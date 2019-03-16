@@ -464,8 +464,8 @@ namespace PFD
             System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.GenerateMemberLoadsIfNotGenerated();
-                        
-            Solver solver = new Solver();
+
+            Solver solver = new Solver(vm.UseFEMSolverCalculationForSimpleBeam);
             vm.SolverWindow = solver;
             
             vm.Run();

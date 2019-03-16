@@ -78,89 +78,141 @@ namespace FEM_CALC_BASE
         // PFD - nove funkcie (nezahrnaju kombinacie)
 
         // Internal Forces
-        public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, CMember member, float[] fx_positions,
-            CMLoad load, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
+        public void CalculateInternalForcesOnSimpleBeam_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, float[] fx_positions, CMember member,
+           CLoadCase lc, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
         {
-            sMomentValuesforCb = new designMomentValuesForCb();
-            sBIF_x = new basicInternalForces[iNumberOfDesignSections];
-
-            CExample_2D_51_SB memberModel = new CExample_2D_51_SB(member, load);
-
-            float fM_abs_max = 0;
-
-            for (int j = 0; j < iNumberOfDesignSections; j++)
-            {
-
-                if (load.ELoadDir == ELoadDirection.eLD_X)
-                {
-                    sBIF_x[j].fN = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                }
-                else if (load.ELoadDir == ELoadDirection.eLD_Y)
-                {
-                    sBIF_x[j].fV_yu = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                    sBIF_x[j].fM_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
-                }
-                else
-                {
-                    sBIF_x[j].fV_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
-                    sBIF_x[j].fM_yu = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
-                }
-
-                sBIF_x[j].fT = 0f; // TODO - doplnit vypocet
-
-                if (Math.Abs(sBIF_x[j].fM_yu) > Math.Abs(fM_abs_max))
-                    fM_abs_max = sBIF_x[j].fM_yu;
-            }
-
             sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
             sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
             sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
             sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
 
-            if (load.ELoadDir == ELoadDirection.eLD_Z)
-            {
-                sMomentValuesforCb.fM_max = fM_abs_max;
-                sMomentValuesforCb.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.25f * member.FLength, member.FLength);
-                sMomentValuesforCb.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.50f * member.FLength, member.FLength);
-                sMomentValuesforCb.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.75f * member.FLength, member.FLength);
-            }
-        }
+            sMomentValuesforCb = new designMomentValuesForCb();
+            sBIF_x = new basicInternalForces[iNumberOfDesignSections];
 
-        public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
-        CMLoad memberload, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
-        {
-            CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, member, fx_positions, memberload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
+            foreach (CMLoad cmload in lc.MemberLoadsList) // Each member load in load case assigned to the member
+            {
+                if (cmload.Member.ID == member.ID)
+                {
+                    CExample_2D_51_SB memberModel = new CExample_2D_51_SB(member, cmload);
+
+                    designMomentValuesForCb sMomentValuesforCb_temp = new designMomentValuesForCb();
+
+                    for (int j = 0; j < iNumberOfDesignSections; j++)
+                    {
+                        basicInternalForces[] sBIF_x_temp = new basicInternalForces[iNumberOfDesignSections];
+
+                        if (cmload.ELoadDir == ELoadDirection.eLD_X)
+                        {
+                            sBIF_x_temp[j].fN = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                        }
+                        else if (cmload.ELoadDir == ELoadDirection.eLD_Y)
+                        {
+                            if (bUseCRSCGeometricalAxes)
+                            {
+                                sBIF_x_temp[j].fV_yy = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fM_zz = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                            }
+                            else
+                            {
+                                sBIF_x_temp[j].fV_yu = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fM_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                            }
+                        }
+                        else
+                        {
+                            if (bUseCRSCGeometricalAxes)
+                            {
+                                sBIF_x_temp[j].fV_zz = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fM_yy = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                            }
+                            else
+                            {
+                                sBIF_x_temp[j].fV_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fM_yu = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                            }
+                        }
+
+                        sBIF_x_temp[j].fT = 0f; // TODO - doplnit vypocet
+
+                        // Add load results
+                        sBIF_x[j].fN += sBIF_x_temp[j].fN;
+                        sBIF_x[j].fV_yu += sBIF_x_temp[j].fV_yu;
+                        sBIF_x[j].fV_yy += sBIF_x_temp[j].fV_yy;
+                        sBIF_x[j].fV_zv += sBIF_x_temp[j].fV_zv;
+                        sBIF_x[j].fV_zz += sBIF_x_temp[j].fV_zz;
+                        sBIF_x[j].fM_yu += sBIF_x_temp[j].fM_yu;
+                        sBIF_x[j].fM_yy += sBIF_x_temp[j].fM_yy;
+                        sBIF_x[j].fM_zv += sBIF_x_temp[j].fM_zv;
+                        sBIF_x[j].fM_zz += sBIF_x_temp[j].fM_zz;
+                    }
+
+                    if (cmload.ELoadDir == ELoadDirection.eLD_Z)
+                    {
+                        sMomentValuesforCb_temp.fM_max = memberModel.m_arrMLoads[0].Get_SSB_M_max(member.FLength);
+                        sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.25f * member.FLength, member.FLength);
+                        sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.50f * member.FLength, member.FLength);
+                        sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.75f * member.FLength, member.FLength);
+
+                        // Add load results
+                        sMomentValuesforCb.fM_max += sMomentValuesforCb_temp.fM_max;
+                        sMomentValuesforCb.fM_14 += sMomentValuesforCb_temp.fM_14;
+                        sMomentValuesforCb.fM_24 += sMomentValuesforCb_temp.fM_24;
+                        sMomentValuesforCb.fM_34 += sMomentValuesforCb_temp.fM_34;
+                    }
+                }
+            }
         }
 
         // Deflections
-        public void CalculateDeflectionsOnSimpleBeam_PFD(int iNumberOfDesignSections, CMember member, float[] fx_positions,
-            CMLoad load, out basicDeflections[] sBDeflections_x)
+        public void CalculateDeflectionsOnSimpleBeam_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, float[] fx_positions, CMember member,
+        CLoadCase lc, out basicDeflections[] sBDeflections_x)
         {
             sBDeflections_x = new basicDeflections[iNumberOfDesignSections];
 
-            CExample_2D_51_SB memberModel = new CExample_2D_51_SB(member, load);
-
-            for (int j = 0; j < iNumberOfDesignSections; j++)
+            foreach (CMLoad cmload in lc.MemberLoadsList) // Each member load in load case assigned to the member
             {
-                if (load.ELoadDir == ELoadDirection.eLD_Z)
+                if (cmload.Member.ID == member.ID)
                 {
-                    sBDeflections_x[j].fDelta_yu = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_z);
-                    sBDeflections_x[j].fDelta_yy = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_z);
-                }
-                else
-                {
-                    sBDeflections_x[j].fDelta_zv = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_y);
-                    sBDeflections_x[j].fDelta_zz = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_y);
-                }
+                    CExample_2D_51_SB memberModel = new CExample_2D_51_SB(member, cmload);
 
-                sBDeflections_x[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x[j].fDelta_yy) + MathF.Pow2(sBDeflections_x[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
+                    for (int j = 0; j < iNumberOfDesignSections; j++)
+                    {
+                        basicDeflections[] sBDeflections_x_temp = new basicDeflections[iNumberOfDesignSections];
+
+                        if (cmload.ELoadDir == ELoadDirection.eLD_Z)
+                        {
+                            if (bUseCRSCGeometricalAxes)
+                                sBDeflections_x_temp[j].fDelta_yy = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_z);
+                            else
+                                sBDeflections_x_temp[j].fDelta_yu = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_mikro);
+                        }
+                        else
+                        {
+                            if (bUseCRSCGeometricalAxes)
+                                sBDeflections_x_temp[j].fDelta_zz = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_y);
+                            else
+                                sBDeflections_x_temp[j].fDelta_zv = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_epsilon);
+                        }
+
+                        if (bUseCRSCGeometricalAxes)
+                            sBDeflections_x_temp[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_temp[j].fDelta_yy) + MathF.Pow2(sBDeflections_x_temp[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
+                        else
+                            sBDeflections_x_temp[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_temp[j].fDelta_yu) + MathF.Pow2(sBDeflections_x_temp[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
+
+                        // Add load results
+                        sBDeflections_x[j].fDelta_yu += sBDeflections_x_temp[j].fDelta_yu;
+                        sBDeflections_x[j].fDelta_yy += sBDeflections_x_temp[j].fDelta_yy;
+                        sBDeflections_x[j].fDelta_zv += sBDeflections_x_temp[j].fDelta_zv;
+                        sBDeflections_x[j].fDelta_zz += sBDeflections_x_temp[j].fDelta_zz;
+
+                        if (bUseCRSCGeometricalAxes)
+                            sBDeflections_x[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x[j].fDelta_yy) + MathF.Pow2(sBDeflections_x[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
+                        else
+                            sBDeflections_x[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x[j].fDelta_yu) + MathF.Pow2(sBDeflections_x[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
+
+                    }
+                }
             }
-        }
-
-        public void CalculateDeflectionsOnSimpleBeam_PFD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
-        CMLoad memberload, out basicDeflections[] sBDeflections_x)
-        {
-            CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, member, fx_positions, memberload, out sBDeflections_x);
         }
     }
 }

@@ -21,14 +21,10 @@ namespace PFD.Infrastructure
         {
             theLock = lockObject;
         }
-
-
         public void BeamCalculations(CModel beam, bool DeterminateCombinationResultsByFEMSolver)
         {
             CModelToBFEMNetConverter.Convert(beam, DeterminateCombinationResultsByFEMSolver);
         }
-
-        
 
         //-------------------------------------------------------------------------------------------------------------------------------
         public IAsyncResult BeginBeamCalculations(CModel beam, bool DeterminateCombinationResultsByFEMSolver, AsyncCallback cb, object s)

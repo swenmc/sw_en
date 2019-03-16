@@ -104,11 +104,11 @@ namespace FEM_CALC_BASE
 
             // Member loads
             // Load 1 - MemberIDs: 1
-            CMLoad MLoad_q1 = null;
+            CMLoad memberLoad_0 = null;
 
             if (load is CMLoad_21)
             {
-                // Nastavujem do kopie, aby som neprepisal priradenie originalu
+                // Nastavujem do kopie, aby som neprepisal priradenie originalneho zatazenia prutu v globalnom modeli
                 CMLoad_21 load_uniform = new CMLoad_21();
                 load_uniform.ID = 1;
                 load_uniform.Fq = ((CMLoad_21)load).Fq;
@@ -116,11 +116,11 @@ namespace FEM_CALC_BASE
                 load_uniform.ELoadType_FMTS = load.ELoadType_FMTS;
                 load_uniform.ELoadCS = load.ELoadCS;
                 load_uniform.ELoadDir = load.ELoadDir;
-                MLoad_q1 = load_uniform;
+                memberLoad_0 = load_uniform;
             }
             else if (load is CMLoad_24)
             {
-                // Nastavujem do kopie, aby som neprepisal priradenie originalu
+                // Nastavujem do kopie, aby som neprepisal priradenie originalneho zatazenia prutu v globalnom modeli
                 CMLoad_24 load_partial = new CMLoad_24();
                 load_partial.ID = 1;
                 load_partial.FaA = ((CMLoad_24)load).FaA;
@@ -131,7 +131,7 @@ namespace FEM_CALC_BASE
                 load_partial.ELoadType_FMTS = load.ELoadType_FMTS;
                 load_partial.ELoadCS = load.ELoadCS;
                 load_partial.ELoadDir = load.ELoadDir;
-                MLoad_q1 = load_partial;
+                memberLoad_0 = load_partial;
             }
             else
             {
@@ -139,14 +139,16 @@ namespace FEM_CALC_BASE
                 throw new ArgumentNullException("Invalid load type.");
             }
 
-            MLoad_q1.IMemberCollection = new int[1];
-            MLoad_q1.IMemberCollection[0] = 1;
-            m_arrMLoads[0] = MLoad_q1;
+            memberLoad_0.IMemberCollection = new int[1];
+            memberLoad_0.IMemberCollection[0] = 1;
+            memberLoad_0.Member = member;
+            m_arrMLoads[0] = memberLoad_0;
 
             // Load Cases
             // Load Case 1
             CLoadCase LoadCase0 = new CLoadCase();
             LoadCase0.ID = 1;
+            LoadCase0.MemberLoadsList.Add(memberLoad_0);
 
             m_arrLoadCases[0] = LoadCase0;
 
@@ -154,6 +156,8 @@ namespace FEM_CALC_BASE
             // Load Combination 1
             CLoadCombination LoadComb0 = new CLoadCombination();
             LoadComb0.ID = 1;
+            LoadComb0.LoadCasesFactorsList = new List<float> { 1.00f};
+            LoadComb0.LoadCasesList = new List<CLoadCase> { LoadCase0 };
 
             m_arrLoadCombs[0] = LoadComb0;
         }

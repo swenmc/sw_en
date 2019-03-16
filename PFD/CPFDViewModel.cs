@@ -86,6 +86,7 @@ namespace PFD
         private float MDisplayIn3DRatio;
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
+        private bool MUseFEMSolverCalculationForSimpleBeam;
         // Local member load direction used for load definition, calculation of internal forces and design
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
@@ -690,6 +691,20 @@ namespace PFD
             }
         }
 
+        public bool UseFEMSolverCalculationForSimpleBeam
+        {
+            get
+            {
+                return MUseFEMSolverCalculationForSimpleBeam;
+            }
+
+            set
+            {
+                MUseFEMSolverCalculationForSimpleBeam = value;
+                NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
+            }
+        }
+
         public bool UseCRSCGeometricalAxes
         {
             get
@@ -971,6 +986,9 @@ namespace PFD
             GenerateLoadsOnFrameMembers = true;
             GenerateSurfaceLoads = true;
 
+            DeterminateCombinationResultsByFEMSolver = false;
+            UseFEMSolverCalculationForSimpleBeam = false;
+
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
@@ -1127,18 +1145,20 @@ namespace PFD
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);            
+            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
-            SolverWindow.SetBeams();
-            // Calculation of simple beam model
-            beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
-            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);            
-            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
+            if (UseFEMSolverCalculationForSimpleBeam)
+            {
+                SolverWindow.SetBeams();
+                // Calculation of simple beam model
+                beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
+                if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
+                CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
+                if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
+            }
 
-
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, frameModels, beamSimpleModels);
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
 

@@ -15,12 +15,14 @@ namespace PFD
         public double Progress = 0;
         Stopwatch stopWatch = new Stopwatch();
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
+        bool UseFEMSolverCalculationForSimpleBeam;
 
-        public Solver()
+        public Solver(bool bUseFEMSolverCalculationForSimpleBeam)
         {
             InitializeComponent();
             Progress = 0;
             DisplayCalculationTime();
+            UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
@@ -102,6 +104,9 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
+                if(!UseFEMSolverCalculationForSimpleBeam)
+                    SetInActiveRowFormat(LabelFrames, LabelFramesCounting);
+
                 SetInActiveRowFormat(LabelBeams, LabelBeamsCounting);
                 SetActiveRowFormat(LabelDeterminateDesignInternalForces, LabelDeterminateDesignInternalForcesProgress);
             });
