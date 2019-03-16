@@ -33,13 +33,13 @@ namespace BaseClasses
 
                 Model3DGroup gr = new Model3DGroup();
 
-                //najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
+                // Najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
                 if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplayLoadsLabels)
                 {
                     gr.Children.Add(Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
                     //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
                 }
-                
+
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
@@ -219,6 +219,7 @@ namespace BaseClasses
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
                         model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsGenerated &&
                         model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to display
                     {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
@@ -320,123 +321,128 @@ namespace BaseClasses
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                 {
-                    // Set different colors of plates in joints defined in LCS of member and GCS of model
-                    if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                        brushPlates = new SolidColorBrush(Colors.DeepSkyBlue);
-
-                    // Models3D or ModelGroups Components
-                    Model3DGroup JointModelGroup = new Model3DGroup();
-
-                    // Plates
-                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
+                    if (cmodel.m_arrConnectionJoints[i] != null && 
+                        cmodel.m_arrConnectionJoints[i].BIsGenerated &&
+                        cmodel.m_arrConnectionJoints[i].BIsDisplayed)
                     {
-                        for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; l++)
-                        {
-                            if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
-                            {
-                                GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
-                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
+                        // Set different colors of plates in joints defined in LCS of member and GCS of model
+                        if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
+                            brushPlates = new SolidColorBrush(Colors.DeepSkyBlue);
 
-                                if (sDisplayOptions.bDisplayPlates)
+                        // Models3D or ModelGroups Components
+                        Model3DGroup JointModelGroup = new Model3DGroup();
+
+                        // Plates
+                        if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
+                        {
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; l++)
+                            {
+                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                                 {
-                                    // Add plates
-                                    JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
-                                }
+                                    GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
+                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
 
-                                // Add plate connectors
-                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
-                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
+                                    if (sDisplayOptions.bDisplayPlates)
+                                    {
+                                        // Add plates
+                                        JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
+                                    }
+
+                                    // Add plate connectors
+                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
+                                    {
+                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
+                                        {
+                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushConnectors);
+                                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
+                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                                        }
+                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                        if (sDisplayOptions.bDisplayConnectors)
+                                        {
+                                            JointModelGroup.Children.Add(plateConnectorsModelGroup);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Set plates color to default
+                        brushPlates = new SolidColorBrush(Colors.Gray);
+
+                        // Connectors
+                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+
+                        if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
+                        {
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrConnectors.Length; l++)
+                            {
+                                if (cmodel.m_arrConnectionJoints[i].m_arrConnectors[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
                                 {
-                                    Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
-                                    {
-                                        GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushConnectors);
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
-                                        plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
-                                    }
-                                    plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                    if (sDisplayOptions.bDisplayConnectors)
-                                    {
-                                        JointModelGroup.Children.Add(plateConnectorsModelGroup);
-                                    }
+                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushConnectors)); // Add bolt 3D model to the model group
                                 }
                             }
                         }
-                    }
 
-                    // Set plates color to default
-                    brushPlates = new SolidColorBrush(Colors.Gray);
-
-                    // Connectors
-                    bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
-
-                    if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
-                    {
-                        for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrConnectors.Length; l++)
+                        // Welds
+                        if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
                         {
-                            if (cmodel.m_arrConnectionJoints[i].m_arrConnectors[l] != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; l++)
                             {
-                                JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushConnectors)); // Add bolt 3D model to the model group
+                                if (cmodel.m_arrConnectionJoints[i].m_arrWelds[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
+                                {
+                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrWelds[l].CreateGeomModel3D(brushWelds)); // Add weld 3D model to the model group
+                                }
                             }
                         }
-                    }
 
-                    // Welds
-                    if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
-                    {
-                        for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; l++)
+                        if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
                         {
-                            if (cmodel.m_arrConnectionJoints[i].m_arrWelds[l] != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrWelds[l].m_pControlPoint != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
+                            // Joint is defined in LCS of first secondary member
+                            if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                            cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
+                            !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
                             {
-                                JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrWelds[l].CreateGeomModel3D(brushWelds)); // Add weld 3D model to the model group
+                                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
+                                RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                                JointModelGroup.Transform = rotate;
+                            }
+                            else if (cmodel.m_arrConnectionJoints[i].m_MainMember != null && !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                            {
+                                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
+                                RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                                JointModelGroup.Transform = rotate;
+                            }
+                            else
+                            {
+                                // There is no rotation
+                            }
+
+                            // Joint is defined in LCS of first secondary member
+                            if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                            cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
+                            {
+                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                            }
+                            else // Joint is defined in LCS of main member
+                            {
+                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
                             }
                         }
+                        cmodel.m_arrConnectionJoints[i].Visual_ConnectionJoint = JointModelGroup;
+
+                        // Add joint model group to the global model group items
+                        if (JointsModel3DGroup == null) JointsModel3DGroup = new Model3DGroup();
+                        JointsModel3DGroup.Children.Add(JointModelGroup);
                     }
-
-                    if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                    {
-                        // Joint is defined in LCS of first secondary member
-                        if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                        cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                        !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                        {
-                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                            JointModelGroup.Transform = rotate;
-                        }
-                        else if (cmodel.m_arrConnectionJoints[i].m_MainMember != null && !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                        {
-                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                            JointModelGroup.Transform = rotate;
-                        }
-                        else
-                        {
-                            // There is no rotation
-                        }
-
-                        // Joint is defined in LCS of first secondary member
-                        if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                        cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
-                        {
-                            cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                        }
-                        else // Joint is defined in LCS of main member
-                        {
-                            cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
-                        }
-                    }
-                    cmodel.m_arrConnectionJoints[i].Visual_ConnectionJoint = JointModelGroup;
-
-                    // Add joint model group to the global model group items
-                    if (JointsModel3DGroup == null) JointsModel3DGroup = new Model3DGroup();
-                    JointsModel3DGroup.Children.Add(JointModelGroup);
                 } //for joints
             }
             return JointsModel3DGroup;
@@ -450,7 +456,7 @@ namespace BaseClasses
 
             if (selectedLoadCase != null)
             {
-                if (selectedLoadCase.NodeLoadsList != null  && sDisplayOptions.bDisplayNodalLoads) // Some nodal loads exist
+                if (selectedLoadCase.NodeLoadsList != null && sDisplayOptions.bDisplayNodalLoads) // Some nodal loads exist
                 {
                     // Model Groups of Nodal Loads
                     for (int i = 0; i < selectedLoadCase.NodeLoadsList.Count; i++)
@@ -757,7 +763,7 @@ namespace BaseClasses
 
                     Transform3DGroup transform = m.CreateTransformCoordGroup(m, true);
                     Point3D pC = new Point3D(0 + m.FLength * 0.35, 0, 0);
-                    
+
                     Point3D pAxisX = new Point3D(pC.X + axisL, pC.Y, pC.Z);
                     Point3D pAxisY = new Point3D(pC.X, pC.Y + axisL, pC.Z);
                     Point3D pAxisZ = new Point3D(pC.X, pC.Y, pC.Z + axisL);
@@ -1672,7 +1678,7 @@ namespace BaseClasses
                     }
                 }
             }
-            
+
         }
         private static void DrawSurfaceLoadAxis(CSLoad_FreeUniform l, Transform3DGroup loadGroupTransform, Viewport3D viewPort)
         {
@@ -1694,7 +1700,7 @@ namespace BaseClasses
                 {
                     trans.Children.Add(loadGroupTransform);
                 }
-                
+
                 pC = trans.Transform(pC);
                 pAxisX = trans.Transform(pAxisX);
                 pAxisY = trans.Transform(pAxisY);

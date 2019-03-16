@@ -42,6 +42,7 @@ namespace BaseClasses
             float ftemp_a = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             float ftemp_b = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
 
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             Name = "Column to Rafter Knee Joint";

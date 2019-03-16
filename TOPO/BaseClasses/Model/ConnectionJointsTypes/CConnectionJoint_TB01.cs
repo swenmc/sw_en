@@ -19,7 +19,7 @@ namespace BaseClasses
 
             m_Node = Node_temp;
             m_MainMember = Column_temp;
-
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             // Plate properties

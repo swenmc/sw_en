@@ -26,6 +26,7 @@ namespace BaseClasses
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
             m_ft_main_plate = ft_temp_main_plate; // Thickness of plate in knee joint of the frame (main column and rafter)
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             m_ft = 0.003f;

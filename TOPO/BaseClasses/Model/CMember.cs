@@ -483,6 +483,8 @@ namespace BaseClasses
             Prefix = component.ComponentPrefix;
             Name = component.ComponentName;
 
+            // Member is generated
+            BIsGenerated = true;
             // Set as default property that member should be displayed
             BIsDisplayed = true;
         }
