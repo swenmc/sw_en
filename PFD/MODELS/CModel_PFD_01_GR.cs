@@ -1794,10 +1794,17 @@ namespace PFD
             // Deactivate already generated members in the bay (space between frames) where is the block inserted
             for (int i = 0; i < iNumberofMembersToDeactivate; i++)
             {
-                m_arrMembers[iFirstMemberToDeactivate + i].BIsDisplayed = false;
-
+                CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
+                if(m != null) m.BIsDisplayed = false;
+                
                 // Deactivate Member Joints
                 // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
+                // Doplnene 16.3.2019 - potrebne otestovat, ci funguje
+                CConnectionJointTypes jStart;
+                CConnectionJointTypes jEnd;
+                GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
+                if (jStart != null) jStart.BIsDisplayed = false;
+                if (jEnd != null) jEnd.BIsDisplayed = false;
             }
 
             float fBlockRotationAboutZaxis_rad = 0;
