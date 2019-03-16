@@ -255,8 +255,16 @@
                         <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
 
-                        <Button Name="btnDisplayDoorBlock" Content="D Block" Grid.Row="20" Grid.Column="5" Height="20" Click="btnDisplayDoorBlock_Click" Margin="90,55,30,55"/>
-                        <Button Name="btnDisplayWindowBlock" Content="W Block" Grid.Row="21" Grid.Column="5" Height="20" Margin="90,55,30,55" Click="btnDisplayWindowBlock_Click"/>
+                        <Button Grid.Row="20" Grid.Column="5" VerticalAlignment="Top" ToolTip="Display door block" HorizontalAlignment="Right" Name="btnDisplayDoorBlock" Click="btnDisplayDoorBlock_Click" Margin="90,55,30,55" Width="20" Height="20">
+                            <StackPanel>
+                                <Image Source="Resources/door.png"></Image>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Row="21" Grid.Column="5" VerticalAlignment="Top" ToolTip="Display window block" HorizontalAlignment="Right" Name="btnDisplayWindowBlock" Click="btnDisplayWindowBlock_Click" Margin="90,55,30,55" Width="20" Height="20">
+                            <StackPanel>
+                                <Image Source="Resources/window.png"></Image>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
