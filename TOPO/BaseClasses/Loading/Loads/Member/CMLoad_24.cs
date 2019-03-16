@@ -149,6 +149,15 @@ namespace BaseClasses
 
             return fRA_Start * (FaA + (fRA_Start / (2 * Fq)));
         }
+        public override float Get_SSB_N_x(float fx)
+        {
+            if (fx <= FaA)
+                return Fq * Fs;
+            else if (fx < m_fd_calc)
+                return Fq * Fs - Fq * (fx - FaA);
+            else
+                return 0;
+        }
         public override float Get_SSB_V_x(float fx, float fL)
         {
             float fRA_Start = Get_SSB_SupportReactionValue_RA_Start(fL);

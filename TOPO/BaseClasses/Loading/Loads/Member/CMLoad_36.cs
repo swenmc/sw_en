@@ -61,6 +61,10 @@ namespace BaseClasses
         {
             throw new NotImplementedException();
         }
+        public override float Get_SSB_N_x(float fx)
+        {
+            throw new NotImplementedException();
+        }
         public override float Get_SSB_V_x(float fx, float fL)
         {
             throw new NotImplementedException();

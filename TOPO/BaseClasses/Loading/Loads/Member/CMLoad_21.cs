@@ -92,6 +92,10 @@ namespace BaseClasses
         {
             return 0.125f * Fq * fL * fL;
         }
+        public override float Get_SSB_N_x(float fx)
+        {
+            return Fq * fx;
+        }
         public override float Get_SSB_V_x(float fx, float fL)
         {
             return Fq * (0.5f * fL - fx);

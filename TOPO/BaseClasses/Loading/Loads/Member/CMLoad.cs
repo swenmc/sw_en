@@ -164,6 +164,7 @@ namespace BaseClasses
         abstract public float Get_SSB_SupportReactionValue_RB_End(float fL);
         abstract public float Get_SSB_V_max(float fL);
         abstract public float Get_SSB_M_max(float fL);
+        abstract public float Get_SSB_N_x(float fx);
         abstract public float Get_SSB_V_x(float fx, float fL);
         abstract public float Get_SSB_M_x(float fx, float fL);
         abstract public float Get_SSB_Delta_max(float fL, float fE, float fI);

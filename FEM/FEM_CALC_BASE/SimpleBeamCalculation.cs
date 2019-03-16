@@ -103,7 +103,7 @@ namespace FEM_CALC_BASE
 
                         if (cmload.ELoadDir == ELoadDirection.eLD_X)
                         {
-                            sBIF_x_temp[j].fN = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                            sBIF_x_temp[j].fN = memberModel.m_arrMLoads[0].Get_SSB_N_x(fx_positions[j]);
                         }
                         else if (cmload.ELoadDir == ELoadDirection.eLD_Y)
                         {
@@ -122,12 +122,12 @@ namespace FEM_CALC_BASE
                         {
                             if (bUseCRSCGeometricalAxes)
                             {
-                                sBIF_x_temp[j].fV_zz = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fV_zz = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
                                 sBIF_x_temp[j].fM_yy = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                             else
                             {
-                                sBIF_x_temp[j].fV_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp[j].fV_zv = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
                                 sBIF_x_temp[j].fM_yu = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                         }
