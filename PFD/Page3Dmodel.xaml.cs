@@ -21,8 +21,7 @@ namespace PFD
         public EGCS eGCS = EGCS.eGCSLeftHanded;
         //EGCS eGCS = EGCS.eGCSRightHanded;
 
-        
-        public Page3Dmodel(CModel_PFD model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase)
+        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase)
         {
             sDisplayOptions = sDisplayOptions_temp;
 
