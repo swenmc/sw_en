@@ -1147,7 +1147,7 @@ namespace PFD
             CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
-            if (UseFEMSolverCalculationForSimpleBeam)
+            if (DeterminateCombinationResultsByFEMSolver || UseFEMSolverCalculationForSimpleBeam)
             {
                 SolverWindow.SetBeams();
                 // Calculation of simple beam model
