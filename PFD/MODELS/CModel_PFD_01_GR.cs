@@ -1322,6 +1322,8 @@ namespace PFD
             #endregion
 
             AddMembersToMemberGroupsLists();
+
+            SetJointDefaultParameters();
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -1907,6 +1909,20 @@ namespace PFD
             if (i != m_arrMembers.Length)
                 throw new Exception("Not all members were added.");
             */
+        }
+
+        // TODO - spravnejsie by bolo nastavovat defaultne parametre spoja uz pri vytvoreni
+        public void SetJointDefaultParameters()
+        {
+            foreach (CConnectionJointTypes joint in m_arrConnectionJoints)
+            {
+                if (joint.m_MainMember != null && joint.m_MainMember.BIsGenerated) // In case that joint main member is generated
+                {
+                    if (joint.m_MainMember.BIsDisplayed == true) joint.BIsDisplayed = true;
+                    if (joint.m_MainMember.BIsDSelectedForDesign == true) joint.BIsDSelectedForDesign = true;
+                    if (joint.m_MainMember.BIsSelectedForMaterialList == true) joint.BIsSelectedForMaterialList = true;
+                }
+            }
         }
     }
 }

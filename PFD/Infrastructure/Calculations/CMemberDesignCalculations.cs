@@ -84,10 +84,10 @@ namespace PFD.Infrastructure
         public void CalculateAll()
         {
             //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
-            
-            CalculateMemberDesignLoadCase();
 
-            CalculateMemberDesignLoadCombination();
+            CalculateInternalForces_LoadCase();
+
+            CalculateInternalForces_LoadCombination_And_MemberDesign();
 
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
@@ -100,7 +100,7 @@ namespace PFD.Infrastructure
             ShowResultsInMessageBox();
         }
 
-        public void CalculateMemberDesignLoadCase()
+        public void CalculateInternalForces_LoadCase()
         {
             designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
             basicInternalForces[] sBIF_x = null;
@@ -115,8 +115,7 @@ namespace PFD.Infrastructure
             {
                 SolverWindow.SetMemberDesignLoadCaseProgress(++count, Model.m_arrMembers.Length);
 
-                // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
-                if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     if (!DeterminateCombinationResultsByFEMSolver)
                     {
@@ -212,7 +211,7 @@ namespace PFD.Infrastructure
             }
 
         }
-        public void CalculateMemberDesignLoadCombination()
+        public void CalculateInternalForces_LoadCombination_And_MemberDesign()
         {
             // Design of members
             // Calculate Internal Forces For Load Combinations
@@ -226,8 +225,8 @@ namespace PFD.Infrastructure
             foreach (CMember m in Model.m_arrMembers)
             {
                 SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
-                // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
-                if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+
+                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -387,7 +386,7 @@ namespace PFD.Infrastructure
                                                       "Joint ID: " + jointEnd.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
                                                       "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_End, 3).ToString() + "\n");
-                                
+
                                 SetMaximumDesignRatioByComponentType(m, memberDesignModel);
                             }
                         }

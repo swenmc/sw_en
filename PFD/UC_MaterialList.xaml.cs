@@ -27,7 +27,7 @@ namespace PFD
 
         List<string> listMemberPrefix = new List<string>(1);
         List<string> listMemberCrScName = new List<string>(1);
-        List<int>    listMemberQuantity = new List<int>(1);
+        List<int> listMemberQuantity = new List<int>(1);
         List<string> listMemberMaterialName = new List<string>(1);
         List<double> dlistMemberLength = new List<double>(1);
         List<double> dlistMemberMassPerLength = new List<double>(1);
@@ -107,7 +107,7 @@ namespace PFD
 
                     for (int j = 0; j < assignedMembersList.Count; j++) // Each member in the list
                     {
-                        if (assignedMembersList[j].BIsDisplayed)
+                        if (assignedMembersList[j].BIsSelectedForMaterialList)
                         {
                             // Define current member properties
                             string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
@@ -164,70 +164,6 @@ namespace PFD
 
                     iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
                 }
-
-                //if (model.m_arrCrSc[i].AssignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
-                //{
-                //    List<CMember> ListOfMemberGroups = new List<CMember>();
-
-                //    for (int j = 0; j < model.m_arrCrSc[i].AssignedMembersList.Count; j++) // Each member in the list
-                //    {
-                //        if (model.m_arrCrSc[i].AssignedMembersList[j].BIsDisplayed)
-                //        {
-                //            // Define current member properties
-                //            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0];
-                //            string sCrScName = model.m_arrCrSc[i].Name;
-                //            int iQuantity = 1;
-                //            string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
-                //            float fLength = model.m_arrCrSc[i].AssignedMembersList[j].FLength_real;
-                //            float fMassPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
-                //            float fMassPerPiece = fLength * fMassPerLength;
-                //            float fTotalLength = iQuantity * fLength;
-                //            float fTotalMass = fTotalLength * fMassPerLength;
-                //            float fTotalPrice = fTotalMass * fCFS_PricePerKg_Members_Total;
-
-                //            bool bMemberwasAdded = false; // Member was added to the group
-
-                //            if (j > 0) // If it not first item
-                //            {
-                //                for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
-                //                {
-                //                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0]) &&
-                //                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
-                //                    {
-                //                        // Add member to the one from already created groups
-
-                //                        listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
-                //                        listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
-                //                        listMemberTotalMass[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberMassPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all members in the group
-                //                        listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalMass[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
-
-                //                        bMemberwasAdded = true;
-                //                    }
-                //                    // TODO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                //                }
-                //            }
-
-                //            if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
-                //            {
-                //                listMemberPrefix.Add(sPrefix);
-                //                listMemberCrScName.Add(sCrScName);
-                //                listMemberQuantity.Add(iQuantity);
-                //                listMemberMaterialName.Add(sMaterialName);
-                //                dlistMemberLength.Add(Math.Round(fLength, iNumberOfDecimalPlacesLength));
-                //                dlistMemberMassPerLength.Add(Math.Round(fMassPerLength, iNumberOfDecimalPlacesMass));
-                //                dlistMemberMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                //                listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
-                //                listMemberTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                //                listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
-
-                //                // Add first member in the group to the list of member groups
-                //                ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
-                //            }
-                //        }
-                //    }
-
-                //    iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
-                //}
             }
 
             // Check Data
@@ -239,7 +175,7 @@ namespace PFD
 
             foreach (CMember member in model.m_arrMembers)
             {
-                if (member.BIsDisplayed)
+                if (member.BIsSelectedForMaterialList)
                 {
                     dTotalMembersLength_Model += member.FLength_real;
                     dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
@@ -384,137 +320,140 @@ namespace PFD
             {
                 for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                 {
-                    // Define current plate properties
-                    // Not used - could be used to compare names in database with user-defined in the future
-
-                    string[] sPlateNames;
-                    ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
-                    switch (ePlateSerieType_FS)
+                    if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
                     {
-                        case ESerieTypePlate.eSerie_B:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_B_Names;
+                        // Define current plate properties
+                        // Not used - could be used to compare names in database with user-defined in the future
 
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_L:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_L_Names;
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_LL:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_LL_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_F:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_F_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_Q:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_Q_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_S:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_S_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_T:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_T_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_X:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_X_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_Y:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_Y_Names;
-
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_J:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_J_Names;
-                                break;
-                            }
-                        case ESerieTypePlate.eSerie_K:
-                            {
-                                sPlateNames = databaseCopm.arr_Serie_K_Names;
-                                break;
-                            }
-                        default:
-                            {
-                                // Not implemented
-                                break;
-                            }
-                    }
-
-                    string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
-                    int iQuantity = 1;
-                    string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.Name;
-
-                    float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx;
-                    float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy;
-                    float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
-                    float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
-                    float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
-                    float fTotalArea = iQuantity * fArea;
-                    float fTotalMass = iQuantity * fMassPerPiece;
-                    float fTotalPrice = fTotalMass * fCFS_PricePerKg_Plates_Total;
-
-                    bool bPlatewasAdded = false; // Plate was added to the group
-
-                    if (i > 0 || (i == 0 && j > 0)) // If it not first item
-                    {
-                        for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
+                        string[] sPlateNames;
+                        ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
+                        switch (ePlateSerieType_FS)
                         {
-                            if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
-                            MathF.d_equal(ListOfPlateGroups[k].fWidth_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx) &&
-                            MathF.d_equal(ListOfPlateGroups[k].fHeight_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy) &&
-                            MathF.d_equal(ListOfPlateGroups[k].Ft, model.m_arrConnectionJoints[i].m_arrPlates[j].Ft) &&
-                            MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
-                            {
-                                // Add plate to the one from already created groups
+                            case ESerieTypePlate.eSerie_B:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_B_Names;
 
-                                listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
-                                listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * dlistPlateArea[k], iNumberOfDecimalPlacesArea);
-                                listPlateTotalMass[k] = Math.Round(listPlateQuantity[k] * dlistPlateMassPerPiece[k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all plates in the group
-                                listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * fCFS_PricePerKg_Plates_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all plates in the group
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_L:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_L_Names;
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_LL:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_LL_Names;
 
-                                bPlatewasAdded = true;
-                            }
-                            // TOO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_F:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_F_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_Q:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_Q_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_S:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_S_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_T:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_T_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_X:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_X_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_Y:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_Y_Names;
+
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_J:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_J_Names;
+                                    break;
+                                }
+                            case ESerieTypePlate.eSerie_K:
+                                {
+                                    sPlateNames = databaseCopm.arr_Serie_K_Names;
+                                    break;
+                                }
+                            default:
+                                {
+                                    // Not implemented
+                                    break;
+                                }
                         }
-                    }
 
-                    if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                    {
-                        listPlatePrefix.Add(sPrefix);
-                        listPlateQuantity.Add(iQuantity);
-                        listPlateMaterialName.Add(sMaterialName);
-                        dlistPlateWidth_bx.Add(Math.Round(fWidth_bx, iNumberOfDecimalPlacesPlateDim));
-                        dlistPlateHeight_hy.Add(Math.Round(fHeight_hy, iNumberOfDecimalPlacesPlateDim));
-                        dlistPlateThickness_tz.Add(Math.Round(Ft, iNumberOfDecimalPlacesPlateDim));
-                        dlistPlateArea.Add(Math.Round(fArea, iNumberOfDecimalPlacesArea));
-                        dlistPlateMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                        listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlacesArea));
-                        listPlateTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                        listPlateTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+                        string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
+                        int iQuantity = 1;
+                        string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.Name;
 
-                        // Add first plate in the group to the list of plate groups
-                        ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
+                        float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx;
+                        float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy;
+                        float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
+                        float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
+                        float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
+                        float fTotalArea = iQuantity * fArea;
+                        float fTotalMass = iQuantity * fMassPerPiece;
+                        float fTotalPrice = fTotalMass * fCFS_PricePerKg_Plates_Total;
+
+                        bool bPlatewasAdded = false; // Plate was added to the group
+
+                        if (i > 0 || (i == 0 && j > 0)) // If it not first item
+                        {
+                            for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
+                            {
+                                if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
+                                MathF.d_equal(ListOfPlateGroups[k].fWidth_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx) &&
+                                MathF.d_equal(ListOfPlateGroups[k].fHeight_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy) &&
+                                MathF.d_equal(ListOfPlateGroups[k].Ft, model.m_arrConnectionJoints[i].m_arrPlates[j].Ft) &&
+                                MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
+                                {
+                                    // Add plate to the one from already created groups
+
+                                    listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
+                                    listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * dlistPlateArea[k], iNumberOfDecimalPlacesArea);
+                                    listPlateTotalMass[k] = Math.Round(listPlateQuantity[k] * dlistPlateMassPerPiece[k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all plates in the group
+                                    listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * fCFS_PricePerKg_Plates_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all plates in the group
+
+                                    bPlatewasAdded = true;
+                                }
+                                // TOO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                            }
+                        }
+
+                        if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                        {
+                            listPlatePrefix.Add(sPrefix);
+                            listPlateQuantity.Add(iQuantity);
+                            listPlateMaterialName.Add(sMaterialName);
+                            dlistPlateWidth_bx.Add(Math.Round(fWidth_bx, iNumberOfDecimalPlacesPlateDim));
+                            dlistPlateHeight_hy.Add(Math.Round(fHeight_hy, iNumberOfDecimalPlacesPlateDim));
+                            dlistPlateThickness_tz.Add(Math.Round(Ft, iNumberOfDecimalPlacesPlateDim));
+                            dlistPlateArea.Add(Math.Round(fArea, iNumberOfDecimalPlacesArea));
+                            dlistPlateMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
+                            listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlacesArea));
+                            listPlateTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
+                            listPlateTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+
+                            // Add first plate in the group to the list of plate groups
+                            ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
+                        }
                     }
                 }
             }
@@ -528,14 +467,17 @@ namespace PFD
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
             {
-                // Set plates and connectors data
-                foreach (CPlate plate in joint.m_arrPlates)
+                if (joint.BIsSelectedForMaterialList)
                 {
-                    dTotalPlatesArea_Model += plate.fArea;
-                    dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
-                    dTotalPlatesMass_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
-                    dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
-                    iTotalPlatesNumber_Model += 1;
+                    // Set plates and connectors data
+                    foreach (CPlate plate in joint.m_arrPlates)
+                    {
+                        dTotalPlatesArea_Model += plate.fArea;
+                        dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
+                        dTotalPlatesMass_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
+                        dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+                        iTotalPlatesNumber_Model += 1;
+                    }
                 }
             }
 
@@ -654,58 +596,61 @@ namespace PFD
 
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
-                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
                 {
-                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null)
+                    for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
-                        for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length; k++) // For each connector in plate
+                        if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null)
                         {
-                            string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name;
-                            int iQuantity = 1;
-                            string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].m_Mat.Name;
-                            int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Gauge;
-                            float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread;
-                            float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length;
-                            string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
-                            float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
-                            float fTotalMass = iQuantity * fMassPerPiece;
-                            float fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
-
-                            bool bConnectorwasAdded = false; // Connector was added to the group
-
-                            if (ListOfConnectorGroups.Count > 0) // If it not first item
+                            for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length; k++) // For each connector in plate
                             {
-                                for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
+                                string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name;
+                                int iQuantity = 1;
+                                string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].m_Mat.Name;
+                                int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Gauge;
+                                float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread;
+                                float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length;
+                                string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
+                                float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
+                                float fTotalMass = iQuantity * fMassPerPiece;
+                                float fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
+
+                                bool bConnectorwasAdded = false; // Connector was added to the group
+
+                                if (ListOfConnectorGroups.Count > 0) // If it not first item
                                 {
-                                    if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread) &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length) &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].Mass, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass))
+                                    for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
                                     {
-                                        // Add connector to the one from already created groups
+                                        if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name &&
+                                        MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread) &&
+                                        MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length) &&
+                                        MathF.d_equal(ListOfConnectorGroups[m].Mass, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass))
+                                        {
+                                            // Add connector to the one from already created groups
 
-                                        listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
-                                        listConnectorTotalMass[m] = Math.Round(listConnectorQuantity[m] * dlistConnectorMassPerPiece[m], iNumberOfDecimalPlacesMass); // Recalculate total mass of all connectors in the group
-                                        listConnectorTotalPrice[m] = Math.Round(listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all connectors in the group
+                                            listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
+                                            listConnectorTotalMass[m] = Math.Round(listConnectorQuantity[m] * dlistConnectorMassPerPiece[m], iNumberOfDecimalPlacesMass); // Recalculate total mass of all connectors in the group
+                                            listConnectorTotalPrice[m] = Math.Round(listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all connectors in the group
 
-                                        bConnectorwasAdded = true;
+                                            bConnectorwasAdded = true;
+                                        }
+                                        // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                                     }
-                                    // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                                 }
-                            }
 
-                            if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                            {
-                                listConnectorPrefix.Add(sPrefix);
-                                listConnectorQuantity.Add(iQuantity);
-                                listConnectorMaterialName.Add(sMaterialName);
-                                listConnectorSize.Add(size);
-                                dlistConnectorMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                                listConnectorTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                                listConnectorTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+                                if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                                {
+                                    listConnectorPrefix.Add(sPrefix);
+                                    listConnectorQuantity.Add(iQuantity);
+                                    listConnectorMaterialName.Add(sMaterialName);
+                                    listConnectorSize.Add(size);
+                                    dlistConnectorMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
+                                    listConnectorTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
+                                    listConnectorTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
-                                // Add first plate in the group to the list of plate groups
-                                ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
+                                    // Add first plate in the group to the list of plate groups
+                                    ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
+                                }
                             }
                         }
                     }
@@ -719,16 +664,19 @@ namespace PFD
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
             {
-                foreach (CPlate plate in joint.m_arrPlates)
+                if (joint.BIsSelectedForMaterialList)
                 {
-                    // Set connectors data
-                    if (plate.ScrewArrangement.Screws != null)
+                    foreach (CPlate plate in joint.m_arrPlates)
                     {
-                        foreach (CConnector connector in plate.ScrewArrangement.Screws)
+                        // Set connectors data
+                        if (plate.ScrewArrangement.Screws != null)
                         {
-                            dTotalConnectorsMass_Model += connector.Mass;
-                            dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
-                            iTotalConnectorsNumber_Model += 1;
+                            foreach (CConnector connector in plate.ScrewArrangement.Screws)
+                            {
+                                dTotalConnectorsMass_Model += connector.Mass;
+                                dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
+                                iTotalConnectorsNumber_Model += 1;
+                            }
                         }
                     }
                 }
