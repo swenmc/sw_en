@@ -19,14 +19,14 @@ using System.ComponentModel;
 
 namespace PFD
 {
-    /// <summary>
-    /// Interaction logic for UC_WindowsList.xaml
-    /// </summary>
     public partial class UC_DoorsAndWindows : UserControl
     {
-        public UC_DoorsAndWindows(CPFDViewModel vm)
+        public UC_DoorsAndWindows(CPFDViewModel pfdVM)
         {
             InitializeComponent();
+
+            CDoorsWindowsVM vm = new CDoorsWindowsVM();
+            vm.Doors = pfdVM.DoorBlocksProperties;
 
             vm.PropertyChanged += HandleComponentListPropertyChangedEvent;
             this.DataContext = vm;
@@ -37,5 +37,9 @@ namespace PFD
             if (sender == null) return;
         }
 
+
+
     }
+
+    
 }

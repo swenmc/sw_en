@@ -123,6 +123,7 @@
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="CComponentInfo.cs" />
+    <Compile Include="CDoorsWindowsVM.cs" />
     <Compile Include="CComponentListVM.cs" />
     <Compile Include="CComboBoxHelper.cs" />
     <Compile Include="CComponentParamsViewList.cs" />

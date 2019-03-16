@@ -838,7 +838,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
             {
-                if (DoorsAndWindows.Content == null) DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);                
+                DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {

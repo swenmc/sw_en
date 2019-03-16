@@ -264,6 +264,7 @@
                                 <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <!--<DataGrid ItemsSource="{Binding Path=DoorBlocksProperties}"></DataGrid>-->
                         <!--<local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>-->
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
 

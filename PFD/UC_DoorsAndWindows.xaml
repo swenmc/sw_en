@@ -19,9 +19,9 @@
                 <DataGridTextColumn Header="BuildingSide" Binding="{Binding sBuildingSide}"/>
                 <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
                 <DataGridTextColumn Header="DoorType" Binding="{Binding sDoorType}"/>
-                <!--<DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight}"/>
+                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight}"/>
                 <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth}"/>
-                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>-->
+                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock>Windows:</TextBlock>

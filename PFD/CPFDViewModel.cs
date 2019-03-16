@@ -961,7 +961,7 @@ namespace PFD
             set
             {
                 MDoorBlocksProperties = value;
-                NotifyPropertyChanged("MDoorBlocksProperties");
+                NotifyPropertyChanged("DoorBlocksProperties");
             }
         }
 
