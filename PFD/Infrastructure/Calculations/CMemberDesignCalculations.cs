@@ -537,35 +537,15 @@ namespace PFD.Infrastructure
         {
             // Create load combination (FEM solver object)
             BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
-            lcomb.LcID = lcombID;
-
-            // Add specific load cases into the combination and set load factors
-            for (int j = 0; j < Model.m_arrLoadCombs[lcombID - 1].LoadCasesList.Count; j++)
-            {
-                BriefFiniteElementNet.LoadType loadtype = CModelToBFEMNetConverter.GetBFEMLoadType(Model.m_arrLoadCombs[lcombID - 1].LoadCasesList[j].Type);
-                BriefFiniteElementNet.LoadCase loadCase = new BriefFiniteElementNet.LoadCase(Model.m_arrLoadCases[j].Name, loadtype);
-                lcomb.Add(loadCase, Model.m_arrLoadCombs[lcombID - 1].LoadCasesFactorsList[j]);
-            }
+            lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1]);
 
             int iMemberIndex_FM = frameModels[iFrameIndex].GetMemberIndexInFrame(member);
 
-            BriefFiniteElementNet.Force f14 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.25 * member.FLength, lcomb);
-            BriefFiniteElementNet.Force f24 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.50 * member.FLength, lcomb);
-            BriefFiniteElementNet.Force f34 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.75 * member.FLength, lcomb);
+            float fSegmentStart_abs = 0f;
+            float fSegmentEnd_abs = member.FLength;
 
-            sMomentValuesforCb_design.fM_14 = (float)Math.Abs(f14.My);
-            sMomentValuesforCb_design.fM_24 = (float)Math.Abs(f24.My);
-            sMomentValuesforCb_design.fM_34 = (float)Math.Abs(f34.My);
-            sMomentValuesforCb_design.fM_max = 0;
-
-            for (int i = 0; i < iNumberOfDesignSections; i++)
-            {
-                float fx = ((float)i / (float)iNumberOfSegments) * member.FLength;
-                BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(fx, lcomb);
-
-                if (Math.Abs(f.My) > sMomentValuesforCb_design.fM_max)
-                    sMomentValuesforCb_design.fM_max = (float)Math.Abs(f.My);
-            }
+            sMomentValuesforCb_design = GetMomentValuesforCb_design_Segment(fSegmentStart_abs, fSegmentEnd_abs, lcomb,
+            ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])));
 
             /*
             if (MUseCRSCGeometricalAxes)
@@ -589,33 +569,13 @@ namespace PFD.Infrastructure
         {
             // Create load combination (FEM solver object)
             BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
-            lcomb.LcID = lcombID;
+            lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1]);
 
-            // Add specific load cases into the combination and set load factors
-            for (int j = 0; j < Model.m_arrLoadCombs[lcombID - 1].LoadCasesList.Count; j++)
-            {
-                BriefFiniteElementNet.LoadType loadtype = CModelToBFEMNetConverter.GetBFEMLoadType(Model.m_arrLoadCombs[lcombID - 1].LoadCasesList[j].Type);
-                BriefFiniteElementNet.LoadCase loadCase = new BriefFiniteElementNet.LoadCase(Model.m_arrLoadCases[j].Name, loadtype);
-                lcomb.Add(loadCase, Model.m_arrLoadCombs[lcombID - 1].LoadCasesFactorsList[j]);
-            }
+            float fSegmentStart_abs = 0f;
+            float fSegmentEnd_abs = member.FLength;
 
-            BriefFiniteElementNet.Force f14 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.25 * member.FLength, lcomb);
-            BriefFiniteElementNet.Force f24 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.50 * member.FLength, lcomb);
-            BriefFiniteElementNet.Force f34 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.75 * member.FLength, lcomb);
-
-            sMomentValuesforCb_design.fM_14 = (float)Math.Abs(f14.My);
-            sMomentValuesforCb_design.fM_24 = (float)Math.Abs(f24.My);
-            sMomentValuesforCb_design.fM_34 = (float)Math.Abs(f34.My);
-            sMomentValuesforCb_design.fM_max = 0;
-
-            for (int i = 0; i < iNumberOfDesignSections; i++)
-            {
-                float fx = ((float)i / (float)iNumberOfSegments) * member.FLength;
-                BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(fx, lcomb);
-
-                if (Math.Abs(f.My) > sMomentValuesforCb_design.fM_max)
-                    sMomentValuesforCb_design.fM_max = (float)Math.Abs(f.My);
-            }
+            sMomentValuesforCb_design = GetMomentValuesforCb_design_Segment(fSegmentStart_abs, fSegmentEnd_abs, lcomb,
+            ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])));
 
             /*
             if (MUseCRSCGeometricalAxes)
@@ -633,6 +593,52 @@ namespace PFD.Infrastructure
 
             sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
             */
+        }
+
+        private designMomentValuesForCb GetMomentValuesforCb_design_Segment(
+            float fSegmentStart_abs,
+            float fSegmentEnd_abs,
+            BriefFiniteElementNet.LoadCombination lcomb,
+            BriefFiniteElementNet.FrameElement2Node memberBFENet)
+        {
+            float fSegmentLength = fSegmentEnd_abs - fSegmentStart_abs;
+            BriefFiniteElementNet.Force f14 = memberBFENet.GetInternalForceAt(fSegmentStart_abs + 0.25 * fSegmentLength, lcomb);
+            BriefFiniteElementNet.Force f24 = memberBFENet.GetInternalForceAt(fSegmentStart_abs + 0.50 * fSegmentLength, lcomb);
+            BriefFiniteElementNet.Force f34 = memberBFENet.GetInternalForceAt(fSegmentStart_abs + 0.75 * fSegmentLength, lcomb);
+
+            designMomentValuesForCb sMomentValuesforCb_design_segment;
+            sMomentValuesforCb_design_segment.fM_14 = (float)Math.Abs(f14.My);
+            sMomentValuesforCb_design_segment.fM_24 = (float)Math.Abs(f24.My);
+            sMomentValuesforCb_design_segment.fM_34 = (float)Math.Abs(f34.My);
+            sMomentValuesforCb_design_segment.fM_max = 0;
+
+            for (int i = 0; i < iNumberOfDesignSections; i++)
+            {
+                float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfSegments) * fSegmentLength;
+                BriefFiniteElementNet.Force f = memberBFENet.GetInternalForceAt(fx, lcomb);
+
+                if (Math.Abs(f.My) > sMomentValuesforCb_design_segment.fM_max)
+                    sMomentValuesforCb_design_segment.fM_max = (float)Math.Abs(f.My);
+            }
+
+            return sMomentValuesforCb_design_segment;
+        }
+
+        private BriefFiniteElementNet.LoadCombination ConvertLoadCombinationtoBFENet(CLoadCombination loadcomb_input)
+        {
+            // Create load combination (FEM solver object)
+            BriefFiniteElementNet.LoadCombination lcomb_output = new BriefFiniteElementNet.LoadCombination();
+            lcomb_output.LcID = loadcomb_input.ID;
+
+            // Add specific load cases into the combination and set load factors
+            for (int j = 0; j < Model.m_arrLoadCombs[loadcomb_input.ID - 1].LoadCasesList.Count; j++)
+            {
+                BriefFiniteElementNet.LoadType loadtype = CModelToBFEMNetConverter.GetBFEMLoadType(Model.m_arrLoadCombs[loadcomb_input.ID - 1].LoadCasesList[j].Type);
+                BriefFiniteElementNet.LoadCase loadCase = new BriefFiniteElementNet.LoadCase(Model.m_arrLoadCases[j].Name, loadtype);
+                lcomb_output.Add(loadCase, Model.m_arrLoadCombs[loadcomb_input.ID - 1].LoadCasesFactorsList[j]);
+            }
+
+            return lcomb_output;
         }
 
         private void ShowResultsInMessageBox()
