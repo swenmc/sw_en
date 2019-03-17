@@ -109,5 +109,19 @@ namespace BaseClasses
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public bool Validate()
+        {
+            bool isValid = true;
+
+            if (string.IsNullOrEmpty(m_sBuildingSide)) return false;
+            if (string.IsNullOrEmpty(m_sDoorType)) return false;
+            if (m_iBayNumber < 0f) return false;
+            if (m_fDoorsHeight < 0.1f) return false;
+            if (m_fDoorsWidth < 0.1f) return false;
+            if (m_fDoorCoordinateXinBlock < 0f) return false;
+
+            return isValid;
+        }
     }
 }
