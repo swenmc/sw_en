@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BaseClasses
 {
-    public class DoorProperties
+    public class DoorProperties : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private string m_sBuildingSide;
         private int m_iBayNumber;
         private string m_sDoorType;
@@ -25,6 +27,7 @@ namespace BaseClasses
             set
             {
                 m_sBuildingSide = value;
+                NotifyPropertyChanged("sBuildingSide");
             }
         }
 
@@ -38,6 +41,7 @@ namespace BaseClasses
             set
             {
                 m_iBayNumber = value;
+                NotifyPropertyChanged("iBayNumber");
             }
         }
 
@@ -51,6 +55,7 @@ namespace BaseClasses
             set
             {
                 m_sDoorType = value;
+                NotifyPropertyChanged("sDoorType");
             }
         }
 
@@ -64,6 +69,7 @@ namespace BaseClasses
             set
             {
                 m_fDoorsHeight = value;
+                NotifyPropertyChanged("fDoorsHeight");
             }
         }
 
@@ -77,6 +83,7 @@ namespace BaseClasses
             set
             {
                 m_fDoorsWidth = value;
+                NotifyPropertyChanged("fDoorsWidth");
             }
         }
 
@@ -90,9 +97,17 @@ namespace BaseClasses
             set
             {
                 m_fDoorCoordinateXinBlock = value;
+                NotifyPropertyChanged("fDoorCoordinateXinBlock");
             }
         }
 
         public DoorProperties() { }
+
+        //-------------------------------------------------------------------------------------------------------------
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

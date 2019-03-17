@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BaseClasses
 {
-    public class WindowProperties
+    public class WindowProperties : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         private string m_sBuildingSide;
         private int m_iBayNumber;
         private float m_fWindowsHeight;
@@ -26,6 +28,7 @@ namespace BaseClasses
             set
             {
                 m_sBuildingSide = value;
+                NotifyPropertyChanged("sBuildingSide");
             }
         }
 
@@ -39,6 +42,7 @@ namespace BaseClasses
             set
             {
                 m_iBayNumber = value;
+                NotifyPropertyChanged("iBayNumber");
             }
         }
 
@@ -52,6 +56,7 @@ namespace BaseClasses
             set
             {
                 m_fWindowsHeight = value;
+                NotifyPropertyChanged("fWindowsHeight");
             }
         }
 
@@ -65,6 +70,7 @@ namespace BaseClasses
             set
             {
                 m_fWindowsWidth = value;
+                NotifyPropertyChanged("fWindowsWidth");
             }
         }
 
@@ -78,6 +84,7 @@ namespace BaseClasses
             set
             {
                 m_fWindowCoordinateXinBay = value;
+                NotifyPropertyChanged("fWindowCoordinateXinBay");
             }
         }
 
@@ -91,6 +98,7 @@ namespace BaseClasses
             set
             {
                 m_fWindowCoordinateZinBay = value;
+                NotifyPropertyChanged("fWindowCoordinateZinBay");
             }
         }
 
@@ -104,9 +112,18 @@ namespace BaseClasses
             set
             {
                 m_iNumberOfWindowColumns = value;
+                NotifyPropertyChanged("iNumberOfWindowColumns");
             }
         }
 
         public WindowProperties() { }
+
+
+        //-------------------------------------------------------------------------------------------------------------
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

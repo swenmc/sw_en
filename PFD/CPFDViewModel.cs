@@ -961,6 +961,10 @@ namespace PFD
             set
             {
                 MDoorBlocksProperties = value;
+                foreach (DoorProperties d in MDoorBlocksProperties)
+                {
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
+                }
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
         }
@@ -976,6 +980,10 @@ namespace PFD
             set
             {
                 MWindowBlocksProperties = value;
+                foreach (WindowProperties w in MWindowBlocksProperties)
+                {
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
+                }
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
@@ -1251,6 +1259,15 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void HandleDoorPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            this.PropertyChanged(sender, e);
+        }
+        private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            this.PropertyChanged(sender, e);
         }
     }
 }
