@@ -900,7 +900,7 @@ namespace PFD
             {
                 for (int i = 0; i < doorBlocksProperties.Count; i++)
                 {
-                    AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
+                    if(doorBlocksProperties[i].Validate()) AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
                 }                
             }
 
@@ -908,7 +908,7 @@ namespace PFD
             {
                 for (int i = 0; i < windowBlocksProperties.Count; i++)
                 {
-                    AddWindowBlock(windowBlocksProperties[i], 0.5f);
+                    if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
                 }                
             }
 
@@ -1748,6 +1748,14 @@ namespace PFD
             pControlPointBlock = new CPoint(0, mColumn.NodeStart.X, mColumn.NodeStart.Y, mColumn.NodeStart.Z, 0);
         }
 
+
+        //Tuto funkciu mam pozriet - Mato chce:
+        //rozsirujem tam velkosti poli a take veci CModel_PFD_01_GR - riadok 1751
+        //vlastne tie objekty z objektu CBlock pridavam do celkoveho zoznamu, ale napriklad prerez pre girts som ignoroval aby tam nebol 2x
+//Chce to vymysliet nejaky koncept ako to ma fungovat a chce to programatorsku hlavu 🙂
+//tie moje "patlacky" ako sa to tam dolepuje do poli atd by som nebral velmi vazne
+//Malo by ty to fungovat tak, ze ked pridam prve dvere tak sa tie prierezy pridaju a ked pridavam dalsie, tak uz sa pridavaju len uzly a pruty a prierez sa len nastavi
+//uz by sa nemal vytvarat novy
         public void AddDoorOrWindowBlockProperties(CPoint pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
         {
             int arraysizeoriginal;

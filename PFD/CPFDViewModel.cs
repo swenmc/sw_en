@@ -961,12 +961,24 @@ namespace PFD
             set
             {
                 MDoorBlocksProperties = value;
+                if (MDoorBlocksProperties == null) return;
+                MDoorBlocksProperties.CollectionChanged += DoorBlocksProperties_CollectionChanged;
                 foreach (DoorProperties d in MDoorBlocksProperties)
                 {
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                 }
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
+        }
+
+        private void DoorBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                DoorProperties d = MDoorBlocksProperties.LastOrDefault();
+                if(d != null) d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
+            }
+            //NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
         }
 
         public ObservableCollection<WindowProperties> WindowBlocksProperties
@@ -980,12 +992,24 @@ namespace PFD
             set
             {
                 MWindowBlocksProperties = value;
+                if (MWindowBlocksProperties == null) return;
+                MWindowBlocksProperties.CollectionChanged += WindowBlocksProperties_CollectionChanged;
                 foreach (WindowProperties w in MWindowBlocksProperties)
                 {
                     w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                 }
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
+        }
+
+        private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                WindowProperties w = MWindowBlocksProperties.LastOrDefault();
+                if (w != null) w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
+            }
+            //NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");            
         }
 
 

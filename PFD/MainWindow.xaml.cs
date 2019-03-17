@@ -206,6 +206,11 @@ namespace PFD
             {
                 FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             }
+
+            //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged")
+            //{
+            //    Datagrid_DoorsAndGates.Items.Refresh();
+            //}
             
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");

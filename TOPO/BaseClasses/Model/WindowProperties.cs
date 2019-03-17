@@ -125,5 +125,21 @@ namespace BaseClasses
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public bool Validate()
+        {
+            bool isValid = true;
+
+            if (string.IsNullOrEmpty(m_sBuildingSide)) return false;
+            
+            if (m_iBayNumber < 0) return false;
+            if (m_fWindowsHeight < 0.1f) return false;
+            if (m_fWindowsWidth < 0.1f) return false;
+            if (m_fWindowCoordinateXinBay < 0f) return false;
+            if (m_fWindowCoordinateZinBay < 0f) return false;
+            if (m_iNumberOfWindowColumns < 0) return false;
+            
+            return isValid;
+        }
     }
 }
