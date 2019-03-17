@@ -978,7 +978,10 @@ namespace PFD
                 DoorProperties d = MDoorBlocksProperties.LastOrDefault();
                 if(d != null) d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
             }
-            //NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
+            }            
         }
 
         public ObservableCollection<WindowProperties> WindowBlocksProperties
@@ -1009,7 +1012,10 @@ namespace PFD
                 WindowProperties w = MWindowBlocksProperties.LastOrDefault();
                 if (w != null) w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
             }
-            //NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");            
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
+            }
         }
 
 
