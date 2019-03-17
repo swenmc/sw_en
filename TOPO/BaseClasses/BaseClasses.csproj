@@ -96,7 +96,9 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Circular.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Model\CSegment_LTB.cs" />
+    <Compile Include="Model\DoorProperties.cs" />
     <Compile Include="Model\SpecificModelTypes\CBeam_Simple.cs" />
+    <Compile Include="Model\WindowProperties.cs" />
     <Compile Include="Results\JointDesignDetails\CJointDesignDetails_FrontOrBackColumnToMainRafterJoint.cs" />
     <Compile Include="Results\JointDesignDetails\CJointDesignDetails_BaseJoint.cs" />
     <Compile Include="Results\JointDesignDetails\CJointDesignDetails_GirtOrPurlin.cs" />

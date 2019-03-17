@@ -836,10 +836,10 @@ namespace PFD
                     uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                 }
             }
-            else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
-            {
-                DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
-            }
+            //else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
+            //{
+            //    DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
+            //}
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {
                 Part_List.Content = new UC_MaterialList(vm.Model);

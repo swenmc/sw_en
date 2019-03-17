@@ -264,9 +264,21 @@
                                 <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <!--<DataGrid ItemsSource="{Binding Path=DoorBlocksProperties}"></DataGrid>-->
+                        
                         <!--<local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>-->
-                        <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
+                        <!--<local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>-->
+                        <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" Grid.Row="21" 
+                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding sBuildingSide}"/>
+                                <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
+                                <DataGridTextColumn Header="WindowsHeight" Binding="{Binding fWindowsHeight}"/>
+                                <DataGridTextColumn Header="WindowsWidth" Binding="{Binding fWindowsWidth}"/>
+                                <DataGridTextColumn Header="WindowCoordinateXinBay" Binding="{Binding fWindowCoordinateXinBay}"/>
+                                <DataGridTextColumn Header="WindowCoordinateZinBay" Binding="{Binding fWindowCoordinateZinBay}"/>
+                                <DataGridTextColumn Header="NumberOfWindowColumns" Binding="{Binding iNumberOfWindowColumns}"/>                                
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                         <Button Grid.Row="20" Grid.Column="5" VerticalAlignment="Top" ToolTip="Display door block" HorizontalAlignment="Right" Name="btnDisplayDoorBlock" Click="btnDisplayDoorBlock_Click" Margin="90,55,30,55" Width="20" Height="20">
                             <StackPanel>
