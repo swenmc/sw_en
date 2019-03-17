@@ -406,7 +406,6 @@ namespace M_AS4600
             }
 
             // 7.2.2 Design of members subject to bending
-
             CalculateBendingStrength_722(ELSType.eLS_ULS, sDIF.fM_xu_xx, sDIF.fM_yv_yy);
 
             fEta_722_M_xu = Math.Abs(sDIF.fM_xu_xx) / (fPhi_b * fM_b_xu); // 7.2.2

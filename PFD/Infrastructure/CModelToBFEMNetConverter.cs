@@ -273,7 +273,7 @@ namespace PFD
             return model;
         }
 
-        private static LoadType GetBFEMLoadType(ELCType LoadCaseType)
+        public static LoadType GetBFEMLoadType(ELCType LoadCaseType)
         {
             LoadType loadtype = LoadType.Other;
             if (LoadCaseType == ELCType.ePermanentLoad)

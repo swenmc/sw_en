@@ -144,7 +144,7 @@ namespace PFD.Infrastructure
 
                                     SetDefaultBucklingFactors(m, ref sBucklingLengthFactors);
 
-                                    SetMomentValuesforCb_design_Frame(iFrameIndex, lc.ID, m.ID, ref sMomentValuesforCb);
+                                    SetMomentValuesforCb_design_Frame(iFrameIndex, lc.ID, m, ref sMomentValuesforCb);
 
                                     sBIF_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
                                 }
@@ -171,7 +171,7 @@ namespace PFD.Infrastructure
                                     {
                                         SetDefaultBucklingFactors(m, ref sBucklingLengthFactors);
 
-                                        SetMomentValuesforCb_design_SimpleBeam(iSimpleBeamIndex, lc.ID, m.ID, ref sMomentValuesforCb);
+                                        SetMomentValuesforCb_design_SimpleBeam(iSimpleBeamIndex, lc.ID, m, ref sMomentValuesforCb);
 
                                         sBIF_x = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
                                     }
@@ -254,7 +254,7 @@ namespace PFD.Infrastructure
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
 
-                                SetMomentValuesforCb_design_Frame(iFrameIndex, lcomb.ID, m.ID, ref sMomentValuesforCb_design);
+                                SetMomentValuesforCb_design_Frame(iFrameIndex, lcomb.ID, m, ref sMomentValuesforCb_design);
 
                                 sBIF_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
 
@@ -290,7 +290,7 @@ namespace PFD.Infrastructure
 
                                 int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
 
-                                SetMomentValuesforCb_design_SimpleBeam(iSimpleBeamIndex, lcomb.ID, m.ID, ref sMomentValuesforCb_design);
+                                SetMomentValuesforCb_design_SimpleBeam(iSimpleBeamIndex, lcomb.ID, m, ref sMomentValuesforCb_design);
 
                                 sBIF_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
 
@@ -542,49 +542,106 @@ namespace PFD.Infrastructure
                 sBucklingLengthFactors = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
         }
 
-        private void SetMomentValuesforCb_design_Frame(int iFrameIndex, int lcombID, int memberID, ref designMomentValuesForCb sMomentValuesforCb_design)
+        private void SetMomentValuesforCb_design_Frame(int iFrameIndex, int lcombID, CMember member, ref designMomentValuesForCb sMomentValuesforCb_design)
         {
-            // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
-            // pre nacitanie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt
+            // Create load combination (FEM solver object)
+            BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
+            lcomb.LcID = lcombID;
 
+            // Add specific load cases into the combination and set load factors
+            for (int j = 0; j < Model.m_arrLoadCombs[lcombID - 1].LoadCasesList.Count; j++)
+            {
+                BriefFiniteElementNet.LoadType loadtype = CModelToBFEMNetConverter.GetBFEMLoadType(Model.m_arrLoadCombs[lcombID - 1].LoadCasesList[j].Type);
+                BriefFiniteElementNet.LoadCase loadCase = new BriefFiniteElementNet.LoadCase(Model.m_arrLoadCases[j].Name, loadtype);
+                lcomb.Add(loadCase, Model.m_arrLoadCombs[lcombID - 1].LoadCasesFactorsList[j]);
+            }
+
+            int iMemberIndex_FM = frameModels[iFrameIndex].GetMemberIndexInFrame(member);
+
+            BriefFiniteElementNet.Force f14 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.25 * member.FLength, lcomb);
+            BriefFiniteElementNet.Force f24 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.50 * member.FLength, lcomb);
+            BriefFiniteElementNet.Force f34 = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(0.75 * member.FLength, lcomb);
+
+            sMomentValuesforCb_design.fM_14 = (float)Math.Abs(f14.My);
+            sMomentValuesforCb_design.fM_24 = (float)Math.Abs(f24.My);
+            sMomentValuesforCb_design.fM_34 = (float)Math.Abs(f34.My);
+            sMomentValuesforCb_design.fM_max = 0;
+
+            for (int i = 0; i < iNumberOfDesignSections; i++)
+            {
+                float fx = ((float)i / (float)iNumberOfSegments) * member.FLength;
+                BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])).GetInternalForceAt(fx, lcomb);
+
+                if (Math.Abs(f.My) > sMomentValuesforCb_design.fM_max)
+                    sMomentValuesforCb_design.fM_max = (float)Math.Abs(f.My);
+            }
+
+            /*
             if (MUseCRSCGeometricalAxes)
             {
-                //TODO - napojit presne hodnoty vo stvrtinach
-                //BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.25 * m.FLength)
-
-                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[2].fM_yy;
-                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[5].fM_yy;
-                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[7].fM_yy;
+                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[2].fM_yy;
+                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[5].fM_yy;
+                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[7].fM_yy;
             }
             else
             {
-                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[2].fM_yu;
-                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[5].fM_yu;
-                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[7].fM_yu;
+                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[2].fM_yu;
+                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[5].fM_yu;
+                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[7].fM_yu;
             }
 
             sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
+            */
         }
 
-        private void SetMomentValuesforCb_design_SimpleBeam(int iSimpleBeamIndex, int lcombID, int memberID, ref designMomentValuesForCb sMomentValuesforCb_design)
+        private void SetMomentValuesforCb_design_SimpleBeam(int iSimpleBeamIndex, int lcombID, CMember member, ref designMomentValuesForCb sMomentValuesforCb_design)
         {
-            // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
-            // pre nacitanie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt
+            // Create load combination (FEM solver object)
+            BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
+            lcomb.LcID = lcombID;
 
+            // Add specific load cases into the combination and set load factors
+            for (int j = 0; j < Model.m_arrLoadCombs[lcombID - 1].LoadCasesList.Count; j++)
+            {
+                BriefFiniteElementNet.LoadType loadtype = CModelToBFEMNetConverter.GetBFEMLoadType(Model.m_arrLoadCombs[lcombID - 1].LoadCasesList[j].Type);
+                BriefFiniteElementNet.LoadCase loadCase = new BriefFiniteElementNet.LoadCase(Model.m_arrLoadCases[j].Name, loadtype);
+                lcomb.Add(loadCase, Model.m_arrLoadCombs[lcombID - 1].LoadCasesFactorsList[j]);
+            }
+
+            BriefFiniteElementNet.Force f14 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.25 * member.FLength, lcomb);
+            BriefFiniteElementNet.Force f24 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.50 * member.FLength, lcomb);
+            BriefFiniteElementNet.Force f34 = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.75 * member.FLength, lcomb);
+
+            sMomentValuesforCb_design.fM_14 = (float)Math.Abs(f14.My);
+            sMomentValuesforCb_design.fM_24 = (float)Math.Abs(f24.My);
+            sMomentValuesforCb_design.fM_34 = (float)Math.Abs(f34.My);
+            sMomentValuesforCb_design.fM_max = 0;
+
+            for (int i = 0; i < iNumberOfDesignSections; i++)
+            {
+                float fx = ((float)i / (float)iNumberOfSegments) * member.FLength;
+                BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(fx, lcomb);
+
+                if (Math.Abs(f.My) > sMomentValuesforCb_design.fM_max)
+                    sMomentValuesforCb_design.fM_max = (float)Math.Abs(f.My);
+            }
+
+            /*
             if (MUseCRSCGeometricalAxes)
             {
-                sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[2].fM_yy;
-                sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[5].fM_yy;
-                sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[7].fM_yy;
+                sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[2].fM_yy;
+                sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[5].fM_yy;
+                sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[7].fM_yy;
             }
             else
             {
-                sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[2].fM_yu;
-                sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[5].fM_yu;
-                sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][memberID].InternalForces[7].fM_yu;
+                sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[2].fM_yu;
+                sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[5].fM_yu;
+                sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcombID][member.ID].InternalForces[7].fM_yu;
             }
 
             sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
+            */
         }
 
         private void ShowResultsInMessageBox()
