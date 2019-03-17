@@ -85,6 +85,10 @@ namespace PFD.Infrastructure
         {
             //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
+            // Zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
+
             CalculateInternalForces_LoadCase();
 
             CalculateInternalForces_LoadCombination_And_MemberDesign();
@@ -92,10 +96,7 @@ namespace PFD.Infrastructure
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
             SolverWindow.SetSumaryFinished();
-            
-            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
+
 
             ShowResultsInMessageBox();
         }
@@ -248,7 +249,7 @@ namespace PFD.Infrastructure
                                 // Nastavit vysledky pre prut ramu
                                 // TODO - faktory vzpernej dlzky mozu byt ine pre kazdy segment pruta a kazdy load case alebo load combination
                                 // TODO - vymysliet system ako s tym pracovat a priradzovat, je potrebne pouzit pri posudeni v mieste x na prute
-                                // Podobne aj hodnoty M14,M24,M34 a Mmax sa maju brat z hodnot na segmente, nie na celom prute
+                                // Podobne aj veliciny M14,M24,M34 a Mmax sa maju brat z priebehu ohyboveho momentu na segmente v absolutnej hodnote
 
                                 SetDefaultBucklingFactors(m, ref sBucklingLengthFactors_design);
 
@@ -261,11 +262,6 @@ namespace PFD.Infrastructure
                                 // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
                                 // Preto hodnoty momentov prenasobime
                                 float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
-
-                                sMomentValuesforCb_design.fM_14 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_24 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_34 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_max *= fInternalForceSignFactor;
 
                                 for (int i = 0; i < sBIF_x_design.Length; i++)
                                 {
@@ -297,11 +293,6 @@ namespace PFD.Infrastructure
                                 // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
                                 // Preto hodnoty momentov prenasobime
                                 float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
-
-                                sMomentValuesforCb_design.fM_14 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_24 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_34 *= fInternalForceSignFactor;
-                                sMomentValuesforCb_design.fM_max *= fInternalForceSignFactor;
 
                                 for (int i = 0; i < sBIF_x_design.Length; i++)
                                 {
