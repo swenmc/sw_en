@@ -24,7 +24,7 @@ namespace PFD
         private int MSelectedLoadCombinationID;
 
         private ObservableCollection<CComponentInfo> MComponentList;
-        private CLimitState[] MLimitStates;
+        private List<CLimitState> MLimitStates;
         private List<CLoadCombination> MLoadCombinations;
 
         public bool IsSetFromCode = false;
@@ -78,7 +78,7 @@ namespace PFD
             }
         }
         
-        public CLimitState[] LimitStates
+        public List<CLimitState> LimitStates
         {
             get
             {
@@ -141,7 +141,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CPFDJointsDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            MLimitStates = limitStates;
+            SetLimitStates(limitStates);
             MComponentList = componentList;
             m_allLoadCombinations = allLoadCombinations;
 
@@ -152,6 +152,18 @@ namespace PFD
 
             IsSetFromCode = false;
         }
+
+        private void SetLimitStates(CLimitState[] modelLimitStates)
+        {
+            MLimitStates = new List<CLimitState>();
+            foreach (CLimitState ls in modelLimitStates)
+            {
+                if (ls.eLS_Type == ELSType.eLS_SLS) continue;  //task 213 = vynechanie SLS
+
+                MLimitStates.Add(ls);
+            }
+        }
+
         private void SetLoadCombinations()
         {
             CLimitState limitState = LimitStates[LimitStateIndex];
