@@ -79,14 +79,10 @@ namespace FEM_CALC_BASE
 
         // Internal Forces
         public void CalculateInternalForcesOnSimpleBeam_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, float[] fx_positions, CMember member,
-           CLoadCase lc, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
+           CLoadCase lc, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb)
         {
-            sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
-            sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
-            sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
-            sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
-
-            sMomentValuesforCb = new designMomentValuesForCb();
+            sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
+            sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
 
             foreach (CMLoad cmload in lc.MemberLoadsList) // Each member load in load case assigned to the member
@@ -95,69 +91,70 @@ namespace FEM_CALC_BASE
                 {
                     CExample_2D_51_SB memberModel = new CExample_2D_51_SB(member, cmload);
 
-                    designMomentValuesForCb sMomentValuesforCb_temp = new designMomentValuesForCb();
-
                     for (int j = 0; j < iNumberOfDesignSections; j++)
                     {
-                        basicInternalForces[] sBIF_x_temp = new basicInternalForces[iNumberOfDesignSections];
+                        designMomentValuesForCb sMomentValuesforCb_temp = new designMomentValuesForCb();
+                        basicInternalForces sBIF_x_temp = new basicInternalForces();
 
                         if (cmload.ELoadDir == ELoadDirection.eLD_X)
                         {
-                            sBIF_x_temp[j].fN = memberModel.m_arrMLoads[0].Get_SSB_N_x(fx_positions[j]);
+                            sBIF_x_temp.fN = memberModel.m_arrMLoads[0].Get_SSB_N_x(fx_positions[j]);
                         }
                         else if (cmload.ELoadDir == ELoadDirection.eLD_Y)
                         {
                             if (bUseCRSCGeometricalAxes)
                             {
-                                sBIF_x_temp[j].fV_yy = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                                sBIF_x_temp[j].fM_zz = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fV_yy = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fM_zz = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                             else
                             {
-                                sBIF_x_temp[j].fV_yu = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                                sBIF_x_temp[j].fM_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fV_yu = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fM_zv = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                         }
                         else
                         {
                             if (bUseCRSCGeometricalAxes)
                             {
-                                sBIF_x_temp[j].fV_zz = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                                sBIF_x_temp[j].fM_yy = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fV_zz = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fM_yy = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                             else
                             {
-                                sBIF_x_temp[j].fV_zv = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
-                                sBIF_x_temp[j].fM_yu = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fV_zv = memberModel.m_arrMLoads[0].Get_SSB_V_x(fx_positions[j], member.FLength);
+                                sBIF_x_temp.fM_yu = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx_positions[j], member.FLength);
                             }
                         }
 
-                        sBIF_x_temp[j].fT = 0f; // TODO - doplnit vypocet
+                        sBIF_x_temp.fT = 0f; // TODO - doplnit vypocet
 
                         // Add load results
-                        sBIF_x[j].fN += sBIF_x_temp[j].fN;
-                        sBIF_x[j].fV_yu += sBIF_x_temp[j].fV_yu;
-                        sBIF_x[j].fV_yy += sBIF_x_temp[j].fV_yy;
-                        sBIF_x[j].fV_zv += sBIF_x_temp[j].fV_zv;
-                        sBIF_x[j].fV_zz += sBIF_x_temp[j].fV_zz;
-                        sBIF_x[j].fM_yu += sBIF_x_temp[j].fM_yu;
-                        sBIF_x[j].fM_yy += sBIF_x_temp[j].fM_yy;
-                        sBIF_x[j].fM_zv += sBIF_x_temp[j].fM_zv;
-                        sBIF_x[j].fM_zz += sBIF_x_temp[j].fM_zz;
-                    }
+                        sBIF_x[j].fN += sBIF_x_temp.fN;
+                        sBIF_x[j].fV_yu += sBIF_x_temp.fV_yu;
+                        sBIF_x[j].fV_yy += sBIF_x_temp.fV_yy;
+                        sBIF_x[j].fV_zv += sBIF_x_temp.fV_zv;
+                        sBIF_x[j].fV_zz += sBIF_x_temp.fV_zz;
+                        sBIF_x[j].fM_yu += sBIF_x_temp.fM_yu;
+                        sBIF_x[j].fM_yy += sBIF_x_temp.fM_yy;
+                        sBIF_x[j].fM_zv += sBIF_x_temp.fM_zv;
+                        sBIF_x[j].fM_zz += sBIF_x_temp.fM_zz;
 
-                    if (cmload.ELoadDir == ELoadDirection.eLD_Z)
-                    {
-                        sMomentValuesforCb_temp.fM_max = memberModel.m_arrMLoads[0].Get_SSB_M_max(member.FLength);
-                        sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.25f * member.FLength, member.FLength);
-                        sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.50f * member.FLength, member.FLength);
-                        sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.75f * member.FLength, member.FLength);
+                        if (cmload.ELoadDir == ELoadDirection.eLD_Z)
+                        {
+                            sMomentValuesforCb_temp.fM_max = memberModel.m_arrMLoads[0].Get_SSB_M_max(member.FLength);
+                            sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.25f * member.FLength, member.FLength);
+                            sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.50f * member.FLength, member.FLength);
+                            sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.75f * member.FLength, member.FLength);
 
-                        // Add load results
-                        sMomentValuesforCb.fM_max += sMomentValuesforCb_temp.fM_max;
-                        sMomentValuesforCb.fM_14 += sMomentValuesforCb_temp.fM_14;
-                        sMomentValuesforCb.fM_24 += sMomentValuesforCb_temp.fM_24;
-                        sMomentValuesforCb.fM_34 += sMomentValuesforCb_temp.fM_34;
+                            // Add load results
+                            sMomentValuesforCb[j].fM_max += sMomentValuesforCb_temp.fM_max;
+                            sMomentValuesforCb[j].fM_14 += sMomentValuesforCb_temp.fM_14;
+                            sMomentValuesforCb[j].fM_24 += sMomentValuesforCb_temp.fM_24;
+                            sMomentValuesforCb[j].fM_34 += sMomentValuesforCb_temp.fM_34;
+                        }
+
+                        sBucklingLengthFactors[j] = GetSegmentBucklingFactors_xLocation(fx_positions[j], member, lc.ID);
                     }
                 }
             }
@@ -213,6 +210,43 @@ namespace FEM_CALC_BASE
                     }
                 }
             }
+        }
+
+        // Refaktorovat
+        public designBucklingLengthFactors GetSegmentBucklingFactors_xLocation(float fx, CMember member, int lcombID)
+        {
+            designBucklingLengthFactors bucklingLengthFactors = new designBucklingLengthFactors();
+            bucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f;
+            bucklingLengthFactors.fBeta_y_FB_fl_ey = 1.0f;
+            bucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
+            bucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
+
+            if (member.LTBSegmentGroup != null && member.LTBSegmentGroup.Count > 1) // More than one LTB segment exists
+            {
+                for (int i = 0; i < member.LTBSegmentGroup.Count; i++)
+                {
+                    if (fx >= member.LTBSegmentGroup[i].SegmentStartCoord_Abs && fx <= member.LTBSegmentGroup[i].SegmentEndCoord_Abs)
+                    {
+                        if (member.LTBSegmentGroup[i].BucklingLengthFactors == null) // Default
+                        {
+                            bucklingLengthFactors = new designBucklingLengthFactors();
+                            bucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f;
+                            bucklingLengthFactors.fBeta_y_FB_fl_ey = 1.0f;
+                            bucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
+                            bucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
+                        }
+                        else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 0) // Defined only once
+                        {
+                            bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[0];
+
+                        }
+                        else // if(bucklingLengthFactors.Count > 1) // Different values for load combinations
+                            bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[lcombID - 1];
+                    }
+                }
+            }
+
+            return bucklingLengthFactors;
         }
     }
 }

@@ -122,8 +122,8 @@ namespace PFD
 
             // Perform display in of internal foces just for ULS combinations
             // Member basic internal forces
-            designBucklingLengthFactors sBucklingLengthFactors;
-            designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
+            designBucklingLengthFactors[] sBucklingLengthFactors;
+            designMomentValuesForCb[] sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
             // Kombinacia ktorej vysledky chceme zobrazit

@@ -71,14 +71,15 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndMemberDesign_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x,
+            designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
             sDIF_x = new designInternalForces[iNumberOfDesignSections];
 
-                for (int j = 0; j < iNumberOfDesignSections; j++)
-                {
+            for (int j = 0; j < iNumberOfDesignSections; j++)
+            {
                 sDIF_x[j].fN = sBIF_x[j].fN;
                 sDIF_x[j].fN_c = sDIF_x[j].fN > 0 ? 0f : Math.Abs(sDIF_x[j].fN);
                 sDIF_x[j].fN_t = sDIF_x[j].fN < 0 ? 0f : sDIF_x[j].fN;
@@ -99,16 +100,16 @@ namespace M_BASE
                     sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
                 }
 
-                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[j], member, sBucklingLengthFactors, sMomentValuesforCb);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[j], member, sBucklingLengthFactors[j], sMomentValuesforCb[j]);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
-                    {
-                        fMaximumDesignRatioLocationID = j;
-                        fMaximumDesignRatio = obj_CalcDesign.fEta_max;
-                    }
-
-                    listOfMemberDesignInLocations.Add(obj_CalcDesign);
+                {
+                    fMaximumDesignRatioLocationID = j;
+                    fMaximumDesignRatio = obj_CalcDesign.fEta_max;
                 }
+
+                listOfMemberDesignInLocations.Add(obj_CalcDesign);
+            }
         }
 
         public void SetDesignDeflections_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)

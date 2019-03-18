@@ -11,7 +11,8 @@ namespace BaseClasses
         private CMember MMember;
         private CLoadCombination MLoadCombination;
         private basicInternalForces[] MInternalForces;
-        private designMomentValuesForCb MBendingMomentValues;
+        private designMomentValuesForCb[] MBendingMomentValues;
+        private designBucklingLengthFactors[] MBucklingLengthFactors;
 
         public CMember Member
         {
@@ -52,7 +53,7 @@ namespace BaseClasses
             }
         }
 
-        public designMomentValuesForCb BendingMomentValues
+        public designMomentValuesForCb[] BendingMomentValues
         {
             get
             {
@@ -65,16 +66,30 @@ namespace BaseClasses
             }
         }
 
+        public designBucklingLengthFactors[] BucklingLengthFactors
+        {
+            get
+            {
+                return MBucklingLengthFactors;
+            }
+
+            set
+            {
+                MBucklingLengthFactors = value;
+            }
+        }
+
         public CMemberInternalForcesInLoadCombinations()
         {
 
         }
-        public CMemberInternalForcesInLoadCombinations(CMember member, CLoadCombination loadcombination, basicInternalForces[] internalForces, designMomentValuesForCb bendingMomentValuesForCb)
+        public CMemberInternalForcesInLoadCombinations(CMember member, CLoadCombination loadcombination, basicInternalForces[] internalForces, designMomentValuesForCb[] bendingMomentValuesForCb, designBucklingLengthFactors[] bucklingLengthFactors)
         {
             MMember = member;
             MLoadCombination = loadcombination;
             MInternalForces = internalForces;
             MBendingMomentValues = bendingMomentValuesForCb;
+            MBucklingLengthFactors = bucklingLengthFactors;
         }
     }
 }

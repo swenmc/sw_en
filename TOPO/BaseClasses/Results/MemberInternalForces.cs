@@ -12,6 +12,8 @@ namespace BaseClasses
         double[] _xLocations;
         List<basicInternalForces> _internalForces;
         List<basicDeflections> _deflections;
+        List<designMomentValuesForCb> _designMomentValuesForCb;
+        List<designBucklingLengthFactors> _designBucklingLengthFactors;
 
         public int MemberID
         {
@@ -65,11 +67,39 @@ namespace BaseClasses
             }
         }
 
+        public List<designMomentValuesForCb> DesignMomentValuesForCb
+        {
+            get
+            {
+                return _designMomentValuesForCb;
+            }
+
+            set
+            {
+                _designMomentValuesForCb = value;
+            }
+        }
+
+        public List<designBucklingLengthFactors> DesignBucklingLengthFactors
+        {
+            get
+            {
+                return _designBucklingLengthFactors;
+            }
+
+            set
+            {
+                _designBucklingLengthFactors = value;
+            }
+        }
+
         public MemberInternalForces(int memberID)
         {
             MemberID = memberID;
             InternalForces = new List<basicInternalForces>();
             Deflections = new List<basicDeflections>();
+            DesignMomentValuesForCb = new List<designMomentValuesForCb>();
+            DesignBucklingLengthFactors = new List<designBucklingLengthFactors>();
         }
 
         public MemberInternalForces(int memberID, double[] xLocations, List<basicInternalForces> internalForces)

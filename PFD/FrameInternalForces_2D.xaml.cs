@@ -167,8 +167,8 @@ namespace PFD
                         continue; // TODO - Sem by sa to uz nemalo ani dostat ak je prut nema vysledky
 
                     int iNumberOfDesignSections = 11;
-                    designBucklingLengthFactors sBucklingLengthFactors;
-                    designMomentValuesForCb sMomentValuesforCb;
+                    designBucklingLengthFactors[] sBucklingLengthFactors;
+                    designMomentValuesForCb[] sMomentValuesforCb;
                     basicInternalForces[] sBIF_x;
 
                     CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[i],
@@ -303,8 +303,8 @@ namespace PFD
             for (int s = 0; s < iNumberOfResultsSections; s++)
                 xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
 
-            designBucklingLengthFactors sBucklingLengthFactors;
-            designMomentValuesForCb sMomentValuesforCb;
+            designBucklingLengthFactors[] sBucklingLengthFactors;
+            designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[] sBIF_x;
 
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[memberIndex],
