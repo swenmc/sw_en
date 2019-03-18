@@ -95,6 +95,45 @@ namespace PFD
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
 
+        // Popis pre Ondreja - doors and windows
+
+        // GUI
+        // Building Side - combobox s polozkami "Left", "Right", "Front", "Back"
+        // Bay Number - combobox s polozkami 1 - n_lefright alebo 1 - n_front alebo 1 - n_back, takze v kazdom riadku moze byt v comboboxe iny zoznam podla toho ktora strana ma kolko bays (bays - segmenty medzi stlpami, cislovane v smere kladnej osi X, resp. Y)
+
+        // v CModel_PFD_01_GR su premenne z ktorych sa maximalne cislo bay da urcit
+        // (iFrameNo - 1)
+        // (iFrontColumnNoInOneFrame + 1)
+        // (iBackColumnNoInOneFrame + 1)
+
+        // Door Type - combobox s polozkami Personnel Door, Roller Door
+        // Personnel door su len z jedneho prierezu BOX 10075
+        // Roller door mozu mat dva prierezy - door trimmer C270115btb a niekedy aj door lintel z C27095 (podla toho aka je vzdialenost medzi hornou hranou dveri a najblizsim girt nad tym)
+        // U blokov sa momentalne moze a nemusi vytvorit crsc pre girt, ten sa potom ale nepridava do celkoveho pola m_arrCrSc pretoze tam uz je
+
+        // dalsie polozky v tabulke su float, moze tam byt validacia ze napriklad poloha dveri v bay + sirka dveri nemoze byt vacsia nez sirka bay (L1) alebo ze vyska dveri nemoze byt vacsia nez vyska steny budovy atd
+
+        // Window - podobne ako door, posledna polozka je combobox s 1-20?? - pocet stlpikov okna, ktore rozdelia okno na viacero casti
+
+        // Ked pridam do modelu prve dvere alebo okno mali by sa do Component list pridat prierezy, ktore tam este nie su (trimmer, lintel), tieto prierezy by sa mali vyrobit len raz a ked budem pridavat dalsie dvere alebo okna, tak by sa mali len priradzovat
+        // pri pridani dveri sa mozu vygenerovat rozne prierezy podla typu dveri a geometrie (C270115btb-trimmer pre roller door, C27095-lintel pre roller door, BOX 10075 pre personnel door), pri pridani window sa generuje len BOX 10075
+
+        // Prierezy bloku sa momentalne pridavaju do zoznamu vsetkych prierezov pre kazde dvere/okno samostatne
+        // vid CBlock_3D_001_DoorInBay, line 41, takze ked pridam 10 dveri s BOX 10075 tak ten BOX 10075 je tam 10 krat samostatny pre kazde dvere co je zbytocne
+        // v CModel_PFD_01_GR sa vo funkcii AddDoorOrWindowBlockProperties menia velkosti povodnych poli a pridavaju sa do nich nove objekty z blokov
+        // prierez pre GIRT z bloku sa nepridava lebo uz v zozname 3D modelu existuje
+
+        // Je potrebne skontrolovat ci sa prutom z blokov priradia vsetky "bool" parametre a ci sa dane pruty priradia do group of members vid CModel_PFD_01_GR AddMembersToMemberGroupsLists()
+
+        // Potrebujeme opravit 3D grafiku
+        // a otocit vsetky lokane osy prutov bloku rovnakym smerom
+        // nastavit spravne excentricity a pootocenia
+        // "vymysliet" algoritmus ako sa tieto udaje zmenia ak blok otocim a presuniem z prednej steny na lavu, pravu, zadnu (toto je poriadny oriesok)
+
+        // Door trimmers bude potrebne pridat do zoznamov typov prutov ktore su zatazene surface loads, tu je komplikacia ze kazdy prut moze mat inu zatazovaciu sirku
+        // vid FreeSurfaceLoadsMemberTypeData
+
+
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -102,8 +141,6 @@ namespace PFD
         public float fh2;
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
-
-        
 
         public CCalcul_1170_1 GeneralLoad;
         public CCalcul_1170_2 Wind;
