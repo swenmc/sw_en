@@ -126,9 +126,7 @@ namespace PFD
 
             // Prepare data for generating of window blocks
             WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
-
             
-
             // Tu je nesktocne vela roboty, kym to bude nejako normalne vyzerat
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties);
@@ -207,10 +205,10 @@ namespace PFD
                 FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             }
 
-            //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged")
-            //{
-            //    Datagrid_DoorsAndGates.Items.Refresh();
-            //}
+            if (e.PropertyName == "DoorBlocksProperties_Add")
+            {
+                Datagrid_DoorsAndGates.ItemsSource = viewModel.DoorBlocksProperties;                
+            }
             
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");

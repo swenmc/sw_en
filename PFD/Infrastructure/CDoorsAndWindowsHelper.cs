@@ -52,6 +52,27 @@ namespace PFD.Infrastructure
             return DoorBlocks;
         }
 
+
+        public static void SetDefaultDoorParams(DoorProperties d)
+        {
+            d.sBuildingSide = "Front";
+            d.iBayNumber = 1;
+            d.sDoorType = "Personnel Door";
+            d.fDoorsWidth = 1;
+            d.fDoorsHeight = 1;
+            d.fDoorCoordinateXinBlock = 0.1f;
+        }
+        public static void SetDefaultWindowParams(WindowProperties w)
+        {
+            w.sBuildingSide = "Front";
+            w.iBayNumber = 1;
+            w.fWindowsHeight = 0.6f;
+            w.fWindowsWidth = 0.6f;
+            w.fWindowCoordinateXinBay = 0.1f;
+            w.fWindowCoordinateZinBay = 0.2f;
+            w.iNumberOfWindowColumns = 2;            
+        }        
+
         public static ObservableCollection<WindowProperties> GetDefaultWindowsProperties()
         {
             ObservableCollection<WindowProperties> WindowBlocks = new ObservableCollection<WindowProperties>();

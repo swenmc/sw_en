@@ -1015,7 +1015,12 @@ namespace PFD
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 DoorProperties d = MDoorBlocksProperties.LastOrDefault();
-                if(d != null) d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
+                if (d != null)
+                {
+                    CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                    
+                    //NotifyPropertyChanged("DoorBlocksProperties_Add"); //toto neviem rozbehat
+                }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
@@ -1067,7 +1072,12 @@ namespace PFD
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 WindowProperties w = MWindowBlocksProperties.LastOrDefault();
-                if (w != null) w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
+                if (w != null)
+                {
+                    CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
+                    //NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
+                }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
