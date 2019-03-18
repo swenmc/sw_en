@@ -9,12 +9,12 @@
         d:DesignHeight="1200" d:DesignWidth="600">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">300</System:Double>
     </UserControl.Resources>
     <Grid Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

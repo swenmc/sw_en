@@ -26,7 +26,7 @@ namespace PFD
             Model = model;
             DesignResults_ULS = designResults_ULS;
             DesignResults_SLS = designResults_SLS;
-
+            
             // Member Design
             CPFDMemberDesign vm = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleLoadInputPropertyChangedEvent;

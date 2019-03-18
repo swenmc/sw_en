@@ -25,7 +25,7 @@ namespace PFD
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private List<CLimitState> MLimitStates;
-        private List<CLoadCombination> MLoadCombinations;
+        private List<ComboItem> MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
@@ -92,7 +92,7 @@ namespace PFD
             }
         }
 
-        public List<CLoadCombination> LoadCombinations
+        public List<ComboItem> LoadCombinations
         {
             get
             {
@@ -163,18 +163,19 @@ namespace PFD
                 MLimitStates.Add(ls);
             }
         }
-
+                
         private void SetLoadCombinations()
         {
             CLimitState limitState = LimitStates[LimitStateIndex];
 
-            List<CLoadCombination> loadCombinations = new List<CLoadCombination>();
+            List<ComboItem> loadCombinations = new List<ComboItem>();
             foreach (CLoadCombination lc in m_allLoadCombinations)
             {
-                if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(lc);
+                if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(new ComboItem(lc.ID, $"{lc.Name}\t{lc.CombinationKey}"));
             }
             LoadCombinations = loadCombinations;
         }
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {

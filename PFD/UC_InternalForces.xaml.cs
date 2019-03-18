@@ -331,7 +331,7 @@ namespace PFD
 
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
-            CLoadCombination lcomb = vm.LoadCombinations.Find(lc => lc.ID == vm.SelectedLoadCombinationID);
+            CLoadCombination lcomb = Model.m_arrLoadCombs.FirstOrDefault(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
             CMember member = FindMemberWithMaximumDesignRatio(lcomb, Combobox_ComponentType.Text, Model.listOfModelMemberGroups);
             if (member == null) throw new Exception("Member with maximum design ratio not found.");

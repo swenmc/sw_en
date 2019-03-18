@@ -86,6 +86,7 @@
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="CLine2D.cs" />
     <Compile Include="CNote2D.cs" />
+    <Compile Include="ComboItem.cs" />
     <Compile Include="CProductionInfo.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GlobalConstants.cs" />
