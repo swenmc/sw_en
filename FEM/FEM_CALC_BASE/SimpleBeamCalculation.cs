@@ -191,10 +191,12 @@ namespace FEM_CALC_BASE
                                 sBDeflections_x_temp[j].fDelta_zv = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_epsilon);
                         }
 
+                        /* // nepotrebujeme pocitat - zrata sa z vyslednych hodnot v jednotlivych smeroch
                         if (bUseCRSCGeometricalAxes)
                             sBDeflections_x_temp[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_temp[j].fDelta_yy) + MathF.Pow2(sBDeflections_x_temp[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
                         else
                             sBDeflections_x_temp[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_temp[j].fDelta_yu) + MathF.Pow2(sBDeflections_x_temp[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
+                        */
 
                         // Add load results
                         sBDeflections_x[j].fDelta_yu += sBDeflections_x_temp[j].fDelta_yu;
@@ -202,11 +204,12 @@ namespace FEM_CALC_BASE
                         sBDeflections_x[j].fDelta_zv += sBDeflections_x_temp[j].fDelta_zv;
                         sBDeflections_x[j].fDelta_zz += sBDeflections_x_temp[j].fDelta_zz;
 
-                        if (bUseCRSCGeometricalAxes)
+                        if (bUseCRSCGeometricalAxes && (!MathF.d_equal(sBDeflections_x[j].fDelta_yy, 0) || !MathF.d_equal(sBDeflections_x[j].fDelta_zz, 0)))
                             sBDeflections_x[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x[j].fDelta_yy) + MathF.Pow2(sBDeflections_x[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
-                        else
+                        else if (!MathF.d_equal(sBDeflections_x[j].fDelta_yu, 0) || !MathF.d_equal(sBDeflections_x[j].fDelta_zv, 0))
                             sBDeflections_x[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x[j].fDelta_yu) + MathF.Pow2(sBDeflections_x[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
-
+                        else
+                            sBDeflections_x[j].fDelta_tot = 0;
                     }
                 }
             }

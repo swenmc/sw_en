@@ -356,10 +356,7 @@ namespace PFD.Infrastructure
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
-                                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
-                                if (sMomentValuesforCb_design.Length == 0)
-                                {
-                                }
+                                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                             }
 
                             // 22.2.2019 - Ulozime vnutorne sily v kombinacii - pre zobrazenie v Internal forces
@@ -373,9 +370,6 @@ namespace PFD.Infrastructure
                                 // Member Design
                                 CMemberDesign memberDesignModel = new CMemberDesign();
                                 // TODO - sBucklingLengthFactors_design  a sMomentValuesforCb_design nemaju byt priradene prutu ale segmentu pruta pre kazdy load case / load combination
-                                if(sMomentValuesforCb_design.Length == 0)
-                                {
-                                }
                                 memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
                                 MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors_design[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design[memberDesignModel.fMaximumDesignRatioLocationID])); 
 
@@ -456,7 +450,7 @@ namespace PFD.Infrastructure
                                 }
                                 else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                                 {
-                                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
+                                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
                                 }
 
                                 memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);

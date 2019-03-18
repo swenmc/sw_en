@@ -30,9 +30,11 @@ namespace PFD
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
         int iLoadCombinationIndex;
+        bool UseCRSCGeometricalAxes;
 
-        public FrameInternalForces_2D(bool bDeterminateCombinationResultsByFEMSolver, CModel example_model, int iLoadCombinationIndex_temp, List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations)
+        public FrameInternalForces_2D(bool bUseCRSCGeometricalAxes, CModel example_model, int iLoadCombinationIndex_temp, List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations)
         {
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             model = example_model;
             iLoadCombinationIndex = iLoadCombinationIndex_temp;
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
@@ -171,7 +173,9 @@ namespace PFD
                     designMomentValuesForCb[] sMomentValuesforCb;
                     basicInternalForces[] sBIF_x;
 
-                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[i],
+                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
                         model.m_arrLoadCombs[iLoadCombinationIndex],
                         ListMemberInternalForcesInLoadCombinations,
                         iNumberOfDesignSections,
@@ -307,7 +311,8 @@ namespace PFD
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[] sBIF_x;
 
-            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[memberIndex],
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(UseCRSCGeometricalAxes,
+                model.m_arrMembers[memberIndex],
                 model.m_arrLoadCombs[iLoadCombinationIndex],
                 ListMemberInternalForcesInLoadCombinations,
                 iNumberOfResultsSections,
