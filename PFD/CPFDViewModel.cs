@@ -94,7 +94,9 @@ namespace PFD
 
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
-
+        private List<string> MBuildingSides;
+        private List<string> MDoorsTypes;
+        
         // Popis pre Ondreja - doors and windows
 
         // GUI
@@ -1041,6 +1043,24 @@ namespace PFD
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
+
+        public List<string> BuildingSides
+        {
+            get
+            {
+                if (MBuildingSides == null) MBuildingSides = new List<string>() { "Left", "Right", "Front", "Back" };
+                return MBuildingSides;
+            }
+        }
+        public List<string> DoorsTypes
+        {
+            get
+            {
+                if (MDoorsTypes == null) MDoorsTypes = new List<string>() { "Personnel Door", "Roller Door" };
+                return MDoorsTypes;
+            }
+        }
+        
 
         private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

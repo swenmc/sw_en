@@ -13,6 +13,8 @@
         <!--<System:String x:Key="strHelloWorld">Hello, world!</System:String> -->
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
+        <CollectionViewSource x:Key="BuildingSides" Source="{Binding BuildingSides}"/>
+        <CollectionViewSource x:Key="DoorsTypes" Source="{Binding DoorsTypes}"/>
     </Window.Resources>
 
     <Grid>
@@ -254,11 +256,15 @@
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="205" Margin="5,2,0,0" FontSize="16" Grid.ColumnSpan="2"/>
 
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, Delay=1000}" Grid.Row="20" 
-                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding sBuildingSide}"/>
-                                <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
-                                <DataGridTextColumn Header="DoorType" Binding="{Binding sDoorType}"/>
+                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6">                            
+                            <DataGrid.Columns>                                
+                                <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
+                                    SelectedItemBinding="{Binding Path=sBuildingSide}"
+                                    ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
+                                <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>                                
+                                <DataGridComboBoxColumn Header="DoorType" Width="Auto"
+                                    SelectedItemBinding="{Binding Path=sDoorType}"
+                                    ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
                                 <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight}"/>
                                 <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth}"/>
                                 <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
@@ -270,7 +276,9 @@
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay, Delay=1000}" Grid.Row="21" 
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding sBuildingSide}"/>
+                                <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
+                                    SelectedItemBinding="{Binding Path=sBuildingSide}"
+                                    ItemsSource="{Binding Source={StaticResource BuildingSides}}" />                                
                                 <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
                                 <DataGridTextColumn Header="WindowsHeight" Binding="{Binding fWindowsHeight}"/>
                                 <DataGridTextColumn Header="WindowsWidth" Binding="{Binding fWindowsWidth}"/>
