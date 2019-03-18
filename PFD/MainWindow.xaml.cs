@@ -791,7 +791,6 @@ namespace PFD
                 {
                     Internal_Forces.Content = new UC_InternalForces(
                     vm.UseCRSCGeometricalAxes,
-                    vm.DeterminateCombinationResultsByFEMSolver,
                     vm.Model,
                     compList,
                     vm.MemberInternalForcesInLoadCombinations,

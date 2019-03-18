@@ -1340,8 +1340,13 @@ namespace PFD
 
         private void SetDesignMembersLists(CMemberDesignCalculations mdc)
         {
+            // TODO - toto budeme asi potrebovat vycistit, ukladame a nastavujeme toho zbytocne prilis vela
+            MemberInternalForcesInLoadCombinations = mdc.MemberInternalForcesInLoadCombinations;
+            MemberDeflectionsInLoadCombinations = mdc.MemberDeflectionsInLoadCombinations;
+
             MemberInternalForcesInLoadCases = mdc.MemberInternalForcesInLoadCases;
             MemberDeflectionsInLoadCases = mdc.MemberDeflectionsInLoadCases;
+
             MemberDesignResults_ULS = mdc.MemberDesignResults_ULS;
             MemberDesignResults_SLS = mdc.MemberDesignResults_SLS;
             JointDesignResults_ULS = mdc.JointDesignResults_ULS;

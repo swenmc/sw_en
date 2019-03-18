@@ -48,7 +48,6 @@ namespace PFD
         float[] fArr_BendingMomentValuesMx;
         float[] fArr_BendingMomentValuesMy;
 
-        bool DeterminateCombinationResultsByFEMSolver;
         bool UseCRSCGeometricalAxes;
 
         CModel_PFD Model;
@@ -68,7 +67,6 @@ namespace PFD
 
         public UC_InternalForces(
             bool bUseCRSCGeometricalAxes,
-            bool bDeterminateCombinationResultsByFEMSolver,
             CModel_PFD model,
             CComponentListVM compList,
             List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations,
@@ -80,7 +78,6 @@ namespace PFD
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
-            DeterminateCombinationResultsByFEMSolver = bDeterminateCombinationResultsByFEMSolver;
             Model = model; // 3D model
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
             frameModels = frameModels_temp; // particular 2D models
