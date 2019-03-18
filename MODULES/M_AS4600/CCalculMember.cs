@@ -96,6 +96,7 @@ namespace M_AS4600
     public class CCalculMember
     {
         public designInternalForces_AS4600 sDIF;
+        public designDeflections sDDeflections;
 
         CCrSc_TW cs; // Thin-walled cross-section
 
@@ -287,6 +288,7 @@ namespace M_AS4600
 
         public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member)
         {
+            designDeflections sDDeflections = sDDeflections_x_temp;
             CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections_x_temp, member.FLength);
 
             // Validation
