@@ -204,11 +204,6 @@ namespace PFD
             {
                 FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             }
-
-            if (e.PropertyName == "DoorBlocksProperties_Add")
-            {
-                Datagrid_DoorsAndGates.ItemsSource = viewModel.DoorBlocksProperties;                
-            }
             
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
@@ -1630,6 +1625,16 @@ namespace PFD
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
             */
+        }
+
+        private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            Frame1.UpdateLayout();  //nutne koli pridaniu riadku a update v GUI
+        }
+
+        private void Datagrid_Windows_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            Frame1.UpdateLayout(); //nutne koli pridaniu riadku a update v GUI
         }
     }
 }

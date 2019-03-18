@@ -58,8 +58,8 @@ namespace PFD.Infrastructure
             d.sBuildingSide = "Front";
             d.iBayNumber = 1;
             d.sDoorType = "Personnel Door";
-            d.fDoorsWidth = 1;
-            d.fDoorsHeight = 1;
+            d.fDoorsWidth = 0.9f;
+            d.fDoorsHeight = 2.1f;
             d.fDoorCoordinateXinBlock = 0.1f;
         }
         public static void SetDefaultWindowParams(WindowProperties w)
@@ -69,7 +69,7 @@ namespace PFD.Infrastructure
             w.fWindowsHeight = 0.6f;
             w.fWindowsWidth = 0.6f;
             w.fWindowCoordinateXinBay = 0.1f;
-            w.fWindowCoordinateZinBay = 0.2f;
+            w.fWindowCoordinateZinBay = 2f;
             w.iNumberOfWindowColumns = 2;            
         }        
 

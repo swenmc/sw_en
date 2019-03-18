@@ -1018,8 +1018,8 @@ namespace PFD
                 if (d != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                    
-                    //NotifyPropertyChanged("DoorBlocksProperties_Add"); //toto neviem rozbehat
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                      
+                    NotifyPropertyChanged("DoorBlocksProperties_Add");
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
@@ -1048,7 +1048,23 @@ namespace PFD
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
-
+        private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                WindowProperties w = MWindowBlocksProperties.LastOrDefault();
+                if (w != null)
+                {
+                    CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
+                    NotifyPropertyChanged("WindowBlocksProperties_Add");
+                }
+            }
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
+            }
+        }
         public List<string> BuildingSides
         {
             get
@@ -1065,26 +1081,6 @@ namespace PFD
                 return MDoorsTypes;
             }
         }
-        
-
-        private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                WindowProperties w = MWindowBlocksProperties.LastOrDefault();
-                if (w != null)
-                {
-                    CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
-                    //NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
-                }
-            }
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
-            }
-        }
-
 
 
         //-------------------------------------------------------------------------------------------------------------
