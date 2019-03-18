@@ -96,6 +96,7 @@ namespace M_AS4600
     public class CCalculMember
     {
         public designInternalForces_AS4600 sDIF;
+        public designDeflections sDDeflections;
 
         CCrSc_TW cs; // Thin-walled cross-section
 
@@ -287,6 +288,7 @@ namespace M_AS4600
 
         public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member)
         {
+            designDeflections sDDeflections = sDDeflections_x_temp;
             CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections_x_temp, member.FLength);
 
             // Validation
@@ -299,7 +301,7 @@ namespace M_AS4600
         public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp)
         {
             float fLimit = 1f / 360f; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
-            float fLimitDeflection = fL_temp * fLimit;
+            fLimitDeflection = fL_temp * fLimit;
 
             // Calculate deflection design ratio
             fEta_defl_yu = Math.Abs(sDDeflections_x_temp.fDelta_yu) / fLimitDeflection;
@@ -309,7 +311,7 @@ namespace M_AS4600
             fEta_defl_tot = sDDeflections_x_temp.fDelta_tot / fLimitDeflection;
 
             // Set maximum design ratio
-            fEta_max = fEta_defl_tot;
+            fEta_max = MathF.Max(fEta_max, fEta_defl_tot);
         }
 
         public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors,  designMomentValuesForCb sMomentValuesForCb)

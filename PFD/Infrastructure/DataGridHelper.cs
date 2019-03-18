@@ -488,12 +488,24 @@ namespace PFD
 
             // Deflection
             // δ
+            listPhysicalQuantity_Symbols.Add("δ x");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_yy * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Deflection);
+
+            listPhysicalQuantity_Symbols.Add("δ y");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_zz * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Deflection);
+
+            //listPhysicalQuantity_Symbols.Add("δ tot");
+            //listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_tot * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
+            //listPhysicalQuantity_Units.Add(sUnit_Deflection);
 
             listPhysicalQuantity_Symbols.Add("δ lim");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLimitDeflection * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Deflection);
 
             // Design ratio
+            /*
             listPhysicalQuantity_Symbols.Add("η x/u");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_yu, iNumberOfDecimalPlaces_DesignRatio).ToString());
             listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
@@ -501,6 +513,7 @@ namespace PFD
             listPhysicalQuantity_Symbols.Add("η y/v");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_zv, iNumberOfDecimalPlaces_DesignRatio).ToString());
             listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+            */
 
             listPhysicalQuantity_Symbols.Add("η x");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_yy, iNumberOfDecimalPlaces_DesignRatio).ToString());

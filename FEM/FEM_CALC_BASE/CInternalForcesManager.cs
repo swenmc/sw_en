@@ -11,7 +11,7 @@ namespace FEM_CALC_BASE
     public static class CMemberResultsManager
     {
         // Internal forces - ULS
-        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, 
+        public static void SetMemberInternalForcesInLoadCombination(bool bUseCRSCGeometricalAxes, CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, 
             int iNumberOfMemberResultsSections, 
             out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
@@ -28,15 +28,22 @@ namespace FEM_CALC_BASE
                     for(int j=0; j < mlf.InternalForces.Length; j++)
                     {
                         sBIF_x_output[j].fN = mlf.InternalForces[j].fN;
-                        sBIF_x_output[j].fV_yu = mlf.InternalForces[j].fV_yu;
-                        sBIF_x_output[j].fV_yy = mlf.InternalForces[j].fV_yy;
-                        sBIF_x_output[j].fV_zv = mlf.InternalForces[j].fV_zv;
-                        sBIF_x_output[j].fV_zz = mlf.InternalForces[j].fV_zz;
                         sBIF_x_output[j].fT = mlf.InternalForces[j].fT;
-                        sBIF_x_output[j].fM_yu = mlf.InternalForces[j].fM_yu;
-                        sBIF_x_output[j].fM_yy = mlf.InternalForces[j].fM_yy;
-                        sBIF_x_output[j].fM_zv = mlf.InternalForces[j].fM_zv;
-                        sBIF_x_output[j].fM_zz = mlf.InternalForces[j].fM_zz;
+
+                        if (bUseCRSCGeometricalAxes)
+                        {
+                            sBIF_x_output[j].fV_yy = mlf.InternalForces[j].fV_yy;
+                            sBIF_x_output[j].fV_zz = mlf.InternalForces[j].fV_zz;
+                            sBIF_x_output[j].fM_yy = mlf.InternalForces[j].fM_yy;
+                            sBIF_x_output[j].fM_zz = mlf.InternalForces[j].fM_zz;
+                        }
+                        else
+                        {
+                            sBIF_x_output[j].fV_yu = mlf.InternalForces[j].fV_yu;
+                            sBIF_x_output[j].fV_zv = mlf.InternalForces[j].fV_zv;
+                            sBIF_x_output[j].fM_yu = mlf.InternalForces[j].fM_yu;
+                            sBIF_x_output[j].fM_zv = mlf.InternalForces[j].fM_zv;
+                        }
 
                         sMomentValuesforCb_output[j].fM_max = mlf.BendingMomentValues[j].fM_max;
                         sMomentValuesforCb_output[j].fM_14 = mlf.BendingMomentValues[j].fM_14;
@@ -50,7 +57,7 @@ namespace FEM_CALC_BASE
             }
         }
 
-        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, 
+        public static void SetMemberInternalForcesInLoadCombination(bool bUseCRSCGeometricalAxes, CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, 
             int iNumberOfMemberResultsSections, 
             out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
@@ -71,14 +78,21 @@ namespace FEM_CALC_BASE
                         {
                             sBIF_x_output[j].fN += fcurrentLoadCaseFactor * mlf.InternalForces[j].fN;
                             sBIF_x_output[j].fV_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_yu;
-                            sBIF_x_output[j].fV_yy += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_yy;
-                            sBIF_x_output[j].fV_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zv;
-                            sBIF_x_output[j].fV_zz += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zz;
-                            sBIF_x_output[j].fT += fcurrentLoadCaseFactor * mlf.InternalForces[j].fT;
-                            sBIF_x_output[j].fM_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_yu;
-                            sBIF_x_output[j].fM_yy += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_yy;
-                            sBIF_x_output[j].fM_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_zv;
-                            sBIF_x_output[j].fM_zz += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_zz;
+
+                            if (bUseCRSCGeometricalAxes)
+                            {
+                                sBIF_x_output[j].fV_yy += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_yy;
+                                sBIF_x_output[j].fV_zz += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zz;
+                                sBIF_x_output[j].fM_yy += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_yy;
+                                sBIF_x_output[j].fM_zz += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_zz;
+                            }
+                            else
+                            {
+                                sBIF_x_output[j].fT += fcurrentLoadCaseFactor * mlf.InternalForces[j].fT;
+                                sBIF_x_output[j].fM_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_yu;
+                                sBIF_x_output[j].fM_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_zv;
+                                sBIF_x_output[j].fV_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zv;
+                            }
 
                             sMomentValuesforCb_output[j].fM_max += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_max;
                             sMomentValuesforCb_output[j].fM_14 += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_14;
@@ -94,7 +108,7 @@ namespace FEM_CALC_BASE
         }
 
         //  Deflections - SLS
-        public static void SetMemberDeflectionsInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
+        public static void SetMemberDeflectionsInLoadCombination(bool bUseCRSCGeometricalAxes, CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
         {
             sBDeflections_x_output = new basicDeflections[iNumberOfMemberResultsSections];
 
@@ -106,11 +120,23 @@ namespace FEM_CALC_BASE
                     int j = 0;
                     foreach (basicDeflections bdef in mdefl.Deflections)
                     {
-                        sBDeflections_x_output[j].fDelta_yu = bdef.fDelta_yu;
-                        sBDeflections_x_output[j].fDelta_yy = bdef.fDelta_yy;
-                        sBDeflections_x_output[j].fDelta_zv = bdef.fDelta_zv;
-                        sBDeflections_x_output[j].fDelta_zz = bdef.fDelta_zz;
-                        sBDeflections_x_output[j].fDelta_tot = (float)Math.Sqrt(MathF.Pow2(bdef.fDelta_yu) + MathF.Pow2(bdef.fDelta_zv));
+                        if (bUseCRSCGeometricalAxes)
+                        {
+                            sBDeflections_x_output[j].fDelta_yy = bdef.fDelta_yy;
+                            sBDeflections_x_output[j].fDelta_zz = bdef.fDelta_zz;
+                        }
+                        else
+                        {
+                            sBDeflections_x_output[j].fDelta_zv = bdef.fDelta_zv;
+                            sBDeflections_x_output[j].fDelta_yu = bdef.fDelta_yu;
+                        }
+
+                        if (bUseCRSCGeometricalAxes && (!MathF.d_equal(sBDeflections_x_output[j].fDelta_yy, 0) || !MathF.d_equal(sBDeflections_x_output[j].fDelta_zz, 0)))
+                            sBDeflections_x_output[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_output[j].fDelta_yy) + MathF.Pow2(sBDeflections_x_output[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
+                        else if (!MathF.d_equal(sBDeflections_x_output[j].fDelta_yu, 0) || !MathF.d_equal(sBDeflections_x_output[j].fDelta_zv, 0))
+                            sBDeflections_x_output[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_output[j].fDelta_yu) + MathF.Pow2(sBDeflections_x_output[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
+                        else
+                            sBDeflections_x_output[j].fDelta_tot = 0;
 
                         j++;
                     }
@@ -118,7 +144,7 @@ namespace FEM_CALC_BASE
             }
         }
 
-        public static void SetMemberDeflectionsInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCases> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
+        public static void SetMemberDeflectionsInLoadCombination(bool bUseCRSCGeometricalAxes, CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCases> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
         {
             sBDeflections_x_output = new basicDeflections[iNumberOfMemberResultsSections];
 
@@ -134,11 +160,23 @@ namespace FEM_CALC_BASE
                         int j = 0;
                         foreach (basicDeflections bdef in mdefl.Deflections)
                         {
-                            sBDeflections_x_output[j].fDelta_yu += fcurrentLoadCaseFactor * bdef.fDelta_yu;
-                            sBDeflections_x_output[j].fDelta_yy += fcurrentLoadCaseFactor * bdef.fDelta_yy;
-                            sBDeflections_x_output[j].fDelta_zv += fcurrentLoadCaseFactor * bdef.fDelta_zv;
-                            sBDeflections_x_output[j].fDelta_zz += fcurrentLoadCaseFactor * bdef.fDelta_zz;
-                            sBDeflections_x_output[j].fDelta_tot += (float)Math.Sqrt(MathF.Pow2(fcurrentLoadCaseFactor * bdef.fDelta_yu) + MathF.Pow2(fcurrentLoadCaseFactor * bdef.fDelta_zv));
+                            if (bUseCRSCGeometricalAxes)
+                            {
+                                sBDeflections_x_output[j].fDelta_yy += fcurrentLoadCaseFactor * bdef.fDelta_yy;
+                                sBDeflections_x_output[j].fDelta_zz += fcurrentLoadCaseFactor * bdef.fDelta_zz;
+                            }
+                            else
+                            {
+                                sBDeflections_x_output[j].fDelta_yu += fcurrentLoadCaseFactor * bdef.fDelta_yu;
+                                sBDeflections_x_output[j].fDelta_zv += fcurrentLoadCaseFactor * bdef.fDelta_zv;
+                            }
+
+                            if (bUseCRSCGeometricalAxes && (!MathF.d_equal(sBDeflections_x_output[j].fDelta_yy, 0) || !MathF.d_equal(sBDeflections_x_output[j].fDelta_zz, 0)))
+                                sBDeflections_x_output[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_output[j].fDelta_yy) + MathF.Pow2(sBDeflections_x_output[j].fDelta_zz)); // Vektorovy sucin pre vyslednicu
+                            else if (!MathF.d_equal(sBDeflections_x_output[j].fDelta_yu, 0) || !MathF.d_equal(sBDeflections_x_output[j].fDelta_zv, 0))
+                                sBDeflections_x_output[j].fDelta_tot = MathF.Sqrt(MathF.Pow2(sBDeflections_x_output[j].fDelta_yu) + MathF.Pow2(sBDeflections_x_output[j].fDelta_zv)); // Vektorovy sucin pre vyslednicu
+                            else
+                                sBDeflections_x_output[j].fDelta_tot = 0;
 
                             j++;
                         }

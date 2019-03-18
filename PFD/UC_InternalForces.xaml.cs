@@ -140,7 +140,7 @@ namespace PFD
 
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             // Zmena 22.02.20019 - Potrebujeme pracovat s LoadCombinations, pretoze BFENet moze vracat vysledky v Load Cases aj Load Combinations
-            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCombinations, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(UseCRSCGeometricalAxes, member, lcomb, ListMemberInternalForcesInLoadCombinations, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkovych struktur
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case, resp. load combination rovnaky ale nemusi byt, je potrebne dopracovat
@@ -379,7 +379,7 @@ namespace PFD
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
             int lcombIndex = frameModel.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(UseCRSCGeometricalAxes, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();
