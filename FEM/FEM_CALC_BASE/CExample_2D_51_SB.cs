@@ -126,6 +126,7 @@ namespace FEM_CALC_BASE
                 load_partial.FaA = ((CMLoad_24)load).FaA;
                 load_partial.Fa = ((CMLoad_24)load).Fa;
                 load_partial.Fs = ((CMLoad_24)load).Fs;
+                load_partial.Fd_calc = ((CMLoad_24)load).Fd_calc;
                 load_partial.Fq = ((CMLoad_24)load).Fq;
                 load_partial.MLoadTypeDistr = load.MLoadTypeDistr;
                 load_partial.ELoadType_FMTS = load.ELoadType_FMTS;

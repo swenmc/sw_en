@@ -11,6 +11,7 @@ namespace BaseClasses
         private float m_faA;     // Distance of Load from Member Start / User Input (distance between load start point and member start)
         private float m_fa;      // Distance of Midpoint(Centre) of Load from Member Start 
         private float m_fs;      // Distance of Load / Length along which load acts
+        public float m_fd_calc;  // Auxiary value (end of load on the member m_faA + fs)
         //----------------------------------------------------------------------------
         public float Fq
         {
@@ -32,8 +33,12 @@ namespace BaseClasses
             get { return m_fs; }
             set { m_fs = value; }
         }
+        public float Fd_calc
+        {
+            get { return m_fd_calc; }
+            set { m_fd_calc = value; }
+        }
 
-        private float m_fd_calc;
         private float m_fc_calc;
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
