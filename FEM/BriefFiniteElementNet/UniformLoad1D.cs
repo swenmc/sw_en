@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Text;
 using BriefFiniteElementNet.Elements;
+using MATH;
 
 namespace BriefFiniteElementNet
 {
@@ -146,11 +147,60 @@ namespace BriefFiniteElementNet
             throw new NotImplementedException();
         }
 
-        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x)
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false)
         {
+            if (elm is FrameElement2Node)
+            {
+                var frElm = elm as FrameElement2Node;
+
+                var l = (frElm.EndNode.Location - frElm.StartNode.Location).Length;
+                var w = GetLocalDistributedLoad(elm);
+
+                var gStartDisp = frElm.StartNode.GetNodalDisplacement();
+                var gEndDisp = frElm.EndNode.GetNodalDisplacement();
+
+                var lStartDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gStartDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gStartDisp.Rotations));
+
+                var lEndDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gEndDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gEndDisp.Rotations));
+
+                var buf = new Displacement();
+
+                //bool bConsiderNodalDisplacement = false; // Nodal displacement transformed to LCS
+
+                if (bConsiderNodalDisplacement)
+                {
+                    buf.DX = lStartDisp.DX;
+                    buf.DY = lStartDisp.DY + GetDeflectionAt_x2(x, l, w.Y, frElm.E, frElm.Iz);
+                    buf.DZ = lStartDisp.DZ + GetDeflectionAt_x2(x, l, w.Z, frElm.E, frElm.Iy);
+                    buf.RX = lStartDisp.RX;
+                    buf.RY = lStartDisp.RY; // TODO - not implemented
+                    buf.RZ = lStartDisp.RZ; // TODO - not implemented
+                }
+                else
+                {
+                    buf.DX = 0;
+                    buf.DY = GetDeflectionAt_x2(x, l, w.Y, frElm.E, frElm.Iz);
+                    buf.DZ = GetDeflectionAt_x2(x, l, w.Z, frElm.E, frElm.Iy);
+                    buf.RX = 0;
+                    buf.RY = 0; // TODO - not implemented
+                    buf.RZ = 0; // TODO - not implemented
+                }
+
+                return -buf;
+            }
+
             throw new NotImplementedException();
         }
 
+        private double GetDeflectionAt_x2(double x, double l, double w, double E, double I)
+        {
+                //return (-w * x / (24f * E * I)) * (MathF.Pow3(l) + 2 * l * MathF.Pow2(x) + MathF.Pow3(x)); // Nespravna rovnica ??
+                return ((-w * x * (l - x)) / (24f * E * I)) * (MathF.Pow2(l) + x * (l - x));
+        }
         #endregion
 
         #region Constructors

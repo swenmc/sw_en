@@ -75,7 +75,8 @@ namespace BriefFiniteElementNet
         /// <returns></returns>
         public abstract Force GetInternalForceAt(double x);
 
-        public abstract Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb);
+        public abstract Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false);
+        public abstract Displacement GetLocalDeformationAt_MC(double x);
 
         /// <summary>
         /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.

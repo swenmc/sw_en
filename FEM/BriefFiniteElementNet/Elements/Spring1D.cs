@@ -67,11 +67,15 @@ namespace BriefFiniteElementNet.Elements
             throw new NotImplementedException();
         }
 
-        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false)
         {
             throw new NotImplementedException();
         }
 
+        public override Displacement GetLocalDeformationAt_MC(double x)
+        {
+            throw new NotImplementedException();
+        }
 
         public Spring1D() : base(2)
         {

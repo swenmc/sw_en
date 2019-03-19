@@ -6,6 +6,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text;
 using BriefFiniteElementNet.Elements;
+using MATH;
 
 namespace BriefFiniteElementNet
 {
@@ -159,9 +160,70 @@ namespace BriefFiniteElementNet
             throw new NotImplementedException();
         }
 
-        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x)
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false)
         {
+            if (elm is FrameElement2Node)
+            {
+                var frElm = elm as FrameElement2Node;
+
+                var localForce = this.force;
+
+                if (this.coordinationSystem == CoordinationSystem.Global)
+                {
+                    var tmp = frElm.TransformGlobalToLocal(localForce.Forces, localForce.Moments);
+
+                    localForce.Forces = tmp[0];
+                    localForce.Moments = tmp[1];
+                }
+
+                var l = (frElm.EndNode.Location - frElm.StartNode.Location).Length;
+
+                var l1 = distanseFromStartNode;
+                var l2 = l - l1;
+
+                var gStartDisp = frElm.StartNode.GetNodalDisplacement();
+                var gEndDisp = frElm.EndNode.GetNodalDisplacement();
+
+                var lStartDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gStartDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gStartDisp.Rotations));
+
+                var lEndDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gEndDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gEndDisp.Rotations));
+
+                var buf = new Displacement();
+
+                // bool bConsiderNodalDisplacement = false; // Nodal displacement transformed to LCS
+
+                if (bConsiderNodalDisplacement)
+                {
+                    buf.DX = lStartDisp.DX;
+                    buf.DY = lStartDisp.DY + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fy, frElm.E, frElm.Iz);
+                    buf.DZ = lStartDisp.DZ + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fz, frElm.E, frElm.Iy);
+                    buf.RX = lStartDisp.RX;
+                    buf.RY = lStartDisp.RY; // TODO - not implemented
+                    buf.RZ = lStartDisp.RZ; // TODO - not implemented
+                }
+                else
+                {
+                    buf.DX = 0;
+                    buf.DY = GetDeflectionAt_x2(x, l1, l2, l, localForce.Fy, frElm.E, frElm.Iz);
+                    buf.DZ = GetDeflectionAt_x2(x, l1, l2, l, localForce.Fz, frElm.E, frElm.Iy);
+                    buf.RX = 0;
+                    buf.RY = 0; // TODO - not implemented
+                    buf.RZ = 0; // TODO - not implemented
+                }
+
+                return -buf;
+            }
+
             throw new NotImplementedException();
+        }
+
+        private double GetDeflectionAt_x2(double x, double l1, double l2, double l, double f_value, double E, double I)
+        {
+            return (-f_value / (6f * E * I)) * (l2 * ((MathF.Pow3(x) / l) - ((l1 * l2 * x / l) * (2*l -l1)) - MathF.Pow3(x - l1)));
         }
 
         public Force[] GetGlobalEquivalentNodalLoads(Element element)

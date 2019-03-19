@@ -264,11 +264,11 @@ namespace BriefFiniteElementNet
                 }
                 else
                 {
-                    var a = l / 2 + StarIsoLocation * l / 2;
-                    var c = (EndIsoLocation - StarIsoLocation) * l / 2;
-                    var b = a + c;
-                    var e = l - b;
-                    var d = l - a / 2 - b / 2;
+                    var a = l / 2 + StarIsoLocation * l / 2; // Vzdialenost zaciatku zatazenia od zaciatku pruta
+                    var c = (EndIsoLocation - StarIsoLocation) * l / 2; // Dlzka zatazenia na prute
+                    var b = a + c; // Poloha konca zatazenia od zaciatku pruta
+                    var e = l - b; // Vzdialenost konca zatazenia od konca pruta
+                    var d = l - a / 2 - b / 2; // Vzdialenost stredu zatazenia od konca pruta
 
                     buf.Fx = -GetForceAt_x2(x, a, b, c, d, l, w.X, -f1.Fx, -f3.Fx);
                     buf.Fy = -GetForceAt_x2(x, a, b, c, d, l, w.Y, -f1.Fy, -f3.Fy);
@@ -394,9 +394,77 @@ namespace BriefFiniteElementNet
                 return -Ma + Ra * x - w * c * (x - l + d);
         }
 
-        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x)
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false)
         {
+            if (elm is FrameElement2Node)
+            {
+                var frElm = elm as FrameElement2Node;
+
+                var l = (frElm.EndNode.Location - frElm.StartNode.Location).Length;
+                var w = GetLocalDistributedLoad(elm);
+
+                var gStartDisp = frElm.StartNode.GetNodalDisplacement();
+                var gEndDisp = frElm.EndNode.GetNodalDisplacement();
+
+                var lStartDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gStartDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gStartDisp.Rotations));
+
+                var lEndDisp = new Displacement(
+                    frElm.TransformGlobalToLocal(gEndDisp.Displacements),
+                    frElm.TransformGlobalToLocal(gEndDisp.Rotations));
+
+                var a = l / 2 + StarIsoLocation * l / 2; // Vzdialenost zaciatku zatazenia od zaciatku pruta
+                var c = (EndIsoLocation - StarIsoLocation) * l / 2; // Dlzka zatazenia na prute
+                var b = a + c; // Poloha konca zatazenia od zaciatku pruta
+                var e = l - b; // Vzdialenost konca zatazenia od konca pruta
+                var d = l - a / 2 - b / 2; // Vzdialenost stredu zatazenia od konca pruta
+
+                // Uprava rozmerov podla obrazku pre simply supported beam
+                // https://www.engineersedge.com/beam_bending/beam_bending30.htm
+
+                var a2 = a; // Vzdialenost zaciatku zatazenia od zaciatku pruta
+                var b2 = c; // Dlzka zatazenia na prute
+                var c2 = e; // Vzdialenost konca zatazenia od konca pruta
+                var d2 = b; // Poloha konca zatazenia od zaciatku pruta
+
+                var buf = new Displacement();
+
+                //bool bConsiderNodalDisplacement = false; // Nodal displacement transformed to LCS
+
+                if (bConsiderNodalDisplacement)
+                {
+                    buf.DX = lStartDisp.DX;
+                    buf.DY = lStartDisp.DY + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz);
+                    buf.DZ = lStartDisp.DZ + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy);
+                    buf.RX = lStartDisp.RX;
+                    buf.RY = lStartDisp.RY; // TODO - not implemented
+                    buf.RZ = lStartDisp.RZ; // TODO - not implemented
+                }
+                else
+                {
+                    buf.DX = 0;
+                    buf.DY = GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz);
+                    buf.DZ = GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy);
+                    buf.RX = 0;
+                    buf.RY = 0; // TODO - not implemented
+                    buf.RZ = 0; // TODO - not implemented
+                }
+
+                return -buf;
+            }
+
             throw new NotImplementedException();
+        }
+
+        private double GetDeflectionAt_x2(double x, double a, double b, double c, double d, double l, double w, double E, double I)
+        {
+            if (x <= a)
+                return (-w * b * (b + 2f * c) * x / (48f * E * I * l)) * (4 * (MathF.Pow2(l) - MathF.Pow2(x)) - MathF.Pow2(b + 2 * c) - MathF.Pow2(b));
+            else if (x < d)
+                return (-w / (48f * E * I)) * (b * x / l * (4 * (b + 2 * c) * (MathF.Pow2(l) - MathF.Pow2(x)) - MathF.Pow3(b + 2 * c) - MathF.Pow2(b) * (b + 2 * c)) + 2 * MathF.Pow4(x - a));
+            else
+                return (-w * b / (48 * E * I)) * ((x / l) * (b + 2 * c) * (4 * (MathF.Pow2(l) - MathF.Pow2(x)) - MathF.Pow2(b + 2 * c)) - MathF.Pow2(b) * (2 * d - b) * (1 - (x / l)) + MathF.Pow3(2 * x - a - d));
         }
         #endregion
 

@@ -523,7 +523,7 @@ namespace BriefFiniteElementNet
         }
 
         // MC - docasne pridane
-        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false)
         {
             var gStartDisp = StartNode.GetNodalDisplacement(cmb);
             var gEndDisp = EndNode.GetNodalDisplacement(cmb);
@@ -536,11 +536,38 @@ namespace BriefFiniteElementNet
                 TransformGlobalToLocal(gEndDisp.Displacements),
                 TransformGlobalToLocal(gEndDisp.Rotations));
 
-            // TODO - implementovat vypocet lokalnej deformacie
+            var displStartVector = new double[]
+            {
+                lStartDisp.DX, lStartDisp.DY, lStartDisp.DZ,
+                lStartDisp.RX, lStartDisp.RY, lStartDisp.RZ
+            };
 
-            var deformationAtX = Math.Abs(lStartDisp.DZ) > Math.Abs(lEndDisp.DZ) ? lStartDisp : lEndDisp; // Docasne vrati hodnotu s vacsim maximom pre posun v smere z
+            var startDisp = Displacement.FromVector(displStartVector, 0);
 
-            return deformationAtX;
+            var displacementAtX = new Displacement(0, 0, 0, 0, 0, 0);
+
+            if (bConsiderNodalDisplacement == true)
+                displacementAtX = startDisp;
+
+            foreach (var ld in loads)
+            {
+                if (!cmb.ContainsKey(ld.Case))
+                    continue;
+
+                var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x);
+
+                displacementAtX += cmb[ld.Case] * frc;
+            }
+
+            return displacementAtX;
+        }
+
+        public override Displacement GetLocalDeformationAt_MC(double x)
+        {
+            var cmb = new LoadCombination();
+            cmb[new LoadCase()] = 1.0;
+
+            return GetLocalDeformationAt_MC(x, cmb);
         }
 
         #region transformations

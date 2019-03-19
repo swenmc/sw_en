@@ -21,12 +21,12 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             //Example1();
             //Example2();
-            Example3();
+            //Example3();
             //Example4();
             //Example5();
             //Example6();
             //Example7();
-            //Example8();
+            Example8();
             //Example9();
 
             //DocSnippets.Test1();
@@ -471,18 +471,25 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             model.Nodes.Add(n1, n2);
 
-            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
-
             // Frame Element
             var e1 = new FrameElement2Node(n1, n2);
             e1.Label = "e1";
 
-            e1.Geometry = secAA;
+            //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+            //e1.Geometry = secAA;
+            //e1.UseOverridedProperties = false;
+
+            e1.A = 1e-4;
+            e1.Ay = 5e-5;
+            e1.Az = 5e-5;
+            e1.Iy = 1e-5;
+            e1.Iz = 1e-5;
+            e1.J = 1e-5;
+
+            e1.UseOverridedProperties = true;
 
             e1.E = 210e9;
             e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
-
-            e1.UseOverridedProperties = false;
 
             model.Elements.Add(e1);
 
@@ -508,8 +515,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             List<LoadCombination> loadcombinations = new List<LoadCombination>();
             loadcombinations.Add(lcomb1);
 
-            var load = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
-            e1.Loads.Add(load);                                  //apply load to element
+            var load = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);    //creating new instance of load
+            e1.Loads.Add(load);                                                                       //apply load to element
 
             // Display Global Equivalent Nodal Load
             var eForce = e1.GetGlobalEquivalentNodalLoads(load);
@@ -541,18 +548,25 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             model.Nodes.Add(n1, n2);
 
-            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
-
             // Frame Element
             var e1 = new FrameElement2Node(n1, n2);
             e1.Label = "e1";
 
-            e1.Geometry = secAA;
+            //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+            //e1.Geometry = secAA;
+            //e1.UseOverridedProperties = false;
+
+            e1.A = 1e-4;
+            e1.Ay = 5e-5;
+            e1.Az = 5e-5;
+            e1.Iy = 1e-5;
+            e1.Iz = 1e-5;
+            e1.J = 1e-5;
+
+            e1.UseOverridedProperties = true;
 
             e1.E = 210e9;
             e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
-
-            e1.UseOverridedProperties = false;
 
             model.Elements.Add(e1);
 
@@ -579,7 +593,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             loadcombinations.Add(lcomb1);
 
             // Start and end offset, resp. isolocation [-1,1]
-            var load = new PartialUniformLoad1D(-10000, -1 + 0.05, 1 - 0.1, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            var load = new PartialUniformLoad1D(-10000, -1 + 0.05, 1 - 0.35, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
 
             e1.Loads.Add(load);                                  //apply load to element
 
@@ -744,15 +758,19 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
                 {
                     Console.WriteLine("Element No.: " + (j + 1).ToString());
-                    Console.WriteLine("Internal forces in particular x positions");
+                    Console.WriteLine("Internal forces and displacements in particular x positions");
 
                     double elemLength = bfenet_model.Elements[j].GetElementLength();
 
                     for (int k = 0; k < xLocations_rel.Length; k++)
                     {
                         string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
+
                         var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
                         Console.WriteLine(sMessage + "\t " + eForce);
+
+                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                        Console.WriteLine(sMessage + "\t " + eDisplacement);
 
                         if (bWriteResultsInTXTFile)
                             outputresults.Add(eForce);

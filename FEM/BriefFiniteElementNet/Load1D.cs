@@ -47,9 +47,8 @@ namespace BriefFiniteElementNet
             set { coordinationSystem = value; }
         }
 
-
         public abstract Force GetInternalForceAt(Element1D elm, double x);
-        public abstract Displacement GetLocalDeformationAt_MC(Element1D elm, double x);
+        public abstract Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false);
 
         #region Serialization stuff
 

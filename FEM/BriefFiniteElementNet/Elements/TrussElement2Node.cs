@@ -149,7 +149,12 @@ namespace BriefFiniteElementNet.Elements
             return GetInternalForceAt(x, LoadCombination.DefaultLoadCombination);
         }
 
-        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Displacement GetLocalDeformationAt_MC(double x)
         {
             throw new NotImplementedException();
         }
