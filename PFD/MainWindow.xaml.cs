@@ -204,7 +204,9 @@ namespace PFD
             {
                 FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             }
-            
+
+            if (e.PropertyName == "Bays") return;
+
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);

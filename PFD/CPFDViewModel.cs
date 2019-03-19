@@ -52,6 +52,8 @@ namespace PFD
         private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
 
+        private int iFrontColumnNoInOneFrame;
+
         // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
@@ -96,7 +98,8 @@ namespace PFD
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
-        
+        //private Dictionary<string, List<string>> MBuildingSidesBays;
+
         // Popis pre Ondreja - doors and windows
 
         // GUI
@@ -394,7 +397,7 @@ namespace PFD
                 {
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
-                    int iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     // Update value of distance between columns
 
                     // Todo
@@ -599,6 +602,8 @@ namespace PFD
             set
             {
                 MModel = value;
+                SetModelBays();
+                SetDoorBlockBays();
             }
         }
 
@@ -1082,7 +1087,62 @@ namespace PFD
             }
         }
 
+        public List<int> Bays
+        {
+            get
+            {
 
+                return new List<int>() { 4, 4, 5, 6, 7, 9, 0 };
+            }
+        }
+
+        //public Dictionary<string, List<string>> BuildingSidesBays
+        //{
+        //    get
+        //    {
+        //        if (MBuildingSidesBays == null) SetModelBays();
+        //        return MBuildingSidesBays;
+        //    }
+        //}
+
+        List<int> frontBays;
+        List<int> backBays;
+        List<int> leftRightBays;
+        private void SetModelBays()
+        {
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            //MBuildingSidesBays = new Dictionary<string, List<string>>();
+            frontBays = new List<int>();
+            backBays = new List<int>();
+            leftRightBays = new List<int>();
+            int i = 0;
+            while (i < model.iFrameNo - 1)
+            {
+                leftRightBays.Add((++i));
+            }
+            i = 0;
+            while (i < iFrontColumnNoInOneFrame + 1)
+            {
+                frontBays.Add((++i));
+            }
+            i = 0;
+            while (i < iFrontColumnNoInOneFrame + 1)
+            {
+                backBays.Add((++i));
+            }
+            
+        }
+
+        private void SetDoorBlockBays()
+        {
+            foreach (DoorProperties d in MDoorBlocksProperties)
+            {
+                if (d.sBuildingSide == "Front") d.Bays = frontBays;
+                else if (d.sBuildingSide == "Back") d.Bays = backBays;
+                else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
+                else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
+            }
+        }
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1092,7 +1152,7 @@ namespace PFD
 
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
-
+            
             ShowMemberID = true;
             ShowMemberRealLength = true;
 

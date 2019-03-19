@@ -12,6 +12,7 @@ namespace BaseClasses
         public event PropertyChangedEventHandler PropertyChanged;
         private string m_sBuildingSide;
         private int m_iBayNumber;
+        private List<int> m_Bays;
         private string m_sDoorType;
         private float m_fDoorsHeight;
         private float m_fDoorsWidth;
@@ -101,7 +102,24 @@ namespace BaseClasses
             }
         }
 
-        public DoorProperties() { }
+        public List<int> Bays
+        {
+            get
+            {
+                return m_Bays;
+            }
+
+            set
+            {
+                m_Bays = value;
+                if(m_Bays != null) NotifyPropertyChanged("Bays");
+            }
+        }
+
+        public DoorProperties()
+        {
+            
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
