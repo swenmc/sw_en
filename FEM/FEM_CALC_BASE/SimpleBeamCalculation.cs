@@ -176,19 +176,26 @@ namespace FEM_CALC_BASE
                     {
                         basicDeflections[] sBDeflections_x_temp = new basicDeflections[iNumberOfDesignSections];
 
-                        if (cmload.ELoadDir == ELoadDirection.eLD_Z)
+                        if (cmload.ELoadDir == ELoadDirection.eLD_Y)
                         {
                             if (bUseCRSCGeometricalAxes)
                                 sBDeflections_x_temp[j].fDelta_yy = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_z);
                             else
                                 sBDeflections_x_temp[j].fDelta_yu = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_mikro);
                         }
-                        else
+                        else if(cmload.ELoadDir == ELoadDirection.eLD_Z)
                         {
                             if (bUseCRSCGeometricalAxes)
                                 sBDeflections_x_temp[j].fDelta_zz = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_y);
                             else
                                 sBDeflections_x_temp[j].fDelta_zv = memberModel.m_arrMLoads[0].Get_SSB_Delta_x(fx_positions[j], member.FLength, member.CrScStart.m_Mat.m_fE, (float)member.CrScStart.I_epsilon);
+                        }
+                        else // x - no deflection
+                        {
+                            sBDeflections_x_temp[j].fDelta_yy = 0f;
+                            sBDeflections_x_temp[j].fDelta_yu = 0f;
+                            sBDeflections_x_temp[j].fDelta_zz = 0f;
+                            sBDeflections_x_temp[j].fDelta_zv = 0f;
                         }
 
                         /* // nepotrebujeme pocitat - zrata sa z vyslednych hodnot v jednotlivych smeroch
@@ -241,7 +248,6 @@ namespace FEM_CALC_BASE
                         else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 0) // Defined only once
                         {
                             bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[0];
-
                         }
                         else // if(bucklingLengthFactors.Count > 1) // Different values for load combinations
                             bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[lcombID - 1];
