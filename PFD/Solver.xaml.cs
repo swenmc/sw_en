@@ -16,6 +16,7 @@ namespace PFD
         Stopwatch stopWatch = new Stopwatch();
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         bool UseFEMSolverCalculationForSimpleBeam;
+        string sResultsSummaryText;
 
         public Solver(bool bUseFEMSolverCalculationForSimpleBeam)
         {
@@ -27,6 +28,9 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
+            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(sResultsSummaryText);
+            designSummaryWindow.Show();
+
             this.Close();
         }
 
@@ -137,7 +141,7 @@ namespace PFD
             });
         }
 
-        public void SetSumaryFinished()
+        public void SetSumaryFinished(string sResultsSummaryTextAll)
         {
             Dispatcher.Invoke(() =>
             {
@@ -152,6 +156,7 @@ namespace PFD
                     stopWatch.Stop();
                 }
 
+                sResultsSummaryText = sResultsSummaryTextAll; // Set output window text
                 BtnOK.IsEnabled = true;
             });
         }

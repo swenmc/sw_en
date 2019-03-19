@@ -10,6 +10,38 @@ using System.Threading.Tasks;
 
 namespace PFD.Infrastructure
 {
+    public struct sDesignResults
+    {
+        public string sLimitStateType;
+
+        public float fMaximumDesignRatioWholeStructure;
+        public float fMaximumDesignRatioMainColumn;
+        public float fMaximumDesignRatioMainRafter;
+        public float fMaximumDesignRatioEndColumn;
+        public float fMaximumDesignRatioEndRafter;
+        public float fMaximumDesignRatioGirts;
+        public float fMaximumDesignRatioPurlins;
+        public float fMaximumDesignRatioColumns;
+
+        public CLoadCombination GoverningLoadCombinationStructure;
+        public CLoadCombination GoverningLoadCombinationMainColumn;
+        public CLoadCombination GoverningLoadCombinationMainRafter;
+        public CLoadCombination GoverningLoadCombinationEndColumn;
+        public CLoadCombination GoverningLoadCombinationEndRafter;
+        public CLoadCombination GoverningLoadCombinationGirts;
+        public CLoadCombination GoverningLoadCombinationPurlins;
+        public CLoadCombination GoverningLoadCombinationColumns;
+
+        public CMember MaximumDesignRatioWholeStructureMember;
+        public CMember MaximumDesignRatioMainColumn;
+        public CMember MaximumDesignRatioMainRafter;
+        public CMember MaximumDesignRatioEndColumn;
+        public CMember MaximumDesignRatioEndRafter;
+        public CMember MaximumDesignRatioGirt;
+        public CMember MaximumDesignRatioPurlin;
+        public CMember MaximumDesignRatioColumn;
+    }
+
     public class CMemberDesignCalculations
     {
         const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
@@ -35,26 +67,11 @@ namespace PFD.Infrastructure
 
         private List<CFrame> frameModels;
         private List<CBeam_Simple> beamSimpleModels;
-        
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////
-        float fMaximumDesignRatioWholeStructure = 0;
-        float fMaximumDesignRatioMainColumn = 0;
-        float fMaximumDesignRatioMainRafter = 0;
-        float fMaximumDesignRatioEndColumn = 0;
-        float fMaximumDesignRatioEndRafter = 0;
-        float fMaximumDesignRatioGirts = 0;
-        float fMaximumDesignRatioPurlins = 0;
-        float fMaximumDesignRatioColumns = 0;
-
-        CMember MaximumDesignRatioWholeStructureMember = new CMember();
-        CMember MaximumDesignRatioMainColumn = new CMember();
-        CMember MaximumDesignRatioMainRafter = new CMember();
-        CMember MaximumDesignRatioEndColumn = new CMember();
-        CMember MaximumDesignRatioEndRafter = new CMember();
-        CMember MaximumDesignRatioGirt = new CMember();
-        CMember MaximumDesignRatioPurlin = new CMember();
-        CMember MaximumDesignRatioColumn = new CMember();
-
+        public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        public sDesignResults sDesignResults_ULS = new sDesignResults();
+        public sDesignResults sDesignResults_SLS = new sDesignResults();
 
         public CMemberDesignCalculations(Solver solverWindow,
             CModel_PFD_01_GR model,
@@ -95,10 +112,10 @@ namespace PFD.Infrastructure
 
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
-            SolverWindow.SetSumaryFinished();
-
-
-            ShowResultsInMessageBox();
+            SolverWindow.SetSumaryFinished(
+               GetTextForResultsMessageBox(sDesignResults_ULSandSLS) + 
+               GetTextForResultsMessageBox(sDesignResults_ULS) +
+               GetTextForResultsMessageBox(sDesignResults_SLS));
         }
 
         public void CalculateInternalForces_LoadCase()
@@ -237,6 +254,10 @@ namespace PFD.Infrastructure
         }
         public void CalculateInternalForces_LoadCombination_And_MemberDesign()
         {
+            sDesignResults_ULSandSLS.sLimitStateType = "ULS and SLS";
+            sDesignResults_ULS.sLimitStateType = "ULS";
+            sDesignResults_SLS.sLimitStateType = "SLS";
+
             // Design of members
             // Calculate Internal Forces For Load Combinations
             MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
@@ -374,10 +395,18 @@ namespace PFD.Infrastructure
                                 MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors_design[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design[memberDesignModel.fMaximumDesignRatioLocationID])); 
 
                                 // Set maximum design ratio of whole structure
-                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure)
                                 {
-                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
-                                    MaximumDesignRatioWholeStructureMember = m;
+                                    sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    sDesignResults_ULSandSLS.GoverningLoadCombinationStructure = lcomb;
+                                    sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember = m;
+                                }
+
+                                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULS.fMaximumDesignRatioWholeStructure)
+                                {
+                                    sDesignResults_ULS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    sDesignResults_ULS.GoverningLoadCombinationStructure = lcomb;
+                                    sDesignResults_ULS.MaximumDesignRatioWholeStructureMember = m;
                                 }
 
                                 // Joint Design
@@ -422,7 +451,8 @@ namespace PFD.Infrastructure
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
                                                       "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_End, 3).ToString() + "\n");
 
-                                SetMaximumDesignRatioByComponentType(m, memberDesignModel);
+                                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
+                                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULS);
                             }
                         }
                         else // SLS
@@ -460,10 +490,18 @@ namespace PFD.Infrastructure
                                 if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
 
                                 // Set maximum design ratio of whole structure
-                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure)
                                 {
-                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
-                                    MaximumDesignRatioWholeStructureMember = m;
+                                    sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    sDesignResults_ULSandSLS.GoverningLoadCombinationStructure = lcomb;
+                                    sDesignResults_ULSandSLS.MaximumDesignRatioWholeStructureMember = m;
+                                }
+
+                                if (memberDesignModel.fMaximumDesignRatio > sDesignResults_SLS.fMaximumDesignRatioWholeStructure)
+                                {
+                                    sDesignResults_SLS.fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    sDesignResults_SLS.GoverningLoadCombinationStructure = lcomb;
+                                    sDesignResults_SLS.MaximumDesignRatioWholeStructureMember = m;
                                 }
 
                                 // Output (for debugging)
@@ -472,6 +510,9 @@ namespace PFD.Infrastructure
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
                                                       "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
+
+                                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
+                                SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_SLS);
                             }
                         }
                     }
@@ -481,71 +522,78 @@ namespace PFD.Infrastructure
             }
         }
 
-        private void SetMaximumDesignRatioByComponentType(CMember m, CMemberDesign memberDesignModel)
+        private void SetMaximumDesignRatioByComponentType(CMember m, CLoadCombination lcomb, CMemberDesign memberDesignModel, ref sDesignResults s)
         {
             // Output - set maximum design ratio by component Type
             switch (m.EMemberType)
             {
                 case EMemberType_FS.eMC: // Main Column
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainColumn)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainColumn)
                         {
-                            fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioMainColumn = m;
+                            s.fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationMainColumn = lcomb;
+                            s.MaximumDesignRatioMainColumn = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eMR: // Main Rafter
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainRafter)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainRafter)
                         {
-                            fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioMainRafter = m;
+                            s.fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationMainRafter = lcomb;
+                            s.MaximumDesignRatioMainRafter = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eEC: // End Column
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndColumn)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndColumn)
                         {
-                            fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioEndColumn = m;
+                            s.fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationEndColumn = lcomb;
+                            s.MaximumDesignRatioEndColumn = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eER: // End Rafter
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndRafter)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndRafter)
                         {
-                            fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioEndRafter = m;
+                            s.fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationEndRafter = lcomb;
+                            s.MaximumDesignRatioEndRafter = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eG: // Girt
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioGirts)
                         {
-                            fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioGirt = m;
+                            s.fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationGirts = lcomb;
+                            s.MaximumDesignRatioGirt = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eP: // Purlin
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioPurlins)
                         {
-                            fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioPurlin = m;
+                            s.fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationPurlins = lcomb;
+                            s.MaximumDesignRatioPurlin = m;
                         }
                         break;
                     }
                 case EMemberType_FS.eC: // Column
                     {
-                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioColumns)
                         {
-                            fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
-                            MaximumDesignRatioColumn = m;
+                            s.fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
+                            s.GoverningLoadCombinationColumns = lcomb;
+                            s.MaximumDesignRatioColumn = m;
                         }
                         break;
                     }
@@ -711,27 +759,57 @@ namespace PFD.Infrastructure
             }
         }
 
-        private void ShowResultsInMessageBox()
+        private string GetTextForResultsMessageBox(sDesignResults s)
         {
             string txt = "Calculation Results \n" +
+                    "Limit State Type: " + s.sLimitStateType + "\n" +
                     "Maximum design ratio \n" +
-                    "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationStructure.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioWholeStructure, 3).ToString() +
+                     "\n\n\n" +
                     "Maximum design ratio - main columns\n" +
-                    "Member ID: " + MaximumDesignRatioMainColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainColumn, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioMainColumn.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationMainColumn.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString() +
+                     "\n\n" +
                     "Maximum design ratio - rafters\n" +
-                    "Member ID: " + MaximumDesignRatioMainRafter.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainRafter, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioMainRafter.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationMainRafter.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainRafter, 3).ToString() +
+                    "\n\n" +
                     "Maximum design ratio - end columns\n" +
-                    "Member ID: " + MaximumDesignRatioEndColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioEndColumn, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioEndColumn.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationEndColumn.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndColumn, 3).ToString() +
+                     "\n\n" +
                     "Maximum design ratio - end rafters\n" +
-                    "Member ID: " + MaximumDesignRatioEndRafter.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioEndRafter, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioEndRafter.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationEndRafter.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndRafter, 3).ToString() +
+                     "\n\n" +
                     "Maximum design ratio - girts\n" +
-                    "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioGirt.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationGirts.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioGirts, 3).ToString() +
+                     "\n\n" +
                     "Maximum design ratio - purlins\n" +
-                    "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
+                    "Member ID: " + s.MaximumDesignRatioPurlin.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationPurlins.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioPurlins, 3).ToString() +
+                     "\n\n" +
                     "Maximum design ratio - columns\n" +
-                    "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n";
+                    "Member ID: " + s.MaximumDesignRatioColumn.ID.ToString() + "\t" +
+                    "Load Combination ID: " + s.GoverningLoadCombinationColumns.ID + "\t" +
+                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioColumns, 3).ToString() +
+                     "\n\n\n";
 
-            SolverWindow.ShowMessageBox(txt);
+            return txt;
+        }
+
+        private void ShowResultsInMessageBox(string txtULSandSLS, string txtULS, string txtSLS)
+        {
+            SolverWindow.ShowMessageBox(txtULSandSLS + txtULS + txtSLS);
         }
     }
 }

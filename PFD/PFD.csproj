@@ -140,6 +140,9 @@
     <Compile Include="DeflectionLimit.xaml.cs">
       <DependentUpon>DeflectionLimit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DesignResultsSummary.xaml.cs">
+      <DependentUpon>DesignResultsSummary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FrameInternalForces_2D.xaml.cs">
       <DependentUpon>FrameInternalForces_2D.xaml</DependentUpon>
     </Compile>
@@ -232,6 +235,10 @@
       <DependentUpon>WindTerrainCategories.xaml</DependentUpon>
     </Compile>
     <Page Include="DeflectionLimit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
