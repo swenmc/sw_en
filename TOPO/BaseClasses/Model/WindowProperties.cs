@@ -12,6 +12,7 @@ namespace BaseClasses
         public event PropertyChangedEventHandler PropertyChanged;
         private string m_sBuildingSide;
         private int m_iBayNumber;
+        private List<int> m_Bays;
         private float m_fWindowsHeight;
         private float m_fWindowsWidth;
         private float m_fWindowCoordinateXinBay;
@@ -113,6 +114,19 @@ namespace BaseClasses
             {
                 m_iNumberOfWindowColumns = value;
                 NotifyPropertyChanged("iNumberOfWindowColumns");
+            }
+        }
+        public List<int> Bays
+        {
+            get
+            {
+                return m_Bays;
+            }
+
+            set
+            {
+                m_Bays = value;
+                if (m_Bays != null) NotifyPropertyChanged("Bays");
             }
         }
 
