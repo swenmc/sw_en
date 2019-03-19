@@ -69,6 +69,9 @@ namespace PFD
                         x_resultsDeflections.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
                         x_resultsDeflections.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
 
+                        if (x_resultsDeflections.fDelta_yy != 0 || x_resultsDeflections.fDelta_zz != 0)
+                            x_resultsDeflections.fDelta_tot = (float)Math.Sqrt(Math.Pow(x_resultsDeflections.fDelta_yy, 2) + Math.Pow(x_resultsDeflections.fDelta_zz, 2));
+
                         mResult.Deflections.Add(x_resultsDeflections);
                     }
                     membersResults.Add(mResult.MemberID, mResult);

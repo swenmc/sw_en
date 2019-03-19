@@ -761,48 +761,53 @@ namespace PFD.Infrastructure
 
         private string GetTextForResultsMessageBox(sDesignResults s)
         {
-            string txt = "Calculation Results \n" +
-                    "Limit State Type: " + s.sLimitStateType + "\n" +
-                    "Maximum design ratio \n" +
-                    "Member ID: " + s.MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationStructure.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioWholeStructure, 3).ToString() +
-                     "\n\n\n" +
-                    "Maximum design ratio - main columns\n" +
-                    "Member ID: " + s.MaximumDesignRatioMainColumn.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationMainColumn.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString() +
-                     "\n\n" +
-                    "Maximum design ratio - rafters\n" +
-                    "Member ID: " + s.MaximumDesignRatioMainRafter.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationMainRafter.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainRafter, 3).ToString() +
-                    "\n\n" +
-                    "Maximum design ratio - end columns\n" +
-                    "Member ID: " + s.MaximumDesignRatioEndColumn.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationEndColumn.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndColumn, 3).ToString() +
-                     "\n\n" +
-                    "Maximum design ratio - end rafters\n" +
-                    "Member ID: " + s.MaximumDesignRatioEndRafter.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationEndRafter.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndRafter, 3).ToString() +
-                     "\n\n" +
-                    "Maximum design ratio - girts\n" +
-                    "Member ID: " + s.MaximumDesignRatioGirt.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationGirts.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioGirts, 3).ToString() +
-                     "\n\n" +
-                    "Maximum design ratio - purlins\n" +
-                    "Member ID: " + s.MaximumDesignRatioPurlin.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationPurlins.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioPurlins, 3).ToString() +
-                     "\n\n" +
-                    "Maximum design ratio - columns\n" +
-                    "Member ID: " + s.MaximumDesignRatioColumn.ID.ToString() + "\t" +
-                    "Load Combination ID: " + s.GoverningLoadCombinationColumns.ID + "\t" +
-                    "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioColumns, 3).ToString() +
-                     "\n\n\n";
+            string txt = "";
+
+            if (s.fMaximumDesignRatioWholeStructure > 0)
+            {
+                txt = "Calculation Results \n" +
+                        "Limit State Type: " + s.sLimitStateType + "\n" +
+                        "Maximum design ratio \n" +
+                        "Member ID: " + s.MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationStructure.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioWholeStructure, 3).ToString() +
+                         "\n\n\n" +
+                        "Maximum design ratio - main columns\n" +
+                        "Member ID: " + s.MaximumDesignRatioMainColumn.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationMainColumn.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString() +
+                         "\n\n" +
+                        "Maximum design ratio - rafters\n" +
+                        "Member ID: " + s.MaximumDesignRatioMainRafter.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationMainRafter.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainRafter, 3).ToString() +
+                        "\n\n" +
+                        "Maximum design ratio - end columns\n" +
+                        "Member ID: " + s.MaximumDesignRatioEndColumn.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationEndColumn.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndColumn, 3).ToString() +
+                         "\n\n" +
+                        "Maximum design ratio - end rafters\n" +
+                        "Member ID: " + s.MaximumDesignRatioEndRafter.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationEndRafter.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndRafter, 3).ToString() +
+                         "\n\n" +
+                        "Maximum design ratio - girts\n" +
+                        "Member ID: " + s.MaximumDesignRatioGirt.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationGirts.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioGirts, 3).ToString() +
+                         "\n\n" +
+                        "Maximum design ratio - purlins\n" +
+                        "Member ID: " + s.MaximumDesignRatioPurlin.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationPurlins.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioPurlins, 3).ToString() +
+                         "\n\n" +
+                        "Maximum design ratio - columns\n" +
+                        "Member ID: " + s.MaximumDesignRatioColumn.ID.ToString() + "\t" +
+                        "Load Combination ID: " + s.GoverningLoadCombinationColumns.ID + "\t" +
+                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioColumns, 3).ToString() +
+                         "\n\n\n";
+            }
 
             return txt;
         }

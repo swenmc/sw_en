@@ -305,9 +305,14 @@ namespace M_AS4600
 
             // Calculate deflection design ratio
             fEta_defl_yu = Math.Abs(sDDeflections_x_temp.fDelta_yu) / fLimitDeflection;
+            fEta_max = MathF.Max(fEta_max, fEta_defl_yu);
             fEta_defl_zv = Math.Abs(sDDeflections_x_temp.fDelta_zv) / fLimitDeflection;
+            fEta_max = MathF.Max(fEta_max, fEta_defl_zv);
             fEta_defl_yy = Math.Abs(sDDeflections_x_temp.fDelta_yy) / fLimitDeflection;
+            fEta_max = MathF.Max(fEta_max, fEta_defl_yy);
             fEta_defl_zz = Math.Abs(sDDeflections_x_temp.fDelta_zz) / fLimitDeflection;
+            fEta_max = MathF.Max(fEta_max, fEta_defl_zz);
+
             fEta_defl_tot = sDDeflections_x_temp.fDelta_tot / fLimitDeflection;
 
             // Set maximum design ratio
