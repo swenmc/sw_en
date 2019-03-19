@@ -15,7 +15,7 @@
         <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
         <CollectionViewSource x:Key="BuildingSides" Source="{Binding BuildingSides}"/>
         <CollectionViewSource x:Key="DoorsTypes" Source="{Binding DoorsTypes}"/>
-        <!--<CollectionViewSource x:Key="Bays" Source="{Binding Bays}"/>-->
+        <CollectionViewSource x:Key="WindowColumns" Source="{Binding WindowColumns}"/>
     </Window.Resources>
 
     <Grid>
@@ -255,15 +255,14 @@
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="205" Margin="5,2,0,0" FontSize="16" Grid.ColumnSpan="2"/>
-
-                        <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay}" Grid.Row="20" 
+                        
+                        <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" Grid.Row="20" 
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
                                     SelectedItemBinding="{Binding Path=sBuildingSide}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridComboBoxColumn Header="BayNumber" 
-                                SelectedValueBinding="{Binding iBayNumber}">
+                                <DataGridComboBoxColumn Header="BayNumber" SelectedValueBinding="{Binding iBayNumber}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
@@ -278,9 +277,9 @@
                                 <DataGridComboBoxColumn Header="DoorType" Width="Auto"
                                     SelectedItemBinding="{Binding Path=sDoorType}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
-                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight}"/>
-                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth}"/>
-                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
+                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -290,12 +289,25 @@
                                 <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
                                     SelectedItemBinding="{Binding Path=sBuildingSide}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
+                                <DataGridComboBoxColumn Header="BayNumber" SelectedValueBinding="{Binding iBayNumber}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>                                
                                 <DataGridTextColumn Header="WindowsHeight" Binding="{Binding fWindowsHeight}"/>
                                 <DataGridTextColumn Header="WindowsWidth" Binding="{Binding fWindowsWidth}"/>
                                 <DataGridTextColumn Header="WindowCoordinateXinBay" Binding="{Binding fWindowCoordinateXinBay}"/>
-                                <DataGridTextColumn Header="WindowCoordinateZinBay" Binding="{Binding fWindowCoordinateZinBay}"/>
-                                <DataGridTextColumn Header="NumberOfWindowColumns" Binding="{Binding iNumberOfWindowColumns}"/>
+                                <DataGridTextColumn Header="WindowCoordinateZinBay" Binding="{Binding fWindowCoordinateZinBay}"/>                                
+                                <DataGridComboBoxColumn Header="NumberOfWindowColumns" Width="Auto"
+                                    SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
+                                    ItemsSource="{Binding Source={StaticResource WindowColumns}}" />
                             </DataGrid.Columns>
                         </DataGrid>
 

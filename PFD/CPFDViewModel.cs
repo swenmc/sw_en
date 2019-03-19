@@ -98,26 +98,15 @@ namespace PFD
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
-        //private Dictionary<string, List<string>> MBuildingSidesBays;
+
 
         // Popis pre Ondreja - doors and windows
-
         // GUI
-        // Building Side - combobox s polozkami "Left", "Right", "Front", "Back"
-        // Bay Number - combobox s polozkami 1 - n_lefright alebo 1 - n_front alebo 1 - n_back, takze v kazdom riadku moze byt v comboboxe iny zoznam podla toho ktora strana ma kolko bays (bays - segmenty medzi stlpami, cislovane v smere kladnej osi X, resp. Y)
-
-        // v CModel_PFD_01_GR su premenne z ktorych sa maximalne cislo bay da urcit
-        // (iFrameNo - 1)
-        // (iFrontColumnNoInOneFrame + 1)
-        // (iBackColumnNoInOneFrame + 1)
-
-        // Door Type - combobox s polozkami Personnel Door, Roller Door
+        
         // Personnel door su len z jedneho prierezu BOX 10075
         // Roller door mozu mat dva prierezy - door trimmer C270115btb a niekedy aj door lintel z C27095 (podla toho aka je vzdialenost medzi hornou hranou dveri a najblizsim girt nad tym)
         // U blokov sa momentalne moze a nemusi vytvorit crsc pre girt, ten sa potom ale nepridava do celkoveho pola m_arrCrSc pretoze tam uz je
-
-        // dalsie polozky v tabulke su float, moze tam byt validacia ze napriklad poloha dveri v bay + sirka dveri nemoze byt vacsia nez sirka bay (L1) alebo ze vyska dveri nemoze byt vacsia nez vyska steny budovy atd
-
+        
         // Window - podobne ako door, posledna polozka je combobox s 1-20?? - pocet stlpikov okna, ktore rozdelia okno na viacero casti
 
         // Ked pridam do modelu prve dvere alebo okno mali by sa do Component list pridat prierezy, ktore tam este nie su (trimmer, lintel), tieto prierezy by sa mali vyrobit len raz a ked budem pridavat dalsie dvere alebo okna, tak by sa mali len priradzovat
@@ -602,8 +591,7 @@ namespace PFD
             set
             {
                 MModel = value;
-                SetModelBays();
-                SetDoorBlockBays();
+                SetModelBays();                
             }
         }
 
@@ -1086,37 +1074,29 @@ namespace PFD
                 return MDoorsTypes;
             }
         }
-
-        public List<int> Bays
+        public List<int> WindowColumns
         {
             get
             {
-
-                return new List<int>() { 4, 4, 5, 6, 7, 9, 0 };
+                return new List<int>() { 2,3,4,5,6,7,8,9,10 };
             }
         }
 
-        //public Dictionary<string, List<string>> BuildingSidesBays
-        //{
-        //    get
-        //    {
-        //        if (MBuildingSidesBays == null) SetModelBays();
-        //        return MBuildingSidesBays;
-        //    }
-        //}
+        
 
-        List<int> frontBays;
-        List<int> backBays;
-        List<int> leftRightBays;
+        private List<int> frontBays;
+        private List<int> backBays;
+        private List<int> leftRightBays;
         private void SetModelBays()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
-            //MBuildingSidesBays = new Dictionary<string, List<string>>();
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;            
             frontBays = new List<int>();
             backBays = new List<int>();
             leftRightBays = new List<int>();
+
+            int iFrameNo = model != null ? model.iFrameNo : 4;
             int i = 0;
-            while (i < model.iFrameNo - 1)
+            while (i < iFrameNo - 1)
             {
                 leftRightBays.Add((++i));
             }
@@ -1130,13 +1110,40 @@ namespace PFD
             {
                 backBays.Add((++i));
             }
-            
+
+            SetDoorsBays();
+            SetWindowsBays();
+            SetDoorsValidationProperties();
         }
 
-        private void SetDoorBlockBays()
+        private void SetDoorsBays()
         {
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
+                if (d.sBuildingSide == "Front") d.Bays = frontBays;
+                else if (d.sBuildingSide == "Back") d.Bays = backBays;
+                else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
+                else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
+            }
+        }
+        private void SetWindowsBays()
+        {
+            foreach (WindowProperties w in MWindowBlocksProperties)
+            {
+                if (w.sBuildingSide == "Front") w.Bays = frontBays;
+                else if (w.sBuildingSide == "Back") w.Bays = backBays;
+                else if (w.sBuildingSide == "Left") w.Bays = leftRightBays;
+                else if (w.sBuildingSide == "Right") w.Bays = leftRightBays;
+            }
+        }
+
+        
+        private void SetDoorsValidationProperties()
+        {
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            foreach (DoorProperties d in MDoorBlocksProperties)
+            {
+                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
                 if (d.sBuildingSide == "Front") d.Bays = frontBays;
                 else if (d.sBuildingSide == "Back") d.Bays = backBays;
                 else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;

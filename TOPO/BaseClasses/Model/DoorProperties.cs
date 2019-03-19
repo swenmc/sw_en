@@ -18,6 +18,15 @@ namespace BaseClasses
         private float m_fDoorsWidth;
         private float m_fDoorCoordinateXinBlock;
 
+
+        //validationValues
+        private float m_WallHeight = float.NaN;
+        private float m_L1 = float.NaN;
+        private float m_distFrontColumns = float.NaN;
+        private float m_distBackColumns = float.NaN;
+
+
+
         public string sBuildingSide
         {
             get
@@ -69,7 +78,9 @@ namespace BaseClasses
 
             set
             {
-                m_fDoorsHeight = value;
+                if (!float.IsNaN(m_WallHeight) && (value < 1 || value > m_WallHeight))
+                    throw new ArgumentException($"Doors Height must be between 1 and {m_WallHeight} [m]");
+                m_fDoorsHeight = value;                
                 NotifyPropertyChanged("fDoorsHeight");
             }
         }
@@ -83,7 +94,12 @@ namespace BaseClasses
 
             set
             {
+                float temp = m_fDoorsWidth;
                 m_fDoorsWidth = value;
+                if (!ValidateDoorInsideBay()) { 
+                    m_fDoorsWidth = temp;
+                    throw new ArgumentException($"Doors outside of bay width.");
+                }
                 NotifyPropertyChanged("fDoorsWidth");
             }
         }
@@ -97,7 +113,12 @@ namespace BaseClasses
 
             set
             {
+                float temp = m_fDoorCoordinateXinBlock;
                 m_fDoorCoordinateXinBlock = value;
+                if (!ValidateDoorInsideBay()) {
+                    m_fDoorCoordinateXinBlock = temp;
+                    throw new ArgumentException($"Doors outside of bay width.");
+                }
                 NotifyPropertyChanged("fDoorCoordinateXinBlock");
             }
         }
@@ -115,6 +136,7 @@ namespace BaseClasses
                 if(m_Bays != null) NotifyPropertyChanged("Bays");
             }
         }
+
 
         public DoorProperties()
         {
@@ -141,5 +163,41 @@ namespace BaseClasses
 
             return isValid;
         }
+
+        public bool ValidateDoorInsideBay()
+        {
+            if (sBuildingSide == "Front")
+            {
+                if (float.IsNaN(m_distFrontColumns)) return true;
+                if (m_distFrontColumns < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+            }
+            else if (sBuildingSide == "Back")
+            {
+                if (float.IsNaN(m_distBackColumns)) return true;
+                if (m_distBackColumns < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+            }
+            else if (sBuildingSide == "Left") {
+                if (float.IsNaN(m_L1)) return true;
+                if (m_L1 < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+            }
+            else if (sBuildingSide == "Right")
+            {
+                if (float.IsNaN(m_L1)) return true;
+                if (m_L1 < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+            }
+
+
+            return true;
+        }
+
+        public void SetValidationValues(float wallHeight, float L1, float distFrontColumns, float distBackColumns)
+        {
+            m_WallHeight = wallHeight;
+            m_L1 = L1;
+            m_distFrontColumns = distFrontColumns;
+            m_distBackColumns = distBackColumns;
+
+        }
+        
     }
 }
