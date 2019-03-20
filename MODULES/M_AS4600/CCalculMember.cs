@@ -286,10 +286,16 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member, float fLimit)
         {
             designDeflections sDDeflections = sDDeflections_x_temp;
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections_x_temp, member.FLength);
+
+            float fLength = member.FLength;
+
+            if(member.EMemberType == EMemberType_FS.eMR || member.EMemberType == EMemberType_FS.eER)
+                fLength = 2 * Math.Abs(member.NodeEnd.X - member.NodeStart.X); // Total width of gable roof building - vertical deflection of apex deflection
+
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections_x_temp, fLength, fLimit);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -298,9 +304,8 @@ namespace M_AS4600
             }
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp, float fLimit)
         {
-            float fLimit = 1f / 360f; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
             fLimitDeflection = fL_temp * fLimit;
 
             // Calculate deflection design ratio

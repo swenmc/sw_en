@@ -1954,5 +1954,20 @@ namespace BaseClasses
             // Mozno by som mal zapracovat toto
             //http://mathworld.wolfram.com/EulerAngles.html
         }
+
+        public CMemberGroup GetMemberGroupFromList(List<CMemberGroup> listOfGroups)
+        {
+            // TODO - toto vyhladavanie podla podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
+            for (int i = 0; i < listOfGroups.Count; i++)
+            {
+                for (int j = 0; j < listOfGroups[i].ListOfMembers.Count; j++)
+                {
+                    if (listOfGroups[i].ListOfMembers[j] == this)
+                        return listOfGroups[i];
+                }
+            }
+
+            return null; // Not found
+        }
     } // End of Class CMember
 }

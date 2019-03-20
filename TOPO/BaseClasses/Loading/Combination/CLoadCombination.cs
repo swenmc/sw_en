@@ -141,10 +141,9 @@ namespace BaseClasses
             LoadCasesList = LoadCases_temp;
         }
 
-        
         public override bool Equals(object obj)
         {
-            //       
+            //
             // See the full list of guidelines at
             //   http://go.microsoft.com/fwlink/?LinkID=85237  
             // and also the guidance for operator== at
@@ -161,8 +160,6 @@ namespace BaseClasses
 
             if (this.LoadCasesList.SequenceEqual(c.LoadCasesList) && this.LoadCasesFactorsList.SequenceEqual(c.LoadCasesFactorsList)) return true;
             else return false;
-            
-
         }
 
         // override object.GetHashCode
@@ -174,6 +171,14 @@ namespace BaseClasses
             return base.GetHashCode();
         }
 
-        
+        public bool IsCombinationOfPermanentLoadCasesOnly()
+        {
+            foreach (CLoadCase lc in this.LoadCasesList)
+            {
+                if (lc.Type != ELCType.ePermanentLoad)
+                    return false;
+            }
+            return true;
+        }
     }
 }

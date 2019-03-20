@@ -158,17 +158,23 @@ namespace PFD
 
             CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
-            listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
+
+            // TODO - nastavovat v GUI - zaviest databazu pre rozne typy prutov a typy load combinations
+            float fLimitPermanentLoad = 1f / 300f;
+            float fLimitTotal = 1 / 150f;
+            float fLimitTotal_Frame = 1f / 250f;
+
+            listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fLimitPermanentLoad, fLimitTotal, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)

@@ -101,7 +101,14 @@ namespace PFD
                 {
                     CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res == null) continue;
-                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m);
+
+                    // Limit zavisi od typu zatazenia (load combination) a typu pruta
+                    float fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_Total;
+
+                    if (loadCombID == 41) // TODO Combination of permanent load (TODO - nacitat spravne typ kombinacie, neurcovat podla cisla ID)
+                        fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
+
+                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDeflectionLimit);
 
                     if (calcul.fEta_max > fMaximumDesignRatio)
                     {

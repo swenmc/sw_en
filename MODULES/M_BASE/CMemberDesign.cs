@@ -112,7 +112,7 @@ namespace M_BASE
             }
         }
 
-        public void SetDesignDeflections_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
+        public void SetDesignDeflections_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, float fDeflectionLimit, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
@@ -133,7 +133,7 @@ namespace M_BASE
 
                 sDDeflections_x[j].fDelta_tot = sBDeflections_x[j].fDelta_tot;
 
-                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDDeflections_x[j], member);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDDeflections_x[j], member, fDeflectionLimit);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                 {
