@@ -525,6 +525,8 @@ namespace BriefFiniteElementNet
         // MC - docasne pridane
         public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
+            // TODO - neviem ci maju byt uzlove deformacie zohladnene tu aj vo funkciach zatazenia
+            // Potrebujem to este skontrolovat
             var gStartDisp = StartNode.GetNodalDisplacement(cmb);
             var gEndDisp = EndNode.GetNodalDisplacement(cmb);
 
