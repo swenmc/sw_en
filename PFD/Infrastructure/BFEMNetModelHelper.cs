@@ -54,10 +54,8 @@ namespace PFD
                         x_resultsIF.fM_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mz;
 
                         mResult.InternalForces.Add(x_resultsIF);
-                        
+
                         // Deformations
-                        // TODO - dopracovat do BFENEt aby to vracalo aspon nejake rozumne hodnoty :-)
-                        // Pripadne updatovat kniznicu a pozriet sa ci taketo funkcie nepridali
                         if (debugging)
                         {
                             string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));

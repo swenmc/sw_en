@@ -101,11 +101,6 @@ namespace PFD.Infrastructure
         public void CalculateAll()
         {
             //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
-
-            // Zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
-
             CalculateInternalForces_LoadCase();
 
             CalculateInternalForces_LoadCombination_And_MemberDesign();
