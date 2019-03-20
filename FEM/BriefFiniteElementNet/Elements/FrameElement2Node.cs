@@ -523,7 +523,7 @@ namespace BriefFiniteElementNet
         }
 
         // MC - docasne pridane
-        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false)
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
             var gStartDisp = StartNode.GetNodalDisplacement(cmb);
             var gEndDisp = EndNode.GetNodalDisplacement(cmb);
@@ -554,7 +554,7 @@ namespace BriefFiniteElementNet
                 if (!cmb.ContainsKey(ld.Case))
                     continue;
 
-                var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x);
+                var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x, bConsiderNodalDisplacementOnly);
 
                 displacementAtX += cmb[ld.Case] * frc;
             }
@@ -562,12 +562,12 @@ namespace BriefFiniteElementNet
             return displacementAtX;
         }
 
-        public override Displacement GetLocalDeformationAt_MC(double x)
+        public override Displacement GetLocalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
             var cmb = new LoadCombination();
             cmb[new LoadCase()] = 1.0;
 
-            return GetLocalDeformationAt_MC(x, cmb);
+            return GetLocalDeformationAt_MC(x, cmb, bConsiderNodalDisplacementOnly, bConsiderNodalDisplacement);
         }
 
         #region transformations

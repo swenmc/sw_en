@@ -67,12 +67,12 @@ namespace BriefFiniteElementNet.Elements
             throw new NotImplementedException();
         }
 
-        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacement = false)
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
             throw new NotImplementedException();
         }
 
-        public override Displacement GetLocalDeformationAt_MC(double x)
+        public override Displacement GetLocalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
             throw new NotImplementedException();
         }

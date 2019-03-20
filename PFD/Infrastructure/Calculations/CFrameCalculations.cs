@@ -24,8 +24,9 @@ namespace PFD.Infrastructure
 
         public void FrameCalculations(CModel frame, bool bCalculateLoadCasesOnly)
         {
-            bool bConsiderNodalDisplacement = true; // Pre ramy pouzijeme absolutne hodnoty deformacii, tj. vratane deformacie (posuvnov) koncovych uzlov ramu
-            CModelToBFEMNetConverter.Convert(frame, bCalculateLoadCasesOnly, bConsiderNodalDisplacement);
+            bool bConsiderNodalDisplacement = false; // Pre ramy nepouzijeme absolutne hodnoty deformacii, tj. vratane deformacie (posunov) koncovych uzlov ramu
+            bool bConsiderNodalDisplacementOnly = true; // Pre ramy pouzijeme len priehyby od posunov uzlov, nezohladnuju sa relativne lokalne deformacie samotneho pruta
+            CModelToBFEMNetConverter.Convert(frame, bCalculateLoadCasesOnly, bConsiderNodalDisplacementOnly, bConsiderNodalDisplacement);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

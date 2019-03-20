@@ -394,7 +394,7 @@ namespace BriefFiniteElementNet
                 return -Ma + Ra * x - w * c * (x - l + d);
         }
 
-        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false)
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
             if (elm is FrameElement2Node)
             {
@@ -451,8 +451,8 @@ namespace BriefFiniteElementNet
                 if (bConsiderNodalDisplacement)
                 {
                     buf.DX = lDisp_x_linear.DX;
-                    buf.DY = lDisp_x_linear.DY + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz);
-                    buf.DZ = lDisp_x_linear.DZ + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy);
+                    buf.DY = lDisp_x_linear.DY + (bConsiderNodalDisplacementOnly ? 0 : GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz));
+                    buf.DZ = lDisp_x_linear.DZ + (bConsiderNodalDisplacementOnly ? 0 : GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy));
                     buf.RX = lDisp_x_linear.RX;
                     buf.RY = lDisp_x_linear.RY; // TODO - not implemented
                     buf.RZ = lDisp_x_linear.RZ; // TODO - not implemented

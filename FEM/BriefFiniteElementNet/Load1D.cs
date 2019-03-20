@@ -48,7 +48,7 @@ namespace BriefFiniteElementNet
         }
 
         public abstract Force GetInternalForceAt(Element1D elm, double x);
-        public abstract Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacement = false);
+        public abstract Displacement GetLocalDeformationAt_MC(Element1D elm, double x, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false);
 
         #region Serialization stuff
 
