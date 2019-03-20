@@ -188,8 +188,14 @@ namespace PFD
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             float fDoorColumnRotation = (float)Math.PI / 2;
 
+            // Rotate local axis about x
+            if (BuildingSide == "Left" || BuildingSide == "Right")
+            {
+                fDoorColumnRotation += (float)Math.PI / 2;
+            }
+
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left")
+            if (BuildingSide == "Left" || BuildingSide == "Back")
             {
                 feccentricityDoorColumnStart.MFz_local *= -1.0f;
                 feccentricityDoorColumnEnd.MFz_local *= -1.0f;
@@ -211,7 +217,7 @@ namespace PFD
             float fDoorLintelRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left")
+            if (BuildingSide == "Left" || BuildingSide == "Back")
             {
                 feccentricityDoorLintelStart.MFz_local *= -1.0f;
                 feccentricityDoorLintelEnd.MFz_local *= -1.0f;

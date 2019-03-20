@@ -212,12 +212,18 @@ namespace PFD
                 fWindowColumnStart = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
 
             float fWindowColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
-            CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
-            float fWindowColumnRotation = (float)Math.PI;
+            CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            float fWindowColumnRotation = (float)Math.PI / 2;
+
+            // Rotate local axis about x
+            if (BuildingSide == "Left" || BuildingSide == "Right")
+            {
+                fWindowColumnRotation += (float)Math.PI / 2;
+            }
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left")
+            if (BuildingSide == "Left" || BuildingSide == "Back")
             {
                 feccentricityWindowColumnStart.MFz_local *= -1.0f;
                 feccentricityWindowColumnEnd.MFz_local *= -1.0f;
@@ -234,12 +240,12 @@ namespace PFD
             // TODO - add to block parameters
             float fWindowHeaderStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             float fWindowHeaderEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityWindowHeaderStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowHeaderEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowHeaderStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowHeaderEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             float fWindowHeaderRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left")
+            if (BuildingSide == "Left" || BuildingSide == "Back")
             {
                 feccentricityWindowHeaderStart.MFz_local *= -1.0f;
                 feccentricityWindowHeaderEnd.MFz_local *= -1.0f;
@@ -255,12 +261,12 @@ namespace PFD
             // TODO - add to block parameters
             float fWindowSillStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             float fWindowSillEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityWindowSillStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowSillEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowSillStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowSillEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             float fWindowSillRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left")
+            if (BuildingSide == "Left" || BuildingSide == "Back")
             {
                 feccentricityWindowSillStart.MFz_local *= -1.0f;
                 feccentricityWindowSillEnd.MFz_local *= -1.0f;
