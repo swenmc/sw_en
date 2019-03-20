@@ -192,18 +192,34 @@ namespace BriefFiniteElementNet
                     frElm.TransformGlobalToLocal(gEndDisp.Displacements),
                     frElm.TransformGlobalToLocal(gEndDisp.Rotations));
 
+                // Linear displacement in x-location due to displacement of element end nodes
+                double dx_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DX, lStartDisp.DX, x, l);
+                double dy_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DY, lStartDisp.DY, x, l);
+                double dz_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DZ, lStartDisp.DZ, x, l);
+                double rx_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RX, lStartDisp.RX, x, l);
+                double ry_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RY, lStartDisp.RY, x, l);
+                double rz_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RZ, lStartDisp.RZ, x, l);
+
+                var lDisp_x_linear = new Displacement(
+                    dx_linear_Atx,
+                    dy_linear_Atx,
+                    dz_linear_Atx,
+                    rx_linear_Atx,
+                    ry_linear_Atx,
+                    rz_linear_Atx);
+
                 var buf = new Displacement();
 
                 // bool bConsiderNodalDisplacement = false; // Nodal displacement transformed to LCS
 
                 if (bConsiderNodalDisplacement)
                 {
-                    buf.DX = lStartDisp.DX;
-                    buf.DY = lStartDisp.DY + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fy, frElm.E, frElm.Iz);
-                    buf.DZ = lStartDisp.DZ + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fz, frElm.E, frElm.Iy);
-                    buf.RX = lStartDisp.RX;
-                    buf.RY = lStartDisp.RY; // TODO - not implemented
-                    buf.RZ = lStartDisp.RZ; // TODO - not implemented
+                    buf.DX = lDisp_x_linear.DX;
+                    buf.DY = lDisp_x_linear.DY + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fy, frElm.E, frElm.Iz);
+                    buf.DZ = lDisp_x_linear.DZ + GetDeflectionAt_x2(x, l1, l2, l, localForce.Fz, frElm.E, frElm.Iy);
+                    buf.RX = lDisp_x_linear.RX;
+                    buf.RY = lDisp_x_linear.RY; // TODO - not implemented
+                    buf.RZ = lDisp_x_linear.RZ; // TODO - not implemented
                 }
                 else
                 {
@@ -224,6 +240,12 @@ namespace BriefFiniteElementNet
         private double GetDeflectionAt_x2(double x, double l1, double l2, double l, double f_value, double E, double I)
         {
             return (-f_value / (6f * E * I)) * (l2 * ((MathF.Pow3(x) / l) - ((l1 * l2 * x / l) * (2*l -l1)) - MathF.Pow3(x - l1)));
+        }
+
+        // TODO - refactoring
+        private double GetDisplacementAt_x_linear(double dstart, double dend, double x, double l)
+        {
+            return (dend - dstart) / l * x;
         }
 
         public Force[] GetGlobalEquivalentNodalLoads(Element element)

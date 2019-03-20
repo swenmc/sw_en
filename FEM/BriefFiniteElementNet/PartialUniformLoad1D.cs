@@ -414,6 +414,22 @@ namespace BriefFiniteElementNet
                     frElm.TransformGlobalToLocal(gEndDisp.Displacements),
                     frElm.TransformGlobalToLocal(gEndDisp.Rotations));
 
+                // Linear displacement in x-location due to displacement of element end nodes
+                double dx_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DX, lStartDisp.DX, x, l);
+                double dy_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DY, lStartDisp.DY, x, l);
+                double dz_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.DZ, lStartDisp.DZ, x, l);
+                double rx_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RX, lStartDisp.RX, x, l);
+                double ry_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RY, lStartDisp.RY, x, l);
+                double rz_linear_Atx = GetDisplacementAt_x_linear(lEndDisp.RZ, lStartDisp.RZ, x, l);
+
+                var lDisp_x_linear = new Displacement(
+                    dx_linear_Atx,
+                    dy_linear_Atx,
+                    dz_linear_Atx,
+                    rx_linear_Atx,
+                    ry_linear_Atx,
+                    rz_linear_Atx);
+                
                 var a = l / 2 + StarIsoLocation * l / 2; // Vzdialenost zaciatku zatazenia od zaciatku pruta
                 var c = (EndIsoLocation - StarIsoLocation) * l / 2; // Dlzka zatazenia na prute
                 var b = a + c; // Poloha konca zatazenia od zaciatku pruta
@@ -434,12 +450,12 @@ namespace BriefFiniteElementNet
 
                 if (bConsiderNodalDisplacement)
                 {
-                    buf.DX = lStartDisp.DX;
-                    buf.DY = lStartDisp.DY + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz);
-                    buf.DZ = lStartDisp.DZ + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy);
-                    buf.RX = lStartDisp.RX;
-                    buf.RY = lStartDisp.RY; // TODO - not implemented
-                    buf.RZ = lStartDisp.RZ; // TODO - not implemented
+                    buf.DX = lDisp_x_linear.DX;
+                    buf.DY = lDisp_x_linear.DY + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Y, frElm.E, frElm.Iz);
+                    buf.DZ = lDisp_x_linear.DZ + GetDeflectionAt_x2(x, a2, b2, c2, d2, l, w.Z, frElm.E, frElm.Iy);
+                    buf.RX = lDisp_x_linear.RX;
+                    buf.RY = lDisp_x_linear.RY; // TODO - not implemented
+                    buf.RZ = lDisp_x_linear.RZ; // TODO - not implemented
                 }
                 else
                 {
@@ -465,6 +481,11 @@ namespace BriefFiniteElementNet
                 return (-w / (48f * E * I)) * (b * x / l * (4 * (b + 2 * c) * (MathF.Pow2(l) - MathF.Pow2(x)) - MathF.Pow3(b + 2 * c) - MathF.Pow2(b) * (b + 2 * c)) + 2 * MathF.Pow4(x - a));
             else
                 return (-w * b / (48 * E * I)) * ((x / l) * (b + 2 * c) * (4 * (MathF.Pow2(l) - MathF.Pow2(x)) - MathF.Pow2(b + 2 * c)) - MathF.Pow2(b) * (2 * d - b) * (1 - (x / l)) + MathF.Pow3(2 * x - a - d));
+        }
+
+        private double GetDisplacementAt_x_linear(double dstart, double dend, double x, double l)
+        {
+            return (dend - dstart) / l * x;
         }
         #endregion
 

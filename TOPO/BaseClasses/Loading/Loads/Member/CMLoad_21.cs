@@ -110,7 +110,8 @@ namespace BaseClasses
         }
         public override float Get_SSB_Delta_x(float fx, float fL, float fE, float fI)
         {
-            return ((Fq * fx) / (24f * fE * fI)) * (MathF.Pow3(fL) - 2f * fL * MathF.Pow2(fx) + MathF.Pow3(fx));
+            //return ((Fq * fx) / (24f * fE * fI)) * (MathF.Pow3(fL) - 2f * fL * MathF.Pow2(fx) + MathF.Pow3(fx)); // ??? Tato rovnica je asi nespravna
+            return ((Fq * fx * (fL - fx)) / (24f * fE * fI)) * (MathF.Pow2(fL) + fx * (fL - fx));
         }
     }
 }
