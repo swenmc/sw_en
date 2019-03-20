@@ -11,7 +11,7 @@ namespace PFD
 {
     public static class BFEMNetModelHelper
     {
-        public static LoadCombinationsInternalForces GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations)
+        public static LoadCombinationsInternalForces GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations, bool bConsiderNodalDisplacement = false)
         {
             bool debugging = false;
             LoadCombinationsInternalForces lcIF = new LoadCombinationsInternalForces();
@@ -66,8 +66,8 @@ namespace PFD
                         }
 
                         basicDeflections x_resultsDeflections = new basicDeflections();
-                        x_resultsDeflections.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
-                        x_resultsDeflections.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
+                        x_resultsDeflections.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], bConsiderNodalDisplacement).DY;
+                        x_resultsDeflections.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], bConsiderNodalDisplacement).DZ;
 
                         if (x_resultsDeflections.fDelta_yy != 0 || x_resultsDeflections.fDelta_zz != 0)
                             x_resultsDeflections.fDelta_tot = (float)Math.Sqrt(Math.Pow(x_resultsDeflections.fDelta_yy, 2) + Math.Pow(x_resultsDeflections.fDelta_zz, 2));

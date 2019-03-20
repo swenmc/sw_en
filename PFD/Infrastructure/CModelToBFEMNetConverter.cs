@@ -8,7 +8,7 @@ namespace PFD
     public static class CModelToBFEMNetConverter
     {
 
-        public static Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly)
+        public static Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly, bool bConsiderNodalDisplacement = false)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
@@ -268,7 +268,7 @@ namespace PFD
                BFEMNetModelHelper.DisplayResultsinConsole(model, loadcombinations, false);
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
-            topomodel.LoadCombInternalForcesResults = BFEMNetModelHelper.GetResultsList(model, loadcombinations);
+            topomodel.LoadCombInternalForcesResults = BFEMNetModelHelper.GetResultsList(model, loadcombinations, bConsiderNodalDisplacement);
             topomodel.BFEMNetModel = model;
             return model;
         }
