@@ -485,7 +485,8 @@ namespace BriefFiniteElementNet
 
         private double GetDisplacementAt_x_linear(double dstart, double dend, double x, double l)
         {
-            return (dend - dstart) / l * x;
+            // Linear interpolation (l and x are always positive)
+            return MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, l, dstart, dend, x);
         }
         #endregion
 

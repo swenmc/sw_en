@@ -20,13 +20,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            //Example2();
+            Example2();
             //Example3();
             //Example4();
             //Example5();
             //Example6();
             //Example7();
-            Example8();
+            //Example8();
             //Example9();
 
             //DocSnippets.Test1();
@@ -745,6 +745,15 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 rtotalsum.Mz = fz;
 
                 Console.WriteLine("Total reactions SUM :" + rtotalsum.ToString() + "\n");
+
+                if (bfenet_model.Nodes.Count == 5) // Frame - nodal displacements
+                {
+                    Displacement n0_base = bfenet_model.Nodes[0].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n1_knee = bfenet_model.Nodes[1].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n2_apex = bfenet_model.Nodes[2].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n3_knee = bfenet_model.Nodes[3].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n4_base = bfenet_model.Nodes[4].GetNodalDisplacement(loadcombinations[i]);
+                }
 
                 // Internal forces
 

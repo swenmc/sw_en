@@ -157,6 +157,11 @@ namespace MATH.ARRAY
             return b1 + (((b2 - b1) / (a2 - a1)) * (a - a1));
         }
 
+        public static double GetLinearInterpolationValuePositive(double a1, double a2, double b1, double b2, double a)
+        {
+            return b1 + (((b2 - b1) / (a2 - a1)) * (a - a1));
+        }
+
         // Interpolation - aby fungovalo obecne, je potrebne doriesit kladne a zaporne hodnoty
         public static float GetLinearInterpolationValuePositive(float x, float[] xd, float[] yd)
         {

@@ -27,6 +27,20 @@ namespace PFD
                 for (int s = 0; s < iNumberOfResultsSections; s++)
                     xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
 
+                if (debugging && bfenet_model.Nodes.Count == 5) // Frame - nodal displacements
+                {
+                    Displacement n0_base = bfenet_model.Nodes[0].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n1_knee = bfenet_model.Nodes[1].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n2_apex = bfenet_model.Nodes[2].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n3_knee = bfenet_model.Nodes[3].GetNodalDisplacement(loadcombinations[i]);
+                    Displacement n4_base = bfenet_model.Nodes[4].GetNodalDisplacement(loadcombinations[i]);
+
+                    Trace.WriteLine("Load Combination No." + (i + 1).ToString() + " Name: " + GetLoadCombinationString(loadcombinations[i]));
+                    Trace.WriteLine("n1-knee" + "\t " + n1_knee);
+                    Trace.WriteLine("n2-apex" + "\t " + n2_apex);
+                    Trace.WriteLine("n3-knee" + "\t " + n3_knee);
+                }
+
                 MembersInternalForces membersResults = new MembersInternalForces();
                 for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
                 {

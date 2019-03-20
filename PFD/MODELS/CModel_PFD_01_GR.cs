@@ -124,17 +124,17 @@ namespace PFD
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
             // TODO - napojit na GUI a na databazu
-            m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
