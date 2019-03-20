@@ -259,10 +259,10 @@
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" Grid.Row="20" 
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem">
                             <DataGrid.Columns>
-                                <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
+                                <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
                                     SelectedItemBinding="{Binding Path=sBuildingSide}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridComboBoxColumn Header="BayNumber" SelectedValueBinding="{Binding iBayNumber}">
+                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
@@ -274,22 +274,22 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="DoorType" Width="Auto"
+                                <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="70"
                                     SelectedItemBinding="{Binding Path=sDoorType}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
-                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="50" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="50" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="50" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" Grid.Row="21" 
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_Windows_AddingNewItem">
                             <DataGrid.Columns>
-                                <DataGridComboBoxColumn Header="BuildingSide" Width="Auto"
+                                <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
                                     SelectedItemBinding="{Binding Path=sBuildingSide}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridComboBoxColumn Header="BayNumber" SelectedValueBinding="{Binding iBayNumber}">
+                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
@@ -300,12 +300,12 @@
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
-                                </DataGridComboBoxColumn>                                
-                                <DataGridTextColumn Header="WindowsHeight" Binding="{Binding fWindowsHeight}"/>
-                                <DataGridTextColumn Header="WindowsWidth" Binding="{Binding fWindowsWidth}"/>
-                                <DataGridTextColumn Header="WindowCoordinateXinBay" Binding="{Binding fWindowCoordinateXinBay}"/>
-                                <DataGridTextColumn Header="WindowCoordinateZinBay" Binding="{Binding fWindowCoordinateZinBay}"/>                                
-                                <DataGridComboBoxColumn Header="NumberOfWindowColumns" Width="Auto"
+                                </DataGridComboBoxColumn>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of window" Width="50" Binding="{Binding fWindowsHeight}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of window" Width="50" Binding="{Binding fWindowsWidth}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="50" Binding="{Binding fWindowCoordinateXinBay}"/>
+                                <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="50" Binding="{Binding fWindowCoordinateZinBay}"/>
+                                <DataGridComboBoxColumn Header="Muntin Number" ToolTipService.ToolTip="Enter number of window block columns" Width="100"
                                     SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
                                     ItemsSource="{Binding Source={StaticResource WindowColumns}}" />
                             </DataGrid.Columns>
