@@ -36,7 +36,7 @@ namespace BaseClasses
 
             set
             {
-                m_sBuildingSide = value;
+                m_sBuildingSide = value;                
                 NotifyPropertyChanged("sBuildingSide");
             }
         }
@@ -127,6 +127,7 @@ namespace BaseClasses
         {
             get
             {
+                if (m_Bays == null) m_Bays = new List<int>();
                 return m_Bays;
             }
 
@@ -169,24 +170,23 @@ namespace BaseClasses
             if (sBuildingSide == "Front")
             {
                 if (float.IsNaN(m_distFrontColumns)) return true;
-                if (m_distFrontColumns < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+                if (m_distFrontColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
             }
             else if (sBuildingSide == "Back")
             {
                 if (float.IsNaN(m_distBackColumns)) return true;
-                if (m_distBackColumns < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+                if (m_distBackColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
             }
             else if (sBuildingSide == "Left") {
                 if (float.IsNaN(m_L1)) return true;
-                if (m_L1 < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+                if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
             }
             else if (sBuildingSide == "Right")
             {
                 if (float.IsNaN(m_L1)) return true;
-                if (m_L1 < fDoorsWidth + fDoorCoordinateXinBlock) return false;
+                if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
             }
-
-
+            
             return true;
         }
 

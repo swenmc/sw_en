@@ -120,6 +120,7 @@ namespace BaseClasses
         {
             get
             {
+                if (m_Bays == null) m_Bays = new List<int>();
                 return m_Bays;
             }
 

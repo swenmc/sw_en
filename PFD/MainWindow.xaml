@@ -260,9 +260,9 @@
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
-                                    SelectedItemBinding="{Binding Path=sBuildingSide}"
+                                    SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber}">
+                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
@@ -287,9 +287,9 @@
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_Windows_AddingNewItem">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
-                                    SelectedItemBinding="{Binding Path=sBuildingSide}"
+                                    SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Source={StaticResource BuildingSides}}" />
-                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber}">
+                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select bay number" Width="50" SelectedValueBinding="{Binding iBayNumber, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
