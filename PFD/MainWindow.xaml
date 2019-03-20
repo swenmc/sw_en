@@ -274,7 +274,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="70"
+                                <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="120"
                                     SelectedItemBinding="{Binding Path=sDoorType}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
                                 <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="50" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
