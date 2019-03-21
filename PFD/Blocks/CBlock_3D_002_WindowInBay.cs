@@ -214,7 +214,7 @@ namespace PFD
             float fWindowColumnStart = 0.0f;
 
             if(fBottomGirtPosition >= fCoordinateZOfGirtUnderWindow) // Window column is connected to the girt
-                fWindowColumnStart = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
+                fWindowColumnStart = -(float)ReferenceGirt.CrScStart.y_max - fCutOffOneSide;
 
             float fWindowColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
             CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);

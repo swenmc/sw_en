@@ -188,7 +188,7 @@ namespace PFD
 
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
-            float fDoorColumnEnd = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
+            float fDoorColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             float fDoorColumnRotation = (float)Math.PI / 2;
