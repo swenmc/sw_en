@@ -105,6 +105,7 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            FillCrScPropertiesByTableData();
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
             // SOLID MODEL
@@ -120,8 +121,6 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
-
-            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -244,8 +243,6 @@ namespace CRSC
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
             // Temporary - odstranit po implementacii vypoctu
-            D_y_gc = 0; // Temporary - TODO
-            D_z_gc = 0;
 
             y_min = -b / 2;
             y_max = b / 2;

@@ -11,13 +11,14 @@ namespace PFD
     {
         public int iNumberOfGirtsUnderWindow;
 
-        public CBlock_3D_002_WindowInBay(            
+        public CBlock_3D_002_WindowInBay(
             WindowProperties prop,
             float fLimitDistanceFromColumn,
             float fBottomGirtPosition,
             float fDist_Girt,
             CMember referenceGirt_temp,
-            CMember Colummn,
+            CMember ColumnLeft,
+            CMember ColumnRight,
             float fBayWidth,
             float fBayHeight,
             bool bIsReverseGirtSession = false,
@@ -193,6 +194,10 @@ namespace PFD
                             if (bIsFirstBayInFrontorBackSide) // First bay, right side, end connection to the intermediate column
                                 fGirtEndTemp = ReferenceGirt.FAlignment_End;
                         }
+                        else // Last bay - right side - end allignment to the main column
+                        {
+                            fGirtEndTemp = ReferenceGirt.FAlignment_Start;
+                        }
 
                         eccentricityGirtStart_temp = eccentricityGirtEnd; // TODO - we need probably to change signs of values
                         eccentricityGirtEnd_temp = eccentricityGirtStart; // TODO - we need probably to change signs of values
@@ -281,14 +286,35 @@ namespace PFD
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
 
-            // Girt Joints
-            if (iMembersGirts > 0)
+            // Girt Member Joints
+            for (int i = 0; i < iNumberOfGirtsSequences; i++) // (Girts on the left side and the right side of door)
             {
-                for (int i = 0; i < iMembersGirts; i++) // Each created girt
+                for (int j = 0; j < INumberOfGirtsToDeactivate; j++)
                 {
-                    CMember current_member = m_arrMembers[i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, Colummn, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, Colummn, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                    CMember currentColumnToConnectStart = ColumnLeft; // Column
+                    CMember currentColumnToConnectEnd = m_arrMembers[iMembersGirts]; // Door Column
+                    bool bConsiderMainMemberWidthStart = true;
+                    bool bConsiderMainMemberWidthEnd = true;
+                    CMember current_member = m_arrMembers[i * INumberOfGirtsToDeactivate + j]; // Girt
+
+                    if (bIsFirstBayInFrontorBackSide)
+                    {
+                        bConsiderMainMemberWidthStart = false;
+                    }
+
+                    if (i == 1 || bWindowToCloseToLeftColumn) // If just right sequence of girts is generated
+                    {
+                        currentColumnToConnectStart = m_arrMembers[iMembersGirts + 1]; // Door Column
+                        currentColumnToConnectEnd = ColumnRight;
+
+                        if (bIsLastBayInFrontorBackSide) // Different columns on bay sides
+                        {
+                            bConsiderMainMemberWidthEnd = false;
+                        }
+                    }
+
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bConsiderMainMemberWidthStart, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bConsiderMainMemberWidthEnd, true));
                 }
             }
 

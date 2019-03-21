@@ -92,6 +92,7 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            FillCrScPropertiesByTableData();
             ChangeCoordToCentroid();
 
             // SOLID MODEL
@@ -107,8 +108,6 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
-
-            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -214,10 +213,6 @@ namespace CRSC
 
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
-            // Temporary - odstranit po implementacii vypoctu
-            D_y_gc = 0; // Temporary - TODO
-            D_z_gc = 0;
-
             y_min = -b / 2;
             y_max = b / 2;
             z_min = -h / 2;
@@ -226,16 +221,16 @@ namespace CRSC
             for (int i = 0; i < INoPointsOut; i++)
             {
                 Point p = CrScPointsOut[i];
-                p.X += D_y_gc;
-                p.Y += D_z_gc;
+                p.X += 0;
+                p.Y += 0;
                 CrScPointsOut[i] = p;
             }
 
             for (int i = 0; i < INoPointsIn; i++)
             {
                 Point p = CrScPointsIn[i];
-                p.X += D_y_gc;
-                p.Y += D_z_gc;
+                p.X += 0;
+                p.Y += 0;
                 CrScPointsIn[i] = p;
             }
         }

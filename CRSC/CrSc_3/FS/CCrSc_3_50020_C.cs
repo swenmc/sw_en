@@ -198,22 +198,17 @@ namespace CRSC
  
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
-            // Temporary - odstranit po implementacii vypoctu
-
-            D_y_gc = -0.02923; // Temporary - TODO
-            y_min = D_y_gc;
+            y_min = -D_y_gc;
             y_max = b + y_min;
 
             z_min = -h / 2;
             z_max = h / 2;
 
-            D_z_gc = 0;
-
             for (int i = 0; i < ITotNoPoints; i++)
             {
                 Point p = CrScPointsOut[i];
-                p.X += D_y_gc;
-                p.Y += D_z_gc;
+                p.X += y_min;
+                p.Y += 0;
                 CrScPointsOut[i] = p;
             }
         }

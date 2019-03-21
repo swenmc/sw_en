@@ -35,6 +35,8 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            FillCrScPropertiesByTableData();
+
             // SOLID MODEL
             // Fill list of indices for drawing of surface - triangles edges
             // Particular indices - distinguished colors of member surfaces
@@ -48,8 +50,6 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
-
-            FillCrScPropertiesByTableData();
         }
     }
 }

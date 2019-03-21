@@ -1551,15 +1551,15 @@ namespace PFD
             refgirt.DTheta_x = Math.PI / 2;
 
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
-            CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
 
             DoorProperties props = new DoorProperties();
             props.sBuildingSide = "Left";
             props.fDoorsHeight = 2.1f;
             props.fDoorsWidth = 0.9f;
             props.fDoorCoordinateXinBlock = 0.6f;
-            CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 4.5f, 4f);
-
+            CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;
@@ -1594,7 +1594,8 @@ namespace PFD
             refgirt.DTheta_x = Math.PI / 2;
 
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
-            CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
 
             WindowProperties prop = new WindowProperties();
             prop.sBuildingSide = "Left";
@@ -1604,7 +1605,7 @@ namespace PFD
             prop.fWindowCoordinateZinBay = 1.4f;
             prop.iNumberOfWindowColumns = 3;
 
-            CModel model = new CBlock_3D_002_WindowInBay(prop, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
+            CModel model = new CBlock_3D_002_WindowInBay(prop, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;

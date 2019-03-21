@@ -95,6 +95,8 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            FillCrScPropertiesByTableData();
+
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
             // SOLID MODEL
@@ -110,8 +112,6 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
-
-            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -254,20 +254,17 @@ namespace CRSC
         {
             // Temporary - odstranit po implementacii vypoctu
 
-            D_y_gc = -0.044; // Temporary - TODO
-            y_min = D_y_gc;
+            y_min = -D_y_gc;
             y_max = b + y_min;
 
             z_min = -h / 2;
             z_max = h / 2;
 
-            D_z_gc = 0;
-
             for (int i = 0; i < ITotNoPoints; i++)
             {
                 Point p = CrScPointsOut[i];
-                p.X += D_y_gc;
-                p.Y += D_z_gc;
+                p.X += y_min;
+                p.Y += 0;
                 CrScPointsOut[i] = p;
             }
         }
