@@ -1642,7 +1642,7 @@ namespace PFD
         public void DeterminateBasicPropertiesToInsertBlock(
             string sBuildingSide,                     // Identification of building side (left, right, front, back)
             int iBayNumber,                           // Bay number (1-n) in positive X or Y direction
-            out CMember mReferenceGirt,               // First girt in bay - reference girt
+            out CMember mReferenceGirt,               // Reference girt - first girts that needs to be deactivated and replaced by new member (some parameters are same for deactivated and new member)
             out CMember mColumnLeft,                  // Left column of bay
             out CMember mColumnRight,                 // Right column of bay
             out CPoint pControlPointBlock,            // Conctrol point to insert block - defined as left column base point
