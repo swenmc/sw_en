@@ -18,7 +18,8 @@ namespace PFD
             CMember ColumnLeft,
             CMember ColumnRight,
             float fBayWidth,
-            float fWallHeight,
+            float fBayHeight,
+            float fUpperGirtLimit,
             bool bIsReverseGirtSession = false,
             bool bIsFirstBayInFrontorBackSide = false,
             bool bIsLastBayInFrontorBackSide = false)
@@ -115,13 +116,18 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfColumns; i++) // (Column on the left side and the right side of door)
             {
-                // Verical coordinate
-                float fz = fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt;
-
-                if (BuildingSide == "Left" || BuildingSide == "Right")
-                    fz = Math.Min(fz, fWallHeight); // Top node z-coordinate must be less or equal to the side wall height
-
                 m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, 0, 0);
+
+                // TODO - Refaktorovat validaciu hornej suradnice stlpa s window
+                // Vertical coordinate
+                float fz = fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt;
+                fz = Math.Min(fz, fBayHeight); // Top node z-coordinate must be less or equal to the bay height
+
+                // Ak nie je vygenerovany girt pretoze je velmi blizko eave purlin (left, right) alebo rafter (front, back)
+                // napajame stlpiky priamo na eave purlin alebo rafter, tj. suradcnica horneho bodu stlpika je rovna fBayHeight
+                if (fBayHeight - fz < fUpperGirtLimit)
+                    fz = fBayHeight;
+
                 m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, fz, 0);
             }
 

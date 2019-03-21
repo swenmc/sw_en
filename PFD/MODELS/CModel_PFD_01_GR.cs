@@ -1576,6 +1576,7 @@ namespace PFD
             CBlock_3D_001_DoorInBay door;
             CPoint pControlPointBlock;
             float fBayWidth;
+            float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstMemberToDeactivate;
             bool bIsReverseSession;
             bool bIsFirstBayInFrontorBackSide;
@@ -1592,7 +1593,8 @@ namespace PFD
                 mColumnLeft,
                 mColumnRight,
                 fBayWidth,
-                fSideWallHeight,
+                fBayHeight,
+                fUpperGirtLimit,
                 bIsReverseSession,
                 bIsFirstBayInFrontorBackSide,
                 bIsLastBayInFrontorBackSide);
@@ -1608,7 +1610,7 @@ namespace PFD
             CBlock_3D_002_WindowInBay window;
             CPoint pControlPointBlock;
             float fBayWidth;
-            float fBayHeight = fH1_frame;
+            float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstGirtInBay;
             int iFirstMemberToDeactivate;
             bool bIsReverseSession;
@@ -1627,6 +1629,7 @@ namespace PFD
                 mColumnRight,
                 fBayWidth,
                 fBayHeight,
+                fUpperGirtLimit,
                 bIsReverseSession,
                 bIsFirstBayInFrontorBackSide,
                 bIsLastBayInFrontorBackSide);
