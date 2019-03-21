@@ -1640,15 +1640,15 @@ namespace PFD
         }
 
         public void DeterminateBasicPropertiesToInsertBlock(
-            string sBuildingSide,
-            int iBayNumber,
-            out CMember mReferenceGirt,
-            out CMember mColumnLeft,
-            out CMember mColumnRight,
-            out CPoint pControlPointBlock,
-            out float fBayWidth,
-            out int iFirstMemberToDeactivate,
-            out bool bIsReverseSession,
+            string sBuildingSide,                     // Identification of building side (left, right, front, back)
+            int iBayNumber,                           // Bay number (1-n) in positive X or Y direction
+            out CMember mReferenceGirt,               // First girt in bay - reference girt
+            out CMember mColumnLeft,                  // Left column of bay
+            out CMember mColumnRight,                 // Right column of bay
+            out CPoint pControlPointBlock,            // Conctrol point to insert block - defined as left column base point
+            out float fBayWidth,                      // Width of bay (distance between bay columns)
+            out int iFirstMemberToDeactivate,         // Index of first girt in the bay which is in collision with the block and must be deactivated
+            out bool bIsReverseSession,               // Front or back wall bay can have reverse direction of girts in X
             out bool bIsFirstBayInFrontorBackSide,
             out bool bIsLastBayInFrontorBackSide
             )

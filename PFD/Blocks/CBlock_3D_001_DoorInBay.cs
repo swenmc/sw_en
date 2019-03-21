@@ -11,16 +11,16 @@ namespace PFD
     {
         public CBlock_3D_001_DoorInBay(
             DoorProperties prop,
-            float fLimitDistanceFromColumn,
-            float fBottomGirtPosition,
-            float fDist_Girt,
-            CMember referenceGirt_temp,
-            CMember ColumnLeft,
-            CMember ColumnRight,
+            float fLimitDistanceFromColumn,       // Limit value to generate girts on the left or right side of opening
+            float fBottomGirtPosition,            // Vertical position of first girt
+            float fDist_Girt,                     // Vertical regular distance between girts
+            CMember referenceGirt_temp,           // Reference girt object in bay
+            CMember ColumnLeft,                   // Left column of bay
+            CMember ColumnRight,                  // Right column of bay
             float fBayWidth,
             float fBayHeight,
-            float fUpperGirtLimit,
-            bool bIsReverseGirtSession = false,
+            float fUpperGirtLimit,                // Vertical limit to generate last girt (cant' be too close or in colision with eave purlin or rafter)
+            bool bIsReverseGirtSession = false,   // Front or back wall bay can have reverse direction of girts in X
             bool bIsFirstBayInFrontorBackSide = false,
             bool bIsLastBayInFrontorBackSide = false)
         {
