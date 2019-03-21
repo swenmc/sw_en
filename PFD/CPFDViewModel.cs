@@ -102,11 +102,11 @@ namespace PFD
 
         // Popis pre Ondreja - doors and windows
         // GUI
-        
+
         // Personnel door su len z jedneho prierezu BOX 10075
         // Roller door mozu mat dva prierezy - door trimmer C270115btb a niekedy aj door lintel z C27095 (podla toho aka je vzdialenost medzi hornou hranou dveri a najblizsim girt nad tym)
         // U blokov sa momentalne moze a nemusi vytvorit crsc pre girt, ten sa potom ale nepridava do celkoveho pola m_arrCrSc pretoze tam uz je
-        
+
         // Window - podobne ako door, posledna polozka je combobox s 1-20?? - pocet stlpikov okna, ktore rozdelia okno na viacero casti
 
         // Ked pridam do modelu prve dvere alebo okno mali by sa do Component list pridat prierezy, ktore tam este nie su (trimmer, lintel), tieto prierezy by sa mali vyrobit len raz a ked budem pridavat dalsie dvere alebo okna, tak by sa mali len priradzovat
@@ -591,7 +591,7 @@ namespace PFD
             set
             {
                 MModel = value;
-                SetModelBays();                
+                SetModelBays();
             }
         }
 
@@ -1011,14 +1011,14 @@ namespace PFD
                 if (d != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                      
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("DoorBlocksProperties_Add");
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
-            }            
+            }
         }
 
         public ObservableCollection<WindowProperties> WindowBlocksProperties
@@ -1049,7 +1049,7 @@ namespace PFD
                 if (w != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("WindowBlocksProperties_Add");
                 }
             }
@@ -1078,18 +1078,18 @@ namespace PFD
         {
             get
             {
-                return new List<int>() { 2,3,4,5,6,7,8,9,10 };
+                return new List<int>() { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             }
         }
 
-        
+
 
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
         private void SetModelBays()
         {
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;            
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
             frontBays = new List<int>();
             backBays = new List<int>();
             leftRightBays = new List<int>();
@@ -1120,34 +1120,121 @@ namespace PFD
         {
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
-                if (d.sBuildingSide == "Front") d.Bays = frontBays;
-                else if (d.sBuildingSide == "Back") d.Bays = backBays;
-                else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
-                else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
+                if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
+                else if (d.sBuildingSide == "Back" && !d.Bays.SequenceEqual(backBays)) d.Bays = backBays;
+                else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
+                else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
+            }
+            CheckDoorsBays();
+        }
+        private void SetDoorsBays(DoorProperties d)
+        {
+            if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
+            else if (d.sBuildingSide == "Back" && !d.Bays.SequenceEqual(backBays)) d.Bays = backBays;
+            else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
+            else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
+
+            CheckDoorsBays(d);
+        }
+        private void CheckDoorsBays()
+        {
+            foreach (DoorProperties d in MDoorBlocksProperties)
+            {
+                if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
+                if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
+                {
+                    //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri                    
+                    int bayNum = GetFreeBayFor(d);
+                    if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                    else d.iBayNumber = bayNum;
+                }
             }
         }
+        private void CheckDoorsBays(DoorProperties d)
+        {
+            if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
+            if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
+            {
+                //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri                    
+                int bayNum = GetFreeBayFor(d);
+                if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                else d.iBayNumber = bayNum;
+            }
+        }
+
         private void SetWindowsBays()
         {
             foreach (WindowProperties w in MWindowBlocksProperties)
             {
-                if (w.sBuildingSide == "Front") w.Bays = frontBays;
-                else if (w.sBuildingSide == "Back") w.Bays = backBays;
-                else if (w.sBuildingSide == "Left") w.Bays = leftRightBays;
-                else if (w.sBuildingSide == "Right") w.Bays = leftRightBays;
+                if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
+                else if (w.sBuildingSide == "Back" && !w.Bays.SequenceEqual(backBays)) w.Bays = backBays;
+                else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
+                else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
+            }
+            CheckWindowsBays();
+        }
+        private void SetWindowsBays(WindowProperties w)
+        {
+            if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
+            else if (w.sBuildingSide == "Back" && !w.Bays.SequenceEqual(backBays)) w.Bays = backBays;
+            else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
+            else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
+
+            CheckWindowsBays(w);
+        }
+        private void CheckWindowsBays()
+        {
+            foreach (WindowProperties w in MWindowBlocksProperties)
+            {
+                if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
+                if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
+                {
+                    //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
+                    int bayNum = GetFreeBayFor(w);
+                    if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
+                    else w.iBayNumber = bayNum;
+                }
             }
         }
+        private void CheckWindowsBays(WindowProperties w)
+        {
+            if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
+            if (MWindowBlocksProperties.Where(x => x.iBayNumber == w.iBayNumber && x.sBuildingSide == w.sBuildingSide).Count() > 1)
+            {
+                //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
+                int bayNum = GetFreeBayFor(w);
+                if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
+                else w.iBayNumber = bayNum;
+            }
+        }
+        private int GetFreeBayFor(WindowProperties win)
+        {
+            foreach (int bayNum in win.Bays)
+            {
+                if (MWindowBlocksProperties.Where(x => x.iBayNumber == bayNum && x.sBuildingSide == win.sBuildingSide).Count() == 0) return bayNum;
+            }
+            return -1;
+        }
+        private int GetFreeBayFor(DoorProperties d)
+        {
+            foreach (int bayNum in d.Bays)
+            {
+                if (MDoorBlocksProperties.Where(x => x.iBayNumber == bayNum && x.sBuildingSide == d.sBuildingSide).Count() == 0) return bayNum;
+            }
+            return -1;
+        }
 
-        
+
         private void SetDoorsValidationProperties()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
                 d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
-                if (d.sBuildingSide == "Front") d.Bays = frontBays;
-                else if (d.sBuildingSide == "Back") d.Bays = backBays;
-                else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
-                else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
+                //if (d.sBuildingSide == "Front") d.Bays = frontBays;
+                //else if (d.sBuildingSide == "Back") d.Bays = backBays;
+                //else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
+                //else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -1159,7 +1246,7 @@ namespace PFD
 
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
-            
+
             ShowMemberID = true;
             ShowMemberRealLength = true;
 
@@ -1238,7 +1325,7 @@ namespace PFD
                     ColumnDistance,
                     BottomGirtPosition,
                     FrontFrameRakeAngle,
-                    BackFrameRakeAngle,                    
+                    BackFrameRakeAngle,
                     DoorBlocksProperties,
                     WindowBlocksProperties,
                     GeneralLoad,
@@ -1428,6 +1515,18 @@ namespace PFD
 
         private void HandleDoorPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "sBuildingSide")
+            {
+                if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
+                if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
+            }
+            else if (e.PropertyName == "iBayNumber")
+            {
+                if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
+                if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
+            }
+
+
             this.PropertyChanged(sender, e);
         }
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
