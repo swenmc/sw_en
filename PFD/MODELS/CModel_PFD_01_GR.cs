@@ -219,7 +219,6 @@ namespace PFD
 
             // Limit pre poziciu horneho nosnika (front / back girt) na prednej alebo zadnej stene budovy
             // Nosnik alebo pripoj nosnika nesmie zasahovat do prievlaku (rafter)
-
             fz_UpperLimitForFrontGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].b);
             fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eBackGirt].b);
 
@@ -899,7 +898,7 @@ namespace PFD
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Blocks
-            // TODO - pokusny blok dveri, je potreba refaktorovat, napojit na GUI, vytvorit zoznam tychto objektov -> viacero dveri v budove na roznych poziciach a s roznymi parametrami
+            // TODO - pokusny blok dveri, je potreba refaktorovat
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             if (doorBlocksProperties != null)
@@ -1784,7 +1783,7 @@ namespace PFD
             // Cross-sections
             arraysizeoriginal = m_arrCrSc.Length;
 
-            Array.Resize(ref m_arrCrSc, m_arrCrSc.Length + block.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
+            Array.Resize(ref m_arrCrSc, arraysizeoriginal + block.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
 
             // Copy block cross-sections into the model
             for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova

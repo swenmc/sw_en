@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BaseClasses
 {
@@ -36,8 +37,15 @@ namespace BaseClasses
 
             set
             {
-                m_sBuildingSide = value;                
-                NotifyPropertyChanged("sBuildingSide");
+                string temp = m_sBuildingSide;
+                m_sBuildingSide = value;
+                
+                if (!ValidateDoorInsideBay())
+                {
+                    m_sBuildingSide = temp;
+                    MessageBox.Show("Doors outside of bay width.");
+                }
+                else NotifyPropertyChanged("sBuildingSide");
             }
         }
 
@@ -79,9 +87,15 @@ namespace BaseClasses
             set
             {
                 if (!float.IsNaN(m_WallHeight) && (value < 1 || value > m_WallHeight))
-                    throw new ArgumentException($"Doors Height must be between 1 and {m_WallHeight} [m]");
-                m_fDoorsHeight = value;                
-                NotifyPropertyChanged("fDoorsHeight");
+                {
+                    MessageBox.Show($"Doors Height must be between 1 and {m_WallHeight} [m]");
+                }
+                else
+                {
+                    m_fDoorsHeight = value;
+                    NotifyPropertyChanged("fDoorsHeight");
+                }
+                
             }
         }
 
@@ -98,9 +112,9 @@ namespace BaseClasses
                 m_fDoorsWidth = value;
                 if (!ValidateDoorInsideBay()) { 
                     m_fDoorsWidth = temp;
-                    throw new ArgumentException($"Doors outside of bay width.");
+                    MessageBox.Show("Doors outside of bay width.");
                 }
-                NotifyPropertyChanged("fDoorsWidth");
+                else NotifyPropertyChanged("fDoorsWidth");
             }
         }
 
@@ -117,9 +131,9 @@ namespace BaseClasses
                 m_fDoorCoordinateXinBlock = value;
                 if (!ValidateDoorInsideBay()) {
                     m_fDoorCoordinateXinBlock = temp;
-                    throw new ArgumentException($"Doors outside of bay width.");
+                    MessageBox.Show("Doors outside of bay width.");
                 }
-                NotifyPropertyChanged("fDoorCoordinateXinBlock");
+                else NotifyPropertyChanged("fDoorCoordinateXinBlock");
             }
         }
 

@@ -221,6 +221,10 @@ namespace PFD
                     //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                    // Re-calculate value of distance between columns (number of columns per frame is always even
+                    int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
+                    iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
 
                 NotifyPropertyChanged("GableWidth");

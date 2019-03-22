@@ -156,5 +156,33 @@ namespace BaseClasses
             
             return isValid;
         }
+
+        public bool ValidateWindowInsideBay()
+        {
+            //TODO implement according to DoorProperties
+
+            //if (sBuildingSide == "Front")
+            //{
+            //    if (float.IsNaN(m_distFrontColumns)) return true;
+            //    if (m_distFrontColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
+            //}
+            //else if (sBuildingSide == "Back")
+            //{
+            //    if (float.IsNaN(m_distBackColumns)) return true;
+            //    if (m_distBackColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
+            //}
+            //else if (sBuildingSide == "Left")
+            //{
+            //    if (float.IsNaN(m_L1)) return true;
+            //    if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
+            //}
+            //else if (sBuildingSide == "Right")
+            //{
+            //    if (float.IsNaN(m_L1)) return true;
+            //    if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
+            //}
+
+            return true;
+        }
     }
 }
