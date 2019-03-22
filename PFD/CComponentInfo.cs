@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PFD
 {
-    public class CComponentInfo
+    public class CComponentInfo : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private string MPrefix;
         private string MComponentName;
         private string MSection;
@@ -55,6 +58,7 @@ namespace PFD
             set
             {
                 MSection = value;
+                NotifyPropertyChanged("Section");
             }
         }
 
@@ -68,6 +72,7 @@ namespace PFD
             set
             {
                 MMaterial = value;
+                NotifyPropertyChanged("Material");
             }
         }
 
@@ -81,6 +86,7 @@ namespace PFD
             set
             {
                 MGenerate = value;
+                NotifyPropertyChanged("Generate");
             }
         }
 
@@ -94,6 +100,7 @@ namespace PFD
             set
             {
                 MDisplay = value;
+                NotifyPropertyChanged("Display");
             }
         }
 
@@ -107,6 +114,7 @@ namespace PFD
             set
             {
                 MCalculate = value;
+                NotifyPropertyChanged("Calculate");
             }
         }
 
@@ -120,6 +128,7 @@ namespace PFD
             set
             {
                 MDesign = value;
+                NotifyPropertyChanged("Design");
             }
         }
 
@@ -133,6 +142,7 @@ namespace PFD
             set
             {
                 MMaterialList = value;
+                NotifyPropertyChanged("MaterialList");
             }
         }
 
@@ -161,6 +171,12 @@ namespace PFD
             MDesign = design;
             MMaterialList = materialList;
             MSections = sections;
+        }
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Linq;
 using System.Collections.ObjectModel;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -68,6 +69,7 @@ namespace PFD
                 float fBackFrameRakeAngle_temp_deg,
                 ObservableCollection<DoorProperties> doorBlocksProperties,
                 ObservableCollection<WindowProperties> windowBlocksProperties,
+                ObservableCollection<CComponentInfo> componentList,
                 CCalcul_1170_1 generalLoad,
                 CCalcul_1170_2 wind,
                 CCalcul_1170_3 snow,
@@ -123,35 +125,77 @@ namespace PFD
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            // TODO - napojit na GUI a na databazu
-            m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            // TODO - napojit na GUI a na databazu            
+            m_arrMat[(int)EMemberGroupNames.eMainColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn].Material);
+            m_arrMat[(int)EMemberGroupNames.eRafter] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter].Material);
+            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn_EF].Material);
+            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter_EF].Material);
+            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eEavesPurlin].Material);
+            m_arrMat[(int)EMemberGroupNames.eGirtWall] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtWall].Material);
+            m_arrMat[(int)EMemberGroupNames.ePurlin] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlin].Material);
+            m_arrMat[(int)EMemberGroupNames.eFrontColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontColumn].Material);
+            m_arrMat[(int)EMemberGroupNames.eBackColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackColumn].Material);
+            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirt].Material);
+            m_arrMat[(int)EMemberGroupNames.eBackGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirt].Material);
+
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            //m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
             // TODO Ondrej - Nastavit objekt prierezu podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
             // Napojit na GUI
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Chocolate); // 1.95,4.9, 7.85      // Main Column
-            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Green);               // Rafter
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(3, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(4, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(5, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(6, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
-            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(7, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(8, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(9, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(10, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
-            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(11, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
+
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eMainColumn].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eRafter] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eRafter].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eMainColumn_EF].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eRafter_EF].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eEavesPurlin].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eGirtWall].Section);
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.ePurlin].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontColumn].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackColumn].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontGirt].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackGirt].Section);
+
+            for (int i = 0; i < m_arrCrSc.Length; i++)
+            {
+                m_arrCrSc[i].ID = i + 1;
+            }
+
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn].CSColor = Colors.Chocolate;
+            m_arrCrSc[(int)EMemberGroupNames.eRafter].CSColor = Colors.Green;               // Rafter
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].CSColor = Colors.DarkOrchid;   // Main Column - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].CSColor = Colors.GreenYellow;      // Rafter - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].CSColor = Colors.DarkCyan;                    // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall].CSColor = Colors.Orange;                       // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin].CSColor = Colors.SlateBlue;                      // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].CSColor = Colors.BlueViolet;        // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor =  Colors.BlueViolet;         // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;                       // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;
+
+            //m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Chocolate); // 1.95,4.9, 7.85      // Main Column
+            //m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Green);               // Rafter
+            //m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(3, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
+            //m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(4, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
+            //m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(5, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
+            //m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(6, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
+            //m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(7, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
+            //m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(8, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
+            //m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(9, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
+            //m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(10, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
+            //m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(11, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);

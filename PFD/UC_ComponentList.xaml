@@ -15,10 +15,7 @@
             <RowDefinition Height="950"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">
-            <!--<DataGrid.Resources>
-                <CollectionViewSource x:Key="Sections" Source="{Binding Sections}"/>
-            </DataGrid.Resources>-->
+                  IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">            
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>

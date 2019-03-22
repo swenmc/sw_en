@@ -94,6 +94,8 @@
     <Compile Include="GraphObj\CDimensionArc.cs" />
     <Compile Include="GraphObj\CDimensionLinear.cs" />
     <Compile Include="GraphObj\PointF.cs" />
+    <Compile Include="Helpers\CrScFactory.cs" />
+    <Compile Include="Helpers\MaterialFactory.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Circular.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Model\CSegment_LTB.cs" />

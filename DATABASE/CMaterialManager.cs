@@ -10,6 +10,42 @@ namespace DATABASE
 {
     public static class CMaterialManager
     {
+        public static Dictionary<string, CMaterialProperties> LoadMaterialPropertiesDict()
+        {
+            CMaterialProperties properties;
+            Dictionary<string, CMaterialProperties> items = new Dictionary<string, CMaterialProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        properties = new CMaterialProperties();
+                        properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        properties.Standard = reader["Standard"].ToString();
+                        properties.Grade = reader["Grade"].ToString();
+                        properties.iNumberOfIntervals = reader["iNumberOfIntervals"].ToString();
+                        properties.t1 = reader["t1"].ToString();
+                        properties.t2 = reader["t2"].ToString();
+                        properties.t3 = reader["t3"].ToString();
+                        properties.t4 = reader["t4"].ToString();
+                        properties.f_y1 = reader["f_y1"].ToString();
+                        properties.f_u1 = reader["f_u1"].ToString();
+                        properties.f_y2 = reader["f_y2"].ToString();
+                        properties.f_u2 = reader["f_u2"].ToString();
+                        properties.f_y3 = reader["f_y3"].ToString();
+                        properties.f_u3 = reader["f_u3"].ToString();
+                        properties.f_y4 = reader["f_y4"].ToString();
+                        properties.f_u4 = reader["f_u4"].ToString();
+                        items.Add(properties.Grade, properties);
+                    }
+                }
+            }
+            return items;
+        }
         public static List<CMaterialProperties> LoadMaterialProperties()
         {
             CMaterialProperties properties;

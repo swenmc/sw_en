@@ -618,6 +618,9 @@ namespace PFD
         private void UpdateAll()
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            
+            CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
+
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
 
@@ -627,8 +630,7 @@ namespace PFD
             sGeometryInputData.fW = vm.GableWidth;
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
-
-
+            
             CalculateLoadingValues();
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
@@ -653,6 +655,7 @@ namespace PFD
                 vm.BackFrameRakeAngle,                
                 DoorBlocksProperties,
                 WindowBlocksProperties,
+                compList?.ComponentList,
                 generalLoad,
                 wind,
                 snow,
@@ -786,9 +789,9 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eInternalForces)
             {
-                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
-                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
+                CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
                 if (Internal_Forces.Content == null)
                 {
@@ -812,9 +815,9 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign)
             {
-                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
-                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
+                CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
                 if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
                 else
@@ -826,9 +829,9 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign)
             {
-                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
-                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
+                CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
                 if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.JointDesignResults_ULS);
                 else
                 {

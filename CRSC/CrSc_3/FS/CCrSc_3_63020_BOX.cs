@@ -45,6 +45,8 @@ namespace CRSC
             set { m_fd = value; }
         }
 
+        public CCrSc_3_63020_BOX(float fh, float fb, float ft, float ft_flange) 
+            : this(0, fh, fb, ft, ft_flange, Colors.Chocolate) { }
         public CCrSc_3_63020_BOX(int iID_temp, float fh, float fb, float ft, float ft_flange, Color color_temp)
         {
             ID = iID_temp;

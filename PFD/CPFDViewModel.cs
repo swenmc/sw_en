@@ -100,6 +100,8 @@ namespace PFD
         private List<string> MDoorsTypes;
 
 
+        private ObservableCollection<CComponentInfo> MComponentList;
+
         // Popis pre Ondreja - doors and windows
         // GUI
 
@@ -1086,7 +1088,33 @@ namespace PFD
             }
         }
 
+        public ObservableCollection<CComponentInfo> ComponentList
+        {
+            get
+            {
+                return MComponentList;
+            }
 
+            set
+            {
+                MComponentList = value;
+                
+
+                
+                if (MComponentList == null) return;
+                
+                foreach (CComponentInfo c in MComponentList)
+                {
+                    c.PropertyChanged += HandleComponentInfoPropertyChangedEvent;
+                }
+                NotifyPropertyChanged("ComponentList");
+            }
+        }
+
+        private void C_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         private List<int> frontBays;
         private List<int> backBays;
@@ -1340,6 +1368,7 @@ namespace PFD
                     BackFrameRakeAngle,
                     DoorBlocksProperties,
                     WindowBlocksProperties,
+                    ComponentList,
                     GeneralLoad,
                     Wind,
                     Snow,
@@ -1545,5 +1574,12 @@ namespace PFD
         {
             this.PropertyChanged(sender, e);
         }
+
+        private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            this.PropertyChanged(sender, e);
+        }
+
+        
     }
 }
