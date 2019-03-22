@@ -12,7 +12,7 @@ namespace PFD
         public CBlock_3D_001_DoorInBay(
             DoorProperties prop,
             float fLimitDistanceFromColumn,       // Limit value to generate girts on the left or right side of opening
-            float fBottomGirtPosition,            // Vertical position of first girt
+            float fBottomGirtPosition,            // Vertical position of bottom girt
             float fDist_Girt,                     // Vertical regular distance between girts
             CMember referenceGirt_temp,           // Reference girt object in bay
             CMember ColumnLeft,                   // Left column of bay
