@@ -48,6 +48,7 @@ namespace CRSC
             set { m_fc_lip2 = value; }
         }
 
+        public CCrSc_3_50020_C_NESTED(float fh, float fb, float ft) : this(0, fh, fb, ft, Colors.Red) { }
         public CCrSc_3_50020_C_NESTED(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
             ID = iID_temp;
