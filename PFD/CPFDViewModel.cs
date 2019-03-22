@@ -16,6 +16,7 @@ using BriefFiniteElementNet.CodeProjectExamples;
 using BriefFiniteElementNet;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -1110,12 +1111,7 @@ namespace PFD
                 NotifyPropertyChanged("ComponentList");
             }
         }
-
-        private void C_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;

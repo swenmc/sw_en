@@ -10,6 +10,7 @@ using System.Globalization;
 using BaseClasses;
 using System.Collections.ObjectModel;
 using DATABASE;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -167,41 +168,42 @@ namespace PFD
             //a pre ostatne? nastavil som vsetky
             
             MComponentList = new ObservableCollection<CComponentInfo>();
-            CDatabaseComponents database = new CDatabaseComponents(); // System components database
+           
+            List<CComponentPrefixes> list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
             CComponentInfo ci = null;            
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], "Box 63020", "G550", true, true, true, true, true, Sections);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "Box 63020", "G550", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], "Box 63020", "G550", true, true, true, true, true, Sections);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "Box 63020", "G550", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], "C 50020", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "C 50020", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], "C 27095", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "C 27095", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], "C 270115", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "C 270115", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true, Sections);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "C 27095", "G550", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
-                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true, Sections);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "C 27095", "G550", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
 
             SelectedComponentIndex = 0;
