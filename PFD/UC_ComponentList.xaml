@@ -6,24 +6,34 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Height="1350" Width="750">
-    <Grid Margin="5,10,5,5">
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="220"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="950"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding ComponentList}" SelectionChanged="Datagrid_Components_SelectionChanged">
-            <DataGrid.Resources>
+                  IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">
+            <!--<DataGrid.Resources>
                 <CollectionViewSource x:Key="Sections" Source="{Binding Sections}"/>
-            </DataGrid.Resources>
+            </DataGrid.Resources>-->
             <DataGrid.Columns>
-                <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" Header="Prefix" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ComponentName}" Header="ComponentName" Width="Auto"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Section" Width="Auto"
-                                SelectedItemBinding="{Binding Path=Section}"
-                                ItemsSource="{Binding Source={StaticResource Sections}}" />
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="Auto" SelectedValueBinding="{Binding Section}">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding Sections}"/>
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto"></DataGridTextColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Generate}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
@@ -36,6 +46,7 @@
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Component Details" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="True" ItemsSource="{Binding ComponentDetailsList}">
-            </DataGrid>
+        </DataGrid>
     </Grid>
+
 </UserControl>

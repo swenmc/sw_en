@@ -330,6 +330,9 @@
                         <TextBlock Text="Members" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
+                <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <local:UC_ComponentList></local:UC_ComponentList>
+                </ScrollViewer>
             </TabItem>
             <TabItem Name ="Joint_Input">
                 <TabItem.Header>

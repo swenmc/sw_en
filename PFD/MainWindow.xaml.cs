@@ -287,8 +287,8 @@ namespace PFD
         private void CalculateLoadingValues()
         {
             // Input - TabItem Components
-            if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-            UC_ComponentList componentList_UC = (UC_ComponentList)Member_Input.Content;
+            //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+            //UC_ComponentList componentList_UC = (UC_ComponentList)Member_Input.Content;
             //tu som nenasiel ziaden ViewModel napojeny na dany User Control
             //DataGrid grid = componentList_UC.Datagrid_Components;
 
@@ -765,7 +765,8 @@ namespace PFD
 
             if (MainTabControl.SelectedIndex == (int)ETabNames.eMember_Input)
             {
-                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                //defined in xaml
+                //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
             {

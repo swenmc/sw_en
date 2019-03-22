@@ -19,6 +19,7 @@ namespace PFD
         public event PropertyChangedEventHandler PropertyChanged;
 
         ObservableCollection<CComponentInfo> MComponentList;
+        private int MSelectedComponentIndex;
 
         // DATABASE DATA (MDBModels - table sections)
         /*
@@ -60,7 +61,7 @@ namespace PFD
                 NotifyPropertyChanged("ComponentList");
             }
         }
-        public List<string> Sections
+        private List<string> Sections
         {
             get
             {
@@ -85,6 +86,7 @@ namespace PFD
                 if (MSectionsForColumnsOrRafters == null)
                 {
                     MSectionsForColumnsOrRafters = new List<string>(5);
+                    MSectionsForColumnsOrRafters.Add(Sections[0]);   // DB ID ? toto som pridal lebo inak bolo pre C nastavenie nieco co nebolo v zozname
                     MSectionsForColumnsOrRafters.Add(Sections[5]);   // DB ID 6
                     MSectionsForColumnsOrRafters.Add(Sections[7]);   // DB ID 8
                     MSectionsForColumnsOrRafters.Add(Sections[8]);   // DB ID 9
@@ -140,12 +142,69 @@ namespace PFD
             }
         }
 
+        public int SelectedComponentIndex
+        {
+            get
+            {
+                return MSelectedComponentIndex;
+            }
+
+            set
+            {
+                MSelectedComponentIndex = value;
+                NotifyPropertyChanged("SelectedComponentIndex");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CComponentListVM()
         {
+            // TODO No 47 - Ondrej - nastavit pre rozne riadky iny obsah comboboxu "sections"
+            // Pre prefixy MC, MR, C nastavit SectionsForColumnsOrRafters
+            // Pre prefixy EP, G, P nastavit SectionsForGirtsOrPurlins
+            //a pre ostatne? nastavil som vsetky
+            
             MComponentList = new ObservableCollection<CComponentInfo>();
+            CDatabaseComponents database = new CDatabaseComponents(); // System components database
+
+            CComponentInfo ci = null;            
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], "Box 63020", "G550", true, true, true, true, true, Sections);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], "Box 63020", "G550", true, true, true, true, true, Sections);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], "C 50020", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], "C 27095", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], "C 270115", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true, Sections);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], 
+                database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true, Sections);
+            MComponentList.Add(ci);
+
+            SelectedComponentIndex = 0;
         }
 
         //-------------------------------------------------------------------------------------------------------------

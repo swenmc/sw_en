@@ -11,6 +11,7 @@ namespace PFD
         private string MPrefix;
         private string MComponentName;
         private string MSection;
+        private List<string> MSections;
         private string MMaterial;
         private bool MGenerate;
         private bool MDisplay;
@@ -135,7 +136,20 @@ namespace PFD
             }
         }
 
-        public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList)
+        public List<string> Sections
+        {
+            get
+            {
+                return MSections;
+            }
+
+            set
+            {
+                MSections = value;
+            }
+        }
+
+        public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections)
         {
             MPrefix = prefix;
             MComponentName = componentName;
@@ -146,6 +160,7 @@ namespace PFD
             MCalculate = calculate;
             MDesign = design;
             MMaterialList = materialList;
+            MSections = sections;
         }
     }
 }
