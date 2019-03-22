@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BaseClasses
 {
@@ -19,6 +20,14 @@ namespace BaseClasses
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
 
+
+        //validationValues
+        private float m_WallHeight = float.NaN;
+        private float m_L1 = float.NaN;
+        private float m_distFrontColumns = float.NaN;
+        private float m_distBackColumns = float.NaN;
+
+
         public string sBuildingSide
         {
             get
@@ -28,8 +37,15 @@ namespace BaseClasses
 
             set
             {
+                string temp = m_sBuildingSide;
                 m_sBuildingSide = value;
-                NotifyPropertyChanged("sBuildingSide");
+
+                if (!ValidateWindowInsideBay())
+                {
+                    m_sBuildingSide = temp;
+                    MessageBox.Show("Window outside of bay width.");
+                }
+                else NotifyPropertyChanged("sBuildingSide");
             }
         }
 
@@ -70,8 +86,15 @@ namespace BaseClasses
 
             set
             {
+                float temp = m_fWindowsWidth;
                 m_fWindowsWidth = value;
-                NotifyPropertyChanged("fWindowsWidth");
+                if (!ValidateWindowInsideBay())
+                {
+                    m_fWindowsWidth = temp;
+                    MessageBox.Show("Window outside of bay width.");
+
+                }
+                else NotifyPropertyChanged("fWindowsWidth");
             }
         }
 
@@ -84,8 +107,14 @@ namespace BaseClasses
 
             set
             {
+                float temp = m_fWindowCoordinateXinBay;
                 m_fWindowCoordinateXinBay = value;
-                NotifyPropertyChanged("fWindowCoordinateXinBay");
+                if (!ValidateWindowInsideBay()) {
+                    m_fWindowCoordinateXinBay = temp;
+                    MessageBox.Show("Window outside of bay width.");
+
+                }
+                else NotifyPropertyChanged("fWindowCoordinateXinBay");
             }
         }
 
@@ -160,29 +189,34 @@ namespace BaseClasses
         public bool ValidateWindowInsideBay()
         {
             //TODO implement according to DoorProperties
+            float fBayWidth = 0;
+            if (sBuildingSide == "Left" || sBuildingSide == "Right")
+            {
+                fBayWidth = m_L1;
+            }
+            else if (sBuildingSide == "Front")
+            {
+                fBayWidth = m_distFrontColumns;
 
-            //if (sBuildingSide == "Front")
-            //{
-            //    if (float.IsNaN(m_distFrontColumns)) return true;
-            //    if (m_distFrontColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
-            //}
-            //else if (sBuildingSide == "Back")
-            //{
-            //    if (float.IsNaN(m_distBackColumns)) return true;
-            //    if (m_distBackColumns < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
-            //}
-            //else if (sBuildingSide == "Left")
-            //{
-            //    if (float.IsNaN(m_L1)) return true;
-            //    if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
-            //}
-            //else if (sBuildingSide == "Right")
-            //{
-            //    if (float.IsNaN(m_L1)) return true;
-            //    if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
-            //}
+            }
+            else if (sBuildingSide == "Back")
+            {
+                fBayWidth = m_distBackColumns;
+            }
 
+            if (float.IsNaN(fBayWidth)) return true;
+            if (fBayWidth < m_fWindowsWidth+ m_fWindowCoordinateXinBay) return false;
+            
             return true;
+        }
+
+        public void SetValidationValues(float wallHeight, float L1, float distFrontColumns, float distBackColumns)
+        {
+            m_WallHeight = wallHeight;
+            m_L1 = L1;
+            m_distFrontColumns = distFrontColumns;
+            m_distBackColumns = distBackColumns;
+
         }
     }
 }

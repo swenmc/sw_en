@@ -1117,7 +1117,7 @@ namespace PFD
 
             SetDoorsBays();
             SetWindowsBays();
-            SetDoorsValidationProperties();
+            SetDoorsWindowsValidationProperties();
         }
 
         private void SetDoorsBays()
@@ -1227,18 +1227,26 @@ namespace PFD
             }
             return -1;
         }
-
-
+        
+        private void SetDoorsWindowsValidationProperties()
+        {
+            SetDoorsValidationProperties();
+            SetWindowsValidationProperties();
+        }
         private void SetDoorsValidationProperties()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
-                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
-                //if (d.sBuildingSide == "Front") d.Bays = frontBays;
-                //else if (d.sBuildingSide == "Back") d.Bays = backBays;
-                //else if (d.sBuildingSide == "Left") d.Bays = leftRightBays;
-                //else if (d.sBuildingSide == "Right") d.Bays = leftRightBays;
+                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);                
+            }
+        }
+        private void SetWindowsValidationProperties()
+        {
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
+            foreach (WindowProperties w in MWindowBlocksProperties)
+            {
+                w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
         //-------------------------------------------------------------------------------------------------------------

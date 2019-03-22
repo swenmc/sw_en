@@ -14,7 +14,7 @@ namespace PFD
         public CBlock_3D_002_WindowInBay(
             WindowProperties prop,
             float fLimitDistanceFromColumn,       // Limit value to generate girts on the left or right side of opening
-            float fBottomGirtPosition,            // Vertical position of bottom girt
+            float fBottomGirtPosition,            // Vertical position of first girt
             float fDist_Girt,                     // Vertical regular distance between girts
             CMember referenceGirt_temp,           // Reference girt object in bay
             CMember ColumnLeft,                   // Left column of bay
@@ -38,10 +38,10 @@ namespace PFD
 
             // Basic validation
             if ((prop.fWindowsWidth + prop.fWindowCoordinateXinBay) > fBayWidth)
-                throw new Exception(); // Window is defined out of frame bay
+                throw new Exception("Window is defined out of frame bay."); // Window is defined out of frame bay
 
             if ((prop.fWindowsHeight + prop.fWindowCoordinateZinBay) > fBayHeight)
-                throw new Exception(); // Window is defined out of frame height
+                throw new Exception("Window is defined out of frame height"); // Window is defined out of frame height
 
             float fDistanceBetweenWindowColumns = prop.fWindowsWidth / (prop.iNumberOfWindowColumns - 1);
 
