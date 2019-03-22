@@ -15,7 +15,7 @@ namespace BaseClasses.Helpers
         private static Dictionary<string, CrScProperties> sectionsProps = null;
         
 
-        public static CSC GetCrSc(string SectionName)
+        public static CCrSc_TW GetCrSc(string SectionName)
         {
             if(sectionsProps == null) sectionsProps = CSectionManager.LoadSectionProperties();
 
@@ -28,19 +28,19 @@ namespace BaseClasses.Helpers
             }
             else if (SectionName == "C 50020")
             {
-                new CCrSc_3_50020_C((float)s.h, (float)s.b, (float)s.t_min);
+                return new CCrSc_3_50020_C((float)s.h, (float)s.b, (float)s.t_min);
             }
             else if (SectionName == "C 27095")
             {
-                new CCrSc_3_270XX_C((float)s.h, (float)s.b, (float)s.t_min);
+                return new CCrSc_3_270XX_C((float)s.h, (float)s.b, (float)s.t_min);
             }
             else if (SectionName == "C 270115")
             {
-                new CCrSc_3_270XX_C_NESTED((float)s.h, (float)s.b, (float)s.t_min);
+                return new CCrSc_3_270XX_C_NESTED((float)s.h, (float)s.b, (float)s.t_min);
             }
             else if (SectionName == "Box 10075")
             {
-                new CCrSc_3_270XX_C_NESTED((float)s.h, (float)s.b, (float)s.t_min);
+                return new CCrSc_3_270XX_C_NESTED((float)s.h, (float)s.b, (float)s.t_min);
             }
 
             return null;            
