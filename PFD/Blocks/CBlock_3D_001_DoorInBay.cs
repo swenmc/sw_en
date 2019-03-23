@@ -29,11 +29,6 @@ namespace PFD
 
             // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
-            /*
-            fDoorsHeight = 2.1f;
-            fDoorsWidth = 1.1f;
-            fDoorCoordinateXinBlock = 0.6f; // From 0 to Bay Width (distance L1) - DoorsWidth // Position of Door in Bay
-            */
 
             // Basic validation
             if ((prop.fDoorsWidth + prop.fDoorCoordinateXinBlock) > fBayWidth)
