@@ -15,7 +15,7 @@
             <RowDefinition Height="950"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">            
+                  IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
@@ -42,7 +42,13 @@
 
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Component Details" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="true" AutoGenerateColumns="True" ItemsSource="{Binding ComponentDetailsList}">
+                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 

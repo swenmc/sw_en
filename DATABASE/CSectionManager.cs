@@ -356,12 +356,12 @@ namespace DATABASE
                     {
                         properties = new CSectionPropertiesText();
                         properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        properties.text = reader["propertyText"].ToString();
-                        properties.symbol = reader["propertySymbol"].ToString();
-                        properties.name = reader["propertyName"].ToString();
-                        properties.unit_SI = reader["unit_SI"].ToString();
-                        properties.unit_NcmkPa = reader["unit_NcmkPa"].ToString();
-                        properties.unit_NmmMpa = reader["unit_NmmMPa"].ToString();
+                        properties.Text= reader["propertyText"].ToString();
+                        properties.Symbol = reader["propertySymbol"].ToString();
+                        properties.Name = reader["propertyName"].ToString();
+                        properties.Unit_SI = reader["unit_SI"].ToString();
+                        properties.Unit_NcmkPa = reader["unit_NcmkPa"].ToString();
+                        properties.Unit_NmmMpa = reader["unit_NmmMPa"].ToString();
                         items.Add(properties);
                     }
                 }

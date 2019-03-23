@@ -1159,7 +1159,7 @@ namespace PFD
                 foreach (CSectionPropertiesText textRow in sectionTexts)
                 {
                     if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row for property value which is not empty string
-                        details.Add(new CComponentParamsViewString(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
+                        details.Add(new CComponentParamsViewString(textRow.Text, textRow.Symbol, listSectionPropertyValue[textRow.ID - 1], textRow.Unit_NmmMpa));
                 }
 
                 ComponentDetails = details;

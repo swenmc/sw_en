@@ -28,6 +28,8 @@ namespace PFD
         private List<string> MSectionsForDoorOrWindowFrame;
         private List<string> MSectionsForRollerDoorTrimmer;
 
+        private List<CSectionPropertiesText> m_ComponentDetailsList;
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -44,6 +46,29 @@ namespace PFD
                 NotifyPropertyChanged("ComponentList");
             }
         }
+        
+        public List<CSectionPropertiesText> ComponentDetailsList
+        {
+            get
+            {
+                
+                
+                if (m_ComponentDetailsList == null)
+                {
+                    //List<CSectionPropertiesText> secProps = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
+                    //m_ComponentDetailsList = new ObservableCollection<CSectionPropertiesText>(secProps);
+                    m_ComponentDetailsList = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
+                }
+                return m_ComponentDetailsList;
+            }
+
+            set
+            {
+                m_ComponentDetailsList = value;
+                NotifyPropertyChanged("ComponentDetailsList");
+            }
+        }
+
         private List<string> Sections
         {
             get
@@ -154,6 +179,7 @@ namespace PFD
             set
             {
                 MSelectedComponentIndex = value;
+                SetComponentDetails(MSelectedComponentIndex + 1);
                 NotifyPropertyChanged("SelectedComponentIndex");
             }
         }
@@ -164,7 +190,7 @@ namespace PFD
         public CComponentListVM()
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
-           
+            
             List<CComponentPrefixes> list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
             CComponentInfo ci = null;
@@ -210,6 +236,25 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SetComponentDetails(int sectionID)
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Cross-section details
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
+            
+            List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(sectionID + 1);
+
+            // Default - other properties
+            for (int i = 0; i < ComponentDetailsList.Count; i++)
+            {
+                ComponentDetailsList[i].Value = listSectionPropertyValue[i];
+            }
+            ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
+
+
         }
     }
 }
