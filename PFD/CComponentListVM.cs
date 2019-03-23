@@ -22,25 +22,6 @@ namespace PFD
         ObservableCollection<CComponentInfo> MComponentList;
         private int MSelectedComponentIndex;
 
-        // DATABASE DATA (MDBModels - table sections)
-        /*
-        -----------------------------------------
-        ID  section   sectionName
-        -----------------------------------------
-        1   10075     Box 10075
-        2   27055     C 27055
-        3   27095     C 27095
-        4   27095n    C 27095n
-        5   270115    C 270115
-        6   270115btb C 270115 back to back
-        7   270115n   C 270115 nested
-        8   50020     C 50020
-        9   50020n    C 50020 nested
-        10  63020     Box 63020
-        11  63020s1   Box 63020 single stiffener
-        12  63020s2   Box 63020 double stiffener
-        */
-
         private List<string> MSections;
         private List<string> MSectionsForColumnsOrRafters;
         private List<string> MSectionsForGirtsOrPurlins;
@@ -75,10 +56,27 @@ namespace PFD
             }
         }
 
-        // TODO No 47 - Ondrej - nastavit pre rozne riadky iny obsah comboboxu "sections"
-        // Pre prefixy MC, MR, C nastavit SectionsForColumnsOrRafters
-        // Pre prefixy EP, G, P nastavit SectionsForGirtsOrPurlins
-        // mozno by to mohlo byt pripravene v nejakom zozname sectionID v databaze pre kazdy prefix, vid MDBModels - tabulka componentPrefixes a tabulka sections
+        // Nastavit pre rozne typy component iny obsah comboboxu "sections"
+        // Mozno by to mohlo byt predpripravene v nejakom zozname sectionID v databaze pre kazdy prefix,
+        // vid MDBModels - tabulka componentPrefixes a MDBSections, kazdy prefix (typ pruta) by potom obsahoval zoznam ID prierezov ktore mu mozu byt priradene
+
+        /*
+        -----------------------------------------
+        ID  section   sectionName
+        -----------------------------------------
+        1   10075     Box 10075
+        2   27055     C 27055
+        3   27095     C 27095
+        4   27095n    C 27095n
+        5   270115    C 270115
+        6   270115btb C 270115 back to back
+        7   270115n   C 270115 nested
+        8   50020     C 50020
+        9   50020n    C 50020 nested
+        10  63020     Box 63020
+        11  63020s1   Box 63020 single stiffener
+        12  63020s2   Box 63020 double stiffener
+        */
 
         public List<string> SectionsForColumnsOrRafters
         {
@@ -165,11 +163,6 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CComponentListVM()
         {
-            // TODO No 47 - Ondrej - nastavit pre rozne riadky iny obsah comboboxu "sections"
-            // Pre prefixy MC, MR, C nastavit SectionsForColumnsOrRafters
-            // Pre prefixy EP, G, P nastavit SectionsForGirtsOrPurlins
-            //a pre ostatne? nastavil som vsetky
-            
             MComponentList = new ObservableCollection<CComponentInfo>();
            
             List<CComponentPrefixes> list_CompPref = CComponentManager.LoadComponentsPrefixes();
@@ -182,10 +175,10 @@ namespace PFD
                 list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix,
                 list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
@@ -203,10 +196,10 @@ namespace PFD
                 list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
 
             SelectedComponentIndex = 0;
