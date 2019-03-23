@@ -11,27 +11,20 @@ namespace BaseClasses.Helpers
 {
     public static class MaterialFactory
     {
-        private static Dictionary<string, CMaterialProperties> materialsProps = null;
+        private static Dictionary<string, CMatProperties> materialsProps = null;
 
-
-        public static CMat GetMaterial(string materialName)
+        public static CMat_03_00 GetMaterial(string materialName)
         {
-            if (materialsProps == null) materialsProps = CMaterialManager.LoadMaterialPropertiesDict();
+            if (materialsProps == null) materialsProps = CMaterialManager.LoadMaterialProperties();
 
-            CMaterialProperties s = null;
+            CMatProperties s = null;
             materialsProps.TryGetValue(materialName, out s);
             if (s == null) return null;
-            if (materialName == "G550‡")
-            {
-                return new CMat_03_00(1, "G550‡", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            }
-            else if (materialName == "G500†")
-            {
-                return new CMat_03_00(1, "G500†", 200e+9f, 0.3f, 0.1f, 500e+6f, 500e+6f);
-            }
-            
 
-            return null;
+            CMat_03_00 material = new CMat_03_00(1, s.Grade, 200e+9f, 0.3f); // Create steel material
+            CMaterialManager.SetMaterialProperties(s, ref material);
+
+            return material;
         }
     }
 }

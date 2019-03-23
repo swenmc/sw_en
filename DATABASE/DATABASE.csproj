@@ -88,6 +88,7 @@
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
     <Compile Include="DTO\CAnnualProbability.cs" />
+    <Compile Include="DTO\CMatProperties.cs" />
     <Compile Include="DTO\CMaterialProperties.cs" />
     <Compile Include="DTO\CrScProperties.cs" />
     <Compile Include="DTO\CTEKScrewProperties.cs" />

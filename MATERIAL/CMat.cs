@@ -24,14 +24,6 @@ namespace MATERIAL
             set { m_sName = value; }
         }
 
-        private string m_sNameDatabase;
-
-        public string NameDatabase
-        {
-            get { return m_sNameDatabase; }
-            set { m_sNameDatabase = value; }
-        }
-
         // Default material - steel
         public short m_sMatType = 3;
         public float m_fE = 2.1e11f;       // Unit [Pa]

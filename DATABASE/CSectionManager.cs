@@ -15,7 +15,7 @@ namespace DATABASE
             CrScProperties crsc = null;
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
-            
+
             Dictionary<string, CrScProperties> items = new Dictionary<string, CrScProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))

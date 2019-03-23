@@ -15,7 +15,7 @@ namespace DATABASE.DTO
         public string unit_SI;
         public string unit_NcmkPa;
         public string unit_NmmMpa;
-       
+
         public CSectionPropertiesText() { }
     }
 }

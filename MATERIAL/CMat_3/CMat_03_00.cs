@@ -64,6 +64,17 @@ namespace MATERIAL
             m_ff_u = new float[1] { fu };
         }
 
+        public CMat_03_00(int id, string name_temp, float fE, float fNu)
+        {
+            ID = id;
+            Name = name_temp; // Default Name
+            m_sMatType = 3;
+            m_fE = fE;   // Unit [Pa]
+            m_fNu = fNu;    // Unit [-]
+            m_fG = m_fE / (2f * (1f + m_fNu)); // Unit [Pa]
+            m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
+        }
+
         public CMat_03_00(int id, string name_temp, float fE, float fNu, float ft, float fy, float fu)
         {
             ID = id;

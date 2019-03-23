@@ -10,6 +10,48 @@ namespace DATABASE
 {
     public static class CMaterialManager
     {
+        public static Dictionary<string, CMatProperties> LoadMaterialProperties()
+        {
+            CMatProperties mat = null;
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            Dictionary<string, CMatProperties> items = new Dictionary<string, CMatProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        mat = new CMatProperties();
+                        mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        mat.Standard = reader["Standard"].ToString();
+                        mat.Grade = reader["Grade"].ToString();
+                        mat.iNumberOfIntervals = int.Parse(reader["iNumberOfIntervals"].ToString(), nfi);
+                        mat.t1 = reader["t1"].ToString() == "" ? double.NaN : double.Parse(reader["t1"].ToString(), nfi);
+                        mat.t2 = reader["t2"].ToString() == "" ? double.NaN : double.Parse(reader["t2"].ToString(), nfi);
+                        mat.t3 = reader["t3"].ToString() == "" ? double.NaN : double.Parse(reader["t3"].ToString(), nfi);
+                        mat.t4 = reader["t4"].ToString() == "" ? double.NaN : double.Parse(reader["t4"].ToString(), nfi);
+                        mat.f_y1 = reader["f_y1"].ToString() == "" ? double.NaN : double.Parse(reader["f_y1"].ToString(), nfi);
+                        mat.f_u1 = reader["f_u1"].ToString() == "" ? double.NaN : double.Parse(reader["f_u1"].ToString(), nfi);
+                        mat.f_y2 = reader["f_y2"].ToString() == "" ? double.NaN : double.Parse(reader["f_y2"].ToString(), nfi);
+                        mat.f_u2 = reader["f_u2"].ToString() == "" ? double.NaN : double.Parse(reader["f_u2"].ToString(), nfi);
+                        mat.f_y3 = reader["f_y3"].ToString() == "" ? double.NaN : double.Parse(reader["f_y3"].ToString(), nfi);
+                        mat.f_u3 = reader["f_u3"].ToString() == "" ? double.NaN : double.Parse(reader["f_u3"].ToString(), nfi);
+                        mat.f_y4 = reader["f_y4"].ToString() == "" ? double.NaN : double.Parse(reader["f_y4"].ToString(), nfi);
+                        mat.f_u4 = reader["f_u4"].ToString() == "" ? double.NaN : double.Parse(reader["f_u4"].ToString(), nfi);
+                        mat.note = reader["note"].ToString();
+
+                        items.Add(mat.Grade, mat);
+                    }
+                }
+            }
+            return items;
+        }
+        /*
         public static Dictionary<string, CMaterialProperties> LoadMaterialPropertiesDict()
         {
             CMaterialProperties properties;
@@ -46,7 +88,8 @@ namespace DATABASE
             }
             return items;
         }
-        public static List<CMaterialProperties> LoadMaterialProperties()
+        */
+        public static List<CMaterialProperties> LoadMaterialProperties_list()
         {
             CMaterialProperties properties;
             List<CMaterialProperties> items = new List<CMaterialProperties>();
@@ -145,7 +188,45 @@ namespace DATABASE
 
             return properties;
         }
+        /*
+        public static CMatProperties LoadMaterialProperties_basicSIUnits(string name)
+        {
+            CMatProperties mat = new CMatProperties();
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
 
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600 WHERE Grade = @Grade", conn);
+                command.Parameters.AddWithValue("@Grade",  name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        mat.Standard = reader["Standard"].ToString();
+                        mat.Grade = reader["Grade"].ToString();
+                        mat.iNumberOfIntervals = int.Parse(reader["iNumberOfIntervals"].ToString(), nfi);
+                        mat.t1 = reader["t1"].ToString() == "" ? double.NaN : double.Parse(reader["t1"].ToString(), nfi);
+                        mat.t2 = reader["t2"].ToString() == "" ? double.NaN : double.Parse(reader["t2"].ToString(), nfi);
+                        mat.t3 = reader["t3"].ToString() == "" ? double.NaN : double.Parse(reader["t3"].ToString(), nfi);
+                        mat.t4 = reader["t4"].ToString() == "" ? double.NaN : double.Parse(reader["t4"].ToString(), nfi);
+                        mat.f_y1 = reader["f_y1"].ToString() == "" ? double.NaN : double.Parse(reader["f_y1"].ToString(), nfi);
+                        mat.f_u1 = reader["f_u1"].ToString() == "" ? double.NaN : double.Parse(reader["f_u1"].ToString(), nfi);
+                        mat.f_y2 = reader["f_y2"].ToString() == "" ? double.NaN : double.Parse(reader["f_y2"].ToString(), nfi);
+                        mat.f_u2 = reader["f_u2"].ToString() == "" ? double.NaN : double.Parse(reader["f_u2"].ToString(), nfi);
+                        mat.f_y3 = reader["f_y3"].ToString() == "" ? double.NaN : double.Parse(reader["f_y3"].ToString(), nfi);
+                        mat.f_u3 = reader["f_u3"].ToString() == "" ? double.NaN : double.Parse(reader["f_u3"].ToString(), nfi);
+                        mat.f_y4 = reader["f_y4"].ToString() == "" ? double.NaN : double.Parse(reader["f_y4"].ToString(), nfi);
+                        mat.f_u4 = reader["f_u4"].ToString() == "" ? double.NaN : double.Parse(reader["f_u4"].ToString(), nfi);
+                    }
+                }
+            }
+            return mat;
+        }
+        */
         public static void SetMaterialValuesFromDatabase(CMat[] materials)
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
@@ -229,7 +310,7 @@ namespace DATABASE
             }
         }
 
-        public static void LoadMaterialProperties(CMat_03_00 mat, string matNameDatabase) // Grade
+        public static void LoadMaterialProperties(CMat_03_00 mat, string matName) // Grade
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -238,13 +319,13 @@ namespace DATABASE
             {
                 conn.Open();
                 SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600 WHERE Grade = @Grade", conn);
-                command.Parameters.AddWithValue("@Grade", matNameDatabase);
+                command.Parameters.AddWithValue("@Grade", matName);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        mat.NameDatabase = matNameDatabase;
+                        mat.Name = matName;
 
                         SetMaterialProperties(reader, ref mat);
                     }
@@ -349,6 +430,69 @@ namespace DATABASE
                 mat.m_ft_interval[3] = float.Parse(reader["t4"].ToString(), nfi);
                 mat.m_ff_yk[3] = float.Parse(reader["f_y4"].ToString(), nfi) * 1e+6f;
                 mat.m_ff_u[3] = float.Parse(reader["f_u4"].ToString(), nfi) * 1e+6f;
+            }
+        }
+
+        public static void SetMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
+        {
+            mat.ID = properties.ID;
+            mat.Standard = properties.Standard;
+            mat.Name = properties.Grade;
+
+            // Load number intervals of thickness depending values
+            int intervals = properties.iNumberOfIntervals;
+            // Resize fields
+            Array.Resize<float>(ref mat.m_ft_interval, intervals);
+            Array.Resize<float>(ref mat.m_ff_yk, intervals);
+            Array.Resize<float>(ref mat.m_ff_u, intervals);
+
+            mat.Note = properties.note;
+
+            if (intervals == 1)
+            {
+                mat.m_ft_interval = new float[intervals];
+                mat.m_ft_interval[0] = (float)properties.t1;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
+                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
+            }
+            else if (intervals == 2)
+            {
+                mat.m_ft_interval = new float[intervals];
+                mat.m_ft_interval[0] = (float)properties.t1;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
+                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
+                mat.m_ft_interval[1] = (float)properties.t2;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
+                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
+            }
+            else if (intervals == 3)
+            {
+                mat.m_ft_interval = new float[intervals];
+                mat.m_ft_interval[0] = (float)properties.t1;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
+                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
+                mat.m_ft_interval[1] = (float)properties.t2;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
+                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
+                mat.m_ft_interval[2] = (float)properties.t3;
+                mat.m_ff_yk[2] = (float)properties.f_y3 * 1e+6f;
+                mat.m_ff_u[2] = (float)properties.f_u3 * 1e+6f;
+            }
+            else if (intervals == 4)
+            {
+                mat.m_ft_interval = new float[intervals];
+                mat.m_ft_interval[0] = (float)properties.t1;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
+                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
+                mat.m_ft_interval[1] = (float)properties.t2;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
+                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
+                mat.m_ft_interval[2] = (float)properties.t3;
+                mat.m_ff_yk[2] = (float)properties.f_y3 * 1e+6f;
+                mat.m_ff_u[2] = (float)properties.f_u3 * 1e+6f;
+                mat.m_ft_interval[3] = (float)properties.t4;
+                mat.m_ff_yk[3] = (float)properties.f_y4 * 1e+6f;
+                mat.m_ff_u[3] = (float)properties.f_u4 * 1e+6f;
             }
         }
     }
