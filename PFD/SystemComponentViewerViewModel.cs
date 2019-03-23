@@ -1141,7 +1141,7 @@ namespace PFD
             nfi.NumberDecimalSeparator = ".";
 
             List<CComponentParamsView> geometry = new List<CComponentParamsView>();
-            geometry.Add(new CComponentParamsViewString("Name", "", crsc.Name, ""));
+            geometry.Add(new CComponentParamsViewString("Name", "", crsc.Name_short, ""));
             geometry.Add(new CComponentParamsViewString("Width", "b", (Math.Round(crsc.b * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(new CComponentParamsViewString("Height", "h", (Math.Round(crsc.h * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(new CComponentParamsViewString("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
@@ -1154,7 +1154,7 @@ namespace PFD
 
             try
             {
-                listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(crsc.NameDatabase);
+                listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(crsc.Name_short);
 
                 foreach (CSectionPropertiesText textRow in sectionTexts)
                 {

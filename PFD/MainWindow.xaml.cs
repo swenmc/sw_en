@@ -548,7 +548,7 @@ namespace PFD
                 */
 
                 // Ak sa funkcia LoadCrossSectionProperties presunie do konstruktora pre CrSc tak toto je mozno uz navyse
-                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(crsc.NameDatabase);
+                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(crsc.Name_short);
                 crsc.SetParams(dto);
 
                 // Docasne hodnoty

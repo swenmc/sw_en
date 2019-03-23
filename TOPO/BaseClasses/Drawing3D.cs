@@ -1119,7 +1119,7 @@ namespace BaseClasses
             List<string> parts = new List<string>();
             if (options.bDisplayMemberID) parts.Add(m.ID.ToString());
             if (options.bDisplayMemberPrefix) parts.Add(m.Prefix.ToString());
-            if (options.bDisplayMemberCrossSectionStartName) parts.Add(m.CrScStart?.Name);
+            if (options.bDisplayMemberCrossSectionStartName) parts.Add(m.CrScStart?.Name_short);
             if (options.bDisplayMemberRealLength) parts.Add(m.FLength_real.ToString("F3") + " m");
 
             return string.Join(separator, parts);

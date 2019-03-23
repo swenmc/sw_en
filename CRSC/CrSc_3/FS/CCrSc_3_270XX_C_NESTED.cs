@@ -46,12 +46,12 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " nested";
-            NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + "n";
+            Name_long = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " nested";
+            Name_short = (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + "n";
 
             // Temporary
-            Name = "C " + "270" + (ft * 1000 * 100).ToString() + " nested";
-            NameDatabase = "270" + (ft * 1000 * 100).ToString() + "n";
+            Name_long = "C " + "270" + (ft * 1000 * 100).ToString() + " nested";
+            Name_short = "270" + (ft * 1000 * 100).ToString() + "n";
 
             CSColor = color_temp;  // Set cross-section color
 

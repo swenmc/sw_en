@@ -32,8 +32,8 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
-            NameDatabase = (fh * 1000).ToString() + (ft * 1000).ToString();
+            Name_long = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
+            Name_short = (fh * 1000).ToString() + (ft * 1000).ToString();
 
             h = fh;
             b = fb;
@@ -48,8 +48,8 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
-            NameDatabase = (fh * 1000).ToString() + (ft * 1000).ToString();
+            Name_long = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
+            Name_short = (fh * 1000).ToString() + (ft * 1000).ToString();
 
             h = fh;
             b = fb;

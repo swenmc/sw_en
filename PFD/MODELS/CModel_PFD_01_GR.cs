@@ -125,7 +125,7 @@ namespace PFD
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            // TODO - napojit na GUI a na databazu            
+            // TODO - napojit na GUI a na databazu
             m_arrMat[(int)EMemberGroupNames.eMainColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn].Material);
             m_arrMat[(int)EMemberGroupNames.eRafter] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eRafter].Material);
             m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eMainColumn_EF].Material);
@@ -137,18 +137,6 @@ namespace PFD
             m_arrMat[(int)EMemberGroupNames.eBackColumn] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackColumn].Material);
             m_arrMat[(int)EMemberGroupNames.eFrontGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirt].Material);
             m_arrMat[(int)EMemberGroupNames.eBackGirt] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirt].Material);
-
-            //m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
-            //m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
@@ -173,29 +161,17 @@ namespace PFD
                 m_arrCrSc[i].ID = i + 1;
             }
 
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn].CSColor = Colors.Chocolate;
-            m_arrCrSc[(int)EMemberGroupNames.eRafter].CSColor = Colors.Green;               // Rafter
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn].CSColor = Colors.Chocolate;       // Main Column
+            m_arrCrSc[(int)EMemberGroupNames.eRafter].CSColor = Colors.Green;               // Main Rafter
             m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].CSColor = Colors.DarkOrchid;   // Main Column - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].CSColor = Colors.GreenYellow;      // Rafter - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].CSColor = Colors.DarkCyan;                    // Eaves Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eGirtWall].CSColor = Colors.Orange;                       // Girt - Wall
-            m_arrCrSc[(int)EMemberGroupNames.ePurlin].CSColor = Colors.SlateBlue;                      // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].CSColor = Colors.BlueViolet;        // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor =  Colors.BlueViolet;         // Back Column
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;                       // Front Girt
-            m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;
-
-            //m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Chocolate); // 1.95,4.9, 7.85      // Main Column
-            //m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00785f, Colors.Green);               // Rafter
-            //m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(3, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
-            //m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(4, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
-            //m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(5, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
-            //m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(6, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
-            //m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(7, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
-            //m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(8, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
-            //m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(9, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
-            //m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(10, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
-            //m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(11, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
+            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].CSColor = Colors.GreenYellow;      // Main Rafter - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].CSColor = Colors.DarkCyan;       // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall].CSColor = Colors.Orange;            // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin].CSColor = Colors.SlateBlue;           // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].CSColor = Colors.BlueViolet;     // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor =  Colors.BlueViolet;     // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;            // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // Back Girt
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);
@@ -208,17 +184,17 @@ namespace PFD
             float fLimitTotal = 1 / 150f;
             float fLimitTotal_Frame = 1f / 250f;
             
-            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberType_FS.eMC].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberType_FS.eMR].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberType_FS.eEC].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberType_FS.eER].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberType_FS.eEP].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberType_FS.eG].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberType_FS.eP].ComponentName, m_arrCrSc[(int)EMemberGroupNames.ePurlin], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberType_FS.eC].ComponentName + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberType_FS.eC].ComponentName + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberType_FS.eG].ComponentName + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberType_FS.eG].ComponentName + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, m_arrCrSc[(int)EMemberGroupNames.ePurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fLimitPermanentLoad, fLimitTotal, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)

@@ -21,13 +21,13 @@ namespace BaseClasses.Helpers
             CMaterialProperties s = null;
             materialsProps.TryGetValue(materialName, out s);
             if (s == null) return null;
-            if (materialName == "G550")
+            if (materialName == "G550‡")
             {
-                return new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+                return new CMat_03_00(1, "G550‡", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
             }
-            else if (materialName == "50020_C")
+            else if (materialName == "G500†")
             {
-                return new CMat_03_00(1, "G550", 200e+9f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+                return new CMat_03_00(1, "G500†", 200e+9f, 0.3f, 0.1f, 500e+6f, 500e+6f);
             }
             
 

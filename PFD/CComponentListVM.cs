@@ -30,14 +30,15 @@ namespace PFD
         1   10075     Box 10075
         2   27055     C 27055
         3   27095     C 27095
-        4   270115    C 270115
-        5   270115btb C 270115 back to back
-        6   270115n   C 270115 nested
-        7   50020     C 50020
-        8   50020n    C 50020 nested
-        9   63020     Box 63020
-        10  63020s1   Box 63020 single stiffener
-        11  63020s2   Box 63020 double stiffener
+        4   27095n    C 27095n
+        5   270115    C 270115
+        6   270115btb C 270115 back to back
+        7   270115n   C 270115 nested
+        8   50020     C 50020
+        9   50020n    C 50020 nested
+        10  63020     Box 63020
+        11  63020s1   Box 63020 single stiffener
+        12  63020s2   Box 63020 double stiffener
         */
 
         private List<string> MSections;
@@ -68,8 +69,7 @@ namespace PFD
             {
                 if (MSections == null)
                 {
-                    //MSections = new List<string> { "Box 63020", "Box 63020", "C 50020", "C 27095", "C 270115", "Box 10075", "Box 10075", "C 27095", "C 27095" };
-                    MSections = CDatabaseManager.GetStringList("ModelsSQLiteDB", "sections", "sectionName");
+                    MSections = CDatabaseManager.GetStringList("SectionsSQLiteDB", "tableSections_m", "sectionName_short");
                 }
                 return MSections;
             }
@@ -86,13 +86,15 @@ namespace PFD
             {
                 if (MSectionsForColumnsOrRafters == null)
                 {
-                    MSectionsForColumnsOrRafters = new List<string>(5);
-                    MSectionsForColumnsOrRafters.Add(Sections[0]);   // DB ID ? toto som pridal lebo inak bolo pre C nastavenie nieco co nebolo v zozname
-                    MSectionsForColumnsOrRafters.Add(Sections[5]);   // DB ID 6
+                    MSectionsForColumnsOrRafters = new List<string>(8);
+                    MSectionsForColumnsOrRafters.Add(Sections[3]);   // DB ID 4
+                    MSectionsForColumnsOrRafters.Add(Sections[4]);   // DB ID 5
+                    MSectionsForColumnsOrRafters.Add(Sections[6]);   // DB ID 7
                     MSectionsForColumnsOrRafters.Add(Sections[7]);   // DB ID 8
                     MSectionsForColumnsOrRafters.Add(Sections[8]);   // DB ID 9
                     MSectionsForColumnsOrRafters.Add(Sections[9]);   // DB ID 10
                     MSectionsForColumnsOrRafters.Add(Sections[10]);  // DB ID 11
+                    MSectionsForColumnsOrRafters.Add(Sections[11]);  // DB ID 12
                 }
                 return MSectionsForColumnsOrRafters;
             }
@@ -104,12 +106,13 @@ namespace PFD
             {
                 if (MSectionsForGirtsOrPurlins == null)
                 {
-                    MSectionsForGirtsOrPurlins = new List<string>(5);
+                    MSectionsForGirtsOrPurlins = new List<string>(6);
                     MSectionsForGirtsOrPurlins.Add(Sections[2]);   // DB ID 3
                     MSectionsForGirtsOrPurlins.Add(Sections[3]);   // DB ID 4
-                    MSectionsForGirtsOrPurlins.Add(Sections[5]);   // DB ID 6
+                    MSectionsForGirtsOrPurlins.Add(Sections[4]);   // DB ID 5
                     MSectionsForGirtsOrPurlins.Add(Sections[6]);   // DB ID 7
                     MSectionsForGirtsOrPurlins.Add(Sections[7]);   // DB ID 8
+                    MSectionsForGirtsOrPurlins.Add(Sections[8]);   // DB ID 9
                 }
                 return MSectionsForGirtsOrPurlins;
             }
@@ -136,7 +139,7 @@ namespace PFD
                 if (MSectionsForRollerDoorTrimmer == null)
                 {
                     MSectionsForRollerDoorTrimmer = new List<string>(1);
-                    MSectionsForRollerDoorTrimmer.Add(Sections[4]); // DB ID 5
+                    MSectionsForRollerDoorTrimmer.Add(Sections[5]); // DB ID 6
 
                 }
                 return MSectionsForRollerDoorTrimmer;
@@ -171,39 +174,39 @@ namespace PFD
            
             List<CComponentPrefixes> list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
-            CComponentInfo ci = null;            
+            CComponentInfo ci = null;
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "Box 63020", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "Box 63020", "G550", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "Box 63020", "G550", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "C 50020", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "C 27095", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "C 270115", "G550", true, true, true, true, true, SectionsForGirtsOrPurlins);
+                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "Box 10075", "G550", true, true, true, true, true, SectionsForColumnsOrRafters);
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "C 27095", "G550", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "C 27095", "G550", true, true, true, true, true, Sections);
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, Sections);
             MComponentList.Add(ci);
 
             SelectedComponentIndex = 0;

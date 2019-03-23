@@ -73,21 +73,20 @@ namespace CRSC
         }
 
         // Name of cross-section
-        private string m_sName;
+        private string m_sectionName_short;
 
-        public string Name
+        public string Name_short
         {
-            get { return m_sName; }
-            set { m_sName = value; }
+            get { return m_sectionName_short; }
+            set { m_sectionName_short = value; }
         }
 
-        // Name of cross-section in database
-        private string m_sNameDatabase;
+        private string m_sectionName_long;
 
-        public string NameDatabase
+        public string Name_long
         {
-            get { return m_sNameDatabase; }
-            set { m_sNameDatabase = value; }
+            get { return m_sectionName_long ; }
+            set { m_sectionName_long = value; }
         }
 
         // List of Members ID that have assigned cross-section

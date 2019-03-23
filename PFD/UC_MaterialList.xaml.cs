@@ -111,7 +111,7 @@ namespace PFD
                         {
                             // Define current member properties
                             string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
-                            string sCrScName = model.m_arrCrSc[i].Name;
+                            string sCrScName = model.m_arrCrSc[i].Name_short;
                             int iQuantity = 1;
                             string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
                             float fLength = assignedMembersList[j].FLength_real;

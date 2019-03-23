@@ -16,9 +16,10 @@ namespace DATABASE.DTO
         string MDistance_L1;
         string MIFrames;
         string MC_array_code;
-        string MColumn8;
         string MMainColumn;
         string MMainRafter;
+        string MEdgeColumn;
+        string MEdgeRafter;
         string MEdgePurlin;
         string MGirt;
         string MPurlin;
@@ -133,19 +134,6 @@ namespace DATABASE.DTO
             }
         }
 
-        public string Column8
-        {
-            get
-            {
-                return MColumn8;
-            }
-
-            set
-            {
-                MColumn8 = value;
-            }
-        }
-
         public string MainColumn
         {
             get
@@ -169,6 +157,32 @@ namespace DATABASE.DTO
             set
             {
                 MMainRafter = value;
+            }
+        }
+
+        public string EdgeColumn
+        {
+            get
+            {
+                return MEdgeColumn;
+            }
+
+            set
+            {
+                MEdgeColumn = value;
+            }
+        }
+
+        public string EdgeRafter
+        {
+            get
+            {
+                return MEdgeRafter;
+            }
+
+            set
+            {
+                MEdgeRafter = value;
             }
         }
 

@@ -28,7 +28,8 @@ namespace DATABASE
                     {
                         crsc = new CrScProperties();
                         crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.SectionNameDatabase = reader["section"].ToString();
+                        crsc.sectionName_short = reader["sectionName_short"].ToString();
+                        crsc.sectionName_long = reader["sectionName_long"].ToString();
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);
                         crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
@@ -84,57 +85,7 @@ namespace DATABASE
                         crsc.A_vz = double.Parse(reader["A_vz"].ToString(), nfi);
                         crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
 
-
-
-
-                        //properties.h = reader["h"].ToString();
-                        //properties.b = reader["b"].ToString();
-                        //properties.t = reader["t"].ToString();
-                        //properties.A_g = reader["A_g"].ToString();
-                        //properties.I_y0 = reader["I_y0"].ToString();
-                        //properties.I_z0 = reader["I_z0"].ToString();
-                        //properties.W_el_y0 = reader["W_el_y0"].ToString();
-                        //properties.W_el_z0 = reader["W_el_z0"].ToString();
-                        //properties.Iyz0 = reader["Iyz0"].ToString();
-                        //properties.Iy = reader["Iy"].ToString();
-                        //properties.Iz = reader["Iz"].ToString();
-                        //properties.W_el_y = reader["W_el_y"].ToString();
-                        //properties.W_el_z = reader["W_el_z"].ToString();
-                        //properties.It = reader["It"].ToString();
-                        //properties.Iw = reader["Iw"].ToString();
-                        //properties.yc = reader["yc"].ToString();
-                        //properties.zc = reader["zc"].ToString();
-                        //properties.ys = reader["ys"].ToString();
-                        //properties.zs = reader["zs"].ToString();
-                        //properties.ycs = reader["ycs"].ToString();
-                        //properties.zcs = reader["zcs"].ToString();
-                        //properties.betay = reader["betay"].ToString();
-                        //properties.betaz = reader["betaz"].ToString();
-                        //properties.alpha_deg = reader["alpha_deg"].ToString();
-                        //properties.Bending_curve_x1 = reader["Bending_curve_x1"].ToString();
-                        //properties.Bending_curve_x2 = reader["Bending_curve_x2"].ToString();
-                        //properties.Bending_curve_x3 = reader["Bending_curve_x3"].ToString();
-                        //properties.Bending_curve_y = reader["Bending_curve_y"].ToString();
-                        //properties.Compression_curve_1 = reader["Compression_curve_1"].ToString();
-                        //properties.Compression_curve_2 = reader["Compression_curve_2"].ToString();
-                        //properties.Compression_curve_3 = reader["Compression_curve_3"].ToString();
-                        //properties.A_stiff = reader["A_stiff"].ToString();
-                        //properties.n_stiff = reader["n_stiff"].ToString();
-                        //properties.y_stiff = reader["y_stiff"].ToString();
-                        //properties.b_1_flat_portion = reader["b_1_flat_portion"].ToString();
-                        //properties.b_tot = reader["b_tot"].ToString();
-                        //properties.b_tot_length = reader["b_tot_length"].ToString();
-                        //properties.A_f1 = reader["A_f1"].ToString();
-                        //properties.A_vy = reader["A_vy"].ToString();
-                        //properties.fvy_red_factor = reader["fvy_red_factor"].ToString();
-                        //properties.d_1_flat_portion = reader["d_1_flat_portion"].ToString();
-                        //properties.d_tot = reader["d_tot"].ToString();
-                        //properties.d_tot_length = reader["d_tot_length"].ToString();
-                        //properties.A_w1 = reader["A_w1"].ToString();
-                        //properties.A_vz = reader["A_vz"].ToString();
-                        //properties.fvz_red_factor = reader["fvz_red_factor"].ToString();
-
-                        items.Add(crsc.SectionNameDatabase, crsc);
+                        items.Add(crsc.sectionName_short, crsc);
                     }
                 }
             }
@@ -185,7 +136,8 @@ namespace DATABASE
         {
             CSectionProperties properties = new CSectionProperties();
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-            properties.sectionName = reader["section"].ToString();
+            properties.sectionName_short = reader["sectionName_short"].ToString();
+            properties.sectionName_long = reader["sectionName_long"].ToString();
             properties.h = reader["h"].ToString();
             properties.b = reader["b"].ToString();
             properties.t = reader["t"].ToString();
@@ -240,7 +192,7 @@ namespace DATABASE
             return properties;
         }
 
-        public static CrScProperties LoadCrossSectionProperties_meters(string sectionNameDatabase)
+        public static CrScProperties LoadCrossSectionProperties_meters(string sectionName_short)
         {
             CrScProperties crsc = new CrScProperties();
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -249,15 +201,15 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE section = @section", conn);
-                command.Parameters.AddWithValue("@section", sectionNameDatabase);
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE sectionName_short = @sectionName_short", conn);
+                command.Parameters.AddWithValue("@sectionName_short", sectionName_short);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.SectionNameDatabase = sectionNameDatabase;
+                        crsc.sectionName_short = sectionName_short;
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);
                         crsc.t_min = double.Parse(reader["t"].ToString(), nfi);

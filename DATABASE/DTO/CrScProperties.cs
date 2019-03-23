@@ -9,7 +9,8 @@ namespace DATABASE.DTO
     public class CrScProperties
     {
         public int DatabaseID;
-        public string SectionNameDatabase;
+        public string sectionName_short;
+        public string sectionName_long;
         public double h;
         public double b;
         public double t_min;

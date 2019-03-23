@@ -30,9 +30,10 @@ namespace DATABASE
                         model.Distance_L1 = reader["distance_L1"].ToString();
                         model.IFrames = reader["iFrames"].ToString();
                         model.C_array_code = reader["c_array_code"].ToString();
-                        model.Column8 = reader["Column8"].ToString();
                         model.MainColumn = reader["mainColumn"].ToString();
                         model.MainRafter = reader["mainRafter"].ToString();
+                        model.EdgeColumn = reader["edgeColumn"].ToString();
+                        model.EdgeRafter = reader["edgeRafter"].ToString();
                         model.EdgePurlin = reader["edgePurlin"].ToString();
                         model.Girt = reader["girt"].ToString();
                         model.Purlin = reader["purlin"].ToString();
@@ -68,9 +69,10 @@ namespace DATABASE
                         model.Distance_L1 = reader["distance_L1"].ToString();
                         model.IFrames = reader["iFrames"].ToString();
                         model.C_array_code = reader["c_array_code"].ToString();
-                        model.Column8 = reader["Column8"].ToString();
                         model.MainColumn = reader["mainColumn"].ToString();
                         model.MainRafter = reader["mainRafter"].ToString();
+                        model.EdgeColumn = reader["edgeColumn"].ToString();
+                        model.EdgeRafter = reader["edgeRafter"].ToString();
                         model.EdgePurlin = reader["edgePurlin"].ToString();
                         model.Girt = reader["girt"].ToString();
                         model.Purlin = reader["purlin"].ToString();
@@ -84,7 +86,6 @@ namespace DATABASE
             return model;
         }
 
-        
         private static Dictionary<int, CComponentPrefixes> DictComponentPrefixes;
         private static void LoadModelComponents()
         {

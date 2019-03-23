@@ -51,20 +51,20 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
-            Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // FS Description
-            NameDatabase = (fh * 1000).ToString() + (20).ToString();
+            Name_long = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
+            Name_long = "Box " + (fh * 1000).ToString() + (20).ToString(); // FS Description
+            Name_short = (fh * 1000).ToString() + (20).ToString();
 
             // Temporary  identify stiffeners acc. to flange thickness
             if (0.003f < ft_flange && ft_flange < 0.005)
             {
-                Name = "Box " + (fh * 1000).ToString() + (20).ToString() + " single stiffener"; // FS Description
-                NameDatabase = (fh * 1000).ToString() + (20).ToString() + "s1";
+                Name_long = "Box " + (fh * 1000).ToString() + (20).ToString() + " single stiffener"; // FS Description
+                Name_short = (fh * 1000).ToString() + (20).ToString() + "s1";
             }
             else if (ft_flange > 0.005)
             {
-                Name = "Box " + (fh * 1000).ToString() + (20).ToString() + " double stiffener"; // FS Description
-                NameDatabase = (fh * 1000).ToString() + (20).ToString() + "s2";
+                Name_long = "Box " + (fh * 1000).ToString() + (20).ToString() + " double stiffener"; // FS Description
+                Name_short = (fh * 1000).ToString() + (20).ToString() + "s2";
             }
 
             CSColor = color_temp;  // Set cross-section color

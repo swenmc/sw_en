@@ -56,8 +56,8 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
-            NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
+            Name_long = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
+            Name_short = (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
 
             CSColor = color_temp;  // Set cross-section color
             //ITotNoPoints = 56;

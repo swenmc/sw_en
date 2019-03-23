@@ -384,7 +384,7 @@ namespace CRSC
         public void SetParams(CrScProperties dto)
         {
             this.DatabaseID = dto.DatabaseID;
-            this.NameDatabase = dto.SectionNameDatabase;
+            this.Name_short = dto.sectionName_short;
             this.h = dto.h;
             this.b = dto.b;
 
@@ -600,14 +600,14 @@ namespace CRSC
         public void FillCrScPropertiesByTableData()
         {
             // Do not calculate but set table data from database
-            if (NameDatabase != null || NameDatabase != "") // Database name must be defined
+            if (Name_short != null || Name_short != "") // Database name must be defined
             {
-                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(NameDatabase);
+                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(Name_short);
                 this.SetParams(dto);
             }
             else
             {
-                throw new System.ArgumentNullException("Database name is" + NameDatabase + " This name is not defined in the cross-section database.");
+                throw new System.ArgumentNullException("Database name is" + Name_short + " This name is not defined in the cross-section database.");
             }
         }
     }

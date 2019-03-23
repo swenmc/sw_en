@@ -9,7 +9,8 @@ namespace DATABASE.DTO
     public class CSectionProperties
     {
         public int ID;
-        public string sectionName;
+        public string sectionName_short;
+        public string sectionName_long;
         public string h;
         public string b;
         public string t;

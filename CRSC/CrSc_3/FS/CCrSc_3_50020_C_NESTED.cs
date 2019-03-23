@@ -53,13 +53,13 @@ namespace CRSC
         {
             ID = iID_temp;
 
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString() + " nested"; // Original Description
-            Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // FS Description
-            NameDatabase = (fh * 1000).ToString() + (20).ToString() + "n";
+            Name_long = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString() + " nested"; // Original Description
+            Name_long = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // FS Description
+            Name_short = (fh * 1000).ToString() + (20).ToString() + "n";
 
             // Temporary
-            Name = "C " + "500" + (20).ToString() + " nested"; // FS Description
-            NameDatabase = "500" + (20).ToString() + "n";
+            Name_long = "C " + "500" + (20).ToString() + " nested"; // FS Description
+            Name_short = "500" + (20).ToString() + "n";
 
             CSColor = color_temp;  // Set cross-section color
 
