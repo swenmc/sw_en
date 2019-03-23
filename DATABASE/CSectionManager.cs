@@ -21,7 +21,7 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m", conn); // Nacitavame v metroch
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -118,8 +118,8 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm WHERE section = @section", conn);
-                command.Parameters.AddWithValue("@section", name);
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm WHERE sectionName_short = @sectionName_short", conn);
+                command.Parameters.AddWithValue("@sectionName_short", name);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
