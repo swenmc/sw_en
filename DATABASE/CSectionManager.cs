@@ -80,12 +80,12 @@ namespace DATABASE
             return crsc;
         }
 
-        public static List<string> LoadSectionPropertiesStringList(int ID)
-        {
-            CSectionProperties properties = new CSectionProperties();
-            properties = LoadSectionProperties_mm(ID);
-            return FillListOfSectionPropertiesString(properties);
-        }
+        //public static List<string> LoadSectionPropertiesStringList(int ID)
+        //{
+        //    CSectionProperties properties = new CSectionProperties();
+        //    properties = LoadSectionProperties_mm(ID);
+        //    return FillListOfSectionPropertiesString(properties);
+        //}
 
         public static List<string> LoadSectionPropertiesStringList(string name)
         {

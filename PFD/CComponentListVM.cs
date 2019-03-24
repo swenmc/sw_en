@@ -179,7 +179,7 @@ namespace PFD
             set
             {
                 MSelectedComponentIndex = value;
-                SetComponentDetails(MSelectedComponentIndex + 1);
+                SetComponentDetails();
                 NotifyPropertyChanged("SelectedComponentIndex");
             }
         }
@@ -238,23 +238,21 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetComponentDetails(int sectionID)
+        private void SetComponentDetails()
         {
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Cross-section details
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            CComponentInfo cInfo = ComponentList[MSelectedComponentIndex];
+            if (cInfo == null) return;
             
+            List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(cInfo.Section);
             
-            List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(sectionID + 1);
-
-            // Default - other properties
             for (int i = 0; i < ComponentDetailsList.Count; i++)
             {
                 ComponentDetailsList[i].Value = listSectionPropertyValue[i];
             }
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
-
-
         }
     }
 }
