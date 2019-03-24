@@ -13,9 +13,6 @@ namespace DATABASE
         public static Dictionary<string, CrScProperties> LoadSectionProperties()
         {
             CrScProperties crsc = null;
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
             Dictionary<string, CrScProperties> items = new Dictionary<string, CrScProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
@@ -26,65 +23,7 @@ namespace DATABASE
                 {
                     while (reader.Read())
                     {
-                        crsc = new CrScProperties();
-                        crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.sectionName_short = reader["sectionName_short"].ToString();
-                        crsc.sectionName_long = reader["sectionName_long"].ToString();
-                        crsc.h = double.Parse(reader["h"].ToString(), nfi);
-                        crsc.b = double.Parse(reader["b"].ToString(), nfi);
-                        crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
-                        crsc.t_max = double.Parse(reader["t"].ToString(), nfi);
-                        crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
-                        crsc.I_y0 = double.Parse(reader["I_y0"].ToString(), nfi);
-                        crsc.I_z0 = double.Parse(reader["I_z0"].ToString(), nfi);
-                        //crsc.W_el_y0 = double.Parse(reader["W_el_y0"].ToString(), nfi);
-                        //crsc.W_el_z0 = double.Parse(reader["W_el_z0"].ToString(), nfi);
-                        //crsc.Iyz0 = double.Parse(reader["Iyz0"].ToString(), nfi);
-                        crsc.I_y = double.Parse(reader["Iy"].ToString(), nfi);
-                        crsc.I_z = double.Parse(reader["Iz"].ToString(), nfi);
-                        crsc.W_y_el = double.Parse(reader["W_el_y"].ToString(), nfi);
-                        crsc.W_z_el = double.Parse(reader["W_el_z"].ToString(), nfi);
-                        crsc.I_t = double.Parse(reader["It"].ToString(), nfi);
-                        crsc.I_w = double.Parse(reader["Iw"].ToString(), nfi);
-                        crsc.D_y_gc = double.Parse(reader["yc"].ToString(), nfi); // Poloha taziska v povodnom suradnicovom systeme
-                        crsc.D_z_gc = double.Parse(reader["zc"].ToString(), nfi);
-                        crsc.D_y_sc = double.Parse(reader["ys"].ToString(), nfi); // Poloha stredu smyku v povodnom suradnicovom systeme
-                        crsc.D_z_sc = double.Parse(reader["zs"].ToString(), nfi);
-                        crsc.D_y_s = double.Parse(reader["ycs"].ToString(), nfi); // Vzdialenost medzi taziskom G a stredom smyku S
-                        crsc.D_z_s = double.Parse(reader["zcs"].ToString(), nfi);
-                        crsc.Beta_y = double.Parse(reader["betay"].ToString(), nfi);
-                        crsc.Beta_z = double.Parse(reader["betaz"].ToString(), nfi);
-                        crsc.Alpha_rad = double.Parse(reader["alpha_deg"].ToString(), nfi) / 180 * Math.PI;
-                        //crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
-
-                        crsc.fol_b = reader["fol_b"].ToString() == "" ? double.NaN : double.Parse(reader["fol_b"].ToString(), nfi);
-                        crsc.fod_b = reader["fod_b"].ToString() == "" ? double.NaN : double.Parse(reader["fod_b"].ToString(), nfi);
-                        crsc.fol_c = reader["fol_c"].ToString() == "" ? double.NaN : double.Parse(reader["fol_c"].ToString(), nfi);
-                        crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
-
-                        crsc.A_stiff = reader["A_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["A_stiff"].ToString(), nfi);
-                        crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString(), nfi);
-                        crsc.y_stiff = reader["y_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["y_stiff"].ToString(), nfi);
-
-                        crsc.b_1_flat_portion = double.Parse(reader["b_1_flat_portion"].ToString(), nfi);
-                        crsc.b_tot = double.Parse(reader["b_tot"].ToString(), nfi);
-                        crsc.b_tot_length = double.Parse(reader["b_tot_length"].ToString(), nfi);
-                        crsc.A_f1 = double.Parse(reader["A_f1"].ToString(), nfi);
-                        crsc.A_vy = double.Parse(reader["A_vy"].ToString(), nfi);
-                        crsc.fvy_red_factor = double.Parse(reader["fvy_red_factor"].ToString(), nfi);
-                        crsc.d_1_flat_portion = double.Parse(reader["d_1_flat_portion"].ToString(), nfi);
-                        crsc.d_tot = double.Parse(reader["d_tot"].ToString(), nfi);
-                        crsc.d_tot_length = double.Parse(reader["d_tot_length"].ToString(), nfi);
-                        crsc.A_w1 = double.Parse(reader["A_w1"].ToString(), nfi);
-                        crsc.A_vz = double.Parse(reader["A_vz"].ToString(), nfi);
-                        crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
-
+                        crsc = GetCrScProperties(reader);
                         items.Add(crsc.sectionName_short, crsc);
                     }
                 }
@@ -92,7 +31,71 @@ namespace DATABASE
             return items;
         }
 
-        public static CSectionProperties LoadSectionProperties(int ID)
+        public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
+        {
+            CSectionPropertiesText properties;
+            List<CSectionPropertiesText> items = new List<CSectionPropertiesText>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from sectionProperties", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        properties = new CSectionPropertiesText();
+                        properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        properties.Text = reader["propertyText"].ToString();
+                        properties.Symbol = reader["propertySymbol"].ToString();
+                        properties.Name = reader["propertyName"].ToString();
+                        properties.Unit_SI = reader["unit_SI"].ToString();
+                        properties.Unit_NcmkPa = reader["unit_NcmkPa"].ToString();
+                        properties.Unit_NmmMpa = reader["unit_NmmMPa"].ToString();
+                        items.Add(properties);
+                    }
+                }
+            }
+            return items;
+        }
+        
+        public static CrScProperties LoadCrossSectionProperties_meters(string sectionName_short)
+        {
+            CrScProperties crsc = new CrScProperties();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE sectionName_short = @sectionName_short", conn);
+                command.Parameters.AddWithValue("@sectionName_short", sectionName_short);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        crsc = GetCrScProperties(reader);
+                    }
+                }
+            }
+            return crsc;
+        }
+
+        public static List<string> LoadSectionPropertiesStringList(int ID)
+        {
+            CSectionProperties properties = new CSectionProperties();
+            properties = LoadSectionProperties_mm(ID);
+            return FillListOfSectionPropertiesString(properties);
+        }
+
+        public static List<string> LoadSectionPropertiesStringList(string name)
+        {
+            CSectionProperties properties = new CSectionProperties();
+            properties = LoadSectionProperties_mm(name);
+            return FillListOfSectionPropertiesString(properties);
+        }
+
+
+        private static CSectionProperties LoadSectionProperties_mm(int ID)
         {
             CSectionProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
@@ -112,7 +115,7 @@ namespace DATABASE
             return properties;
         }
 
-        public static CSectionProperties LoadSectionProperties(string name)
+        private static CSectionProperties LoadSectionProperties_mm(string name)
         {
             CSectionProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
@@ -131,7 +134,6 @@ namespace DATABASE
             }
             return properties;
         }
-
         private static CSectionProperties GetSectionProperties(SQLiteDataReader reader)
         {
             CSectionProperties properties = new CSectionProperties();
@@ -191,99 +193,71 @@ namespace DATABASE
 
             return properties;
         }
-
-        public static CrScProperties LoadCrossSectionProperties_meters(string sectionName_short)
+        private static CrScProperties GetCrScProperties(SQLiteDataReader reader)
         {
-            CrScProperties crsc = new CrScProperties();
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE sectionName_short = @sectionName_short", conn);
-                command.Parameters.AddWithValue("@sectionName_short", sectionName_short);
+            CrScProperties crsc = new CrScProperties();
+            crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
+            crsc.sectionName_short = reader["sectionName_short"].ToString();
+            crsc.sectionName_long = reader["sectionName_long"].ToString();
+            crsc.h = double.Parse(reader["h"].ToString(), nfi);
+            crsc.b = double.Parse(reader["b"].ToString(), nfi);
+            crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
+            crsc.t_max = double.Parse(reader["t"].ToString(), nfi);
+            crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
+            crsc.I_y0 = double.Parse(reader["I_y0"].ToString(), nfi);
+            crsc.I_z0 = double.Parse(reader["I_z0"].ToString(), nfi);
+            //crsc.W_el_y0 = double.Parse(reader["W_el_y0"].ToString(), nfi);
+            //crsc.W_el_z0 = double.Parse(reader["W_el_z0"].ToString(), nfi);
+            //crsc.Iyz0 = double.Parse(reader["Iyz0"].ToString(), nfi);
+            crsc.I_y = double.Parse(reader["Iy"].ToString(), nfi);
+            crsc.I_z = double.Parse(reader["Iz"].ToString(), nfi);
+            crsc.W_y_el = double.Parse(reader["W_el_y"].ToString(), nfi);
+            crsc.W_z_el = double.Parse(reader["W_el_z"].ToString(), nfi);
+            crsc.I_t = double.Parse(reader["It"].ToString(), nfi);
+            crsc.I_w = double.Parse(reader["Iw"].ToString(), nfi);
+            crsc.D_y_gc = double.Parse(reader["yc"].ToString(), nfi); // Poloha taziska v povodnom suradnicovom systeme
+            crsc.D_z_gc = double.Parse(reader["zc"].ToString(), nfi);
+            crsc.D_y_sc = double.Parse(reader["ys"].ToString(), nfi); // Poloha stredu smyku v povodnom suradnicovom systeme
+            crsc.D_z_sc = double.Parse(reader["zs"].ToString(), nfi);
+            crsc.D_y_s = double.Parse(reader["ycs"].ToString(), nfi); // Vzdialenost medzi taziskom G a stredom smyku S
+            crsc.D_z_s = double.Parse(reader["zcs"].ToString(), nfi);
+            crsc.Beta_y = double.Parse(reader["betay"].ToString(), nfi);
+            crsc.Beta_z = double.Parse(reader["betaz"].ToString(), nfi);
+            crsc.Alpha_rad = double.Parse(reader["alpha_deg"].ToString(), nfi) / 180 * Math.PI;
+            //crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
+            //crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
+            //crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
+            //crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
+            //crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
+            //crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
+            //crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.sectionName_short = sectionName_short;
-                        crsc.h = double.Parse(reader["h"].ToString(), nfi);
-                        crsc.b = double.Parse(reader["b"].ToString(), nfi);
-                        crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
-                        crsc.t_max = double.Parse(reader["t"].ToString(), nfi);
-                        crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
-                        crsc.I_y0 = double.Parse(reader["I_y0"].ToString(), nfi);
-                        crsc.I_z0 = double.Parse(reader["I_z0"].ToString(), nfi);
-                        //crsc.W_el_y0 = double.Parse(reader["W_el_y0"].ToString(), nfi);
-                        //crsc.W_el_z0 = double.Parse(reader["W_el_z0"].ToString(), nfi);
-                        //crsc.Iyz0 = double.Parse(reader["Iyz0"].ToString(), nfi);
-                        crsc.I_y = double.Parse(reader["Iy"].ToString(), nfi);
-                        crsc.I_z = double.Parse(reader["Iz"].ToString(), nfi);
-                        crsc.W_y_el = double.Parse(reader["W_el_y"].ToString(), nfi);
-                        crsc.W_z_el = double.Parse(reader["W_el_z"].ToString(), nfi);
-                        crsc.I_t = double.Parse(reader["It"].ToString(), nfi);
-                        crsc.I_w = double.Parse(reader["Iw"].ToString(), nfi);
-                        crsc.D_y_gc = double.Parse(reader["yc"].ToString(), nfi); // Poloha taziska v povodnom suradnicovom systeme
-                        crsc.D_z_gc = double.Parse(reader["zc"].ToString(), nfi);
-                        crsc.D_y_sc = double.Parse(reader["ys"].ToString(), nfi); // Poloha stredu smyku v povodnom suradnicovom systeme
-                        crsc.D_z_sc = double.Parse(reader["zs"].ToString(), nfi);
-                        crsc.D_y_s  = double.Parse(reader["ycs"].ToString(), nfi); // Vzdialenost medzi taziskom G a stredom smyku S
-                        crsc.D_z_s  = double.Parse(reader["zcs"].ToString(), nfi);
-                        crsc.Beta_y = double.Parse(reader["betay"].ToString(), nfi);
-                        crsc.Beta_z = double.Parse(reader["betaz"].ToString(), nfi);
-                        crsc.Alpha_rad = double.Parse(reader["alpha_deg"].ToString(), nfi) / 180 * Math.PI;
-                        //crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
-                        //crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
-                        //crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
+            crsc.fol_b = reader["fol_b"].ToString() == "" ? double.NaN : double.Parse(reader["fol_b"].ToString(), nfi);
+            crsc.fod_b = reader["fod_b"].ToString() == "" ? double.NaN : double.Parse(reader["fod_b"].ToString(), nfi);
+            crsc.fol_c = reader["fol_c"].ToString() == "" ? double.NaN : double.Parse(reader["fol_c"].ToString(), nfi);
+            crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
 
-                        crsc.fol_b = reader["fol_b"].ToString() == "" ? double.NaN : double.Parse(reader["fol_b"].ToString(), nfi);
-                        crsc.fod_b = reader["fod_b"].ToString() == "" ? double.NaN : double.Parse(reader["fod_b"].ToString(), nfi);
-                        crsc.fol_c = reader["fol_c"].ToString() == "" ? double.NaN : double.Parse(reader["fol_c"].ToString(), nfi);
-                        crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
+            crsc.A_stiff = reader["A_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["A_stiff"].ToString(), nfi);
+            crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString(), nfi);
+            crsc.y_stiff = reader["y_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["y_stiff"].ToString(), nfi);
 
-                        crsc.A_stiff = reader["A_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["A_stiff"].ToString(), nfi);
-                        crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString(), nfi);
-                        crsc.y_stiff = reader["y_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["y_stiff"].ToString(), nfi);
-
-                        crsc.b_1_flat_portion = double.Parse(reader["b_1_flat_portion"].ToString(), nfi);
-                        crsc.b_tot = double.Parse(reader["b_tot"].ToString(), nfi);
-                        crsc.b_tot_length = double.Parse(reader["b_tot_length"].ToString(), nfi);
-                        crsc.A_f1 = double.Parse(reader["A_f1"].ToString(), nfi);
-                        crsc.A_vy = double.Parse(reader["A_vy"].ToString(), nfi);
-                        crsc.fvy_red_factor = double.Parse(reader["fvy_red_factor"].ToString(), nfi);
-                        crsc.d_1_flat_portion = double.Parse(reader["d_1_flat_portion"].ToString(), nfi);
-                        crsc.d_tot = double.Parse(reader["d_tot"].ToString(), nfi);
-                        crsc.d_tot_length = double.Parse(reader["d_tot_length"].ToString(), nfi);
-                        crsc.A_w1 = double.Parse(reader["A_w1"].ToString(), nfi);
-                        crsc.A_vz =double.Parse(reader["A_vz"].ToString(), nfi);
-                        crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
-                    }
-                }
-            }
+            crsc.b_1_flat_portion = double.Parse(reader["b_1_flat_portion"].ToString(), nfi);
+            crsc.b_tot = double.Parse(reader["b_tot"].ToString(), nfi);
+            crsc.b_tot_length = double.Parse(reader["b_tot_length"].ToString(), nfi);
+            crsc.A_f1 = double.Parse(reader["A_f1"].ToString(), nfi);
+            crsc.A_vy = double.Parse(reader["A_vy"].ToString(), nfi);
+            crsc.fvy_red_factor = double.Parse(reader["fvy_red_factor"].ToString(), nfi);
+            crsc.d_1_flat_portion = double.Parse(reader["d_1_flat_portion"].ToString(), nfi);
+            crsc.d_tot = double.Parse(reader["d_tot"].ToString(), nfi);
+            crsc.d_tot_length = double.Parse(reader["d_tot_length"].ToString(), nfi);
+            crsc.A_w1 = double.Parse(reader["A_w1"].ToString(), nfi);
+            crsc.A_vz = double.Parse(reader["A_vz"].ToString(), nfi);
+            crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
             return crsc;
         }
-
-        public static List<string> LoadSectionPropertiesStringList(int ID)
-        {
-            CSectionProperties properties = new CSectionProperties();
-            properties = LoadSectionProperties(ID);
-            return FillListOfSectionPropertiesString(properties);
-        }
-
-        public static List<string> LoadSectionPropertiesStringList(string name)
-        {
-            CSectionProperties properties = new CSectionProperties();
-            properties = LoadSectionProperties(name);
-            return FillListOfSectionPropertiesString(properties);
-        }
-
         private static List<string> FillListOfSectionPropertiesString(CSectionProperties properties)
         {
             List<string> list = new List<string>();
@@ -341,32 +315,6 @@ namespace DATABASE
             return list;
         }
 
-        public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
-        {
-            CSectionPropertiesText properties;
-            List<CSectionPropertiesText> items = new List<CSectionPropertiesText>();
-
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from sectionProperties", conn);
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        properties = new CSectionPropertiesText();
-                        properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        properties.Text= reader["propertyText"].ToString();
-                        properties.Symbol = reader["propertySymbol"].ToString();
-                        properties.Name = reader["propertyName"].ToString();
-                        properties.Unit_SI = reader["unit_SI"].ToString();
-                        properties.Unit_NcmkPa = reader["unit_NcmkPa"].ToString();
-                        properties.Unit_NmmMpa = reader["unit_NmmMPa"].ToString();
-                        items.Add(properties);
-                    }
-                }
-            }
-            return items;
-        }
+        
     }
 }
