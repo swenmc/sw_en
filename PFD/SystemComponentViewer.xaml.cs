@@ -50,7 +50,7 @@ namespace PFD
         float fl; // out of plane - Z coord
         float fl2; // out of plane - Z coord
         float ft;
-        float ft_f;
+        int iNumberOfStiffeners = 0;
         float fb_fl; // Flange - Z-section
         float fc_lip1; // LIP - Z-section
         int iNumberofHoles = 0;
@@ -628,7 +628,7 @@ namespace PFD
                             fb = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
                             fh = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
                             ft = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            ft_f = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            iNumberOfStiffeners = (int)dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 4];
                             cComponentColor = dcomponents.arr_Serie_Box63020_FS_Colors[vm.ComponentIndex];
                             break;
                         }
@@ -1022,7 +1022,7 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FS.eSerie_Box_63020:
                         {
-                            crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // BOX
+                            crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, iNumberOfStiffeners, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FS.eSerie_SmartDek:

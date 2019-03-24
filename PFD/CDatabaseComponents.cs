@@ -472,11 +472,11 @@ namespace PFD
             Color.FromRgb(0,255,255)  // Blue
         };
 
-        public float[,] arr_Serie_Box63020_FS_Dimension = new float[3, 4]
+        public float[,] arr_Serie_Box63020_FS_Dimension = new float[3, 5]
         {
-                {180, 630, 1.95f, 1.95f},
-                {180, 630, 1.95f, 4.95f},
-                {180, 630, 1.95f, 7.95f}
+                {180, 630, 1.95f, 1.95f, 0},
+                {180, 630, 1.95f, 4.95f, 1}, // 3.00 mm
+                {180, 630, 1.95f, 7.90f, 2}  // 3.00 mm
         };
 
         // TODO nahradit vstupmi z databazy

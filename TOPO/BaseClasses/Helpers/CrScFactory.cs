@@ -48,7 +48,7 @@ namespace BaseClasses.Helpers
             }
             else if (SectionName == "63020" || SectionName == "63020s1" || SectionName == "63020s2")
             {
-                return new CCrSc_3_63020_BOX((float)s.h, (float)s.b, (float)s.t_min, (float)s.t_max);
+                return new CCrSc_3_63020_BOX((float)s.h, (float)s.b, (float)s.t_min, s.n_stiff);
             }
             else
             {

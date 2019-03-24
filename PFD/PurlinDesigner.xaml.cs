@@ -597,15 +597,15 @@ namespace PFD
             }
             else if (sSectionNameDatabase == "63020")
             {
-                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00195f, cComponentColor);
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0, cComponentColor);
             }
             else if (sSectionNameDatabase == "63020s1")
             {
-                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00390f, cComponentColor);
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 1, cComponentColor);
             }
             else if (sSectionNameDatabase == "63020s2")
             {
-                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00858f, cComponentColor);
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 2, cComponentColor);
             }
             else
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System;
 
 namespace CRSC
 {
@@ -29,6 +30,13 @@ namespace CRSC
 
         private float fz_23stif;
 
+        private int m_iNumberOfStiffeners;
+
+        public int NumberOfStiffeners
+        {
+            get { return m_iNumberOfStiffeners; }
+            set { m_iNumberOfStiffeners = value; }
+        }
         public float Ft_f
         {
             get { return m_ft_f; }
@@ -45,26 +53,38 @@ namespace CRSC
             set { m_fd = value; }
         }
 
-        public CCrSc_3_63020_BOX(float fh, float fb, float ft, float ft_flange) 
-            : this(0, fh, fb, ft, ft_flange, Colors.Chocolate) { }
-        public CCrSc_3_63020_BOX(int iID_temp, float fh, float fb, float ft, float ft_flange, Color color_temp)
+        public CCrSc_3_63020_BOX(float fh, float fb, float ft, int iNumberOfStiffeners) 
+            : this(0, fh, fb, ft, iNumberOfStiffeners, Colors.Chocolate) { }
+        public CCrSc_3_63020_BOX(int iID_temp, float fh, float fb, float ft, int iNumberOfStiffeners, Color color_temp)
         {
+            m_iNumberOfStiffeners = iNumberOfStiffeners;
+            if (m_iNumberOfStiffeners > 2)
+            {
+                // Exception - invalid number of stiffeners
+                throw new ArgumentOutOfRangeException("Invalid number of stiffeners.");
+            }
+
             ID = iID_temp;
 
             Name_long = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
-            Name_long = "Box " + (fh * 1000).ToString() + (20).ToString(); // FS Description
-            Name_short = (fh * 1000).ToString() + (20).ToString();
 
-            // Temporary  identify stiffeners acc. to flange thickness
-            if (0.003f < ft_flange && ft_flange < 0.005)
+            if(m_iNumberOfStiffeners == 0)
+            {
+                Name_long = "Box " + (fh * 1000).ToString() + (20).ToString(); // FS Description
+                Name_short = (fh * 1000).ToString() + (20).ToString();
+                m_ft_f = ft;
+            }
+           else if (m_iNumberOfStiffeners == 1)
             {
                 Name_long = "Box " + (fh * 1000).ToString() + (20).ToString() + " single stiffener"; // FS Description
                 Name_short = (fh * 1000).ToString() + (20).ToString() + "s1";
+                m_ft_f = ft + 0.003f;
             }
-            else if (ft_flange > 0.005)
+            else if (m_iNumberOfStiffeners == 2)
             {
                 Name_long = "Box " + (fh * 1000).ToString() + (20).ToString() + " double stiffener"; // FS Description
                 Name_short = (fh * 1000).ToString() + (20).ToString() + "s2";
+                m_ft_f = ft + 2 * 0.003f;
             }
 
             CSColor = color_temp;  // Set cross-section color
@@ -76,7 +96,6 @@ namespace CRSC
 
             h = fh;
             b = fb;
-            m_ft_f = ft_flange;
             m_ft_w = ft;
 
             m_fd = fh - 2 * ft;
