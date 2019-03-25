@@ -9,6 +9,9 @@ namespace PFD
 {
     public class CComponentInfo : INotifyPropertyChanged
     {
+        //todo dokodit IsSetFromCode a filtrovat eventy ktore sa posielaju hore, napr. ked sa zmeni generate aj ine checkboxy...tak GUI sa musi updatovat ale eventy hore nemaju chodit,
+        //lebo potom sa UpdateAll() vola vela krat
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string MPrefix;
