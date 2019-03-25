@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d">
-
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="Materials" Source="{Binding Materials}"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -32,7 +34,12 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto"></DataGridTextColumn>
+
+                <DataGridComboBoxColumn Header="Material" ToolTipService.ToolTip="Select material" Width="Auto" 
+                    SelectedValueBinding="{Binding Material}" 
+                    ItemsSource ="{Binding Source={StaticResource Materials}}">
+                </DataGridComboBoxColumn>
+                <!--<DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto"></DataGridTextColumn>-->
                 <DataGridCheckBoxColumn Binding="{Binding Generate, Delay=500}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Display, Delay=500}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Calculate, Delay=500}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>

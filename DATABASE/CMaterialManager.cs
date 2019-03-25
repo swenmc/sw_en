@@ -31,7 +31,23 @@ namespace DATABASE
             return items;
         }
 
-        
+        public static List<string> GetMaterialTypesList()
+        {
+            List<string> materialTypes = new List<string>();
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from materialSteelAS4600", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        materialTypes.Add(reader["Grade"].ToString());                        
+                    }
+                }
+            }
+            return materialTypes;
+        }
 
 
         public static CMatProperties LoadMaterialProperties(int ID)

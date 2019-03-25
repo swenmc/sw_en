@@ -1326,6 +1326,7 @@ namespace PFD
         {
             if (e.PropertyName == "ComponentDetailsList") return;
             else if (e.PropertyName == "SelectedComponentIndex") return;
+            else if (e.PropertyName == "MaterialDetails") return;
 
             PropertyChanged(sender, e);            
         }

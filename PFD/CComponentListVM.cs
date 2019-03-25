@@ -28,8 +28,10 @@ namespace PFD
         private List<string> MSectionsForDoorOrWindowFrame;
         private List<string> MSectionsForRollerDoorTrimmer;
 
+        private List<string> MMaterials;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMatProperties> m_MaterialDetails;
+
         
 
         //-------------------------------------------------------------------------------------------------------------
@@ -209,7 +211,16 @@ namespace PFD
             }
         }
 
-       
+        public List<string> Materials
+        {
+            get
+            {
+                if (MMaterials == null) MMaterials = CMaterialManager.GetMaterialTypesList();
+                return MMaterials;
+            }
+        }
+
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

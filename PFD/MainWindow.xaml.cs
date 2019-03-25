@@ -213,8 +213,8 @@ namespace PFD
             else if (sender is CComponentListVM)
             {
                 CComponentListVM vm = sender as CComponentListVM;
-                if (e.PropertyName == "SelectedComponentIndex") return;
-                else if (e.PropertyName == "ComponentDetailsList") return;
+                //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
+                //else if (e.PropertyName == "ComponentDetailsList") return;
             }
             
 
