@@ -43,10 +43,19 @@ namespace PFD
             set
             {
                 MComponentList = value;
+                foreach (CComponentInfo ci in ComponentList)
+                {
+                    ci.PropertyChanged += ComponentListItem_PropertyChanged;
+                }
                 NotifyPropertyChanged("ComponentList");
             }
         }
-        
+
+        private void ComponentListItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged(sender, e);            
+        }
+
         public List<CSectionPropertiesText> ComponentDetailsList
         {
             get
@@ -227,6 +236,11 @@ namespace PFD
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins);
             MComponentList.Add(ci);
+
+            foreach (CComponentInfo cInfo in MComponentList)
+            {
+                cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+            }
 
             SelectedComponentIndex = 0;
         }

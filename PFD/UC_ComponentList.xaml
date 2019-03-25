@@ -32,11 +32,11 @@
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto"></DataGridTextColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Generate}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Generate, Delay=500}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Display, Delay=500}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Calculate, Delay=500}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Design, Delay=500}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList, Delay=500}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

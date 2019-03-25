@@ -1276,9 +1276,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties)
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM)
         {
             IsSetFromCode = true;
+            componentVM.PropertyChanged += ComponentVM_PropertyChanged;
 
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
@@ -1319,6 +1320,14 @@ namespace PFD
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
+        }
+
+        private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ComponentDetailsList") return;
+            else if (e.PropertyName == "SelectedComponentIndex") return;
+
+            PropertyChanged(sender, e);            
         }
 
 

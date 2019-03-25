@@ -126,10 +126,11 @@ namespace PFD
 
             // Prepare data for generating of window blocks
             WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
-            
-            // Tu je nesktocne vela roboty, kym to bude nejako normalne vyzerat
+
+            CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
+
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
@@ -189,23 +190,33 @@ namespace PFD
             vm.Model.GroupModelMembers();
         }
 
+        //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            CPFDViewModel viewModel = sender as CPFDViewModel;
-            if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
-
-            //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
-            if (e.PropertyName == "RoofCladdingIndex")
+            if (sender is CPFDViewModel)
             {
-                FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
-            }
-            else if (e.PropertyName == "WallCladdingIndex")
-            {
-                FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-            }
+                CPFDViewModel viewModel = sender as CPFDViewModel;
+                if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
 
-            if (e.PropertyName == "Bays") return;
+                if (e.PropertyName == "RoofCladdingIndex")
+                {
+                    FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+                }
+                else if (e.PropertyName == "WallCladdingIndex")
+                {
+                    FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+                }
+
+                if (e.PropertyName == "Bays") return;
+            }
+            else if (sender is CComponentListVM)
+            {
+                CComponentListVM vm = sender as CComponentListVM;
+                if (e.PropertyName == "SelectedComponentIndex") return;
+                else if (e.PropertyName == "ComponentDetailsList") return;
+            }
+            
 
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
@@ -218,6 +229,8 @@ namespace PFD
 
             
         }
+
+
 
         //SplashScreen splashScreen = null;
         //bool waiting = true;

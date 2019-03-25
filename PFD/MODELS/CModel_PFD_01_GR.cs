@@ -254,7 +254,10 @@ namespace PFD
             fz_UpperLimitForFrontGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].b);
             fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eBackGirt].b);
 
-            bool bGenerateGirts = true;
+            //Mato - toto tu je aka podmienka? zatial som dal,ze alebo back alebo front girt staci ak je zaskrtnute
+            //bool bGenerateGirts = true; 
+
+            bool bGenerateGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate || componentList[(int)EMemberGroupNames.eFrontGirt].Generate;
             if (bGenerateGirts)
             {
                 iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
@@ -267,7 +270,8 @@ namespace PFD
             int iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-            bool bGeneratePurlins = true;
+            
+            bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate;
             if (bGeneratePurlins)
             {
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
@@ -277,7 +281,7 @@ namespace PFD
             int iOneRafterFrontColumnNo = 0;
             iFrontColumnNoInOneFrame = 0;
 
-            bool bGenerateFrontColumns = true;
+            bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontColumn].Generate;
             if (bGenerateFrontColumns)
             {
                 iOneRafterFrontColumnNo = (int)((0.5f * fW_frame) / fDist_FrontColumns);
@@ -295,7 +299,7 @@ namespace PFD
 
             fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stplmi
 
-            bool bGenerateBackColumns = true;
+            bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackColumn].Generate;
             if (bGenerateBackColumns)
             {
                 iOneRafterBackColumnNo = (int)((0.5f * fW_frame) / fDist_BackColumns);
@@ -314,7 +318,8 @@ namespace PFD
             iFrontGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
 
-            bool bGenerateFrontGirts = true;
+            
+            bool bGenerateFrontGirts = componentList[(int)EMemberGroupNames.eFrontGirt].Generate;
 
             if (bGenerateFrontGirts)
             {
@@ -345,7 +350,7 @@ namespace PFD
             iBackGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerBackColumn = new int[iOneRafterBackColumnNo];
 
-            bool bGenerateBackGirts = true;
+            bool bGenerateBackGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate;
 
             if (bGenerateBackGirts)
             {

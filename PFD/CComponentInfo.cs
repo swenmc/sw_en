@@ -86,6 +86,13 @@ namespace PFD
             set
             {
                 MGenerate = value;
+                if (!MGenerate)
+                {
+                    Display = false;
+                    Calculate = false;
+                    Design = false;
+                    MaterialList = false;
+                }
                 NotifyPropertyChanged("Generate");
             }
         }
