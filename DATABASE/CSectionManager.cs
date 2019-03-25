@@ -5,7 +5,6 @@ using System.Data.SQLite;
 using System.Globalization;
 using DATABASE.DTO;
 
-
 namespace DATABASE
 {
     public static class CSectionManager
@@ -30,7 +29,6 @@ namespace DATABASE
             }
             return items;
         }
-
         public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;
@@ -58,7 +56,6 @@ namespace DATABASE
             }
             return items;
         }
-        
         public static CrScProperties LoadCrossSectionProperties_meters(string sectionName_short)
         {
             CrScProperties crsc = new CrScProperties();
@@ -79,22 +76,12 @@ namespace DATABASE
             }
             return crsc;
         }
-
-        //public static List<string> LoadSectionPropertiesStringList(int ID)
-        //{
-        //    CSectionProperties properties = new CSectionProperties();
-        //    properties = LoadSectionProperties_mm(ID);
-        //    return FillListOfSectionPropertiesString(properties);
-        //}
-
         public static List<string> LoadSectionPropertiesStringList(string name)
         {
             CSectionProperties properties = new CSectionProperties();
             properties = LoadSectionProperties_mm(name);
             return FillListOfSectionPropertiesString(properties);
         }
-
-
         private static CSectionProperties LoadSectionProperties_mm(int ID)
         {
             CSectionProperties properties = null;
@@ -114,7 +101,6 @@ namespace DATABASE
             }
             return properties;
         }
-
         private static CSectionProperties LoadSectionProperties_mm(string name)
         {
             CSectionProperties properties = null;
@@ -314,7 +300,5 @@ namespace DATABASE
 
             return list;
         }
-
-        
     }
 }

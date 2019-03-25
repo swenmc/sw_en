@@ -125,7 +125,6 @@ namespace DATABASE
             }
             return items;
         }
-
         public static CMaterialProperties LoadMaterialProperties(int ID)
         {
             CMaterialProperties properties = null;
@@ -145,7 +144,6 @@ namespace DATABASE
             }
             return properties;
         }
-
         public static CMaterialProperties LoadMaterialProperties(string name)
         {
             CMaterialProperties properties = null;
@@ -165,7 +163,6 @@ namespace DATABASE
             }
             return properties;
         }
-
         private static CMaterialProperties GetMaterialProperties(SQLiteDataReader reader)
         {
             CMaterialProperties properties = new CMaterialProperties();
@@ -309,7 +306,6 @@ namespace DATABASE
                 }
             }
         }
-
         public static void LoadMaterialProperties(CMat_03_00 mat, string matName) // Grade
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -332,21 +328,18 @@ namespace DATABASE
                 }
             }
         }
-
         public static List<string> LoadMaterialPropertiesStringList(int ID)
         {
             CMaterialProperties properties = new CMaterialProperties();
             properties = LoadMaterialProperties(ID);
             return FillListOfMaterialPropertiesString(properties);
         }
-
         public static List<string> LoadMaterialPropertiesStringList(string name)
         {
             CMaterialProperties properties = new CMaterialProperties();
             properties = LoadMaterialProperties(name);
             return FillListOfMaterialPropertiesString(properties);
         }
-
         private static List<string> FillListOfMaterialPropertiesString(CMaterialProperties properties)
         {
             List<string> list = new List<string>();
@@ -366,7 +359,6 @@ namespace DATABASE
 
             return list;
         }
-
         private static void SetMaterialProperties(SQLiteDataReader reader, ref CMat_03_00 mat)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -432,7 +424,6 @@ namespace DATABASE
                 mat.m_ff_u[3] = float.Parse(reader["f_u4"].ToString(), nfi) * 1e+6f;
             }
         }
-
         public static void SetMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
         {
             mat.ID = properties.ID;
