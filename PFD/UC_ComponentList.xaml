@@ -4,15 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
-        mc:Ignorable="d"
-        Height="1350" Width="750">
+        mc:Ignorable="d">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="250"/>
+            <RowDefinition Height="280"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="950"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="false" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">
@@ -40,7 +41,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Component Details" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cross-Section Properties" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
@@ -48,6 +49,29 @@
                 <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Material Properties" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
+        <DataGrid Name ="Datagrid_Materials" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetails, Mode=OneWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Grade}" Header="Grade" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Standard}" Header="Standard" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding iNumberOfIntervals}" Header="Intervals" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding t1}" Header="t1" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding t2}" Header="t2" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding t3}" Header="t3" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding t4}" Header="t4" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_y1}" Header="f_y1" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_u1}" Header="f_u1" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_y2}" Header="f_y2" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_u2}" Header="f_u2" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_y3}" Header="f_y3" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_u3}" Header="f_u3" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_y4}" Header="f_y4" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding f_u4}" Header="f_u4" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Note}" Header="note" Width="Auto"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

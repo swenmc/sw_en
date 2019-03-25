@@ -29,6 +29,8 @@ namespace PFD
         private List<string> MSectionsForRollerDoorTrimmer;
 
         private List<CSectionPropertiesText> m_ComponentDetailsList;
+        private List<CMatProperties> m_MaterialDetails;
+        
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -77,6 +79,20 @@ namespace PFD
                 NotifyPropertyChanged("ComponentDetailsList");
             }
         }
+        public List<CMatProperties> MaterialDetails
+        {
+            get
+            {
+                return m_MaterialDetails;
+            }
+
+            set
+            {
+                m_MaterialDetails = value;
+                NotifyPropertyChanged("MaterialDetails");
+            }
+        }
+
 
         private List<string> Sections
         {
@@ -193,6 +209,8 @@ namespace PFD
             }
         }
 
+       
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -241,8 +259,6 @@ namespace PFD
             {
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             }
-
-            SelectedComponentIndex = 0;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -267,6 +283,8 @@ namespace PFD
                 ComponentDetailsList[i].Value = listSectionPropertyValue[i];
             }
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
+
+            MaterialDetails = new List<CMatProperties>() { CMaterialManager.LoadMaterialProperties(cInfo.Material) };
         }
     }
 }

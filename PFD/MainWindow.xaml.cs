@@ -538,7 +538,13 @@ namespace PFD
 
         public void SetMaterialValuesFromDatabase()
         {
-            CMaterialManager.SetMaterialValuesFromDatabase(vm.Model.m_arrMat);
+            foreach (CMat m in vm.Model.m_arrMat)
+            {
+                if (m is CMat_03_00)
+                {
+                    CMaterialManager.LoadMaterialProperties((CMat_03_00)m, m.Name);
+                }
+            }            
         }
 
         public void SetCrossSectionValuesFromDatabase()
