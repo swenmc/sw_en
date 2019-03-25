@@ -254,10 +254,8 @@ namespace PFD
             fz_UpperLimitForFrontGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].b);
             fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eBackGirt].b);
 
-            //Mato - toto tu je aka podmienka? zatial som dal,ze alebo back alebo front girt staci ak je zaskrtnute
-            //bool bGenerateGirts = true; 
-
-            bool bGenerateGirts = componentList[(int)EMemberGroupNames.eBackGirt].Generate || componentList[(int)EMemberGroupNames.eFrontGirt].Generate;
+            // Side wall - girts
+            bool bGenerateGirts = componentList[(int)EMemberGroupNames.eGirtWall].Generate;
             if (bGenerateGirts)
             {
                 iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
@@ -297,7 +295,7 @@ namespace PFD
             int iOneRafterBackColumnNo = 0;
             iBackColumnNoInOneFrame = 0;
 
-            fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stplmi
+            fDist_BackColumns = fDist_FrontColumns; // Todo Temporary - umoznit ine roztece medzi zadnymi a prednymi stlpmi
 
             bool bGenerateBackColumns = componentList[(int)EMemberGroupNames.eBackColumn].Generate;
             if (bGenerateBackColumns)
