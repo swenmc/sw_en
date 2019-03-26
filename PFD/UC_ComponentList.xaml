@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Materials" Source="{Binding Materials}"/>
+        <System:Double x:Key="theColumnWidthText">250</System:Double>
+        <System:Double x:Key="theColumnWidthSymbol">100</System:Double>
+        <System:Double x:Key="theColumnWidthValue">100</System:Double>
+        <System:Double x:Key="theColumnWidthUnit">70</System:Double>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -51,10 +56,10 @@
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource theColumnWidthText}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource  theColumnWidthSymbol}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding Source={StaticResource  theColumnWidthValue}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding Source={StaticResource  theColumnWidthUnit}}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -62,10 +67,10 @@
         <DataGrid Name ="Datagrid_Materials" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource  theColumnWidthText}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource  theColumnWidthSymbol}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding Source={StaticResource  theColumnWidthValue}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding Source={StaticResource  theColumnWidthUnit}}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
