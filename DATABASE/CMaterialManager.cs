@@ -143,7 +143,7 @@ namespace DATABASE
             mat.E = reader["E"].ToString() == "" ? double.NaN : double.Parse(reader["E"].ToString(), nfi);
             mat.G = reader["G"].ToString() == "" ? double.NaN : double.Parse(reader["G"].ToString(), nfi);
             mat.Nu = reader["Nu"].ToString() == "" ? double.NaN : double.Parse(reader["Nu"].ToString(), nfi);
-            mat.iNumberOfIntervals = int.Parse(reader["iNumberOfIntervals"].ToString(), nfi);
+            mat.iNumberOfIntervals = int.Parse(reader["iNumberOfIntervals"].ToString());
             mat.t1 = reader["t1"].ToString() == "" ? double.NaN : double.Parse(reader["t1"].ToString(), nfi);
             mat.t2 = reader["t2"].ToString() == "" ? double.NaN : double.Parse(reader["t2"].ToString(), nfi);
             mat.t3 = reader["t3"].ToString() == "" ? double.NaN : double.Parse(reader["t3"].ToString(), nfi);
@@ -231,7 +231,7 @@ namespace DATABASE
             mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi) * fFactorUnit_Stress;
 
             // Load number intervals of thickness depending values
-            int intervals = reader.GetInt32(reader.GetOrdinal("iNumberOfIntervals"));
+            int intervals = int.Parse(reader["iNumberOfIntervals"].ToString());
             // Resize fields
             Array.Resize<float>(ref mat.m_ft_interval, intervals);
             Array.Resize<float>(ref mat.m_ff_yk, intervals);
