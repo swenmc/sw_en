@@ -417,11 +417,12 @@
         eEC, // End Column
         eEP, // Edge Purlin
         eP,  // Purlin
-        eDT, // Door Trimmer
-        eDL, // Door Lintel
+        eDT, // Door Trimmer (roller door)
+        eDL, // Door Lintel (roller door)
         ePB, // Purlin Block
         eGB, // Girt Block
-        eDF, // Door Frame
+        eDF, // Door Frame (personnel door)
+        eWF, // Window Frame
         eBG, // Base Girt
         eMR, // Main Rafter
         eMC, // Main Column
