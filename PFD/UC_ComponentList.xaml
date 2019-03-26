@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d">
     <UserControl.Resources>
+        <System:Int32 x:Key="columnWidth">220</System:Int32>        
         <CollectionViewSource x:Key="Materials" Source="{Binding Materials}"/>
     </UserControl.Resources>
     <Grid>
@@ -51,10 +53,10 @@
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding columnWidth}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -62,10 +64,10 @@
         <DataGrid Name ="Datagrid_Materials" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding columnWidth}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
