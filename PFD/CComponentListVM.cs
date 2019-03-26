@@ -30,9 +30,7 @@ namespace PFD
 
         private List<string> MMaterials;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
-        private List<CMatProperties> m_MaterialDetails;
-
-        
+        private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -57,19 +55,15 @@ namespace PFD
 
         private void ComponentListItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            PropertyChanged(sender, e);            
+            PropertyChanged(sender, e);
         }
 
         public List<CSectionPropertiesText> ComponentDetailsList
         {
             get
             {
-                
-                
                 if (m_ComponentDetailsList == null)
                 {
-                    //List<CSectionPropertiesText> secProps = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
-                    //m_ComponentDetailsList = new ObservableCollection<CSectionPropertiesText>(secProps);
                     m_ComponentDetailsList = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
                 }
                 return m_ComponentDetailsList;
@@ -81,20 +75,23 @@ namespace PFD
                 NotifyPropertyChanged("ComponentDetailsList");
             }
         }
-        public List<CMatProperties> MaterialDetails
+        public List<CMaterialPropertiesText> MaterialDetailsList
         {
             get
             {
-                return m_MaterialDetails;
+                if (m_MaterialDetailsList == null)
+                {
+                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits();
+                }
+                return m_MaterialDetailsList;
             }
 
             set
             {
-                m_MaterialDetails = value;
-                NotifyPropertyChanged("MaterialDetails");
+                m_MaterialDetailsList = value;
+                NotifyPropertyChanged("MaterialDetailsList");
             }
         }
-
 
         private List<string> Sections
         {
@@ -220,8 +217,6 @@ namespace PFD
             }
         }
 
-
-
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -286,16 +281,24 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////
             CComponentInfo cInfo = ComponentList[MSelectedComponentIndex];
             if (cInfo == null) return;
-            
+
+            // Cross-section properties
             List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(cInfo.Section);
-            
+
             for (int i = 0; i < ComponentDetailsList.Count; i++)
             {
                 ComponentDetailsList[i].Value = listSectionPropertyValue[i];
             }
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
 
-            MaterialDetails = new List<CMatProperties>() { CMaterialManager.LoadMaterialProperties(cInfo.Material) };
+            // Material properties
+            List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList(cInfo.Material);
+
+            for (int i = 0; i < MaterialDetailsList.Count; i++)
+            {
+                MaterialDetailsList[i].Value = listMaterialPropertyValue[i];
+            }
+            MaterialDetailsList = new List<CMaterialPropertiesText>(MaterialDetailsList);
         }
     }
 }

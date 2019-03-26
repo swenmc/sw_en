@@ -544,7 +544,7 @@ namespace PFD
                 {
                     CMaterialManager.LoadMaterialProperties((CMat_03_00)m, m.Name);
                 }
-            }            
+            }
         }
 
         public void SetCrossSectionValuesFromDatabase()

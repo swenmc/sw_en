@@ -26,7 +26,6 @@ namespace PFD
     /// </summary>
     public partial class UC_ComponentList : UserControl
     {
-        
         public UC_ComponentList()
         {
             InitializeComponent();
@@ -40,13 +39,12 @@ namespace PFD
             this.DataContext = cl;
             cl.SelectedComponentIndex = 0;
         }
-        
+
         protected void HandleComponentListPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
             CComponentListVM viewModel = sender as CComponentListVM;
             if (viewModel == null) return;
         }
-        
     }
 }

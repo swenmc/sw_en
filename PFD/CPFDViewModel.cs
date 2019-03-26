@@ -1324,13 +1324,12 @@ namespace PFD
 
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "ComponentDetailsList") return;
-            else if (e.PropertyName == "SelectedComponentIndex") return;
-            else if (e.PropertyName == "MaterialDetails") return;
+            if (e.PropertyName == "SelectedComponentIndex") return;
+            else if (e.PropertyName == "ComponentDetailsList") return;
+            else if (e.PropertyName == "MaterialDetailsList") return;
 
-            PropertyChanged(sender, e);            
+            PropertyChanged(sender, e);
         }
-
 
         //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
         public void CreateModel()

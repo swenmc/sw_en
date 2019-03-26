@@ -91,6 +91,7 @@
     <Compile Include="DTO\CMatProperties.cs" />
     <Compile Include="DTO\CMaterialProperties.cs" />
     <Compile Include="DTO\CrScProperties.cs" />
+    <Compile Include="DTO\CMaterialPropertiesTex.cs" />
     <Compile Include="DTO\CTEKScrewProperties.cs" />
     <Compile Include="DTO\CSectionPropertiesText.cs" />
     <Compile Include="CTrapezoidalSheetingManager.cs" />

@@ -11,6 +11,9 @@ namespace DATABASE.DTO
         private int m_ID;
         private string m_Standard;
         private string m_Grade;
+        private double m_E;
+        private double m_G;
+        private double m_Nu;
         private int m_iNumberOfIntervals;
         private double m_t1;
         private double m_t2;
@@ -62,6 +65,45 @@ namespace DATABASE.DTO
             set
             {
                 m_Grade = value;
+            }
+        }
+
+        public double E
+        {
+            get
+            {
+                return m_E;
+            }
+
+            set
+            {
+                m_E = value;
+            }
+        }
+
+        public double G
+        {
+            get
+            {
+                return m_G;
+            }
+
+            set
+            {
+                m_G = value;
+            }
+        }
+
+        public double Nu
+        {
+            get
+            {
+                return m_Nu;
+            }
+
+            set
+            {
+                m_Nu = value;
             }
         }
 
