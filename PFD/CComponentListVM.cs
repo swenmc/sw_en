@@ -55,6 +55,11 @@ namespace PFD
 
         private void ComponentListItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (sender is CComponentInfo)
+            {
+                CComponentInfo cInfo = sender as CComponentInfo;
+                if (cInfo.IsSetFromCode) return;
+            }
             PropertyChanged(sender, e);
         }
 

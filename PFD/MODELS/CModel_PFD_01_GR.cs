@@ -172,7 +172,7 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor = Colors.BlueViolet;     // Back Column
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;            // Front Girt
             m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // Back Girt
-
+                        
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);
 
@@ -902,6 +902,9 @@ namespace PFD
 
             #endregion
 
+            //set members Generate,Calculate,Design, MaterialList properties
+            SetMembersAccordingTo(componentList);            
+
             #region Blocks
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1322,6 +1325,8 @@ namespace PFD
             AddMembersToMemberGroupsLists();
 
             SetJointDefaultParameters();
+
+            //SetMembersInMemberGroupsListsAccordingTo(componentList);
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -1928,6 +1933,46 @@ namespace PFD
             if (i != m_arrMembers.Length)
                 throw new Exception("Not all members were added.");
             */
+        }
+
+        private void SetMembersAccordingTo(ObservableCollection<CComponentInfo> componentList)
+        {
+            foreach (CMember m in m_arrMembers)
+            {
+                foreach (CComponentInfo cInfo in componentList)
+                {
+                    if (m.Prefix == cInfo.Prefix)
+                    {
+                        m.BIsGenerated = cInfo.Generate;
+                        m.BIsDSelectedForIFCalculation = cInfo.Calculate;
+                        m.BIsDSelectedForDesign = cInfo.Design;
+                        m.BIsSelectedForMaterialList = cInfo.MaterialList;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void SetMembersInMemberGroupsListsAccordingTo(ObservableCollection<CComponentInfo> componentList)
+        {
+            foreach (CMemberGroup group in listOfModelMemberGroups)
+            {
+                foreach (CComponentInfo cInfo in componentList)
+                {
+                    if (group.Name != cInfo.ComponentName) continue;
+
+                    foreach (CMember m in group.ListOfMembers)
+                    {
+                        if (m.BIsGenerated)  //only if it is not already turned off
+                        {
+                            m.BIsGenerated = cInfo.Generate;
+                            m.BIsDSelectedForIFCalculation = cInfo.Calculate;
+                            m.BIsDSelectedForDesign = cInfo.Design;
+                            m.BIsSelectedForMaterialList = cInfo.MaterialList;
+                        }
+                    }
+                }
+            }
         }
 
         // TODO - spravnejsie by bolo nastavovat defaultne parametre spoja uz pri vytvoreni

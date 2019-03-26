@@ -119,8 +119,7 @@ namespace PFD
                 if (!MGenerate && MDisplay)                                    
                     MDisplay = false;
                 
-
-                if (!IsSetFromCode) NotifyPropertyChanged("Display");
+                NotifyPropertyChanged("Display");
             }
         }
 
@@ -142,7 +141,7 @@ namespace PFD
                     Design = false;
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("Calculate");
+                NotifyPropertyChanged("Calculate");
             }
         }
 
@@ -162,7 +161,7 @@ namespace PFD
                 if (!MCalculate && MDesign)
                     MDesign = false;
 
-                if (!IsSetFromCode) NotifyPropertyChanged("Design");
+                NotifyPropertyChanged("Design");
             }
         }
 
@@ -179,7 +178,7 @@ namespace PFD
                 if (!MGenerate && MMaterialList)
                     MMaterialList = false;
 
-                if (!IsSetFromCode) NotifyPropertyChanged("MaterialList");
+                NotifyPropertyChanged("MaterialList");
             }
         }
 
