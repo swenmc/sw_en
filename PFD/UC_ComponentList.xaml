@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d">
     <UserControl.Resources>
-        <System:Int32 x:Key="columnWidth">220</System:Int32>        
+        <System:Int32 x:Key="columnWidth">120</System:Int32>        
         <CollectionViewSource x:Key="Materials" Source="{Binding Materials}"/>
     </UserControl.Resources>
     <Grid>
@@ -41,11 +41,11 @@
                     SelectedValueBinding="{Binding Material}" 
                     ItemsSource ="{Binding Source={StaticResource Materials}}">
                 </DataGridComboBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Generate, Delay=500}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display, Delay=500}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate, Delay=500}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design, Delay=500}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList, Delay=500}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Generate}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -53,10 +53,10 @@
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding ComponentDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -64,10 +64,10 @@
         <DataGrid Name ="Datagrid_Materials" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="true" AutoGenerateColumns="False" ItemsSource="{Binding MaterialDetailsList, Mode=OneWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding columnWidth}"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding columnWidth}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Text}" Header="Name" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Unit_NmmMpa}" Header="Unit" Width="{Binding Source={StaticResource columnWidth}}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
