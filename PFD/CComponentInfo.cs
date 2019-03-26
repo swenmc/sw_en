@@ -14,6 +14,8 @@ namespace PFD
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private bool MIsSetFromCode;
+
         private string MPrefix;
         private string MComponentName;
         private string MSection;
@@ -88,13 +90,17 @@ namespace PFD
 
             set
             {
+                if (value == false && !ValidateGenerateCouldBeChanged()) return;
+                
                 MGenerate = value;
                 if (!MGenerate)
                 {
+                    IsSetFromCode = true;
                     Display = false;
                     Calculate = false;
                     Design = false;
                     MaterialList = false;
+                    IsSetFromCode = false;
                 }
                 NotifyPropertyChanged("Generate");
             }
@@ -110,7 +116,11 @@ namespace PFD
             set
             {
                 MDisplay = value;
-                NotifyPropertyChanged("Display");
+                if (!MGenerate && MDisplay)                                    
+                    MDisplay = false;
+                
+
+                if (!IsSetFromCode) NotifyPropertyChanged("Display");
             }
         }
 
@@ -124,7 +134,15 @@ namespace PFD
             set
             {
                 MCalculate = value;
-                NotifyPropertyChanged("Calculate");
+                if (!MGenerate && MCalculate)
+                    MCalculate = false;
+
+                if (!MCalculate)
+                {
+                    Design = false;
+                }
+
+                if (!IsSetFromCode) NotifyPropertyChanged("Calculate");
             }
         }
 
@@ -138,7 +156,13 @@ namespace PFD
             set
             {
                 MDesign = value;
-                NotifyPropertyChanged("Design");
+                if (!MGenerate && MDesign)
+                    MDesign = false;
+
+                if (!MCalculate && MDesign)
+                    MDesign = false;
+
+                if (!IsSetFromCode) NotifyPropertyChanged("Design");
             }
         }
 
@@ -152,7 +176,10 @@ namespace PFD
             set
             {
                 MMaterialList = value;
-                NotifyPropertyChanged("MaterialList");
+                if (!MGenerate && MMaterialList)
+                    MMaterialList = false;
+
+                if (!IsSetFromCode) NotifyPropertyChanged("MaterialList");
             }
         }
 
@@ -169,8 +196,22 @@ namespace PFD
             }
         }
 
+        public bool IsSetFromCode
+        {
+            get
+            {
+                return MIsSetFromCode;
+            }
+
+            set
+            {
+                MIsSetFromCode = value;
+            }
+        }
+
         public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections)
         {
+            MIsSetFromCode = false;
             MPrefix = prefix;
             MComponentName = componentName;
             MSection = section;
@@ -187,6 +228,14 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private bool ValidateGenerateCouldBeChanged()
+        {
+            //Main Columns, Main Rafters , Edge Columns, Edge Rafters a Eave Purlins by sa mali generovat vzdy, 
+            //takze nebude mozne checkbox Generate vypnut (pre MC, MR, EC, ER a EP disablovat editaciu checboxu generate, vzdy musi byt true)
+            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") return false;
+            else return true;
         }
     }
 }
