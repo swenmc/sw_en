@@ -220,12 +220,15 @@ namespace DATABASE
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
+            float fFactorUnit_Stress = 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
+            float fFactorUnit_Thickness = 1e+3f; // From m to mm - TODO - prerobit databazu na mm a MPa
+
             mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             mat.Standard = reader["Standard"].ToString();
             mat.Name = reader["Grade"].ToString();
-            mat.m_fE = float.Parse(reader["E"].ToString(), nfi) * 1e+6f;
-            mat.m_fG = float.Parse(reader["G"].ToString(), nfi) * 1e+6f;
-            mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi) * 1e+6f;
+            mat.m_fE = float.Parse(reader["E"].ToString(), nfi) * fFactorUnit_Stress;
+            mat.m_fG = float.Parse(reader["G"].ToString(), nfi) * fFactorUnit_Stress;
+            mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi) * fFactorUnit_Stress;
 
             // Load number intervals of thickness depending values
             int intervals = reader.GetInt32(reader.GetOrdinal("iNumberOfIntervals"));
@@ -239,52 +242,55 @@ namespace DATABASE
             if (intervals == 1)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi);
-                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
-                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * 1e+6f;
+                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * fFactorUnit_Stress;
             }
             else if (intervals == 2)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi);
-                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi);
-                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * 1e+6f;
+                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * fFactorUnit_Stress;
             }
             else if (intervals == 3)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi);
-                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi);
-                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[2] = float.Parse(reader["t3"].ToString(), nfi);
-                mat.m_ff_yk[2] = float.Parse(reader["f_y3"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[2] = float.Parse(reader["f_u3"].ToString(), nfi) * 1e+6f;
+                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[2] = float.Parse(reader["t3"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[2] = float.Parse(reader["f_y3"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[2] = float.Parse(reader["f_u3"].ToString(), nfi) * fFactorUnit_Stress;
             }
             else if (intervals == 4)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi);
-                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi);
-                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[2] = float.Parse(reader["t3"].ToString(), nfi);
-                mat.m_ff_yk[2] = float.Parse(reader["f_y3"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[2] = float.Parse(reader["f_u3"].ToString(), nfi) * 1e+6f;
-                mat.m_ft_interval[3] = float.Parse(reader["t4"].ToString(), nfi);
-                mat.m_ff_yk[3] = float.Parse(reader["f_y4"].ToString(), nfi) * 1e+6f;
-                mat.m_ff_u[3] = float.Parse(reader["f_u4"].ToString(), nfi) * 1e+6f;
+                mat.m_ft_interval[0] = float.Parse(reader["t1"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = float.Parse(reader["f_y1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[0] = float.Parse(reader["f_u1"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = float.Parse(reader["t2"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = float.Parse(reader["f_y2"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[1] = float.Parse(reader["f_u2"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[2] = float.Parse(reader["t3"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[2] = float.Parse(reader["f_y3"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[2] = float.Parse(reader["f_u3"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ft_interval[3] = float.Parse(reader["t4"].ToString(), nfi) * fFactorUnit_Thickness;
+                mat.m_ff_yk[3] = float.Parse(reader["f_y4"].ToString(), nfi) * fFactorUnit_Stress;
+                mat.m_ff_u[3] = float.Parse(reader["f_u4"].ToString(), nfi) * fFactorUnit_Stress;
             }
         }
         public static void SetMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
         {
+            float fFactorUnit_Stress = 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
+            float fFactorUnit_Thickness = 1e+3f; // From m to mm - TODO - prerobit databazu na mm a MPa
+
             mat.ID = properties.ID;
             mat.Standard = properties.Standard;
             mat.Name = properties.Grade;
@@ -304,48 +310,48 @@ namespace DATABASE
             if (intervals == 1)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = (float)properties.t1;
-                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
-                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
+                mat.m_ft_interval[0] = (float)properties.t1 * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * fFactorUnit_Stress; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
+                mat.m_ff_u[0] = (float)properties.f_u1 * fFactorUnit_Stress;
             }
             else if (intervals == 2)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = (float)properties.t1;
-                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
-                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
-                mat.m_ft_interval[1] = (float)properties.t2;
-                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
-                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
+                mat.m_ft_interval[0] = (float)properties.t1 * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * fFactorUnit_Stress;
+                mat.m_ff_u[0] = (float)properties.f_u1 * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = (float)properties.t2 * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * fFactorUnit_Stress;
+                mat.m_ff_u[1] = (float)properties.f_u2 * fFactorUnit_Stress;
             }
             else if (intervals == 3)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = (float)properties.t1;
-                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
-                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
-                mat.m_ft_interval[1] = (float)properties.t2;
-                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
-                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
-                mat.m_ft_interval[2] = (float)properties.t3;
-                mat.m_ff_yk[2] = (float)properties.f_y3 * 1e+6f;
-                mat.m_ff_u[2] = (float)properties.f_u3 * 1e+6f;
+                mat.m_ft_interval[0] = (float)properties.t1 * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * fFactorUnit_Stress;
+                mat.m_ff_u[0] = (float)properties.f_u1 * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = (float)properties.t2 * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * fFactorUnit_Stress;
+                mat.m_ff_u[1] = (float)properties.f_u2 * fFactorUnit_Stress;
+                mat.m_ft_interval[2] = (float)properties.t3 * fFactorUnit_Thickness;
+                mat.m_ff_yk[2] = (float)properties.f_y3 * fFactorUnit_Stress;
+                mat.m_ff_u[2] = (float)properties.f_u3 * fFactorUnit_Stress;
             }
             else if (intervals == 4)
             {
                 mat.m_ft_interval = new float[intervals];
-                mat.m_ft_interval[0] = (float)properties.t1;
-                mat.m_ff_yk[0] = (float)properties.f_y1 * 1e+6f;
-                mat.m_ff_u[0] = (float)properties.f_u1 * 1e+6f;
-                mat.m_ft_interval[1] = (float)properties.t2;
-                mat.m_ff_yk[1] = (float)properties.f_y2 * 1e+6f;
-                mat.m_ff_u[1] = (float)properties.f_u2 * 1e+6f;
-                mat.m_ft_interval[2] = (float)properties.t3;
-                mat.m_ff_yk[2] = (float)properties.f_y3 * 1e+6f;
-                mat.m_ff_u[2] = (float)properties.f_u3 * 1e+6f;
-                mat.m_ft_interval[3] = (float)properties.t4;
-                mat.m_ff_yk[3] = (float)properties.f_y4 * 1e+6f;
-                mat.m_ff_u[3] = (float)properties.f_u4 * 1e+6f;
+                mat.m_ft_interval[0] = (float)properties.t1 * fFactorUnit_Thickness;
+                mat.m_ff_yk[0] = (float)properties.f_y1 * fFactorUnit_Stress;
+                mat.m_ff_u[0] = (float)properties.f_u1 * fFactorUnit_Stress;
+                mat.m_ft_interval[1] = (float)properties.t2 * fFactorUnit_Thickness;
+                mat.m_ff_yk[1] = (float)properties.f_y2 * fFactorUnit_Stress;
+                mat.m_ff_u[1] = (float)properties.f_u2 * fFactorUnit_Stress;
+                mat.m_ft_interval[2] = (float)properties.t3 * fFactorUnit_Thickness;
+                mat.m_ff_yk[2] = (float)properties.f_y3 * fFactorUnit_Stress;
+                mat.m_ff_u[2] = (float)properties.f_u3 * fFactorUnit_Stress;
+                mat.m_ft_interval[3] = (float)properties.t4 * fFactorUnit_Thickness;
+                mat.m_ff_yk[3] = (float)properties.f_y4 * fFactorUnit_Stress;
+                mat.m_ff_u[3] = (float)properties.f_u4 * fFactorUnit_Stress;
             }
         }
         private static List<string> FillListOfMaterialPropertiesString(CMaterialProperties properties)
