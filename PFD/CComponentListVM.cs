@@ -62,8 +62,59 @@ namespace PFD
 
                 if(e.PropertyName == "Material") SetComponentDetails();
                 else if(e.PropertyName == "Section") SetComponentDetails();
+
+                if (e.PropertyName == "Generate")
+                {
+                    if (!ValidateGirts()) { cInfo.Generate = !cInfo.Generate; return; }
+                    SetGirtsAndColumns(cInfo);
+                }
             }
+
             PropertyChanged(sender, e);
+        }
+
+        private bool ValidateGirts()
+        {
+            //Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
+            CComponentInfo girt = ComponentList.First(c => c.ComponentName == "Girt");
+            CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
+            CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
+
+            if (girt.Generate)
+            {
+                return true;
+            }
+            else
+            {
+                if (girtFront.Generate || girtBack.Generate) return false;
+            }
+
+            return true;
+        }
+
+        private void SetGirtsAndColumns(CComponentInfo cInfo)
+        {
+            //Ak je zaskrtnute generovanie girts front side musia byt zapnute columns front side, a podobne pre back side girts a back side columns.
+            if (cInfo.ComponentName == "Column - Front Side")
+            {
+                CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
+                if(girtFront.Generate != cInfo.Generate) girtFront.Generate = cInfo.Generate;
+            }
+            else if (cInfo.ComponentName == "Column - Back Side")
+            {
+                CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
+                if (girtBack.Generate != cInfo.Generate) girtBack.Generate = cInfo.Generate;
+            }
+            else if (cInfo.ComponentName == "Girt - Front Side")
+            {
+                CComponentInfo columnFront = ComponentList.First(c => c.ComponentName == "Column - Front Side");
+                if (columnFront.Generate != cInfo.Generate) columnFront.Generate = cInfo.Generate;
+            }
+            else if (cInfo.ComponentName == "Girt - Back Side")
+            {
+                CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
+                if (columnBack.Generate != cInfo.Generate) columnBack.Generate = cInfo.Generate;
+            }
         }
 
         public List<CSectionPropertiesText> ComponentDetailsList

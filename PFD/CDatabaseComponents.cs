@@ -481,7 +481,7 @@ namespace PFD
 
         // TODO nahradit vstupmi z databazy
 
-        public string[,] arr_Member_Types_Prefix = new string[15, 2]
+        public string[,] arr_Member_Types_Prefix = new string[16, 2]
         {
             {"G", "Girt"},             // 00
             {"C", "Column"},           // 01
@@ -495,9 +495,10 @@ namespace PFD
             {"PB","Purlin Block"},     // 09
             {"GB","Girt Block"},       // 10
             {"DF","Door Frame"},       // 11
-            {"BG","Base Girt"},        // 12
-            {"MR","Main Rafter"},      // 13
-            {"MC","Main Column"}       // 14
+            {"WF","Window Frame"},       // 12            
+            {"BG","Base Girt"},        // 13
+            {"MR","Main Rafter"},      // 14
+            {"MC","Main Column"}       // 15
         };
 
         public string[] arr_Serie_Screws_Names = new string[1]

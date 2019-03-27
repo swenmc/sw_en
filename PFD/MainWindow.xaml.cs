@@ -215,6 +215,26 @@ namespace PFD
                 CComponentListVM vm = sender as CComponentListVM;
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 //else if (e.PropertyName == "ComponentDetailsList") return;
+
+
+            }
+            else if (sender is CComponentInfo)
+            {
+                CComponentInfo cInfo = sender as CComponentInfo;
+                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOnFrontSide())
+                {
+                    MessageBoxResult result = MessageBox.Show("Chcete vymazat dvere z prednej strany budovy?", "Pozor", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        RemoveDoorsFromFrontSide();
+                    }
+                    else
+                    {
+                        cInfo.Generate = true;
+                        return;
+                    }
+                }
+
             }
             
 
@@ -228,6 +248,31 @@ namespace PFD
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
             
+        }
+
+        private void RemoveDoorsFromFrontSide()
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+
+            List<DoorProperties> doorsToRemove = new List<DoorProperties>();
+            foreach (DoorProperties d in vm.DoorBlocksProperties)
+            {
+                if (d.sBuildingSide == "Front") doorsToRemove.Add(d);
+            }
+            foreach (DoorProperties d in doorsToRemove)
+            {
+                vm.DoorBlocksProperties.Remove(d);
+            }
+        }
+        private bool AreDoorsOnFrontSide()
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            
+            foreach (DoorProperties d in vm.DoorBlocksProperties)
+            {
+                if (d.sBuildingSide == "Front") return true;
+            }
+            return false;
         }
 
 

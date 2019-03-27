@@ -410,7 +410,7 @@
 
     public enum EMemberType_FS
     {
-        eG,  // Girt
+        eG = 0,  // Girt
         eC,  // Column
         eER, // End Rafter
         eWP, // Wind Post
