@@ -27,7 +27,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="Auto" SelectedValueBinding="{Binding Section}">
+                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="Auto" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Sections}"/>
@@ -41,14 +41,14 @@
                 </DataGridComboBoxColumn>
 
                 <DataGridComboBoxColumn Header="Material" ToolTipService.ToolTip="Select material" Width="Auto" 
-                    SelectedValueBinding="{Binding Material}" 
+                    SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}" 
                     ItemsSource ="{Binding Source={StaticResource Materials}}">
                 </DataGridComboBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Generate, Delay=500}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display, Delay=500}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate, Delay=500}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design, Delay=500}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList, Delay=500}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

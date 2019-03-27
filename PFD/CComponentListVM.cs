@@ -59,6 +59,9 @@ namespace PFD
             {
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
+
+                if(e.PropertyName == "Material") SetComponentDetails();
+                else if(e.PropertyName == "Section") SetComponentDetails();
             }
             PropertyChanged(sender, e);
         }

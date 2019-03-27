@@ -22,6 +22,7 @@ namespace PFD
         private List<string> MSections;
         private string MMaterial;
         private bool MGenerate;
+        private bool MGenerateIsReadonly;
         private bool MDisplay;
         private bool MCalculate;
         private bool MDesign;
@@ -103,6 +104,18 @@ namespace PFD
                     IsSetFromCode = false;
                 }
                 NotifyPropertyChanged("Generate");
+            }
+        }
+        public bool GenerateIsReadonly
+        {
+            get
+            {
+                return MGenerateIsReadonly;
+            }
+
+            set
+            {
+                MGenerateIsReadonly = value;
             }
         }
 
@@ -208,6 +221,8 @@ namespace PFD
             }
         }
 
+        
+
         public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections)
         {
             MIsSetFromCode = false;
@@ -221,6 +236,8 @@ namespace PFD
             MDesign = design;
             MMaterialList = materialList;
             MSections = sections;
+
+            SetGenerateIsReadonly();
         }
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -235,6 +252,12 @@ namespace PFD
             //takze nebude mozne checkbox Generate vypnut (pre MC, MR, EC, ER a EP disablovat editaciu checboxu generate, vzdy musi byt true)
             if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") return false;
             else return true;
+        }
+
+        private void SetGenerateIsReadonly()
+        {
+            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") GenerateIsReadonly = true;
+            else GenerateIsReadonly = false;            
         }
     }
 }
