@@ -359,19 +359,16 @@ namespace CRSC
         // end of cross-section variables definition
         #endregion
 
-        public new CMat_03_00 m_Mat = new CMat_03_00();
-
         // Default example
         public CCrSc_TW()
         {
-            m_Mat.Name = "Steel S500"; //Temporary
             CrScPointsOut = new List<Point>();
         }
 
         // Data in datagrid
         public CCrSc_TW(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
-            m_Mat.Name = "Steel S500"; //Temporary
+            m_Mat.Name = "G550‡"; //Temporary
             CrScPointsOut = new List<Point>();
 
             int count = y_suradnice.Count;

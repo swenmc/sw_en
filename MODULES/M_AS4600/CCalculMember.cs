@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using MATERIAL;
 using CRSC;
 using MATH;
 using System;
@@ -109,15 +110,6 @@ namespace M_AS4600
         LatBracing_D2_1 eLateralBracing = LatBracing_D2_1.eNoBracing;
 
         float fl_member;
-        float fl_ez;
-        float fl_ex;
-        float fl_ey;
-        float fl_LTB;
-
-        float fM_max;
-        float fM_14;
-        float fM_24;
-        float fM_34;
 
         float ff_y;
         float ff_u;
@@ -169,6 +161,11 @@ namespace M_AS4600
 
         public float fN_t_min;
 
+        public float fl_ez;
+        public float fl_ex;
+        public float fl_ey;
+        public float fl_LTB;
+
         public float ff_oc;
         public float flambda_c;
         public float fN_y;
@@ -197,6 +194,10 @@ namespace M_AS4600
         public float fM_bd_xu;
         public float fM_bl_xu;
 
+        public float fM_14;
+        public float fM_24;
+        public float fM_34;
+        public float fM_max;
         public float fC_b;
         public float fM_o_xu;
         public float ff_ol_bend;
@@ -637,8 +638,16 @@ namespace M_AS4600
             fh_y = 0.02f; // No lip
 
             // Set material properties
-            ff_y = cs.m_Mat.Get_f_yk_by_thickness(ft);
-            ff_u = cs.m_Mat.Get_f_uk_by_thickness(ft);
+            if (cs.m_Mat is CMat_03_00) // Material is Steel
+            {
+                ff_y = ((CMat_03_00)cs.m_Mat).Get_f_yk_by_thickness(ft);
+                ff_u = ((CMat_03_00)cs.m_Mat).Get_f_uk_by_thickness(ft);
+            }
+            else
+            {
+                throw new Exception("Invalid component material.");
+            }
+
             fE = cs.m_Mat.m_fE;
             fG = cs.m_Mat.m_fG;
             fNu = cs.m_Mat.m_fNu;
@@ -653,7 +662,7 @@ namespace M_AS4600
             fl_ey = sBucklingLengthFactors.fBeta_y_FB_fl_ey * fl_member; // Flexural buckling - minor axis (Nc)
             fl_ez = sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez * fl_member; // Torsional / Torsional-flexural buckling (Nc)
 
-            fl_LTB = sBucklingLengthFactors.fBeta_LTB_fl_LTB * fl_member; // Laterla-torsional buckling (Mx)
+            fl_LTB = sBucklingLengthFactors.fBeta_LTB_fl_LTB * fl_member; // Lateral-torsional buckling (Mx)
 
             fM_max = sMomentValuesForCb.fM_max;
             fM_14 = sMomentValuesForCb.fM_14;

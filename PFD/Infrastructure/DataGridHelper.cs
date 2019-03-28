@@ -156,6 +156,7 @@ namespace PFD
             float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
             float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
 
+            float fUnitFactor_ComponentLength = 1f; // m to m
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
             float fUnitFactor_CrSc_Area = 1000000f; // m^2 to mm^2
 
@@ -167,6 +168,7 @@ namespace PFD
             string sUnit_Moment = "[kNm]";
             string sUnit_Stress = "[MPa]";
 
+            string sUnit_ComponentLength = "[m]";
             string sUnit_ComponentDimension = "[mm]";
             string sUnit_CrSc_Area = "[mm²]";
 
@@ -222,6 +224,18 @@ namespace PFD
             // Global Buckling
             if (obj_CalcDesign.fEta_721_N > 0 || obj_CalcDesign.fEta_722_M_xu > 0)
             {
+                listPhysicalQuantity_Symbols.Add("l ex");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fl_ex * fUnitFactor_ComponentLength, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentLength);
+
+                listPhysicalQuantity_Symbols.Add("l ey");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fl_ey * fUnitFactor_ComponentLength, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentLength);
+
+                listPhysicalQuantity_Symbols.Add("l ez");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fl_ez * fUnitFactor_ComponentLength, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentLength);
+
                 listPhysicalQuantity_Symbols.Add("f ox");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Stress);
@@ -324,7 +338,30 @@ namespace PFD
 
             if (obj_CalcDesign.fEta_722_M_xu > 0)
             {
+                // Effective length in the plane of bending - leb (lateral-torsional bending)
+                listPhysicalQuantity_Symbols.Add("l eb");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fl_LTB * fUnitFactor_ComponentLength, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentLength);
+
                 // Bending about x/u axis
+
+                // LTB - unbraced segment D2.1.1
+                listPhysicalQuantity_Symbols.Add("M x.3");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_14 * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("M x.4");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_24 * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("M x.5");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_34 * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("M x.max");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_max * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
                 listPhysicalQuantity_Symbols.Add("C b");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Factor);

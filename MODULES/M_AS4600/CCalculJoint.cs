@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using BaseClasses;
 using MATH;
+using MATERIAL;
 using CRSC;
 using M_NZS3101;
 
@@ -117,15 +118,30 @@ namespace M_AS4600
             ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);
             ff_uk_1_plate = plate.m_Mat.Get_f_uk_by_thickness((float)ft_1_plate);
 
-            ff_yk_2_MainMember = crsc_mainMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscmainMember);
-            ff_uk_2_MainMember = crsc_mainMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscmainMember);
+            if (crsc_mainMember.m_Mat is CMat_03_00) // Material is Steel
+            {
+                ff_yk_2_MainMember = ((CMat_03_00)crsc_mainMember.m_Mat).Get_f_yk_by_thickness(ft_2_crscmainMember);
+                ff_uk_2_MainMember = ((CMat_03_00)crsc_mainMember.m_Mat).Get_f_uk_by_thickness(ft_2_crscmainMember);
+            }
+            else
+            {
+                throw new Exception("Invalid component material.");
+            }
 
             if (joint_temp.m_SecondaryMembers != null && joint_temp.m_SecondaryMembers.Length > 0) // Some secondary member exists (otherwise it is base plate connection)
             {
                 crsc_secMember = (CCrSc_TW)joint_temp.m_SecondaryMembers[0].CrScStart;
                 ft_2_crscsecMember = (float)crsc_secMember.t_min;
-                ff_yk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscsecMember);
-                ff_uk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscsecMember);
+
+                if (crsc_secMember.m_Mat is CMat_03_00) // Material is Steel
+                {
+                    ff_yk_2_SecondaryMember = ((CMat_03_00)crsc_secMember.m_Mat).Get_f_yk_by_thickness(ft_2_crscsecMember);
+                    ff_uk_2_SecondaryMember = ((CMat_03_00)crsc_secMember.m_Mat).Get_f_uk_by_thickness(ft_2_crscsecMember);
+                }
+                else
+                {
+                    throw new Exception("Invalid component material.");
+                }
             }
 
             // 5.4.1

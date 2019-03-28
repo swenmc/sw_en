@@ -19,7 +19,7 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private int MLimitStateIndex;        
+        private int MLimitStateIndex;
         private int MComponentTypeIndex;
         private int MSelectedLoadCombinationID;
 
@@ -48,24 +48,6 @@ namespace PFD
                 NotifyPropertyChanged("LimitStateIndex");
             }
         }
-
-        //-------------------------------------------------------------------------------------------------------------
-        //public int LoadCombinationIndex
-        //{
-        //    get
-        //    {
-        //        return MLoadCombinationIndex;
-        //    }
-
-        //    set
-        //    {
-        //        MLoadCombinationIndex = value;
-
-        //        // TODO No. 68 - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
-
-        //        NotifyPropertyChanged("LoadCombinationIndex");
-        //    }
-        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -153,7 +135,6 @@ namespace PFD
             MComponentList = componentList;
             m_allLoadCombinations = allLoadCombinations;
 
-
             // Set default
             LimitStateIndex = 0;
             ComponentTypeIndex = 0;
@@ -169,6 +150,7 @@ namespace PFD
             {
                 if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(new ComboItem(lc.ID, $"{lc.Name}\t{lc.CombinationKey}"));
             }
+
             LoadCombinations = loadCombinations;
         }
         //-------------------------------------------------------------------------------------------------------------

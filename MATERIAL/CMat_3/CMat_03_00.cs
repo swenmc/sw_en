@@ -108,15 +108,15 @@ namespace MATERIAL
 
         public float Get_f_yk_by_thickness(float ft)
         {
-            return FindCorrespondingVauleInArray(ft, m_ft_interval, m_ff_yk);
+            return FindCorrespondingValueInArray(ft, m_ft_interval, m_ff_yk);
         }
 
         public float Get_f_uk_by_thickness(float ft)
         {
-            return FindCorrespondingVauleInArray(ft, m_ft_interval, m_ff_u);
+            return FindCorrespondingValueInArray(ft, m_ft_interval, m_ff_u);
         }
 
-        public float FindCorrespondingVauleInArray(float ft, float[] ft_interval, float[] fvalues)
+        public float FindCorrespondingValueInArray(float ft, float[] ft_interval, float[] fvalues)
         {
             for (int i = 0; i < ft_interval.Length; i++)
             {

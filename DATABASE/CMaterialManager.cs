@@ -221,7 +221,7 @@ namespace DATABASE
             nfi.NumberDecimalSeparator = ".";
 
             float fFactorUnit_Stress = 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
-            float fFactorUnit_Thickness = 1e+3f; // From m to mm - TODO - prerobit databazu na mm a MPa
+            float fFactorUnit_Thickness = 0.001f; // From mm to m
 
             mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             mat.Standard = reader["Standard"].ToString();
@@ -289,7 +289,7 @@ namespace DATABASE
         public static void SetMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
         {
             float fFactorUnit_Stress = 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
-            float fFactorUnit_Thickness = 1e+3f; // From m to mm - TODO - prerobit databazu na mm a MPa
+            float fFactorUnit_Thickness = 0.001f; // From mm to m
 
             mat.ID = properties.ID;
             mat.Standard = properties.Standard;

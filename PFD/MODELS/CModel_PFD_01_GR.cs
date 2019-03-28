@@ -1826,8 +1826,8 @@ namespace PFD
                 {
                     m.BIsDisplayed = false;
                     m.BIsGenerated = false;
-                    m.BIsDSelectedForIFCalculation = false;
-                    m.BIsDSelectedForDesign = false;
+                    m.BIsSelectedForIFCalculation = false;
+                    m.BIsSelectedForDesign = false;
                     m.BIsSelectedForMaterialList = false;
                 }
 
@@ -1842,8 +1842,8 @@ namespace PFD
                 {
                     jStart.BIsDisplayed = false;
                     jStart.BIsGenerated = false;
-                    jStart.BIsDSelectedForIFCalculation = false;
-                    jStart.BIsDSelectedForDesign = false;
+                    jStart.BIsSelectedForIFCalculation = false;
+                    jStart.BIsSelectedForDesign = false;
                     jStart.BIsSelectedForMaterialList = false;
                 }
 
@@ -1851,8 +1851,8 @@ namespace PFD
                 {
                     jEnd.BIsDisplayed = false;
                     jEnd.BIsGenerated = false;
-                    jEnd.BIsDSelectedForIFCalculation = false;
-                    jEnd.BIsDSelectedForDesign = false;
+                    jEnd.BIsSelectedForIFCalculation = false;
+                    jEnd.BIsSelectedForDesign = false;
                     jEnd.BIsSelectedForMaterialList = false;
                 }
             }
@@ -1915,8 +1915,8 @@ namespace PFD
                 {
                     if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
                     {
-                        member.BIsDSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
-                        member.BIsDSelectedForDesign = true;
+                        member.BIsSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
+                        member.BIsSelectedForDesign = true;
                         member.BIsSelectedForMaterialList = true;
 
                         group.ListOfMembers.Add(member);
@@ -1944,8 +1944,8 @@ namespace PFD
                     if (m.Prefix == cInfo.Prefix)
                     {
                         m.BIsGenerated = cInfo.Generate;
-                        m.BIsDSelectedForIFCalculation = cInfo.Calculate;
-                        m.BIsDSelectedForDesign = cInfo.Design;
+                        m.BIsSelectedForIFCalculation = cInfo.Calculate;
+                        m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                         break;
                     }
@@ -1966,8 +1966,8 @@ namespace PFD
                         if (m.BIsGenerated)  //only if it is not already turned off
                         {
                             m.BIsGenerated = cInfo.Generate;
-                            m.BIsDSelectedForIFCalculation = cInfo.Calculate;
-                            m.BIsDSelectedForDesign = cInfo.Design;
+                            m.BIsSelectedForIFCalculation = cInfo.Calculate;
+                            m.BIsSelectedForDesign = cInfo.Design;
                             m.BIsSelectedForMaterialList = cInfo.MaterialList;
                         }
                     }
@@ -1983,7 +1983,7 @@ namespace PFD
                 if (joint.m_MainMember != null && joint.m_MainMember.BIsGenerated) // In case that joint main member is generated
                 {
                     if (joint.m_MainMember.BIsDisplayed == true) joint.BIsDisplayed = true;
-                    if (joint.m_MainMember.BIsDSelectedForDesign == true) joint.BIsDSelectedForDesign = true;
+                    if (joint.m_MainMember.BIsSelectedForDesign == true) joint.BIsSelectedForDesign = true;
                     if (joint.m_MainMember.BIsSelectedForMaterialList == true) joint.BIsSelectedForMaterialList = true;
                 }
             }

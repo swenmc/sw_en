@@ -128,7 +128,7 @@ namespace PFD.Infrastructure
             {
                 SolverWindow.SetMemberDesignLoadCaseProgress(++count, Model.m_arrMembers.Length);
 
-                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     if (!DeterminateCombinationResultsByFEMSolver)
                     {
@@ -266,7 +266,7 @@ namespace PFD.Infrastructure
             {
                 SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
 
-                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -379,7 +379,7 @@ namespace PFD.Infrastructure
                             if (sBIF_x_design != null) MemberInternalForcesInLoadCombinations.Add(new CMemberInternalForcesInLoadCombinations(m, lcomb, sBIF_x_design, sMomentValuesforCb_design, sBucklingLengthFactors_design));
 
                             // Member design internal forces
-                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                            if (m.BIsSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
                                 designInternalForces[] sMemberDIF_x;
 
@@ -425,7 +425,7 @@ namespace PFD.Infrastructure
 
                                 // End Joint
                                 JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
-                                
+
                                 // Output (for debugging - member results)
                                 bool bDebugging = false; // Testovacie ucely
                                 if (bDebugging)
@@ -456,7 +456,7 @@ namespace PFD.Infrastructure
                             basicDeflections[] sBDeflection_x_design;
 
                             // Member design deflections
-                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                            if (m.BIsSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
                                 designDeflections[] sDDeflection_x;
                                 CMemberDesign memberDesignModel = new CMemberDesign();

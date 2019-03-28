@@ -39,7 +39,7 @@ namespace BaseClasses
 
         bool m_bIsSelectedForIFCalculation;
 
-        public bool BIsDSelectedForIFCalculation
+        public bool BIsSelectedForIFCalculation
         {
             get { return m_bIsSelectedForIFCalculation; }
             set { m_bIsSelectedForIFCalculation = value; }
@@ -47,7 +47,7 @@ namespace BaseClasses
 
         bool m_bIsSelectedForDesign;
 
-        public bool BIsDSelectedForDesign
+        public bool BIsSelectedForDesign
         {
             get { return m_bIsSelectedForDesign; }
             set { m_bIsSelectedForDesign = value; }
