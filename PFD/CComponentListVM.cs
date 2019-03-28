@@ -105,12 +105,12 @@ namespace PFD
                 CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
                 if (girtBack.Generate != cInfo.Generate) girtBack.Generate = cInfo.Generate;
             }
-            else if (cInfo.ComponentName == "Girt - Front Side")
+            else if (cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnFront = ComponentList.First(c => c.ComponentName == "Column - Front Side");
                 if (columnFront.Generate != cInfo.Generate) columnFront.Generate = cInfo.Generate;
             }
-            else if (cInfo.ComponentName == "Girt - Back Side")
+            else if (cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
                 if (columnBack.Generate != cInfo.Generate) columnBack.Generate = cInfo.Generate;
