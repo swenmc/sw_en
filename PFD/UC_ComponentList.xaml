@@ -22,8 +22,8 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}">
+        <DataGrid Name ="Datagrid_Components"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
@@ -48,7 +48,13 @@
                 https://stackoverflow.com/questions/11407833/how-to-change-datagrid-row-color-on-checkbox-clicked
                 https://social.msdn.microsoft.com/Forums/en-US/7044fff0-6680-41b9-a795-966861d4fc73/checkbox-column-in-datagrid-row-styles?forum=wpf
                 -->
-                <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto">
+                    <!--<DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <EventSetter Event="CheckBox.Rightclick" Handler="DataGridCheckBoxColumn_Click" />
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>-->
+                </DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>

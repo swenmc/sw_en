@@ -219,6 +219,9 @@ namespace PFD
             else if (sender is CComponentInfo)
             {
                 CComponentInfo cInfo = sender as CComponentInfo;
+                if (cInfo.IsSetFromCode) return;
+                if (e.PropertyName == "IsSetFromCode") return;
+
                 if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
                     MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);

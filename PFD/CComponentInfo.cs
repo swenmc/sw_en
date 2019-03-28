@@ -218,6 +218,7 @@ namespace PFD
             set
             {
                 MIsSetFromCode = value;
+                NotifyPropertyChanged("IsSetFromCode");
             }
         }
 
@@ -246,7 +247,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private bool ValidateGenerateCouldBeChanged()
+        public bool ValidateGenerateCouldBeChanged()
         {
             //Main Columns, Main Rafters , Edge Columns, Edge Rafters a Eave Purlins by sa mali generovat vzdy, 
             //takze nebude mozne checkbox Generate vypnut (pre MC, MR, EC, ER a EP disablovat editaciu checboxu generate, vzdy musi byt true)
