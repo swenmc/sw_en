@@ -215,18 +215,16 @@ namespace PFD
                 CComponentListVM vm = sender as CComponentListVM;
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 //else if (e.PropertyName == "ComponentDetailsList") return;
-
-
             }
             else if (sender is CComponentInfo)
             {
                 CComponentInfo cInfo = sender as CComponentInfo;
-                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOnFrontSide())
+                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
-                    MessageBoxResult result = MessageBox.Show("Chcete vymazat dvere z prednej strany budovy?", "Pozor", MessageBoxButton.YesNo);
+                    MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the front wall?", "Warning", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        RemoveDoorsFromFrontSide();
+                        RemoveDoorsAndWindowsBuildingSide("Front");
                     }
                     else
                     {
@@ -235,8 +233,20 @@ namespace PFD
                     }
                 }
 
+                if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Back"))
+                {
+                    MessageBoxResult result = MessageBox.Show("Do you want to delete doors and windows in the back wall?", "Warning", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        RemoveDoorsAndWindowsBuildingSide("Back");
+                    }
+                    else
+                    {
+                        cInfo.Generate = true;
+                        return;
+                    }
+                }
             }
-            
 
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
@@ -246,36 +256,48 @@ namespace PFD
             UpdateAll();
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
-
-            
         }
 
-        private void RemoveDoorsFromFrontSide()
+        private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
 
             List<DoorProperties> doorsToRemove = new List<DoorProperties>();
             foreach (DoorProperties d in vm.DoorBlocksProperties)
             {
-                if (d.sBuildingSide == "Front") doorsToRemove.Add(d);
+                if (d.sBuildingSide == sBuildingSide) doorsToRemove.Add(d);
             }
             foreach (DoorProperties d in doorsToRemove)
             {
                 vm.DoorBlocksProperties.Remove(d);
             }
+
+            List<WindowProperties> windowsToRemove = new List<WindowProperties>();
+            foreach (WindowProperties w in vm.WindowBlocksProperties)
+            {
+                if (w.sBuildingSide == sBuildingSide) windowsToRemove.Add(w);
+            }
+            foreach (WindowProperties w in windowsToRemove)
+            {
+                vm.WindowBlocksProperties.Remove(w);
+            }
         }
-        private bool AreDoorsOnFrontSide()
+
+        private bool AreDoorsOrWindowsOnBuildingSide(string sBuildingSide)
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            
+ 
             foreach (DoorProperties d in vm.DoorBlocksProperties)
             {
-                if (d.sBuildingSide == "Front") return true;
+                if (d.sBuildingSide == sBuildingSide) return true;
+            }
+
+            foreach (WindowProperties w in vm.WindowBlocksProperties)
+            {
+                if (w.sBuildingSide == sBuildingSide) return true;
             }
             return false;
         }
-
-
 
         //SplashScreen splashScreen = null;
         //bool waiting = true;
