@@ -257,7 +257,7 @@ namespace PFD
         private void SetGenerateIsReadonly()
         {
             if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") GenerateIsReadonly = true;
-            else GenerateIsReadonly = false;            
+            else GenerateIsReadonly = false;
         }
     }
 }
