@@ -228,7 +228,7 @@ namespace DATABASE
             mat.Name = reader["Grade"].ToString();
             mat.m_fE = float.Parse(reader["E"].ToString(), nfi) * fFactorUnit_Stress;
             mat.m_fG = float.Parse(reader["G"].ToString(), nfi) * fFactorUnit_Stress;
-            mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi) * fFactorUnit_Stress;
+            mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi);
 
             // Load number intervals of thickness depending values
             int intervals = int.Parse(reader["iNumberOfIntervals"].ToString());
