@@ -44,16 +44,20 @@
                     SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}" 
                     ItemsSource ="{Binding Source={StaticResource Materials}}">
                 </DataGridComboBoxColumn>
-                <!-- TODO Ondrej - Nastavit readonly bunkam (checkboxom) zasednutie, resp specificky vzhlad, aby bolo hned jasne ze nema zmysel na checkbox klikat
-                https://stackoverflow.com/questions/11407833/how-to-change-datagrid-row-color-on-checkbox-clicked
-                https://social.msdn.microsoft.com/Forums/en-US/7044fff0-6680-41b9-a795-966861d4fc73/checkbox-column-in-datagrid-row-styles?forum=wpf
-                -->
+                
                 <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto">
-                    <!--<DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox">
-                            <EventSetter Event="CheckBox.Rightclick" Handler="DataGridCheckBoxColumn_Click" />
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding GenerateIsEnabled}"/>
                         </Style>
-                    </DataGridCheckBoxColumn.ElementStyle>-->
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="{Binding GenerateIsEnabled}"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>                
                 </DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>

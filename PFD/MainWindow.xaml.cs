@@ -251,6 +251,7 @@ namespace PFD
                 }
             }
 
+            SetUIElementsVisibility();
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
@@ -509,6 +510,8 @@ namespace PFD
             vm.Run();
             solver.ShowDialog();
 
+            vm.ModelCalculatedResultsValid = true;
+            SetUIElementsVisibility();
             // TODO - implementovat vypocet
         }
 
@@ -765,6 +768,29 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
             Frame1.UpdateLayout();
+        }
+
+        private void SetUIElementsVisibility()
+        {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            if (vm.ModelCalculatedResultsValid)
+            {
+                Internal_Forces.IsEnabled = true;
+                Member_Design.IsEnabled = true;
+                Joint_Design.IsEnabled = true;
+                Footing_Design.IsEnabled = true;
+                ButtonCalculateForces.IsEnabled = false;
+            }
+            else
+            {
+                Internal_Forces.IsEnabled = false;
+                Member_Design.IsEnabled = false;
+                Joint_Design.IsEnabled = false;
+                Footing_Design.IsEnabled = false;
+                ButtonCalculateForces.IsEnabled = true;
+
+            }
+
         }
 
         private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
@@ -1273,14 +1299,14 @@ namespace PFD
             }
         }
         
-        public void UpdateProgressBarValue(double progressValue, string labelText)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                progressBar.Value = progressValue;
-                progressBarLabel.Content = labelText;
-            });
-        }
+        //public void UpdateProgressBarValue(double progressValue, string labelText)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        progressBar.Value = progressValue;
+        //        progressBarLabel.Content = labelText;
+        //    });
+        //}
 
         public void ShowMessageBoxInPFDWindow(string text)
         {

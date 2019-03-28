@@ -47,19 +47,6 @@ namespace PFD
             if (viewModel == null) return;
         }
 
-        //private void DataGridCheckBoxColumn_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is CheckBox)
-        //    {
-        //        CComponentInfo viewModel = ((CheckBox)sender).DataContext as CComponentInfo;
-
-        //    }
-            
-            
-        //    //viewModel.ComponentList[viewModel.SelectedComponentIndex].Generate = false;
-
-        //}
-
         private void Datagrid_Components_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.RightButton == MouseButtonState.Pressed)

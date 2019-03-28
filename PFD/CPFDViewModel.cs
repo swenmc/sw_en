@@ -99,9 +99,9 @@ namespace PFD
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
-
-
+        
         private ObservableCollection<CComponentInfo> MComponentList;
+        private bool MModelCalculatedResultsValid;
 
         // Popis pre Ondreja - doors and windows
         // GUI
@@ -196,6 +196,7 @@ namespace PFD
                 RoofCladdingColorIndex = 22;
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
+                ModelCalculatedResultsValid = false;
 
                 NotifyPropertyChanged("ModelIndex");
             }
@@ -229,7 +230,7 @@ namespace PFD
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
                     iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -253,7 +254,7 @@ namespace PFD
                     // Recalculate fL1
                     fL1 = MLength / (MFrames - 1);
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("Length");
             }
         }
@@ -277,7 +278,7 @@ namespace PFD
                     // Recalculate roof heigth
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -306,7 +307,7 @@ namespace PFD
                     // Recalculate h2
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("RoofPitch");
             }
         }
@@ -330,7 +331,7 @@ namespace PFD
                     // Recalculate L1
                     fL1 = MLength / (MFrames - 1);
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -351,7 +352,7 @@ namespace PFD
                     throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
 
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -370,7 +371,7 @@ namespace PFD
                     throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
 
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -406,7 +407,7 @@ namespace PFD
 
                     MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));
                 }
-
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
@@ -424,6 +425,7 @@ namespace PFD
                 if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
                     throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
+                ModelCalculatedResultsValid = false;
                 NotifyPropertyChanged("BottomGirtPosition");
             }
         }
@@ -1111,7 +1113,20 @@ namespace PFD
                 NotifyPropertyChanged("ComponentList");
             }
         }
-        
+
+        public bool ModelCalculatedResultsValid
+        {
+            get
+            {
+                return MModelCalculatedResultsValid;
+            }
+
+            set
+            {
+                MModelCalculatedResultsValid = value;
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -1315,6 +1330,8 @@ namespace PFD
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
+
+            MModelCalculatedResultsValid = false;
 
             IsSetFromCode = false;
 

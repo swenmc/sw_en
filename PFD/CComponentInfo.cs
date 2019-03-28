@@ -23,6 +23,7 @@ namespace PFD
         private string MMaterial;
         private bool MGenerate;
         private bool MGenerateIsReadonly;
+        private bool MGenerateIsEnabled;
         private bool MDisplay;
         private bool MCalculate;
         private bool MDesign;
@@ -116,6 +117,18 @@ namespace PFD
             set
             {
                 MGenerateIsReadonly = value;
+            }
+        }
+        public bool GenerateIsEnabled
+        {
+            get
+            {
+                return MGenerateIsEnabled;
+            }
+
+            set
+            {
+                MGenerateIsEnabled = value;
             }
         }
 
@@ -259,6 +272,8 @@ namespace PFD
         {
             if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") GenerateIsReadonly = true;
             else GenerateIsReadonly = false;
-        }
+
+            GenerateIsEnabled = !GenerateIsReadonly;
+        }        
     }
 }
