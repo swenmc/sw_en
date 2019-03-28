@@ -512,13 +512,23 @@ namespace M_AS4600
                 fEta_max = MathF.Max(fEta_max, fEta_723_12_xu_yv_10);
             }
 
-            float fEta_N_724, fEta_Mxu_724, fEta_Myv_724; 
+            float fEta_N_724, fEta_Mxu_724, fEta_Myv_724;
             float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1;
             float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2;
 
             fM_s_xu_f = eq.Eq_725_3___(fZ_ft_xu, ff_y);
             fM_s_yv_f = eq.Eq_725_3___(fZ_ft_yv, ff_y);
 
+            // Biaxial bending, no axial force
+            if (MathF.d_equal(sDIF.fN, 0.0f) && Math.Abs(sDIF.fM_xu_xx) > 0.0f && Math.Abs(sDIF.fM_yv_yy) > 0.0f)
+            {
+                float fEta_N_724_biaxialbending, fEta_Mxu_724_biaxialbending, fEta_Myv_724_biaxialbending;
+                float fEta_724_biaxialbending;
+                eq.Eq_724_____(fPhi_c, fPhi_b, 0f, float.MaxValue, sDIF.fM_xu_xx, fM_b_xu, sDIF.fM_yv_yy, fM_b_yv, out fEta_N_724_biaxialbending, out fEta_Mxu_724_biaxialbending, out fEta_Myv_724_biaxialbending, out fEta_724_biaxialbending);
+                fEta_max = MathF.Max(fEta_max, fEta_724_biaxialbending);
+            }
+
+            // Axial force and bending moment
             if (!MathF.d_equal(sDIF.fN, 0.0f)) // Some axial force exists
             {
                 if (sDIF.fN < 0.0f) // Compression
@@ -722,7 +732,7 @@ namespace M_AS4600
             float fM_bl_yv = fM_y_yv;
 
             // TODO - skontrolovat a overit vypocet unosnosti pre osu y/v
-            float fM_b_yv = MathF.Min(fM_be_yv, MathF.Min(fM_bl_yv, fM_bd_yv)); // Design resistance value 7.2.2
+            fM_b_yv = MathF.Min(fM_be_yv, MathF.Min(fM_bl_yv, fM_bd_yv)); // Design resistance value 7.2.2
 
             // 7.2.2.2.2 Lateral-torsional buckling
 

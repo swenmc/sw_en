@@ -679,6 +679,9 @@ namespace M_AS4600
             fPortion_Mx = Math.Abs(fM_x_asterix) / (fPhi_b * fM_bx);
             fPortion_My = Math.Abs(fM_y_asterix) / (fPhi_b * fM_by);
             fRatio = -fPortion_N + fPortion_Mx + fPortion_My; // Eq. (7.2.5(1))
+
+            if (fRatio < 0) // Ak je vyuzitie pre kladnu (tahovu) osovau silu vacsie nez sucet vyuzitia od od ohybovych momentov
+                fRatio = fPortion_N;
         }
         public void Eq_725_2___(float fPhi_t, float fPhi_b, float fN_asterix, float fN_t, float fM_x_asterix, float fM_sxf, float fM_y_asterix, float fM_syf, out float fPortion_N, out float fPortion_Mx, out float fPortion_My, out float fRatio)
         {
