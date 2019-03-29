@@ -2,6 +2,7 @@
 using MATH;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PFD
@@ -378,7 +379,29 @@ namespace PFD
             }
         }
 
-    
+
+        public static void SetMembersAccordingTo(CMember[] m_arrMembers, ObservableCollection<CComponentInfo> componentList)
+        {
+            int count = 0;
+
+            foreach (CMember m in m_arrMembers)
+            {
+                foreach (CComponentInfo cInfo in componentList)
+                {
+                    if (m.Prefix == cInfo.Prefix)
+                    {
+                        count++;
+                        m.BIsGenerated = cInfo.Generate;
+                        m.BIsSelectedForIFCalculation = cInfo.Calculate;
+                        m.BIsSelectedForDesign = cInfo.Design;
+                        m.BIsSelectedForMaterialList = cInfo.MaterialList;
+                        break;
+                    }
+                }
+            }
+            System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine() count: " + count);
+        }
+
         public static int GetMembersSetForCalculationsCount(CMember[] arrMembers)
         {
             int count = 0;
@@ -388,6 +411,8 @@ namespace PFD
             }
             return count;
         }
+
+
 
 
     }

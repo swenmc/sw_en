@@ -109,6 +109,8 @@ namespace PFD
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
                     if (header == "MaterialList") cInfo.MaterialList = !material;
+
+                    cInfo.IsSetFromCode = false;
                 }
             }
 
@@ -144,6 +146,8 @@ namespace PFD
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
                     if (header == "MaterialList") cInfo.MaterialList = !material;
+
+                    cInfo.IsSetFromCode = false;
                 }
                 
 

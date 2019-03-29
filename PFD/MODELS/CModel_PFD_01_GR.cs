@@ -903,7 +903,7 @@ namespace PFD
             #endregion
 
             //set members Generate,Calculate,Design, MaterialList properties
-            SetMembersAccordingTo(componentList);
+            CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
 
             #region Blocks
 
@@ -1946,23 +1946,7 @@ namespace PFD
             */
         }
 
-        private void SetMembersAccordingTo(ObservableCollection<CComponentInfo> componentList)
-        {
-            foreach (CMember m in m_arrMembers)
-            {
-                foreach (CComponentInfo cInfo in componentList)
-                {
-                    if (m.Prefix == cInfo.Prefix)
-                    {
-                        m.BIsGenerated = cInfo.Generate;
-                        m.BIsSelectedForIFCalculation = cInfo.Calculate;
-                        m.BIsSelectedForDesign = cInfo.Design;
-                        m.BIsSelectedForMaterialList = cInfo.MaterialList;
-                        break;
-                    }
-                }
-            }
-        }
+        
 
         private void SetMembersInMemberGroupsListsAccordingTo(ObservableCollection<CComponentInfo> componentList)
         {

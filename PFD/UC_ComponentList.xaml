@@ -59,10 +59,10 @@
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>                
                 </DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Display, UpdateSourceTrigger=PropertyChanged}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Calculate, UpdateSourceTrigger=PropertyChanged}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Design, UpdateSourceTrigger=PropertyChanged}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList, UpdateSourceTrigger=PropertyChanged}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

@@ -1102,8 +1102,6 @@ namespace PFD
             {
                 MComponentList = value;
                 
-
-                
                 if (MComponentList == null) return;
                 
                 foreach (CComponentInfo c in MComponentList)
@@ -1295,6 +1293,7 @@ namespace PFD
         {
             IsSetFromCode = true;
             componentVM.PropertyChanged += ComponentVM_PropertyChanged;
+            ComponentList = componentVM.ComponentList;
 
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
@@ -1472,6 +1471,8 @@ namespace PFD
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTING CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+
+            CModelHelper.SetMembersAccordingTo(model.m_arrMembers, ComponentList);
 
             //tieto texty budeme zobrazovat vsetky members alebo len tie ktore su urcene pre vypocet?
             int membersCalcCount = CModelHelper.GetMembersSetForCalculationsCount(model.m_arrMembers);
