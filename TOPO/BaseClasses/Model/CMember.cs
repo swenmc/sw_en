@@ -1957,7 +1957,7 @@ namespace BaseClasses
 
         public CMemberGroup GetMemberGroupFromList(List<CMemberGroup> listOfGroups)
         {
-            // TODO - toto vyhladavanie podla podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
+            // TODO - toto vyhladavanie podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
             for (int i = 0; i < listOfGroups.Count; i++)
             {
                 for (int j = 0; j < listOfGroups[i].ListOfMembers.Count; j++)
