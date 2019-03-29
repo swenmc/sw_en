@@ -1473,9 +1473,12 @@ namespace PFD
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
 
-            SolverWindow.SetCountsLabels(model.m_arrNodes.Length, model.m_arrMembers.Length, model.m_arrConnectionJoints.Count, model.m_arrLoadCases.Length, model.m_arrLoadCombs.Length);
-            SolverWindow.SetMemberDesignLoadCaseProgress(0, model.m_arrMembers.Length);
-            SolverWindow.SetMemberDesignLoadCombinationProgress(0, model.m_arrMembers.Length);
+            //tieto texty budeme zobrazovat vsetky members alebo len tie ktore su urcene pre vypocet?
+            int membersCalcCount = CModelHelper.GetMembersSetForCalculationsCount(model.m_arrMembers);
+
+            SolverWindow.SetCountsLabels(model.m_arrNodes.Length, membersCalcCount/*model.m_arrMembers.Length*/, model.m_arrConnectionJoints.Count, model.m_arrLoadCases.Length, model.m_arrLoadCombs.Length);
+            SolverWindow.SetMemberDesignLoadCaseProgress(0, membersCalcCount);
+            SolverWindow.SetMemberDesignLoadCombinationProgress(0, membersCalcCount);
 
             // Validate model before calculation (compare IDs)
             CModelHelper.ValidateModel(model);

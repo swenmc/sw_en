@@ -57,6 +57,8 @@ namespace PFD
 
             for (int i = 0; i < model.m_arrMembers.Length; i++)
             {
+                if (!model.m_arrMembers[i].BIsSelectedForIFCalculation) continue; //member is not selected for calculations
+
                 CMember simpleBeamMember = new CMember();
                 List<CNode> simpleBeamNodes = new List<CNode>();
 
@@ -376,8 +378,17 @@ namespace PFD
             }
         }
 
+    
+        public static int GetMembersSetForCalculationsCount(CMember[] arrMembers)
+        {
+            int count = 0;
+            foreach (CMember m in arrMembers)
+            {
+                if (m.BIsSelectedForIFCalculation) count++;
+            }
+            return count;
+        }
 
 
-        
     }
 }

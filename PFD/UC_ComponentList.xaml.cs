@@ -78,10 +78,41 @@ namespace PFD
                     cInfo.Calculate = true;
                     cInfo.IsSetFromCode = false;
                     cInfo.MaterialList = true;
-                }
-                
+                }                
             }
-            
+
+            //toggle Column
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                string header = ((DataGrid)sender).CurrentColumn.Header.ToString();
+                CComponentListVM vm = this.DataContext as CComponentListVM;
+                CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
+
+                bool generate = selectedInfo.Generate;
+                bool calc = selectedInfo.Calculate;
+                bool design = selectedInfo.Design;
+                bool display = selectedInfo.Display;
+                bool material = selectedInfo.MaterialList;
+
+                if (vm == null) return;
+
+                foreach (CComponentInfo cInfo in vm.ComponentList)
+                {
+                    if (vm.ComponentList.IndexOf(cInfo) == vm.ComponentList.Count - 1)
+                    {
+                        cInfo.IsSetFromCode = false;
+                    }
+                    else cInfo.IsSetFromCode = true;
+
+                    if (header == "Generate") cInfo.Generate = !generate;
+                    if (header == "Calculate") cInfo.Calculate = !calc;
+                    if (header == "Design") cInfo.Design = !design;
+                    if (header == "Display") cInfo.Display = !display;
+                    if (header == "MaterialList") cInfo.MaterialList = !material;
+                }
+            }
+
+
         }
 
         private void Datagrid_Components_MouseDown(object sender, MouseButtonEventArgs e)
