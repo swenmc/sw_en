@@ -142,9 +142,9 @@ namespace PFD
             set
             {
                 MDisplay = value;
-                if (!MGenerate && MDisplay)                                    
+                if (!MGenerate && MDisplay)
                     MDisplay = false;
-                
+
                 NotifyPropertyChanged("Display");
             }
         }
@@ -235,8 +235,6 @@ namespace PFD
             }
         }
 
-        
-
         public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections)
         {
             MIsSetFromCode = false;
@@ -274,6 +272,6 @@ namespace PFD
             else GenerateIsReadonly = false;
 
             GenerateIsEnabled = !GenerateIsReadonly;
-        }        
+        }
     }
 }

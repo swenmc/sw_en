@@ -379,18 +379,23 @@ namespace PFD
             }
         }
 
-
         public static void SetMembersAccordingTo(CMember[] m_arrMembers, ObservableCollection<CComponentInfo> componentList)
         {
             int count = 0;
 
             foreach (CMember m in m_arrMembers)
             {
-                foreach (CComponentInfo cInfo in componentList)
+                for(int i=0; i< componentList.Count; i++)
                 {
+                    // BUG 243 - nestaci nam prefix lebo girt, front girts a back girts maju prefix rovnaky
+                    // Mozno by CComponentInfo mohlo mat svoje ID, ktore porovname s ID prierezu, potom by sa for (line 388) zmenilo spat na foreach
+                    CComponentInfo cInfo = componentList[i];
+
                     // TO Ondrej - ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
-                    if (m.Prefix == cInfo.Prefix && m.BIsGenerated) // !!! Set member properties only for already generated members - deactivated members (especially girts in place where block is inserted) shouldn't be activated
+                    if (m.Prefix == cInfo.Prefix &&
+                        m.CrScStart.ID == i+1 && // BUG 243 - Temporary nestaci nam prefix lebo girt, front girts a back girts maju prefix rovnaky
+                        m.BIsGenerated) // !!! Set member properties only for already generated members - deactivated members (especially girts in place where block is inserted) shouldn't be activated
                     {
                         count++;
                         // Assign component properties from GUI component list to the particular members in the model
