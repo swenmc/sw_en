@@ -316,7 +316,6 @@ namespace PFD
             iFrontGirtsNoInOneFrame = 0;
             iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
 
-            
             bool bGenerateFrontGirts = componentList[(int)EMemberGroupNames.eFrontGirt].Generate;
 
             if (bGenerateFrontGirts)
@@ -902,9 +901,6 @@ namespace PFD
 
             #endregion
 
-            //set members Generate,Calculate,Design, MaterialList properties
-            CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
-
             #region Blocks
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -975,6 +971,12 @@ namespace PFD
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             #endregion
+
+            AddMembersToMemberGroupsLists();
+
+            // Set members Generate, Display, Calculate, Design, MaterialList properties
+            CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
+
 
             #region Supports
 
@@ -1333,11 +1335,7 @@ namespace PFD
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
             #endregion
 
-            AddMembersToMemberGroupsLists();
-
             SetJointDefaultParameters();
-
-            //SetMembersInMemberGroupsListsAccordingTo(componentList);
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -1894,28 +1892,6 @@ namespace PFD
 
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
-
-                // Assign block girts members to the group
-                if (m_arrMembers[arraysizeoriginal + i].EMemberType == EMemberType_FS.eG)
-                {
-                    if (block.BuildingSide == "Left" || block.BuildingSide == "Right")
-                    {
-                        listOfModelMemberGroups[(int)EMemberGroupNames.eGirtWall].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
-                    }
-                    else if(block.BuildingSide == "Front")
-                    {
-                        listOfModelMemberGroups[(int)EMemberGroupNames.eFrontGirt].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
-                    }
-                    else if (block.BuildingSide == "Back")
-                    {
-                        listOfModelMemberGroups[(int)EMemberGroupNames.eBackGirt].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
-                    }
-                    else
-                    {
-                        throw new Exception("Building side is not specified for the girt member ID: " + m_arrMembers[arraysizeoriginal + i].ID);
-                    }
-
-                }
             }
 
             // Add block member connections to the main model connections
@@ -1948,10 +1924,6 @@ namespace PFD
                 {
                     if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
                     {
-                        member.BIsSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
-                        member.BIsSelectedForDesign = true;
-                        member.BIsSelectedForMaterialList = true;
-
                         group.ListOfMembers.Add(member);
                         //listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
                         i++;
@@ -1966,29 +1938,6 @@ namespace PFD
             if (i != m_arrMembers.Length)
                 throw new Exception("Not all members were added.");
             */
-        }
-
-        private void SetMembersInMemberGroupsListsAccordingTo(ObservableCollection<CComponentInfo> componentList)
-        {
-            foreach (CMemberGroup group in listOfModelMemberGroups)
-            {
-                foreach (CComponentInfo cInfo in componentList)
-                {
-                    if (group.Name != cInfo.ComponentName) continue;
-
-                    foreach (CMember m in group.ListOfMembers)
-                    {
-                        if (m.BIsGenerated)  //only if it is not already turned off
-                        {
-                            m.BIsGenerated = cInfo.Generate;
-                            m.BIsDisplayed = cInfo.Display;
-                            m.BIsSelectedForIFCalculation = cInfo.Calculate;
-                            m.BIsSelectedForDesign = cInfo.Design;
-                            m.BIsSelectedForMaterialList = cInfo.MaterialList;
-                        }
-                    }
-                }
-            }
         }
 
         // TODO - spravnejsie by bolo nastavovat defaultne parametre spoja uz pri vytvoreni
