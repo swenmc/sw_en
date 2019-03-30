@@ -182,7 +182,6 @@ namespace PFD
                     }
 
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], EMemberType_FS.eG, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
-                    m_arrMembers[i * INumberOfGirtsToDeactivate + j].BIsDisplayed = true;
                 }
             }
 
@@ -212,9 +211,6 @@ namespace PFD
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
             m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
 
-            m_arrMembers[iMembersGirts].BIsDisplayed = true;
-            m_arrMembers[iMembersGirts + 1].BIsDisplayed = true;
-
             // Door lintel (header)
             // TODO - add to block parameters
             float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
@@ -233,7 +229,6 @@ namespace PFD
             if (iNumberOfLintels > 0)
             {
                 m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
-                m_arrMembers[iMembersGirts + iNumberOfColumns].BIsDisplayed = true;
             }
 
             // Connection Joints

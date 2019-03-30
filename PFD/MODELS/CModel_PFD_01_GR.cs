@@ -1835,8 +1835,8 @@ namespace PFD
                 CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
                 if (m != null)
                 {
-                    m.BIsDisplayed = false;
                     m.BIsGenerated = false;
+                    m.BIsDisplayed = false;
                     m.BIsSelectedForIFCalculation = false;
                     m.BIsSelectedForDesign = false;
                     m.BIsSelectedForMaterialList = false;
@@ -1851,8 +1851,8 @@ namespace PFD
 
                 if (jStart != null)
                 {
-                    jStart.BIsDisplayed = false;
                     jStart.BIsGenerated = false;
+                    jStart.BIsDisplayed = false;
                     jStart.BIsSelectedForIFCalculation = false;
                     jStart.BIsSelectedForDesign = false;
                     jStart.BIsSelectedForMaterialList = false;
@@ -1860,8 +1860,8 @@ namespace PFD
 
                 if (jEnd != null) jEnd.BIsDisplayed = false;
                 {
-                    jEnd.BIsDisplayed = false;
                     jEnd.BIsGenerated = false;
+                    jEnd.BIsDisplayed = false;
                     jEnd.BIsSelectedForIFCalculation = false;
                     jEnd.BIsSelectedForDesign = false;
                     jEnd.BIsSelectedForMaterialList = false;
@@ -1894,6 +1894,27 @@ namespace PFD
 
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
+
+                // Assign block girts members to the group
+                if (m_arrMembers[arraysizeoriginal + i].EMemberType == EMemberType_FS.eG)
+                {
+                    if (block.BuildingSide == "Left" || block.BuildingSide == "Right")
+                    {
+                        listOfModelMemberGroups[(int)EMemberGroupNames.eGirtWall].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
+                    }
+                    else if(block.BuildingSide == "Front")
+                    {
+                        listOfModelMemberGroups[(int)EMemberGroupNames.eFrontGirt].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
+                    }
+                    else if (block.BuildingSide == "Back")
+                    {
+                        listOfModelMemberGroups[(int)EMemberGroupNames.eBackGirt].ListOfMembers.Add(m_arrMembers[arraysizeoriginal + i]);
+                    }
+                    else
+                    {
+                        throw new Exception("Building side is not specified for the girt member ID: " + m_arrMembers[arraysizeoriginal + i].ID);
+                    }
+                }
             }
 
             // Add block member connections to the main model connections
