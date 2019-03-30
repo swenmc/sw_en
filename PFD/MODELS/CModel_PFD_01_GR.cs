@@ -1914,6 +1914,7 @@ namespace PFD
                     {
                         throw new Exception("Building side is not specified for the girt member ID: " + m_arrMembers[arraysizeoriginal + i].ID);
                     }
+
                 }
             }
 
@@ -1967,8 +1968,6 @@ namespace PFD
             */
         }
 
-        
-
         private void SetMembersInMemberGroupsListsAccordingTo(ObservableCollection<CComponentInfo> componentList)
         {
             foreach (CMemberGroup group in listOfModelMemberGroups)
@@ -1982,6 +1981,7 @@ namespace PFD
                         if (m.BIsGenerated)  //only if it is not already turned off
                         {
                             m.BIsGenerated = cInfo.Generate;
+                            m.BIsDisplayed = cInfo.Display;
                             m.BIsSelectedForIFCalculation = cInfo.Calculate;
                             m.BIsSelectedForDesign = cInfo.Design;
                             m.BIsSelectedForMaterialList = cInfo.MaterialList;
