@@ -126,7 +126,7 @@ namespace PFD
             // Kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.GetLoadCombinationWithID(vm.SelectedLoadCombinationID);
 
-            string selectedGroupName = vm.ComponentList[vm.ComponentTypeIndex].ComponentName;
+            string selectedGroupName = vm.ComponentList.ElementAtOrDefault(vm.ComponentTypeIndex);
             CMember member = FindMemberWithMaximumDesignRatio(lcomb, selectedGroupName, Model.listOfModelMemberGroups); // Find member in group (members with same compoment type) with maximum design ratio
             if (member == null) return; // nemame vypocitane vysledky...nie je co zobrazovat //throw new Exception("Member with maximum design ratio not found.");
 
@@ -623,6 +623,8 @@ namespace PFD
 
         bool bIsMemberInGroup(CMember member, string groupName, List<CMemberGroup> listOfGroups)
         {
+            if (string.IsNullOrEmpty(groupName)) return false;
+
             // TODO - toto vyhladavanie podla podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
             for (int i = 0; i < listOfGroups.Count; i++)
             {

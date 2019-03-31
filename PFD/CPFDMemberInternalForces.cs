@@ -23,7 +23,7 @@ namespace PFD
         private int MComponentTypeIndex;
         private int MSelectedLoadCombinationID;
 
-        private ObservableCollection<CComponentInfo> MComponentList;
+        private List<string> MComponentList;
         private CLimitState[] MLimitStates;
         private List<ComboItem> MLoadCombinations;
 
@@ -80,7 +80,7 @@ namespace PFD
             }
         }
 
-        public ObservableCollection<CComponentInfo> ComponentList
+        public List<string> ComponentList
         {
             get
             {
@@ -143,7 +143,7 @@ namespace PFD
         public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             MLimitStates = limitStates;
-            MComponentList = componentList;
+            MComponentList = componentList.Where(s => s.Calculate == true).Select(s => s.ComponentName).ToList();
             m_allLoadCombinations = allLoadCombinations;
 
             // Set default

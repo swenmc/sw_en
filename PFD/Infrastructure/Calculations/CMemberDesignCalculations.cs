@@ -54,6 +54,7 @@ namespace PFD.Infrastructure
         private bool MUseCRSCGeometricalAxes;
         private bool DeterminateCombinationResultsByFEMSolver;
         private bool UseFEMSolverCalculationForSimpleBeam;
+        private int membersCalcCount;
 
         public List<CMemberInternalForcesInLoadCases> MemberInternalForcesInLoadCases;
         public List<CMemberDeflectionsInLoadCases> MemberDeflectionsInLoadCases;
@@ -89,7 +90,8 @@ namespace PFD.Infrastructure
             frameModels = FrameModels;
 
             fx_positions = new float[iNumberOfDesignSections];
-            step = (100.0 - SolverWindow.Progress) / (Model.m_arrMembers.Length * 2.0);
+            membersCalcCount = CModelHelper.GetMembersSetForCalculationsCount(model.m_arrMembers);
+            step = (100.0 - SolverWindow.Progress) / (membersCalcCount * 2.0);
 
             MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
             MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
@@ -126,10 +128,9 @@ namespace PFD.Infrastructure
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in Model.m_arrMembers)
             {
-                SolverWindow.SetMemberDesignLoadCaseProgress(++count, Model.m_arrMembers.Length);
-
                 if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
+                    SolverWindow.SetMemberDesignLoadCaseProgress(++count, membersCalcCount);
                     if (!DeterminateCombinationResultsByFEMSolver)
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
@@ -264,10 +265,9 @@ namespace PFD.Infrastructure
             int count = 0;
             foreach (CMember m in Model.m_arrMembers)
             {
-                SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
-
                 if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
+                    SolverWindow.SetMemberDesignLoadCombinationProgress(++count, membersCalcCount);
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 

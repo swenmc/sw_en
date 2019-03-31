@@ -23,7 +23,7 @@ namespace PFD
         private int MComponentTypeIndex;
         private int MSelectedLoadCombinationID;
 
-        private ObservableCollection<CComponentInfo> MComponentList;
+        private List<string> MComponentList;
         private List<CLimitState> MLimitStates;
         private List<ComboItem> MLoadCombinations;
 
@@ -122,7 +122,7 @@ namespace PFD
 
         private CLoadCombination[] m_allLoadCombinations;
 
-        public ObservableCollection<CComponentInfo> ComponentList
+        public List<string> ComponentList
         {
             get
             {
@@ -141,8 +141,8 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CPFDJointsDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            SetLimitStates(limitStates);
-            MComponentList = componentList;
+            SetLimitStates(limitStates);            
+            MComponentList = componentList.Where(s => s.Calculate == true).Select(s => s.ComponentName).ToList();
             m_allLoadCombinations = allLoadCombinations;
 
 

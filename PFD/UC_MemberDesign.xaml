@@ -38,7 +38,7 @@
         
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" DisplayMemberPath="ComponentName" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Design Details - Member" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <DataGrid Grid.Row="5" Grid.Column="0" Name ="Results_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
