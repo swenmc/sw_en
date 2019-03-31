@@ -400,7 +400,7 @@ namespace PFD
                         count++;
                         // Assign component properties from GUI component list to the particular members in the model
                         m.BIsGenerated = cInfo.Generate;
-                        m.BIsDisplayed = cInfo.Display;
+                        m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
