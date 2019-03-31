@@ -14,10 +14,11 @@ namespace BaseClasses
 {
     public static class Drawing3D
     {
-        private static bool centerModel = false;
+        private static bool centerModel = true;
         private static float fModel_Length_X = 0;
         private static float fModel_Length_Y = 0;
         private static float fModel_Length_Z = 0;
+        private static Transform3DGroup centerModelTransGr = null;
 
         public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
@@ -33,6 +34,13 @@ namespace BaseClasses
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
                 Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                if (centerModel)
+                {
+                    centerModelTransGr = new Transform3DGroup();
+                    centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                }
 
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);
@@ -75,15 +83,9 @@ namespace BaseClasses
                                 
                 if (centerModel)
                 {
-                    Transform3DGroup transGr = new Transform3DGroup();
-                    transGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
-                    transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
-
                     //translate transform to model center
                     //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
-
-                    ((Model3D)gr).Transform = transGr;
+                    ((Model3D)gr).Transform = centerModelTransGr;
 
                     Point3D cameraPosition = new Point3D(0, 0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
@@ -734,9 +736,9 @@ namespace BaseClasses
             //priprava na centrovanie modelu                
             if (centerModel)
             {
-                wX.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
-                wY.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
-                wZ.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                wX.Transform = centerModelTransGr;
+                wY.Transform = centerModelTransGr;
+                wZ.Transform = centerModelTransGr;
             }
 
             viewPort.Children.Add(wX);
@@ -777,7 +779,7 @@ namespace BaseClasses
                 //priprava na centrovanie modelu                
                 if (centerModel)
                 {
-                    lines.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);                    
+                    lines.Transform = centerModelTransGr;
                 }                
 
                 viewPort.Children.Add(lines);
@@ -839,6 +841,13 @@ namespace BaseClasses
             wZ.Point2 = pAxisZ;
             wZ.Thickness = flineThickness;
             wZ.Color = Colors.Blue;
+
+            if (centerModel)
+            {
+                wX.Transform = centerModelTransGr;
+                wY.Transform = centerModelTransGr;
+                wZ.Transform = centerModelTransGr;
+            }
 
             viewPort.Children.Add(wX);
             viewPort.Children.Add(wY);
@@ -931,7 +940,7 @@ namespace BaseClasses
                 //priprava na centrovanie modelu                
                 if (centerModel)
                 {
-                    wl.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                    wl.Transform = centerModelTransGr;
                 }
 
                 viewPort.Children.Add(wl);
@@ -1029,7 +1038,7 @@ namespace BaseClasses
                 //priprava na centrovanie modelu                
                 if (centerModel)
                 {
-                    wl.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                    wl.Transform = centerModelTransGr;
                 }
 
                 viewPort.Children.Add(wl);
