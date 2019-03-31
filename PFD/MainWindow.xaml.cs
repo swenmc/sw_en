@@ -73,11 +73,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-
-        //public CModel_PFD model;
-        public CDatabaseModels dmodels; // Todo nahradit databazov modelov
-        //public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
-        //public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
+        
         public ObservableCollection<DoorProperties> DoorBlocksProperties;
         public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
@@ -101,8 +97,6 @@ namespace PFD
 
         public MainWindow()
         {
-            dmodels = new CDatabaseModels();
-
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
             splashScreen.Show(false);

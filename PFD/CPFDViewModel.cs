@@ -184,6 +184,7 @@ namespace PFD
                 BottomGirtPosition = dmodel.fdist_girt_bottom;
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
+                _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
                 IsSetFromCode = false;
 
@@ -1286,12 +1287,15 @@ namespace PFD
                 w.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
+
+        private CComponentListVM _componentVM;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM)
         {
             IsSetFromCode = true;
+            _componentVM = componentVM;
             componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = componentVM.ComponentList;
 
@@ -1344,7 +1348,7 @@ namespace PFD
             else if (e.PropertyName == "ComponentDetailsList") return;
             else if (e.PropertyName == "MaterialDetailsList") return;
 
-            PropertyChanged(sender, e);
+            if(PropertyChanged != null) PropertyChanged(sender, e);
         }
 
         //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
@@ -1603,7 +1607,7 @@ namespace PFD
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            this.PropertyChanged(sender, e);
+            if(PropertyChanged != null) this.PropertyChanged(sender, e);
         }
 
         

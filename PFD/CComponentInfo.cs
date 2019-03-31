@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace PFD
 
         private string MPrefix;
         private string MComponentName;
+        private EMemberType_DB MMemberType;
         private string MSection;
         private List<string> MSections;
         private string MMaterial;
@@ -235,7 +237,20 @@ namespace PFD
             }
         }
 
-        public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections)
+        public EMemberType_DB MemberType
+        {
+            get
+            {
+                return MMemberType;
+            }
+
+            set
+            {
+                MMemberType = value;
+            }
+        }
+
+        public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, EMemberType_DB memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
@@ -248,6 +263,7 @@ namespace PFD
             MDesign = design;
             MMaterialList = materialList;
             MSections = sections;
+            MMemberType = memberType;
 
             SetGenerateIsReadonly();
         }

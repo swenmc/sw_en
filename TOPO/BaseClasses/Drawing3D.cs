@@ -14,21 +14,31 @@ namespace BaseClasses
 {
     public static class Drawing3D
     {
+        private static bool centerModel = false;
+        private static float fModel_Length_X = 0;
+        private static float fModel_Length_Y = 0;
+        private static float fModel_Length_Z = 0;
+
         public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
             //DateTime start = DateTime.Now;
 
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
-
-            // Global coordinate system - axis
-            if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);
-
-            if (sDisplayOptions.bDisplaySurfaceLoadAxis) DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
-
+            
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
+                fModel_Length_X = 0;
+                fModel_Length_Y = 0;
+                fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
+                // Global coordinate system - axis
+                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);
+
+                if (sDisplayOptions.bDisplaySurfaceLoadAxis) DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
+
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
 
                 Model3DGroup gr = new Model3DGroup();
@@ -62,15 +72,30 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
+                                
+                if (centerModel)
+                {
+                    Transform3DGroup transGr = new Transform3DGroup();
+                    transGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                    transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
 
-                float fModel_Length_X = 0;
-                float fModel_Length_Y = 0;
-                float fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    //translate transform to model center
+                    //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
 
-                _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
+                    ((Model3D)gr).Transform = transGr;
+
+                    Point3D cameraPosition = new Point3D(0, 0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
+                    _trackport.PerspectiveCamera.Position = cameraPosition;
+                    _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
+                }
+                else
+                {
+                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    _trackport.PerspectiveCamera.Position = cameraPosition;
+                    _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
+                }
+
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model
@@ -706,6 +731,14 @@ namespace BaseClasses
             wZ.Thickness = flineThickness;
             wZ.Color = Colors.Blue;
 
+            //priprava na centrovanie modelu                
+            if (centerModel)
+            {
+                wX.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                wY.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                wZ.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+            }
+
             viewPort.Children.Add(wX);
             viewPort.Children.Add(wY);
             viewPort.Children.Add(wZ);
@@ -740,6 +773,12 @@ namespace BaseClasses
                         lines.Points.Add(pNodeEnd); // Add End Node
                     }
                 }
+
+                //priprava na centrovanie modelu                
+                if (centerModel)
+                {
+                    lines.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);                    
+                }                
 
                 viewPort.Children.Add(lines);
             }
@@ -888,6 +927,13 @@ namespace BaseClasses
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(wireFramePoints);
                 wl.Color = Colors.White;
+
+                //priprava na centrovanie modelu                
+                if (centerModel)
+                {
+                    wl.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                }
+
                 viewPort.Children.Add(wl);
 
                 //ScreenSpaceLines are much slower = performance issue
@@ -979,6 +1025,13 @@ namespace BaseClasses
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(jointsWireFramePoints);
                 wl.Color = Colors.White;
+
+                //priprava na centrovanie modelu                
+                if (centerModel)
+                {
+                    wl.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                }
+
                 viewPort.Children.Add(wl);
             }
         }

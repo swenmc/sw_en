@@ -133,7 +133,7 @@
         eUYRZ,
         eUZRY
     }
- 
+
     //----------------------------------------------------------------------------
     // Intermediate Transverse Support Type (upper flange, bottom flange, both flanges, etc.)
     //----------------------------------------------------------------------------
@@ -243,10 +243,10 @@
     //----------------------------------------------------------------------------
     public enum EFoundationType
     {
-       eStrip = 0, // Strip footings / Wall footings
-       eRaft = 1,  // Raft foundations
-       ePad = 2,   // Spread footings / Footing pads
-       ePile = 2,  // Deep foundation - pile foundations
+        eStrip = 0, // Strip footings / Wall footings
+        eRaft = 1,  // Raft foundations
+        ePad = 2,   // Spread footings / Footing pads
+        ePile = 2,  // Deep foundation - pile foundations
     }
 
     //----------------------------------------------------------------------------
@@ -298,13 +298,13 @@
     public enum ELCMainDirection
     {
         eUndefined = 6,
-        eGeneral   = 7,
-        eMinusX    = 0, // (load acting in -X) Theta = 000 deg (see AS/NZS 1170.2, Figure 2.2)
-        ePlusX     = 2, // (load acting in +X) Theta = 180 deg (see AS/NZS 1170.2, Figure 2.2)
-        eMinusY    = 3, // (load acting in -Y) Theta = 270 deg (see AS/NZS 1170.2, Figure 2.2)
-        ePlusY     = 1, // (load acting in +Y) Theta = 090 deg (see AS/NZS 1170.2, Figure 2.2)
-        eMinusZ    = 4,
-        ePlusZ     = 5
+        eGeneral = 7,
+        eMinusX = 0, // (load acting in -X) Theta = 000 deg (see AS/NZS 1170.2, Figure 2.2)
+        ePlusX = 2, // (load acting in +X) Theta = 180 deg (see AS/NZS 1170.2, Figure 2.2)
+        eMinusY = 3, // (load acting in -Y) Theta = 270 deg (see AS/NZS 1170.2, Figure 2.2)
+        ePlusY = 1, // (load acting in +Y) Theta = 090 deg (see AS/NZS 1170.2, Figure 2.2)
+        eMinusZ = 4,
+        ePlusZ = 5
     }
 
     //----------------------------------------------------------------------------
@@ -314,7 +314,7 @@
     {
         eDL_G = 0,                                  // "Dead load G"
         eIL_Q = 1,                                  // "Imposed load Q"
-    
+
         eSL_Su_Full = 2,                            // "Snow load Su - full"
         eSL_Su_Left = 3,                            // "Snow load Su - left"
         eSL_Su_Right,                           // "Snow load Su - right"
@@ -426,6 +426,21 @@
         eBG, // Base Girt
         eMR, // Main Rafter
         eMC, // Main Column
+    }
+
+    public enum EMemberType_DB
+    {
+        MainColumn = 1,
+        MainRafter = 2,
+        EdgeColumn = 3,
+        EdgeRafter = 4,
+        EdgePurlin = 5,
+        Girt = 6,
+        Purlin = 7,
+        ColumnFrontSide = 8,
+        ColumnBackSide = 9,
+        GirtFrontSide = 10,
+        GirtBackSide = 11
     }
 
     public enum ECountry
@@ -716,9 +731,9 @@
     //    public int iBayNumber;
     //}
 
-    
 
-    
+
+
 
     // AS 1170.0 - AS 1170.5
     public struct loadInputComboboxIndexes
