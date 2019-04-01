@@ -27,7 +27,6 @@ namespace PFD
         private float m_fRakeAngleBackFrame_deg; // Angle between X-axis and last frame
 
         private Dictionary<EMemberType_DB, string> m_membersSectionsDict;
-        
 
         #region properties
         
@@ -238,15 +237,11 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_DB.ColumnBackSide, model.ColumnBackSide);
             MembersSectionsDict.Add(EMemberType_DB.GirtFrontSide, model.GirtFrontSide);
             MembersSectionsDict.Add(EMemberType_DB.GirtBackSide, model.GirtBackSide);
-
-            //Mato - tu by mozno defaulty trebalo tiez mat v databaze
-            MembersSectionsDict.Add(EMemberType_DB.DoorFrame, "10075");
-            MembersSectionsDict.Add(EMemberType_DB.DoorTrimmer, "270115btb");
-            MembersSectionsDict.Add(EMemberType_DB.DoorLintel, "27095");
-            MembersSectionsDict.Add(EMemberType_DB.WindowFrame, "10075");
+            MembersSectionsDict.Add(EMemberType_DB.DoorFrame, model.DoorFrame);
+            MembersSectionsDict.Add(EMemberType_DB.DoorTrimmer, model.DoorTrimmer);
+            MembersSectionsDict.Add(EMemberType_DB.DoorLintel, model.DoorLintel);
+            MembersSectionsDict.Add(EMemberType_DB.WindowFrame, model.WindowFrame);
         }
-
-        
     }
 }
 

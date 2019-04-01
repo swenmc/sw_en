@@ -41,6 +41,10 @@ namespace DATABASE
                         model.ColumnBackSide = reader["columnBackSide"].ToString();
                         model.GirtFrontSide = reader["girtFrontSide"].ToString();
                         model.GirtBackSide = reader["girtBackSide"].ToString();
+                        model.DoorFrame = reader["doorFrame"].ToString();
+                        model.DoorTrimmer = reader["doorTrimmer"].ToString();
+                        model.DoorLintel = reader["doorLintel"].ToString();
+                        model.WindowFrame = reader["windowFrame"].ToString();
                         items.Add(model);
                     }
                 }
@@ -80,6 +84,10 @@ namespace DATABASE
                         model.ColumnBackSide = reader["columnBackSide"].ToString();
                         model.GirtFrontSide = reader["girtFrontSide"].ToString();
                         model.GirtBackSide = reader["girtBackSide"].ToString();
+                        model.DoorFrame = reader["doorFrame"].ToString();
+                        model.DoorTrimmer = reader["doorTrimmer"].ToString();
+                        model.DoorLintel = reader["doorLintel"].ToString();
+                        model.WindowFrame = reader["windowFrame"].ToString();
                     }
                 }
             }

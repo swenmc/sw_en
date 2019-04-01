@@ -27,6 +27,11 @@ namespace DATABASE.DTO
         string MColumnBackSide;
         string MGirtFrontSide;
         string MGirtBackSide;
+        string MDoorFrame;
+        string MDoorTrimmer;
+        string MDoorLintel;
+        string MWindowFrame;
+
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
 
@@ -277,6 +282,58 @@ namespace DATABASE.DTO
             }
         }
 
+        public string DoorFrame
+        {
+            get
+            {
+                return MDoorFrame;
+            }
+
+            set
+            {
+                MDoorFrame = value;
+            }
+        }
+
+        public string DoorTrimmer
+        {
+            get
+            {
+                return MDoorTrimmer;
+            }
+
+            set
+            {
+                MDoorTrimmer = value;
+            }
+        }
+
+        public string DoorLintel
+        {
+            get
+            {
+                return MDoorLintel;
+            }
+
+            set
+            {
+                MDoorLintel = value;
+            }
+        }
+
+        public string WindowFrame
+        {
+            get
+            {
+                return MWindowFrame;
+            }
+
+            set
+            {
+                MWindowFrame = value;
+            }
+        }
+ 
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
