@@ -81,13 +81,13 @@ namespace PFD
             CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
             CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
 
-            if (girt.Generate)
+            if (girt.Generate.Value)
             {
                 return true;
             }
             else
             {
-                if (girtFront.Generate || girtBack.Generate) return false;
+                if (girtFront.Generate.Value || girtBack.Generate.Value) return false;
             }
 
             return true;
@@ -106,12 +106,12 @@ namespace PFD
                 CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
                 if (girtBack.Generate != cInfo.Generate) girtBack.Generate = cInfo.Generate;
             }
-            else if (cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate) //iba ked zapnem Girt tak sa musi zapnut aj column
+            else if (cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnFront = ComponentList.First(c => c.ComponentName == "Column - Front Side");
                 if (columnFront.Generate != cInfo.Generate) columnFront.Generate = cInfo.Generate;
             }
-            else if (cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate) //iba ked zapnem Girt tak sa musi zapnut aj column
+            else if (cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
                 if (columnBack.Generate != cInfo.Generate) columnBack.Generate = cInfo.Generate;
@@ -392,7 +392,7 @@ namespace PFD
             if (cInfo != null) return; //already exist in the collection
                         
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", true, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.DoorFrame);
+                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", null, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
 
@@ -409,7 +409,7 @@ namespace PFD
             if (cDT == null)
             {
                 cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", true, true, true, true, true, SectionsForRollerDoorTrimmer, EMemberType_DB.DoorTrimmer);
+                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", null, true, true, true, true, SectionsForRollerDoorTrimmer, EMemberType_DB.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
             }
@@ -418,7 +418,7 @@ namespace PFD
             if (cDL == null)
             {
                 cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForRollerDoorLintel, EMemberType_DB.DoorLintel);
+                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", null, true, true, true, true, SectionsForRollerDoorLintel, EMemberType_DB.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
             }
@@ -438,7 +438,7 @@ namespace PFD
             if (cInfo != null) return; //already exist in the collection
 
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", true, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.WindowFrame);
+                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", null, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
         }

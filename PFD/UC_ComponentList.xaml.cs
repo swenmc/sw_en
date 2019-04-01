@@ -55,7 +55,7 @@ namespace PFD
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo cInfo = vm.ComponentList[((DataGrid)sender).SelectedIndex];
 
-                if (cInfo.Generate)
+                if (cInfo.Generate.Value)
                 {
                     if (cInfo.ValidateGenerateCouldBeChanged()) cInfo.Generate = false;
                     else
@@ -88,7 +88,7 @@ namespace PFD
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
-                bool generate = selectedInfo.Generate;
+                bool generate = selectedInfo.Generate.Value;
                 bool calc = selectedInfo.Calculate;
                 bool design = selectedInfo.Design;
                 bool display = selectedInfo.Display;
@@ -125,7 +125,7 @@ namespace PFD
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
-                bool generate = selectedInfo.Generate;
+                bool generate = selectedInfo.Generate.Value;
                 bool calc = selectedInfo.Calculate;
                 bool design = selectedInfo.Design;
                 bool display = selectedInfo.Display;

@@ -23,9 +23,10 @@ namespace PFD
         private string MSection;
         private List<string> MSections;
         private string MMaterial;
-        private bool MGenerate;
+        private bool? MGenerate;
         private bool MGenerateIsReadonly;
         private bool MGenerateIsEnabled;
+        private bool MGenerateIsThreeState;
         private bool MDisplay;
         private bool MCalculate;
         private bool MDesign;
@@ -85,7 +86,7 @@ namespace PFD
             }
         }
 
-        public bool Generate
+        public bool? Generate
         {
             get
             {
@@ -97,7 +98,9 @@ namespace PFD
                 if (value == false && !ValidateGenerateCouldBeChanged()) return;
                 
                 MGenerate = value;
-                if (!MGenerate)
+                if (MGenerate == null) return;
+
+                if (!(bool)MGenerate)
                 {
                     IsSetFromCode = true;
                     Display = false;
@@ -133,6 +136,18 @@ namespace PFD
                 MGenerateIsEnabled = value;
             }
         }
+        public bool GenerateIsThreeState
+        {
+            get
+            {
+                return MGenerateIsThreeState;
+            }
+
+            set
+            {
+                MGenerateIsThreeState = value;
+            }
+        }
 
         public bool Display
         {
@@ -144,7 +159,7 @@ namespace PFD
             set
             {
                 MDisplay = value;
-                if (!MGenerate && MDisplay)
+                if (!MGenerate.Value && MDisplay)
                     MDisplay = false;
 
                 NotifyPropertyChanged("Display");
@@ -161,7 +176,7 @@ namespace PFD
             set
             {
                 MCalculate = value;
-                if (!MGenerate && MCalculate)
+                if (!MGenerate.Value && MCalculate)
                     MCalculate = false;
 
                 if (!MCalculate)
@@ -183,7 +198,7 @@ namespace PFD
             set
             {
                 MDesign = value;
-                if (!MGenerate && MDesign)
+                if (!MGenerate.Value && MDesign)
                     MDesign = false;
 
                 if (!MCalculate && MDesign)
@@ -203,7 +218,7 @@ namespace PFD
             set
             {
                 MMaterialList = value;
-                if (!MGenerate && MMaterialList)
+                if (!MGenerate.Value && MMaterialList)
                     MMaterialList = false;
 
                 NotifyPropertyChanged("MaterialList");
@@ -250,7 +265,7 @@ namespace PFD
             }
         }
 
-        public CComponentInfo(string prefix, string componentName, string section, string material, bool generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, EMemberType_DB memberType)
+        public CComponentInfo(string prefix, string componentName, string section, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, EMemberType_DB memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
@@ -278,16 +293,19 @@ namespace PFD
         {
             //Main Columns, Main Rafters , Edge Columns, Edge Rafters a Eave Purlins by sa mali generovat vzdy, 
             //takze nebude mozne checkbox Generate vypnut (pre MC, MR, EC, ER a EP disablovat editaciu checboxu generate, vzdy musi byt true)
-            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") return false;
+            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP" || MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") return false;
             else return true;
         }
 
         private void SetGenerateIsReadonly()
         {
-            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP") GenerateIsReadonly = true;
+            if (MPrefix == "MC" || MPrefix == "MR" || MPrefix == "EC" || MPrefix == "ER" || MPrefix == "EP" || MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") GenerateIsReadonly = true;
             else GenerateIsReadonly = false;
 
             GenerateIsEnabled = !GenerateIsReadonly;
+
+            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") GenerateIsThreeState = true;
+            else GenerateIsThreeState = false;
         }
     }
 }
