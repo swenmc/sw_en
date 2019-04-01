@@ -34,6 +34,11 @@ namespace PFD
             if ((prop.fDoorsWidth + prop.fDoorCoordinateXinBlock) > fBayWidth)
                 throw new Exception("Door is defined out of frame bay."); // Door is defined out of frame bay
 
+            EMemberType_FS eTypeColumn;
+            EMemberType_FS eTypeLintel;
+            CCrSc crscColumn;
+            CCrSc crscLintel;
+
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[2];
 
@@ -46,9 +51,48 @@ namespace PFD
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
-            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
-            m_arrCrSc[1].Name_short = "10075";
-            m_arrCrSc[1].m_Mat = m_arrMat[0];
+
+            if (prop.sDoorType == "Personnel Door")
+            {
+                // Personnel door
+                // One cross-section
+                m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
+                m_arrCrSc[1].Name_short = "10075";
+                m_arrCrSc[1].m_Mat = m_arrMat[0];
+
+                eTypeColumn = EMemberType_FS.eDF;
+                eTypeLintel = EMemberType_FS.eDF;
+
+                crscColumn = m_arrCrSc[1];
+                crscLintel = m_arrCrSc[1];
+            }
+            else // if (prop.sDoorType == "Roller Door")
+            {
+                // Roller door
+                // Two cross-sections
+                int arraysizeoriginal;
+
+                // Cross-sections
+                arraysizeoriginal = m_arrCrSc.Length;
+
+                Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( + one cross-section)
+
+                // Trimmer
+                m_arrCrSc[1] = new CCrSc_3_270XX_C_BACK_TO_BACK(0, 0.27f, 0.14f, 0.02f, 0.00115f, Colors.Beige); // Door trimmer
+                m_arrCrSc[1].Name_short = "270115btb";
+                m_arrCrSc[1].m_Mat = m_arrMat[0];
+
+                eTypeColumn = EMemberType_FS.eDT;
+                crscColumn = m_arrCrSc[1];
+
+                // Lintel
+                m_arrCrSc[2] = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Azure); // Door lintel
+                m_arrCrSc[2].Name_short = "27095";
+                m_arrCrSc[2].m_Mat = m_arrMat[0];
+
+                eTypeLintel = EMemberType_FS.eDL;
+                crscLintel = m_arrCrSc[2];
+            }
 
             INumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
@@ -138,7 +182,7 @@ namespace PFD
             // TODO - add to block parameters
 
             float fGirtAllignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
-            float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Door column
+            float fGirtAllignmentEnd = -0.5f * (float)crscColumn.b - fCutOffOneSide; // Door column
             CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
@@ -190,8 +234,8 @@ namespace PFD
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h);
+            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h);
             float fDoorColumnRotation = (float)Math.PI / 2;
 
             // Rotate local axis about x
@@ -208,15 +252,15 @@ namespace PFD
             }
 
             // Door columns
-            m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
-            m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
+            m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], crscColumn, eTypeColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
+            m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], crscColumn, eTypeColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
 
             // Door lintel (header)
             // TODO - add to block parameters
-            float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            float fDoorLintelStart = -0.5f * (float)crscColumn.h - fCutOffOneSide;
+            float fDoorLintelEnd = -0.5f * (float)crscColumn.h - fCutOffOneSide;
+            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h);
+            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h);
             float fDoorLintelRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
@@ -228,7 +272,7 @@ namespace PFD
 
             if (iNumberOfLintels > 0)
             {
-                m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
+                m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], crscLintel, eTypeLintel, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
             }
 
             // Connection Joints

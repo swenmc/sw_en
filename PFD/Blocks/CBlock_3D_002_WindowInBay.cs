@@ -250,7 +250,7 @@ namespace PFD
             // Window columns
             for (int i = 0; i < prop.iNumberOfWindowColumns; i++)
             {
-                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
+                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
                 m_arrMembers[iMembersGirts + i].BIsDisplayed = true;
             }
 
@@ -271,7 +271,7 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfHeaders; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
                 m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].BIsDisplayed = true;
             }
 
@@ -292,7 +292,7 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfSills; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
                 m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].BIsDisplayed = true;
             }
 
