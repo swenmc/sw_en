@@ -159,7 +159,7 @@ namespace PFD
             set
             {
                 MDisplay = value;
-                if (!MGenerate.Value && MDisplay)
+                if (MGenerate.HasValue && !MGenerate.Value && MDisplay)
                     MDisplay = false;
 
                 NotifyPropertyChanged("Display");
@@ -176,7 +176,7 @@ namespace PFD
             set
             {
                 MCalculate = value;
-                if (!MGenerate.Value && MCalculate)
+                if (MGenerate.HasValue && !MGenerate.Value && MCalculate)
                     MCalculate = false;
 
                 if (!MCalculate)
@@ -198,7 +198,7 @@ namespace PFD
             set
             {
                 MDesign = value;
-                if (!MGenerate.Value && MDesign)
+                if (MGenerate.HasValue && !MGenerate.Value && MDesign)
                     MDesign = false;
 
                 if (!MCalculate && MDesign)
@@ -218,7 +218,7 @@ namespace PFD
             set
             {
                 MMaterialList = value;
-                if (!MGenerate.Value && MMaterialList)
+                if (MGenerate.HasValue && !MGenerate.Value && MMaterialList)
                     MMaterialList = false;
 
                 NotifyPropertyChanged("MaterialList");

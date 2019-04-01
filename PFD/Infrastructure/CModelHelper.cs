@@ -406,7 +406,7 @@ namespace PFD
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                         break;
                     }
-                    else if(m.Prefix == "WF" && m.Prefix == cInfo.Prefix)
+                    else if ((m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT") && m.Prefix == cInfo.Prefix)
                     {
                         count++;
                         // Assign component properties from GUI component list to the particular members in the model

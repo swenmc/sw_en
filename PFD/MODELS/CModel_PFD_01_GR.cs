@@ -912,6 +912,10 @@ namespace PFD
             {
                 for (int i = 0; i < doorBlocksProperties.Count; i++)
                 {
+                    if (!bGenerateGirts && (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")) continue;
+                    else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
+                    else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
+
                     if (doorBlocksProperties[i].Validate()) AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
                 }
             }
@@ -920,6 +924,10 @@ namespace PFD
             {
                 for (int i = 0; i < windowBlocksProperties.Count; i++)
                 {
+                    if (!bGenerateGirts && (windowBlocksProperties[i].sBuildingSide == "Right" || windowBlocksProperties[i].sBuildingSide == "Left")) continue;
+                    else if (!bGenerateFrontGirts && windowBlocksProperties[i].sBuildingSide == "Front") continue;
+                    else if (!bGenerateBackGirts && windowBlocksProperties[i].sBuildingSide == "Back") continue;
+
                     if (windowBlocksProperties[i].Validate()) AddWindowBlock(windowBlocksProperties[i], 0.5f);
                 }
             }

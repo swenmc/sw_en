@@ -88,7 +88,7 @@ namespace PFD
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
-                bool generate = selectedInfo.Generate.Value;
+                bool? generate = selectedInfo.Generate;
                 bool calc = selectedInfo.Calculate;
                 bool design = selectedInfo.Design;
                 bool display = selectedInfo.Display;
@@ -104,7 +104,7 @@ namespace PFD
                     }
                     else cInfo.IsSetFromCode = true;
 
-                    if (header == "Generate") cInfo.Generate = !generate;
+                    if (header == "Generate" && generate != null) cInfo.Generate = !generate;
                     if (header == "Calculate") cInfo.Calculate = !calc;
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
@@ -125,7 +125,7 @@ namespace PFD
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
-                bool generate = selectedInfo.Generate.Value;
+                bool? generate = selectedInfo.Generate;
                 bool calc = selectedInfo.Calculate;
                 bool design = selectedInfo.Design;
                 bool display = selectedInfo.Display;
@@ -141,7 +141,7 @@ namespace PFD
                     }
                     else cInfo.IsSetFromCode = true;
 
-                    if (header == "Generate") cInfo.Generate = !generate;
+                    if (header == "Generate" && generate != null) cInfo.Generate = !generate;
                     if (header == "Calculate") cInfo.Calculate = !calc;
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
