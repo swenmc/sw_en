@@ -1029,6 +1029,7 @@ namespace PFD
             {
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
             }
+            SetComponentListAccordingToDoors();
         }
 
         public ObservableCollection<WindowProperties> WindowBlocksProperties
@@ -1067,6 +1068,7 @@ namespace PFD
             {
                 NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
             }
+            SetComponentListAccordingToWindows();
         }
         public List<string> BuildingSides
         {
@@ -1295,13 +1297,15 @@ namespace PFD
         public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM)
         {
             IsSetFromCode = true;
-            _componentVM = componentVM;
-            componentVM.PropertyChanged += ComponentVM_PropertyChanged;
-            ComponentList = componentVM.ComponentList;
-
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
 
+            _componentVM = componentVM;
+            SetComponentListAccordingToDoorsAndWindows();
+
+            _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
+            ComponentList = _componentVM.ComponentList;
+            
             ShowMemberID = true;
             ShowMemberRealLength = true;
 
@@ -1341,6 +1345,8 @@ namespace PFD
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
         }
+
+        
 
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -1576,6 +1582,49 @@ namespace PFD
             MemberDesignResults_SLS = mdc.MemberDesignResults_SLS;
             JointDesignResults_ULS = mdc.JointDesignResults_ULS;
         }
+        
+        private void SetComponentListAccordingToDoorsAndWindows()
+        {
+            SetComponentListAccordingToDoors();
+            SetComponentListAccordingToWindows();
+        }
+        private void SetComponentListAccordingToDoors()
+        {
+            if (ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();             
+            else _componentVM.RemovePersonelDoor();
+
+            if (ModelHasRollerDoor()) _componentVM.AddRollerDoor();
+            else _componentVM.RemoveRollerDoor();
+
+        }
+        private void SetComponentListAccordingToWindows()
+        {
+            if (ModelHasWindow()) _componentVM.AddWindow();
+            else _componentVM.RemoveWindow();
+        }
+
+        private bool ModelHasPersonelDoor()
+        {
+            foreach (DoorProperties d in DoorBlocksProperties)
+            {
+                if (d.sDoorType == "Personnel Door") return true;                
+            }
+            return false;
+        }
+        private bool ModelHasRollerDoor()
+        {
+            foreach (DoorProperties d in DoorBlocksProperties)
+            {
+                if (d.sDoorType == "Roller Door") return true;                
+            }
+            return false;
+        }
+        private bool ModelHasWindow()
+        {
+            if (WindowBlocksProperties == null) return false;
+
+            return WindowBlocksProperties.Count > 0;
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
@@ -1596,7 +1645,10 @@ namespace PFD
                 if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
                 if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
             }
-
+            else if (e.PropertyName == "sDoorType")
+            {
+                SetComponentListAccordingToDoors();
+            }
 
             this.PropertyChanged(sender, e);
         }

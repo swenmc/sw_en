@@ -238,6 +238,12 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_DB.ColumnBackSide, model.ColumnBackSide);
             MembersSectionsDict.Add(EMemberType_DB.GirtFrontSide, model.GirtFrontSide);
             MembersSectionsDict.Add(EMemberType_DB.GirtBackSide, model.GirtBackSide);
+
+            //Mato - tu by mozno defaulty trebalo tiez mat v databaze
+            MembersSectionsDict.Add(EMemberType_DB.DoorFrame, "10075");
+            MembersSectionsDict.Add(EMemberType_DB.DoorTrimmer, "270115btb");
+            MembersSectionsDict.Add(EMemberType_DB.DoorLintel, "27095");
+            MembersSectionsDict.Add(EMemberType_DB.WindowFrame, "10075");
         }
 
         

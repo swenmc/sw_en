@@ -27,6 +27,7 @@ namespace PFD
         private List<string> MSectionsForGirtsOrPurlins;
         private List<string> MSectionsForDoorOrWindowFrame;
         private List<string> MSectionsForRollerDoorTrimmer;
+        private List<string> MSectionsForRollerDoorLintel;
 
         private List<string> MMaterials;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
@@ -251,6 +252,19 @@ namespace PFD
                 return MSectionsForRollerDoorTrimmer;
             }
         }
+        public List<string> SectionsForRollerDoorLintel
+        {
+            get
+            {
+                if (MSectionsForRollerDoorLintel == null)
+                {
+                    MSectionsForRollerDoorLintel = new List<string>(1);
+                    MSectionsForRollerDoorLintel.Add(Sections[2]); // DB ID 3
+
+                }
+                return MSectionsForRollerDoorLintel;
+            }
+        }
 
         public int SelectedComponentIndex
         {
@@ -276,14 +290,15 @@ namespace PFD
             }
         }
 
+        private List<CComponentPrefixes> list_CompPref;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CComponentListVM()
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
-            
-            List<CComponentPrefixes> list_CompPref = CComponentManager.LoadComponentsPrefixes();
+
+            list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
             CComponentInfo ci = null;
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix,
@@ -369,6 +384,68 @@ namespace PFD
                 MaterialDetailsList[i].Value = listMaterialPropertyValue[i];
             }
             MaterialDetailsList = new List<CMaterialPropertiesText>(MaterialDetailsList);
+        }
+
+        public void AddPersonelDoor()
+        {
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
+            if (cInfo != null) return; //already exist in the collection
+                        
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", true, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.DoorFrame);
+            cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+            ComponentList.Add(cInfo);
+
+        }
+        public void RemovePersonelDoor()
+        {
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
+            if (cInfo != null) ComponentList.Remove(cInfo);                
+        }
+
+        public void AddRollerDoor()
+        {
+            CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
+            if (cDT == null)
+            {
+                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", true, true, true, true, true, SectionsForRollerDoorTrimmer, EMemberType_DB.DoorTrimmer);
+                cDT.PropertyChanged += ComponentListItem_PropertyChanged;
+                ComponentList.Add(cDT);
+            }
+
+            CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
+            if (cDL == null)
+            {
+                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForRollerDoorLintel, EMemberType_DB.DoorLintel);
+                cDL.PropertyChanged += ComponentListItem_PropertyChanged;
+                ComponentList.Add(cDL);
+            }
+        }
+        public void RemoveRollerDoor()
+        {
+            CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
+            if (cDT != null) ComponentList.Remove(cDT);
+            
+            CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
+            if (cDL != null) ComponentList.Remove(cDL);
+        }
+
+        public void AddWindow()
+        {
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
+            if (cInfo != null) return; //already exist in the collection
+
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix,
+                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", true, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.WindowFrame);
+            cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
+            ComponentList.Add(cInfo);
+        }
+        public void RemoveWindow()
+        {
+            CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
+            if (cInfo != null) ComponentList.Remove(cInfo);
         }
     }
 }

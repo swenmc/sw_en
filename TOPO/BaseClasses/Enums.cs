@@ -440,7 +440,12 @@
         ColumnFrontSide = 8,
         ColumnBackSide = 9,
         GirtFrontSide = 10,
-        GirtBackSide = 11
+        GirtBackSide = 11,
+
+        DoorFrame = 12,
+        WindowFrame = 13,
+        DoorTrimmer = 14,
+        DoorLintel = 15
     }
 
     public enum ECountry
