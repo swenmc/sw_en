@@ -60,13 +60,14 @@ namespace PFD
             {
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
+                if (e.PropertyName == "GenerateIsEnabled") return;
 
                 if(e.PropertyName == "Material") SetComponentDetails();
                 else if(e.PropertyName == "Section") SetComponentDetails();
 
                 if (e.PropertyName == "Generate")
                 {
-                    if (!ValidateGirts()) { cInfo.Generate = !cInfo.Generate; return; }
+                    if (!ValidateGirts()) { cInfo.IsSetFromCode = true; cInfo.Generate = !cInfo.Generate; ValidateGirts(); cInfo.IsSetFromCode = false; return; }
                     SetGirtsAndColumns(cInfo);
                 }
             }
@@ -74,12 +75,22 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
+
+
         private bool ValidateGirts()
         {
+            //To Mato - ja osobne tejto podmienke proste nerozumiem
             //Ak je zaskrtnute generovanie front girts alebo back girts musia byt zaskrtnute aj girt (teda side wall)
             CComponentInfo girt = ComponentList.First(c => c.ComponentName == "Girt");
             CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
             CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
+
+            //ak je front aj back false tak vtedy dovolit editovat girt
+            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girt.GenerateIsEnabled = true; girt.GenerateIsReadonly = false; }            
+            else { girt.GenerateIsEnabled = false; girt.GenerateIsReadonly = true; }
+
+            if (girt.GenerateIsEnabled && !girt.Generate.Value) { girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true; girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true; }
+            else { girtFront.GenerateIsEnabled = true; girtFront.GenerateIsReadonly = false; girtBack.GenerateIsEnabled = true; girtBack.GenerateIsReadonly = false; }
 
             if (girt.Generate.Value)
             {
@@ -318,6 +329,7 @@ namespace PFD
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix,
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, EMemberType_DB.Girt);
+            ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix,
                 list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, EMemberType_DB.Purlin);

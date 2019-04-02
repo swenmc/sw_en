@@ -99,7 +99,8 @@ namespace PFD
                 
                 MGenerate = value;
                 if (MGenerate == null) return;
-
+                                
+                NotifyPropertyChanged("Generate");
                 if (!(bool)MGenerate)
                 {
                     IsSetFromCode = true;
@@ -109,7 +110,6 @@ namespace PFD
                     MaterialList = false;
                     IsSetFromCode = false;
                 }
-                NotifyPropertyChanged("Generate");
             }
         }
         public bool GenerateIsReadonly
@@ -134,6 +134,7 @@ namespace PFD
             set
             {
                 MGenerateIsEnabled = value;
+                NotifyPropertyChanged("GenerateIsEnabled");
             }
         }
         public bool GenerateIsThreeState

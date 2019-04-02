@@ -215,6 +215,8 @@ namespace PFD
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "IsSetFromCode") return;
+                if (e.PropertyName == "GenerateIsEnabled") return;
+                if (e.PropertyName == "GenerateIsReadonly") return;
 
                 if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
@@ -225,7 +227,9 @@ namespace PFD
                     }
                     else
                     {
+                        cInfo.IsSetFromCode = true;
                         cInfo.Generate = true;
+                        cInfo.IsSetFromCode = false;
                         return;
                     }
                 }
