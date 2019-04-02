@@ -228,7 +228,7 @@ namespace PFD
                     else
                     {
                         cInfo.IsSetFromCode = true;
-                        cInfo.Generate = true;
+                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)
                         cInfo.IsSetFromCode = false;
                         return;
                     }

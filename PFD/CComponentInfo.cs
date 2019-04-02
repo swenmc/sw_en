@@ -96,20 +96,21 @@ namespace PFD
             set
             {
                 if (value == false && !ValidateGenerateCouldBeChanged()) return;
-                
+                bool propertyWasChanged = MGenerate != value;
+
                 MGenerate = value;
                 if (MGenerate == null) return;
-                                
-                NotifyPropertyChanged("Generate");
-                if (!(bool)MGenerate)
+                                                
+                if (propertyWasChanged)
                 {
                     IsSetFromCode = true;
-                    Display = false;
-                    Calculate = false;
-                    Design = false;
-                    MaterialList = false;
+                    Display = MGenerate.Value;
+                    Calculate = MGenerate.Value;
+                    Design = MGenerate.Value;
+                    MaterialList = MGenerate.Value;
                     IsSetFromCode = false;
                 }
+                NotifyPropertyChanged("Generate");
             }
         }
         public bool GenerateIsReadonly
