@@ -447,5 +447,19 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
             if (cInfo != null) ComponentList.Remove(cInfo);
         }
+
+
+        public bool NoCompomentsForCalculate()
+        {
+            return !ComponentList.Any(c => c.Calculate == true);            
+        }
+        public bool NoCompomentsForDesign()
+        {
+            return !ComponentList.Any(c => c.Design == true);
+        }
+        public bool NoCompomentsForMaterialList()
+        {
+            return !ComponentList.Any(c => c.MaterialList == true);            
+        }
     }
 }

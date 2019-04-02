@@ -782,8 +782,24 @@ namespace PFD
                 Joint_Design.IsEnabled = false;
                 Footing_Design.IsEnabled = false;
                 ButtonCalculateForces.IsEnabled = true;
-
             }
+
+            CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
+            if (compListVM.NoCompomentsForCalculate())
+            {
+                Internal_Forces.IsEnabled = false;                
+                ButtonCalculateForces.IsEnabled = false;
+            }
+            if (compListVM.NoCompomentsForDesign())
+            {
+                Member_Design.IsEnabled = false;
+                Joint_Design.IsEnabled = false;
+                Footing_Design.IsEnabled = false;
+            }
+
+            if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;            
+            else Part_List.IsEnabled = true;
+
 
         }
 

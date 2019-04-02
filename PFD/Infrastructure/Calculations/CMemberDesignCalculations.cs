@@ -478,16 +478,24 @@ namespace PFD.Infrastructure
                                     CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
                                 }
 
+                                
                                 // Find group of current member (definition of member type)
                                 CMemberGroup currentMemberTypeGroupOfMembers = m.GetMemberGroupFromList(Model.listOfModelMemberGroups);
+                                float fDeflectionLimit = 0f;
+                                
+                                //To Mato, ja by som osobne zadefinoval pre listOfModelMemberGroups memberType presne ako je pre member m.EMemberType
+                                //nasledne by som vybral skupinu takto:
+                                //CMemberGroup currentMemberTypeGroupOfMembers = Model.listOfModelMemberGroups.FirstOrDefault(gr => gr.EMemberType == m.EMemberType);
 
-                                float fDeflectionLimit;
-
-                                // Set deflection limit depending of member type and load combination type
-                                if (lcomb.IsCombinationOfPermanentLoadCasesOnly())
-                                    fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_PermanentLoad;
-                                else
-                                    fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_Total;
+                                //To Mato - pozor ak su to dvere, okno, tak currentMemberTypeGroupOfMembers je null, lebo 
+                                if (currentMemberTypeGroupOfMembers != null)
+                                {
+                                    // Set deflection limit depending of member type and load combination type
+                                    if (lcomb.IsCombinationOfPermanentLoadCasesOnly())
+                                        fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_PermanentLoad;
+                                    else
+                                        fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_Total;
+                                }                                
 
                                 memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, m, fDeflectionLimit, sBDeflection_x_design, out sDDeflection_x);
                                 MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
