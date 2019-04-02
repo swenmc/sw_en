@@ -1169,6 +1169,11 @@ namespace BaseClasses
 
                         // Create text
                         textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+
+                        if (centerModel)
+                        {
+                            textlabel.Transform = centerModelTransGr;
+                        }
                         viewPort.Children.Add(textlabel);
                     }
                 }
