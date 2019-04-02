@@ -1,10 +1,10 @@
-﻿using DATABASE.DTO;
-using MATERIAL;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 using DATABASE;
+using DATABASE.DTO;
 
 namespace CRSC
 {
@@ -425,7 +425,12 @@ namespace CRSC
             this.A_w1 = dto.A_w1;
             this.A_vz = dto.A_vz;
             this.fvz_red_factor = dto.fvz_red_factor;
-    }
+
+            this.i_y_rg = Math.Sqrt(I_y / A_g);
+            this.i_z_rg = Math.Sqrt(I_z / A_g);
+            this.i_epsilon_rg = Math.Sqrt(I_epsilon / A_g);
+            this.i_mikro_rg = Math.Sqrt(I_mikro / A_g);
+        }
 
         // Calculate properties
         // CSO - open thin-walled cross-section
