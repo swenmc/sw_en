@@ -400,6 +400,11 @@ namespace PFD
                         count++;
                         // Assign component properties from GUI component list to the particular members in the model
                         m.BIsGenerated = cInfo.Generate.GetValueOrDefault(false);
+
+                        // cInfo.Generate = null for block components, set true
+                        if (m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT")
+                            m.BIsGenerated = true;
+
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;
@@ -410,7 +415,8 @@ namespace PFD
                     {
                         count++;
                         // Assign component properties from GUI component list to the particular members in the model
-                        m.BIsGenerated = cInfo.Generate.GetValueOrDefault(false);
+                        //m.BIsGenerated = cInfo.Generate.GetValueOrDefault(false);
+                        m.BIsGenerated = true;
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;

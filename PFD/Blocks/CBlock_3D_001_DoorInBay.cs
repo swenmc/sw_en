@@ -86,7 +86,7 @@ namespace PFD
                 crscColumn = m_arrCrSc[1];
 
                 // Lintel
-                m_arrCrSc[2] = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Azure); // Door lintel
+                m_arrCrSc[2] = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Chocolate); // Door lintel
                 m_arrCrSc[2].Name_short = "27095";
                 m_arrCrSc[2].m_Mat = m_arrMat[0];
 
@@ -234,8 +234,10 @@ namespace PFD
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h);
-            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscColumn.h);
+            float fDistanceBetweenGirtAndColumn_LCS_z_axis = 0.5f * (float)ReferenceGirt.CrScStart.h - 0.5f * (float)crscColumn.h;
+
+            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis : -eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis);
+            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis : -eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis);
             float fDoorColumnRotation = (float)Math.PI / 2;
 
             // Rotate local axis about x
@@ -257,10 +259,12 @@ namespace PFD
 
             // Door lintel (header)
             // TODO - add to block parameters
-            float fDoorLintelStart = -0.5f * (float)crscColumn.h - fCutOffOneSide;
-            float fDoorLintelEnd = -0.5f * (float)crscColumn.h - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h);
-            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h : -eccentricityGirtStart.MFz_local + 0.5f * (float)crscLintel.h);
+            float fDoorLintelStart = -0.5f * (float)crscColumn.b - fCutOffOneSide;
+            float fDoorLintelEnd = -0.5f * (float)crscColumn.b - fCutOffOneSide;
+            float fDistanceBetweenGirtAndLintel_LCS_z_axis = 0.5f * (float)ReferenceGirt.CrScStart.h - 0.5f * (float)crscLintel.h;
+
+            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndLintel_LCS_z_axis : -eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndLintel_LCS_z_axis);
+            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndLintel_LCS_z_axis : -eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndLintel_LCS_z_axis);
             float fDoorLintelRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
