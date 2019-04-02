@@ -22,7 +22,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_Components"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
@@ -60,10 +60,38 @@
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>                
                 </DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display, UpdateSourceTrigger=PropertyChanged}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <!--<DataGridCheckBoxColumn Binding="{Binding Display, UpdateSourceTrigger=PropertyChanged}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Calculate, UpdateSourceTrigger=PropertyChanged}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
                 <DataGridCheckBoxColumn Binding="{Binding Design, UpdateSourceTrigger=PropertyChanged}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList, UpdateSourceTrigger=PropertyChanged}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList, UpdateSourceTrigger=PropertyChanged}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>-->
+                <DataGridTemplateColumn Header="Display">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Display, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Calculate">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Calculate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Design">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Design, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="MaterialList">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=MaterialList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                
             </DataGrid.Columns>
         </DataGrid>
 
