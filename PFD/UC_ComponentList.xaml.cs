@@ -78,7 +78,7 @@ namespace PFD
                     cInfo.Calculate = true;
                     cInfo.IsSetFromCode = false;
                     cInfo.MaterialList = true;
-                }                
+                }
             }
 
             //toggle Column
@@ -113,8 +113,6 @@ namespace PFD
                     cInfo.IsSetFromCode = false;
                 }
             }
-
-
         }
 
         private void Datagrid_Components_MouseDown(object sender, MouseButtonEventArgs e)
@@ -149,8 +147,6 @@ namespace PFD
 
                     cInfo.IsSetFromCode = false;
                 }
-                
-
             }
         }
     }

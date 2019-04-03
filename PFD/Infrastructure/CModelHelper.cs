@@ -406,7 +406,7 @@ namespace PFD
                         m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                         break;
-                    }                    
+                    }
                 }
             }
             System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine() count: " + count);
