@@ -775,7 +775,7 @@ namespace PFD.Infrastructure
 
         private string GetTextForResultsMessageBox(sDesignResults s)
         {
-            StringBuilder sb = new StringBuilder();            
+            StringBuilder sb = new StringBuilder();
 
             if (s.fMaximumDesignRatioWholeStructure > 0)
             {
@@ -789,8 +789,8 @@ namespace PFD.Infrastructure
                     if (s.GoverningLoadCombinationStructure != null)
                     {
                         sb.Append($"Load Combination ID: {s.GoverningLoadCombinationStructure.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioWholeStructure, 3)}\n\n\n");                        
-                    }                    
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioWholeStructure, 3)}\n\n\n");
+                    }
                 }
 
                 if (s.MaximumDesignRatioMainColumn != null)
@@ -800,7 +800,7 @@ namespace PFD.Infrastructure
                     if (s.GoverningLoadCombinationMainColumn != null)
                     {
                         sb.Append($"Load Combination ID: {s.GoverningLoadCombinationMainColumn.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString()}\n\n");                        
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString()}\n\n");
                     }
                 }
 
@@ -869,7 +869,6 @@ namespace PFD.Infrastructure
                         sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioColumns, 3)}\n\n\n");
                     }
                 }
-                
             }
 
             return sb.ToString();
