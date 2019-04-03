@@ -57,12 +57,7 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
 
-        // TODO - Ondrej
-        // Potrebujeme do UC_InternalForces dostat nejakym sposobom geometriu ramov a vysledky na ramoch aby sme to mohli pre prislusny rozhodujuci MainColumn alebo Rafter zobrazit v FrameInternalForces_2D
         List<CFrame> frameModels;
-        //List<List<List<List<basicInternalForces>>>> internalforcesframes;
-        //List<List<List<List<basicDeflections>>>> deflectionsframes;
-
         GraphWindow graph;
 
         public UC_InternalForces(
@@ -128,7 +123,13 @@ namespace PFD
 
             string selectedGroupName = vm.ComponentList.ElementAtOrDefault(vm.ComponentTypeIndex);
             CMember member = FindMemberWithMaximumDesignRatio(lcomb, selectedGroupName, Model.listOfModelMemberGroups); // Find member in group (members with same compoment type) with maximum design ratio
-            if (member == null) return; // nemame vypocitane vysledky...nie je co zobrazovat //throw new Exception("Member with maximum design ratio not found.");
+            if (member == null) // nemame vypocitane vysledky...nie je co zobrazovat
+            {
+                CMemberGroup memberGroup = Model.listOfModelMemberGroups.FirstOrDefault(g => g.Name == selectedGroupName);
+                if (memberGroup == null) return;
+                member = memberGroup.ListOfMembers.FirstOrDefault();
+                if (member == null) return;
+            } 
 
             fMemberLength_xMax = member.FLength;
 
