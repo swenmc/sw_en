@@ -775,55 +775,104 @@ namespace PFD.Infrastructure
 
         private string GetTextForResultsMessageBox(sDesignResults s)
         {
-            string txt = "";
+            StringBuilder sb = new StringBuilder();            
 
             if (s.fMaximumDesignRatioWholeStructure > 0)
             {
-                txt = "Calculation Results \n" +
-                        "Limit State Type: " + s.sLimitStateType + "\n" +
-                        "Maximum design ratio \n" +
-                        "Member ID: " + s.MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationStructure.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioWholeStructure, 3).ToString() +
-                         "\n\n\n" +
-                        "Maximum design ratio - main columns\n" +
-                        "Member ID: " + s.MaximumDesignRatioMainColumn.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationMainColumn.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString() +
-                         "\n\n" +
-                        "Maximum design ratio - rafters\n" +
-                        "Member ID: " + s.MaximumDesignRatioMainRafter.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationMainRafter.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioMainRafter, 3).ToString() +
-                        "\n\n" +
-                        "Maximum design ratio - end columns\n" +
-                        "Member ID: " + s.MaximumDesignRatioEndColumn.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationEndColumn.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndColumn, 3).ToString() +
-                         "\n\n" +
-                        "Maximum design ratio - end rafters\n" +
-                        "Member ID: " + s.MaximumDesignRatioEndRafter.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationEndRafter.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioEndRafter, 3).ToString() +
-                         "\n\n" +
-                        "Maximum design ratio - girts\n" +
-                        "Member ID: " + s.MaximumDesignRatioGirt.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationGirts.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioGirts, 3).ToString() +
-                         "\n\n" +
-                        "Maximum design ratio - purlins\n" +
-                        "Member ID: " + s.MaximumDesignRatioPurlin.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationPurlins.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioPurlins, 3).ToString() +
-                         "\n\n" +
-                        "Maximum design ratio - columns\n" +
-                        "Member ID: " + s.MaximumDesignRatioColumn.ID.ToString() + "\t" +
-                        "Load Combination ID: " + s.GoverningLoadCombinationColumns.ID + "\t" +
-                        "Design Ratio η: " + Math.Round(s.fMaximumDesignRatioColumns, 3).ToString() +
-                         "\n\n\n";
+                sb.Append("Calculation Results \n");
+                sb.Append($"Limit State Type: {s.sLimitStateType}\n");
+
+                if (s.MaximumDesignRatioWholeStructureMember != null)
+                {
+                    sb.Append("Maximum design ratio \n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioWholeStructureMember.ID.ToString()}\t");
+                    if (s.GoverningLoadCombinationStructure != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationStructure.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioWholeStructure, 3)}\n\n\n");                        
+                    }                    
+                }
+
+                if (s.MaximumDesignRatioMainColumn != null)
+                {
+                    sb.Append("Maximum design ratio - main columns\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioMainColumn.ID.ToString()}\t");
+                    if (s.GoverningLoadCombinationMainColumn != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationMainColumn.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString()}\n\n");                        
+                    }
+                }
+
+                if (s.MaximumDesignRatioMainRafter != null)
+                {
+                    sb.Append("Maximum design ratio - rafters\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioMainRafter.ID}\t");
+                    if (s.GoverningLoadCombinationMainRafter != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationMainRafter.ID }\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainRafter, 3)}\n\n");
+                    }
+                }
+
+                if (s.MaximumDesignRatioEndColumn != null)
+                {
+                    sb.Append("Maximum design ratio - end columns\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioEndColumn.ID}\t");
+                    if (s.GoverningLoadCombinationEndColumn != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationEndColumn.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioEndColumn, 3)}\n\n");
+                    }   
+                }
+
+                if (s.MaximumDesignRatioEndRafter != null)
+                {
+                    sb.Append("Maximum design ratio - end rafters\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioEndRafter.ID}\t");
+                    if (s.GoverningLoadCombinationEndRafter != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationEndRafter.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioEndRafter, 3)}\n\n");
+                    }
+                }
+
+                if (s.MaximumDesignRatioGirt != null)
+                {
+                    sb.Append("Maximum design ratio - girts\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioGirt.ID}\t");
+                    if (s.GoverningLoadCombinationGirts != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationGirts.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioGirts, 3)}\n\n");
+                    }
+                }
+
+                if (s.MaximumDesignRatioPurlin != null)
+                {
+                    sb.Append("Maximum design ratio - purlins\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioPurlin.ID}\t");
+                    if (s.GoverningLoadCombinationPurlins != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationPurlins.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioPurlins, 3)}\n\n");
+                    }
+                }
+
+                if (s.MaximumDesignRatioColumn != null)
+                {
+                    sb.Append("Maximum design ratio - columns\n");
+                    sb.Append($"Member ID: {s.MaximumDesignRatioColumn.ID}\t");
+                    if (s.GoverningLoadCombinationColumns != null)
+                    {
+                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationColumns.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioColumns, 3)}\n\n\n");
+                    }
+                }
+                
             }
 
-            return txt;
+            return sb.ToString();
         }
 
         private void ShowResultsInMessageBox(string txtULSandSLS, string txtULS, string txtSLS)
