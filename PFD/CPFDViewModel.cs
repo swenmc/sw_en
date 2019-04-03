@@ -55,6 +55,25 @@ namespace PFD
 
         private int iFrontColumnNoInOneFrame;
 
+        private bool m_LightDirectional;
+        private bool m_LightPoint;
+        private bool m_LightSpot;
+        private bool m_LightAmbient;
+        private bool m_MaterialDiffuse;
+        private bool m_MaterialEmissive;
+        private bool m_DisplayMembers;
+        private bool m_DisplayJoints;
+        private bool m_DisplayPlates;
+        private bool m_DisplayConnectors;
+        private bool m_DisplayFoundations;
+        private bool m_DisplayFloorSlab;
+        private bool m_DisplayNodalSupports;
+        private bool m_DisplayMembersCenterLines;
+        private bool m_DisplaySolidModel;
+        private bool m_DisplayWireFrameModel;
+        private bool m_DisplayDistinguishedColorMember;
+        private bool m_DisplayTransparentModelMember;
+
         // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
@@ -99,7 +118,7 @@ namespace PFD
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
-        
+
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
 
@@ -717,6 +736,7 @@ namespace PFD
             set
             {
                 MShowSurfaceLoads = value;
+                if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
                 NotifyPropertyChanged("ShowSurfaceLoads");
             }
         }
@@ -842,7 +862,7 @@ namespace PFD
 
             set
             {
-                MShowLoadsLabels = value;
+                MShowLoadsLabels = value;                
                 NotifyPropertyChanged("ShowLoadsLabels");
             }
         }
@@ -1104,9 +1124,9 @@ namespace PFD
             set
             {
                 MComponentList = value;
-                
+
                 if (MComponentList == null) return;
-                
+
                 foreach (CComponentInfo c in MComponentList)
                 {
                     c.PropertyChanged += HandleComponentInfoPropertyChangedEvent;
@@ -1125,6 +1145,263 @@ namespace PFD
             set
             {
                 MModelCalculatedResultsValid = value;
+            }
+        }
+
+        public bool LightDirectional
+        {
+            get
+            {
+                return m_LightDirectional;
+            }
+
+            set
+            {
+                m_LightDirectional = value;
+                NotifyPropertyChanged("LightDirectional");
+            }
+        }
+
+        public bool LightPoint
+        {
+            get
+            {
+                return m_LightPoint;
+            }
+
+            set
+            {
+                m_LightPoint = value;
+                NotifyPropertyChanged("LightPoint");
+            }
+        }
+
+        public bool LightSpot
+        {
+            get
+            {
+                return m_LightSpot;
+            }
+
+            set
+            {
+                m_LightSpot = value;
+                NotifyPropertyChanged("LightSpot");
+            }
+        }
+
+        public bool LightAmbient
+        {
+            get
+            {
+                return m_LightAmbient;
+            }
+
+            set
+            {
+                m_LightAmbient = value;
+                NotifyPropertyChanged("LightAmbient");
+            }
+        }
+
+        public bool MaterialDiffuse
+        {
+            get
+            {
+                return m_MaterialDiffuse;
+            }
+
+            set
+            {
+                m_MaterialDiffuse = value;
+                if (!m_MaterialDiffuse && !m_MaterialEmissive) MaterialEmissive = true;
+                NotifyPropertyChanged("MaterialDiffuse");
+            }
+        }
+
+        public bool MaterialEmissive
+        {
+            get
+            {
+                return m_MaterialEmissive;
+            }
+
+            set
+            {
+                m_MaterialEmissive = value;
+                if (!m_MaterialEmissive && !m_MaterialDiffuse) MaterialDiffuse = true;
+                NotifyPropertyChanged("MaterialEmissive");
+            }
+        }
+
+        public bool DisplayMembers
+        {
+            get
+            {
+                return m_DisplayMembers;
+            }
+
+            set
+            {
+                m_DisplayMembers = value;
+                if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
+                NotifyPropertyChanged("DisplayMembers");
+            }
+        }
+
+        public bool DisplayJoints
+        {
+            get
+            {
+                return m_DisplayJoints;
+            }
+
+            set
+            {
+                m_DisplayJoints = value;
+                NotifyPropertyChanged("DisplayJoints");
+            }
+        }
+
+        public bool DisplayPlates
+        {
+            get
+            {
+                return m_DisplayPlates;
+            }
+
+            set
+            {
+                m_DisplayPlates = value;
+                if (m_DisplayPlates) DisplayJoints = true;
+                NotifyPropertyChanged("DisplayPlates");
+            }
+        }
+
+        public bool DisplayConnectors
+        {
+            get
+            {
+                return m_DisplayConnectors;
+            }
+
+            set
+            {
+                m_DisplayConnectors = value;
+                if (m_DisplayConnectors) DisplayJoints = true;
+                NotifyPropertyChanged("DisplayConnectors");
+            }
+        }
+
+        public bool DisplayFoundations
+        {
+            get
+            {
+                return m_DisplayFoundations;
+            }
+
+            set
+            {
+                m_DisplayFoundations = value;
+                NotifyPropertyChanged("DisplayFoundations");
+            }
+        }
+
+        public bool DisplayFloorSlab
+        {
+            get
+            {
+                return m_DisplayFloorSlab;
+            }
+
+            set
+            {
+                m_DisplayFloorSlab = value;
+                NotifyPropertyChanged("DisplayFloorSlab");
+            }
+        }
+
+        public bool DisplayNodalSupports
+        {
+            get
+            {
+                return m_DisplayNodalSupports;
+            }
+
+            set
+            {
+                m_DisplayNodalSupports = value;
+                NotifyPropertyChanged("DisplayNodalSupports");
+            }
+        }
+
+        public bool DisplayMembersCenterLines
+        {
+            get
+            {
+                return m_DisplayMembersCenterLines;
+            }
+
+            set
+            {
+                m_DisplayMembersCenterLines = value;
+                NotifyPropertyChanged("DisplayMembersCenterLines");
+            }
+        }
+
+        public bool DisplaySolidModel
+        {
+            get
+            {
+                return m_DisplaySolidModel;
+            }
+
+            set
+            {
+                m_DisplaySolidModel = value;
+                NotifyPropertyChanged("DisplaySolidModel");
+            }
+        }
+
+        public bool DisplayWireFrameModel
+        {
+            get
+            {
+                return m_DisplayWireFrameModel;
+            }
+
+            set
+            {
+                m_DisplayWireFrameModel = value;
+                NotifyPropertyChanged("DisplayWireFrameModel");
+            }
+        }
+
+        public bool DisplayDistinguishedColorMember
+        {
+            get
+            {
+                return m_DisplayDistinguishedColorMember;
+            }
+
+            set
+            {
+                m_DisplayDistinguishedColorMember = value;
+                NotifyPropertyChanged("DisplayDistinguishedColorMember");
+            }
+        }
+
+        public bool DisplayTransparentModelMember
+        {
+            get
+            {
+                return m_DisplayTransparentModelMember;
+            }
+
+            set
+            {
+                m_DisplayTransparentModelMember = value;
+                NotifyPropertyChanged("DisplayTransparentModelMember");
             }
         }
 
@@ -1267,7 +1544,7 @@ namespace PFD
             }
             return -1;
         }
-        
+
         private void SetDoorsWindowsValidationProperties()
         {
             SetDoorsValidationProperties();
@@ -1278,7 +1555,7 @@ namespace PFD
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
-                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);                
+                d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
         private void SetWindowsValidationProperties()
@@ -1305,7 +1582,26 @@ namespace PFD
 
             _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = _componentVM.ComponentList;
-            
+
+            LightDirectional = false;
+            LightPoint = false;
+            LightSpot = false;
+            LightAmbient = true;
+            MaterialDiffuse = true;
+            MaterialEmissive = true;
+            DisplayMembers = true;
+            DisplayJoints = false;
+            DisplayPlates = false;
+            DisplayConnectors = false;
+            DisplayFoundations = false;
+            DisplayFloorSlab = false;
+            DisplayNodalSupports = false;
+            DisplayMembersCenterLines = true;
+            DisplaySolidModel = false;
+            DisplayWireFrameModel = false;
+            DisplayDistinguishedColorMember = false;
+            DisplayTransparentModelMember = false;
+
             ShowMemberID = true;
             ShowMemberRealLength = true;
 
@@ -1346,7 +1642,7 @@ namespace PFD
             _worker.WorkerSupportsCancellation = true;
         }
 
-        
+
 
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -1354,7 +1650,7 @@ namespace PFD
             else if (e.PropertyName == "ComponentDetailsList") return;
             else if (e.PropertyName == "MaterialDetailsList") return;
 
-            if(PropertyChanged != null) PropertyChanged(sender, e);
+            if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
         //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
@@ -1582,7 +1878,7 @@ namespace PFD
             MemberDesignResults_SLS = mdc.MemberDesignResults_SLS;
             JointDesignResults_ULS = mdc.JointDesignResults_ULS;
         }
-        
+
         private void SetComponentListAccordingToDoorsAndWindows()
         {
             SetComponentListAccordingToDoors();
@@ -1590,7 +1886,7 @@ namespace PFD
         }
         private void SetComponentListAccordingToDoors()
         {
-            if (ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();             
+            if (ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();
             else _componentVM.RemovePersonelDoor();
 
             if (ModelHasRollerDoor()) _componentVM.AddRollerDoor();
@@ -1607,7 +1903,7 @@ namespace PFD
         {
             foreach (DoorProperties d in DoorBlocksProperties)
             {
-                if (d.sDoorType == "Personnel Door") return true;                
+                if (d.sDoorType == "Personnel Door") return true;
             }
             return false;
         }
@@ -1615,7 +1911,7 @@ namespace PFD
         {
             foreach (DoorProperties d in DoorBlocksProperties)
             {
-                if (d.sDoorType == "Roller Door") return true;                
+                if (d.sDoorType == "Roller Door") return true;
             }
             return false;
         }
@@ -1659,9 +1955,9 @@ namespace PFD
 
         private void HandleComponentInfoPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            if(PropertyChanged != null) this.PropertyChanged(sender, e);
+            if (PropertyChanged != null) this.PropertyChanged(sender, e);
         }
 
-        
+
     }
 }

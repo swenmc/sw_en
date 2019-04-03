@@ -656,22 +656,22 @@ namespace PFD
         {
             // Get display options from GUI
 
-            sDisplayOptions.bUseLightDirectional = chbLightDirectional.IsChecked == true;
-            sDisplayOptions.bUseLightPoint = chbLightPoint.IsChecked == true;
-            sDisplayOptions.bUseLightSpot = chbLightSpot.IsChecked == true;
-            sDisplayOptions.bUseLightAmbient = chbLightAmbient.IsChecked == true;
+            sDisplayOptions.bUseLightDirectional = vm.LightDirectional;
+            sDisplayOptions.bUseLightPoint = vm.LightPoint;
+            sDisplayOptions.bUseLightSpot = vm.LightSpot;
+            sDisplayOptions.bUseLightAmbient = vm.LightAmbient;
 
-            sDisplayOptions.bUseDiffuseMaterial = chbMaterialDiffuse.IsChecked == true;
-            sDisplayOptions.bUseEmissiveMaterial = chbMaterialEmissive.IsChecked == true;
+            sDisplayOptions.bUseDiffuseMaterial = vm.MaterialDiffuse;
+            sDisplayOptions.bUseEmissiveMaterial = vm.MaterialEmissive;
 
-            sDisplayOptions.bDisplayMembers = chbDisplayMembers.IsChecked == true;
-            sDisplayOptions.bDisplayJoints = chbDisplayJoints.IsChecked == true;
-            sDisplayOptions.bDisplayPlates = chbDisplayPlates.IsChecked == true;
-            sDisplayOptions.bDisplayConnectors = chbDisplayConnectors.IsChecked == true;
+            sDisplayOptions.bDisplayMembers = vm.DisplayMembers;
+            sDisplayOptions.bDisplayJoints = vm.DisplayJoints;
+            sDisplayOptions.bDisplayPlates = vm.DisplayPlates;
+            sDisplayOptions.bDisplayConnectors = vm.DisplayConnectors;
 
-            sDisplayOptions.bDisplayFoundations = chbDisplayFoundations.IsChecked == true;
-            sDisplayOptions.bDisplayFloorSlab = chbDisplayFloorSlab.IsChecked == true;
-            sDisplayOptions.bDisplayNodalSupports = chbDisplayNodalSupports.IsChecked == true;
+            sDisplayOptions.bDisplayFoundations = vm.DisplayFoundations;
+            sDisplayOptions.bDisplayFloorSlab = vm.DisplayFloorSlab;
+            sDisplayOptions.bDisplayNodalSupports = vm.DisplayNodalSupports;
 
             sDisplayOptions.bDisplayMemberDescription = vm.ShowMemberDescription;
             sDisplayOptions.bDisplayMemberID = vm.ShowMemberID;
@@ -679,12 +679,12 @@ namespace PFD
             sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
             sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
 
-            sDisplayOptions.bDisplayMembersCenterLines = chbDisplayMembersCenterLines.IsChecked == true;
-            sDisplayOptions.bDisplaySolidModel = chbDisplaySolidModel.IsChecked == true;
-            sDisplayOptions.bDisplayWireFrameModel = chbDisplayWireFrameModel.IsChecked == true;
+            sDisplayOptions.bDisplayMembersCenterLines = vm.DisplayMembersCenterLines;
+            sDisplayOptions.bDisplaySolidModel = vm.DisplaySolidModel;
+            sDisplayOptions.bDisplayWireFrameModel = vm.DisplayWireFrameModel;
 
-            sDisplayOptions.bDistinguishedColor = chbDisplayDistinguishedColorMember.IsChecked == true;
-            sDisplayOptions.bTransparentMemberModel = chbDisplayTransparentModelMember.IsChecked == true;
+            sDisplayOptions.bDistinguishedColor = vm.DisplayDistinguishedColorMember;
+            sDisplayOptions.bTransparentMemberModel = vm.DisplayTransparentModelMember;
 
             sDisplayOptions.bDisplayGlobalAxis = vm.ShowGlobalAxis;
             sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
@@ -981,346 +981,7 @@ namespace PFD
                 // Not implemented like UC;
             };
         }
-
-        // TO Ondrej - TODO - nemali by sme tieto metody pre checkboxy tiez prerobit na ViewModel properties ???
-
-        private void chbLightDirectional_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightpoint_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightSpot_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightAmbient_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbLightDirectional_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightpoint_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightSpot_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbLightAmbient_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbMaterialDiffuse_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbMaterialEmissive_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbMaterialDiffuse_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbMaterialEmissive.IsChecked == false)
-                    chbMaterialEmissive.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-
-        private void chbMaterialEmissive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbMaterialDiffuse.IsChecked == false)
-                    chbMaterialDiffuse.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayMembers_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayJoints_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayPlates_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbDisplayJoints.IsChecked == false)
-                    chbDisplayJoints.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-        private void chbDisplayConnectors_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbDisplayJoints.IsChecked == false)
-                    chbDisplayJoints.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-        private void chbDisplayFoundations_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbDisplayFoundations.IsChecked == false)
-                    chbDisplayFoundations.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-        private void chbDisplayFloorSlab_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbDisplayFloorSlab.IsChecked == false)
-                    chbDisplayFloorSlab.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-        private void chbDisplayNodalSupports_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                if (chbDisplayNodalSupports.IsChecked == false)
-                    chbDisplayNodalSupports.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayMembers_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayJoints_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayPlates_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayConnectors_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayFoundations_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayFloorSlab_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayNodalSupports_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
         
-        private void chbDisplayMembersCenterLines_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplaySolidModel_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayWireFrameModel_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                // TODO Ondrej - odstranit zavislost na solid model, tak aby bolo mozne zobrazit samostany wireframe
-                if (chbDisplaySolidModel.IsChecked == false)
-                    chbDisplaySolidModel.SetCurrentValue(CheckBox.IsCheckedProperty, true);
-
-                UpdateAll();
-
-
-                //if (model.WireFrameJoints != null)
-                //{
-                //    //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.WireFrameMembers);
-                //    //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.WireFrameJoints);
-                //}
-                //else
-                //{
-
-                //}
-            }
-        }
-
-        private void chbDisplayMembersCenterLines_UnChecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplaySolidModel_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayWireFrameModel_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-
-                //int index = 0;
-                //foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
-                //{
-                //    if (visual is ScreenSpaceLines3D)
-                //    {
-                //        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.StartsWith("WireFrame")) break;
-                //    }
-
-                //    index++;
-                //}
-                //if(index < ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Count) ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-
-                //index = 0;
-                //foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
-                //{
-                //    if (visual is ScreenSpaceLines3D)
-                //    {
-                //        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.StartsWith("WireFrame")) break;
-                //    }
-
-                //    index++;
-                //}
-                //if (index < ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Count) ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-            }
-        }
-
-        private void chbDisplayDistinguishedColorMember_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayTransparentModelMember_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayDistinguishedColorMember_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-
-        private void chbDisplayTransparentModelMember_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        
-        //public void UpdateProgressBarValue(double progressValue, string labelText)
-        //{
-        //    Dispatcher.Invoke(() =>
-        //    {
-        //        progressBar.Value = progressValue;
-        //        progressBarLabel.Content = labelText;
-        //    });
-        //}
 
         public void ShowMessageBoxInPFDWindow(string text)
         {
