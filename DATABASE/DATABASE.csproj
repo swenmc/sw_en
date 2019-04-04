@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CComponentManager.cs" />
+    <Compile Include="CJointsManager.cs" />
     <Compile Include="CTEKScrewsManager.cs" />
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
@@ -127,6 +128,7 @@
     <Content Include="Resources\MDB.db3" />
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBSections.db3" />
+    <None Include="Resources\MDBJoints.db3" />
     <None Include="Resources\MDBModels.db3" />
     <None Include="Resources\MDBTEKScrews.db3" />
     <None Include="Resources\MDBTrapezoidalSheeting.db3" />
