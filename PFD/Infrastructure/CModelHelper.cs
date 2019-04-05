@@ -9,6 +9,7 @@ namespace PFD
 {
     public static class CModelHelper
     {
+        const bool debugging = true;
         //Extension method
         //returns list of frames with members from Model
         public static List<CFrame> GetFramesFromModel(this CModel_PFD_01_GR model)
@@ -404,6 +405,8 @@ namespace PFD
                     {
                         m.CrScStart.ID = (int)cInfo.MemberType;
                     }
+
+
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     if (m.Prefix == cInfo.Prefix &&
@@ -419,10 +422,7 @@ namespace PFD
                         if (m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT")
                         {
                             m.BIsGenerated = true;
-                            m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
-                            m.BIsSelectedForIFCalculation = cInfo.Calculate;
-                        }
-                            
+                        }   
 
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
@@ -433,11 +433,11 @@ namespace PFD
                     else if(m.Prefix == cInfo.Prefix &&
                         m.CrScStart.ID == (int)cInfo.MemberType && !m.BIsGenerated)
                     {
-                        System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
+                        if(debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
                     }
                 }
             }
-            System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine() count: " + count);
+            if (debugging) System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine() count: " + count);
         }
 
         public static int GetMembersSetForCalculationsCount(CMember[] arrMembers)
