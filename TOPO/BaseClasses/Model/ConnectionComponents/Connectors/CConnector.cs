@@ -184,6 +184,9 @@ namespace BaseClasses
         public Point3DCollection WireFrameModelPointsFromVisual()
         {
             Point3DCollection points3D = new Point3DCollection();
+            if (Visual_Connector == null) return points3D;
+            if (Visual_Connector.Geometry == null) return points3D;
+
             Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
             // TODO Ondrej 15/07/2018

@@ -344,7 +344,7 @@ namespace BaseClasses
 
             Model3DGroup JointsModel3DGroup = null;
 
-            if (cmodel.m_arrConnectionJoints != null && sDisplayOptions.bDisplayJoints) // Some joints exist
+            if (cmodel.m_arrConnectionJoints != null) // Some joints exist
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                 {
@@ -992,8 +992,12 @@ namespace BaseClasses
                                         }
                                     }
                                 }
-                                var transPoints_Plate = jointPlatePoints.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
-                                jointPoints.AddRange(transPoints_Plate);
+                                if (model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate != null)
+                                {
+                                    var transPoints_Plate = jointPlatePoints.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
+                                    jointPoints.AddRange(transPoints_Plate);
+                                }
+                                
                             }
                         }
 
