@@ -203,6 +203,8 @@ namespace PFD
                 }
 
                 if (e.PropertyName == "Bays") return;
+                if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
+                if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
             }
             else if (sender is CComponentListVM)
             {

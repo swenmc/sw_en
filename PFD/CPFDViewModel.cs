@@ -97,7 +97,9 @@ namespace PFD
         private bool MShowLoadsLabelsUnits;
         private bool MShowGlobalAxis;
         private bool MShowLocalMembersAxis;
+        private bool MIsEnabledLocalMembersAxis;        
         private bool MShowSurfaceLoadsAxis;
+        private bool MIsEnabledSurfaceLoadsAxis;
 
         // Member description options
         private bool MShowMemberDescription;
@@ -634,6 +636,7 @@ namespace PFD
             set
             {
                 MShowLoads = value;
+                SetIsEnabledSurfaceLoadsAxis();
                 NotifyPropertyChanged("ShowLoads");
             }
         }
@@ -737,6 +740,7 @@ namespace PFD
             {
                 MShowSurfaceLoads = value;
                 if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
+                SetIsEnabledSurfaceLoadsAxis();
                 NotifyPropertyChanged("ShowSurfaceLoads");
             }
         }
@@ -914,6 +918,19 @@ namespace PFD
                 NotifyPropertyChanged("ShowLocalMembersAxis");
             }
         }
+        public bool IsEnabledLocalMembersAxis
+        {
+            get
+            {
+                return MIsEnabledLocalMembersAxis;
+            }
+
+            set
+            {
+                MIsEnabledLocalMembersAxis = value;
+                NotifyPropertyChanged("IsEnabledLocalMembersAxis");
+            }
+        }
         public bool ShowSurfaceLoadsAxis
         {
             get
@@ -927,6 +944,19 @@ namespace PFD
                 NotifyPropertyChanged("ShowSurfaceLoadsAxis");
             }
         }
+        public bool IsEnabledSurfaceLoadsAxis
+        {
+            get
+            {
+                return MIsEnabledSurfaceLoadsAxis;
+            }
+
+            set
+            {
+                MIsEnabledSurfaceLoadsAxis = value;
+                NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
+            }
+        }        
 
         public bool GenerateNodalLoads
         {
@@ -1245,6 +1275,7 @@ namespace PFD
             {
                 m_DisplayMembers = value;
                 if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
+                SetIsEnabledLocalMembersAxis();
                 NotifyPropertyChanged("DisplayMembers");
             }
         }
@@ -1345,6 +1376,7 @@ namespace PFD
             set
             {
                 m_DisplayMembersCenterLines = value;
+                SetIsEnabledLocalMembersAxis();
                 NotifyPropertyChanged("DisplayMembersCenterLines");
             }
         }
@@ -1359,6 +1391,7 @@ namespace PFD
             set
             {
                 m_DisplaySolidModel = value;
+                SetIsEnabledLocalMembersAxis();
                 NotifyPropertyChanged("DisplaySolidModel");
             }
         }
@@ -1373,6 +1406,7 @@ namespace PFD
             set
             {
                 m_DisplayWireFrameModel = value;
+                SetIsEnabledLocalMembersAxis();
                 NotifyPropertyChanged("DisplayWireFrameModel");
             }
         }
@@ -1920,6 +1954,27 @@ namespace PFD
             if (WindowBlocksProperties == null) return false;
 
             return WindowBlocksProperties.Count > 0;
+        }
+        private void SetIsEnabledLocalMembersAxis()
+        {
+            //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
+            //tak by malo byt zobrazenie os Local Member Axis disabled.            
+            if (m_DisplayMembers)
+            {
+                if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;
+                else { IsEnabledLocalMembersAxis = false; }
+            }
+            else { IsEnabledLocalMembersAxis = false; }
+
+            if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
+        }
+        private void SetIsEnabledSurfaceLoadsAxis()
+        {
+            //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
+            if (MShowSurfaceLoads && MShowLoads) IsEnabledSurfaceLoadsAxis = true;
+            else IsEnabledSurfaceLoadsAxis = false;
+
+            if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
         }
 
         //-------------------------------------------------------------------------------------------------------------
