@@ -51,9 +51,9 @@ namespace PFD
         {
             if (e.RightButton == MouseButtonState.Pressed)
             {
-                //CComponentInfo cInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo cInfo = vm.ComponentList[((DataGrid)sender).SelectedIndex];
+                if (cInfo == null) return;
 
                 if (cInfo.Generate.Value)
                 {
@@ -67,7 +67,6 @@ namespace PFD
                         cInfo.IsSetFromCode = false;
                         cInfo.MaterialList = false;
                     }
-
                 }
                 else
                 {
@@ -85,6 +84,8 @@ namespace PFD
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 string header = ((DataGrid)sender).CurrentColumn.Header.ToString();
+                if (header == "Generate" || header == "Prefix" || header == "ComponentName" || header == "Sections" || header == "Material") return;
+
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
@@ -103,8 +104,7 @@ namespace PFD
                         cInfo.IsSetFromCode = false;
                     }
                     else cInfo.IsSetFromCode = true;
-
-                    if (header == "Generate" && generate != null) cInfo.Generate = !generate;
+                    
                     if (header == "Calculate") cInfo.Calculate = !calc;
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
@@ -120,6 +120,8 @@ namespace PFD
             if (e.MiddleButton == MouseButtonState.Pressed)
             {
                 string header = ((DataGrid)sender).CurrentColumn.Header.ToString();
+                if (header == "Generate" || header == "Prefix" || header == "ComponentName" || header == "Sections" || header == "Material") return;
+
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;
 
@@ -138,8 +140,7 @@ namespace PFD
                         cInfo.IsSetFromCode = false;
                     }
                     else cInfo.IsSetFromCode = true;
-
-                    if (header == "Generate" && generate != null) cInfo.Generate = !generate;
+                    
                     if (header == "Calculate") cInfo.Calculate = !calc;
                     if (header == "Design") cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
