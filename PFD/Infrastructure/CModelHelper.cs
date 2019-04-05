@@ -387,10 +387,28 @@ namespace PFD
             {
                 foreach(CComponentInfo cInfo in componentList)
                 {
+                    //toto odstranime ked bude m.EMemberTypePosition stale dobre nastavene
+                    if (m.EMemberType == EMemberType_FS.eDF && cInfo.MemberType == EMemberType_DB.DoorFrame)
+                    {
+                        m.CrScStart.ID = (int)cInfo.MemberType;
+                    }
+                    if (m.EMemberType == EMemberType_FS.eDT && cInfo.MemberType == EMemberType_DB.DoorTrimmer)
+                    {
+                        m.CrScStart.ID = (int)cInfo.MemberType;
+                    }
+                    if (m.EMemberType == EMemberType_FS.eDL && cInfo.MemberType == EMemberType_DB.DoorLintel)
+                    {
+                        m.CrScStart.ID = (int)cInfo.MemberType;
+                    }
+                    if (m.EMemberType == EMemberType_FS.eWF && cInfo.MemberType == EMemberType_DB.WindowFrame)
+                    {
+                        m.CrScStart.ID = (int)cInfo.MemberType;
+                    }
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     if (m.Prefix == cInfo.Prefix &&
-                        m.CrScStart.ID == (int)cInfo.MemberType && 
+                        m.CrScStart.ID == (int)cInfo.MemberType &&
+                        //m.EMemberTypePosition == cInfo.MemberType && //takto to chcem pouzit, Mato skusis kazdemu member nastavit typ?
                         m.BIsGenerated) // !!! Set member properties only for already generated members - deactivated members (especially girts in place where block is inserted) shouldn't be activated
                     {
                         count++;
@@ -399,13 +417,23 @@ namespace PFD
 
                         // cInfo.Generate = null for block components, set true
                         if (m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT")
+                        {
                             m.BIsGenerated = true;
+                            m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
+                            m.BIsSelectedForIFCalculation = cInfo.Calculate;
+                        }
+                            
 
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
                         break;
+                    }
+                    else if(m.Prefix == cInfo.Prefix &&
+                        m.CrScStart.ID == (int)cInfo.MemberType && !m.BIsGenerated)
+                    {
+                        System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
                     }
                 }
             }

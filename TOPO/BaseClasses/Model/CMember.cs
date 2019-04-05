@@ -125,6 +125,13 @@ namespace BaseClasses
             get { return eMemberType_FS; }
             set { eMemberType_FS = value; }
         }
+        private EMemberType_DB eMemberType_DB;
+
+        public EMemberType_DB EMemberTypePosition
+        {
+            get { return eMemberType_DB; }
+            set { eMemberType_DB = value; }
+        }
 
         // Priemet do osi GCS - rozdiel suradnic v GCS
         private double dDelta_X;
@@ -384,6 +391,7 @@ namespace BaseClasses
             m_cnRelease2 = null;
             m_CrScStart = objCrSc1;
             eMemberType_FS = eMemberType;
+
             EccentricityStart = objEccentricityStart;
             EccentricityEnd = objEccentricityEnd;
             FAlignment_Start = fAligment1;
@@ -443,6 +451,7 @@ namespace BaseClasses
             m_CrScStart = objCrSc1;
             m_CrScEnd = objCrSc2;
             eMemberType_FS = eMemberType;
+
             EccentricityStart = objEccentricityStart;
             EccentricityEnd = objEccentricityEnd;
             FAlignment_Start = fAligment1;
@@ -1968,6 +1977,17 @@ namespace BaseClasses
             }
 
             return null; // Not found
+        }
+
+
+        private void SetMemberType()
+        {
+            switch (eMemberType_FS)
+            {
+                case EMemberType_FS.eMC: eMemberType_FS = EMemberType_FS.eMC;
+                    break;
+            }
+            
         }
     } // End of Class CMember
 }
