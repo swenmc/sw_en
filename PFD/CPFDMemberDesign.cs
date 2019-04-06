@@ -132,7 +132,7 @@ namespace PFD
         public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             MLimitStates = limitStates;            
-            MComponentList = componentList.Where(s => s.Calculate == true).Select(s => s.ComponentName).ToList();
+            MComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
             m_allLoadCombinations = allLoadCombinations;
 
             // Set default

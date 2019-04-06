@@ -445,6 +445,8 @@ namespace PFD
             int count = 0;
             foreach (CMember m in arrMembers)
             {
+                if (!m.BIsGenerated) continue;
+                if (!m.BIsSelectedForDesign) continue;
                 if (m.BIsSelectedForIFCalculation) count++;
             }
             return count;

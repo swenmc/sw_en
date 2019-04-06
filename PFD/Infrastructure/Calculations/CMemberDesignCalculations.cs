@@ -128,6 +128,9 @@ namespace PFD.Infrastructure
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in Model.m_arrMembers)
             {
+                if (!m.BIsGenerated) continue;
+                if (!m.BIsSelectedForDesign) continue;
+
                 if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     SolverWindow.SetMemberDesignLoadCaseProgress(++count, membersCalcCount);
@@ -265,6 +268,9 @@ namespace PFD.Infrastructure
             int count = 0;
             foreach (CMember m in Model.m_arrMembers)
             {
+                if (!m.BIsGenerated) continue;
+                if (!m.BIsSelectedForDesign) continue;
+
                 if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     SolverWindow.SetMemberDesignLoadCombinationProgress(++count, membersCalcCount);

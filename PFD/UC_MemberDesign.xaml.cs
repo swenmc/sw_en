@@ -40,7 +40,7 @@ namespace PFD
             CPFDMemberDesign vm = sender as CPFDMemberDesign;
             if (vm != null && vm.IsSetFromCode) return;
             
-            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups[vm.ComponentTypeIndex];
+            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
 
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;
