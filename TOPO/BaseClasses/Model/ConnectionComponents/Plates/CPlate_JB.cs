@@ -125,7 +125,7 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            UpdatePlateData(screwArrangement);
+             UpdatePlateData(screwArrangement);
         }
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)

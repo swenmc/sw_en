@@ -95,12 +95,12 @@ namespace BaseClasses
             // Screw arrangement parameters
             // TODO nacitavat parametre z prierezu
             float fCrscWebStraightDepth = (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.025f - 2 * (float)m_SecondaryMembers[0].CrScStart.t_min; // BOX 63020 web straight depth
-            float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
+            float fStiffenerSize = 0.2857142f * (float)m_SecondaryMembers[0].CrScStart.h; // TODO - - dynamicky podla typu a velkosti prierezu -  0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
             bool bUseAdditionalCornerScrews = true;
             int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
-            float fAdditionalConnectorDistance = 0.03f;
-            int iConnectorNumberInCircleSequence = 20;
-            float fConnectorRadiusInCircleSequence = 0.25f;
+            float fAdditionalConnectorDistance = Math.Max(0.02f, 0.05f * fCrscWebStraightDepth);
+            float fConnectorRadiusInCircleSequence = 0.45f * fCrscWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
+            int iConnectorNumberInCircleSequence = (int)((2f * MATH.MathF.fPI * fConnectorRadiusInCircleSequence) / 0.05f); // 20; // TODO - dynamicky podla velkosti plate
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
