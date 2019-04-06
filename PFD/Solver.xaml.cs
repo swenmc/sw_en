@@ -28,8 +28,11 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            DesignResultsSummary designSummaryWindow = new DesignResultsSummary(sResultsSummaryText);
-            designSummaryWindow.Show();
+            if (!string.IsNullOrEmpty(sResultsSummaryText))
+            {
+                DesignResultsSummary designSummaryWindow = new DesignResultsSummary(sResultsSummaryText);
+                designSummaryWindow.Show();
+            }
 
             this.Close();
         }
