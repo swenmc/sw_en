@@ -10,71 +10,73 @@
         d:DesignHeight="1270" d:DesignWidth="600">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">300</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">250</System:Double>
         <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
     </UserControl.Resources>
-    <Grid Margin="5,10,5,5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Margin="5,10,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Load Combination:" HorizontalAlignment="Left" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" />
-        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name ="Combobox_LoadCombination" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Load Combination:" HorizontalAlignment="Left" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" />
+            <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name ="Combobox_LoadCombination" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LoadCombinations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SelectedLoadCombinationID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Axial Force N [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="4" Grid.Column="0" Name ="Canvas_AxialForceDiagram" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Axial Force N [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="4" Grid.Column="0" Name ="Canvas_AxialForceDiagram" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Shear Force Vx [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="6" Grid.Column="0" Name ="Canvas_ShearForceDiagramVx" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Shear Force Vx [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="6" Grid.Column="0" Name ="Canvas_ShearForceDiagramVx" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <TextBlock Grid.Row="7" Grid.Column="0" Text="Shear Force Vy [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="8" Grid.Column="0" Name ="Canvas_ShearForceDiagramVy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="Shear Force Vy [kN]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="8" Grid.Column="0" Name ="Canvas_ShearForceDiagramVy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <TextBlock Grid.Row="9" Grid.Column="0" Text="Torsion Moment T [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="10" Grid.Column="0" Name ="Canvas_TorsionMomentDiagram" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Torsion Moment T [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="10" Grid.Column="0" Name ="Canvas_TorsionMomentDiagram" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <TextBlock Grid.Row="11" Grid.Column="0" Text="Bending Moment Mx [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="12" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMx" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="11" Grid.Column="0" Text="Bending Moment Mx [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="12" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMx" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <TextBlock Grid.Row="13" Grid.Column="0" Text="Bending Moment My [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <Canvas Grid.Row="14" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="Bending Moment My [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="14" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" ToolTip="Display internal forces in frame members" HorizontalAlignment="Left" Name="Button_Frame_2D" Click="Button_Frame_2D_Click" Width="20" Margin="5 0 10 0" Height="20">
-            <StackPanel>
-                <Image Source="Resources/frame_if_icon.png"/>
-            </StackPanel>
-        </Button>
-        <Button Width="100" Height="20" Grid.Row="0" Grid.Column="3" Cursor="Arrow" Name="GraphButton" Click="GraphButton_Click">
-            Show Graph
-        </Button>
-    </Grid>
+            <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" ToolTip="Display internal forces in frame members" HorizontalAlignment="Left" Name="Button_Frame_2D" Click="Button_Frame_2D_Click" Width="20" Margin="5 0 10 0" Height="20">
+                <StackPanel>
+                    <Image Source="Resources/frame_if_icon.png"/>
+                </StackPanel>
+            </Button>
+            <Button Width="100" Height="20" Grid.Row="0" Grid.Column="3" Cursor="Arrow" Name="GraphButton" Click="GraphButton_Click">
+                Show Graph
+            </Button>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -331,9 +331,16 @@ namespace PFD
         {
             CLoadCombination lcomb = Model.m_arrLoadCombs.FirstOrDefault(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
-            CMember member = FindMemberWithMaximumDesignRatio(lcomb, Combobox_ComponentType.Text, Model.listOfModelMemberGroups);
-            if (member == null) throw new Exception("Member with maximum design ratio not found.");
-
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb, vm.ComponentList[vm.ComponentTypeIndex], Model.listOfModelMemberGroups);
+            //if (member == null) throw new Exception("Member with maximum design ratio not found.");
+            if (member == null) // nemame vypocitane vysledky...nie je co zobrazovat
+            {
+                CMemberGroup memberGroup = Model.listOfModelMemberGroups.FirstOrDefault(g => g.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+                if (memberGroup == null) return;
+                member = memberGroup.ListOfMembers.FirstOrDefault();
+                if (member == null) return;
+            }
+            
             int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);
             CModel frameModel = frameModels[iFrameIndex];
 
