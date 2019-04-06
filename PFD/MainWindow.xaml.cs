@@ -77,7 +77,7 @@ namespace PFD
         public ObservableCollection<DoorProperties> DoorBlocksProperties;
         public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
-        public CPFDLoadInput loadinput;
+        public CPFDLoadInput loadInput;
         public CCalcul_1170_1 generalLoad;
         public CCalcul_1170_2 wind;
         public CCalcul_1170_3 snow;
@@ -123,8 +123,13 @@ namespace PFD
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
 
+            UC_Loads loadInput_UC = null;
+            if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
+            else loadInput_UC = (UC_Loads)Loads.Content;
+            loadInput = loadInput_UC.DataContext as CPFDLoadInput;
+            
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
@@ -144,7 +149,7 @@ namespace PFD
             vm.Wind = wind;
             vm.Snow = snow;
             vm.Eq = eq;
-            vm.Loadinput = loadinput;
+            vm.Loadinput = loadInput;
 
             //vm.CreateModel();
 
@@ -191,7 +196,8 @@ namespace PFD
             if (sender is CPFDViewModel)
             {
                 CPFDViewModel viewModel = sender as CPFDViewModel;
-                if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
+                if(viewModel == null) return;
+                if (viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
 
                 if (e.PropertyName == "RoofCladdingIndex")
                 {
@@ -205,6 +211,8 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
+
+                if (e.PropertyName == "ModelCalculatedResultsValid") return;
             }
             else if (sender is CComponentListVM)
             {
@@ -380,22 +388,22 @@ namespace PFD
             UC_Loads loadInput_UC = null;
             if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
             else loadInput_UC = (UC_Loads)Loads.Content;
-            loadinput = loadInput_UC.DataContext as CPFDLoadInput;
+            loadInput = loadInput_UC.DataContext as CPFDLoadInput;
 
             // Basic data
-            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;                    // locations (cities) enum
-            sBuildingInputData.fDesignLife_Value = loadinput.DesignLife_Value;                   // Database value in years
-            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level (index + 1)
+            sBuildingInputData.location = (ELocation)loadInput.LocationIndex;                    // locations (cities) enum
+            sBuildingInputData.fDesignLife_Value = loadInput.DesignLife_Value;                   // Database value in years
+            sBuildingInputData.iImportanceClass = loadInput.ImportanceClassIndex + 1;            // Importance Level (index + 1)
 
-            sBuildingInputData.fAnnualProbabilityULS_Snow = loadinput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
-            sBuildingInputData.fAnnualProbabilityULS_Wind = loadinput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
-            sBuildingInputData.fAnnualProbabilityULS_EQ = loadinput.AnnualProbabilityULS_EQ;     // Annual Probability of Exceedence ULS - EQ
-            sBuildingInputData.fAnnualProbabilitySLS = loadinput.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
+            sBuildingInputData.fAnnualProbabilityULS_Snow = loadInput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
+            sBuildingInputData.fAnnualProbabilityULS_Wind = loadInput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
+            sBuildingInputData.fAnnualProbabilityULS_EQ = loadInput.AnnualProbabilityULS_EQ;     // Annual Probability of Exceedence ULS - EQ
+            sBuildingInputData.fAnnualProbabilitySLS = loadInput.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
 
-            sBuildingInputData.fR_ULS_Snow = loadinput.R_ULS_Snow;
-            sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
-            sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
-            sBuildingInputData.fR_SLS = loadinput.R_SLS;
+            sBuildingInputData.fR_ULS_Snow = loadInput.R_ULS_Snow;
+            sBuildingInputData.fR_ULS_Wind = loadInput.R_ULS_Wind;
+            sBuildingInputData.fR_ULS_EQ = loadInput.R_ULS_EQ;
+            sBuildingInputData.fR_SLS = loadInput.R_SLS;
 
             // Load Generation
             // General loading
@@ -445,8 +453,8 @@ namespace PFD
             float fMass_Girts_x = iNumberOfGirts_x * fGirtMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Frame_x = iNumberOfMainColumns_x * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
 
-            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
-            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_x = fMass_Frame_x + fMass_Girts_x + fMass_Wall_x_kg + fMass_EavePurlins_x + fMass_Purlins_x + fMass_Roof_x_kg;
 
@@ -466,8 +474,8 @@ namespace PFD
 
             float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu
 
-            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
-            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_y = fMass_Frame_y + fMass_Girts_y + fMass_Wall_y_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
 
@@ -520,26 +528,26 @@ namespace PFD
             generalLoad = new CCalcul_1170_1(
                 fMass_Roof,
                 fMass_Wall,
-                loadinput.AdditionalDeadActionRoof,
-                loadinput.AdditionalDeadActionWall,
-                loadinput.ImposedActionRoof,
+                loadInput.AdditionalDeadActionRoof,
+                loadInput.AdditionalDeadActionWall,
+                loadInput.ImposedActionRoof,
                 GlobalConstants.G_ACCELERATION);
         }
 
         public void CalculateSnowLoad()
         {
             sSnowInputData.eCountry = ECountry.eNewZealand; // Temporary - zatial nie je implementovana Australia
-            sSnowInputData.eSnowRegion = (ESnowRegion)loadinput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
-            sSnowInputData.eExposureCategory = (ERoofExposureCategory)loadinput.ExposureCategoryIndex;
-            sSnowInputData.fh_0_SiteElevation_meters = loadinput.SiteElevation;
+            sSnowInputData.eSnowRegion = (ESnowRegion)loadInput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
+            sSnowInputData.eExposureCategory = (ERoofExposureCategory)loadInput.ExposureCategoryIndex;
+            sSnowInputData.fh_0_SiteElevation_meters = loadInput.SiteElevation;
             snow = new CCalcul_1170_3(sBuildingInputData, sGeometryInputData, sSnowInputData);
         }
 
         public void CalculateWindLoad()
         {
-            sWindInputData.eWindRegion = loadinput.WindRegion;
-            sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
-            sWindInputData.fTerrainCategory = GetTerrainCategory(loadinput.TerrainCategoryIndex);
+            sWindInputData.eWindRegion = loadInput.WindRegion;
+            sWindInputData.iAngleWindDirection = loadInput.AngleWindDirectionIndex;
+            sWindInputData.fTerrainCategory = GetTerrainCategory(loadInput.TerrainCategoryIndex);
 
             wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
@@ -568,13 +576,13 @@ namespace PFD
 
         public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)
         {
-            sSeisInputData.eSiteSubsoilClass = loadinput.SiteSubSoilClass;
-            sSeisInputData.fProximityToFault_D_km = loadinput.FaultDistanceDmin; // km
-            sSeisInputData.fZoneFactor_Z = loadinput.ZoneFactorZ;
-            sSeisInputData.fPeriodAlongXDirection_Tx = loadinput.PeriodAlongXDirectionTx; //sec
-            sSeisInputData.fPeriodAlongYDirection_Ty = loadinput.PeriodAlongYDirectionTy; //sec
-            sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadinput.SpectralShapeFactorChTx;
-            sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadinput.SpectralShapeFactorChTy;
+            sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
+            sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin; // km
+            sSeisInputData.fZoneFactor_Z = loadInput.ZoneFactorZ;
+            sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
+            sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
+            sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
+            sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
 
             eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
         }

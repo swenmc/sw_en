@@ -207,6 +207,7 @@ namespace PFD
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
+                SetResultsAreNotValid();
                 IsSetFromCode = false;
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
@@ -252,7 +253,7 @@ namespace PFD
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
                     iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -276,7 +277,7 @@ namespace PFD
                     // Recalculate fL1
                     fL1 = MLength / (MFrames - 1);
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("Length");
             }
         }
@@ -300,7 +301,7 @@ namespace PFD
                     // Recalculate roof heigth
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -329,7 +330,7 @@ namespace PFD
                     // Recalculate h2
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("RoofPitch");
             }
         }
@@ -353,7 +354,7 @@ namespace PFD
                     // Recalculate L1
                     fL1 = MLength / (MFrames - 1);
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -374,7 +375,7 @@ namespace PFD
                     throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
 
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -393,7 +394,7 @@ namespace PFD
                     throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
 
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -429,7 +430,7 @@ namespace PFD
 
                     MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));
                 }
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
@@ -447,7 +448,7 @@ namespace PFD
                 if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
                     throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
-                ModelCalculatedResultsValid = false;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("BottomGirtPosition");
             }
         }
@@ -471,7 +472,7 @@ namespace PFD
                     throw new ArgumentException(s);
                 }
                 MFrontFrameRakeAngle = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("FrontFrameRakeAngle");
             }
         }
@@ -495,7 +496,7 @@ namespace PFD
                     throw new ArgumentException(s);
                 }
                 MBackFrameRakeAngle = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("BackFrameRakeAngle");
             }
         }
@@ -511,7 +512,7 @@ namespace PFD
             set
             {
                 MRoofCladdingIndex = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
         }
@@ -543,7 +544,7 @@ namespace PFD
             set
             {
                 MRoofCladdingThicknessIndex = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
         }
@@ -559,7 +560,7 @@ namespace PFD
             set
             {
                 MWallCladdingIndex = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("WallCladdingIndex");
             }
         }
@@ -591,7 +592,7 @@ namespace PFD
             set
             {
                 MWallCladdingThicknessIndex = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
         }
@@ -607,7 +608,7 @@ namespace PFD
             set
             {
                 MLoadCaseIndex = value;
-
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("LoadCaseIndex");
             }
         }
@@ -1073,11 +1074,13 @@ namespace PFD
                     CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("DoorBlocksProperties_Add");
+                    SetResultsAreNotValid();
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
+                SetResultsAreNotValid();
             }
             SetComponentListAccordingToDoors();
         }
@@ -1112,11 +1115,13 @@ namespace PFD
                     CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
                     w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("WindowBlocksProperties_Add");
+                    SetResultsAreNotValid();
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
+                SetResultsAreNotValid();
             }
             SetComponentListAccordingToWindows();
         }
@@ -1175,6 +1180,7 @@ namespace PFD
             set
             {
                 MModelCalculatedResultsValid = value;
+                NotifyPropertyChanged("ModelCalculatedResultsValid");
             }
         }
 
@@ -1602,10 +1608,11 @@ namespace PFD
         }
 
         private CComponentListVM _componentVM;
+        private CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM)
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM, CPFDLoadInput loadInput)
         {
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -1616,6 +1623,9 @@ namespace PFD
 
             _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = _componentVM.ComponentList;
+
+            _loadInput = loadInput;
+            _loadInput.PropertyChanged += _loadInput_PropertyChanged;
 
             LightDirectional = false;
             LightPoint = false;
@@ -1676,13 +1686,23 @@ namespace PFD
             _worker.WorkerSupportsCancellation = true;
         }
 
-
+        private void _loadInput_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SetResultsAreNotValid();
+        }
 
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "SelectedComponentIndex") return;
             else if (e.PropertyName == "ComponentDetailsList") return;
             else if (e.PropertyName == "MaterialDetailsList") return;
+
+            if (e.PropertyName == "Section" || e.PropertyName == "Material" ||
+                e.PropertyName == "Generate" || e.PropertyName == "Calculate" ||
+                e.PropertyName == "Design")
+            {
+                SetResultsAreNotValid();
+            }
 
             if (PropertyChanged != null) PropertyChanged(sender, e);
         }
@@ -1977,6 +1997,11 @@ namespace PFD
             if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
         }
 
+        private void SetResultsAreNotValid()
+        {
+            ModelCalculatedResultsValid = false;
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {
@@ -1988,23 +2013,33 @@ namespace PFD
         {
             if (e.PropertyName == "sBuildingSide")
             {
+                SetResultsAreNotValid();
                 if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
                 if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
             }
             else if (e.PropertyName == "iBayNumber")
             {
+                SetResultsAreNotValid();
                 if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
                 if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
             }
             else if (e.PropertyName == "sDoorType")
             {
+                SetResultsAreNotValid();
                 SetComponentListAccordingToDoors();
             }
 
+            if (e.PropertyName == "fDoorsHeight" || e.PropertyName == "fDoorsWidth" ||
+                e.PropertyName == "fDoorCoordinateXinBlock")
+            {
+                SetResultsAreNotValid();
+            }
+            
             this.PropertyChanged(sender, e);
         }
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
+            SetResultsAreNotValid();
             this.PropertyChanged(sender, e);
         }
 
