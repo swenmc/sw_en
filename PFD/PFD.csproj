@@ -186,6 +186,7 @@
       <DependentUpon>UC_FootingInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CLoadCaseView.cs" />
+    <Compile Include="ViewModels\CMaterialListViewModel.cs" />
     <Compile Include="ViewModels\FrameInternalForces_2DViewModel.cs" />
     <Compile Include="WaitWindow.xaml.cs">
       <DependentUpon>WaitWindow.xaml</DependentUpon>

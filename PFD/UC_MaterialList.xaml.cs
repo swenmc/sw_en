@@ -15,6 +15,8 @@ using System.Data.SqlClient;
 using System.Data;
 using BaseClasses;
 using MATH;
+using BaseClasses.Results;
+using PFD.ViewModels;
 
 namespace PFD
 {
@@ -23,23 +25,24 @@ namespace PFD
     /// </summary>
     public partial class UC_MaterialList : UserControl
     {
+
         DataSet ds;
 
-        List<string> listMemberPrefix = new List<string>(1);
-        List<string> listMemberCrScName = new List<string>(1);
-        List<int> listMemberQuantity = new List<int>(1);
-        List<string> listMemberMaterialName = new List<string>(1);
-        List<double> dlistMemberLength = new List<double>(1);
-        List<double> dlistMemberMassPerLength = new List<double>(1);
-        List<double> dlistMemberMassPerPiece = new List<double>(1);
-        List<double> listMemberTotalLength = new List<double>(1);
-        List<double> listMemberTotalMass = new List<double>(1);
-        List<double> listMemberTotalPrice = new List<double>(1);
+        //List<string> listMemberPrefix = new List<string>(1);
+        //List<string> listMemberCrScName = new List<string>(1);
+        //List<int> listMemberQuantity = new List<int>(1);
+        //List<string> listMemberMaterialName = new List<string>(1);
+        //List<double> dlistMemberLength = new List<double>(1);
+        //List<double> dlistMemberMassPerLength = new List<double>(1);
+        //List<double> dlistMemberMassPerPiece = new List<double>(1);
+        //List<double> listMemberTotalLength = new List<double>(1);
+        //List<double> listMemberTotalMass = new List<double>(1);
+        //List<double> listMemberTotalPrice = new List<double>(1);
 
         // For output
-        List<string> listMemberLength = new List<string>(1);
-        List<string> listMemberMassPerLength = new List<string>(1);
-        List<string> listMemberMassPerPiece = new List<string>(1);
+        //List<string> listMemberLength = new List<string>(1);
+        //List<string> listMemberMassPerLength = new List<string>(1);
+        //List<string> listMemberMassPerPiece = new List<string>(1);
 
         List<string> listPlatePrefix = new List<string>(1);
         List<int> listPlateQuantity = new List<int>(1);
@@ -77,6 +80,12 @@ namespace PFD
         {
             InitializeComponent();
 
+            CMaterialListViewModel vm = new CMaterialListViewModel(model);
+            vm.PropertyChanged += MaterialListViewModel_PropertyChanged;         
+            this.DataContext = vm;
+
+            
+
             // Clear all lists
             DeleteAllLists();
 
@@ -95,196 +104,62 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
             float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
 
-            int iLastItemIndex = 0; // Index of last row for previous cross-section
+            
 
-            // For each cross-section shape / size add one row
-            for (int i = 0; i < model.m_arrCrSc.Length; i++)
-            {
-                List<CMember> assignedMembersList = model.GetListOfMembersWithCrsc(model.m_arrCrSc[i]);
-                if (assignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
-                {
-                    List<CMember> ListOfMemberGroups = new List<CMember>();
+            //// Create Table
+            //DataTable table = new DataTable("Table");
+            //// Create Table Rows
 
-                    for (int j = 0; j < assignedMembersList.Count; j++) // Each member in the list
-                    {
-                        if (assignedMembersList[j].BIsSelectedForMaterialList)
-                        {
-                            // Define current member properties
-                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
-                            string sCrScName = model.m_arrCrSc[i].Name_short;
-                            int iQuantity = 1;
-                            string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
-                            float fLength = assignedMembersList[j].FLength_real;
-                            float fMassPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
-                            float fMassPerPiece = fLength * fMassPerLength;
-                            float fTotalLength = iQuantity * fLength;
-                            float fTotalMass = fTotalLength * fMassPerLength;
-                            float fTotalPrice = fTotalMass * fCFS_PricePerKg_Members_Total;
+            //table.Columns.Add("Prefix", typeof(String));
+            //table.Columns.Add("Section", typeof(String));
+            //table.Columns.Add("Quantity", typeof(Int32));
+            //table.Columns.Add("Material", typeof(String));
+            //table.Columns.Add("Length", typeof(String));
+            //table.Columns.Add("Mass_per_m", typeof(String));
+            //table.Columns.Add("Mass_per_Piece", typeof(String));
+            //table.Columns.Add("Total_Length", typeof(Decimal));
+            //table.Columns.Add("Total_Mass", typeof(Decimal));
+            //table.Columns.Add("Total_Price", typeof(Decimal));
 
-                            bool bMemberwasAdded = false; // Member was added to the group
+            //// Set Column Caption
+            //table.Columns["Prefix"].Caption = "Prefix";
+            //table.Columns["Section"].Caption = "Section";
+            //table.Columns["Quantity"].Caption = "Quantity";
+            //table.Columns["Material"].Caption = "Material";
+            //table.Columns["Length"].Caption = "Length";
+            //table.Columns["Mass_per_m"].Caption = "Mass_per_m";
+            //table.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
+            //table.Columns["Total_Length"].Caption = "Total_Length";
+            //table.Columns["Total_Mass"].Caption = "Total_Mass";
+            //table.Columns["Total_Price"].Caption = "Total_Price";
 
-                            if (j > 0) // If it not first item
-                            {
-                                for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
-                                {
-                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0]) &&
-                                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
-                                    {
-                                        // Add member to the one from already created groups
+            //// Create Datases
+            //ds = new DataSet();
+            //// Add Table to Dataset
+            //ds.Tables.Add(table);
 
-                                        listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
-                                        listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
-                                        listMemberTotalMass[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberMassPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all members in the group
-                                        listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalMass[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+            //for (int i = 0; i < listMemberPrefix.Count; i++)
+            //{
+            //    DataRow row = table.NewRow();
 
-                                        bMemberwasAdded = true;
-                                    }
-                                    // TODO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                                }
-                            }
+            //    try
+            //    {
+            //        row["Prefix"] = listMemberPrefix[i];
+            //        row["Section"] = listMemberCrScName[i];
+            //        row["Quantity"] = listMemberQuantity[i];
+            //        row["Material"] = listMemberMaterialName[i];
+            //        row["Length"] = listMemberLength[i];
+            //        row["Mass_per_m"] = listMemberMassPerLength[i];
+            //        row["Mass_per_Piece"] = listMemberMassPerPiece[i];
+            //        row["Total_Length"] = listMemberTotalLength[i];
+            //        row["Total_Mass"] = listMemberTotalMass[i];
+            //        row["Total_Price"] = listMemberTotalPrice[i];
+            //    }
+            //    catch (ArgumentOutOfRangeException) { }
+            //    table.Rows.Add(row);
+            //}
 
-                            if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
-                            {
-                                listMemberPrefix.Add(sPrefix);
-                                listMemberCrScName.Add(sCrScName);
-                                listMemberQuantity.Add(iQuantity);
-                                listMemberMaterialName.Add(sMaterialName);
-                                dlistMemberLength.Add(Math.Round(fLength, iNumberOfDecimalPlacesLength));
-                                dlistMemberMassPerLength.Add(Math.Round(fMassPerLength, iNumberOfDecimalPlacesMass));
-                                dlistMemberMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                                listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
-                                listMemberTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                                listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
-
-                                // Add first member in the group to the list of member groups
-                                ListOfMemberGroups.Add(assignedMembersList[j]);
-                            }
-                        }
-                    }
-
-                    iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
-                }
-            }
-
-            // Check Data
-            double dTotalMembersLength_Model = 0, dTotalMembersLength_Table = 0;
-            double dTotalMembersVolume_Model = 0, dTotalMembersVolume_Table = 0;
-            double dTotalMembersMass_Model = 0, dTotalMembersMass_Table = 0;
-            double dTotalMembersPrice_Model = 0, dTotalMembersPrice_Table = 0;
-            int iTotalMembersNumber_Model = 0, iTotalMembersNumber_Table = 0;
-
-            foreach (CMember member in model.m_arrMembers)
-            {
-                if (member.BIsSelectedForMaterialList)
-                {
-                    dTotalMembersLength_Model += member.FLength_real;
-                    dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
-                    dTotalMembersMass_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
-                    dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
-                    iTotalMembersNumber_Model += 1;
-                }
-            }
-
-            for (int i = 0; i < listMemberPrefix.Count; i++)
-            {
-                dTotalMembersLength_Table += dlistMemberLength[i] * listMemberQuantity[i];
-                //dTotalMembersVolume_Table += member.CrScStart.A_g * dlistMemberLength[i]; // TODO - pridat funkciu, ktora podla nazvu prierezu vrati jeho parametre
-                dTotalMembersMass_Table += listMemberTotalMass[i];
-                dTotalMembersPrice_Table += listMemberTotalPrice[i];
-                iTotalMembersNumber_Table += listMemberQuantity[i];
-            }
-
-            dTotalMembersLength_Model = Math.Round(dTotalMembersLength_Model, iNumberOfDecimalPlacesLength);
-            dTotalMembersLength_Table = Math.Round(dTotalMembersLength_Table, iNumberOfDecimalPlacesLength);
-            dTotalMembersMass_Model = Math.Round(dTotalMembersMass_Model, iNumberOfDecimalPlacesMass);
-            dTotalMembersMass_Table = Math.Round(dTotalMembersMass_Table, iNumberOfDecimalPlacesMass);
-
-            if (!MathF.d_equal(dTotalMembersLength_Model, dTotalMembersLength_Table) ||
-                !MathF.d_equal(dTotalMembersMass_Model, dTotalMembersMass_Table) ||
-                (iTotalMembersNumber_Model != iTotalMembersNumber_Table)) // Error
-                MessageBox.Show(
-                "Total length of members in model " + dTotalMembersLength_Model + " m" + "\n" +
-                "Total length of members in table " + dTotalMembersLength_Table + " m" + "\n" +
-                "Total weight of members in model " + dTotalMembersMass_Model + " kg" + "\n" +
-                "Total weight of members in table " + dTotalMembersMass_Table + " kg" + "\n" +
-                "Total number of members in model " + iTotalMembersNumber_Model + "\n" +
-                "Total number of members in table " + iTotalMembersNumber_Table + "\n");
-
-            // Prepare output format (last row is empty)
-            for (int i = 0; i < listMemberPrefix.Count; i++)
-            {
-                // Change output data format
-                listMemberLength.Add(dlistMemberLength[i].ToString());
-                listMemberMassPerLength.Add(dlistMemberMassPerLength[i].ToString());
-                listMemberMassPerPiece.Add(dlistMemberMassPerPiece[i].ToString());
-            }
-
-            // Add Sum
-            listMemberPrefix.Add("Total:");
-            listMemberCrScName.Add("");
-            listMemberQuantity.Add(iTotalMembersNumber_Table);
-            listMemberMaterialName.Add("");
-            listMemberLength.Add(""); // Empty cell
-            listMemberMassPerLength.Add(""); // Empty cell
-            listMemberMassPerPiece.Add(""); // Empty cell
-            listMemberTotalLength.Add(dTotalMembersLength_Table);
-            listMemberTotalMass.Add(dTotalMembersMass_Table);
-            listMemberTotalPrice.Add(dTotalMembersPrice_Table);
-
-            // Create Table
-            DataTable table = new DataTable("Table");
-            // Create Table Rows
-
-            table.Columns.Add("Prefix", typeof(String));
-            table.Columns.Add("Section", typeof(String));
-            table.Columns.Add("Quantity", typeof(Int32));
-            table.Columns.Add("Material", typeof(String));
-            table.Columns.Add("Length", typeof(String));
-            table.Columns.Add("Mass_per_m", typeof(String));
-            table.Columns.Add("Mass_per_Piece", typeof(String));
-            table.Columns.Add("Total_Length", typeof(Decimal));
-            table.Columns.Add("Total_Mass", typeof(Decimal));
-            table.Columns.Add("Total_Price", typeof(Decimal));
-
-            // Set Column Caption
-            table.Columns["Prefix"].Caption = "Prefix";
-            table.Columns["Section"].Caption = "Section";
-            table.Columns["Quantity"].Caption = "Quantity";
-            table.Columns["Material"].Caption = "Material";
-            table.Columns["Length"].Caption = "Length";
-            table.Columns["Mass_per_m"].Caption = "Mass_per_m";
-            table.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
-            table.Columns["Total_Length"].Caption = "Total_Length";
-            table.Columns["Total_Mass"].Caption = "Total_Mass";
-            table.Columns["Total_Price"].Caption = "Total_Price";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < listMemberPrefix.Count; i++)
-            {
-                DataRow row = table.NewRow();
-
-                try
-                {
-                    row["Prefix"] = listMemberPrefix[i];
-                    row["Section"] = listMemberCrScName[i];
-                    row["Quantity"] = listMemberQuantity[i];
-                    row["Material"] = listMemberMaterialName[i];
-                    row["Length"] = listMemberLength[i];
-                    row["Mass_per_m"] = listMemberMassPerLength[i];
-                    row["Mass_per_Piece"] = listMemberMassPerPiece[i];
-                    row["Total_Length"] = listMemberTotalLength[i];
-                    row["Total_Mass"] = listMemberTotalMass[i];
-                    row["Total_Price"] = listMemberTotalPrice[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
-
-            Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            //Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
             // Set Column Header
             /*
@@ -763,14 +638,19 @@ namespace PFD
             Datagrid_Screws.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
         }
 
+        private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
+        }
+
         private void DeleteAllLists()
         {
             //Todo - asi sa to da jednoduchsie
             DeleteLists();
 
-            Datagrid_Members.ItemsSource = null;
-            Datagrid_Members.Items.Clear();
-            Datagrid_Members.Items.Refresh();
+            //Datagrid_Members.ItemsSource = null;
+            //Datagrid_Members.Items.Clear();
+            //Datagrid_Members.Items.Refresh();
 
             Datagrid_Plates.ItemsSource = null;
             Datagrid_Plates.Items.Clear();
@@ -784,15 +664,15 @@ namespace PFD
         // Deleting lists for updating actual values
         private void DeleteLists()
         {
-            listMemberPrefix.Clear();
-            listMemberCrScName.Clear();
-            listMemberQuantity.Clear();
-            listMemberMaterialName.Clear();
-            dlistMemberLength.Clear();
-            dlistMemberMassPerLength.Clear();
-            dlistMemberMassPerPiece.Clear();
-            listMemberTotalLength.Clear();
-            listMemberTotalMass.Clear();
+            //listMemberPrefix.Clear();
+            //listMemberCrScName.Clear();
+            //listMemberQuantity.Clear();
+            //listMemberMaterialName.Clear();
+            //dlistMemberLength.Clear();
+            //dlistMemberMassPerLength.Clear();
+            //dlistMemberMassPerPiece.Clear();
+            //listMemberTotalLength.Clear();
+            //listMemberTotalMass.Clear();
 
             listPlatePrefix.Clear();
             listPlateQuantity.Clear();

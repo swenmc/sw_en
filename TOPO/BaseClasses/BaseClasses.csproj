@@ -236,6 +236,7 @@
     <Compile Include="Model\Foundations\Foundation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\LoadCasesMemberLoads.cs" />
+    <Compile Include="Results\MaterialList\MaterialListMember.cs" />
     <Compile Include="Results\MembersInternalForces.cs" />
     <Compile Include="Results\LoadCombinationsInternalForces.cs" />
     <Compile Include="Results\MemberInternalForces.cs" />
