@@ -666,6 +666,11 @@ namespace PFD.Infrastructure
 
         private void SetMomentValuesforCb_design_And_BucklingFactors_SimpleBeamSegment(float fx, int iSimpleBeamIndex, int lcombID, CMember member, ref designBucklingLengthFactors bucklingLengthFactors,  ref designMomentValuesForCb sMomentValuesforCb_design)
         {
+            if (iSimpleBeamIndex < 0)
+            {
+                //To Mato - V Load Cases som zaskrtol druhe option a tu sa mi dostalo iSimpleBeamIndex = -1;
+                return;
+            } 
             // Create load combination (FEM solver object)
             BriefFiniteElementNet.LoadCombination lcomb = new BriefFiniteElementNet.LoadCombination();
             lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1]);

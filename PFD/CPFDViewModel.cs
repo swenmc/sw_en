@@ -756,6 +756,7 @@ namespace PFD
             set
             {
                 MDeterminateCombinationResultsByFEMSolver = value;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("DeterminateCombinationResultsByFEMSolver");
             }
         }
@@ -770,6 +771,7 @@ namespace PFD
             set
             {
                 MUseFEMSolverCalculationForSimpleBeam = value;
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
             }
         }
