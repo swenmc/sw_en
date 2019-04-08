@@ -311,16 +311,18 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <Button Grid.Row="20" Grid.Column="4" VerticalAlignment="Top" ToolTip="Display door block" HorizontalAlignment="Right" Name="btnDisplayDoorBlock" Click="btnDisplayDoorBlock_Click" Margin="20,55,150,55" Width="20" Height="20">
-                            <StackPanel>
-                                <Image Source="Resources/door.png"></Image>
-                            </StackPanel>
-                        </Button>
-                        <Button Grid.Row="21" Grid.Column="4" VerticalAlignment="Top" ToolTip="Display window block" HorizontalAlignment="Right" Name="btnDisplayWindowBlock" Click="btnDisplayWindowBlock_Click" Margin="20,55,150,55" Width="20" Height="20">
-                            <StackPanel>
-                                <Image Source="Resources/window.png"></Image>
-                            </StackPanel>
-                        </Button>
+                        <ToggleButton Name="btnDisplayDoorBlock" Grid.Row="20" Grid.Column="4" VerticalAlignment="Center" 
+                                      ToolTip="Display door block" IsEnabled="True"
+                                      HorizontalAlignment="Left" Margin="20 0 0 0" 
+                                      Width="40" Height="40" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
+                            <Image Source="Resources/door.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                        </ToggleButton>
+                        <ToggleButton Name="btnDisplayWindowBlock" Grid.Row="21" Grid.Column="4" VerticalAlignment="Center" 
+                                      ToolTip="Display door block" IsEnabled="True"
+                                      HorizontalAlignment="Left" Margin="20 0 0 0" 
+                                      Width="40" Height="40" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
+                            <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                        </ToggleButton>                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>

@@ -213,6 +213,17 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
 
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
+
+                if (e.PropertyName.Contains("DoorBlocksProperties"))
+                {
+                    if (viewModel.DoorBlocksProperties.Count > 0) btnDisplayDoorBlock.IsEnabled = true;
+                    else btnDisplayDoorBlock.IsEnabled = false;
+                }
+                if (e.PropertyName.Contains("WindowBlocksProperties"))
+                {
+                    if (viewModel.WindowBlocksProperties.Count > 0) btnDisplayWindowBlock.IsEnabled = true;
+                    else btnDisplayWindowBlock.IsEnabled = false;
+                }
             }
             else if (sender is CComponentListVM)
             {
@@ -260,6 +271,7 @@ namespace PFD
             }
 
             SetUIElementsVisibility();
+            UnCheckToggleButtons();
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
@@ -816,6 +828,11 @@ namespace PFD
 
 
         }
+        private void UnCheckToggleButtons()
+        {
+            if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
+            if(btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
+        }
 
         private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
         {
@@ -1344,94 +1361,94 @@ namespace PFD
             });*/
         }
 
-        private void btnDisplayDoorBlock_Click(object sender, RoutedEventArgs e)
-        {
-            // Girt
-            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            refgirt.EccentricityStart = eccentricity;
-            refgirt.EccentricityEnd = eccentricity;
-            refgirt.DTheta_x = Math.PI / 2;
+        //private void btnDisplayDoorBlock_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Girt
+        //    CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+        //    CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+        //    CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+        //    refgirt.EccentricityStart = eccentricity;
+        //    refgirt.EccentricityEnd = eccentricity;
+        //    refgirt.DTheta_x = Math.PI / 2;
 
-            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+        //    CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+        //    CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+        //    CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
 
-            DoorProperties props = new DoorProperties();
-            props.sBuildingSide = "Left";
-            props.fDoorsHeight = 2.1f;
-            props.fDoorsWidth = 0.9f;
-            props.fDoorCoordinateXinBlock = 0.6f;
-            CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
+        //    DoorProperties props = new DoorProperties();
+        //    props.sBuildingSide = "Left";
+        //    props.fDoorsHeight = 2.1f;
+        //    props.fDoorsWidth = 0.9f;
+        //    props.fDoorCoordinateXinBlock = 0.6f;
+        //    CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
 
-            DisplayOptions sDisplayOptions = new DisplayOptions();
-            sDisplayOptions.bUseDiffuseMaterial = true;
-            sDisplayOptions.bUseEmissiveMaterial = true;
-            sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
+        //    DisplayOptions sDisplayOptions = new DisplayOptions();
+        //    sDisplayOptions.bUseDiffuseMaterial = true;
+        //    sDisplayOptions.bUseEmissiveMaterial = true;
+        //    sDisplayOptions.bUseLightAmbient = true;
+        //    sDisplayOptions.bDisplaySolidModel = true;
+        //    sDisplayOptions.bDisplayMembers = true;
+        //    sDisplayOptions.bDisplayJoints = true;
 
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
+        //    Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
 
-            /*
-            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
-            list_trackports.Add(win._trackport);
-            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Door in bay" + " - Window " + (Container.Children.Count + 1) });
-            win.Close();
-            */
-        }
+        //    /*
+        //    Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
+        //    list_trackports.Add(win._trackport);
+        //    Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Door in bay" + " - Window " + (Container.Children.Count + 1) });
+        //    win.Close();
+        //    */
+        //}
 
-        private void btnDisplayWindowBlock_Click(object sender, RoutedEventArgs e)
-        {
-            // Girt
-            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            refgirt.EccentricityStart = eccentricity;
-            refgirt.EccentricityEnd = eccentricity;
-            refgirt.DTheta_x = Math.PI / 2;
+        //private void btnDisplayWindowBlock_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Girt
+        //    CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+        //    CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+        //    CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+        //    refgirt.EccentricityStart = eccentricity;
+        //    refgirt.EccentricityEnd = eccentricity;
+        //    refgirt.DTheta_x = Math.PI / 2;
 
-            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+        //    CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+        //    CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+        //    CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
 
-            WindowProperties prop = new WindowProperties();
-            prop.sBuildingSide = "Left";
-            prop.fWindowsHeight = 1.0f;
-            prop.fWindowsWidth = 3.0f;
-            prop.fWindowCoordinateXinBay = 0.9f;
-            prop.fWindowCoordinateZinBay = 1.4f;
-            prop.iNumberOfWindowColumns = 3;
+        //    WindowProperties prop = new WindowProperties();
+        //    prop.sBuildingSide = "Left";
+        //    prop.fWindowsHeight = 1.0f;
+        //    prop.fWindowsWidth = 3.0f;
+        //    prop.fWindowCoordinateXinBay = 0.9f;
+        //    prop.fWindowCoordinateZinBay = 1.4f;
+        //    prop.iNumberOfWindowColumns = 3;
 
-            CModel model = new CBlock_3D_002_WindowInBay(prop, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+        //    CModel model = new CBlock_3D_002_WindowInBay(prop, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
-            DisplayOptions sDisplayOptions = new DisplayOptions();
-            sDisplayOptions.bUseDiffuseMaterial = true;
-            sDisplayOptions.bUseEmissiveMaterial = true;
-            sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplayJoints = true;
+        //    DisplayOptions sDisplayOptions = new DisplayOptions();
+        //    sDisplayOptions.bUseDiffuseMaterial = true;
+        //    sDisplayOptions.bUseEmissiveMaterial = true;
+        //    sDisplayOptions.bUseLightAmbient = true;
+        //    sDisplayOptions.bDisplaySolidModel = true;
+        //    sDisplayOptions.bDisplayMembers = true;
+        //    sDisplayOptions.bDisplayJoints = true;
 
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
+        //    Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
 
-            /*
-            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
-            list_trackports.Add(win._trackport);
-            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
-            win.Close();
-            */
-        }
+        //    /*
+        //    Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
+        //    list_trackports.Add(win._trackport);
+        //    Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
+        //    win.Close();
+        //    */
+        //}
 
         private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
@@ -1441,6 +1458,100 @@ namespace PFD
         private void Datagrid_Windows_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
             Frame1.UpdateLayout(); //nutne koli pridaniu riadku a update v GUI
+        }
+
+        private void btnDisplayDoorBlock_Checked(object sender, RoutedEventArgs e)
+        {
+            if (btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
+
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+
+            DoorProperties props = null;
+            if (Datagrid_DoorsAndGates.SelectedIndex != -1) props = vm.DoorBlocksProperties.ElementAtOrDefault(Datagrid_DoorsAndGates.SelectedIndex);
+            else props = vm.DoorBlocksProperties.FirstOrDefault();
+            if (props == null) return;
+
+            CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
+
+            DisplayOptions displayOptions = new DisplayOptions();
+            displayOptions.bUseDiffuseMaterial = true;
+            displayOptions.bUseEmissiveMaterial = true;
+            displayOptions.bUseLightAmbient = true;
+            displayOptions.bDisplaySolidModel = true;
+            displayOptions.bDisplayMembers = true;
+            displayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page1 = new Page3Dmodel(model, displayOptions, null);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();            
+        }
+
+        private void btnDisplayDoorBlock_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
+        }
+
+        private void btnDisplayWindowBlock_Checked(object sender, RoutedEventArgs e)
+        {
+            if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
+
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+            
+            WindowProperties props = null;
+            if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
+            else props = vm.WindowBlocksProperties.FirstOrDefault();
+            if (props == null) return;
+            
+            CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+
+            DisplayOptions displayOptions = new DisplayOptions();
+            displayOptions.bUseDiffuseMaterial = true;
+            displayOptions.bUseEmissiveMaterial = true;
+            displayOptions.bUseLightAmbient = true;
+            displayOptions.bDisplaySolidModel = true;
+            displayOptions.bDisplayMembers = true;
+            displayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page1 = new Page3Dmodel(model, displayOptions, null);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
+        }
+
+        private void btnDisplayWindowBlock_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
         }
     }
 }
