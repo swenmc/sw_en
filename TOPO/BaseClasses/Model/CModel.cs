@@ -5,6 +5,7 @@ using CRSC;
 using MATERIAL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BaseClasses
 {
@@ -180,14 +181,18 @@ namespace BaseClasses
         }
 
 
+        //public List<CMember> GetListOfMembersWithCrsc(CCrSc crsc)
+        //{
+        //    List<CMember> members = new List<CMember>();
+        //    foreach (CMember m in m_arrMembers)
+        //    {
+        //        if (m.CrScStart.Equals(crsc) || (m.CrScEnd != null && m.CrScEnd.Equals(crsc))) members.Add(m);
+        //    }
+        //    return members;
+        //}
         public List<CMember> GetListOfMembersWithCrsc(CCrSc crsc)
         {
-            List<CMember> members = new List<CMember>();
-            foreach (CMember m in m_arrMembers)
-            {
-                if (m.CrScStart.Equals(crsc) || (m.CrScEnd != null && m.CrScEnd.Equals(crsc))) members.Add(m);
-            }
-            return members;
+            return m_arrMembers.Where(m => m.CrScStart.ID == crsc.ID || (m.CrScEnd != null && m.CrScEnd.ID == crsc.ID)).ToList();            
         }
 
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)

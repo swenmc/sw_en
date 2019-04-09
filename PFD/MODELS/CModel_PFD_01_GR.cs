@@ -172,7 +172,7 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor = Colors.BlueViolet;     // Back Column
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;            // Front Girt
             m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // Back Girt
-                        
+
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);
 
@@ -268,7 +268,7 @@ namespace PFD
             int iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-            
+
             bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
             if (bGeneratePurlins)
             {
@@ -1814,20 +1814,22 @@ namespace PFD
         public void AddDoorOrWindowBlockProperties(CPoint pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
         {
             int arraysizeoriginal;
-
+            
             // Cross-sections
-            arraysizeoriginal = m_arrCrSc.Length;
-
-            Array.Resize(ref m_arrCrSc, arraysizeoriginal + block.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
-
+            
             // Copy block cross-sections into the model
             for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
             {
-                // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
-                m_arrCrSc[arraysizeoriginal + i - 1] = block.m_arrCrSc[i];
-                m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
-            }
+                CCrSc foundCrsc = m_arrCrSc.FirstOrDefault(c => c.ID == block.m_arrCrSc[i].ID);
+                if (foundCrsc != null) continue;
 
+                arraysizeoriginal = m_arrCrSc.Length;
+                Array.Resize(ref m_arrCrSc, arraysizeoriginal + 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
+                // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+                m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
+                //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
+            }
+            
             // Nodes
             arraysizeoriginal = m_arrNodes.Length;
             Array.Resize(ref m_arrNodes, m_arrNodes.Length + block.m_arrNodes.Length);

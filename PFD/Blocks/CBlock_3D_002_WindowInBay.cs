@@ -60,6 +60,7 @@ namespace PFD
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
             m_arrCrSc[1].Name_short = "10075";
             m_arrCrSc[1].m_Mat = m_arrMat[0];
+            m_arrCrSc[1].ID = (int)EMemberType_DB.WindowFrame;
 
             iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
             float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;

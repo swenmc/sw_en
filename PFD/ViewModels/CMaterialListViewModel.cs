@@ -41,14 +41,14 @@ namespace PFD.ViewModels
         float fCFS_PricePerKg_Plates_Material = 0.4f;      // NZD / kg
         float fCFS_PricePerKg_Members_Manufacture = 0.2f;  // NZD / kg
         float fCFS_PricePerKg_Plates_Manufacture = 0.3f;   // NZD / kg
-        
+
         //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
         float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
 
 
         public CMaterialListViewModel(CModel_PFD model)
         {
-            CDatabaseComponents databaseCopm = new CDatabaseComponents();
+            //CDatabaseComponents databaseCopm = new CDatabaseComponents();
 
             List<MaterialListMember> membersMatList = new List<MaterialListMember>();
 
@@ -69,7 +69,8 @@ namespace PFD.ViewModels
                         if (assignedMembersList[j].BIsSelectedForMaterialList)
                         {
                             // Define current member properties
-                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
+                            //string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
+                            string sPrefix = assignedMembersList[j].Prefix;
                             string sCrScName = model.m_arrCrSc[i].Name_short;
                             int iQuantity = 1;
                             string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
@@ -86,7 +87,9 @@ namespace PFD.ViewModels
                             {
                                 for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                                 {
-                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0]) &&
+                                    //if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0]) &&
+                                    //(MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
+                                    if (ListOfMemberGroups[k].EMemberType == assignedMembersList[j].EMemberType &&
                                     (MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
                                     {
                                         // Add member to the one from already created groups
