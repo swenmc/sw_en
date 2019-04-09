@@ -106,7 +106,7 @@ namespace PFD
 
             set
             {
-                MComponentList = value;
+                MComponentList = value;                
                 NotifyPropertyChanged("ComponentList");
             }
         }
@@ -131,8 +131,8 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            MLimitStates = limitStates;            
-            MComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
+            MLimitStates = limitStates;
+            SetComponentList(componentList);            
             m_allLoadCombinations = allLoadCombinations;
 
             // Set default
@@ -152,6 +152,11 @@ namespace PFD
             }
 
             LoadCombinations = loadCombinations;
+        }
+
+        public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
+        {
+            ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
         }
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

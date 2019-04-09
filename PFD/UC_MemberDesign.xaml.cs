@@ -39,7 +39,8 @@ namespace PFD
             if (sender == null) return;
             CPFDMemberDesign vm = sender as CPFDMemberDesign;
             if (vm != null && vm.IsSetFromCode) return;
-            
+            if (vm.ComponentTypeIndex == -1) return;
+
             CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
 
             // Calculate governing member design ratio in member group
@@ -58,7 +59,7 @@ namespace PFD
 
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
-                float fMaximumDesignRatio = 0;
+                float fMaximumDesignRatio = float.MinValue;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     // Select member with identical ID from the list of results
@@ -79,7 +80,7 @@ namespace PFD
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
                     // throw new Exception("Results of selected component are not available!");
-                    MessageBox.Show("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available! [MemberDesign]");
                 }
             }
             else
@@ -123,7 +124,7 @@ namespace PFD
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
                     // throw new Exception("Results of selected component are not available!");
-                    MessageBox.Show("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available! [MemberDesign]");
                 }
             }
         }

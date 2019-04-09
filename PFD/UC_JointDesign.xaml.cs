@@ -32,12 +32,14 @@ namespace PFD
 
             vm.LimitStateIndex = 0;
         }
+        
 
         protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
             CPFDJointsDesign vm = sender as CPFDJointsDesign;
             if (vm != null && vm.IsSetFromCode) return;
+            if (vm.ComponentTypeIndex == -1) return;
 
             CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
 
@@ -127,7 +129,7 @@ namespace PFD
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
                     // throw new Exception("Results of selected component are not available!");
-                    MessageBox.Show("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available! [JointDesign]");
                 }
 
                 // End Joint
@@ -137,7 +139,7 @@ namespace PFD
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
                     // throw new Exception("Results of selected component are not available!");
-                    MessageBox.Show("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available! [JointDesign]");
                 }
             }
         }

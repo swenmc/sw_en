@@ -963,36 +963,49 @@ namespace PFD
                 }
                 else
                 {
-                    UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
-                    uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
-                    uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
-                    uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
+                    //setuje sa v public void UpdateResults()
+                    //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
+                    //uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
+                    //uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
+                    //uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
                 }
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign)
             {
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
                 //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
-                CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
-
-                if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
+                 
+                if (Member_Design.Content == null)
+                {                    
+                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
+                } 
                 else
                 {
-                    UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
-                    uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
-                    uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+                    ////setuje sa v public void UpdateResults()
+                    //UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
+                    //uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
+                    //uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+
+                    //CPFDMemberDesign memberDesignVM = uc_memberDesign.DataContext as CPFDMemberDesign;
+                    //memberDesignVM.SetComponentList(compListVM.ComponentList);
                 }
+                
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign)
             {
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
                 //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
-                CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
-                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.JointDesignResults_ULS);
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
+                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.JointDesignResults_ULS);
                 else
                 {
-                    UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
-                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                    ////setuje sa v public void UpdateResults()
+                    //UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
+                    //uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+
+                    //CPFDJointsDesign jointsDesignVM = uc_jointDesign.DataContext as CPFDJointsDesign;
+                    //jointsDesignVM.SetComponentList(compListVM.ComponentList);                    
                 }
             }
             //else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
@@ -1022,6 +1035,14 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
+                ObservableCollection<CComponentInfo> componentsList = new ObservableCollection<CComponentInfo>();
+
+                if (uc_ComponentList.DataContext != null)
+                {
+                    CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
+                    componentsList = compListVM.ComponentList;
+                }
+
                 if (Internal_Forces.Content != null)
                 {
                     UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
@@ -1030,7 +1051,11 @@ namespace PFD
                     uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
 
                     CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
-                    vmIF.LimitStateIndex = 0;
+                    vmIF.IsSetFromCode = true;
+                    vmIF.LimitStateIndex = 0;                    
+                    vmIF.SetComponentList(componentsList);
+                    vmIF.IsSetFromCode = false;
+                    vmIF.ComponentTypeIndex = 0;
                 }
 
                 if (Member_Design.Content != null)
@@ -1039,7 +1064,11 @@ namespace PFD
                     uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
                     CPFDMemberDesign vmMD = uc_memberDesign.DataContext as CPFDMemberDesign;
+                    vmMD.IsSetFromCode = true;
                     vmMD.LimitStateIndex = 0;
+                    vmMD.SetComponentList(componentsList);
+                    vmMD.IsSetFromCode = false;
+                    vmMD.ComponentTypeIndex = 0;
                 }
 
                 if (Joint_Design.Content != null)
@@ -1047,7 +1076,11 @@ namespace PFD
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
                     uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                     CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
-                    vmJD.LimitStateIndex = 0;
+                    vmJD.IsSetFromCode = true;
+                    vmJD.LimitStateIndex = 0;                    
+                    vmJD.SetComponentList(componentsList);
+                    vmJD.IsSetFromCode = false;
+                    vmJD.ComponentTypeIndex = 0;
                 }
             });
         }

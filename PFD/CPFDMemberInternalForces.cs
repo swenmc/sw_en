@@ -90,6 +90,7 @@ namespace PFD
             set
             {
                 MComponentList = value;
+                MComponentTypeIndex = 0;
                 NotifyPropertyChanged("ComponentList");
             }
         }
@@ -143,7 +144,7 @@ namespace PFD
         public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             MLimitStates = limitStates;
-            MComponentList = componentList.Where(s => s.Calculate == true).Select(s => s.ComponentName).ToList();
+            SetComponentList(componentList);            
             m_allLoadCombinations = allLoadCombinations;
 
             // Set default
@@ -152,7 +153,11 @@ namespace PFD
 
             IsSetFromCode = false;
         }
-                
+        public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
+        {
+            ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true).Select(s => s.ComponentName).ToList();
+        }
+
         private void SetLoadCombinations()
         {
             CLimitState limitState = LimitStates[LimitStateIndex];
