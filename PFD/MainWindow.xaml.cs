@@ -1498,6 +1498,9 @@ namespace PFD
             if (btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
 
             // Girt
+            //------------------------------------------------
+            // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+            // Tento kod by mal byt zmazany
             CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
             CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
             CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
@@ -1508,11 +1511,23 @@ namespace PFD
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
             CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
             CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+            //------------------------------------------------
+
+
 
             DoorProperties props = null;
             if (Datagrid_DoorsAndGates.SelectedIndex != -1) props = vm.DoorBlocksProperties.ElementAtOrDefault(Datagrid_DoorsAndGates.SelectedIndex);
             else props = vm.DoorBlocksProperties.FirstOrDefault();
             if (props == null) return;
+
+            // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_001_DoorInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+            // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+            // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+
+            // Druha moznost je vytvorit konrektny zobrazovany blok znova.
+            // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddDoorBlock, tj. 
+            // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+            // 2. Vyrobi sa blok door = new CBlock_3D_001_DoorInBay(....)
 
             CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
 
@@ -1528,7 +1543,7 @@ namespace PFD
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
-            Frame1.UpdateLayout();            
+            Frame1.UpdateLayout();
         }
 
         private void btnDisplayDoorBlock_Unchecked(object sender, RoutedEventArgs e)
@@ -1544,6 +1559,9 @@ namespace PFD
         {
             if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
 
+            //------------------------------------------------
+            // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+            // Tento kod by mal byt zmazany
             // Girt
             CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
             CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
@@ -1555,12 +1573,24 @@ namespace PFD
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
             CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
             CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
-            
+            //------------------------------------------------
+
+
+
             WindowProperties props = null;
             if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
             else props = vm.WindowBlocksProperties.FirstOrDefault();
             if (props == null) return;
-            
+
+            // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+            // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+            // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+
+            // Druha moznost je vytvorit konrektny zobrazovany blok znova.
+            // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
+            // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+            // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+
             CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
             DisplayOptions displayOptions = new DisplayOptions();

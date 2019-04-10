@@ -314,15 +314,15 @@
                         <ToggleButton Name="btnDisplayDoorBlock" Grid.Row="20" Grid.Column="4" VerticalAlignment="Center" 
                                       ToolTip="Display door block" IsEnabled="True"
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
-                                      Width="40" Height="40" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
+                                      Width="30" Height="30" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
                             <Image Source="Resources/door.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                         </ToggleButton>
                         <ToggleButton Name="btnDisplayWindowBlock" Grid.Row="21" Grid.Column="4" VerticalAlignment="Center" 
-                                      ToolTip="Display door block" IsEnabled="True"
+                                      ToolTip="Display window block" IsEnabled="True"
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
-                                      Width="40" Height="40" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
+                                      Width="30" Height="30" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
                             <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </ToggleButton>                        
+                        </ToggleButton>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
