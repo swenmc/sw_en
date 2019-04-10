@@ -1485,12 +1485,12 @@ namespace PFD
 
         private void Datagrid_DoorsAndGates_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
-            Frame1.UpdateLayout();  //nutne koli pridaniu riadku a update v GUI
+            Frame1.UpdateLayout();  // Nutne kvôli pridaniu riadku a update v GUI
         }
 
         private void Datagrid_Windows_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
-            Frame1.UpdateLayout(); //nutne koli pridaniu riadku a update v GUI
+            Frame1.UpdateLayout(); // Nutne kvôli pridaniu riadku a update v GUI
         }
 
         private void btnDisplayDoorBlock_Checked(object sender, RoutedEventArgs e)
