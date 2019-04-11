@@ -9,7 +9,7 @@ namespace PFD
 {
     public static class CModelHelper
     {
-        const bool debugging = true;
+        const bool debugging = false;
         //Extension method
         //returns list of frames with members from Model
         public static List<CFrame> GetFramesFromModel(this CModel_PFD_01_GR model)
@@ -437,7 +437,7 @@ namespace PFD
                     }
                 }
             }
-            if (debugging) System.Diagnostics.Trace.WriteLine("System.Diagnostics.Trace.WriteLine() count: " + count);
+            if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
         }
 
         public static int GetMembersSetForCalculationsCount(CMember[] arrMembers)

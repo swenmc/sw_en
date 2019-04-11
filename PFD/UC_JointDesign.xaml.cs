@@ -80,15 +80,15 @@ namespace PFD
 
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
-                float fMaximumDesignRatio = 0;
+                float fMaximumDesignRatio = float.MinValue;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     CConnectionJointTypes cjStart = null;
                     CConnectionJointTypes cjEnd = null;
                     Model.GetModelMemberStartEndConnectionJoints(m, out cjStart, out cjEnd);
 
-                    CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint == cjStart);
-                    CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint == cjEnd);
+                    CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
+                    CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
 
