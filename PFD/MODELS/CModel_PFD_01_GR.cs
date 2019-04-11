@@ -53,6 +53,9 @@ namespace PFD
         int[] iArrNumberOfNodesPerBackColumn;
         int iOneColumnGirtNo;
 
+        public List<CBlock_3D_001_DoorInBay> DoorsModels;
+        public List<CBlock_3D_002_WindowInBay> WindowsModels;
+
         public CModel_PFD_01_GR
             (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -907,6 +910,8 @@ namespace PFD
             // Blocks
             // TODO - pokusny blok dveri, je potreba refaktorovat
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            DoorsModels = new List<CBlock_3D_001_DoorInBay>();
+            WindowsModels = new List<CBlock_3D_002_WindowInBay>();
 
             if (doorBlocksProperties != null)
             {
@@ -1634,6 +1639,8 @@ namespace PFD
                 bIsLastBayInFrontorBackSide);
 
             AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door);
+
+            DoorsModels.Add(door);
         }
 
         public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn)
@@ -1671,6 +1678,8 @@ namespace PFD
             iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
 
             AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window);
+
+            WindowsModels.Add(window);
         }
 
         public void DeterminateBasicPropertiesToInsertBlock(

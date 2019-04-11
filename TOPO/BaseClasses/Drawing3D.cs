@@ -87,7 +87,7 @@ namespace BaseClasses
                     //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
                     ((Model3D)gr).Transform = centerModelTransGr;
 
-                    Point3D cameraPosition = new Point3D(0, 0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
+                    Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * 2);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
                 }
