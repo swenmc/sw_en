@@ -25,7 +25,7 @@ namespace PFD
     /// </summary>
     public partial class UC_MaterialList : UserControl
     {
-
+        bool debugging = true;
         DataSet ds;
 
         //List<string> listMemberPrefix = new List<string>(1);
@@ -81,10 +81,10 @@ namespace PFD
             InitializeComponent();
 
             CMaterialListViewModel vm = new CMaterialListViewModel(model);
-            vm.PropertyChanged += MaterialListViewModel_PropertyChanged;         
+            vm.PropertyChanged += MaterialListViewModel_PropertyChanged;
             this.DataContext = vm;
 
-            
+
 
             // Clear all lists
             DeleteAllLists();
@@ -104,7 +104,7 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
             float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
 
-            
+
 
             //// Create Table
             //DataTable table = new DataTable("Table");
@@ -190,89 +190,95 @@ namespace PFD
             // Plates
 
             List<CPlate> ListOfPlateGroups = new List<CPlate>();
-
+            System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
+            int count = 0;
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
-                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                model.m_arrConnectionJoints[i].BIsSelectedForMaterialList = IsJointSelectedForMaterialList(model.m_arrConnectionJoints[i]);
+
+                if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
                 {
-                    if (model.m_arrConnectionJoints[i].BIsSelectedForMaterialList)
+                    count++;
+                    for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
+
+
                         // Define current plate properties
                         // Not used - could be used to compare names in database with user-defined in the future
 
-                        string[] sPlateNames;
-                        ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
-                        switch (ePlateSerieType_FS)
-                        {
-                            case ESerieTypePlate.eSerie_B:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_B_Names;
+                        //string[] sPlateNames;
+                        //ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
+                        //switch (ePlateSerieType_FS)
+                        //{
+                        //    case ESerieTypePlate.eSerie_B:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_B_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_L:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_L_Names;
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_LL:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_LL_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_L:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_L_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_LL:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_LL_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_F:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_F_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_F:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_F_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_Q:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_Q_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_Q:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_Q_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_S:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_S_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_S:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_S_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_T:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_T_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_T:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_T_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_X:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_X_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_X:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_X_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_Y:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_Y_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_Y:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_Y_Names;
 
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_J:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_J_Names;
-                                    break;
-                                }
-                            case ESerieTypePlate.eSerie_K:
-                                {
-                                    sPlateNames = databaseCopm.arr_Serie_K_Names;
-                                    break;
-                                }
-                            default:
-                                {
-                                    // Not implemented
-                                    break;
-                                }
-                        }
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_J:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_J_Names;
+                        //            break;
+                        //        }
+                        //    case ESerieTypePlate.eSerie_K:
+                        //        {
+                        //            sPlateNames = databaseCopm.arr_Serie_K_Names;
+                        //            break;
+                        //        }
+                        //    default:
+                        //        {
+                        //            // Not implemented
+                        //            break;
+                        //        }
+                        //}
 
                         string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
                         int iQuantity = 1;
@@ -332,6 +338,7 @@ namespace PFD
                     }
                 }
             }
+            System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
 
             // Check Data
             double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
@@ -640,7 +647,26 @@ namespace PFD
 
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            
+
+        }
+
+        private bool IsJointSelectedForMaterialList(CConnectionJointTypes joint)
+        {
+            bool IsSelectedForMaterialList = true;
+            if (joint.m_MainMember != null)
+            {
+                if (!joint.m_MainMember.BIsGenerated) IsSelectedForMaterialList = false;
+                if (!joint.m_MainMember.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
+            }
+            if (joint.m_SecondaryMembers != null)
+            {
+                foreach (CMember m in joint.m_SecondaryMembers)
+                {
+                    if (!m.BIsGenerated) IsSelectedForMaterialList = false;
+                    if (!m.BIsSelectedForMaterialList) IsSelectedForMaterialList = false;
+                }
+            }
+            return IsSelectedForMaterialList;
         }
 
         private void DeleteAllLists()
