@@ -360,7 +360,7 @@ namespace PFD
                 cInfo.IsSetFromCode = true;
                 cInfo.Section = MembersSectionsDict[cInfo.MemberType];
                 cInfo.IsSetFromCode = false;
-            }            
+            }
         }
 
 

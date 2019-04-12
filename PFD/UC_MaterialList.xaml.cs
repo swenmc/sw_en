@@ -89,22 +89,22 @@ namespace PFD
             // Clear all lists
             DeleteAllLists();
 
-            int iNumberOfDecimalPlacesLength = 2;
+            int iNumberOfDecimalPlacesLength = 3;
             int iNumberOfDecimalPlacesPlateDim = 3;
-            int iNumberOfDecimalPlacesArea = 3;
-            int iNumberOfDecimalPlacesVolume = 3;
-            int iNumberOfDecimalPlacesMass = 3;
+            int iNumberOfDecimalPlacesArea = 5;
+            int iNumberOfDecimalPlacesVolume = 5;
+            int iNumberOfDecimalPlacesMass = 4;
             int iNumberOfDecimalPlacesPrice = 3;
 
-            float fCFS_PricePerKg_Members_Material = 0.3f;     // NZD / kg
-            float fCFS_PricePerKg_Plates_Material = 0.4f;      // NZD / kg
-            float fCFS_PricePerKg_Members_Manufacture = 0.2f;  // NZD / kg
-            float fCFS_PricePerKg_Plates_Manufacture = 0.3f;   // NZD / kg
+            float fCFS_PricePerKg_Members_Material = 2.5f;     // NZD / kg
+            float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
+            float fCFS_PricePerKg_Members_Manufacture = 1.0f;  // NZD / kg
+            float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
+
+            float fTEK_PricePerPiece_Screws_Total = 0.05f;     // NZD / piece
+
             float fCFS_PricePerKg_Members_Total = fCFS_PricePerKg_Members_Material + fCFS_PricePerKg_Members_Manufacture;        // NZD / kg
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
-            float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
-
-
 
             //// Create Table
             //DataTable table = new DataTable("Table");
@@ -366,7 +366,7 @@ namespace PFD
             for (int i = 0; i < listPlatePrefix.Count; i++)
             {
                 dTotalPlatesArea_Table += (dlistPlateArea[i] * listPlateQuantity[i]);
-                dTotalPlatesVolume_Table += (dlistPlateArea[i] * dlistPlateThickness_tz[i]);
+                dTotalPlatesVolume_Table += (dlistPlateArea[i] * listPlateQuantity[i] * dlistPlateThickness_tz[i]);
                 dTotalPlatesMass_Table += listPlateTotalMass[i];
                 dTotalPlatesPrice_Table += listPlateTotalPrice[i];
                 iTotalPlatesNumber_Table += listPlateQuantity[i];
@@ -378,6 +378,7 @@ namespace PFD
             dTotalPlatesPrice_Model = Math.Round(dTotalPlatesPrice_Model, iNumberOfDecimalPlacesPrice);
 
             if (!MathF.d_equal(dTotalPlatesArea_Model, dTotalPlatesArea_Table) ||
+                !MathF.d_equal(dTotalPlatesVolume_Model, dTotalPlatesVolume_Table) ||
                 !MathF.d_equal(dTotalPlatesMass_Model, dTotalPlatesMass_Table) ||
                 (iTotalPlatesNumber_Model != iTotalPlatesNumber_Table)) // Error
                 MessageBox.Show(

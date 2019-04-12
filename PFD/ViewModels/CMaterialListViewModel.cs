@@ -30,29 +30,26 @@ namespace PFD.ViewModels
             }
         }
 
-        int iNumberOfDecimalPlacesLength = 2;
+        int iNumberOfDecimalPlacesLength = 3;
         int iNumberOfDecimalPlacesPlateDim = 3;
-        int iNumberOfDecimalPlacesArea = 3;
-        int iNumberOfDecimalPlacesVolume = 3;
-        int iNumberOfDecimalPlacesMass = 3;
+        int iNumberOfDecimalPlacesArea = 5;
+        int iNumberOfDecimalPlacesVolume = 5;
+        int iNumberOfDecimalPlacesMass = 4;
         int iNumberOfDecimalPlacesPrice = 3;
 
-        float fCFS_PricePerKg_Members_Material = 0.3f;     // NZD / kg
-        float fCFS_PricePerKg_Plates_Material = 0.4f;      // NZD / kg
-        float fCFS_PricePerKg_Members_Manufacture = 0.2f;  // NZD / kg
-        float fCFS_PricePerKg_Plates_Manufacture = 0.3f;   // NZD / kg
+        float fCFS_PricePerKg_Members_Material = 2.5f;     // NZD / kg
+        float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
+        float fCFS_PricePerKg_Members_Manufacture = 1.0f;  // NZD / kg
+        float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
 
-        //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
         float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
-
 
         public CMaterialListViewModel(CModel_PFD model)
         {
-            //CDatabaseComponents databaseCopm = new CDatabaseComponents();
-
             List<MaterialListMember> membersMatList = new List<MaterialListMember>();
 
             float fCFS_PricePerKg_Members_Total = fCFS_PricePerKg_Members_Material + fCFS_PricePerKg_Members_Manufacture;        // NZD / kg
+            float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             int iLastItemIndex = 0; // Index of last row for previous cross-section
 
@@ -156,7 +153,11 @@ namespace PFD.ViewModels
             for (int i = 0; i < membersMatList.Count; i++)
             {
                 dTotalMembersLength_Table += membersMatList[i].Length * membersMatList[i].Quantity;
-                //dTotalMembersVolume_Table += member.CrScStart.A_g * dlistMemberLength[i]; // TODO - pridat funkciu, ktora podla nazvu prierezu vrati jeho parametre
+
+                // Load cross-section values
+                DATABASE.DTO.CrScProperties listSectionPropertyValue = DATABASE.CSectionManager.LoadCrossSectionProperties_meters(membersMatList[i].CrScName);
+
+                dTotalMembersVolume_Table += listSectionPropertyValue.A_g * membersMatList[i].TotalLength;
                 dTotalMembersMass_Table += membersMatList[i].TotalMass;
                 dTotalMembersPrice_Table += membersMatList[i].TotalPrice;
                 iTotalMembersNumber_Table += membersMatList[i].Quantity;
@@ -168,11 +169,14 @@ namespace PFD.ViewModels
             dTotalMembersMass_Table = Math.Round(dTotalMembersMass_Table, iNumberOfDecimalPlacesMass);
 
             if (!MathF.d_equal(dTotalMembersLength_Model, dTotalMembersLength_Table) ||
+                !MathF.d_equal(dTotalMembersVolume_Model, dTotalMembersVolume_Table) ||
                 !MathF.d_equal(dTotalMembersMass_Model, dTotalMembersMass_Table) ||
                 (iTotalMembersNumber_Model != iTotalMembersNumber_Table)) // Error
                 MessageBox.Show(
                 "Total length of members in model " + dTotalMembersLength_Model + " m" + "\n" +
                 "Total length of members in table " + dTotalMembersLength_Table + " m" + "\n" +
+                "Total volume of members in model " + dTotalMembersVolume_Model + " m^3" + "\n" +
+                "Total volume of members in table " + dTotalMembersVolume_Table + " m^3" + "\n" +
                 "Total weight of members in model " + dTotalMembersMass_Model + " kg" + "\n" +
                 "Total weight of members in table " + dTotalMembersMass_Table + " kg" + "\n" +
                 "Total number of members in model " + iTotalMembersNumber_Model + "\n" +
