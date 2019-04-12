@@ -1049,6 +1049,7 @@ namespace PFD
                     uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
                     uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
+                    uc_intForces.FrameModels = vm.frameModels;
 
                     CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
                     vmIF.IsSetFromCode = true;

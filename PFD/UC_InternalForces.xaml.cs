@@ -56,8 +56,7 @@ namespace PFD
         public List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
-
-        List<CFrame> frameModels;
+        public List<CFrame> FrameModels;
         GraphWindow graph;
 
         public UC_InternalForces(
@@ -67,7 +66,7 @@ namespace PFD
             List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations,
             List<CMemberLoadCombinationRatio_ULS> memberDesignResults_ULS,
             List<CMemberLoadCombinationRatio_SLS> memberDesignResults_SLS,
-            List<CFrame> frameModels_temp
+            List<CFrame> frameModels
             )
         {
             InitializeComponent();
@@ -75,7 +74,7 @@ namespace PFD
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             Model = model; // 3D model
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
-            frameModels = frameModels_temp; // particular 2D models
+            FrameModels = frameModels; // particular 2D models
 
             MemberDesignResults_ULS = memberDesignResults_ULS;
             MemberDesignResults_SLS = memberDesignResults_SLS;
@@ -100,12 +99,9 @@ namespace PFD
             {
                 return;
             }
-
+            
             // Frame internal forces enabled only for type of members Main Columns and Rafters
-            if (vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn ||
-                vm.ComponentTypeIndex == (int)EMemberGroupNames.eRafter ||
-                vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn_EF ||
-                vm.ComponentTypeIndex == (int)EMemberGroupNames.eRafter_EF)
+            if (vm.ComponentListHasFrameMembers)
                 Button_Frame_2D.IsEnabled = true;
             else
                 Button_Frame_2D.IsEnabled = false;
@@ -331,9 +327,8 @@ namespace PFD
         {
             CLoadCombination lcomb = Model.m_arrLoadCombs.FirstOrDefault(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
-            CMember member = FindMemberWithMaximumDesignRatio(lcomb, vm.ComponentList[vm.ComponentTypeIndex], Model.listOfModelMemberGroups);
-            //if (member == null) throw new Exception("Member with maximum design ratio not found.");
-            if (member == null) // nemame vypocitane vysledky...nie je co zobrazovat
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb, vm.ComponentList[vm.ComponentTypeIndex], Model.listOfModelMemberGroups);            
+            if (member == null) // nemame vypocitane vysledky, takze najdeme pre oznacenu skupinu prvy member
             {
                 CMemberGroup memberGroup = Model.listOfModelMemberGroups.FirstOrDefault(g => g.Name == vm.ComponentList[vm.ComponentTypeIndex]);
                 if (memberGroup == null) return;
@@ -341,9 +336,9 @@ namespace PFD
                 if (member == null) return;
             }
             
-            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);
-            if (iFrameIndex == -1) return;  //ak nenaslo vhodny frame
-            CModel frameModel = frameModels[iFrameIndex];
+            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, FrameModels);
+            if (iFrameIndex == -1) { MessageBox.Show("Could not find frame to display."); return; }  //ak nenaslo vhodny frame
+            CModel frameModel = FrameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
             // 4.4.2.2.1

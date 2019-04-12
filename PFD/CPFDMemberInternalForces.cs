@@ -27,6 +27,7 @@ namespace PFD
         private CLimitState[] MLimitStates;
         private List<ComboItem> MLoadCombinations;
 
+        private bool MComponentListHasFrameMembers;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -136,6 +137,18 @@ namespace PFD
                 NotifyPropertyChanged("SelectedLoadCombinationID");
             }
         }
+        public bool ComponentListHasFrameMembers
+        {
+            get
+            {
+                return MComponentListHasFrameMembers;
+            }
+
+            set
+            {
+                MComponentListHasFrameMembers = value;
+            }
+        }
 
         private CLoadCombination[] m_allLoadCombinations;
         //-------------------------------------------------------------------------------------------------------------
@@ -156,6 +169,8 @@ namespace PFD
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
             ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true).Select(s => s.ComponentName).ToList();
+            ComponentListHasFrameMembers = componentList.Where(c => c.Generate == true && c.Calculate == true).Any(c => c.MemberType == EMemberType_DB.MainColumn || c.MemberType == EMemberType_DB.MainRafter ||
+                c.MemberType == EMemberType_DB.EdgeColumn || c.MemberType == EMemberType_DB.EdgeRafter);
         }
 
         private void SetLoadCombinations()

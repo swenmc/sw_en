@@ -27,6 +27,7 @@ namespace PFD
         private CLimitState[] MLimitStates;
         private List<ComboItem> MLoadCombinations;
 
+        
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -124,6 +125,8 @@ namespace PFD
             }
         }
 
+        
+
         private CLoadCombination[] m_allLoadCombinations;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -154,9 +157,10 @@ namespace PFD
             LoadCombinations = loadCombinations;
         }
 
+        
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
-            ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();
+            ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true && s.Design == true).Select(s => s.ComponentName).ToList();            
         }
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
