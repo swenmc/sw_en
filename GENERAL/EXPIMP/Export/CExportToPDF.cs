@@ -42,11 +42,63 @@ namespace EXPIMP
             }
             return fileName;
         }
+        private static string GetReportPDFName()
+        {
+            int count = 0;
+            string fileName = null;
+            bool nameOK = false;
+            while (!nameOK)
+            {
+                fileName = $"Report_{++count}.pdf";
+
+                if (!System.IO.File.Exists(fileName)) nameOK = true;
+            }
+            return fileName;
+        }
         private static string GetPlateSerieName(CPlate plate)
         {
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) return "APEX";
             else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) return "KNEE";
             else return "PLATE";
+        }
+
+        public static void ReportAllDataToPDFFile(Canvas canvas, List<string[]> tableParams)
+        {
+            PdfDocument s_document = new PdfDocument();
+            s_document.Info.Title = "Export from software";
+            //s_document.Info.Author = "";
+            //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
+            //s_document.Info.Keywords = "PDFsharp, XGraphics";
+            PdfPage page = s_document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
+            
+            DrawLogo(gfx);
+            DrawFSAddress(gfx);
+            gfx.Dispose();
+
+            DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
+
+            //double height = DrawCanvasImage(gfx, canvas);
+            //DrawImage(gfx);
+
+            // Create demonstration pages
+            //new LinesAndCurves().DrawPage(s_document.AddPage());
+            //new Shapes().DrawPage(s_document.AddPage());
+            //new Paths().DrawPage(s_document.AddPage());
+            //new Text().DrawPage(s_document.AddPage());
+            //new Images().DrawPage(s_document.AddPage());
+
+            PdfPage page2 = s_document.AddPage();
+            XGraphics gfx2 = XGraphics.FromPdfPage(page2);
+            AddTableToDocument(gfx2, 50, tableParams);
+
+            string fileName = GetReportPDFName();
+            // Save the s_document...
+            s_document.Save(fileName);
+            // ...and start a viewer
+            Process.Start(fileName);
         }
 
         public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, CPlate plate, CProductionInfo pInfo)

@@ -37,6 +37,7 @@ using BriefFiniteElementNet;
 using BriefFiniteElementNet.Controls;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace PFD
 {
@@ -1626,6 +1627,34 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
             Frame1.UpdateLayout();
+        }
+
+        
+
+        private void ExportPDF_Click(object sender, RoutedEventArgs e)
+        {
+            WaitWindow ww = new WaitWindow();
+            ww.Show();
+
+            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
+            List<string[]> list = new List<string[]>();
+
+            Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
+            RenderTargetBitmap bmp = new RenderTargetBitmap((int)viewPort.ActualWidth, (int)viewPort.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+            bmp.Render(viewPort);
+
+            PngBitmapEncoder png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bmp));
+            using (Stream stm = File.Create("ViewPort.png"))
+            {
+                png.Save(stm);
+            }
+
+
+            if (Frame1.Content is Canvas) CExportToPDF.ReportAllDataToPDFFile(Frame1.Content as Canvas, list);
+            else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
+
+            ww.Close();
         }
     }
 }
