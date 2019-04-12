@@ -105,9 +105,8 @@ namespace PFD.Infrastructure
         public void CalculateAll()
         {
             //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
-            CalculateInternalForces_LoadCase();
-
-            CalculateInternalForces_LoadCombination();
+            Calculate_InternalForces_LoadCase();
+            Calculate_InternalForces_LoadCombination();
             Calculate_MemberDesign_LoadCombination();
 
             SolverWindow.Progress = 100;
@@ -118,7 +117,7 @@ namespace PFD.Infrastructure
                GetTextForResultsMessageBox(sDesignResults_SLS));
         }
 
-        public void CalculateInternalForces_LoadCase()
+        public void Calculate_InternalForces_LoadCase()
         {
             designMomentValuesForCb[] sMomentValuesforCb = null;
             basicInternalForces[] sBIF_x = null;
@@ -252,7 +251,8 @@ namespace PFD.Infrastructure
             }
 
         }
-        public void CalculateInternalForces_LoadCombination()
+
+        public void Calculate_InternalForces_LoadCombination()
         {
             sDesignResults_ULSandSLS.sLimitStateType = "ULS and SLS";
             sDesignResults_ULS.sLimitStateType = "ULS";
@@ -389,7 +389,6 @@ namespace PFD.Infrastructure
                 }                
             }
         }
-
 
         public void Calculate_MemberDesign_LoadCombination()
         {
@@ -723,11 +722,7 @@ namespace PFD.Infrastructure
             */
         }
 
-        private designMomentValuesForCb GetMomentValuesforCb_design_Segment(
-            float fSegmentStart_abs,
-            float fSegmentEnd_abs,
-            BriefFiniteElementNet.LoadCombination lcomb,
-            BriefFiniteElementNet.FrameElement2Node memberBFENet)
+        private designMomentValuesForCb GetMomentValuesforCb_design_Segment(float fSegmentStart_abs, float fSegmentEnd_abs, BriefFiniteElementNet.LoadCombination lcomb, BriefFiniteElementNet.FrameElement2Node memberBFENet)
         {
             float fSegmentLength = fSegmentEnd_abs - fSegmentStart_abs;
             BriefFiniteElementNet.Force f14 = memberBFENet.GetInternalForceAt(fSegmentStart_abs + 0.25 * fSegmentLength, lcomb);
