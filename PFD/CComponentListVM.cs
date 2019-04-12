@@ -460,6 +460,14 @@ namespace PFD
             if (cInfo != null) ComponentList.Remove(cInfo);
         }
 
+        public bool NoFrameMembersForCalculate()
+        {
+            return !ComponentList.Any(c => (c.MemberType == EMemberType_DB.MainColumn || 
+            c.MemberType == EMemberType_DB.MainRafter || 
+            c.MemberType == EMemberType_DB.EdgeColumn || 
+            c.MemberType == EMemberType_DB.EdgeRafter) && c.Calculate == true);
+        }
+
 
         public bool NoCompomentsForCalculate()
         {

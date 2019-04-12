@@ -342,6 +342,7 @@ namespace PFD
             }
             
             int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);
+            if (iFrameIndex == -1) return;  //ak nenaslo vhodny frame
             CModel frameModel = frameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty

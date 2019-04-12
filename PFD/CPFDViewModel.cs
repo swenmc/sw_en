@@ -1854,12 +1854,16 @@ namespace PFD
             //RunFEMSOlver();
 
             SolverWindow.SetFrames();
-            // Calculation of frame model
-            frameModels = model.GetFramesFromModel(); // Create models of particular frames
-            if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
-            if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
-
+            SolverWindow.SetFramesProgress(0, 0);
+            if (!_componentVM.NoFrameMembersForCalculate())
+            {                
+                // Calculation of frame model
+                frameModels = model.GetFramesFromModel(); // Create models of particular frames
+                if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
+                CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
+                if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
+            }
+            
             if (DeterminateCombinationResultsByFEMSolver || UseFEMSolverCalculationForSimpleBeam)
             {
                 SolverWindow.SetBeams();

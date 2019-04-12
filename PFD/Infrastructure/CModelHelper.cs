@@ -445,9 +445,18 @@ namespace PFD
             int count = 0;
             foreach (CMember m in arrMembers)
             {
-                if (!m.BIsGenerated) continue;
-                if (!m.BIsSelectedForDesign) continue;
+                if (!m.BIsGenerated) continue;                
                 if (m.BIsSelectedForIFCalculation) count++;
+            }
+            return count;
+        }
+        public static int GetMembersSetForDesignCalculationsCount(CMember[] arrMembers)
+        {
+            int count = 0;
+            foreach (CMember m in arrMembers)
+            {
+                if (!m.BIsGenerated) continue;
+                if (m.BIsSelectedForDesign) count++;                
             }
             return count;
         }
