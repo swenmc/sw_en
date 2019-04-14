@@ -28,8 +28,59 @@ namespace EXPIMP
         //private const string fontFamily = "Verdana";
         //private const string fontFamily = "Times New Roman";
         private const string fontFamily = "Calibri";
+        private const int fontSizeTitle = 14;
+        private const int fontSizeNormal = 12;
 
+        private static XPdfFontOptions options;
         //private static PdfDocument document = null;
+
+        public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
+        {
+            // Set font encoding to unicode            
+            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+
+            PdfDocument s_document = new PdfDocument();
+            s_document.Info.Title = "Export from software";
+            //s_document.Info.Author = "";
+            //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
+            //s_document.Info.Keywords = "PDFsharp, XGraphics";
+            PdfPage page = s_document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
+            DrawLogo(gfx);
+            DrawProjectInfo(gfx,GetProjectInfo());
+            DrawModel3D(gfx, viewPort);
+            gfx.Dispose();
+
+
+            page = s_document.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            DrawBasicGeometry(gfx, modelData);
+
+
+            //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
+
+            //double height = DrawCanvasImage(gfx, canvas);
+            //DrawImage(gfx);
+
+            // Create demonstration pages
+            //new LinesAndCurves().DrawPage(s_document.AddPage());
+            //new Shapes().DrawPage(s_document.AddPage());
+            //new Paths().DrawPage(s_document.AddPage());
+            //new Text().DrawPage(s_document.AddPage());
+            //new Images().DrawPage(s_document.AddPage());
+
+            PdfPage page2 = s_document.AddPage();
+            XGraphics gfx2 = XGraphics.FromPdfPage(page2);
+            AddTableToDocument(gfx2, 50, tableParams);
+
+            string fileName = GetReportPDFName();
+            // Save the s_document...
+            s_document.Save(fileName);
+            // ...and start a viewer
+            Process.Start(fileName);
+        }
 
         private static RenderTargetBitmap SaveViewPortContentAsImage(Viewport3D viewPort)
         {
@@ -65,17 +116,95 @@ namespace EXPIMP
         /// <param name="viewPort"></param>
         private static void DrawModel3D(XGraphics gfx, Viewport3D viewPort)
         {
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+            gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
+
             XImage image = XImage.FromBitmapSource(SaveViewPortContentAsImage(viewPort));
             //XImage image = XImage.FromFile("ViewPort.png");
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width;
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
-            gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+            gfx.DrawImage(image, 0, 300, scaledImageWidth, scaledImageHeight);
 
             //gfx.DrawImage(image, image.Size.Width, image.Size.Height);
         }
-                
+
+        
+        private static void DrawLogo(XGraphics gfx)
+        {
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
+            gfx.DrawImage(image, 10, 10, 300, 200);
+        }
+
+        private static CProjectInfo GetProjectInfo()
+        {
+            CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
+            return pInfo;
+        }
+
+        private static void DrawProjectInfo(XGraphics gfx, CProjectInfo pInfo)
+        {           
+            XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            int offsetX1 = 320;
+            int offsetX2 = 510;
+            gfx.DrawString("Project Name: ", font, XBrushes.Black, offsetX1, 20);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBold, XBrushes.Black, offsetX1, 40);
+
+            gfx.DrawString("Site: ", font, XBrushes.Black, offsetX1, 60);
+            if (pInfo.Site != null) gfx.DrawString(pInfo.Site, fontBold, XBrushes.Black, offsetX1, 80);
+
+            gfx.DrawString("Project Number: ", font, XBrushes.Black, offsetX1, 140);
+            if (pInfo.ProjectNumber != null) gfx.DrawString(pInfo.ProjectNumber, fontBold, XBrushes.Black, offsetX1, 160);
+
+            gfx.DrawString("Project Part: ", font, XBrushes.Black, offsetX2, 20);
+            gfx.DrawString(pInfo.ProjectPart, fontBold, XBrushes.Black, offsetX2, 40);
+
+            gfx.DrawString("Date: ", font, XBrushes.Black, offsetX2, 140);
+            gfx.DrawString(pInfo.Date.ToShortDateString(), fontBold, XBrushes.Black, offsetX2, 160);
+
+        }
+
+        private static void DrawBasicGeometry(XGraphics gfx, CModelData data)
+        {
+            XFont fontTitle = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            int offsetX1 = 20;
+            int offsetX2 = 120;
+            int offsetX3 = 220;
+            int offsetX4 = 320;
+
+            gfx.DrawString("Basic Geometry - Building", fontTitle, XBrushes.Black, offsetX1, 20);
+
+
+            gfx.DrawString("Width", font, XBrushes.Black, offsetX1, 60);
+            gfx.DrawString("W", font, XBrushes.Black, offsetX2, 60);
+            gfx.DrawString(data.GableWidth.ToString(), font, XBrushes.Black, offsetX3, 60);
+            gfx.DrawString("m", font, XBrushes.Black, offsetX4, 60);
+
+            gfx.DrawString("Length", font, XBrushes.Black, offsetX1, 80);
+            gfx.DrawString("L", font, XBrushes.Black, offsetX2, 80);
+            gfx.DrawString(data.Length.ToString(), font, XBrushes.Black, offsetX3, 80);
+            gfx.DrawString("m", font, XBrushes.Black, offsetX4, 80);
+
+            gfx.DrawString("Height", font, XBrushes.Black, offsetX1, 100);
+            gfx.DrawString("H", font, XBrushes.Black, offsetX2, 100);
+            gfx.DrawString(data.WallHeight.ToString(), font, XBrushes.Black, offsetX3, 100);
+            gfx.DrawString("m", font, XBrushes.Black, offsetX4, 100);
+
+            gfx.DrawString("Height", font, XBrushes.Black, offsetX1, 120);
+            gfx.DrawString("???", font, XBrushes.Black, offsetX2, 120);
+
+            gfx.DrawString("Pitch", font, XBrushes.Black, offsetX1, 140);
+            gfx.DrawString("α", font, XBrushes.Black, offsetX2, 140);
+            gfx.DrawString(data.RoofPitch_deg.ToString(), font, XBrushes.Black, offsetX3, 140);
+            gfx.DrawString("deg", font, XBrushes.Black, offsetX4, 140);            
+        }
 
         private static string GetReportPDFName()
         {
@@ -92,44 +221,7 @@ namespace EXPIMP
         }
         
 
-        public static void ReportAllDataToPDFFile(Viewport3D viewPort, List<string[]> tableParams)
-        {
-            PdfDocument s_document = new PdfDocument();
-            s_document.Info.Title = "Export from software";
-            //s_document.Info.Author = "";
-            //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
-            //s_document.Info.Keywords = "PDFsharp, XGraphics";
-            PdfPage page = s_document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-            
-            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            DrawModel3D(gfx, viewPort);
-            
-
-            gfx.Dispose();
-
-            //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
-
-            //double height = DrawCanvasImage(gfx, canvas);
-            //DrawImage(gfx);
-
-            // Create demonstration pages
-            //new LinesAndCurves().DrawPage(s_document.AddPage());
-            //new Shapes().DrawPage(s_document.AddPage());
-            //new Paths().DrawPage(s_document.AddPage());
-            //new Text().DrawPage(s_document.AddPage());
-            //new Images().DrawPage(s_document.AddPage());
-
-            PdfPage page2 = s_document.AddPage();
-            XGraphics gfx2 = XGraphics.FromPdfPage(page2);
-            AddTableToDocument(gfx2, 50, tableParams);
-
-            string fileName = GetReportPDFName();
-            // Save the s_document...
-            s_document.Save(fileName);
-            // ...and start a viewer
-            Process.Start(fileName);
-        }
+        
 
 
 
@@ -195,36 +287,9 @@ namespace EXPIMP
             gfx.DrawString(sLine5, font, XBrushes.Black, dposition_x, dposition_y + 4 * drowheight);
         }
 
-        private static void DrawProductionInfo(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
-        {
-            // Set font encoding to unicode
-            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular, options);
-            XFont font2 = new XFont(fontFamily, 12, XFontStyle.Underline, options);
+        
 
-            gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
-            if (pInfo.JobNumber != null) gfx.DrawString(pInfo.JobNumber, font, XBrushes.Black, 100, 20);
-            gfx.DrawString("Customer: ", font, XBrushes.Black, 10, 40);
-            if (pInfo.Customer != null) gfx.DrawString(pInfo.Customer, font, XBrushes.Black, 100, 40);
-            gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
-            gfx.DrawString(pInfo.Amount.ToString(), font, XBrushes.Black, 100, 60);
-
-            if (!plate.IsSymmetric())
-            {
-                gfx.DrawString("RH: ", font, XBrushes.Black, 40, 80);
-                gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 100, 80);
-                gfx.DrawString("LH: ", font, XBrushes.Black, 40, 100);
-                gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 100, 100);
-            }
-        }
-
-        private static void DrawProductionNotes(XGraphics gfx)
-        {
-            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular);
-
-            string sNote1 = "Screw Holes - Pre Drill to Ø = 5.7 mm";
-            gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
-        }
+        
 
         private static void DrawPlateInfo(XGraphics gfx, CPlate plate)
         {

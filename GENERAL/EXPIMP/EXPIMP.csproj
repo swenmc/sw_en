@@ -99,6 +99,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CModelData.cs" />
     <Compile Include="Export\CExportToDXF.cs" />
     <Compile Include="Export\CExportToPDF.cs" />
     <Compile Include="Export\CExportToNC.cs" />
@@ -152,6 +153,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MODULES\M_EC1\M_EC1.csproj">
+      <Project>{9764D1BF-A2B3-45D6-AB93-050DCE30830C}</Project>
+      <Name>M_EC1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
       <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
       <Name>BaseClasses</Name>

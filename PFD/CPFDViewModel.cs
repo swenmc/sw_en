@@ -17,6 +17,7 @@ using BriefFiniteElementNet;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using DATABASE.DTO;
+using EXPIMP;
 
 namespace PFD
 {
@@ -97,7 +98,7 @@ namespace PFD
         private bool MShowLoadsLabelsUnits;
         private bool MShowGlobalAxis;
         private bool MShowLocalMembersAxis;
-        private bool MIsEnabledLocalMembersAxis;        
+        private bool MIsEnabledLocalMembersAxis;
         private bool MShowSurfaceLoadsAxis;
         private bool MIsEnabledSurfaceLoadsAxis;
 
@@ -869,7 +870,7 @@ namespace PFD
 
             set
             {
-                MShowLoadsLabels = value;                
+                MShowLoadsLabels = value;
                 NotifyPropertyChanged("ShowLoadsLabels");
             }
         }
@@ -959,7 +960,7 @@ namespace PFD
                 MIsEnabledSurfaceLoadsAxis = value;
                 NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
             }
-        }        
+        }
 
         public bool GenerateNodalLoads
         {
@@ -1642,8 +1643,8 @@ namespace PFD
             DisplayFoundations = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
-            DisplayMembersCenterLines = true;
-            DisplaySolidModel = false;
+            DisplayMembersCenterLines = false;
+            DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
@@ -1856,14 +1857,14 @@ namespace PFD
             SolverWindow.SetFrames();
             SolverWindow.SetFramesProgress(0, 0);
             if (!_componentVM.NoFrameMembersForCalculate())
-            {                
+            {
                 // Calculation of frame model
                 frameModels = model.GetFramesFromModel(); // Create models of particular frames
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
                 CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
-            
+
             if (DeterminateCombinationResultsByFEMSolver || UseFEMSolverCalculationForSimpleBeam)
             {
                 SolverWindow.SetBeams();
@@ -2040,7 +2041,7 @@ namespace PFD
             {
                 SetResultsAreNotValid();
             }
-            
+
             this.PropertyChanged(sender, e);
         }
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -2055,5 +2056,33 @@ namespace PFD
         }
 
 
+
+        public CModelData GetModelData()
+        {
+            CModelData data = new CModelData();
+            data.ModelIndex = ModelIndex;
+            data.GableWidth = MGableWidth;
+            data.Length = MLength;
+            data.WallHeight = MWallHeight;
+            data.RoofPitch_deg = MRoofPitch_deg;
+            data.Frames = MFrames;
+            data.GirtDistance = MGirtDistance;
+            data.PurlinDistance = MPurlinDistance;
+            data.ColumnDistance = MColumnDistance;
+            data.BottomGirtPosition = MBottomGirtPosition;
+            data.FrontFrameRakeAngle = MFrontFrameRakeAngle;
+            data.BackFrameRakeAngle = MBackFrameRakeAngle;
+            data.RoofCladdingIndex = MRoofCladdingIndex;
+            data.RoofCladdingColorIndex = MRoofCladdingColorIndex;
+            data.RoofCladdingThicknessIndex = MRoofCladdingThicknessIndex;
+            data.WallCladdingIndex = MWallCladdingIndex;
+            data.WallCladdingColorIndex = MWallCladdingColorIndex;
+            data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
+            data.LoadCaseIndex = MLoadCaseIndex;
+            
+            data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
+
+            return data;
+        }
     }
 }

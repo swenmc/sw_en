@@ -1637,12 +1637,14 @@ namespace PFD
             ww.Show();
 
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
+            CModelData modelData = vmPFD.GetModelData();
+
             List<string[]> list = new List<string[]>();
 
             try
             {
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;                
-                CMainReportExport.ReportAllDataToPDFFile(viewPort, list);
+                CMainReportExport.ReportAllDataToPDFFile(viewPort, modelData, list);
             }
             catch(Exception ex)
             {
