@@ -7,10 +7,13 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -19,40 +22,77 @@ using System.Windows.Shapes;
 
 namespace EXPIMP
 {
-    public static class CExportToPDF
+    public class CMainReportExport
     {
+
         //private const string fontFamily = "Verdana";
         //private const string fontFamily = "Times New Roman";
         private const string fontFamily = "Calibri";
 
-        private static PdfDocument document = null;
+        //private static PdfDocument document = null;
 
-        private static string GetPDFNameForPlate(CPlate plate)
+        private static RenderTargetBitmap SaveViewPortContentAsImage(Viewport3D viewPort)
         {
-            float fUnitFactor = 1000; // defined in m, exported in mm
+            
+            // Scale dimensions from 96 dpi to 600 dpi.
+            double scale = 300 / 96;
+            RenderTargetBitmap bmp = new RenderTargetBitmap((int)(scale * viewPort.ActualWidth),
+                                                            (int)(scale * viewPort.ActualHeight),
+                                                            scale * 96,
+                                                            scale * 96, PixelFormats.Default);
+            viewPort.InvalidateVisual();
+            bmp.Render(viewPort);
+            bmp.Freeze();
+            SaveBitmapImage(bmp);
+            return bmp;
+            
+        }
+
+        private static void SaveBitmapImage(RenderTargetBitmap bmp)
+        {
+            PngBitmapEncoder png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bmp));
+            using (Stream stm = File.Create("ViewPort.png"))
+            {
+                png.Save(stm);
+            }
+        }
+
+        /// <summary>
+        /// Draw scaled 3Model to PDF
+        /// </summary>
+        /// <param name="gfx"></param>
+        /// <param name="viewPort"></param>
+        private static void DrawModel3D(XGraphics gfx, Viewport3D viewPort)
+        {
+            XImage image = XImage.FromBitmapSource(SaveViewPortContentAsImage(viewPort));
+            //XImage image = XImage.FromFile("ViewPort.png");
+            double scaleFactor = gfx.PageSize.Width / image.PointWidth;
+            double scaledImageWidth = gfx.PageSize.Width;
+            double scaledImageHeight = image.PointHeight * scaleFactor;
+
+            gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+
+            //gfx.DrawImage(image, image.Size.Width, image.Size.Height);
+        }
+                
+
+        private static string GetReportPDFName()
+        {
             int count = 0;
             string fileName = null;
             bool nameOK = false;
             while (!nameOK)
             {
-                count++;
-                fileName = string.Format("{0}_{1}x{2}_{3:D3}.pdf", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+                fileName = $"Report_{++count}.pdf";
 
                 if (!System.IO.File.Exists(fileName)) nameOK = true;
             }
             return fileName;
         }
         
-        private static string GetPlateSerieName(CPlate plate)
-        {
-            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) return "APEX";
-            else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) return "KNEE";
-            else return "PLATE";
-        }
 
-        
-
-        public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, CPlate plate, CProductionInfo pInfo)
+        public static void ReportAllDataToPDFFile(Viewport3D viewPort, List<string[]> tableParams)
         {
             PdfDocument s_document = new PdfDocument();
             s_document.Info.Title = "Export from software";
@@ -61,17 +101,14 @@ namespace EXPIMP
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
             PdfPage page = s_document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-
+            
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            DrawProductionInfo(gfx, pInfo, plate);
-            DrawPlateInfo(gfx, plate);
-            Draw3DScheme(gfx, pInfo, plate);
-            DrawProductionNotes(gfx);
-            DrawLogo(gfx);
-            DrawFSAddress(gfx);
+            DrawModel3D(gfx, viewPort);
+            
+
             gfx.Dispose();
 
-            DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
+            //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
 
             //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
@@ -86,8 +123,8 @@ namespace EXPIMP
             PdfPage page2 = s_document.AddPage();
             XGraphics gfx2 = XGraphics.FromPdfPage(page2);
             AddTableToDocument(gfx2, 50, tableParams);
-            
-            string fileName = GetPDFNameForPlate(plate);
+
+            string fileName = GetReportPDFName();
             // Save the s_document...
             s_document.Save(fileName);
             // ...and start a viewer
@@ -95,332 +132,47 @@ namespace EXPIMP
         }
 
 
-        public static void CreatePDFDocument()
-        {
-            document = new PdfDocument();
-            document.Info.Title = "Export from software";
-        }
-        public static void AddPlateToPDF(Canvas canvas, double canvasWidth, CPlate plate, CProductionInfo pInfo)
-        {
-            PdfPage page = document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            DrawProductionInfo(gfx, pInfo, plate);
-            DrawPlateInfo(gfx, plate);
-            Draw3DScheme(gfx, pInfo, plate);
-            DrawProductionNotes(gfx);
-            DrawLogo(gfx);
-            DrawFSAddress(gfx);
-            gfx.Dispose();
 
-            DrawCanvas_PDF(canvas, page, canvasWidth);
-        }
 
-        public static void AddPlatesParamsTableToDocumentOnNewPage(List<string[]> tableParams)
-        {
-            PdfPage page = document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-            AddPlatesTableToDocument(gfx, 50, tableParams);
-        }
 
-        public static void SavePDFDocument(string fileName)
-        {
-            try
-            {
-                // Save the s_document...
-                document.Save(fileName); // TODO - Ondrej - tu je chyba, ak je subor s rovnakym nazvom ako ma subor ktory je otvoreny v ADOBE, nemoze sa don zapisovat
-                // ...and start a viewer
-                Process.Start(fileName);
-                document = null;
-            }
-            catch (IOException ex)
-            {
-                // The process cannot access the file 'filename' because it is being used by another process
-                MessageBox.Show("The process cannot access the file because it is being used by another process.");
-                return;
-            }
-        }
 
-        public static void DrawCanvas_PDF(Canvas canvas, PdfPage page, double canvasWidth)
-        {
-            XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            double scaleFactor = gfx.PageSize.Width / canvasWidth * 0.9; //90%
-            double marginLeft = gfx.PageSize.Width * 0.1 / 2.0;
-            double marginTop = gfx.PageSize.Height * 0.3 / 2.97;
 
-            foreach (object o in canvas.Children)
-            {
-                System.Diagnostics.Trace.WriteLine(o.GetType());
 
-                if (o is Rectangle)
-                {
-                    Rectangle winRect = o as Rectangle;
-                    double x = Canvas.GetLeft(winRect);
-                    double y = Canvas.GetTop(winRect);
 
-                    System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
-                    XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
-                    gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winRect.Width * scaleFactor, winRect.Height * scaleFactor);
-                    //gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winRect.Width, winRect.Height); //width, height scale factor not applied
-                }
-                else if (o is Polyline)
-                {
-                    Polyline winPol = o as Polyline;
 
-                    System.Windows.Media.Color c = ((SolidColorBrush)winPol.Stroke).Color;
-                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness * scaleFactor);
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness); //thickness scalefactor not applied
 
-                    List<XPoint> points = new List<XPoint>();
-                    foreach (Point p in winPol.Points)
-                    {
-                        points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor + marginTop));
-                    }
-                    gfx.DrawLines(pen, points.ToArray());
-                }
-                else if (o is System.Windows.Shapes.Path)
-                {
-                    XGraphicsPath xGrPath = new XGraphicsPath();
 
-                    System.Windows.Shapes.Path winPath = o as System.Windows.Shapes.Path;
-                    System.Windows.Media.Color c = ((SolidColorBrush)winPath.Stroke).Color;
-                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness * scaleFactor);
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness);
 
-                    PathGeometry pathGeom = winPath.Data.GetFlattenedPathGeometry();
-                    //PathGeometry pathGeom = winPath.Data.GetOutlinedPathGeometry();
-                    
-                    foreach (PathFigure pf in pathGeom.Figures)
-                    {
-                        Point start = pf.StartPoint;
-                        foreach (PathSegment ps in pf.Segments)
-                        {
-                            if (ps is ArcSegment)
-                            {
-                                ArcSegment arc = (ArcSegment)ps;
-                                xGrPath.AddArc(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop), 
-                                    new XPoint(arc.Point.X * scaleFactor + marginLeft, arc.Point.Y * scaleFactor + marginTop), 
-                                    new XSize(arc.Size.Width, arc.Size.Height), arc.RotationAngle, arc.IsLargeArc, arc.SweepDirection);
-                            }
-                            else if (ps is BezierSegment)
-                            {
-                                BezierSegment bs = (BezierSegment)ps;
-                                xGrPath.AddBezier(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop),
-                                    new XPoint(bs.Point1.X * scaleFactor + marginLeft, bs.Point1.Y * scaleFactor + marginTop),
-                                    new XPoint(bs.Point2.X * scaleFactor + marginLeft, bs.Point2.Y * scaleFactor + marginTop),
-                                    new XPoint(bs.Point3.X * scaleFactor + marginLeft, bs.Point3.Y * scaleFactor + marginTop));
-                            }
-                            else if (ps is LineSegment)
-                            {
-                                LineSegment ls = (LineSegment)ps;
-                                XPoint p1 = new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop);
-                                XPoint p2 = new XPoint(ls.Point.X * scaleFactor + marginLeft, ls.Point.Y * scaleFactor + marginTop);  
-                                xGrPath.AddLine(p1, p2);
-                            }
-                            else if (ps is PolyLineSegment) 
-                            {
-                                PolyLineSegment pls = (PolyLineSegment)ps;
-                                List<XPoint> points = new List<XPoint>();
-                                points.Add(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop));
-                                foreach (Point p in pls.Points)
-                                {
-                                    points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor + marginTop));
-                                }
-                                xGrPath.AddLines(points.ToArray());
-                            }
-                        }
-                    }
-                    gfx.DrawPath(pen, xGrPath);
-                }
-                else if (o is Ellipse)
-                {
-                    Ellipse winElipse = o as Ellipse;
-                    //double majorAxis = winElipse.Width;
-                    //double minorAxis = winElipse.Height;
 
-                    System.Windows.Media.Color c = ((SolidColorBrush)winElipse.Stroke).Color;
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winElipse.StrokeThickness);
 
-                    double x = Canvas.GetLeft(winElipse) - winElipse.StrokeThickness / 2;
-                    double y = Canvas.GetTop(winElipse) - winElipse.StrokeThickness / 2;
 
-                    gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winElipse.Width * scaleFactor, winElipse.Height * scaleFactor);
-                    //gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winElipse.Width, winElipse.Height);
-                }
-                else if (o is Line)
-                {
-                    Line winLine = o as Line;
-                    
-                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color;
-                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness);
 
-                    if (winLine.StrokeDashArray.Count > 0) { pen.DashStyle = XDashStyle.Dash;
-                        double[] dashArray = new double[winLine.StrokeDashArray.Count];
-                        for (int i = 0; i < dashArray.Length; i++)
-                        {
-                            dashArray[i] = winLine.StrokeDashArray[i] * scaleFactor;
-                        }
-                        pen.DashPattern = dashArray;
-                    }
-                    
 
-                    gfx.DrawLine(pen, winLine.X1 * scaleFactor + marginLeft, winLine.Y1 * scaleFactor + marginTop, winLine.X2 * scaleFactor + marginLeft, winLine.Y2 * scaleFactor + marginTop);
-                }
-                else if (o is TextBlock)
-                {
-                    TextBlock winText = o as TextBlock;
-                    double angle = 0;
-                    if (winText.RenderTransform is RotateTransform)
-                    {
-                        RotateTransform rotTrans = (RotateTransform)winText.RenderTransform;
-                        //System.Diagnostics.Trace.WriteLine(winText.Text);
-                        //System.Diagnostics.Trace.WriteLine(rotTrans.Angle);
-                        angle = rotTrans.Angle;
-                    }
 
-                    double x = Canvas.GetLeft(winText);
-                    //if(Math.Abs(angle) > 45) x += winText.ActualHeight;
-                    double y = Canvas.GetTop(winText);
-                    //y += winText.FontSize;
 
-                    System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
-                    XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
-                    //XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
-                    XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize / 4 * 3);  //pixels to points
-                    //XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize);  //pixels to points
-                    //XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop);
 
-                    //este by stalo mozno za pokus sa pohrat s rotaciou, ci netreba nahodou robit rotaciu
-                    //XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4*3 * scaleFactor + marginTop);
-                    XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4 * 3 * scaleFactor + marginTop);
-                    //XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 + marginLeft, y * scaleFactor + winText.ActualHeight / 2  + marginTop);
-                    if (Math.Abs(angle) > 45) p.X += winText.ActualHeight * scaleFactor;
 
-                    XGraphicsState state = gfx.Save();
-                    gfx.RotateAtTransform(angle, p);
-                    gfx.DrawString(winText.Text, f, solidBrush, p);
-                    gfx.Restore(state);
-                }
-            }
-            gfx.Dispose();
-        }
 
-        private static void DrawLogo(XGraphics gfx)
-        {
-            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
-            gfx.DrawImage(image, 50, 750);
 
-            XImage image2 = XImage.FromFile(ConfigurationManager.AppSettings["confStampForPDF"]);
-            gfx.DrawImage(image2, 220, 750);
-        }
 
-        private static void Draw3DScheme(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
-        {
-            // Display scheme
+        
 
-            XImage image;
-            string sFileName = "";
-            float platePitch_rad = 0;
 
-            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
-            {
-                sFileName = "JB";
-            }
-            else if (plate is CConCom_Plate_KB)
-            {
-                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
+        
+        
 
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KB_RK";
-                else
-                    sFileName = "KB_FK";
-            }
-            else if (plate is CConCom_Plate_KBS)
-            {
-                CConCom_Plate_KBS plateTemp = (CConCom_Plate_KBS)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
+        
 
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KB_RK";
-                else
-                    sFileName = "KB_FK";
-            }
-            else if (plate is CConCom_Plate_KC)
-            {
-                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
+       
 
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KC_RK";
-                else
-                    sFileName = "KC_FK";
-            }
-            else if (plate is CConCom_Plate_KCS)
-            {
-                CConCom_Plate_KCS plateTemp = (CConCom_Plate_KCS)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
+        
 
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KC_RK";
-                else
-                    sFileName = "KC_FK";
-            }
-            else if (plate is CConCom_Plate_KD)
-            {
-                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
+        
 
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KD_RK";
-                else
-                    sFileName = "KD_FK";
-            }
-            else if (plate is CConCom_Plate_KDS)
-            {
-                CConCom_Plate_KDS plateTemp = (CConCom_Plate_KDS)plate;
-                platePitch_rad = plateTemp.FSlope_rad;
-
-                if (plateTemp.FSlope_rad > 0)
-                    sFileName = "KD_RK";
-                else
-                    sFileName = "KD_FK";
-            }
-            else
-            {
-                // Not defined
-                sFileName = "";
-            }
-
-            if (sFileName != "")
-            {
-                image = XImage.FromFile(ConfigurationManager.AppSettings[sFileName]);
-
-                if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) // J
-                    gfx.DrawImage(image, 120, 45);
-                else // K
-                    gfx.DrawImage(image, 458, 2);
-            }
-
-            // Display number of plates
-
-            // Set font encoding to unicode
-            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular, options);
-
-            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
-            {
-                if (plate is CConCom_Plate_KA) return;
-                if (plate is CConCom_Plate_KE) return;
-                //gfx.DrawString("RH: ", font, XBrushes.Black, 460, 20);
-                gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 486, 75);
-                //gfx.DrawString("LH: ", font, XBrushes.Black, 480, 20);
-                gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 546, 58);
-            }
-        }
+        
+        
 
         private static void DrawFSAddress(XGraphics gfx)
         {
@@ -453,7 +205,7 @@ namespace EXPIMP
             gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
             if (pInfo.JobNumber != null) gfx.DrawString(pInfo.JobNumber, font, XBrushes.Black, 100, 20);
             gfx.DrawString("Customer: ", font, XBrushes.Black, 10, 40);
-            if(pInfo.Customer != null) gfx.DrawString(pInfo.Customer, font, XBrushes.Black, 100, 40);
+            if (pInfo.Customer != null) gfx.DrawString(pInfo.Customer, font, XBrushes.Black, 100, 40);
             gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
             gfx.DrawString(pInfo.Amount.ToString(), font, XBrushes.Black, 100, 60);
 
@@ -587,7 +339,7 @@ namespace EXPIMP
             }
 
             decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
-            
+
             XFont font1 = new XFont(fontFamily, 14, XFontStyle.Bold);
             XFont font2 = new XFont(fontFamily, 12, XFontStyle.Regular);
 
@@ -668,14 +420,14 @@ namespace EXPIMP
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
             Table t = GetSimpleTable(doc, tableParams);
-            
+
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
             pdfRenderer.RenderDocument();
             // Create a renderer and prepare (=layout) the document
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
             docRenderer.PrepareDocument();
-            
+
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
@@ -685,7 +437,7 @@ namespace EXPIMP
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             gfx.MFEH = PdfFontEmbedding.Always;
-            
+
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
             Table t = GetPlatesParamsTable(doc, gfx, tableParams);
@@ -783,7 +535,7 @@ namespace EXPIMP
                 Row row = table.AddRow();
                 if (count == 1 || count == tableParams.Count) row.Format.Font.Bold = true;
 
-                if(count > 1)
+                if (count > 1)
                 {
                     row.Format.Alignment = ParagraphAlignment.Right;
                     row.VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
@@ -818,41 +570,10 @@ namespace EXPIMP
 
                 columns = strParams.Length;
             }
-            
+
             table.SetEdge(0, 0, columns, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
-
-        //private static void BeginBox(XGraphics gfx, int number, string title)
-        //{
-        //    const int dEllipse = 15;
-        //    XRect rect = new XRect(0, 20, 300, 200);
-        //    if (number % 2 == 0)
-        //        rect.X = 300 - 5;
-        //    rect.Y = 40 + ((number - 1) / 2) * (200 - 5);
-        //    rect.Inflate(-10, -10);
-        //    XRect rect2 = rect;
-        //    rect2.Offset(this.borderWidth, this.borderWidth);
-        //    gfx.DrawRoundedRectangle(new XSolidBrush(this.shadowColor), rect2, new XSize(dEllipse + 8, dEllipse + 8));
-        //    XLinearGradientBrush brush = new XLinearGradientBrush(rect, this.backColor, this.backColor2, XLinearGradientMode.Vertical);
-        //    gfx.DrawRoundedRectangle(this.borderPen, brush, rect, new XSize(dEllipse, dEllipse));
-        //    rect.Inflate(-5, -5);
-
-        //    XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
-        //    gfx.DrawString(title, font, XBrushes.Navy, rect, XStringFormats.TopCenter);
-
-        //    rect.Inflate(-10, -5);
-        //    rect.Y += 20;
-        //    rect.Height -= 20;
-
-        //    this.state = gfx.Save();
-        //    gfx.TranslateTransform(rect.X, rect.Y);
-        //}
-
-        //private void EndBox(XGraphics gfx)
-        //{
-        //    gfx.Restore(this.state);
-        //}
     }
 }

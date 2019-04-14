@@ -1639,22 +1639,22 @@ namespace PFD
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
             List<string[]> list = new List<string[]>();
 
-            Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
-            RenderTargetBitmap bmp = new RenderTargetBitmap((int)viewPort.ActualWidth, (int)viewPort.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            bmp.Render(viewPort);
-
-            PngBitmapEncoder png = new PngBitmapEncoder();
-            png.Frames.Add(BitmapFrame.Create(bmp));
-            using (Stream stm = File.Create("ViewPort.png"))
+            try
             {
-                png.Save(stm);
+                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;                
+                CMainReportExport.ReportAllDataToPDFFile(viewPort, list);
             }
-
-
-            if (Frame1.Content is Canvas) CExportToPDF.ReportAllDataToPDFFile(Frame1.Content as Canvas, list);
-            else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
-
-            ww.Close();
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ww.Close();
+            }
         }
+
+
+
     }
 }
