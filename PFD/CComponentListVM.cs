@@ -404,7 +404,7 @@ namespace PFD
             if (cInfo != null) return; //already exist in the collection
                         
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", null, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.DoorFrame);
+                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, EMemberType_DB.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
 
@@ -421,7 +421,7 @@ namespace PFD
             if (cDT == null)
             {
                 cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", null, true, true, true, true, SectionsForRollerDoorTrimmer, EMemberType_DB.DoorTrimmer);
+                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, EMemberType_DB.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
             }
@@ -430,7 +430,7 @@ namespace PFD
             if (cDL == null)
             {
                 cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", null, true, true, true, true, SectionsForRollerDoorLintel, EMemberType_DB.DoorLintel);
+                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, EMemberType_DB.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
             }
@@ -450,7 +450,7 @@ namespace PFD
             if (cInfo != null) return; //already exist in the collection
 
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix,
-                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", null, true, true, true, true, SectionsForDoorOrWindowFrame, EMemberType_DB.WindowFrame);
+                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, EMemberType_DB.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
         }

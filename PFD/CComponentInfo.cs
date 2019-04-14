@@ -29,7 +29,9 @@ namespace PFD
         private bool MGenerateIsThreeState;
         private bool MDisplay;
         private bool MCalculate;
+        private bool MIsCalculateEnabled;        
         private bool MDesign;
+        private bool MIsDesignEnabled;
         private bool MMaterialList;
 
         public string Prefix
@@ -189,6 +191,18 @@ namespace PFD
                 NotifyPropertyChanged("Calculate");
             }
         }
+        public bool IsCalculateEnabled
+        {
+            get
+            {
+                return MIsCalculateEnabled;
+            }
+
+            set
+            {
+                MIsCalculateEnabled = value;
+            }
+        }
 
         public bool Design
         {
@@ -207,6 +221,18 @@ namespace PFD
                     MDesign = false;
 
                 NotifyPropertyChanged("Design");
+            }
+        }
+        public bool IsDesignEnabled
+        {
+            get
+            {
+                return MIsDesignEnabled;
+            }
+
+            set
+            {
+                MIsDesignEnabled = value;
             }
         }
 
@@ -267,6 +293,8 @@ namespace PFD
             }
         }
 
+        
+
         public CComponentInfo(string prefix, string componentName, string section, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, EMemberType_DB memberType)
         {
             MIsSetFromCode = false;
@@ -283,6 +311,8 @@ namespace PFD
             MMemberType = memberType;
 
             SetGenerateIsReadonly();
+            SetCalculateIsEnabled();
+            SetDesignIsEnabled();
         }
 
         protected void NotifyPropertyChanged(string propertyName)
@@ -308,6 +338,16 @@ namespace PFD
 
             if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") GenerateIsThreeState = true;
             else GenerateIsThreeState = false;
+        }
+        private void SetCalculateIsEnabled()
+        {
+            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") IsCalculateEnabled = false;
+            else IsCalculateEnabled = true;
+        }
+        private void SetDesignIsEnabled()
+        {
+            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") IsDesignEnabled = false;
+            else IsDesignEnabled = true;
         }
     }
 }

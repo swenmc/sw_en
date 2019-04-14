@@ -93,14 +93,14 @@
                 <DataGridTemplateColumn Header="Calculate">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Calculate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" IsEnabled="{Binding IsCalculateEnabled}" VerticalAlignment="Center" IsChecked="{Binding Path=Calculate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>                        
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Design">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Design, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox HorizontalAlignment="Center" IsEnabled="{Binding IsDesignEnabled}" VerticalAlignment="Center" IsChecked="{Binding Path=Design, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
