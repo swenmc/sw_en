@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -58,6 +58,10 @@ namespace EXPIMP
             gfx = XGraphics.FromPdfPage(page);
             DrawBasicGeometry(gfx, modelData);
 
+            page = s_document.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            AddBasicGeometryToDocument(gfx, modelData, 10);
+
 
             //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
 
@@ -90,7 +94,7 @@ namespace EXPIMP
             RenderTargetBitmap bmp = new RenderTargetBitmap((int)(scale * viewPort.ActualWidth),
                                                             (int)(scale * viewPort.ActualHeight),
                                                             scale * 96,
-                                                            scale * 96, PixelFormats.Default);
+                                                            scale * 96, System.Windows.Media.PixelFormats.Default);
             viewPort.InvalidateVisual();
             bmp.Render(viewPort);
             bmp.Freeze();
@@ -169,6 +173,8 @@ namespace EXPIMP
 
         private static void DrawBasicGeometry(XGraphics gfx, CModelData data)
         {
+            
+
             XFont fontTitle = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
 
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
@@ -183,7 +189,7 @@ namespace EXPIMP
 
 
             gfx.DrawString("Width", font, XBrushes.Black, offsetX1, 60);
-            gfx.DrawString("W", font, XBrushes.Black, offsetX2, 60);
+            gfx.DrawString("B = ", font, XBrushes.Black, offsetX2, 60);
             gfx.DrawString(data.GableWidth.ToString(), font, XBrushes.Black, offsetX3, 60);
             gfx.DrawString("m", font, XBrushes.Black, offsetX4, 60);
 
@@ -193,17 +199,60 @@ namespace EXPIMP
             gfx.DrawString("m", font, XBrushes.Black, offsetX4, 80);
 
             gfx.DrawString("Height", font, XBrushes.Black, offsetX1, 100);
-            gfx.DrawString("H", font, XBrushes.Black, offsetX2, 100);
+            gfx.DrawString("H1", font, XBrushes.Black, offsetX2, 100);
             gfx.DrawString(data.WallHeight.ToString(), font, XBrushes.Black, offsetX3, 100);
             gfx.DrawString("m", font, XBrushes.Black, offsetX4, 100);
 
             gfx.DrawString("Height", font, XBrushes.Black, offsetX1, 120);
             gfx.DrawString("???", font, XBrushes.Black, offsetX2, 120);
+            gfx.DrawString("H", font, XBrushes.Black, offsetX2, 100);
+            gfx.DrawString(data.WallHeight.ToString(), font, XBrushes.Black, offsetX3, 100);
+            gfx.DrawString("m", font, XBrushes.Black, offsetX4, 100);
 
             gfx.DrawString("Pitch", font, XBrushes.Black, offsetX1, 140);
             gfx.DrawString("α", font, XBrushes.Black, offsetX2, 140);
             gfx.DrawString(data.RoofPitch_deg.ToString(), font, XBrushes.Black, offsetX3, 140);
             gfx.DrawString("deg", font, XBrushes.Black, offsetX4, 140);            
+        }
+
+        private static void AddBasicGeometryToDocument(XGraphics gfx, CModelData data, double offsetY)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            gfx.MFEH = PdfFontEmbedding.Always;
+
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Section sec = doc.AddSection();
+            Paragraph para = sec.AddParagraph();
+            para.Format.FirstLineIndent = 0;
+            para.Format.LeftIndent = 0;
+
+            para.AddFormattedText("Width\t\t");
+            //para.Format.SpaceAfter = "3cm";
+            FormattedText t = para.AddFormattedText("B =", TextFormat.Bold);
+            t.AddTab();
+            para.AddFormattedText(data.GableWidth.ToString());
+            para.AddText("m");
+            t = para.AddFormattedText("2");
+            t.Superscript = true;
+            para.AddLineBreak();
+            para.AddFormattedText("Pitch\t\t");
+            para.AddFormattedText("α\t");
+            para.AddFormattedText(data.RoofPitch_deg.ToString());
+            para.AddFormattedText("\tdeg");
+
+
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), para);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
         private static string GetReportPDFName()
