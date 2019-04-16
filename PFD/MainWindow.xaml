@@ -444,6 +444,7 @@
                 <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="PurlinDesignerButton_Click"/>
 
                 <Button Name="ExportPDF" Content="Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportPDF_Click"/>
+                <Button Name="ExportWord" Content="Report Word" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportWord_Click"/>
 
             </StackPanel>
         </StackPanel>

@@ -86,32 +86,7 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        private static RenderTargetBitmap SaveViewPortContentAsImage(Viewport3D viewPort)
-        {
-            
-            // Scale dimensions from 96 dpi to 600 dpi.
-            double scale = 300 / 96;
-            RenderTargetBitmap bmp = new RenderTargetBitmap((int)(scale * viewPort.ActualWidth),
-                                                            (int)(scale * viewPort.ActualHeight),
-                                                            scale * 96,
-                                                            scale * 96, System.Windows.Media.PixelFormats.Default);
-            viewPort.InvalidateVisual();
-            bmp.Render(viewPort);
-            bmp.Freeze();
-            SaveBitmapImage(bmp);
-            return bmp;
-            
-        }
-
-        private static void SaveBitmapImage(RenderTargetBitmap bmp)
-        {
-            PngBitmapEncoder png = new PngBitmapEncoder();
-            png.Frames.Add(BitmapFrame.Create(bmp));
-            using (Stream stm = File.Create("ViewPort.png"))
-            {
-                png.Save(stm);
-            }
-        }
+        
 
         /// <summary>
         /// Draw scaled 3Model to PDF
@@ -123,7 +98,7 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
 
-            XImage image = XImage.FromBitmapSource(SaveViewPortContentAsImage(viewPort));
+            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
             //XImage image = XImage.FromFile("ViewPort.png");
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width;

@@ -1656,7 +1656,32 @@ namespace PFD
             }
         }
 
+        private void ExportWord_Click(object sender, RoutedEventArgs e)
+        {
+            WaitWindow ww = new WaitWindow();
+            
+            ww.Show();
 
+            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
+            CModelData modelData = vmPFD.GetModelData();
 
+            List<string[]> list = new List<string[]>();
+
+            try
+            {
+                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
+                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData, list);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                ww.Close();
+            }
+
+        }
     }
 }
