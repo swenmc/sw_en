@@ -37,11 +37,7 @@ namespace EXPIMP
         
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
-        private List<string> MBuildingSides;
-        private List<string> MDoorsTypes;
-
-        //private ObservableCollection<CComponentInfo> MComponentList;
-        private bool MModelCalculatedResultsValid;
+        
 
         
 
@@ -331,6 +327,32 @@ namespace EXPIMP
             set
             {
                 iFrontColumnNoInOneFrame = value;
+            }
+        }
+
+        public ObservableCollection<DoorProperties> DoorBlocksProperties
+        {
+            get
+            {
+                return MDoorBlocksProperties;
+            }
+
+            set
+            {
+                MDoorBlocksProperties = value;
+            }
+        }
+
+        public ObservableCollection<WindowProperties> WindowBlocksProperties
+        {
+            get
+            {
+                return MWindowBlocksProperties;
+            }
+
+            set
+            {
+                MWindowBlocksProperties = value;
             }
         }
 

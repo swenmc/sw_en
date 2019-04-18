@@ -26,16 +26,16 @@ namespace EXPIMP
                 //DrawProjectInfo(document, GetProjectInfo());
                 DrawModel3D(document, viewPort);
                 DrawBasicGeometry(document, null);
+                DrawLoad(document, null);
 
-                
 
-                CreateChapterWithBuletedList(document);
 
-                CreateTOC(document);
-                
+                //CreateChapterWithBuletedList(document);
+                //CreateTOC(document);
+
                 // Save this document to disk.
                 document.Save();
-                
+
             }
             Process.Start(fileName);
         }
@@ -58,7 +58,7 @@ namespace EXPIMP
         {
             // Add a Table of 5 rows and 2 columns into the document and sets its values.
             var t = document.AddTable(1, 3);
-            //t.Design = TableDesign.ColorfulListAccent;
+            t.Design = TableDesign.None;
             t.Alignment = Alignment.left;
 
             var image = document.AddImage(ConfigurationManager.AppSettings["logoForPDF"]);
@@ -76,7 +76,7 @@ namespace EXPIMP
 
             p = p.InsertParagraphAfterSelf("Project Number: ");
             p = p.InsertParagraphAfterSelf(pInfo.ProjectNumber).Bold();
-            
+
             p = t.Rows[0].Cells[2].Paragraphs[0].InsertParagraphAfterSelf("Project Part: ");
             p = p.InsertParagraphAfterSelf(pInfo.ProjectPart).Bold();
             p.SpacingAfter(50d);
@@ -84,16 +84,7 @@ namespace EXPIMP
             p = p.InsertParagraphAfterSelf("Date: ");
             p = p.InsertParagraphAfterSelf(pInfo.Date.ToShortDateString()).Bold();
 
-
-
-            // Add a row at the end of the table and sets its values.
-            //var r = t.InsertRow();
-            //r.Cells[0].Paragraphs[0].Append("Mario");
-            //r.Cells[1].Paragraphs[0].Append("54");
-            // Insert a new Paragraph into the document.
-            //var p = document.InsertParagraph("Xceed Top Players Points:");
-            //p.SpacingAfter(40d);
-            // Insert the Table after the Paragraph.
+            
             document.InsertTable(t);
         }
 
@@ -102,8 +93,8 @@ namespace EXPIMP
             // Add a simple image from disk.
             var image = document.AddImage(ConfigurationManager.AppSettings["logoForPDF"]);
             // Set Picture Height and Width.
-            var picture = image.CreatePicture(300, 150);            
-            
+            var picture = image.CreatePicture(300, 150);
+
             // Insert Picture in paragraph.
             var p = document.InsertParagraph();
             p.AppendPicture(picture);
@@ -131,18 +122,59 @@ namespace EXPIMP
 
             p = p.InsertParagraphAfterSelf("Date: ");
             p = p.InsertParagraphAfterSelf(pInfo.Date.ToShortDateString());
-            
+
         }
 
         private static void DrawBasicGeometry(DocX document, CModelData data)
-        {
-            Paragraph p = document.InsertParagraph("Basic Geometry - Building: ");
+        {            
+            Paragraph p = document.InsertParagraph("Basic Geometry - Building");
+            p.StyleName = "Heading1";
 
             p = p.InsertParagraphAfterSelf("Width\t\tB = \t\t10.00 m").Append("2").Script(Script.superscript);
             p = p.InsertParagraphAfterSelf("Length\t\tL = \t\t22.85 m").Append("2").Script(Script.superscript);
             p = p.InsertParagraphAfterSelf("Height\t\tH").Append("1").Script(Script.subscript).Append(" = \t\t5.00 m").Append("2").Script(Script.superscript);
             p = p.InsertParagraphAfterSelf("Height\t\tH").Append("2").Script(Script.subscript).Append(" = \t\t4.48 m").Append("2").Script(Script.superscript);
-            p = p.InsertParagraphAfterSelf("Pitch\t\tα = \t\t3.0 deg").Append("2").Script(Script.superscript);            
+            p = p.InsertParagraphAfterSelf("Pitch\t\tα = \t\t3.0 deg");
+
+            p.SpacingAfter(40d);
+            p = p.InsertParagraphAfterSelf("3D structural model");
+            p.StyleName = "Heading1";
+
+            p = p.InsertParagraphAfterSelf("Theoretical dimensions");
+            p = p.InsertParagraphAfterSelf("Width\t\tB = \t\t9.41 m");
+            p = p.InsertParagraphAfterSelf("Length\t\tL = \t\t22.85 m");
+            p = p.InsertParagraphAfterSelf("Height\t\tH").Append("1").Script(Script.subscript).Append(" = \t\t5.00 m");
+            p = p.InsertParagraphAfterSelf("Height\t\tH").Append("2").Script(Script.subscript).Append(" = \t\t4.48 m");
+
+            p = p.InsertParagraphAfterSelf("Rafter length \t\t9.423 m");
+            p = p.InsertParagraphAfterSelf("Purlin spacing \t\t1.88 m \t- not used for purlin design");
+            p = p.InsertParagraphAfterSelf("Girt spacing \t\t2.00 m \t- not used for girt design");
+        }
+        private static void DrawLoad(DocX document, CModelData data)
+        {
+            Paragraph p = document.InsertParagraph("Load");
+            p.StyleName = "Heading1";
+
+            p = p.InsertParagraphAfterSelf("Basic parameters");
+            p.StyleName = "Heading2";
+            p = p.InsertParagraphAfterSelf("Location:");
+            p = p.InsertParagraphAfterSelf("Design Life:");
+            p = p.InsertParagraphAfterSelf("Importance level:");
+            p = p.InsertParagraphAfterSelf("Annual probability of ecxeedance SLS:");
+
+
+            p = p.InsertParagraphAfterSelf("Dead load (self - weight of frame and cladding)");
+            p.StyleName = "Heading2";
+            p = p.InsertParagraphAfterSelf("Roof:\t\tPurlindek 0.4 mm \t\tg = 0.05623 kN/m").Append("2").Script(Script.superscript).
+                Append("\t5.623 kg/m").Append("2").Script(Script.superscript);
+            p = p.InsertParagraphAfterSelf("Wall - gridline \"2\":");
+
+            p = p.InsertParagraphAfterSelf("Service load - long-term load (considered as dead load)");
+            p.StyleName = "Heading2";
+            p = p.InsertParagraphAfterSelf("Service load - roof:");
+            p = p.InsertParagraphAfterSelf("Design Life:");
+            
+
         }
 
         private static void DrawModel3D(DocX document, Viewport3D viewPort)
@@ -153,7 +185,7 @@ namespace EXPIMP
 
             // Add a simple image from disk.
             var image = document.AddImage("ViewPort.png");
-            
+
             // Set Picture Height and Width.
             var picture = image.CreatePicture((int)document.PageWidth, (int)document.PageWidth);
             // Insert Picture in paragraph.
@@ -161,7 +193,7 @@ namespace EXPIMP
             p.AppendPicture(picture);
             p.InsertPageBreakAfterSelf();
 
-            
+
             //XImage image = XImage.FromFile("ViewPort.png");
             //double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             //double scaledImageWidth = gfx.PageSize.Width;
@@ -174,7 +206,7 @@ namespace EXPIMP
 
         private static void CreateTOC(DocX document)
         {
-            document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);            
+            document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);
         }
 
         private static void CreateChapterWithBuletedList(DocX document)

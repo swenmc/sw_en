@@ -2079,8 +2079,16 @@ namespace PFD
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.LoadCaseIndex = MLoadCaseIndex;
-            
+
             data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
+            
+            data.GeneralLoad = GeneralLoad;
+            data.Wind = Wind;
+            data.Snow = Snow;
+            data.Eq = Eq;
+
+            data.DoorBlocksProperties = DoorBlocksProperties;
+            data.WindowBlocksProperties = WindowBlocksProperties;
 
             return data;
         }
