@@ -2090,6 +2090,9 @@ namespace PFD
             data.DoorBlocksProperties = DoorBlocksProperties;
             data.WindowBlocksProperties = WindowBlocksProperties;
 
+            data.ComponentList = ComponentList;
+            
+
             return data;
         }
     }

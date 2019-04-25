@@ -1,4 +1,6 @@
 ﻿using BaseClasses;
+using DATABASE;
+using DATABASE.DTO;
 using M_EC1.AS_NZS;
 using System;
 using System.Collections.Generic;
@@ -37,9 +39,10 @@ namespace EXPIMP
         
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
-        
+        private ObservableCollection<CComponentInfo> MComponentList;
+        private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
-        
+
 
 
         //private CModel_PFD MModel;
@@ -356,7 +359,34 @@ namespace EXPIMP
             }
         }
 
+        public ObservableCollection<CComponentInfo> ComponentList
+        {
+            get
+            {
+                return MComponentList;
+            }
 
+            set
+            {
+                MComponentList = value;
+            }
+        }
+        public List<CMaterialPropertiesText> MaterialDetailsList
+        {
+            get
+            {
+                if (m_MaterialDetailsList == null)
+                {
+                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits();
+                }
+                return m_MaterialDetailsList;
+            }
+
+            set
+            {
+                m_MaterialDetailsList = value;                
+            }
+        }
 
         //private CComponentListVM _componentVM;
         //private CPFDLoadInput _loadInput;

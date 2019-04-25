@@ -154,6 +154,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DATABASE\DATABASE.csproj">
+      <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MODULES\M_EC1\M_EC1.csproj">
       <Project>{9764D1BF-A2B3-45D6-AB93-050DCE30830C}</Project>
       <Name>M_EC1</Name>
