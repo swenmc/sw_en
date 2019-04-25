@@ -115,6 +115,28 @@ namespace EXPIMP
             }
 
     }
+        // TO Ondrej - Moje uvahy o jednom bazovom rieseni pre tabulky :-)
+
+        // Dalo by sa metodu DrawMaterialTable zobecnit tak, ze List<CMaterialPropertiesText> a List<CSectionPropertiesText>
+        // pripadne aj dalsie zobrazovane hodnoty v datagridoch, ktore maju rovnake (podobne) nazvy stlpcov (Load parameters, Member Design, Joint Design) by mali nejakeho spolocneho predka
+        // V tom by boli zadefinovane stlpce
+
+        /*
+        0 - Text (alebo Name, alebo Description)
+        1 - Symbol
+        2 - Value
+        3 - Unit
+        4 - Formula (alebo Equation)
+        5 - Note
+        */
+
+        // A sprava zobrazovania v Datagridoch GUI a pri exporte do Wordu by bola pre vsetky tieto zoznamy spolocna
+        // Zobrazenie pre jednotlive stlpce by sa dalo vypinat a zapinat
+        // Dalo by sa pocet riadkov tabulky zmensit tak, ze by sa mohli vlozit napriklad dve alebo tri sekvencie (1-5) vedla seba,
+        // takze z 9 riadkov x 5 stlpcov by sme teoreticky mohli urobit 3 riadky x 15 stlpcov (nieco podobne ako je teraz v Member Design Details)
+        // Samozrejme by to bolo nastavitelne podla sirky datagridu v GUI alebo sirky stranky A4 bez okrajov
+        // Spolocne by sa riesili horne a dolne indexy a jednotky
+
         private static void DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
         {
             
