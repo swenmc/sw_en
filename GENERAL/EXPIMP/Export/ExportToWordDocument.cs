@@ -100,7 +100,7 @@ namespace EXPIMP
             par.RemoveText(0);
             foreach (string material in diffMaterials)
             {
-                par = par.InsertParagraphAfterSelf("Material grade: " + material);
+                par = par.InsertParagraphAfterSelf("Material grade: ").Bold().Append(material);
 
                 // Material properties
                 List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList(material);
@@ -111,7 +111,7 @@ namespace EXPIMP
                 }
                 data.MaterialDetailsList = new List<CMaterialPropertiesText>(data.MaterialDetailsList);
 
-                DrawMaterialTable(document, par, data.MaterialDetailsList);
+                par = DrawMaterialTable(document, par, data.MaterialDetailsList);
             }
 
     }
@@ -137,18 +137,27 @@ namespace EXPIMP
         // Samozrejme by to bolo nastavitelne podla sirky datagridu v GUI alebo sirky stranky A4 bez okrajov
         // Spolocne by sa riesili horne a dolne indexy a jednotky
 
-        private static void DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
-        {
-            
-            // Add a Table of 5 rows and 2 columns into the document and sets its values.
+        private static Paragraph DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
+        {            
             var t = document.AddTable(1, 4);
-            t.Design = TableDesign.None;
+            t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
+
+            t.AutoFit = AutoFit.Window;            
+            
 
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Text");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Symbol");
             t.Rows[0].Cells[2].Paragraphs[0].InsertText("Value");
             t.Rows[0].Cells[3].Paragraphs[0].InsertText("Unit");
+            t.Rows[0].Cells[0].Paragraphs[0].Bold();
+            t.Rows[0].Cells[1].Paragraphs[0].Bold();
+            t.Rows[0].Cells[2].Paragraphs[0].Bold();
+            t.Rows[0].Cells[3].Paragraphs[0].Bold();
+            t.Rows[0].Cells[0].Width = document.PageWidth * 0.6;
+            t.Rows[0].Cells[1].Width = document.PageWidth * 0.13;
+            t.Rows[0].Cells[2].Width = document.PageWidth * 0.13;
+            t.Rows[0].Cells[3].Width = document.PageWidth * 0.13;
 
             foreach (CMaterialPropertiesText prop in details)
             {
@@ -160,7 +169,12 @@ namespace EXPIMP
                 row.Cells[2].Paragraphs[0].InsertText(prop.Value);
                 row.Cells[3].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
             }
-            p.InsertTableAfterSelf(t);
+            p = p.InsertParagraphAfterSelf(p);
+            p.RemoveText(0);
+            p.InsertTableBeforeSelf(t);
+            //p.SpacingAfter(10d);
+            
+            return p;            
         }
 
 
