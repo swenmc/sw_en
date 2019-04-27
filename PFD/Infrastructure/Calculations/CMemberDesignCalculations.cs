@@ -45,7 +45,7 @@ namespace PFD.Infrastructure
     public class CMemberDesignCalculations
     {
         const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
-        const int iNumberOfSegments = iNumberOfDesignSections - 1;
+        const int iNumberOfDesignSegments = iNumberOfDesignSections - 1;
 
         float[] fx_positions;
         double step;
@@ -63,8 +63,8 @@ namespace PFD.Infrastructure
         public List<CMemberInternalForcesInLoadCombinations> MemberInternalForcesInLoadCombinations;
         public List<CMemberDeflectionsInLoadCombinations> MemberDeflectionsInLoadCombinations;
 
-        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
-        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
+        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
         private List<CFrame> frameModels;
@@ -100,6 +100,10 @@ namespace PFD.Infrastructure
 
             MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
             MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
+
+            MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+            MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+            JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
         }
 
         public void CalculateAll()
@@ -138,7 +142,7 @@ namespace PFD.Infrastructure
                 if (!DeterminateCombinationResultsByFEMSolver)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
-                        fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
+                        fx_positions[i] = ((float)i / (float)iNumberOfDesignSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
                     foreach (CLoadCase lc in Model.m_arrLoadCases)
                     {
@@ -249,22 +253,12 @@ namespace PFD.Infrastructure
                 SolverWindow.Progress += step;
                 SolverWindow.UpdateProgress();
             }
-
         }
 
         public void Calculate_InternalForces_LoadCombination()
         {
-            sDesignResults_ULSandSLS.sLimitStateType = "ULS and SLS";
-            sDesignResults_ULS.sLimitStateType = "ULS";
-            sDesignResults_SLS.sLimitStateType = "SLS";
-
-            // Design of members
             // Calculate Internal Forces For Load Combinations
-            MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
-            MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
 
-            JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
-            
             foreach (CMember m in Model.m_arrMembers)
             {
                 if (!m.BIsGenerated) continue;
@@ -272,11 +266,12 @@ namespace PFD.Infrastructure
                 if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
-                        fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
+                        fx_positions[i] = ((float)i / (float)iNumberOfDesignSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
                     foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
                     {
-                        if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for ULS
+                        // TODO - kvoli urceniu Ieff pre posudenie priehybu budeme pravdepodobne potrebovat aj vn. sily pre SLS, to znamena ze tento if / else sa zrusi a bude sa to pocitat pre vsetky kombinacie
+                        if (lcomb.eLComType == ELSType.eLS_ULS) // Perform internal foces calculation for ULS
                         {
                             // Member basic internal forces
                             designBucklingLengthFactors[] sBucklingLengthFactors_design = new designBucklingLengthFactors[iNumberOfDesignSections];
@@ -307,6 +302,8 @@ namespace PFD.Infrastructure
                                     sBucklingLengthFactors_design[j] = sBucklingLengthFactors_temp;
                                     sMomentValuesforCb_design[j] = sMomentValuesforCb_temp;
                                 }
+
+                                ValidateAndSetMomentValuesforCbAbsoluteValue(ref sMomentValuesforCb_design);
 
                                 // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
                                 // Preto hodnoty momentov prenasobime
@@ -353,6 +350,8 @@ namespace PFD.Infrastructure
                                     sMomentValuesforCb_design[j] = sMomentValuesforCb_temp;
                                 }
 
+                                ValidateAndSetMomentValuesforCbAbsoluteValue(ref sMomentValuesforCb_design);
+
                                 // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
                                 // Preto hodnoty momentov prenasobime
                                 float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
@@ -376,6 +375,8 @@ namespace PFD.Infrastructure
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
                                 CMemberResultsManager.SetMemberInternalForcesInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
+
+                                ValidateAndSetMomentValuesforCbAbsoluteValue(ref sMomentValuesforCb_design);
                             }
 
                             // 22.2.2019 - Ulozime vnutorne sily v kombinacii - pre zobrazenie v Internal forces
@@ -383,10 +384,11 @@ namespace PFD.Infrastructure
                         }
                         else // SLS
                         {
-                            
+
+                            // TODO - kvoli urceniu Ieff pre posudenie priehybu budeme pravdepodobne potrebovat aj vn. sily pre SLS, to znamena ze tento if / else sa zrusi a bude sa to pocitat pre vsetky kombinacie
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -397,11 +399,6 @@ namespace PFD.Infrastructure
             sDesignResults_SLS.sLimitStateType = "SLS";
 
             // Design of members
-            // Calculate Internal Forces For Load Combinations
-            MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
-            MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
-
-            JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
             int count = 0;
             SolverWindow.SetMemberDesignLoadCombination();
@@ -412,26 +409,32 @@ namespace PFD.Infrastructure
                 if (!m.BIsSelectedForDesign) continue; // Only structural members (not auxiliary members or members with deactivated design)
 
                 SolverWindow.SetMemberDesignLoadCombinationProgress(++count, membersDesignCalcCount);
-                //for (int i = 0; i < iNumberOfDesignSections; i++)
-                //    fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
                 foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
                 {
                     if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for ULS
                     {
-                        // Member basic internal forces
-                        designBucklingLengthFactors[] sBucklingLengthFactors_design = new designBucklingLengthFactors[iNumberOfDesignSections];
-                        designMomentValuesForCb[] sMomentValuesforCb_design = new designMomentValuesForCb[iNumberOfDesignSections];
-                        basicInternalForces[] sBIF_x_design = new basicInternalForces[iNumberOfDesignSections];
-
                         // Member design internal forces
                         designInternalForces[] sMemberDIF_x;
 
                         // Member Design
                         CMemberDesign memberDesignModel = new CMemberDesign();
                         // TODO - sBucklingLengthFactors_design  a sMomentValuesforCb_design nemaju byt priradene prutu ale segmentu pruta pre kazdy load case / load combination
-                        memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
-                        MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors_design[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design[memberDesignModel.fMaximumDesignRatioLocationID]));
+
+                        // Set basic internal forces, buckling lengths and bending moments for determination of Cb for member and load combination
+                        CMemberInternalForcesInLoadCombinations mInternal_forces_and_design_parameters = MemberInternalForcesInLoadCombinations.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+
+                        // Design check procedure
+                        memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes,
+                            iNumberOfDesignSections,
+                            m,
+                            mInternal_forces_and_design_parameters.InternalForces, // TO Ondrej - toto by sme asi mohli predavat cele ako jeden parameter mInternal_forces_and_design_parameters namiesto troch
+                            mInternal_forces_and_design_parameters.BucklingLengthFactors,
+                            mInternal_forces_and_design_parameters.BendingMomentValues,
+                            out sMemberDIF_x);
+
+                        // Add design check results to the list
+                        MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], mInternal_forces_and_design_parameters.BucklingLengthFactors[memberDesignModel.fMaximumDesignRatioLocationID], mInternal_forces_and_design_parameters.BendingMomentValues[memberDesignModel.fMaximumDesignRatioLocationID]));
 
                         // Set maximum design ratio of whole structure
                         if (memberDesignModel.fMaximumDesignRatio > sDesignResults_ULSandSLS.fMaximumDesignRatioWholeStructure)
@@ -456,7 +459,7 @@ namespace PFD.Infrastructure
                         CConnectionJointTypes jointStart;
                         CConnectionJointTypes jointEnd;
 
-                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
+                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, Model, m, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                         // Validation - Main member of joint must be defined
                         if (jointStart.m_MainMember == null)
@@ -492,7 +495,6 @@ namespace PFD.Infrastructure
 
                         SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
                         SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULS);
-
                     }
                     else // SLS
                     {
@@ -519,7 +521,6 @@ namespace PFD.Infrastructure
                         {
                             CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
                         }
-
 
                         // Find group of current member (definition of member type)
                         CMemberGroup currentMemberTypeGroupOfMembers = m.GetMemberGroupFromList(Model.listOfModelMemberGroups);
@@ -569,7 +570,6 @@ namespace PFD.Infrastructure
 
                         SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_ULSandSLS);
                         SetMaximumDesignRatioByComponentType(m, lcomb, memberDesignModel, ref sDesignResults_SLS);
-
                     }
                 }
 
@@ -690,7 +690,7 @@ namespace PFD.Infrastructure
             int iMemberIndex_FM = frameModels[iFrameIndex].GetMemberIndexInFrame(member);
 
             float fSegmentStart_abs, fSegmentEnd_abs;
-            GetSegmentStartAndEndFor_xLocation(fx, member, lcombID, out fSegmentStart_abs, out fSegmentEnd_abs);
+            GetSegmentStartAndEndFor_xLocation(fx, member, out fSegmentStart_abs, out fSegmentEnd_abs);
             GetSegmentBucklingFactors_xLocation(fx, member, lcombID, ref bucklingLengthFactors);
             sMomentValuesforCb_design = GetMomentValuesforCb_design_Segment(fSegmentStart_abs, fSegmentEnd_abs, lcomb,
             ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[iMemberIndex_FM])));
@@ -712,7 +712,7 @@ namespace PFD.Infrastructure
             lcomb = ConvertLoadCombinationtoBFENet(Model.m_arrLoadCombs[lcombID - 1]);
 
             float fSegmentStart_abs, fSegmentEnd_abs;
-            GetSegmentStartAndEndFor_xLocation(fx, member, lcombID, out fSegmentStart_abs, out fSegmentEnd_abs);
+            GetSegmentStartAndEndFor_xLocation(fx, member, out fSegmentStart_abs, out fSegmentEnd_abs);
             GetSegmentBucklingFactors_xLocation(fx, member, lcombID, ref bucklingLengthFactors);
             sMomentValuesforCb_design = GetMomentValuesforCb_design_Segment(fSegmentStart_abs, fSegmentEnd_abs, lcomb,
             ((BriefFiniteElementNet.FrameElement2Node)(beamSimpleModels[iSimpleBeamIndex].BFEMNetModel.Elements[0])));
@@ -730,21 +730,58 @@ namespace PFD.Infrastructure
             BriefFiniteElementNet.Force f34 = memberBFENet.GetInternalForceAt(fSegmentStart_abs + 0.75 * fSegmentLength, lcomb);
 
             designMomentValuesForCb sMomentValuesforCb_design_segment;
-            sMomentValuesforCb_design_segment.fM_14 = (float)Math.Abs(f14.My);
-            sMomentValuesforCb_design_segment.fM_24 = (float)Math.Abs(f24.My);
-            sMomentValuesforCb_design_segment.fM_34 = (float)Math.Abs(f34.My);
+            sMomentValuesforCb_design_segment.fM_14 = (float)f14.My;
+            sMomentValuesforCb_design_segment.fM_24 = (float)f24.My;
+            sMomentValuesforCb_design_segment.fM_34 = (float)f34.My;
             sMomentValuesforCb_design_segment.fM_max = 0;
 
             for (int i = 0; i < iNumberOfDesignSections; i++)
             {
-                float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfSegments) * fSegmentLength;
+                float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
                 BriefFiniteElementNet.Force f = memberBFENet.GetInternalForceAt(fx, lcomb);
 
                 if (Math.Abs(f.My) > sMomentValuesforCb_design_segment.fM_max)
-                    sMomentValuesforCb_design_segment.fM_max = (float)Math.Abs(f.My);
+                    sMomentValuesforCb_design_segment.fM_max = (float)f.My;
             }
 
             return sMomentValuesforCb_design_segment;
+        }
+
+        private void ValidateAndSetMomentValuesforCbAbsoluteValue(ref designMomentValuesForCb[] sMomentValuesforCb_design)
+        {
+            if (sMomentValuesforCb_design == null || sMomentValuesforCb_design.Length == 0)
+                return;
+
+            for (int i = 0; i < sMomentValuesforCb_design.Length; i++)
+            {
+                // Validate
+                if (sMomentValuesforCb_design[i].fM_14 == float.NaN ||
+                   sMomentValuesforCb_design[i].fM_24 == float.NaN ||
+                   sMomentValuesforCb_design[i].fM_34 == float.NaN ||
+                   sMomentValuesforCb_design[i].fM_max == float.NaN)
+                {
+                    throw new ArgumentNullException("Invalid value of bending moment.");
+                }
+
+                /*
+                Mmax. = absolute value of the maximum moment in the unbraced segment
+                M3 = absolute value of the moment at quarter point of the unbraced segment
+                M4 = absolute value of the moment at mid-point of the unbraced segment
+                M5 = absolute value of the moment at three-quarter point of the unbraced segment
+                */
+
+                if (sMomentValuesforCb_design[i].fM_14 < 0)
+                    sMomentValuesforCb_design[i].fM_14 *= -1f;
+
+                if (sMomentValuesforCb_design[i].fM_24 < 0)
+                    sMomentValuesforCb_design[i].fM_24 *= -1f;
+
+                if (sMomentValuesforCb_design[i].fM_34 < 0)
+                    sMomentValuesforCb_design[i].fM_34 *= -1f;
+
+                if (sMomentValuesforCb_design[i].fM_max < 0)
+                    sMomentValuesforCb_design[i].fM_max *= -1f;
+            }
         }
 
         private BriefFiniteElementNet.LoadCombination ConvertLoadCombinationtoBFENet(CLoadCombination loadcomb_input)
@@ -764,7 +801,7 @@ namespace PFD.Infrastructure
             return lcomb_output;
         }
 
-        private void GetSegmentStartAndEndFor_xLocation(float fx, CMember member, int lcombID, out float fSegmentStart_abs, out float fSegmentEnd_abs)
+        private void GetSegmentStartAndEndFor_xLocation(float fx, CMember member, out float fSegmentStart_abs, out float fSegmentEnd_abs)
         {
             fSegmentStart_abs = 0f;
             fSegmentEnd_abs = member.FLength;

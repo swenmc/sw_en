@@ -77,7 +77,6 @@ namespace FEM_CALC_BASE
                         for (int j = 0; j < mlf.InternalForces.Length; j++)
                         {
                             sBIF_x_output[j].fN += fcurrentLoadCaseFactor * mlf.InternalForces[j].fN;
-                            sBIF_x_output[j].fV_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_yu;
 
                             if (bUseCRSCGeometricalAxes)
                             {
@@ -89,15 +88,25 @@ namespace FEM_CALC_BASE
                             else
                             {
                                 sBIF_x_output[j].fT += fcurrentLoadCaseFactor * mlf.InternalForces[j].fT;
+                                sBIF_x_output[j].fV_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_yu;
+                                sBIF_x_output[j].fV_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zv;
                                 sBIF_x_output[j].fM_yu += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_yu;
                                 sBIF_x_output[j].fM_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fM_zv;
-                                sBIF_x_output[j].fV_zv += fcurrentLoadCaseFactor * mlf.InternalForces[j].fV_zv;
                             }
 
                             sMomentValuesforCb_output[j].fM_max += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_max;
                             sMomentValuesforCb_output[j].fM_14 += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_14;
                             sMomentValuesforCb_output[j].fM_24 += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_24;
                             sMomentValuesforCb_output[j].fM_34 += fcurrentLoadCaseFactor * mlf.BendingMomentValues[j].fM_34;
+
+                            // Validate
+                            if (sMomentValuesforCb_output[j].fM_14 == float.NaN ||
+                               sMomentValuesforCb_output[j].fM_24 == float.NaN ||
+                               sMomentValuesforCb_output[j].fM_34 == float.NaN ||
+                               sMomentValuesforCb_output[j].fM_max == float.NaN)
+                            {
+                                throw new ArgumentNullException("Invalid value of bending moment.");
+                            }
 
                             float fx = (float)j / (float)(iNumberOfMemberResultsSections - 1) * m.FLength;
                             sBucklingLengthFactors[j] = GetSegmentBucklingFactors_xLocation(fx, m, lcomb.ID);

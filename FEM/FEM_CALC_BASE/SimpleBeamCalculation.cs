@@ -142,10 +142,29 @@ namespace FEM_CALC_BASE
 
                         if (cmload.ELoadDir == ELoadDirection.eLD_Z)
                         {
-                            sMomentValuesforCb_temp.fM_max = memberModel.m_arrMLoads[0].Get_SSB_M_max(member.FLength);
-                            sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.25f * member.FLength, member.FLength);
-                            sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.50f * member.FLength, member.FLength);
-                            sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(0.75f * member.FLength, member.FLength);
+                            float fSegmentStart_abs;
+                            float fSegmentEnd_abs;
+
+                            GetSegmentStartAndEndFor_xLocation(fx_positions[j], member, out fSegmentStart_abs, out fSegmentEnd_abs);
+
+                            float fSegmentLength = fSegmentEnd_abs - fSegmentStart_abs;
+  
+                            sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.25f * fSegmentLength, member.FLength);
+                            sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.50f * fSegmentLength, member.FLength);
+                            sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.75f * fSegmentLength, member.FLength);
+
+                            sMomentValuesforCb_temp.fM_max = 0;
+
+                            int iNumberOfDesignSegments = iNumberOfDesignSections - 1;
+
+                            for (int i = 0; i < iNumberOfDesignSections; i++)
+                            {
+                                float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
+                                float fM_max_temp = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx, member.FLength);
+
+                                if (Math.Abs(fM_max_temp) > sMomentValuesforCb_temp.fM_max)
+                                    sMomentValuesforCb_temp.fM_max = fM_max_temp;
+                            }
 
                             // Add load results
                             sMomentValuesforCb[j].fM_max += sMomentValuesforCb_temp.fM_max;
@@ -222,7 +241,26 @@ namespace FEM_CALC_BASE
             }
         }
 
-        // Refaktorovat
+        // TODO Refaktorovat s metodou v projekte PFD
+        private void GetSegmentStartAndEndFor_xLocation(float fx, CMember member, out float fSegmentStart_abs, out float fSegmentEnd_abs)
+        {
+            fSegmentStart_abs = 0f;
+            fSegmentEnd_abs = member.FLength;
+
+            if (member.LTBSegmentGroup != null && member.LTBSegmentGroup.Count > 1) // More than one LTB segment exists
+            {
+                for (int i = 0; i < member.LTBSegmentGroup.Count; i++)
+                {
+                    if (fx >= member.LTBSegmentGroup[i].SegmentStartCoord_Abs && fx <= member.LTBSegmentGroup[i].SegmentEndCoord_Abs)
+                    {
+                        fSegmentStart_abs = member.LTBSegmentGroup[i].SegmentStartCoord_Abs;
+                        fSegmentEnd_abs = member.LTBSegmentGroup[i].SegmentEndCoord_Abs;
+                    }
+                }
+            }
+        }
+
+        // TODO Refaktorovat s metodou v projekte PFD
         public designBucklingLengthFactors GetSegmentBucklingFactors_xLocation(float fx, CMember member, int lcombID)
         {
             designBucklingLengthFactors bucklingLengthFactors = new designBucklingLengthFactors();
