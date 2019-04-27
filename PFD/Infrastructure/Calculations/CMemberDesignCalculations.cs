@@ -174,11 +174,11 @@ namespace PFD.Infrastructure
                                 sMomentValuesforCb[j] = sMomentValuesforCb_temp;
                             }
 
+                            // ULS - internal forces
                             sBIF_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
-                            sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
 
-                            if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb, sBucklingLengthFactors));
-                            if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                            // SLS - deflections
+                            sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
                         }
                         else // Single member
                         {
@@ -204,12 +204,11 @@ namespace PFD.Infrastructure
                                     sMomentValuesforCb[j] = sMomentValuesforCb_temp;
                                 }
 
+                                // ULS - internal forces
                                 sBIF_x = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
 
+                                // SLS - deflections
                                 sBDeflections_x = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
-
-                                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb, sBucklingLengthFactors));
-                                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                             }
                             else
                             {
@@ -221,11 +220,13 @@ namespace PFD.Infrastructure
 
                                 // SLS - deflections
                                 calcModel.CalculateDeflectionsOnSimpleBeam_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, fx_positions, m, lc, out sBDeflections_x);
-
-                                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb, sBucklingLengthFactors));
-                                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                             }
                         }
+
+                        // Add results
+                        if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb, sBucklingLengthFactors));
+                        if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
                     } //end foreach load case
                 }
                 SolverWindow.Progress += step;
@@ -355,7 +356,7 @@ namespace PFD.Infrastructure
                             ValidateAndSetMomentValuesforCbAbsoluteValue(ref sMomentValuesforCb_design);
                         }
 
-                        // 22.2.2019 - Ulozime vnutorne sily v kombinacii - pre zobrazenie v Internal forces
+                        // Add results
                         if (sBIF_x_design != null) MemberInternalForcesInLoadCombinations.Add(new CMemberInternalForcesInLoadCombinations(m, lcomb, sBIF_x_design, sMomentValuesforCb_design, sBucklingLengthFactors_design));
                     }
                 }
@@ -400,7 +401,7 @@ namespace PFD.Infrastructure
                                 CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
                             }
 
-                            // 22.2.2019 - Ulozime deformacie v kombinacii - pre zobrazenie v Deflections
+                            // Add results
                             if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
                         }
                     }
@@ -744,8 +745,14 @@ namespace PFD.Infrastructure
                 float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
                 BriefFiniteElementNet.Force f = memberBFENet.GetInternalForceAt(fx, lcomb);
 
-                if (Math.Abs(f.My) > sMomentValuesforCb_design_segment.fM_max)
+                if (Math.Abs(f.My) > Math.Abs(sMomentValuesforCb_design_segment.fM_max))
                     sMomentValuesforCb_design_segment.fM_max = (float)f.My;
+            }
+
+            // Check that M_max is more or equal to the maximum from (M_14, M_24, M_34) - symbols M_3, M_4, M_5 used in exception message
+            if (Math.Abs(sMomentValuesforCb_design_segment.fM_max) < MathF.Max(Math.Abs(sMomentValuesforCb_design_segment.fM_14), Math.Abs(sMomentValuesforCb_design_segment.fM_24), Math.Abs(sMomentValuesforCb_design_segment.fM_34)))
+            {
+                throw new Exception("Maximum value of bending moment doesn't correspond with values of bending moment at segment M₃, M₄, M₅.");
             }
 
             return sMomentValuesforCb_design_segment;
@@ -785,6 +792,12 @@ namespace PFD.Infrastructure
 
                 if (sMomentValuesforCb_design[i].fM_max < 0)
                     sMomentValuesforCb_design[i].fM_max *= -1f;
+
+                // Check that M_max is more or equal to the maximum from (M_14, M_24, M_34) - symbols M_3, M_4, M_5 used in exception message
+                if (sMomentValuesforCb_design[i].fM_max < MathF.Max(sMomentValuesforCb_design[i].fM_14, sMomentValuesforCb_design[i].fM_24, sMomentValuesforCb_design[i].fM_34))
+                {
+                    throw new Exception("Maximum value of bending moment doesn't correspond with values of bending moment at segment M₃, M₄, M₅.");
+                }
             }
         }
 

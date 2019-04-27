@@ -162,7 +162,7 @@ namespace FEM_CALC_BASE
                                 float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
                                 float fM_max_temp = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx, member.FLength);
 
-                                if (Math.Abs(fM_max_temp) > sMomentValuesforCb_temp.fM_max)
+                                if (Math.Abs(fM_max_temp) > Math.Abs(sMomentValuesforCb_temp.fM_max))
                                     sMomentValuesforCb_temp.fM_max = fM_max_temp;
                             }
 
@@ -171,6 +171,12 @@ namespace FEM_CALC_BASE
                             sMomentValuesforCb[j].fM_14 += sMomentValuesforCb_temp.fM_14;
                             sMomentValuesforCb[j].fM_24 += sMomentValuesforCb_temp.fM_24;
                             sMomentValuesforCb[j].fM_34 += sMomentValuesforCb_temp.fM_34;
+
+                            // Check that M_max is more or equal to the maximum from (M_14, M_24, M_34) - symbols M_3, M_4, M_5 used in exception message
+                            if (Math.Abs(sMomentValuesforCb[j].fM_max) < MathF.Max(Math.Abs(sMomentValuesforCb[j].fM_14), Math.Abs(sMomentValuesforCb[j].fM_24), Math.Abs(sMomentValuesforCb[j].fM_34)))
+                            {
+                                throw new Exception("Maximum value of bending moment doesn't correspond with values of bending moment at segment M₃, M₄, M₅.");
+                            }
                         }
 
                         sBucklingLengthFactors[j] = GetSegmentBucklingFactors_xLocation(fx_positions[j], member, lc.ID);
