@@ -79,10 +79,10 @@ namespace FEM_CALC_BASE
 
         // Internal Forces
         public void CalculateInternalForcesOnSimpleBeam_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, float[] fx_positions, CMember member,
-           CLoadCase lc, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb)
+           CLoadCase lc, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors/*, out designMomentValuesForCb[] sMomentValuesforCb*/)
         {
             sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfDesignSections];
-            sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
+            //sMomentValuesforCb = new designMomentValuesForCb[iNumberOfDesignSections];
             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
 
             foreach (CMLoad cmload in lc.MemberLoadsList) // Each member load in load case assigned to the member
@@ -93,7 +93,7 @@ namespace FEM_CALC_BASE
 
                     for (int j = 0; j < iNumberOfDesignSections; j++)
                     {
-                        designMomentValuesForCb sMomentValuesforCb_temp = new designMomentValuesForCb();
+                        //designMomentValuesForCb sMomentValuesforCb_temp = new designMomentValuesForCb();
                         basicInternalForces sBIF_x_temp = new basicInternalForces();
 
                         if (cmload.ELoadDir == ELoadDirection.eLD_X)
@@ -149,34 +149,34 @@ namespace FEM_CALC_BASE
 
                             float fSegmentLength = fSegmentEnd_abs - fSegmentStart_abs;
   
-                            sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.25f * fSegmentLength, member.FLength);
-                            sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.50f * fSegmentLength, member.FLength);
-                            sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.75f * fSegmentLength, member.FLength);
+                            //sMomentValuesforCb_temp.fM_14 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.25f * fSegmentLength, member.FLength);
+                            //sMomentValuesforCb_temp.fM_24 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.50f * fSegmentLength, member.FLength);
+                            //sMomentValuesforCb_temp.fM_34 = memberModel.m_arrMLoads[0].Get_SSB_M_x(fSegmentStart_abs + 0.75f * fSegmentLength, member.FLength);
 
-                            sMomentValuesforCb_temp.fM_max = 0;
+                            //sMomentValuesforCb_temp.fM_max = 0;
 
-                            int iNumberOfDesignSegments = iNumberOfDesignSections - 1;
+                            //int iNumberOfDesignSegments = iNumberOfDesignSections - 1;
 
-                            for (int i = 0; i < iNumberOfDesignSections; i++)
-                            {
-                                float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
-                                float fM_max_temp = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx, member.FLength);
-
-                                if (Math.Abs(fM_max_temp) > Math.Abs(sMomentValuesforCb_temp.fM_max))
-                                    sMomentValuesforCb_temp.fM_max = fM_max_temp;
-                            }
+                            //for (int i = 0; i < iNumberOfDesignSections; i++)
+                            //{
+                            //    float fx = fSegmentStart_abs + ((float)i / (float)iNumberOfDesignSegments) * fSegmentLength;
+                            //    float fM_max_temp = memberModel.m_arrMLoads[0].Get_SSB_M_x(fx, member.FLength);
+                            //
+                            //if (Math.Abs(fM_max_temp) > Math.Abs(sMomentValuesforCb_temp.fM_max))
+                            //        sMomentValuesforCb_temp.fM_max = fM_max_temp;
+                            //}
 
                             // Add load results
-                            sMomentValuesforCb[j].fM_max += sMomentValuesforCb_temp.fM_max;
-                            sMomentValuesforCb[j].fM_14 += sMomentValuesforCb_temp.fM_14;
-                            sMomentValuesforCb[j].fM_24 += sMomentValuesforCb_temp.fM_24;
-                            sMomentValuesforCb[j].fM_34 += sMomentValuesforCb_temp.fM_34;
+                            //sMomentValuesforCb[j].fM_max += sMomentValuesforCb_temp.fM_max;
+                            //sMomentValuesforCb[j].fM_14 += sMomentValuesforCb_temp.fM_14;
+                            //sMomentValuesforCb[j].fM_24 += sMomentValuesforCb_temp.fM_24;
+                            //sMomentValuesforCb[j].fM_34 += sMomentValuesforCb_temp.fM_34;
 
                             // Check that M_max is more or equal to the maximum from (M_14, M_24, M_34) - symbols M_3, M_4, M_5 used in exception message
-                            if (Math.Abs(sMomentValuesforCb[j].fM_max) < MathF.Max(Math.Abs(sMomentValuesforCb[j].fM_14), Math.Abs(sMomentValuesforCb[j].fM_24), Math.Abs(sMomentValuesforCb[j].fM_34)))
-                            {
-                                throw new Exception("Maximum value of bending moment doesn't correspond with values of bending moment at segment M₃, M₄, M₅.");
-                            }
+                            //if (Math.Abs(sMomentValuesforCb[j].fM_max) < MathF.Max(Math.Abs(sMomentValuesforCb[j].fM_14), Math.Abs(sMomentValuesforCb[j].fM_24), Math.Abs(sMomentValuesforCb[j].fM_34)))
+                            //{
+                            //    throw new Exception("Maximum value of bending moment doesn't correspond with values of bending moment at segment M₃, M₄, M₅.");
+                            //}
                         }
 
                         sBucklingLengthFactors[j] = GetSegmentBucklingFactors_xLocation(fx_positions[j], member, lc.ID);

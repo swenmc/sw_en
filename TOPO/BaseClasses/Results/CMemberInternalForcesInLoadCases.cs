@@ -11,7 +11,7 @@ namespace BaseClasses
         private CMember MMember;
         private CLoadCase MLoadCase;
         private basicInternalForces[] MInternalForces;
-        private designMomentValuesForCb[] MBendingMomentValues;
+        //private designMomentValuesForCb[] MBendingMomentValues;
         private designBucklingLengthFactors[] MBucklingLengthFactors;
 
         public CMember Member
@@ -53,6 +53,7 @@ namespace BaseClasses
             }
         }
 
+        /*
         public designMomentValuesForCb[] BendingMomentValues
         {
             get
@@ -65,6 +66,7 @@ namespace BaseClasses
                 MBendingMomentValues = value;
             }
         }
+        */
 
         public designBucklingLengthFactors[] BucklingLengthFactors
         {
@@ -83,12 +85,12 @@ namespace BaseClasses
         {
 
         }
-        public CMemberInternalForcesInLoadCases(CMember member, CLoadCase loadcase, basicInternalForces[] internalForces, designMomentValuesForCb[] bendingMomentValuesForCb, designBucklingLengthFactors[] bucklingLengthFactors)
+        public CMemberInternalForcesInLoadCases(CMember member, CLoadCase loadcase, basicInternalForces[] internalForces, /*designMomentValuesForCb[] bendingMomentValuesForCb,*/ designBucklingLengthFactors[] bucklingLengthFactors)
         {
             MMember = member;
             MLoadCase = loadcase;
             MInternalForces = internalForces;
-            MBendingMomentValues = bendingMomentValuesForCb;
+            //MBendingMomentValues = bendingMomentValuesForCb;
             MBucklingLengthFactors = bucklingLengthFactors;
         }
     }
