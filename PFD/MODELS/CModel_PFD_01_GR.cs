@@ -187,17 +187,17 @@ namespace PFD
             float fLimitTotal = 1 / 150f;
             float fLimitTotal_Frame = 1f / 250f;
 
-            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, m_arrCrSc[(int)EMemberGroupNames.ePurlin], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackColumn].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fLimitPermanentLoad, fLimitTotal, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, m_arrCrSc[(int)EMemberGroupNames.eRafter], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fLimitPermanentLoad, fLimitTotal_Frame, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, EMemberType_FS.eEP, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, EMemberType_FS.eG, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, EMemberType_FS.eP, m_arrCrSc[(int)EMemberGroupNames.ePurlin], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontColumn].ComponentName, EMemberType_FS.eC, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackColumn].ComponentName, EMemberType_FS.eC, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, EMemberType_FS.eG, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fLimitPermanentLoad, fLimitTotal, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, EMemberType_FS.eG, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fLimitPermanentLoad, fLimitTotal, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)

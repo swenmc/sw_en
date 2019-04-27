@@ -18,6 +18,13 @@ namespace BaseClasses
             set { MlistOfMembers = value; }
         }
 
+        private EMemberType_FS MmemberType;
+        public EMemberType_FS MemberType_FS
+        {
+            get { return MmemberType; }
+            set { MmemberType = value; }
+        }
+
         private CCrSc McrossSection;
 
         public CCrSc CrossSection
@@ -53,10 +60,11 @@ namespace BaseClasses
         public CMemberGroup()
         { }
 
-        public CMemberGroup(int ID_temp, string sName_temp, CCrSc crossSection_temp, float fDeflectionLimitPermanentLoad, float fDeflectionLimitTotal, float fTime_temp)
+        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, CCrSc crossSection_temp, float fDeflectionLimitPermanentLoad, float fDeflectionLimitTotal, float fTime_temp)
         {
             ID = ID_temp;
             Name = sName_temp;
+            MemberType_FS = memberTypeFS_temp;
             CrossSection = crossSection_temp;
             FTime = fTime_temp;
             MDeflectionLimit_PermanentLoad = fDeflectionLimitPermanentLoad;
@@ -66,10 +74,11 @@ namespace BaseClasses
             ListOfMembers = new List<CMember>();
         }
 
-        public CMemberGroup(int ID_temp, string sName_temp, CCrSc crossSection_temp, List<CMember> memberList, float fTime_temp)
+        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, CCrSc crossSection_temp, List<CMember> memberList, float fTime_temp)
         {
             ID = ID_temp;
             Name = sName_temp;
+            MemberType_FS = memberTypeFS_temp;
             CrossSection = crossSection_temp;
             ListOfMembers = memberList;
             FTime = fTime_temp;

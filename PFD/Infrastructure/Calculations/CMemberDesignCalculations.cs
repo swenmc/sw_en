@@ -113,6 +113,7 @@ namespace PFD.Infrastructure
             Calculate_InternalForces_LoadCombinations();
 
             Calculate_Deflections_LoadCombinations();
+
             Calculate_MemberDesign_LoadCombinations();
 
             SolverWindow.Progress = 100;
@@ -376,29 +377,32 @@ namespace PFD.Infrastructure
 
                     foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
                     {
-                        // Member basic deflections
-                        basicDeflections[] sBDeflection_x_design = new basicDeflections[iNumberOfDesignSections];
-
-                        // Frame member - vysledky pocitane pre load combinations
-                        if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
+                        if (lcomb.eLComType == ELSType.eLS_SLS) // Postacuje zatial pocitat len pre kombinacie SLS, zmazat pokial bude potrebne pracovat v posudeni kombinacii typu ULS s priehybom (napriklad urcenie vzpernej dlzky ramu podla horizontalnej vychylky)
                         {
-                            int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                            // Member basic deflections
+                            basicDeflections[] sBDeflection_x_design = new basicDeflections[iNumberOfDesignSections];
 
-                            sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
-                        }
-                        else if (DeterminateCombinationResultsByFEMSolver) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
-                        {
-                            int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
+                            // Frame member - vysledky pocitane pre load combinations
+                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
+                            {
+                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
 
-                            sBDeflection_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
-                        }
-                        else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
-                        {
-                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
-                        }
+                                sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
+                            }
+                            else if (DeterminateCombinationResultsByFEMSolver) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
+                            {
+                                int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
 
-                        // 22.2.2019 - Ulozime deformacie v kombinacii - pre zobrazenie v Deflections
-                        if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
+                                sBDeflection_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
+                            }
+                            else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
+                            {
+                                CMemberResultsManager.SetMemberDeflectionsInLoadCombination(MUseCRSCGeometricalAxes, m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
+                            }
+
+                            // 22.2.2019 - Ulozime deformacie v kombinacii - pre zobrazenie v Deflections
+                            if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
+                        }
                     }
                 }
             }
@@ -519,15 +523,14 @@ namespace PFD.Infrastructure
                         // Set basic deflections for member and load combination
                         CMemberDeflectionsInLoadCombinations mDeflections = MemberDeflectionsInLoadCombinations.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
 
-                        // Find group of current member (definition of member type)
-                        CMemberGroup currentMemberTypeGroupOfMembers = m.GetMemberGroupFromList(Model.listOfModelMemberGroups);
                         float fDeflectionLimit = 0f;
 
-                        //To Mato, ja by som osobne zadefinoval pre listOfModelMemberGroups memberType presne ako je pre member m.EMemberType
-                        //nasledne by som vybral skupinu takto:
-                        //CMemberGroup currentMemberTypeGroupOfMembers = Model.listOfModelMemberGroups.FirstOrDefault(gr => gr.EMemberType == m.EMemberType);
+                        // Find group of current member (definition of member type)
+                        CMemberGroup currentMemberTypeGroupOfMembers = Model.listOfModelMemberGroups.FirstOrDefault(gr => gr.MemberType_FS == m.EMemberType);
 
-                        //To Mato - pozor ak su to dvere, okno, tak currentMemberTypeGroupOfMembers je null, lebo 
+                        // To Mato - pozor ak su to dvere, okno, tak currentMemberTypeGroupOfMembers je null
+                        // Ak je to aktualne, tak musime teda este doplnit funkcionalitu tak, aby sa pre pruty blokov tiez vytvorili skupiny
+
                         if (currentMemberTypeGroupOfMembers != null)
                         {
                             // Set deflection limit depending of member type and load combination type
