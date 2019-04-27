@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace BaseClasses
 {
@@ -18,10 +19,12 @@ namespace BaseClasses
         private bool MIsSetFromCode;
 
         private string MPrefix;
+        private string MColor;
         private string MComponentName;
         private EMemberType_DB MMemberType;
         private string MSection;
         private List<string> MSections;
+        private List<string> MColors;
         private string MMaterial;
         private bool? MGenerate;
         private bool MGenerateIsReadonly;
@@ -265,6 +268,18 @@ namespace BaseClasses
                 MSections = value;
             }
         }
+        public List<string> Colors
+        {
+            get
+            {
+                return MColors;
+            }
+
+            set
+            {
+                MColors = value;
+            }
+        }
 
         public bool IsSetFromCode
         {
@@ -293,12 +308,25 @@ namespace BaseClasses
             }
         }
 
-        
+        public string Color
+        {
+            get
+            {
+                return MColor;
+            }
 
-        public CComponentInfo(string prefix, string componentName, string section, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, EMemberType_DB memberType)
+            set
+            {
+                MColor = value;
+                NotifyPropertyChanged("Color");
+            }
+        }
+
+        public CComponentInfo(string prefix, string color, string componentName, string section, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_DB memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
+            MColor = color;
             MComponentName = componentName;
             MSection = section;
             MMaterial = material;
@@ -308,6 +336,7 @@ namespace BaseClasses
             MDesign = design;
             MMaterialList = materialList;
             MSections = sections;
+            MColors = colors;
             MMemberType = memberType;
 
             SetGenerateIsReadonly();

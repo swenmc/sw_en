@@ -163,6 +163,7 @@
     <Compile Include="Infrastructure\CModelHelper.cs" />
     <Compile Include="Infrastructure\CModelToBFEMNetConverter.cs" />
     <Compile Include="Infrastructure\CNodalLoadGenerator.cs" />
+    <Compile Include="Infrastructure\ColorIndexToColorConverter.cs" />
     <Compile Include="Infrastructure\CSurfaceLoadGenerator.cs" />
     <Compile Include="Infrastructure\DataGridHelper.cs" />
     <Compile Include="MemberDesignDetails.xaml.cs">
