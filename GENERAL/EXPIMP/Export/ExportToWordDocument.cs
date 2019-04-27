@@ -14,6 +14,7 @@ namespace EXPIMP
 {
     public static class ExportToWordDocument
     {
+        private const string resourcesFolderPath = "./../../Resources/";
         public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
         {
             string fileName = GetReportName();
@@ -21,7 +22,7 @@ namespace EXPIMP
             using (DocX document = DocX.Create(fileName))
             {
                 // The path to a template document,
-                string templatePath = "./../../Resources/TemplateReport.docx";
+                string templatePath = resourcesFolderPath + "TemplateReport.docx";
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
@@ -29,6 +30,7 @@ namespace EXPIMP
                 DrawProjectInfo(document, GetProjectInfo());
                 DrawBasicGeometry(document, modelData);
                 DrawMaterial(document, modelData);
+                DrawCrossSections(document, modelData);
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -89,13 +91,13 @@ namespace EXPIMP
             document.ReplaceText("[GirtDistance]", data.GirtDistance.ToString(nfi));
             document.ReplaceText("[PurlinDistance]", data.PurlinDistance.ToString(nfi));
             document.ReplaceText("[ColumnDistance]", data.ColumnDistance.ToString(nfi));
-                        
+
             //document.ReplaceText("[RoofPitch_deg]", );
             //document.ReplaceText("[RoofPitch_deg]", );
         }
         private static void DrawMaterial(DocX document, CModelData data)
         {
-            var diffMaterials = data.ComponentList.Select(c => c.Material).Distinct();            
+            var diffMaterials = data.ComponentList.Select(c => c.Material).Distinct();
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MaterialProperties]"));
             par.RemoveText(0);
             foreach (string material in diffMaterials)
@@ -114,7 +116,7 @@ namespace EXPIMP
                 par = DrawMaterialTable(document, par, data.MaterialDetailsList);
             }
 
-    }
+        }
         // TO Ondrej - Moje uvahy o jednom bazovom rieseni pre tabulky :-)
 
         // Dalo by sa metodu DrawMaterialTable zobecnit tak, ze List<CMaterialPropertiesText> a List<CSectionPropertiesText>
@@ -138,13 +140,12 @@ namespace EXPIMP
         // Spolocne by sa riesili horne a dolne indexy a jednotky
 
         private static Paragraph DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
-        {            
+        {
             var t = document.AddTable(1, 4);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
+            t.AutoFit = AutoFit.Window;
 
-            t.AutoFit = AutoFit.Window;            
-            
 
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Text");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Symbol");
@@ -173,10 +174,81 @@ namespace EXPIMP
             p.RemoveText(0);
             p.InsertTableBeforeSelf(t);
             //p.SpacingAfter(10d);
-            
-            return p;            
-        }
 
+            return p;
+        }
+        
+        private static void DrawCrossSections(DocX document, CModelData data)
+        {
+            var diffCrsc = data.ComponentList.Select(c => c.Section).Distinct();
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[CrossSections]"));
+            par.RemoveText(0);
+            foreach (string crsc in diffCrsc)
+            {
+                par = par.InsertParagraphAfterSelf("Cross-section name: ").Bold().Append(crsc);
+
+                // Cross-section properties
+                List<string> listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(crsc);
+
+                for (int i = 0; i < data.ComponentDetailsList.Count; i++)
+                {
+                    data.ComponentDetailsList[i].Value = listSectionPropertyValue[i];
+                }
+                data.ComponentDetailsList = new List<CSectionPropertiesText>(data.ComponentDetailsList);
+
+                par = DrawCrossSectionTable(document, par, crsc, data.ComponentDetailsList);
+            }
+
+        }
+        private static Paragraph DrawCrossSectionTable(DocX document, Paragraph p, string crsc, List<CSectionPropertiesText> details)
+        {
+            var t = document.AddTable(1, 5);
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+            t.AutoFit = AutoFit.Contents;
+
+            var picWidth = 200;
+            var picHeight = 400;
+            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.png");
+            // Set Picture Height and Width.
+            var picture = image.CreatePicture(picHeight, picWidth);
+
+            // Insert Picture in paragraph.
+            t.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);            
+            t.Rows[0].Cells[1].Paragraphs[0].InsertText("Text");
+            t.Rows[0].Cells[2].Paragraphs[0].InsertText("Symbol");
+            t.Rows[0].Cells[3].Paragraphs[0].InsertText("Value");
+            t.Rows[0].Cells[4].Paragraphs[0].InsertText("Unit");
+            t.Rows[0].Cells[1].Paragraphs[0].Bold();
+            t.Rows[0].Cells[2].Paragraphs[0].Bold();
+            t.Rows[0].Cells[3].Paragraphs[0].Bold();
+            t.Rows[0].Cells[4].Paragraphs[0].Bold();
+
+            t.Rows[0].Cells[0].Width = picWidth;
+            t.Rows[0].Cells[1].Width = (document.PageWidth - picWidth) * 0.7;
+            t.Rows[0].Cells[2].Width = (document.PageWidth - picWidth) * 0.1;
+            t.Rows[0].Cells[3].Width = (document.PageWidth - picWidth) * 0.1;
+            t.Rows[0].Cells[4].Width = (document.PageWidth - picWidth) * 0.1;
+            
+            foreach (CSectionPropertiesText prop in details)
+            {
+                if (string.IsNullOrEmpty(prop.Value)) continue;
+
+                Row row = t.InsertRow();
+                row.Cells[1].Paragraphs[0].InsertText(prop.Text);
+                row.Cells[2].Paragraphs[0].InsertText(prop.Symbol);
+                row.Cells[3].Paragraphs[0].InsertText(prop.Value);
+                row.Cells[4].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
+            }
+                        
+            t.MergeCellsInColumn(0, 0, t.Rows.Count-1);
+            
+            p = p.InsertParagraphAfterSelf(p);
+            p.RemoveText(0);
+            p.InsertTableBeforeSelf(t);            
+
+            return p;
+        }
 
 
 
@@ -203,7 +275,7 @@ namespace EXPIMP
             p.StyleName = "Heading2";
             p = p.InsertParagraphAfterSelf("Service load - roof:");
             p = p.InsertParagraphAfterSelf("Design Life:");
-            
+
 
         }
 
@@ -228,7 +300,7 @@ namespace EXPIMP
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
 
             ExportHelper.SaveViewPortContentAsImage(viewPort);
-            double ratio = viewPort.ActualWidth / viewPort.ActualHeight; 
+            double ratio = viewPort.ActualWidth / viewPort.ActualHeight;
 
             // Add a simple image from disk.
             var image = document.AddImage("ViewPort.png");

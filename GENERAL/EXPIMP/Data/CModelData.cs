@@ -40,6 +40,7 @@ namespace EXPIMP
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private ObservableCollection<CComponentInfo> MComponentList;
+        private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
 
@@ -371,6 +372,24 @@ namespace EXPIMP
                 MComponentList = value;
             }
         }
+
+        public List<CSectionPropertiesText> ComponentDetailsList
+        {
+            get
+            {
+                if (m_ComponentDetailsList == null)
+                {
+                    m_ComponentDetailsList = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
+                }
+                return m_ComponentDetailsList;
+            }
+
+            set
+            {
+                m_ComponentDetailsList = value;
+            }
+        }
+
         public List<CMaterialPropertiesText> MaterialDetailsList
         {
             get
@@ -384,7 +403,7 @@ namespace EXPIMP
 
             set
             {
-                m_MaterialDetailsList = value;                
+                m_MaterialDetailsList = value;
             }
         }
 
