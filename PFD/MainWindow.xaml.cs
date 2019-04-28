@@ -1629,11 +1629,9 @@ namespace PFD
             Frame1.UpdateLayout();
         }
 
-        
-
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow();
+            WaitWindow ww = new WaitWindow("XLS");
             ww.Show();
 
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
@@ -1643,7 +1641,7 @@ namespace PFD
 
             try
             {
-                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;                
+                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 CMainReportExport.ReportAllDataToPDFFile(viewPort, modelData, list);
             }
             catch(Exception ex)
@@ -1658,8 +1656,8 @@ namespace PFD
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow();
-            
+            WaitWindow ww = new WaitWindow("DOC");
+
             ww.Show();
 
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
@@ -1681,7 +1679,6 @@ namespace PFD
             {
                 ww.Close();
             }
-
         }
     }
 }

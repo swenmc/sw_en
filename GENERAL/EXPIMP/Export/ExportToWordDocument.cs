@@ -209,12 +209,12 @@ namespace EXPIMP
 
             var picWidth = 200;
             var picHeight = 400;
-            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.png");
+            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.jpg"); // TO Ondrej - co je lepsie JPG alebo PNG format ???
             // Set Picture Height and Width.
             var picture = image.CreatePicture(picHeight, picWidth);
 
             // Insert Picture in paragraph.
-            t.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);            
+            t.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Text");
             t.Rows[0].Cells[2].Paragraphs[0].InsertText("Symbol");
             t.Rows[0].Cells[3].Paragraphs[0].InsertText("Value");
@@ -240,17 +240,15 @@ namespace EXPIMP
                 row.Cells[3].Paragraphs[0].InsertText(prop.Value);
                 row.Cells[4].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
             }
-                        
+
             t.MergeCellsInColumn(0, 0, t.Rows.Count-1);
-            
+
             p = p.InsertParagraphAfterSelf(p);
             p.RemoveText(0);
-            p.InsertTableBeforeSelf(t);            
+            p.InsertTableBeforeSelf(t);
 
             return p;
         }
-
-
 
         private static void DrawLoad(DocX document, CModelData data)
         {
@@ -275,8 +273,6 @@ namespace EXPIMP
             p.StyleName = "Heading2";
             p = p.InsertParagraphAfterSelf("Service load - roof:");
             p = p.InsertParagraphAfterSelf("Design Life:");
-
-
         }
 
         private static void DrawModel3D(DocX document, Viewport3D viewPort)
@@ -306,7 +302,7 @@ namespace EXPIMP
             var image = document.AddImage("ViewPort.png");
             // Set Picture Height and Width.
             var picture = image.CreatePicture((int)document.PageWidth, (int)(document.PageWidth * ratio));
-            // Insert Picture in paragraph.         
+            // Insert Picture in paragraph.
             par.RemoveText(0);
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
