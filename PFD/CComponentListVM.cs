@@ -307,6 +307,9 @@ namespace PFD
         {
             get
             {
+                // TODO - zaviest farby do databazy prierezov a databazy component (pre komponenty je uz v databaze definicia podla RGB)
+                // TODO - pridame este jeden stlpec read-only pre farbu prierezu, bude sa menit podla comboboxu cross-section
+
                 if (MColors == null) MColors = new List<string>() {
                 "AliceBlue",
                 "AntiqueWhite",
