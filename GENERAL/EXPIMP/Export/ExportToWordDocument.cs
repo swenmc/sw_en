@@ -31,6 +31,7 @@ namespace EXPIMP
                 DrawBasicGeometry(document, modelData);
                 DrawMaterial(document, modelData);
                 DrawCrossSections(document, modelData);
+                DrawComponentList(document, modelData);
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -209,7 +210,7 @@ namespace EXPIMP
 
             var picWidth = 200;
             var picHeight = 400;
-            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.jpg"); // TO Ondrej - co je lepsie JPG alebo PNG format ???
+            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.jpg"); // TO Ondrej - co je lepsie JPG alebo PNG format ??? ak  je priehladny tak png a inak je to jedno
             // Set Picture Height and Width.
             var picture = image.CreatePicture(picHeight, picWidth);
 
@@ -248,6 +249,46 @@ namespace EXPIMP
             p.InsertTableBeforeSelf(t);
 
             return p;
+        }
+
+        private static void DrawComponentList(DocX document, CModelData data)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberTypes]"));
+            par.RemoveText(0);
+
+            var t = document.AddTable(1, 5);
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+            t.AutoFit = AutoFit.Window;
+
+
+            t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
+            t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
+            t.Rows[0].Cells[2].Paragraphs[0].InsertText("ComponentName");
+            t.Rows[0].Cells[3].Paragraphs[0].InsertText("Section");
+            t.Rows[0].Cells[4].Paragraphs[0].InsertText("Material");
+            t.Rows[0].Cells[0].Paragraphs[0].Bold();
+            t.Rows[0].Cells[1].Paragraphs[0].Bold();
+            t.Rows[0].Cells[2].Paragraphs[0].Bold();
+            t.Rows[0].Cells[3].Paragraphs[0].Bold();
+            t.Rows[0].Cells[4].Paragraphs[0].Bold();
+            t.Rows[0].Cells[0].Width = document.PageWidth * 0.1;
+            t.Rows[0].Cells[1].Width = document.PageWidth * 0.1;
+            t.Rows[0].Cells[2].Width = document.PageWidth * 0.4;
+            t.Rows[0].Cells[3].Width = document.PageWidth * 0.2;
+            t.Rows[0].Cells[4].Width = document.PageWidth * 0.2;
+
+            foreach (CComponentInfo cInfo in data.ComponentList)
+            {
+                Row row = t.InsertRow();
+                row.Cells[0].Paragraphs[0].InsertText(cInfo.Prefix);
+                row.Cells[1].Paragraphs[0].InsertText(cInfo.Color);
+                row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
+                row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
+                row.Cells[4].Paragraphs[0].InsertText(cInfo.Material);
+            }
+
+            par.InsertTableBeforeSelf(t);
         }
 
         private static void DrawLoad(DocX document, CModelData data)
