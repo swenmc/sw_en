@@ -105,7 +105,7 @@ namespace PFD
                     }
                     else cInfo.IsSetFromCode = true;
 
-                    if (header == "Calculate" && cInfo.IsCalculateEnabled) cInfo.Calculate = !calc;                     
+                    if (header == "Calculate" && cInfo.IsCalculateEnabled) cInfo.Calculate = !calc;
                     if (header == "Design" && cInfo.IsDesignEnabled) cInfo.Design = !design;
                     if (header == "Display") cInfo.Display = !display;
                     if (header == "MaterialList") cInfo.MaterialList = !material;
