@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Controls;
 using Xceed.Words.NET;
 
@@ -32,6 +33,9 @@ namespace EXPIMP
                 DrawMaterial(document, modelData);
                 DrawCrossSections(document, modelData);
                 DrawComponentList(document, modelData);
+
+                DrawLoadCases(document, modelData);
+                DrawLoadCombinations(document, modelData);
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -283,6 +287,8 @@ namespace EXPIMP
                 Row row = t.InsertRow();
                 row.Cells[0].Paragraphs[0].InsertText(cInfo.Prefix);
                 row.Cells[1].Paragraphs[0].InsertText(cInfo.Color);
+                row.Cells[1].FillColor = System.Drawing.Color.FromName(cInfo.Color);
+                row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color));
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
                 row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
                 row.Cells[4].Paragraphs[0].InsertText(cInfo.Material);
@@ -293,30 +299,169 @@ namespace EXPIMP
 
         private static void DrawLoad(DocX document, CModelData data)
         {
-            Paragraph p = document.InsertParagraph("Load");
-            p.StyleName = "Heading1";
+            //document.ReplaceText("[Location]", );
+            //document.ReplaceText("[DesignLife_Value]", );
+            //document.ReplaceText("[ImportanceClass]", );
+            //document.ReplaceText("[AnnualProbabilitySLS]", );
+            //document.ReplaceText("[R_SLS]", );
+            //document.ReplaceText("[SiteElevation]", );
+            
+            //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", );
+            //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", );
+            //document.ReplaceText("[AdditionalDeadActionWall]", );
+            //document.ReplaceText("[AdditionalDeadActionRoof]", );
+            //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", );
+            //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", );
+            //document.ReplaceText("[ImposedActionRoof]", );
+            //document.ReplaceText("[AnnualProbabilityULS_Snow]", );
+            //document.ReplaceText("[R_ULS_Snow]", );
+            //document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", );
+            //document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", );
+            //document.ReplaceText("[ExposureCategory]", );
+            //document.ReplaceText("[CCalcul_1170_3.C_e]", );
+            //document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", );
+            //document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", );
+            //document.ReplaceText("[CCalcul_1170_3.s_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_3.s_SLS]", );
 
-            p = p.InsertParagraphAfterSelf("Basic parameters");
-            p.StyleName = "Heading2";
-            p = p.InsertParagraphAfterSelf("Location:");
-            p = p.InsertParagraphAfterSelf("Design Life:");
-            p = p.InsertParagraphAfterSelf("Importance level:");
-            p = p.InsertParagraphAfterSelf("Annual probability of ecxeedance SLS:");
+            ////Wind Load
+            //document.ReplaceText("[AnnualProbabilityULS_Wind]", );
+            //document.ReplaceText("[R_ULS_Wind]", );
+            //document.ReplaceText("[EWindRegion]", );
+            //document.ReplaceText("[TerrainCategory]", );
+            //document.ReplaceText("[CCalcul_1170_2.z]", );
+
+            //document.ReplaceText("[CCalcul_1170_2.h]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", );
+            //document.ReplaceText("[CCalcul_1170_2.M_z_cat]", );
+            //document.ReplaceText("[CCalcul_1170_2.M_s]", );
+            //document.ReplaceText("[CCalcul_1170_2.M_t]", );
 
 
-            p = p.InsertParagraphAfterSelf("Dead load (self - weight of frame and cladding)");
-            p.StyleName = "Heading2";
-            p = p.InsertParagraphAfterSelf("Roof:\t\tPurlindek 0.4 mm \t\tg = 0.05623 kN/m").Append("2").Script(Script.superscript).
-                Append("\t5.623 kg/m").Append("2").Script(Script.superscript);
-            p = p.InsertParagraphAfterSelf("Wall - gridline \"2\":");
 
-            p = p.InsertParagraphAfterSelf("Service load - long-term load (considered as dead load)");
-            p.StyleName = "Heading2";
-            p = p.InsertParagraphAfterSelf("Service load - roof:");
-            p = p.InsertParagraphAfterSelf("Design Life:");
+
+            ////TODO – potrebujemespristupnitpremenne v objektecez properties
+            ////Wall cladding load g c.w =	[CCalcul_1170_1.DeadLoad_Wall]
+            ////        kN/m2
+            ////Roof cladding load          g c.r =	[CCalcul_1170_1.DeadLoad_Roof] kN/m2
+            ////Additional wall load            g a.w = [AdditionalDeadActionWall] kN/m2
+            ////Additional roof load            g a.r = [AdditionalDeadActionRoof] kN/m2
+            ////Total wall load             g t.w = [CCalcul_1170_1.DeadLoadTotal_Wall] kN/m2
+            ////Total roof load             g t.r = [CCalcul_1170_1.DeadLoadTotal_Roof] kN/m2
+
+
+            ////5.6.	Wind Load
+            ////TODO – potrebujemespristupnitpremenne v objektecez properties
+            ////Annual probability of exceedance ULS:		[AnnualProbabilityULS_Wind]
+            ////Return period               RULS.W =    [R_ULS_Wind] years
+            ////Wind region[EWindRegion]
+            ////Terrain category[TerrainCategory]
+            ////Reference height z = [CCalcul_1170_2.z] m
+            ////Average structure height            h = [CCalcul_1170_2.h] m
+            ////Regional 3s gust wind speed     VR.ULS =    [CCalcul_1170_2.V_R_ULS] m/s
+            ////Regional 3s gust wind speed     VR.SLS =    [CCalcul_1170_2.V_R_SLS] m/s
+            ////Terrain/height multiplier           Mz.cat= [CCalcul_1170_2.M_z_cat]
+            ////Shielding multiplier            Ms =    [CCalcul_1170_2.M_s]
+            ////Topographic multiplier          Mt =    [CCalcul_1170_2.M_t]
+
+
+            ////Hodnotysadajupocitatrozne pre smeryvetraN, W, E, S.Zatialbudemezobrazovatlenhodnoty s indexom[0]
+            ////Wind direction multiplier           Md =    [CCalcul_1170_2.fM_D_array_values_9[0]]
+            ////Site wind speed Vsit, β.ULS= [CCalcul_1170_2.V_sit_ULS_Theta_9[0]] m/s
+            ////Site wind speed             Vsit, β.SLS= [CCalcul_1170_2.V_sit_SLS_Theta_9[0]] m/s
+            ////Design wind speed           Vdes, θ.ULS=[CCalcul_1170_2.V_des_ULS_Theta_4[0]] m/s
+            ////Design wind speed           Vdes, θ.SLS= [CCalcul_1170_2.V_des_SLS_Theta_4[0]] m/s
+            ////Density of air              ρair =  [CCalcul_1170_2.Rho_air] kg/m3
+            ////Dynamic response factor         Cdyn =  [CCalcul_1170_2.C_dyn]
+            ////Basic wind pressure pb.ULS =    [CCalcul_1170_2.p_basic_ULS_Theta_4[0]] kN/m2
+            ////Basic wind pressure         pb.SLS =    [CCalcul_1170_2.p_basic_SLS_Theta_4[0]] kN/m2
+            
+            
+            //document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_sit_SLS_Theta_9[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_des_ULS_Theta_4[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.V_des_SLS_Theta_4[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.Rho_air]", );
+            //document.ReplaceText("[CCalcul_1170_2.C_dyn]", );
+            //document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", );
+            //document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", );
+            
+
+
+            ////5.7.	Seismic Load
+            ////Equivalent static method parameters
+
+            ////Annual probability of exceedance ULS:		[AnnualProbabilityULS_EQ]
+            ////        Return period               RULS.EQ =	[R_ULS_EQ]
+            ////        Site subsoil class                  [ESiteSubSoilClass]
+            ////        Fault distance              Dmin = 	[FaultDistanceDmin]
+            ////        km
+            ////        Fault distance Dmax =  [FaultDistanceDmax] km
+            ////Zone factor Z = [ZoneFactorZ]
+            ////Natural period along X-direction Tx =    [PeriodAlongYDirectionTx] s
+            ////Natural period along Y-direction Ty =    [PeriodAlongYDirectionTy] s
+            ////Spectral shape factor           Ch(Tx) =	[SpectralShapeFactorChTx]
+            ////        Spectral shape factor Ch(Ty) =	[SpectralShapeFactorChTy]
+
+            ////        ULS
+            ////TODO – potrebujemespristupnitpremenne v objektecez properties
+            ////Structural ductility factor ULS     μ =	[CCalcul_1170_5.Nu_ULS]
+            ////        Structural performance factor ULS       Sp =	[CCalcul_1170_5.S_p_ULS_strength]
+
+            ////        Near-fault factor               N(Tx, D) =[CCalcul_1170_5.N_TxD_ULS]
+            ////        Elastic site hazard spectrum        C(Tx) =	[CCalcul_1170_5.C_Tx_ULS]
+            ////        Factor kμ(Tx) =	[CCalcul_1170_5.k_Nu_Tx_ULS]
+            ////        Horizontal design action coefficient        Cd(Tx) =	[CCalcul_1170_5.C_d_T1x_ULS_strength]
+            ////        Contributing weight         Gtot.x=	[CCalcul_1170_5.G_tot_x]
+            ////        kN
+            ////        Horizontal static force Vx =    [CCalcul_1170_5.V_x_ULS_strength] kN
+
+            ////Near-fault factor               N(Ty, D) =[CCalcul_1170_5.N_TyD_ULS]
+            ////        Elastic site hazard spectrum        C(Ty) =	[CCalcul_1170_5.C_Ty_ULS]
+            ////        Factor kμ(Ty) =	[CCalcul_1170_5.k_Nu_Ty_ULS]
+            ////        Horizontal design action coefficient        Cd(Ty) =	[CCalcul_1170_5.C_d_T1y_ULS_strength]
+            ////        Contributing weight         Gtot.y=	[CCalcul_1170_5.G_tot_y]
+            ////        kN
+            ////        Horizontal static force Vx =    [CCalcul_1170_5.V_y_ULS_strength] kN
+
+            ////SLS - TODO
+            ////Structural ductility factor SLS μ = [CCalcul_1170_5.Nu_SLS]
+            ////Structural performance factor SLS   Sp =	[CCalcul_1170_5.S_p_SLS]
+
+            //document.ReplaceText("[AnnualProbabilityULS_EQ]", );
+            //document.ReplaceText("[R_ULS_EQ]", );
+            //document.ReplaceText("[ESiteSubSoilClass]", );
+            //document.ReplaceText("[FaultDistanceDmin]", );
+            //document.ReplaceText("[FaultDistanceDmax]", );
+            //document.ReplaceText("[ZoneFactorZ]", );
+            //document.ReplaceText("[PeriodAlongYDirectionTx]", );
+            //document.ReplaceText("[PeriodAlongYDirectionTy]", );
+            //document.ReplaceText("[SpectralShapeFactorChTx]", );
+            //document.ReplaceText("[SpectralShapeFactorChTy]", );
+            //document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", );
+            //document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", );
+            //document.ReplaceText("[CCalcul_1170_5.G_tot_x]", );
+            //document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", );
+            //document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", );
+            //document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", );
+            //document.ReplaceText("[CCalcul_1170_5.G_tot_y]", );
+            //document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", );
+            //document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", );
+            //document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", );
+
         }
 
-        private static void DrawModel3D(DocX document, Viewport3D viewPort)
+    private static void DrawModel3D(DocX document, Viewport3D viewPort)
         {
             document.InsertParagraph("Structural model in 3D environment: ");
 
@@ -350,6 +495,85 @@ namespace EXPIMP
         }
 
 
+
+        private static void DrawLoadCases(DocX document, CModelData data)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCases]"));
+            par.RemoveText(0);
+
+            var t = document.AddTable(1, 3);
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+            t.AutoFit = AutoFit.Window;
+
+            t.Rows[0].Cells[0].Paragraphs[0].InsertText("Load Case ID");
+            t.Rows[0].Cells[1].Paragraphs[0].InsertText("Load Case Name");
+            t.Rows[0].Cells[2].Paragraphs[0].InsertText("Load Case Type");
+            t.Rows[0].Cells[0].Paragraphs[0].Bold();
+            t.Rows[0].Cells[1].Paragraphs[0].Bold();
+            t.Rows[0].Cells[2].Paragraphs[0].Bold();
+            t.Rows[0].Cells[0].Width = document.PageWidth * 0.1;
+            t.Rows[0].Cells[1].Width = document.PageWidth * 0.5;
+            t.Rows[0].Cells[2].Width = document.PageWidth * 0.4;
+
+            // For each load case add one row
+            foreach (CLoadCase lc in data.Model.m_arrLoadCases)
+            {
+                Row row = t.InsertRow();
+                row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
+                row.Cells[1].Paragraphs[0].InsertText(lc.Name);                
+                row.Cells[2].Paragraphs[0].InsertText(lc.Type.GetFriendlyName());
+            }
+            par.InsertTableBeforeSelf(t);
+        }
+        private static void DrawLoadCombinations(DocX document, CModelData data)
+        {
+            Paragraph parULS = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCombinationsULS]"));
+            Paragraph parSLS = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCombinationsSLS]"));
+            parULS.RemoveText(0);
+            parSLS.RemoveText(0);
+            
+
+            var t = parULS.FollowingTable;
+            // For each load case add one row
+            foreach (CLoadCombination lc in data.Model.m_arrLoadCombs)
+            {
+                t = (lc.eLComType == ELSType.eLS_ULS ? parULS.FollowingTable : parSLS.FollowingTable);
+                t.AutoFit = AutoFit.Fixed;
+
+                Row row = t.InsertRow();
+                
+                //row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
+                row.Cells[0].Paragraphs[0].InsertText(lc.Name);
+                row.Cells[1].Paragraphs[0].InsertText(lc.eLComType == ELSType.eLS_ULS ? "ULS": "SLS");
+
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < lc.LoadCasesList.Count; j++)
+                {
+                    sb.AppendFormat("{0:F2} * LC{1}", Math.Round(lc.LoadCasesFactorsList[j], 2), lc.LoadCasesList[j].ID);
+                    if (j < lc.LoadCasesList.Count - 1) sb.Append(" + ");
+                }
+                row.Cells[2].Paragraphs[0].InsertText(sb.ToString());
+                row.Cells[3].Paragraphs[0].InsertText(lc.CombinationKey);
+                row.Cells[4].Paragraphs[0].InsertText(lc.Formula);
+
+                row.Cells[0].Width = t.Rows[0].Cells[0].Width;
+                row.Cells[1].Width = t.Rows[0].Cells[1].Width;
+                row.Cells[2].Width = t.Rows[0].Cells[2].Width;
+                row.Cells[3].Width = t.Rows[0].Cells[3].Width;
+                row.Cells[4].Width = t.Rows[0].Cells[4].Width;
+            }
+            parULS.Remove(false);
+            parSLS.Remove(false);
+
+            double fontSizeInTable = 9;
+            foreach (Paragraph p in parULS.FollowingTable.Paragraphs)
+            { p.FontSize(fontSizeInTable); }
+            foreach (Paragraph p in parSLS.FollowingTable.Paragraphs)
+            { p.FontSize(fontSizeInTable); }
+        }
+
+        
 
 
 

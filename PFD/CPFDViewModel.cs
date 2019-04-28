@@ -2091,6 +2091,7 @@ namespace PFD
             data.WindowBlocksProperties = WindowBlocksProperties;
 
             data.ComponentList = ComponentList;
+            data.Model = Model;
             
 
             return data;

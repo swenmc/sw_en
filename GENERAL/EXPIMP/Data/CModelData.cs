@@ -73,6 +73,8 @@ namespace EXPIMP
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
 
+        private CModel MModel;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -404,6 +406,19 @@ namespace EXPIMP
             set
             {
                 m_MaterialDetailsList = value;
+            }
+        }
+
+        public CModel Model
+        {
+            get
+            {
+                return MModel;
+            }
+
+            set
+            {
+                MModel = value;                
             }
         }
 

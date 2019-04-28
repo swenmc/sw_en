@@ -64,8 +64,8 @@ namespace PFD
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "GenerateIsEnabled") return;
 
-                if(e.PropertyName == "Material") SetComponentDetails();
-                else if(e.PropertyName == "Section") SetComponentDetails();
+                if (e.PropertyName == "Material") SetComponentDetails();
+                else if (e.PropertyName == "Section") SetComponentDetails();
 
                 if (e.PropertyName == "Generate")
                 {
@@ -88,7 +88,7 @@ namespace PFD
             CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
 
             //ak je front aj back false tak vtedy dovolit editovat girt
-            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girt.GenerateIsEnabled = true; girt.GenerateIsReadonly = false; }            
+            if (!girtFront.Generate.Value && !girtBack.Generate.Value) { girt.GenerateIsEnabled = true; girt.GenerateIsReadonly = false; }
             else { girt.GenerateIsEnabled = false; girt.GenerateIsReadonly = true; }
 
             if (girt.GenerateIsEnabled && !girt.Generate.Value) { girtFront.GenerateIsEnabled = false; girtFront.GenerateIsReadonly = true; girtBack.GenerateIsEnabled = false; girtBack.GenerateIsReadonly = true; }
@@ -112,7 +112,7 @@ namespace PFD
             if (cInfo.ComponentName == "Column - Front Side")
             {
                 CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
-                if(girtFront.Generate != cInfo.Generate) girtFront.Generate = cInfo.Generate;
+                if (girtFront.Generate != cInfo.Generate) girtFront.Generate = cInfo.Generate;
             }
             else if (cInfo.ComponentName == "Column - Back Side")
             {
@@ -307,7 +307,149 @@ namespace PFD
         {
             get
             {
-                if (MColors == null) MColors = new List<string>() { "#FF0000", "#00FF00", "#0000FF", "aqua", "pink", "yellow", "forest green" };
+                if (MColors == null) MColors = new List<string>() {
+                "AliceBlue",
+                "AntiqueWhite",
+                "Aqua",
+                "Aquamarine",
+                "Azure",
+                "Beige",
+                "Bisque",
+                "Black",
+                "BlanchedAlmond",
+                "Blue",
+                "BlueViolet",
+                "Brown",
+                "BurlyWood",
+                "CadetBlue",
+                "Chartreuse",
+                "Chocolate",
+                "Coral",
+                "CornflowerBlue",
+                "Cornsilk",
+                "Crimson",
+                "Cyan",
+                "DarkBlue",
+                "DarkCyan",
+                "DarkGoldenrod",
+                "DarkGray",
+                "DarkGreen",
+                "DarkKhaki",
+                "DarkMagenta",
+                "DarkOliveGreen",
+                "DarkOrange",
+                "DarkOrchid",
+                "DarkRed",
+                "DarkSalmon",
+                "DarkSeaGreen",
+                "DarkSlateBlue",
+                "DarkSlateGray",
+                "DarkTurquoise",
+                "DarkViolet",
+                "DeepPink",
+                "DeepSkyBlue",
+                "DimGray",
+                "DodgerBlue",
+                "Firebrick",
+                "FloralWhite",
+                "ForestGreen",
+                "Fuchsia",
+                "Gainsboro",
+                "GhostWhite",
+                "Gold",
+                "Goldenrod",
+                "Gray",
+                "Green",
+                "GreenYellow",
+                "Honeydew",
+                "HotPink",
+                "IndianRed",
+                "Indigo",
+                "Ivory",
+                "Khaki",
+                "Lavender",
+                "LavenderBlush",
+                "LawnGreen",
+                "LemonChiffon",
+                "LightBlue",
+                "LightCoral",
+                "LightCyan",
+                "LightGoldenrodYellow",
+                "LightGray",
+                "LightGreen",
+                "LightPink",
+                "LightSalmon",
+                "LightSeaGreen",
+                "LightSkyBlue",
+                "LightSlateGray",
+                "LightSteelBlue",
+                "LightYellow",
+                "Lime",
+                "LimeGreen",
+                "Linen",
+                "Magenta",
+                "Maroon",
+                "MediumAquamarine",
+                "MediumBlue",
+                "MediumOrchid",
+                "MediumPurple",
+                "MediumSeaGreen",
+                "MediumSlateBlue",
+                "MediumSpringGreen",
+                "MediumTurquoise",
+                "MediumVioletRed",
+                "MidnightBlue",
+                "MintCream",
+                "MistyRose",
+                "Moccasin",
+                "NavajoWhite",
+                "Navy",
+                "OldLace",
+                "Olive",
+                "OliveDrab",
+                "Orange",
+                "OrangeRed",
+                "Orchid",
+                "PaleGoldenrod",
+                "PaleGreen",
+                "PaleTurquoise",
+                "PaleVioletRed",
+                "PapayaWhip",
+                "PeachPuff",
+                "Peru",
+                "Pink",
+                "Plum",
+                "PowderBlue",
+                "Purple",
+                "Red",
+                "RosyBrown",
+                "RoyalBlue",
+                "SaddleBrown",
+                "Salmon",
+                "SandyBrown",
+                "SeaGreen",
+                "SeaShell",
+                "Sienna",
+                "Silver",
+                "SkyBlue",
+                "SlateBlue",
+                "SlateGray",
+                "Snow",
+                "SpringGreen",
+                "SteelBlue",
+                "Tan",
+                "Teal",
+                "Thistle",
+                "Tomato",
+                "Transparent",
+                "Turquoise",
+                "Olive",
+                "Wheat",
+                "White",
+                "WhiteSmoke",
+                "Yellow",
+                "YellowGreen" };
+
                 return MColors;
             }
 
@@ -342,38 +484,38 @@ namespace PFD
             list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
             CComponentInfo ci = null;
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, "Orange",
                 list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, "Plum",
                 list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, "Red",
                 list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, "Green",
                 list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, "CadetBlue",
                 list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.EdgePurlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Brown",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, "Pink",
                 list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Purlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "Blue",
                 list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "Navy",
                 list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Orchid",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Salmon",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtBackSide);
             MComponentList.Add(ci);
 
@@ -432,8 +574,8 @@ namespace PFD
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
             if (cInfo != null) return; //already exist in the collection
-                        
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, "#FF0000",
+
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, "Purple",
                 list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, Colors, EMemberType_DB.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
@@ -442,7 +584,7 @@ namespace PFD
         public void RemovePersonelDoor()
         {
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
-            if (cInfo != null) ComponentList.Remove(cInfo);                
+            if (cInfo != null) ComponentList.Remove(cInfo);
         }
 
         public void AddRollerDoor()
@@ -450,7 +592,7 @@ namespace PFD
             CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
             if (cDT == null)
             {
-                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, "#FF0000",
+                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, "Olive",
                 list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, Colors, EMemberType_DB.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
@@ -459,7 +601,7 @@ namespace PFD
             CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
             if (cDL == null)
             {
-                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, "#FF0000",
+                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, "Olive",
                 list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, Colors, EMemberType_DB.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
@@ -469,7 +611,7 @@ namespace PFD
         {
             CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
             if (cDT != null) ComponentList.Remove(cDT);
-            
+
             CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
             if (cDL != null) ComponentList.Remove(cDL);
         }
@@ -479,7 +621,7 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
             if (cInfo != null) return; //already exist in the collection
 
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, "#FF0000",
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, "DarkKhaki",
                 list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, MColors, EMemberType_DB.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
@@ -492,16 +634,16 @@ namespace PFD
 
         public bool NoFrameMembersForCalculate()
         {
-            return !ComponentList.Any(c => (c.MemberType == EMemberType_DB.MainColumn || 
-            c.MemberType == EMemberType_DB.MainRafter || 
-            c.MemberType == EMemberType_DB.EdgeColumn || 
+            return !ComponentList.Any(c => (c.MemberType == EMemberType_DB.MainColumn ||
+            c.MemberType == EMemberType_DB.MainRafter ||
+            c.MemberType == EMemberType_DB.EdgeColumn ||
             c.MemberType == EMemberType_DB.EdgeRafter) && c.Calculate == true);
         }
 
 
         public bool NoCompomentsForCalculate()
         {
-            return !ComponentList.Any(c => c.Calculate == true);            
+            return !ComponentList.Any(c => c.Calculate == true);
         }
         public bool NoCompomentsForDesign()
         {
@@ -509,7 +651,7 @@ namespace PFD
         }
         public bool NoCompomentsForMaterialList()
         {
-            return !ComponentList.Any(c => c.MaterialList == true);            
+            return !ComponentList.Any(c => c.MaterialList == true);
         }
     }
 }
