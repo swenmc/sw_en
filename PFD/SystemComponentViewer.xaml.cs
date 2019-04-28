@@ -1966,7 +1966,7 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow();
+            WaitWindow ww = new WaitWindow("PDF");
             ww.Show();
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -2084,7 +2084,7 @@ namespace PFD
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    WaitWindow ww = new WaitWindow();
+                    WaitWindow ww = new WaitWindow("PDF");
                     ww.Show();
 
                     string folder = dialog.SelectedPath;
@@ -2243,8 +2243,7 @@ namespace PFD
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    WaitWindow ww = new WaitWindow();
-                    ww.WaitImage.Source = new BitmapImage(new Uri("Resources/XLSfilelogo.png", UriKind.Relative));
+                    WaitWindow ww = new WaitWindow("XLS");
                     ww.Show();
 
                     string folder = dialog.SelectedPath;
