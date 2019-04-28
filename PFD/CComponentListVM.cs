@@ -307,7 +307,10 @@ namespace PFD
         {
             get
             {
-                if (MColors == null) MColors = new List<string>() { "#FF0000", "#00FF00", "#0000FF", "aqua", "pink", "yellow", "forest green" };
+                // TODO - zaviest farby do databazy prierezov a databazy component (pre komponenty je uz v databaze definicia podla RGB)
+                // TODO - pridame este jeden stlpec read-only pre farbu prierezu, bude sa menit podla comboboxu cross-section
+                //if (MColors == null) MColors = new List<string>() { "#FF0000", "#00FF00", "#0000FF", "#D2B2FF", "aqua", "pink", "yellow", "forest green" };
+                if (MColors == null) MColors = new List<string>() { "#FF0000", "#00FF00", "#0000FF", "#D2B2FF", "#00FFFF", "#FFC0CB", "#FFFF00", "#228B22" };
                 return MColors;
             }
 
@@ -342,38 +345,38 @@ namespace PFD
             list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
             CComponentInfo ci = null;
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, "#FFFF00",
                 list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, "#FFFF00",
                 list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, "#00FF00",
                 list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, "#00FF00",
                 list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, "#0000FF",
                 list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.EdgePurlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#00FFFF",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, "#D2B2FF",
                 list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Purlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FFC0CB",
                 list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "#FFC0CB",
                 list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#00FFFF",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#FF0000",
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "#00FFFF",
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtBackSide);
             MComponentList.Add(ci);
 

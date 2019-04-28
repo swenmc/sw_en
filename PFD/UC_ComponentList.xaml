@@ -37,10 +37,10 @@
                     </DataGridComboBoxColumn.CellStyle>
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
-                            <Setter Property="ItemsSource" Value="{Binding Colors}"/>                            
+                            <Setter Property="ItemsSource" Value="{Binding Colors}"/>
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
-                    <DataGridComboBoxColumn.EditingElementStyle>                        
+                    <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Colors}"/>
                             <!--<Setter Property="ItemTemplate">

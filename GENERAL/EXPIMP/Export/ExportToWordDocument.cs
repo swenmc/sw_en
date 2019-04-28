@@ -282,7 +282,20 @@ namespace EXPIMP
             {
                 Row row = t.InsertRow();
                 row.Cells[0].Paragraphs[0].InsertText(cInfo.Prefix);
+
+                // Component color
+                System.Drawing.Color cellColor = System.Drawing.ColorTranslator.FromHtml(cInfo.Color); // HEX color code
                 row.Cells[1].Paragraphs[0].InsertText(cInfo.Color);
+
+                // Exception pokial nebola farba urcena alebo je chyba v kode farby
+                try
+                {
+                    row.Cells[1].Paragraphs[0].Color(cellColor);
+                    row.Cells[1].FillColor = cellColor;
+                }
+                catch(ArgumentException e)
+                { }
+
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
                 row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
                 row.Cells[4].Paragraphs[0].InsertText(cInfo.Material);
