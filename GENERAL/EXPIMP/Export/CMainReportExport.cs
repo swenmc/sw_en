@@ -36,7 +36,7 @@ namespace EXPIMP
 
         public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
         {
-            // Set font encoding to unicode            
+            // Set font encoding to unicode
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
 
             PdfDocument s_document = new PdfDocument();
@@ -86,8 +86,6 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        
-
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
@@ -109,7 +107,6 @@ namespace EXPIMP
             //gfx.DrawImage(image, image.Size.Width, image.Size.Height);
         }
 
-        
         private static void DrawLogo(XGraphics gfx)
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
@@ -148,8 +145,6 @@ namespace EXPIMP
 
         private static void DrawBasicGeometry(XGraphics gfx, CModelData data)
         {
-            
-
             XFont fontTitle = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
 
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
@@ -216,8 +211,6 @@ namespace EXPIMP
             para.AddFormattedText(data.RoofPitch_deg.ToString());
             para.AddFormattedText("\tdeg");
 
-
-
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
             pdfRenderer.RenderDocument();
@@ -243,9 +236,7 @@ namespace EXPIMP
             }
             return fileName;
         }
-        
-
-        
+ 
 
 
 
@@ -273,22 +264,6 @@ namespace EXPIMP
 
 
 
-        
-
-
-        
-        
-
-        
-
-       
-
-        
-
-        
-
-        
-        
 
         private static void DrawFSAddress(XGraphics gfx)
         {
@@ -310,10 +285,6 @@ namespace EXPIMP
             gfx.DrawString(sLine4, font, XBrushes.Black, dposition_x, dposition_y + 3 * drowheight);
             gfx.DrawString(sLine5, font, XBrushes.Black, dposition_x, dposition_y + 4 * drowheight);
         }
-
-        
-
-        
 
         private static void DrawPlateInfo(XGraphics gfx, CPlate plate)
         {
@@ -578,6 +549,7 @@ namespace EXPIMP
             sec.Add(table);
             return table;
         }
+
         public static Table GetPlatesParamsTable(Document document, XGraphics gfx, List<string[]> tableParams)
         {
             Section sec = document.AddSection();

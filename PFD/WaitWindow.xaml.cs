@@ -19,9 +19,22 @@ namespace PFD
     /// </summary>
     public partial class WaitWindow : Window
     {
-        public WaitWindow()
+        public WaitWindow(string fileType)
         {
             InitializeComponent();
+
+            // Set icon depending on type of exported file
+            if (fileType == "DOC")
+                WaitImage.Source = new BitmapImage(new Uri("Resources/DOCfilelogo.png", UriKind.Relative));
+            else if (fileType == "XLS")
+                WaitImage.Source = new BitmapImage(new Uri("Resources/XLSfilelogo.png", UriKind.Relative));
+            else if (fileType == "PFD")
+                WaitImage.Source = new BitmapImage(new Uri("Resources/PDFfilelogo.png", UriKind.Relative));
+            else
+            {
+                throw new Exception("Not defined file type icon.");
+                // Not defined icon
+            }
         }
     }
 }

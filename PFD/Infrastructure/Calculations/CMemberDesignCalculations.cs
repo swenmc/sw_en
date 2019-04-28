@@ -126,8 +126,6 @@ namespace PFD.Infrastructure
                GetTextForResultsMessageBox(sDesignResults_SLS));
         }
 
-        
-
         public void Calculate_InternalForces()
         {
             int count = 0;
@@ -264,7 +262,7 @@ namespace PFD.Infrastructure
 
         public void Calculate_InternalForces_LoadCombinations(CMember m)
         {
-            // Calculate Internal Forces For Load Combinations            
+            // Calculate Internal Forces For Load Combinations
             if (!m.BIsGenerated) return;
 
             if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
@@ -353,7 +351,7 @@ namespace PFD.Infrastructure
 
         public void Calculate_Deflections_LoadCombinations(CMember m)
         {
-            // Calculate Deflections For Load Combinations            
+            // Calculate Deflections For Load Combinations
             if (!m.BIsGenerated) return;
 
             if (m.BIsSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
@@ -393,7 +391,6 @@ namespace PFD.Infrastructure
             }
 
         }
-
 
         //public void Calculate_InternalForcesAndDeflections_LoadCases()
         //{
