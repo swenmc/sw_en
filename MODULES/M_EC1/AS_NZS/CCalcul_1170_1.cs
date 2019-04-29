@@ -11,6 +11,9 @@ namespace M_EC1.AS_NZS
         public float fDeadLoadTotal_Wall;
         public float fImposedLoadTotal_Roof;
 
+        public float fDeadLoad_Roof;
+        public float fDeadLoad_Wall;
+
         public CCalcul_1170_1(
                float fMass_Roof,
                float fMass_Wall,
@@ -19,8 +22,8 @@ namespace M_EC1.AS_NZS
                float fImposedActionRoof,
                float fg_acceleration)
         {
-            float fDeadLoad_Roof = fMass_Roof * fg_acceleration; // Change from mass kg/m^2 to weight
-            float fDeadLoad_Wall = fMass_Wall * fg_acceleration; // Change from mass kg/m^2 to weight
+            fDeadLoad_Roof = fMass_Roof * fg_acceleration; // Change from mass kg/m^2 to weight
+            fDeadLoad_Wall = fMass_Wall * fg_acceleration; // Change from mass kg/m^2 to weight
 
             // Additional dead loads
             // Additional dead load - roof

@@ -16,7 +16,7 @@ namespace M_EC1.AS_NZS
         public SQLiteConnection conn;
 
         // AS / NZS 4600:2018, cl. 1.6.4.2.2 Structural ductility factor
-        float fNu_ULS = 1.25f; // Structural ductility factor, 1.6.4.2.2(a)
+        public float fNu_ULS = 1.25f; // Structural ductility factor, 1.6.4.2.2(a)
 
         // NZS 1170.5:2004
         /*
@@ -24,7 +24,7 @@ namespace M_EC1.AS_NZS
         The structural ductility factor, μ, for the serviceability limit state SLS1 shall be
         1.0 ≤ nu ≤ 1.25 and for SLS2 shall be within the limits 1.0. ≤ n ≤ 2.0.
         */
-        float fNu_SLS = 1.00f; // Structural ductility factor, 1.6.4.2.2
+        public float fNu_SLS = 1.00f; // Structural ductility factor, 1.6.4.2.2
 
         //float fkNu_ULS; // Ductility coefficient (depends on site soil class)
         //float fkNu_SLS;
@@ -32,15 +32,15 @@ namespace M_EC1.AS_NZS
         // AS/NZS 4600
         // When considering lateral stability of a whole structure, the structural performance factor (Sp) shall be taken as 1.0.
         float fS_p_ULS_stab = 1.00f; // Structural performance factor
-        float fS_p_ULS_strength = 0.90f;
-        float fS_p_SLS = 0.70f;
+        public float fS_p_ULS_strength = 0.90f;
+        public float fS_p_SLS = 0.70f;
 
         float fC_d_T1x_ULS_stab;
-        float fC_d_T1x_ULS_strength;
+        public float fC_d_T1x_ULS_strength;
         float fC_d_T1x_SLS;
 
         float fC_d_T1y_ULS_stab;
-        float fC_d_T1y_ULS_strength;
+        public float fC_d_T1y_ULS_strength;
         float fC_d_T1y_SLS;
 
         /*
@@ -61,8 +61,17 @@ namespace M_EC1.AS_NZS
         public float fV_y_ULS_strength;
         public float fV_y_SLS;
 
-        public CCalcul_1170_5(float fT_1x, float fT_1y, float fG_tot_x, float fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
+        public float fN_TxD_ULS;
+        public float fC_Tx_ULS;
+        public float fG_tot_x;
+        public float fN_TyD_ULS;
+        public float fC_Ty_ULS;
+        public float fG_tot_y;
+
+        public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
+            fG_tot_x = param_fG_tot_x;
+            fG_tot_y = param_fG_tot_y;
             // AS/NZS 4600:2018 - 1.6.4.2.4 Structural performance factor (a)
             if (1 < fNu_ULS && fNu_ULS <= 2)
                 fS_p_ULS_strength = 1.3f - 0.3f * fNu_ULS;
@@ -72,14 +81,14 @@ namespace M_EC1.AS_NZS
             float fR_ULS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilityULS_EQ);
             float fR_SLS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilitySLS);
 
-            float fN_TxD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
-            float fN_TyD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
+            fN_TxD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
+            fN_TyD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
 
             float fN_TxD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
             float fN_TyD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
 
-            float fC_Tx_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TxD_ULS);
-            float fC_Ty_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TyD_ULS);
+            fC_Tx_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TxD_ULS);
+            fC_Ty_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TyD_ULS);
 
             float fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
             float fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);

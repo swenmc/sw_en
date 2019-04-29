@@ -311,65 +311,40 @@ namespace EXPIMP
             document.ReplaceText("[R_SLS]", data.R_SLS.ToString(nfi));
             document.ReplaceText("[SiteElevation]", data.SiteElevation.ToString(nfi));
             
-            //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", );
-            //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", );
-            //document.ReplaceText("[AdditionalDeadActionWall]", );
-            //document.ReplaceText("[AdditionalDeadActionRoof]", );
-            //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", );
-            //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", );
+            
+            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", data.GeneralLoad.fDeadLoad_Wall.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", data.GeneralLoad.fDeadLoad_Roof.ToString(nfi));
+            document.ReplaceText("[AdditionalDeadActionWall]", data.AdditionalDeadActionWall.ToString(nfi));
+            document.ReplaceText("[AdditionalDeadActionRoof]", data.AdditionalDeadActionRoof.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", data.GeneralLoad.fDeadLoadTotal_Wall.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", data.GeneralLoad.fDeadLoadTotal_Roof.ToString(nfi));
             document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(nfi));
             document.ReplaceText("[AnnualProbabilityULS_Snow]", data.AnnualProbabilityULS_Snow.ToString(nfi));
             document.ReplaceText("[R_ULS_Snow]", data.R_ULS_Snow.ToString(nfi));
-            //document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", );
-            //document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", );
+            
+            document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", data.Snow.eSnowElevationRegion.GetFriendlyName());
+            document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", data.Snow.fs_g_ULS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", data.Snow.fs_g_SLS.ToString(nfi));
             document.ReplaceText("[ExposureCategory]", data.ExposureCategory);
-            //document.ReplaceText("[CCalcul_1170_3.C_e]", );
-            //document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", );
-            //document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", );
-            //document.ReplaceText("[CCalcul_1170_3.s_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_3.s_SLS]", );
+            document.ReplaceText("[CCalcul_1170_3.C_e]", data.Snow.fC_e.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", data.Snow.fNu1_Alpha1.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", data.Snow.fNu2_Alpha1.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_3.s_ULS]", data.Snow.fs_ULS_Nu_1.ToString(nfi)); //???
+            document.ReplaceText("[CCalcul_1170_3.s_SLS]", data.Snow.fs_SLS_Nu_1.ToString(nfi)); //???
 
             ////Wind Load
             document.ReplaceText("[AnnualProbabilityULS_Wind]", data.AnnualProbabilityULS_Wind.ToString(nfi));
             document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(nfi));
             document.ReplaceText("[EWindRegion]", data.WindRegion);
             document.ReplaceText("[TerrainCategory]", data.TerrainCategory);
-            //document.ReplaceText("[CCalcul_1170_2.z]", );
+            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(nfi));  
+            document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", data.Wind.fV_R_ULS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", data.Wind.fV_R_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_z_cat]", data.Wind.fM_z_cat.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_s]", data.Wind.fM_s.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_t]", data.Wind.fM_t.ToString(nfi));
 
-            //document.ReplaceText("[CCalcul_1170_2.h]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", );
-            //document.ReplaceText("[CCalcul_1170_2.M_z_cat]", );
-            //document.ReplaceText("[CCalcul_1170_2.M_s]", );
-            //document.ReplaceText("[CCalcul_1170_2.M_t]", );
-
-
-
-
-            ////TODO – potrebujemespristupnitpremenne v objektecez properties
-            ////Wall cladding load g c.w =	[CCalcul_1170_1.DeadLoad_Wall]
-            ////        kN/m2
-            ////Roof cladding load          g c.r =	[CCalcul_1170_1.DeadLoad_Roof] kN/m2
-            ////Additional wall load            g a.w = [AdditionalDeadActionWall] kN/m2
-            ////Additional roof load            g a.r = [AdditionalDeadActionRoof] kN/m2
-            ////Total wall load             g t.w = [CCalcul_1170_1.DeadLoadTotal_Wall] kN/m2
-            ////Total roof load             g t.r = [CCalcul_1170_1.DeadLoadTotal_Roof] kN/m2
-
-
-            ////5.6.	Wind Load
-            ////TODO – potrebujemespristupnitpremenne v objektecez properties
-            ////Annual probability of exceedance ULS:		[AnnualProbabilityULS_Wind]
-            ////Return period               RULS.W =    [R_ULS_Wind] years
-            ////Wind region[EWindRegion]
-            ////Terrain category[TerrainCategory]
-            ////Reference height z = [CCalcul_1170_2.z] m
-            ////Average structure height            h = [CCalcul_1170_2.h] m
-            ////Regional 3s gust wind speed     VR.ULS =    [CCalcul_1170_2.V_R_ULS] m/s
-            ////Regional 3s gust wind speed     VR.SLS =    [CCalcul_1170_2.V_R_SLS] m/s
-            ////Terrain/height multiplier           Mz.cat= [CCalcul_1170_2.M_z_cat]
-            ////Shielding multiplier            Ms =    [CCalcul_1170_2.M_s]
-            ////Topographic multiplier          Mt =    [CCalcul_1170_2.M_t]
 
 
             ////Hodnotysadajupocitatrozne pre smeryvetraN, W, E, S.Zatialbudemezobrazovatlenhodnoty s indexom[0]
@@ -384,18 +359,17 @@ namespace EXPIMP
             ////Basic wind pressure         pb.SLS =    [CCalcul_1170_2.p_basic_SLS_Theta_4[0]] kN/m2
             
             
-            //document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_sit_SLS_Theta_9[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_des_ULS_Theta_4[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.V_des_SLS_Theta_4[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.Rho_air]", );
-            //document.ReplaceText("[CCalcul_1170_2.C_dyn]", );
-            //document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", );
-            //document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", );
+            document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", data.Wind.fM_D_array_values_9[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_SLS_Theta_9[0]]", data.Wind.fV_sit_SLS_Theta_9[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_des_ULS_Theta_4[0]]", data.Wind.fV_des_ULS_Theta_4[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_des_SLS_Theta_4[0]]", data.Wind.fV_des_SLS_Theta_4[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.Rho_air]", data.Wind.fRho_air.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.C_dyn]", data.Wind.fC_dyn.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", data.Wind.fp_basic_ULS_Theta_4[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", data.Wind.fp_basic_SLS_Theta_4[0].ToString(nfi));
             
-
 
             ////5.7.	Seismic Load
             ////Equivalent static method parameters
@@ -437,32 +411,33 @@ namespace EXPIMP
             ////Structural ductility factor SLS μ = [CCalcul_1170_5.Nu_SLS]
             ////Structural performance factor SLS   Sp =	[CCalcul_1170_5.S_p_SLS]
 
-            //document.ReplaceText("[AnnualProbabilityULS_EQ]", );
-            //document.ReplaceText("[R_ULS_EQ]", );
-            //document.ReplaceText("[ESiteSubSoilClass]", );
-            //document.ReplaceText("[FaultDistanceDmin]", );
-            //document.ReplaceText("[FaultDistanceDmax]", );
-            //document.ReplaceText("[ZoneFactorZ]", );
-            //document.ReplaceText("[PeriodAlongYDirectionTx]", );
-            //document.ReplaceText("[PeriodAlongYDirectionTy]", );
-            //document.ReplaceText("[SpectralShapeFactorChTx]", );
-            //document.ReplaceText("[SpectralShapeFactorChTy]", );
-            //document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", );
-            //document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", );
-            //document.ReplaceText("[CCalcul_1170_5.G_tot_x]", );
-            //document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", );
-            //document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", );
-            //document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", );
-            //document.ReplaceText("[CCalcul_1170_5.G_tot_y]", );
-            //document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", );
-            //document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", );
-            //document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", );
+            document.ReplaceText("[AnnualProbabilityULS_EQ]", data.AnnualProbabilityULS_EQ.ToString(nfi));
+            document.ReplaceText("[R_ULS_EQ]", data.R_ULS_EQ.ToString(nfi));
+            document.ReplaceText("[ESiteSubSoilClass]", data.SiteSubSoilClass);
+            document.ReplaceText("[FaultDistanceDmin]", data.FaultDistanceDmin.ToString(nfi));
+            document.ReplaceText("[FaultDistanceDmax]", data.FaultDistanceDmax.ToString(nfi));
+            document.ReplaceText("[ZoneFactorZ]", data.ZoneFactorZ.ToString(nfi));
+            document.ReplaceText("[PeriodAlongYDirectionTx]", data.PeriodAlongXDirectionTx.ToString(nfi));
+            document.ReplaceText("[PeriodAlongYDirectionTy]", data.PeriodAlongYDirectionTy.ToString(nfi));
+            document.ReplaceText("[SpectralShapeFactorChTx]", data.SpectralShapeFactorChTx.ToString(nfi));
+            document.ReplaceText("[SpectralShapeFactorChTy]", data.SpectralShapeFactorChTy.ToString(nfi));
+
+            document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", data.Eq.fN_TxD_ULS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(nfi));
+            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.k_Nu_Tx_ULS.ToString(nfi)); //??? to Mato
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(nfi));
+            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.k_Nu_Ty_ULS.ToString(nfi)); ///??? to Mato
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
 
         }
 

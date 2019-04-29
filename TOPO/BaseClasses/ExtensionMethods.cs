@@ -74,6 +74,16 @@ namespace BaseClasses
             return "Unknown ELCName";
         }
 
+        public static string GetFriendlyName(this ESnowElevationRegions snowElevationRegion)
+        {
+            switch (snowElevationRegion)
+            {
+                case ESnowElevationRegions.eAlpine: return "Alpine";
+                case ESnowElevationRegions.eNoSignificantSnow: return "NoSignificantSnow";
+                case ESnowElevationRegions.eSubAlpine: return "SubAlpine";
+            }
+            return "Unknown Snow Elevation Region";
+        }
 
 
         public static float GetLoadValue(this CMLoad load)

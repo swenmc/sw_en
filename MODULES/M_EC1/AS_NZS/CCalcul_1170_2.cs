@@ -111,7 +111,7 @@ namespace M_EC1.AS_NZS
         float fSiteTerrainSlope_Phi_deg = 3;
 
         public float fM_z_cat; // Terrain multiplier
-        float fRho_air = 1.2f; // kgm^3
+        public float fRho_air = 1.2f; // kgm^3
 
         // Cp factors and segments
         public float fC_pi_min;
