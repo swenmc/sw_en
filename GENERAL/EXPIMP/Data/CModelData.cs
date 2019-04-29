@@ -43,8 +43,36 @@ namespace EXPIMP
         private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMaterialPropertiesText> m_MaterialDetailsList;
 
+        //Loads
+        private string m_Location;
+        private string m_DesignLife;
+        private string m_ImportanceClass;
+        private string m_SnowRegion;
+        private string m_ExposureCategory;
+        private string m_WindRegion;
+        private string m_TerrainCategory;
+        private string m_SiteSubSoilClass;
+        
+        private float m_AnnualProbabilityULS_Snow;
+        private float m_AnnualProbabilityULS_Wind;
+        private float m_AnnualProbabilityULS_EQ;
+        private float m_AnnualProbabilitySLS;
+        private float m_SiteElevation;
+        private float m_FaultDistanceDmin;
+        private float m_FaultDistanceDmax;
+        private float m_ZoneFactorZ;
+        private float m_PeriodAlongXDirectionTx;
+        private float m_PeriodAlongYDirectionTy;
+        private float m_SpectralShapeFactorChTx;
+        private float m_SpectralShapeFactorChTy;
+        private float m_AdditionalDeadActionRoof;
+        private float m_AdditionalDeadActionWall;
+        private float m_ImposedActionRoof;
 
-
+        private float m_R_ULS_Snow;
+        private float m_R_ULS_Wind;
+        private float m_R_ULS_EQ;
+        private float m_R_SLS;
 
         //private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
@@ -419,6 +447,357 @@ namespace EXPIMP
             set
             {
                 MModel = value;                
+            }
+        }
+
+        public string Location
+        {
+            get
+            {
+                return m_Location;
+            }
+
+            set
+            {
+                m_Location = value;
+            }
+        }
+
+        public string DesignLife
+        {
+            get
+            {
+                return m_DesignLife;
+            }
+
+            set
+            {
+                m_DesignLife = value;
+            }
+        }
+
+        public string ImportanceClass
+        {
+            get
+            {
+                return m_ImportanceClass;
+            }
+
+            set
+            {
+                m_ImportanceClass = value;
+            }
+        }
+
+        public string SnowRegion
+        {
+            get
+            {
+                return m_SnowRegion;
+            }
+
+            set
+            {
+                m_SnowRegion = value;
+            }
+        }
+
+        public string ExposureCategory
+        {
+            get
+            {
+                return m_ExposureCategory;
+            }
+
+            set
+            {
+                m_ExposureCategory = value;
+            }
+        }
+
+        public string WindRegion
+        {
+            get
+            {
+                return m_WindRegion;
+            }
+
+            set
+            {
+                m_WindRegion = value;
+            }
+        }
+
+        public string TerrainCategory
+        {
+            get
+            {
+                return m_TerrainCategory;
+            }
+
+            set
+            {
+                m_TerrainCategory = value;
+            }
+        }
+
+        public string SiteSubSoilClass
+        {
+            get
+            {
+                return m_SiteSubSoilClass;
+            }
+
+            set
+            {
+                m_SiteSubSoilClass = value;
+            }
+        }
+
+        public float AnnualProbabilityULS_Snow
+        {
+            get
+            {
+                return m_AnnualProbabilityULS_Snow;
+            }
+
+            set
+            {
+                m_AnnualProbabilityULS_Snow = value;
+            }
+        }
+
+        public float AnnualProbabilityULS_Wind
+        {
+            get
+            {
+                return m_AnnualProbabilityULS_Wind;
+            }
+
+            set
+            {
+                m_AnnualProbabilityULS_Wind = value;
+            }
+        }
+
+        public float AnnualProbabilityULS_EQ
+        {
+            get
+            {
+                return m_AnnualProbabilityULS_EQ;
+            }
+
+            set
+            {
+                m_AnnualProbabilityULS_EQ = value;
+            }
+        }
+
+        public float AnnualProbabilitySLS
+        {
+            get
+            {
+                return m_AnnualProbabilitySLS;
+            }
+
+            set
+            {
+                m_AnnualProbabilitySLS = value;
+            }
+        }
+
+        public float SiteElevation
+        {
+            get
+            {
+                return m_SiteElevation;
+            }
+
+            set
+            {
+                m_SiteElevation = value;
+            }
+        }
+
+        public float FaultDistanceDmin
+        {
+            get
+            {
+                return m_FaultDistanceDmin;
+            }
+
+            set
+            {
+                m_FaultDistanceDmin = value;
+            }
+        }
+
+        public float FaultDistanceDmax
+        {
+            get
+            {
+                return m_FaultDistanceDmax;
+            }
+
+            set
+            {
+                m_FaultDistanceDmax = value;
+            }
+        }
+
+        public float ZoneFactorZ
+        {
+            get
+            {
+                return m_ZoneFactorZ;
+            }
+
+            set
+            {
+                m_ZoneFactorZ = value;
+            }
+        }
+
+        public float PeriodAlongXDirectionTx
+        {
+            get
+            {
+                return m_PeriodAlongXDirectionTx;
+            }
+
+            set
+            {
+                m_PeriodAlongXDirectionTx = value;
+            }
+        }
+
+        public float PeriodAlongYDirectionTy
+        {
+            get
+            {
+                return m_PeriodAlongYDirectionTy;
+            }
+
+            set
+            {
+                m_PeriodAlongYDirectionTy = value;
+            }
+        }
+
+        public float SpectralShapeFactorChTx
+        {
+            get
+            {
+                return m_SpectralShapeFactorChTx;
+            }
+
+            set
+            {
+                m_SpectralShapeFactorChTx = value;
+            }
+        }
+
+        public float SpectralShapeFactorChTy
+        {
+            get
+            {
+                return m_SpectralShapeFactorChTy;
+            }
+
+            set
+            {
+                m_SpectralShapeFactorChTy = value;
+            }
+        }
+
+        public float AdditionalDeadActionRoof
+        {
+            get
+            {
+                return m_AdditionalDeadActionRoof;
+            }
+
+            set
+            {
+                m_AdditionalDeadActionRoof = value;
+            }
+        }
+
+        public float AdditionalDeadActionWall
+        {
+            get
+            {
+                return m_AdditionalDeadActionWall;
+            }
+
+            set
+            {
+                m_AdditionalDeadActionWall = value;
+            }
+        }
+
+        public float ImposedActionRoof
+        {
+            get
+            {
+                return m_ImposedActionRoof;
+            }
+
+            set
+            {
+                m_ImposedActionRoof = value;
+            }
+        }
+
+        public float R_ULS_Snow
+        {
+            get
+            {
+                return m_R_ULS_Snow;
+            }
+
+            set
+            {
+                m_R_ULS_Snow = value;
+            }
+        }
+
+        public float R_ULS_Wind
+        {
+            get
+            {
+                return m_R_ULS_Wind;
+            }
+
+            set
+            {
+                m_R_ULS_Wind = value;
+            }
+        }
+
+        public float R_ULS_EQ
+        {
+            get
+            {
+                return m_R_ULS_EQ;
+            }
+
+            set
+            {
+                m_R_ULS_EQ = value;
+            }
+        }
+
+        public float R_SLS
+        {
+            get
+            {
+                return m_R_SLS;
+            }
+
+            set
+            {
+                m_R_SLS = value;
             }
         }
 

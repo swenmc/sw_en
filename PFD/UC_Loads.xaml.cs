@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using DATABASE;
 
 namespace PFD
 {
@@ -32,15 +33,24 @@ namespace PFD
             sGeometryInputData = geometryInputData;
 
             // Connect to database and fill items of all comboboxes
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
+            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);
 
+            List<string> listLocations = CDatabaseManager.GetStringList("MainSQLiteDB", "nzLocations", "city");
+            List<string> listDesignLife = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life");
+            List<string> listImportanceClass = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt");
+            List<string> listSnowRegion = CDatabaseManager.GetStringList("MainSQLiteDB", "SnowRegions", "snowZone");
+            List<string> listExposureCategory = CDatabaseManager.GetStringList("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName");
+            List<string> listWindRegion = CDatabaseManager.GetStringList("MainSQLiteDB", "WindRegions", "windRegion");
+            List<string> listTerrainCategory = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb");
+            List<string> listSiteSubSoilClass = CDatabaseManager.GetStringList("MainSQLiteDB", "SiteSubSoilClass", "class");
+            
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
@@ -67,6 +77,15 @@ namespace PFD
 
             // Loading
             CPFDLoadInput loadinput = new CPFDLoadInput(sloadInputComboBoxes, sloadInputTextBoxes);
+            loadinput.ListLocations = listLocations;
+            loadinput.ListDesignLife = listDesignLife;
+            loadinput.ListImportanceClass = listImportanceClass;
+            loadinput.ListSnowRegion = listSnowRegion;
+            loadinput.ListExposureCategory = listExposureCategory;
+            loadinput.ListWindRegion = listWindRegion;
+            loadinput.ListTerrainCategory = listTerrainCategory;
+            loadinput.ListSiteSubSoilClass = listSiteSubSoilClass;
+
             loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = loadinput;
         }

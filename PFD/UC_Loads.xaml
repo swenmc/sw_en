@@ -55,17 +55,17 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Location:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Location" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LocationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListLocations}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=LocationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Design Life:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_DesignLife" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=DesignLifeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListDesignLife}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=DesignLifeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Level:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListImportanceClass}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability ULS Snow:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -101,12 +101,12 @@
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SnowRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                     ItemsSource="{Binding Path=ListSnowRegion}"     VerticalAlignment="Top" SelectedIndex="{Binding Path=SnowRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="10" Grid.Column="0" Text="Exposure Category:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="10" Grid.Column="1" Name ="Combobox_ExposureCategory" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ExposureCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                       ItemsSource="{Binding Path=ListExposureCategory}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=ExposureCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="12" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -116,12 +116,12 @@
                 </StackPanel>
             </Button>
             <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_WindRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListWindRegion}"    VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="13" Grid.Column="0" Text="Terrain Category:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_TerrainCategory" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                       ItemsSource="{Binding Path=ListTerrainCategory}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="14" Grid.Column="0" Text="Angle from Cardinal Direction :" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -131,7 +131,7 @@
             <TextBlock Grid.Row="16" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SiteSubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SiteSubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListSiteSubSoilClass}"    VerticalAlignment="Top" SelectedIndex="{Binding Path=SiteSubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="17" Grid.Column="0" Text="Fault Distance Dmin:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

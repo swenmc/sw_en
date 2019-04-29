@@ -2092,7 +2092,19 @@ namespace PFD
 
             data.ComponentList = ComponentList;
             data.Model = Model;
-            
+
+            data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
+            data.DesignLife = _loadInput.ListDesignLife[_loadInput.DesignLifeIndex];
+            data.ImportanceClass = _loadInput.ListImportanceClass[_loadInput.ImportanceClassIndex];
+            data.SnowRegion = _loadInput.ListSnowRegion[_loadInput.SnowRegionIndex];
+            data.ExposureCategory = _loadInput.ListExposureCategory[_loadInput.ExposureCategoryIndex];
+            data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
+            data.TerrainCategory = _loadInput.ListTerrainCategory[_loadInput.TerrainCategoryIndex];
+            data.SiteSubSoilClass = _loadInput.ListSiteSubSoilClass[_loadInput.SiteSubSoilClassIndex];
+
+            data.SiteElevation = _loadInput.SiteElevation;
+            data.R_SLS = _loadInput.R_SLS;
+            data.AnnualProbabilitySLS = _loadInput.AnnualProbabilitySLS;
 
             return data;
         }

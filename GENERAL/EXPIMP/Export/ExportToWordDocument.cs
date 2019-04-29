@@ -16,6 +16,8 @@ namespace EXPIMP
     public static class ExportToWordDocument
     {
         private const string resourcesFolderPath = "./../../Resources/";
+        private const double fontSizeInTable = 9;
+
         public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
         {
             string fileName = GetReportName();
@@ -299,12 +301,15 @@ namespace EXPIMP
 
         private static void DrawLoad(DocX document, CModelData data)
         {
-            //document.ReplaceText("[Location]", );
-            //document.ReplaceText("[DesignLife_Value]", );
-            //document.ReplaceText("[ImportanceClass]", );
-            //document.ReplaceText("[AnnualProbabilitySLS]", );
-            //document.ReplaceText("[R_SLS]", );
-            //document.ReplaceText("[SiteElevation]", );
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            document.ReplaceText("[Location]", data.Location);
+            document.ReplaceText("[DesignLife_Value]", data.DesignLife);
+            document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
+            document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(nfi));
+            document.ReplaceText("[R_SLS]", data.R_SLS.ToString(nfi));
+            document.ReplaceText("[SiteElevation]", data.SiteElevation.ToString(nfi));
             
             //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", );
             //document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", );
@@ -312,13 +317,13 @@ namespace EXPIMP
             //document.ReplaceText("[AdditionalDeadActionRoof]", );
             //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", );
             //document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", );
-            //document.ReplaceText("[ImposedActionRoof]", );
-            //document.ReplaceText("[AnnualProbabilityULS_Snow]", );
-            //document.ReplaceText("[R_ULS_Snow]", );
+            document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(nfi));
+            document.ReplaceText("[AnnualProbabilityULS_Snow]", data.AnnualProbabilityULS_Snow.ToString(nfi));
+            document.ReplaceText("[R_ULS_Snow]", data.R_ULS_Snow.ToString(nfi));
             //document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", );
             //document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", );
             //document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", );
-            //document.ReplaceText("[ExposureCategory]", );
+            document.ReplaceText("[ExposureCategory]", data.ExposureCategory);
             //document.ReplaceText("[CCalcul_1170_3.C_e]", );
             //document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", );
             //document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", );
@@ -326,10 +331,10 @@ namespace EXPIMP
             //document.ReplaceText("[CCalcul_1170_3.s_SLS]", );
 
             ////Wind Load
-            //document.ReplaceText("[AnnualProbabilityULS_Wind]", );
-            //document.ReplaceText("[R_ULS_Wind]", );
-            //document.ReplaceText("[EWindRegion]", );
-            //document.ReplaceText("[TerrainCategory]", );
+            document.ReplaceText("[AnnualProbabilityULS_Wind]", data.AnnualProbabilityULS_Wind.ToString(nfi));
+            document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(nfi));
+            document.ReplaceText("[EWindRegion]", data.WindRegion);
+            document.ReplaceText("[TerrainCategory]", data.TerrainCategory);
             //document.ReplaceText("[CCalcul_1170_2.z]", );
 
             //document.ReplaceText("[CCalcul_1170_2.h]", );
@@ -524,6 +529,9 @@ namespace EXPIMP
                 row.Cells[1].Paragraphs[0].InsertText(lc.Name);                
                 row.Cells[2].Paragraphs[0].InsertText(lc.Type.GetFriendlyName());
             }
+            foreach (Paragraph p in t.Paragraphs)
+            { p.FontSize(fontSizeInTable); }
+
             par.InsertTableBeforeSelf(t);
         }
         private static void DrawLoadCombinations(DocX document, CModelData data)
@@ -565,8 +573,7 @@ namespace EXPIMP
             }
             parULS.Remove(false);
             parSLS.Remove(false);
-
-            double fontSizeInTable = 9;
+            
             foreach (Paragraph p in parULS.FollowingTable.Paragraphs)
             { p.FontSize(fontSizeInTable); }
             foreach (Paragraph p in parSLS.FollowingTable.Paragraphs)

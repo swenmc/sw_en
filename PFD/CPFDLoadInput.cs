@@ -46,6 +46,15 @@ namespace PFD
         private float MAdditionalDeadActionRoof;
         private float MAdditionalDeadActionWall;
         private float MImposedActionRoof;
+        
+        private List<string> m_ListLocations;
+        private List<string> m_ListDesignLife;
+        private List<string> m_ListImportanceClass;
+        private List<string> m_ListSnowRegion;
+        private List<string> m_ListExposureCategory;
+        private List<string> m_ListWindRegion;
+        private List<string> m_ListTerrainCategory;
+        private List<string> m_ListSiteSubSoilClass;
 
         // Not in GUI
         private float MDesignLife_Value;
@@ -593,6 +602,110 @@ namespace PFD
             set
             {
                 MEExposureCategory = value;
+            }
+        }
+
+        public List<string> ListLocations
+        {
+            get
+            {
+                return m_ListLocations;
+            }
+
+            set
+            {
+                m_ListLocations = value;
+            }
+        }
+
+        public List<string> ListDesignLife
+        {
+            get
+            {
+                return m_ListDesignLife;
+            }
+
+            set
+            {
+                m_ListDesignLife = value;
+            }
+        }
+
+        public List<string> ListImportanceClass
+        {
+            get
+            {
+                return m_ListImportanceClass;
+            }
+
+            set
+            {
+                m_ListImportanceClass = value;
+            }
+        }
+
+        public List<string> ListSnowRegion
+        {
+            get
+            {
+                return m_ListSnowRegion;
+            }
+
+            set
+            {
+                m_ListSnowRegion = value;
+            }
+        }
+
+        public List<string> ListExposureCategory
+        {
+            get
+            {
+                return m_ListExposureCategory;
+            }
+
+            set
+            {
+                m_ListExposureCategory = value;
+            }
+        }
+
+        public List<string> ListWindRegion
+        {
+            get
+            {
+                return m_ListWindRegion;
+            }
+
+            set
+            {
+                m_ListWindRegion = value;
+            }
+        }
+
+        public List<string> ListTerrainCategory
+        {
+            get
+            {
+                return m_ListTerrainCategory;
+            }
+
+            set
+            {
+                m_ListTerrainCategory = value;
+            }
+        }
+
+        public List<string> ListSiteSubSoilClass
+        {
+            get
+            {
+                return m_ListSiteSubSoilClass;
+            }
+
+            set
+            {
+                m_ListSiteSubSoilClass = value;
             }
         }
 
