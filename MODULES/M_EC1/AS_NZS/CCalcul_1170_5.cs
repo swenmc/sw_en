@@ -76,6 +76,12 @@ namespace M_EC1.AS_NZS
         public float fk_Nu_Ty_ULS_strength;
         public float fk_Nu_Ty_SLS;
 
+        public float fN_TxD_SLS;
+        public float fN_TyD_SLS;
+
+        public float fC_Tx_SLS;
+        public float fC_Ty_SLS;
+
         public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
             fG_tot_x = param_fG_tot_x;
@@ -92,14 +98,14 @@ namespace M_EC1.AS_NZS
             fN_TxD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
             fN_TyD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
 
-            float fN_TxD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
-            float fN_TyD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
+            fN_TxD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
+            fN_TyD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
 
             fC_Tx_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TxD_ULS);
             fC_Ty_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TyD_ULS);
 
-            float fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
-            float fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
+            fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
+            fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
 
             fC_d_T1x_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_stab);
             fC_d_T1x_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_strength);

@@ -37,6 +37,8 @@ namespace EXPIMP
 
                 DrawLoadCases(document, modelData);
                 DrawLoadCombinations(document, modelData);
+                DrawLoad(document, modelData);
+
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -431,7 +433,17 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
-
+            
+            document.ReplaceText("[CCalcul_1170_5.N_TxD_SLS]", data.Eq.fN_TxD_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Tx_SLS]", data.Eq.fC_Tx_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_SLS]", data.Eq.fk_Nu_Tx_SLS.ToString(nfi));
+            //document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS_strength]", data.Eq.C_d_T1x_SLS_strength.ToString(nfi)); //to Mato ???
+            //document.ReplaceText("[CCalcul_1170_5.V_x_SLS_strength]", data.Eq.V_x_SLS_strength.ToString(nfi)); //to Mato ???
+            document.ReplaceText("[CCalcul_1170_5.N_TyD_SLS]", data.Eq.fN_TyD_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Ty_SLS]", data.Eq.fC_Ty_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_SLS]", data.Eq.fk_Nu_Ty_SLS.ToString(nfi));
+            //document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS _strength]", data.Eq.C_d_T1y_SLS_strength.ToString(nfi)); //to Mato ???
+            //document.ReplaceText("[CCalcul_1170_5.V_y_ SLS_strength]", data.Eq.V_y_SLS_strength.ToString(nfi));//to Mato ???
         }
         private static void DrawModel3D(DocX document, Viewport3D viewPort)
         {

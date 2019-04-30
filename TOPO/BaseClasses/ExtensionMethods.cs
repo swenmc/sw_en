@@ -79,8 +79,8 @@ namespace BaseClasses
             switch (snowElevationRegion)
             {
                 case ESnowElevationRegions.eAlpine: return "Alpine";
-                case ESnowElevationRegions.eNoSignificantSnow: return "NoSignificantSnow";
-                case ESnowElevationRegions.eSubAlpine: return "SubAlpine";
+                case ESnowElevationRegions.eNoSignificantSnow: return "No Significant Snow";
+                case ESnowElevationRegions.eSubAlpine: return "Sub Alpine";
             }
             return "Unknown Snow Elevation Region";
         }
