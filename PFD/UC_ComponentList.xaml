@@ -28,7 +28,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="Auto" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="50" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Color}"/>

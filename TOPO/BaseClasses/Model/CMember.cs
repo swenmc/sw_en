@@ -260,6 +260,13 @@ namespace BaseClasses
                 MLoads = value;
             }
         }
+
+        private Color m_color;
+        public Color Color
+        {
+            get { return m_color; }
+            set { m_color = value; }
+        }
         //public List<Point3D> WireFramePoints;
 
         //----------------------------------------------------------------------------

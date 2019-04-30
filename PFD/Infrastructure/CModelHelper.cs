@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Media;
 
 namespace PFD
 {
@@ -428,6 +429,10 @@ namespace PFD
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
                         m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
+
+                        //set member Color
+                        m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color);
+                        
                         break;
                     }
                     else if(m.Prefix == cInfo.Prefix &&
@@ -435,6 +440,9 @@ namespace PFD
                     {
                         if(debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
                     }
+
+                    
+
                 }
             }
             if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
