@@ -37,11 +37,11 @@ namespace M_EC1.AS_NZS
 
         float fC_d_T1x_ULS_stab;
         public float fC_d_T1x_ULS_strength;
-        float fC_d_T1x_SLS;
+        public float fC_d_T1x_SLS;
 
         float fC_d_T1y_ULS_stab;
         public float fC_d_T1y_ULS_strength;
-        float fC_d_T1y_SLS;
+        public float fC_d_T1y_SLS;
 
         /*
         float fC_v_Tvx_ULS_stab;
@@ -64,23 +64,28 @@ namespace M_EC1.AS_NZS
         public float fG_tot_x;
         public float fG_tot_y;
 
+        // ULS
+        // X-direction
         public float fN_TxD_ULS;
         public float fC_Tx_ULS;
         public float fk_Nu_Tx_ULS_stab;
         public float fk_Nu_Tx_ULS_strength;
-        public float fk_Nu_Tx_SLS;
 
+        // Y-direction
         public float fN_TyD_ULS;
         public float fC_Ty_ULS;
         public float fk_Nu_Ty_ULS_stab;
         public float fk_Nu_Ty_ULS_strength;
-        public float fk_Nu_Ty_SLS;
 
+        // SLS
+        // X-direction
         public float fN_TxD_SLS;
-        public float fN_TyD_SLS;
-
         public float fC_Tx_SLS;
+        public float fk_Nu_Tx_SLS;
+        // Y-direction
+        public float fN_TyD_SLS;
         public float fC_Ty_SLS;
+        public float fk_Nu_Ty_SLS;
 
         public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {

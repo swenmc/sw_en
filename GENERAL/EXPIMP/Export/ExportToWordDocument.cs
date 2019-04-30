@@ -419,35 +419,40 @@ namespace EXPIMP
             document.ReplaceText("[SpectralShapeFactorChTx]", data.SpectralShapeFactorChTx.ToString(nfi));
             document.ReplaceText("[SpectralShapeFactorChTy]", data.SpectralShapeFactorChTy.ToString(nfi));
 
+            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
+
+            // ULS
             document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(nfi));
+            // X-direction
             document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", data.Eq.fN_TxD_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.fk_Nu_Tx_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(nfi));
-
-            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(nfi));
+            // Y-direction
             document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.fk_Nu_Ty_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(nfi));
-
-            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
+
+            // SLS
             document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
-            
+            // X-direction
             document.ReplaceText("[CCalcul_1170_5.N_TxD_SLS]", data.Eq.fN_TxD_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Tx_SLS]", data.Eq.fC_Tx_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_SLS]", data.Eq.fk_Nu_Tx_SLS.ToString(nfi));
-            //document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS_strength]", data.Eq.C_d_T1x_SLS_strength.ToString(nfi)); //to Mato ???
-            //document.ReplaceText("[CCalcul_1170_5.V_x_SLS_strength]", data.Eq.V_x_SLS_strength.ToString(nfi)); //to Mato ???
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS]", data.Eq.fC_d_T1x_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", data.Eq.fV_x_SLS.ToString(nfi));
+            // Y-direction
             document.ReplaceText("[CCalcul_1170_5.N_TyD_SLS]", data.Eq.fN_TyD_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Ty_SLS]", data.Eq.fC_Ty_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_SLS]", data.Eq.fk_Nu_Ty_SLS.ToString(nfi));
-            //document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS _strength]", data.Eq.C_d_T1y_SLS_strength.ToString(nfi)); //to Mato ???
-            //document.ReplaceText("[CCalcul_1170_5.V_y_ SLS_strength]", data.Eq.V_y_SLS_strength.ToString(nfi));//to Mato ???
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS]", data.Eq.fC_d_T1y_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(nfi));
         }
         private static void DrawModel3D(DocX document, Viewport3D viewPort)
         {
