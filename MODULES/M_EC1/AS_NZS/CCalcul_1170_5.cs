@@ -61,12 +61,20 @@ namespace M_EC1.AS_NZS
         public float fV_y_ULS_strength;
         public float fV_y_SLS;
 
+        public float fG_tot_x;
+        public float fG_tot_y;
+
         public float fN_TxD_ULS;
         public float fC_Tx_ULS;
-        public float fG_tot_x;
+        public float fk_Nu_Tx_ULS_stab;
+        public float fk_Nu_Tx_ULS_strength;
+        public float fk_Nu_Tx_SLS;
+
         public float fN_TyD_ULS;
         public float fC_Ty_ULS;
-        public float fG_tot_y;
+        public float fk_Nu_Ty_ULS_stab;
+        public float fk_Nu_Ty_ULS_strength;
+        public float fk_Nu_Ty_SLS;
 
         public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
@@ -93,13 +101,13 @@ namespace M_EC1.AS_NZS
             float fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
             float fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
 
-            fC_d_T1x_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1x_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1x_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Tx_SLS, fT_1x, fNu_SLS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1x_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_stab);
+            fC_d_T1x_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_strength);
+            fC_d_T1x_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Tx_SLS, fT_1x, fNu_SLS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_SLS);
 
-            fC_d_T1y_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1y_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1y_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Ty_SLS, fT_1y, fNu_SLS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1y_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Ty_ULS_stab);
+            fC_d_T1y_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Ty_ULS_strength);
+            fC_d_T1y_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Ty_SLS, fT_1y, fNu_SLS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Ty_SLS);
 
             /*
             // TODO - Martin - v pripade potreby dopracovat podla cl. 3.2 a 5.4

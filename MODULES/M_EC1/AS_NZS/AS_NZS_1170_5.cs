@@ -40,9 +40,9 @@ namespace M_EC1.AS_NZS
         {
             return MathF.Max(Eq_52_1____(fC_T1, fS_p, fk_Nu), Eq_52_2____(fZ, fR_u)); // fCd(T1) - maximum from Eq. (5.2(1)) and Eq. (5.2(2)) - for ULS
         }
-        public static float Eq_5221_ULS(float fC_T1, float fS_p, float fZ, float fR_u, float fT_1, float fNu, ESiteSubSoilClass eSiteSoilClass)
+        public static float Eq_5221_ULS(float fC_T1, float fS_p, float fZ, float fR_u, float fT_1, float fNu, ESiteSubSoilClass eSiteSoilClass, out float fk_Nu)
         {
-            float fk_Nu = Get_k_nu__5211_ULS(fT_1, fNu, eSiteSoilClass);
+            fk_Nu = Get_k_nu__5211_ULS(fT_1, fNu, eSiteSoilClass);
             return MathF.Max(Eq_52_1____(fC_T1, fS_p, fk_Nu), Eq_52_2____(fZ, fR_u)); // fCd(T1) - maximum from Eq. (5.2(1)) and Eq. (5.2(2)) - for ULS
         }
         public static float Get_k_nu__5211_ULS(float fT_1, float fNu, ESiteSubSoilClass eSiteSoilClass)
@@ -67,7 +67,7 @@ namespace M_EC1.AS_NZS
                     }
             }
         }
-        public static float Get_C_D_T1_5212_SLS(float fC_T1, float fT_1, float fNu, ESiteSubSoilClass eSiteSoilClass)
+        public static float Get_C_D_T1_5212_SLS(float fC_T1, float fT_1, float fNu, ESiteSubSoilClass eSiteSoilClass, out float fk_Nu)
         {
             /*
             4.3.2 Serviceability limit state
@@ -78,7 +78,7 @@ namespace M_EC1.AS_NZS
             // SLS 1
             fNu = MathF.Min(MathF.Max(1.0f, fNu), 1.25f);
 
-            float fk_Nu = Get_k_nu__5211_ULS(fT_1, fNu, eSiteSoilClass);
+            fk_Nu = Get_k_nu__5211_ULS(fT_1, fNu, eSiteSoilClass);
             float fS_p = 0.7f; // 5.2.1.2
             return Eq_52_1____(fC_T1, fS_p, fk_Nu); // Eq. (5.2(1)) // fCd(T1)
         }

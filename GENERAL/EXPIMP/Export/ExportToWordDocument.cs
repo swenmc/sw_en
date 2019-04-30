@@ -17,7 +17,6 @@ namespace EXPIMP
     {
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 9;
-
         public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
         {
             string fileName = GetReportName();
@@ -56,7 +55,6 @@ namespace EXPIMP
             }
             Process.Start(fileName);
         }
-
         private static string GetReportName()
         {
             int count = 0;
@@ -70,15 +68,11 @@ namespace EXPIMP
             }
             return fileName;
         }
-
-
-
         private static CProjectInfo GetProjectInfo()
         {
             CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
             return pInfo;
         }
-
         private static void DrawProjectInfo(DocX document, CProjectInfo pInfo)
         {
             document.ReplaceText("[ProjectName]", pInfo.ProjectName);
@@ -184,7 +178,6 @@ namespace EXPIMP
 
             return p;
         }
-        
         private static void DrawCrossSections(DocX document, CModelData data)
         {
             var diffCrsc = data.ComponentList.Select(c => c.Section).Distinct();
@@ -256,7 +249,6 @@ namespace EXPIMP
 
             return p;
         }
-
         private static void DrawComponentList(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberTypes]"));
@@ -298,7 +290,6 @@ namespace EXPIMP
 
             par.InsertTableBeforeSelf(t);
         }
-
         private static void DrawLoad(DocX document, CModelData data)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -426,22 +417,23 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", data.Eq.fN_TxD_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(nfi));
-            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.k_Nu_Tx_ULS.ToString(nfi)); //??? to Mato
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.fk_Nu_Tx_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(nfi));
+
             document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(nfi));
-            //document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.k_Nu_Ty_ULS.ToString(nfi)); ///??? to Mato
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.fk_Nu_Ty_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(nfi));
+
             document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
 
         }
-
-    private static void DrawModel3D(DocX document, Viewport3D viewPort)
+        private static void DrawModel3D(DocX document, Viewport3D viewPort)
         {
             document.InsertParagraph("Structural model in 3D environment: ");
 
@@ -473,9 +465,6 @@ namespace EXPIMP
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
         }
-
-
-
         private static void DrawLoadCases(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCases]"));
@@ -555,8 +544,6 @@ namespace EXPIMP
             { p.FontSize(fontSizeInTable); }
         }
 
-        
-
 
 
 
@@ -585,7 +572,6 @@ namespace EXPIMP
         {
             document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);
         }
-
         private static void CreateChapterWithBuletedList(DocX document)
         {
             // Add a paragraph at the end of the template.
