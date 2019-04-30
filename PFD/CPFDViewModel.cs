@@ -2079,7 +2079,6 @@ namespace PFD
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.LoadCaseIndex = MLoadCaseIndex;
-
             data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
             
             data.GeneralLoad = GeneralLoad;
@@ -2093,6 +2092,7 @@ namespace PFD
             data.ComponentList = ComponentList;
             data.Model = Model;
 
+            //Load input
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.DesignLife = _loadInput.ListDesignLife[_loadInput.DesignLifeIndex];
             data.ImportanceClass = _loadInput.ListImportanceClass[_loadInput.ImportanceClassIndex];
@@ -2101,10 +2101,25 @@ namespace PFD
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
             data.TerrainCategory = _loadInput.ListTerrainCategory[_loadInput.TerrainCategoryIndex];
             data.SiteSubSoilClass = _loadInput.ListSiteSubSoilClass[_loadInput.SiteSubSoilClassIndex];
-
             data.SiteElevation = _loadInput.SiteElevation;
             data.R_SLS = _loadInput.R_SLS;
             data.AnnualProbabilitySLS = _loadInput.AnnualProbabilitySLS;
+            data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall;
+            data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof;
+            data.ImposedActionRoof = _loadInput.ImposedActionRoof;
+            data.AnnualProbabilityULS_Snow = _loadInput.AnnualProbabilityULS_Snow;
+            data.R_ULS_Snow = _loadInput.R_ULS_Snow;
+            data.AnnualProbabilityULS_Wind = _loadInput.AnnualProbabilityULS_Wind;
+            data.R_ULS_Wind = _loadInput.R_ULS_Wind;
+            data.AnnualProbabilityULS_EQ = _loadInput.AnnualProbabilityULS_EQ;
+            data.R_ULS_EQ = _loadInput.R_ULS_EQ;
+            data.FaultDistanceDmin = _loadInput.FaultDistanceDmin;
+            data.FaultDistanceDmax = _loadInput.FaultDistanceDmax;
+            data.ZoneFactorZ = _loadInput.ZoneFactorZ;
+            data.PeriodAlongXDirectionTx = _loadInput.PeriodAlongXDirectionTx;
+            data.PeriodAlongYDirectionTy = _loadInput.PeriodAlongYDirectionTy;
+            data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
+            data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
             return data;
         }

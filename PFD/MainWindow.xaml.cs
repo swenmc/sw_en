@@ -1656,19 +1656,18 @@ namespace PFD
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow("DOC");
-
-            ww.Show();
-
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
-            CModelData modelData = vmPFD.GetModelData();
+            //TODO tlacidlo povolit len vtedy ak su spocitane vysledky
+            //zatial to nechcem pouzivat,aby som nestracal cas
+            //if (!vmPFD.ModelCalculatedResultsValid) { MessageBox.Show("Please click Calculate to get valid results for report."); return; }
 
-            List<string[]> list = new List<string[]>();
-
+            WaitWindow ww = new WaitWindow("DOC");
+            ww.Show();
+            CModelData modelData = vmPFD.GetModelData();            
             try
             {
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
-                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData, list);
+                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
 
             }
             catch (Exception ex)

@@ -16,8 +16,8 @@ namespace EXPIMP
     public static class ExportToWordDocument
     {
         private const string resourcesFolderPath = "./../../Resources/";
-        private const double fontSizeInTable = 9;
-        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
+        private const double fontSizeInTable = 8;
+        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
         {
             string fileName = GetReportName();
             // Create a new document.
@@ -148,8 +148,7 @@ namespace EXPIMP
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.Window;
-
-
+            
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Text");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Symbol");
             t.Rows[0].Cells[2].Paragraphs[0].InsertText("Value");
@@ -176,7 +175,8 @@ namespace EXPIMP
             p = p.InsertParagraphAfterSelf(p);
             p.RemoveText(0);
             p.InsertTableBeforeSelf(t);
-            //p.SpacingAfter(10d);
+
+            SetFontSizeForTable(t);            
 
             return p;
         }
@@ -249,6 +249,8 @@ namespace EXPIMP
             p.RemoveText(0);
             p.InsertTableBeforeSelf(t);
 
+            SetFontSizeForTable(t);
+
             return p;
         }
         private static void DrawComponentList(DocX document, CModelData data)
@@ -289,6 +291,8 @@ namespace EXPIMP
                 row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
                 row.Cells[4].Paragraphs[0].InsertText(cInfo.Material);
             }
+            
+            SetFontSizeForTable(t);
 
             par.InsertTableBeforeSelf(t);
         }
@@ -504,10 +508,8 @@ namespace EXPIMP
                 row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
                 row.Cells[1].Paragraphs[0].InsertText(lc.Name);                
                 row.Cells[2].Paragraphs[0].InsertText(lc.Type.GetFriendlyName());
-            }
-            foreach (Paragraph p in t.Paragraphs)
-            { p.FontSize(fontSizeInTable); }
-
+            }            
+            SetFontSizeForTable(t);
             par.InsertTableBeforeSelf(t);
         }
         private static void DrawLoadCombinations(DocX document, CModelData data)
@@ -549,16 +551,22 @@ namespace EXPIMP
             }
             parULS.Remove(false);
             parSLS.Remove(false);
-            
-            foreach (Paragraph p in parULS.FollowingTable.Paragraphs)
-            { p.FontSize(fontSizeInTable); }
-            foreach (Paragraph p in parSLS.FollowingTable.Paragraphs)
-            { p.FontSize(fontSizeInTable); }
+
+            SetFontSizeForTable(parULS.FollowingTable);
+            SetFontSizeForTable(parSLS.FollowingTable);
         }
 
 
 
+        private static void SetFontSizeForTable(Table table)
+        {
+            if (table == null) return;
 
+            foreach (Paragraph p in table.Paragraphs)
+            {
+                p.FontSize(fontSizeInTable);
+            }
+        }
 
 
 
