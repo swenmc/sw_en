@@ -28,7 +28,7 @@ namespace PFD
                 WaitImage.Source = new BitmapImage(new Uri("Resources/DOCfilelogo.png", UriKind.Relative));
             else if (fileType == "XLS")
                 WaitImage.Source = new BitmapImage(new Uri("Resources/XLSfilelogo.png", UriKind.Relative));
-            else if (fileType == "PFD")
+            else if (fileType == "PDF")
                 WaitImage.Source = new BitmapImage(new Uri("Resources/PDFfilelogo.png", UriKind.Relative));
             else
             {
