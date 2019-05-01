@@ -29,6 +29,7 @@ namespace DATABASE
                         compPrefix.ComponentName = reader["componentName"].ToString();
                         compPrefix.ComponentPrefix = reader["componentPrefix"].ToString();
                         compPrefix.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
+                        compPrefix.ComponentColorName = reader["componentColorName"].ToString();
                         items.Add(compPrefix);
                     }
                 }

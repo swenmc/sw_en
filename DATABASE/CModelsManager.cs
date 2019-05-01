@@ -112,6 +112,7 @@ namespace DATABASE
                         component.ComponentPrefix = reader["componentPrefix"].ToString();
                         component.ComponentName = reader["componentName"].ToString();
                         component.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
+                        component.ComponentColorName = reader["componentColorName"].ToString();
                         DictComponentPrefixes.Add(component.ID, component);
                     }
                 }

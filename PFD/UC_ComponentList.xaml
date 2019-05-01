@@ -54,8 +54,7 @@
                                 </Setter.Value>
                             </Setter>-->
                         </Style>
-                    </DataGridComboBoxColumn.EditingElementStyle>
-                    
+                    </DataGridComboBoxColumn.EditingElementStyle>                    
                 </DataGridComboBoxColumn>
                 
                 <!--<DataGridTemplateColumn Header="Color" ToolTipService.ToolTip="Select color" Width="Auto">
@@ -109,6 +108,14 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
+                <DataGridTextColumn Binding="{Binding SectionColor}" IsReadOnly="True" Header="Section Color" Width="70">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="{Binding SectionColor}"/>
+                            <Setter Property="Foreground" Value="{Binding SectionColor}"/>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>                    
+                </DataGridTextColumn>
 
                 <DataGridComboBoxColumn Header="Material" ToolTipService.ToolTip="Select material" Width="Auto" 
                     SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}" 

@@ -483,43 +483,46 @@ namespace PFD
         public CComponentListVM()
         {
             MComponentList = new ObservableCollection<CComponentInfo>();
-
+            
             list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
+            //toto nacitat z DB
+            //CSectionManager.LoadCrossSectionProperties_meters()
+
             CComponentInfo ci = null;
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, "Orange",
-                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainColumn);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eMC].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eMC].ComponentName, "63020", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, "Plum",
-                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainRafter);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMR].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eMR].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eMR].ComponentName, "63020", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.MainRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, "Red",
-                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeColumn);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEC].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eEC].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eEC].ComponentName, "63020", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeColumn);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, "Green",
-                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeRafter);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eER].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eER].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eER].ComponentName, "63020", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.EdgeRafter);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, "CadetBlue",
-                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.EdgePurlin);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eEP].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eEP].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eEP].ComponentName, "50020", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.EdgePurlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Brown",
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Girt);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eG].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName, "27095", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Girt);
             ci.GenerateIsEnabled = false; ci.GenerateIsReadonly = true;
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, "Pink",
-                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Purlin);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eP].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eP].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eP].ComponentName, "270115", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.Purlin);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "Blue",
-                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnFrontSide);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eC].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Front Side", "270115n", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, "Navy",
-                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnBackSide);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eC].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eC].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eC].ComponentName + " - Back Side", "270115n", "Green", "G550‡", true, true, true, true, true, SectionsForColumnsOrRafters, Colors, EMemberType_DB.ColumnBackSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Orchid",
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtFrontSide);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eG].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Front Side", "27095", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtFrontSide);
             MComponentList.Add(ci);
-            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, "Salmon",
-                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtBackSide);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eG].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eG].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtBackSide);
             MComponentList.Add(ci);
 
             foreach (CComponentInfo cInfo in MComponentList)
@@ -578,8 +581,8 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
             if (cInfo != null) return; //already exist in the collection
 
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, "Purple",
-                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, Colors, EMemberType_DB.DoorFrame);
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDF].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "Green", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, Colors, EMemberType_DB.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
 
@@ -595,8 +598,8 @@ namespace PFD
             CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
             if (cDT == null)
             {
-                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, "Olive",
-                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, Colors, EMemberType_DB.DoorTrimmer);
+                cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDT].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "Green", "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, Colors, EMemberType_DB.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
             }
@@ -604,8 +607,8 @@ namespace PFD
             CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
             if (cDL == null)
             {
-                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, "Olive",
-                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, Colors, EMemberType_DB.DoorLintel);
+                cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDL].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "Green", "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, Colors, EMemberType_DB.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
             }
@@ -624,8 +627,8 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
             if (cInfo != null) return; //already exist in the collection
 
-            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, "DarkKhaki",
-                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, MColors, EMemberType_DB.WindowFrame);
+            cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eWF].ComponentColorName,
+                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "Green", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, MColors, EMemberType_DB.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
         }

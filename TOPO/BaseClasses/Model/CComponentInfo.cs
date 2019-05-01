@@ -23,6 +23,7 @@ namespace BaseClasses
         private string MComponentName;
         private EMemberType_DB MMemberType;
         private string MSection;
+        private string MSectionColor;
         private List<string> MSections;
         private List<string> MColors;
         private string MMaterial;
@@ -322,13 +323,27 @@ namespace BaseClasses
             }
         }
 
-        public CComponentInfo(string prefix, string color, string componentName, string section, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_DB memberType)
+        public string SectionColor
+        {
+            get
+            {
+                return MSectionColor;
+            }
+
+            set
+            {
+                MSectionColor = value;
+            }
+        }
+
+        public CComponentInfo(string prefix, string color, string componentName, string section, string sectionColor, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_DB memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
             MColor = color;
             MComponentName = componentName;
             MSection = section;
+            MSectionColor = sectionColor;
             MMaterial = material;
             MGenerate = generate;
             MDisplay = display;

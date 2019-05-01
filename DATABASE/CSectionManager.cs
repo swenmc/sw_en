@@ -188,6 +188,7 @@ namespace DATABASE
             crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
             crsc.sectionName_short = reader["sectionName_short"].ToString();
             crsc.sectionName_long = reader["sectionName_long"].ToString();
+            crsc.sectionColorName = reader["sectionColorName"].ToString();
             crsc.h = double.Parse(reader["h"].ToString(), nfi);
             crsc.b = double.Parse(reader["b"].ToString(), nfi);
             crsc.t_min = double.Parse(reader["t"].ToString(), nfi);

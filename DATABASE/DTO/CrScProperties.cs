@@ -11,6 +11,7 @@ namespace DATABASE.DTO
         public int DatabaseID;
         public string sectionName_short;
         public string sectionName_long;
+        public string sectionColorName;
         public double h;
         public double b;
         public double t_min;
