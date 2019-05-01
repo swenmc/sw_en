@@ -726,6 +726,8 @@ namespace PFD
             sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
 
             sDisplayOptions.DisplayIn3DRatio = vm.DisplayIn3DRatio;
+            sDisplayOptions.bColorsAccordingToMembers = vm.ColorsAccordingToMembers;
+            sDisplayOptions.bColorsAccordingToSections = vm.ColorsAccordingToSections;
         }
 
         private void UpdateAll()

@@ -432,7 +432,7 @@ namespace PFD
 
                         //set member Color
                         m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color);
-                        
+                        if(m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
                         break;
                     }
                     else if(m.Prefix == cInfo.Prefix &&

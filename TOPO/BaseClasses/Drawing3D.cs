@@ -59,7 +59,9 @@ namespace BaseClasses
                 }
 
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, 
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -107,7 +109,7 @@ namespace BaseClasses
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
-                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
@@ -195,7 +197,9 @@ namespace BaseClasses
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, null, null, null, egcs);
+                if (sDisplayOptions.bDisplayMembers)
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, 
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, null, null, null, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -219,6 +223,8 @@ namespace BaseClasses
             bool bTranspartentModel = false,
             bool bUseDiffuseMaterial = true,
             bool bUseEmissiveMaterial = true,
+            bool bColorsAccordingToMembers = true,
+            bool bColorsAccordingToSections = false,
             SolidColorBrush front = null,
             SolidColorBrush shell = null,
             SolidColorBrush back = null,
@@ -251,14 +257,10 @@ namespace BaseClasses
                     {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
-                            bool bUseCrossSectionColor = true;
-
-                            if (bUseCrossSectionColor && model.m_arrMembers[i].CrScStart.CSColor != null)
-                            {
-                                // Set color of shell
-                                shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
-                            }
-
+                            //Set Colors
+                            if (bColorsAccordingToMembers && model.m_arrMembers[i].Color != null) shell = new SolidColorBrush(model.m_arrMembers[i].Color);
+                            else if(bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+                            
                             if (bFastRendering ||
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
@@ -266,9 +268,7 @@ namespace BaseClasses
                             {
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
-                                GeometryModel3D geom3D;
-                                if (model.m_arrMembers[i].Color == null) geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                else geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, new SolidColorBrush(model.m_arrMembers[i].Color), bUseDiffuseMaterial, bUseEmissiveMaterial);
+                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
                                 
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }

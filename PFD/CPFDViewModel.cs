@@ -110,12 +110,19 @@ namespace PFD
         private bool MShowMemberRealLength;
 
         private float MDisplayIn3DRatio;
+
+
+        
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
         private bool MUseFEMSolverCalculationForSimpleBeam;
         // Local member load direction used for load definition, calculation of internal forces and design
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
+
+        //Color display options
+        private bool m_ColorsAccordingToMembers;
+        private bool m_ColorsAccordingToSections;
 
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
@@ -1448,6 +1455,37 @@ namespace PFD
             }
         }
 
+        public bool ColorsAccordingToMembers
+        {
+            get
+            {
+                return m_ColorsAccordingToMembers;
+            }
+
+            set
+            {
+                if (m_ColorsAccordingToMembers != value)
+                {
+                    m_ColorsAccordingToMembers = value;
+                    NotifyPropertyChanged("ColorsAccordingToMembers");
+                }
+            }
+        }
+
+        public bool ColorsAccordingToSections
+        {
+            get
+            {
+                return m_ColorsAccordingToSections;
+            }
+
+            set
+            {
+                m_ColorsAccordingToSections = value;
+                //NotifyPropertyChanged("ColorsAccordingToSections");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -1635,7 +1673,7 @@ namespace PFD
             LightSpot = false;
             LightAmbient = true;
             MaterialDiffuse = true;
-            MaterialEmissive = true;
+            MaterialEmissive = false;
             DisplayMembers = true;
             DisplayJoints = false;
             DisplayPlates = false;
@@ -1648,6 +1686,8 @@ namespace PFD
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
+            ColorsAccordingToMembers = true;
+            ColorsAccordingToSections = false;
 
             ShowMemberID = true;
             ShowMemberRealLength = true;

@@ -220,6 +220,13 @@
                         <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" IsChecked="{Binding Path=MaterialDiffuse}">Diffuse Material</CheckBox>
                         <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>
 
+                        <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical">
+                            <RadioButton Name="radioColorsIn3DMembers" GroupName="radioColorsIn3D"  IsChecked="{Binding Path=ColorsAccordingToMembers}">Colors according to Members</RadioButton>
+                            <RadioButton Name="radioColorsIn3DSections" GroupName="radioColorsIn3D" IsChecked="{Binding Path=ColorsAccordingToSections}">Colors according to Sections</RadioButton>
+                        </StackPanel>
+                        
+                        
+
                         <CheckBox Name="chbDisplayMembers" Grid.Row="5" Grid.Column="3" IsChecked="{Binding Path=DisplayMembers}">Display Members</CheckBox>
                         <CheckBox Name="chbDisplayJoints" Grid.Row="6" Grid.Column="3" IsChecked="{Binding Path=DisplayJoints}">Display Joints</CheckBox>
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" IsChecked="{Binding Path=DisplayPlates}">Display Plates</CheckBox>

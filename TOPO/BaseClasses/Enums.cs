@@ -616,6 +616,9 @@
         public bool bDisplaySurfaceLoads;
 
         public float DisplayIn3DRatio;
+
+        public bool bColorsAccordingToMembers;
+        public bool bColorsAccordingToSections;
     }
 
     public struct BuildingDataInput
