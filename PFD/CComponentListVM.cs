@@ -486,8 +486,7 @@ namespace PFD
             
             list_CompPref = CComponentManager.LoadComponentsPrefixes();
 
-            //toto nacitat z DB
-            //CSectionManager.LoadCrossSectionProperties_meters()
+            
 
             CComponentInfo ci = null;
             ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eMC].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eMC].ComponentColorName,
@@ -525,11 +524,22 @@ namespace PFD
                 list_CompPref[(int)EMemberType_FS.eG].ComponentName + " - Back Side", "27095", "Green", "G550‡", true, true, true, true, true, SectionsForGirtsOrPurlins, Colors, EMemberType_DB.GirtBackSide);
             MComponentList.Add(ci);
 
+            SetComponentSectionsColors();
+
             foreach (CComponentInfo cInfo in MComponentList)
             {
                 cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             }
         }
+
+        private void SetComponentSectionsColors()
+        {
+            foreach (CComponentInfo cInfo in MComponentList)
+            {                
+                CrScProperties prop = CSectionManager.GetSectionProperties(cInfo.Section);
+                cInfo.SectionColor = prop.sectionColorName;
+            }
+        }        
 
         public void SetModelComponentListProperties(Dictionary<EMemberType_DB, string> MembersSectionsDict)
         {
@@ -581,8 +591,10 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorFrame);
             if (cInfo != null) return; //already exist in the collection
 
+            CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDF].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDF].ComponentColorName,
-                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", "Green", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, Colors, EMemberType_DB.DoorFrame);
+                list_CompPref[(int)EMemberType_FS.eDF].ComponentName, "10075", prop.sectionColorName, "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, Colors, EMemberType_DB.DoorFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
 
@@ -598,8 +610,10 @@ namespace PFD
             CComponentInfo cDT = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorTrimmer);
             if (cDT == null)
             {
+                CrScProperties prop = CSectionManager.GetSectionProperties("270115btb");
+
                 cDT = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDT].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDT].ComponentColorName,
-                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", "Green", "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, Colors, EMemberType_DB.DoorTrimmer);
+                list_CompPref[(int)EMemberType_FS.eDT].ComponentName, "270115btb", prop.sectionColorName, "G550‡", null, true, false, false, true, SectionsForRollerDoorTrimmer, Colors, EMemberType_DB.DoorTrimmer);
                 cDT.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDT);
             }
@@ -607,8 +621,10 @@ namespace PFD
             CComponentInfo cDL = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.DoorLintel);
             if (cDL == null)
             {
+                CrScProperties prop = CSectionManager.GetSectionProperties("27095");
+
                 cDL = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eDL].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eDL].ComponentColorName,
-                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", "Green", "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, Colors, EMemberType_DB.DoorLintel);
+                list_CompPref[(int)EMemberType_FS.eDL].ComponentName, "27095", prop.sectionColorName, "G550‡", null, true, false, false, true, SectionsForRollerDoorLintel, Colors, EMemberType_DB.DoorLintel);
                 cDL.PropertyChanged += ComponentListItem_PropertyChanged;
                 ComponentList.Add(cDL);
             }
@@ -627,8 +643,10 @@ namespace PFD
             CComponentInfo cInfo = ComponentList.FirstOrDefault(c => c.MemberType == EMemberType_DB.WindowFrame);
             if (cInfo != null) return; //already exist in the collection
 
+            CrScProperties prop = CSectionManager.GetSectionProperties("10075");
+
             cInfo = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eWF].ComponentPrefix, list_CompPref[(int)EMemberType_FS.eWF].ComponentColorName,
-                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", "Green", "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, MColors, EMemberType_DB.WindowFrame);
+                list_CompPref[(int)EMemberType_FS.eWF].ComponentName, "10075", prop.sectionColorName, "G550‡", null, true, false, false, true, SectionsForDoorOrWindowFrame, MColors, EMemberType_DB.WindowFrame);
             cInfo.PropertyChanged += ComponentListItem_PropertyChanged;
             ComponentList.Add(cInfo);
         }

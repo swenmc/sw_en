@@ -9,10 +9,13 @@ namespace DATABASE
 {
     public static class CSectionManager
     {
+        private static Dictionary<string, CrScProperties> items = null;
+
         public static Dictionary<string, CrScProperties> LoadSectionProperties()
         {
+            if (items != null) return items;
             CrScProperties crsc = null;
-            Dictionary<string, CrScProperties> items = new Dictionary<string, CrScProperties>();
+            items = new Dictionary<string, CrScProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
@@ -29,6 +32,17 @@ namespace DATABASE
             }
             return items;
         }
+
+        public static CrScProperties GetSectionProperties(string sectionName_short)
+        {
+            Dictionary<string, CrScProperties> dictItems = LoadSectionProperties();
+
+            CrScProperties crsc = null;
+            dictItems.TryGetValue(sectionName_short, out crsc);
+            return crsc;
+        }
+
+
         public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;
