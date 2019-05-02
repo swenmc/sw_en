@@ -28,15 +28,14 @@ namespace DATABASE
                         compPrefix.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         compPrefix.ComponentName = reader["componentName"].ToString();
                         compPrefix.ComponentPrefix = reader["componentPrefix"].ToString();
-                        compPrefix.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
-                        compPrefix.ComponentColorName = reader["componentColorName"].ToString();
+                        compPrefix.ComponentColorCodeRGB = reader["defaultColorRGB"].ToString();
+                        compPrefix.ComponentColorCodeHEX = reader["defaultColorHEX"].ToString();
+                        compPrefix.ComponentColorName = reader["defaultColorName"].ToString();
                         items.Add(compPrefix);
                     }
                 }
             }
             return items;
         }
-
-        
     }
 }

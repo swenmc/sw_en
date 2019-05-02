@@ -12,6 +12,7 @@ namespace DATABASE.DTO
         string MComponentPrefix;
         string MComponentName;
         string MComponentColorCodeRGB;
+        string MComponentColorCodeHEX;
         string MComponentColorName;
 
         //---------------------------------------------------------------------------------------
@@ -66,6 +67,19 @@ namespace DATABASE.DTO
             set
             {
                 MComponentColorCodeRGB = value;
+            }
+        }
+
+        public string ComponentColorCodeHEX
+        {
+            get
+            {
+                return MComponentColorCodeHEX;
+            }
+
+            set
+            {
+                MComponentColorCodeHEX = value;
             }
         }
 

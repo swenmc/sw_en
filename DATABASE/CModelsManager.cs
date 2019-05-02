@@ -111,8 +111,9 @@ namespace DATABASE
                         component.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         component.ComponentPrefix = reader["componentPrefix"].ToString();
                         component.ComponentName = reader["componentName"].ToString();
-                        component.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
-                        component.ComponentColorName = reader["componentColorName"].ToString();
+                        component.ComponentColorCodeRGB = reader["defaultColorRGB"].ToString();
+                        component.ComponentColorCodeHEX = reader["defaultColorHEX"].ToString();
+                        component.ComponentColorName = reader["defaultColorName"].ToString();
                         DictComponentPrefixes.Add(component.ID, component);
                     }
                 }
