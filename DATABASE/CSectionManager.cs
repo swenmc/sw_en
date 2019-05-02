@@ -42,7 +42,6 @@ namespace DATABASE
             return crsc;
         }
 
-
         public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;
@@ -96,6 +95,7 @@ namespace DATABASE
             properties = LoadSectionProperties_mm(name);
             return FillListOfSectionPropertiesString(properties);
         }
+        /*
         private static CSectionProperties LoadSectionProperties_mm(int ID)
         {
             CSectionProperties properties = null;
@@ -114,7 +114,8 @@ namespace DATABASE
                 }
             }
             return properties;
-        }
+        }*/
+        /*
         private static CSectionProperties LoadSectionProperties_mm(string name)
         {
             CSectionProperties properties = null;
@@ -134,6 +135,127 @@ namespace DATABASE
             }
             return properties;
         }
+        */
+
+        private static CSectionProperties LoadSectionProperties_m(string name)
+        {
+            CSectionProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE sectionName_short = @sectionName_short", conn);
+                command.Parameters.AddWithValue("@sectionName_short", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetSectionProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private static CSectionProperties LoadSectionProperties_mm(string name)
+        {
+            CSectionProperties properties_string_milimeter = new CSectionProperties();
+            CrScProperties properties_number_meter = null;
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE sectionName_short = @sectionName_short", conn);
+                command.Parameters.AddWithValue("@sectionName_short", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties_number_meter = GetCrScProperties(reader);
+                    }
+                }
+            }
+
+            // Konverzia jednotiek - pre zobrazenie v tabulke
+            // From meter [m] and pascal [Pa] to milimeter [mm] and megapascal [MPa]
+            // Set decimal places
+
+            float fFactor_Dimension = 1e+3f; // m to mm
+            float fFactor_Area = 1e+6f; // m^2 to mm^2
+            float fFactor_FirstMomentOfArea = 1e+9f; // m^3 to mm^3
+            float fFactor_SecondMomentOfArea = 1e+12f; // m^4 to mm^4
+            float fFactor_WarpingConstant = 1e+18f; // m^6 to mm^6
+
+            float fFactor_Stress = 1e-6f; // Pa to MPa
+
+            int iDecimalPlaces_Dimension = 2;
+            int iDecimalPlaces_Area = 1;
+            int iDecimalPlaces_FirstMomentOfArea = 0;
+            int iDecimalPlaces_SecondMomentOfArea = 0;
+            int iDecimalPlaces_WarpingConstant = 0;
+
+            int iDecimalPlaces_Stress = 3;
+
+            int iDecimalPlaces_Factor = 3;
+
+            properties_string_milimeter.ID = properties_number_meter.DatabaseID;
+            properties_string_milimeter.sectionName_short = properties_number_meter.sectionName_short;
+            properties_string_milimeter.sectionName_long = properties_number_meter.sectionName_long;
+            properties_string_milimeter.h = (Math.Round(properties_number_meter.h * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.b = (Math.Round(properties_number_meter.b * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.t = (Math.Round(properties_number_meter.t_min * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.A_g = (Math.Round(properties_number_meter.A_g * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            properties_string_milimeter.I_y0 = (Math.Round(properties_number_meter.I_y0 * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            properties_string_milimeter.I_z0 = (Math.Round(properties_number_meter.I_z0 * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            //properties_string_milimeter.W_el_y0 = (Math.Round(properties_number_meter.W_el_y0 * fFactor_FirstMomentOfArea, iDecimalPlaces_FirstMomentOfArea)).ToString();
+            //properties_string_milimeter.W_el_z0 = (Math.Round(properties_number_meter.W_el_z0 * fFactor_FirstMomentOfArea, iDecimalPlaces_FirstMomentOfArea)).ToString();
+            //properties_string_milimeter.Iyz0 = (Math.Round(properties_number_meter.I_yz0 * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            properties_string_milimeter.Iy = (Math.Round(properties_number_meter.I_y * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            properties_string_milimeter.Iz = (Math.Round(properties_number_meter.I_z * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            properties_string_milimeter.W_el_y = (Math.Round(properties_number_meter.W_y_el * fFactor_FirstMomentOfArea, iDecimalPlaces_FirstMomentOfArea)).ToString();
+            properties_string_milimeter.W_el_z = (Math.Round(properties_number_meter.W_z_el * fFactor_FirstMomentOfArea, iDecimalPlaces_FirstMomentOfArea)).ToString();
+            properties_string_milimeter.It = (Math.Round(properties_number_meter.I_t * fFactor_SecondMomentOfArea, iDecimalPlaces_SecondMomentOfArea)).ToString();
+            properties_string_milimeter.Iw = (Math.Round(properties_number_meter.I_w * fFactor_WarpingConstant, iDecimalPlaces_WarpingConstant)).ToString();
+            properties_string_milimeter.yc = (Math.Round(properties_number_meter.D_y_gc * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.zc = (Math.Round(properties_number_meter.D_z_gc * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.ys = (Math.Round(properties_number_meter.D_y_sc * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.zs = (Math.Round(properties_number_meter.D_z_sc * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.ycs = (Math.Round(properties_number_meter.D_y_s * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.zcs = (Math.Round(properties_number_meter.D_z_s * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.betay = (Math.Round(properties_number_meter.Beta_y * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.betaz = (Math.Round(properties_number_meter.Beta_z * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.alpha_deg = (Math.Round(properties_number_meter.Alpha_rad * 180 / Math.PI, 3)).ToString();
+            //properties_string_milimeter.Bending_curve_x1 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Bending_curve_x2 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Bending_curve_x3 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Bending_curve_y = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Compression_curve_1 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Compression_curve_2 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.Compression_curve_3 = (Math.Round(properties_number_meter * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            properties_string_milimeter.fol_b = (Math.Round(properties_number_meter.fol_b * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            properties_string_milimeter.fod_b = (Math.Round(properties_number_meter.fod_b * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            properties_string_milimeter.fol_c = (Math.Round(properties_number_meter.fol_c * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            properties_string_milimeter.fod_c = (Math.Round(properties_number_meter.fod_c * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
+            //properties_string_milimeter.A_stiff = (Math.Round(properties_number_meter.A_stiff * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            //properties_string_milimeter.n_stiff = properties_number_meter.n_stiff.ToString();
+            //properties_string_milimeter.y_stiff = (Math.Round(properties_number_meter.y_stiff * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.b_1_flat_portion = (Math.Round(properties_number_meter.b_1_flat_portion * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.b_tot = (Math.Round(properties_number_meter.b_tot * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.b_tot_length = (Math.Round(properties_number_meter.b_tot_length * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.A_f1 = (Math.Round(properties_number_meter.A_f1 * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            //properties_string_milimeter.A_vy = (Math.Round(properties_number_meter.A_vy * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            //properties_string_milimeter.fvy_red_factor = (Math.Round(properties_number_meter.fvy_red_factor, iDecimalPlaces_Factor)).ToString();
+            //properties_string_milimeter.d_1_flat_portion = (Math.Round(properties_number_meter.d_1_flat_portion * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.d_tot = (Math.Round(properties_number_meter.d_tot * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.d_tot_length = (Math.Round(properties_number_meter.d_tot_length * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.A_w1 = (Math.Round(properties_number_meter.A_w1 * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            //properties_string_milimeter.A_vz = (Math.Round(properties_number_meter.A_vz * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            //properties_string_milimeter.fvz_red_factor = (Math.Round(properties_number_meter.fvz_red_factor, iDecimalPlaces_Factor)).ToString();
+
+            return properties_string_milimeter;
+        }
+
         private static CSectionProperties GetSectionProperties(SQLiteDataReader reader)
         {
             CSectionProperties properties = new CSectionProperties();
@@ -202,7 +324,7 @@ namespace DATABASE
             crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
             crsc.sectionName_short = reader["sectionName_short"].ToString();
             crsc.sectionName_long = reader["sectionName_long"].ToString();
-            crsc.sectionColorName = reader["sectionColorName"].ToString();
+            crsc.colorName = reader["colorName"].ToString();
             crsc.h = double.Parse(reader["h"].ToString(), nfi);
             crsc.b = double.Parse(reader["b"].ToString(), nfi);
             crsc.t_min = double.Parse(reader["t"].ToString(), nfi);

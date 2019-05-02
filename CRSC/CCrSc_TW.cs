@@ -382,7 +382,7 @@ namespace CRSC
         {
             this.DatabaseID = dto.DatabaseID;
             this.Name_short = dto.sectionName_short;
-            this.CSColor = (Color)ColorConverter.ConvertFromString(dto.sectionColorName);
+            this.CSColor = (Color)ColorConverter.ConvertFromString(dto.colorName);
             this.h = dto.h;
             this.b = dto.b;
 

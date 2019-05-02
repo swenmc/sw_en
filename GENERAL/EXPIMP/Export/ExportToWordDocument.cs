@@ -176,7 +176,7 @@ namespace EXPIMP
             p.RemoveText(0);
             p.InsertTableBeforeSelf(t);
 
-            SetFontSizeForTable(t);            
+            SetFontSizeForTable(t);
 
             return p;
         }
