@@ -237,9 +237,9 @@ namespace DATABASE
             properties_string_milimeter.fod_b = (Math.Round(properties_number_meter.fod_b * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
             properties_string_milimeter.fol_c = (Math.Round(properties_number_meter.fol_c * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
             properties_string_milimeter.fod_c = (Math.Round(properties_number_meter.fod_c * fFactor_Stress, iDecimalPlaces_Stress)).ToString();
-            //properties_string_milimeter.A_stiff = (Math.Round(properties_number_meter.A_stiff * fFactor_Area, iDecimalPlaces_Area)).ToString();
-            //properties_string_milimeter.n_stiff = properties_number_meter.n_stiff.ToString();
-            //properties_string_milimeter.y_stiff = (Math.Round(properties_number_meter.y_stiff * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.A_stiff = (Math.Round(properties_number_meter.A_stiff * fFactor_Area, iDecimalPlaces_Area)).ToString();
+            properties_string_milimeter.n_stiff = properties_number_meter.n_stiff.ToString();
+            properties_string_milimeter.y_stiff = (Math.Round(properties_number_meter.y_stiff * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             //properties_string_milimeter.b_1_flat_portion = (Math.Round(properties_number_meter.b_1_flat_portion * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             //properties_string_milimeter.b_tot = (Math.Round(properties_number_meter.b_tot * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             //properties_string_milimeter.b_tot_length = (Math.Round(properties_number_meter.b_tot_length * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
