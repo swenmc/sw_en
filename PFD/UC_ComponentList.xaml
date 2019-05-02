@@ -27,8 +27,8 @@
                   IsReadOnly="False" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedComponentIndex}" ItemsSource="{Binding ComponentList}" MouseDoubleClick="Datagrid_Components_MouseDoubleClick" MouseDown="Datagrid_Components_MouseDown">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="Auto"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="50" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="120"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Component Color" ToolTipService.ToolTip="Select color" Width="110" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Color}"/>
@@ -54,7 +54,7 @@
                                 </Setter.Value>
                             </Setter>-->
                         </Style>
-                    </DataGridComboBoxColumn.EditingElementStyle>                    
+                    </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
                 
                 <!--<DataGridTemplateColumn Header="Color" ToolTipService.ToolTip="Select color" Width="Auto">
@@ -96,7 +96,7 @@
                     SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}" 
                     ItemsSource ="{Binding Source={StaticResource Colors}}">
                 </DataGridComboBoxColumn>-->
-                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="Auto" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="80" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Sections}"/>
@@ -108,17 +108,17 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding SectionColor}" IsReadOnly="True" Header="Section Color" Width="70">
+                <DataGridTextColumn Binding="{Binding SectionColor}" IsReadOnly="True" Header="Section Color" Width="110">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding SectionColor}"/>
                             <Setter Property="Foreground" Value="{Binding SectionColor}"/>
                         </Style>
-                    </DataGridTextColumn.CellStyle>                    
+                    </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
 
-                <DataGridComboBoxColumn Header="Material" ToolTipService.ToolTip="Select material" Width="Auto" 
-                    SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}" 
+                <DataGridComboBoxColumn Header="Material" ToolTipService.ToolTip="Select material" Width="Auto"
+                    SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource ="{Binding Source={StaticResource Materials}}">
                 </DataGridComboBoxColumn>
                 
