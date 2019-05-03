@@ -38,6 +38,7 @@ namespace EXPIMP
                 DrawLoadCases(document, modelData);
                 DrawLoadCombinations(document, modelData);
                 DrawLoad(document, modelData);
+                DrawMemberDesign(document, modelData);
 
 
                 //DrawLogoAndProjectInfoTable(document);
@@ -575,7 +576,41 @@ namespace EXPIMP
 
 
 
+        private static void DrawMemberDesign(DocX document, CModelData data)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberDesign]"));
+            par.RemoveText(0);
+            
+            foreach (CComponentInfo cInfo in data.ComponentList)
+            {
+                if (!cInfo.Design) continue;
 
+                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);                
+                par.StyleName = "Heading2";
+
+                par.InsertParagraphAfterSelf($"Governing member ID: "); //todo 
+                par.InsertParagraphAfterSelf($"Governing load combination ID: "); //todo
+                
+                par = par.InsertParagraphAfterSelf("Member internal forces");
+                par.StyleName = "Heading3";
+
+                if (cInfo.MemberType == EMemberType_DB.MainColumn || cInfo.MemberType == EMemberType_DB.MainRafter ||
+                    cInfo.MemberType == EMemberType_DB.EdgeColumn || cInfo.MemberType == EMemberType_DB.EdgeRafter)
+                {
+                    par = par.InsertParagraphAfterSelf("Frame internal forces");
+                    par.StyleName = "Heading3";
+                }
+
+                par = par.InsertParagraphAfterSelf("Member design details - ULS");
+                par.StyleName = "Heading3";
+
+                par = par.InsertParagraphAfterSelf("Member deflections");
+                par.StyleName = "Heading3";
+
+                par = par.InsertParagraphAfterSelf("Member design details - SLS");
+                par.StyleName = "Heading3";                
+            }
+        }
 
 
 
