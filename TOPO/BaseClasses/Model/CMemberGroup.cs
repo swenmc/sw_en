@@ -25,6 +25,14 @@ namespace BaseClasses
             set { MmemberType = value; }
         }
 
+        //TODO inicializovat dalsi enum
+        private EMemberType_DB MmemberType_DB;
+        public EMemberType_DB MemberType
+        {
+            get { return MmemberType_DB; }
+            set { MmemberType_DB = value; }
+        }
+
         private CCrSc McrossSection;
 
         public CCrSc CrossSection

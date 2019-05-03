@@ -98,6 +98,10 @@ namespace EXPIMP
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
+        public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        public sDesignResults sDesignResults_ULS = new sDesignResults();
+        public sDesignResults sDesignResults_SLS = new sDesignResults();
+
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
 

@@ -588,8 +588,10 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);                
                 par.StyleName = "Heading2";
 
-                par.InsertParagraphAfterSelf($"Governing member ID: "); //todo 
-                par.InsertParagraphAfterSelf($"Governing load combination ID: "); //todo
+                //CMember governingMember = GetGoverningMember(data.sDesignResults_ULSandSLS, cInfo.MemberType);
+                //if(governingMember != null) par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
+                //CLoadCombination governingLComb = GetGoverningLoadCombination(data.sDesignResults_ULSandSLS, cInfo.MemberType);
+                //par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
                 
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
@@ -611,6 +613,9 @@ namespace EXPIMP
                 par.StyleName = "Heading3";                
             }
         }
+
+
+        
 
 
 

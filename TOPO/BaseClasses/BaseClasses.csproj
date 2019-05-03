@@ -242,6 +242,7 @@
     <Compile Include="Results\MembersInternalForces.cs" />
     <Compile Include="Results\LoadCombinationsInternalForces.cs" />
     <Compile Include="Results\MemberInternalForces.cs" />
+    <Compile Include="Results\sDesignResults.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CRSC\CRSC.csproj">

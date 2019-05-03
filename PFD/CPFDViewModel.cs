@@ -18,6 +18,7 @@ using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using DATABASE.DTO;
 using EXPIMP;
+using M_AS4600;
 
 namespace PFD
 {
@@ -183,6 +184,10 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+
+        public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
+        public sDesignResults sDesignResults_ULS = new sDesignResults();
+        public sDesignResults sDesignResults_SLS = new sDesignResults();
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
@@ -1969,6 +1974,7 @@ namespace PFD
         private void SetDesignMembersLists(CMemberDesignCalculations mdc)
         {
             // TODO - toto budeme asi potrebovat vycistit, ukladame a nastavujeme toho zbytocne prilis vela
+            // TODO pokial by sme mali private members a public properties, tak by sa dalo hned pozriet,ci sa pouziva property
             MemberInternalForcesInLoadCombinations = mdc.MemberInternalForcesInLoadCombinations;
             MemberDeflectionsInLoadCombinations = mdc.MemberDeflectionsInLoadCombinations;
 
@@ -1978,6 +1984,10 @@ namespace PFD
             MemberDesignResults_ULS = mdc.MemberDesignResults_ULS;
             MemberDesignResults_SLS = mdc.MemberDesignResults_SLS;
             JointDesignResults_ULS = mdc.JointDesignResults_ULS;
+
+            sDesignResults_ULSandSLS = mdc.sDesignResults_ULSandSLS;
+            sDesignResults_ULS = mdc.sDesignResults_ULS;
+            sDesignResults_SLS = mdc.sDesignResults_SLS;
         }
 
         private void SetComponentListAccordingToDoorsAndWindows()
@@ -2161,7 +2171,146 @@ namespace PFD
             data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
             data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
+            data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
+            data.sDesignResults_ULS = sDesignResults_ULS;
+            data.sDesignResults_SLS = sDesignResults_SLS;
+
+            foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
+            {
+                //CCalculMember cGoverningMemberResults;
+
+                //CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MemberDesignResults_ULS, vm.SelectedLoadCombinationID, mGr, out cGoverningMemberResults);
+            }
+
+            
+            
+
             return data;
+        }
+
+
+        // Calculate governing member design ratio
+        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        {
+            cGoverningMemberResults = null;
+
+            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            {
+                float fMaximumDesignRatio = float.MinValue;
+                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
+                {
+                    // Select member with identical ID from the list of results
+                    CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
+                    if (res == null) continue;
+                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+
+                    if (c.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = c.fEta_max;
+                        cGoverningMemberResults = c;
+                    }
+                }
+
+                //if (cGoverningMemberResults != null)
+                //    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
+               
+            }
+        }
+
+        //private Dictionary<EMemberType_DB, >
+
+        private CMember GetGoverningMember(sDesignResults results, EMemberType_FS memberType)
+        {
+            switch (memberType)
+            {
+                case EMemberType_FS.eMC: return results.MaximumDesignRatioMainColumn;
+                case EMemberType_FS.eMR: return results.MaximumDesignRatioMainRafter;
+                case EMemberType_FS.eEC: return results.MaximumDesignRatioEndColumn;
+                case EMemberType_FS.eER: return results.MaximumDesignRatioEndRafter;
+                case EMemberType_FS.eEP: return results.MaximumDesignRatioPurlin;
+                case EMemberType_FS.eG: return results.MaximumDesignRatioGirt;
+                case EMemberType_FS.eP: return results.MaximumDesignRatioPurlin;
+                case EMemberType_FS.eC: return results.MaximumDesignRatioColumn;
+                case EMemberType_FS.eGB: return results.MaximumDesignRatioGirt;
+                
+
+                    //case EMemberType_DB.DoorFrame: return results.;
+                    //case EMemberType_DB.WindowFrame: return results.;
+                    //case EMemberType_DB.DoorTrimmer: return results.;
+                    //case EMemberType_DB.DoorLintel: return results.;                
+            }
+            return null;
+        }
+
+        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_DB memberType)
+        //{
+        //    switch (memberType)
+        //    {
+        //        case EMemberType_DB.MainColumn: return results.GoverningLoadCombinationMainColumn;
+        //        case EMemberType_DB.MainRafter: return results.GoverningLoadCombinationMainRafter;
+        //        case EMemberType_DB.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
+        //        case EMemberType_DB.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
+        //        case EMemberType_DB.EdgePurlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_DB.Girt: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_DB.Purlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_DB.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_DB.ColumnBackSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_DB.GirtFrontSide: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_DB.GirtBackSide: return results.GoverningLoadCombinationGirts;
+
+        //            //case EMemberType_DB.DoorFrame: return results.;
+        //            //case EMemberType_DB.WindowFrame: return results.;
+        //            //case EMemberType_DB.DoorTrimmer: return results.;
+        //            //case EMemberType_DB.DoorLintel: return results.;                
+        //    }
+        //    return null;
+        //}
+        private CMember GetGoverningMember(sDesignResults results, EMemberType_DB memberType)
+        {
+            switch (memberType)
+            {
+                case EMemberType_DB.MainColumn: return results.MaximumDesignRatioMainColumn;
+                case EMemberType_DB.MainRafter: return results.MaximumDesignRatioMainRafter;
+                case EMemberType_DB.EdgeColumn: return results.MaximumDesignRatioEndColumn;
+                case EMemberType_DB.EdgeRafter: return results.MaximumDesignRatioEndRafter;
+                case EMemberType_DB.EdgePurlin: return results.MaximumDesignRatioPurlin;
+                case EMemberType_DB.Girt: return results.MaximumDesignRatioGirt;
+                case EMemberType_DB.Purlin: return results.MaximumDesignRatioPurlin;
+                case EMemberType_DB.ColumnFrontSide: return results.MaximumDesignRatioColumn;
+                case EMemberType_DB.ColumnBackSide: return results.MaximumDesignRatioColumn;
+                case EMemberType_DB.GirtFrontSide: return results.MaximumDesignRatioGirt;
+                case EMemberType_DB.GirtBackSide: return results.MaximumDesignRatioGirt;
+
+                    //case EMemberType_DB.DoorFrame: return results.;
+                    //case EMemberType_DB.WindowFrame: return results.;
+                    //case EMemberType_DB.DoorTrimmer: return results.;
+                    //case EMemberType_DB.DoorLintel: return results.;                
+            }
+            return null;
+        }
+
+        private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_DB memberType)
+        {
+            switch (memberType)
+            {
+                case EMemberType_DB.MainColumn: return results.GoverningLoadCombinationMainColumn;
+                case EMemberType_DB.MainRafter: return results.GoverningLoadCombinationMainRafter;
+                case EMemberType_DB.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
+                case EMemberType_DB.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
+                case EMemberType_DB.EdgePurlin: return results.GoverningLoadCombinationPurlins;
+                case EMemberType_DB.Girt: return results.GoverningLoadCombinationGirts;
+                case EMemberType_DB.Purlin: return results.GoverningLoadCombinationPurlins;
+                case EMemberType_DB.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
+                case EMemberType_DB.ColumnBackSide: return results.GoverningLoadCombinationColumns;
+                case EMemberType_DB.GirtFrontSide: return results.GoverningLoadCombinationGirts;
+                case EMemberType_DB.GirtBackSide: return results.GoverningLoadCombinationGirts;
+
+                    //case EMemberType_DB.DoorFrame: return results.;
+                    //case EMemberType_DB.WindowFrame: return results.;
+                    //case EMemberType_DB.DoorTrimmer: return results.;
+                    //case EMemberType_DB.DoorLintel: return results.;                
+            }
+            return null;
         }
     }
 }

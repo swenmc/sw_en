@@ -10,38 +10,6 @@ using System.Threading.Tasks;
 
 namespace PFD.Infrastructure
 {
-    public struct sDesignResults
-    {
-        public string sLimitStateType;
-
-        public float fMaximumDesignRatioWholeStructure;
-        public float fMaximumDesignRatioMainColumn;
-        public float fMaximumDesignRatioMainRafter;
-        public float fMaximumDesignRatioEndColumn;
-        public float fMaximumDesignRatioEndRafter;
-        public float fMaximumDesignRatioGirts;
-        public float fMaximumDesignRatioPurlins;
-        public float fMaximumDesignRatioColumns;
-
-        public CLoadCombination GoverningLoadCombinationStructure;
-        public CLoadCombination GoverningLoadCombinationMainColumn;
-        public CLoadCombination GoverningLoadCombinationMainRafter;
-        public CLoadCombination GoverningLoadCombinationEndColumn;
-        public CLoadCombination GoverningLoadCombinationEndRafter;
-        public CLoadCombination GoverningLoadCombinationGirts;
-        public CLoadCombination GoverningLoadCombinationPurlins;
-        public CLoadCombination GoverningLoadCombinationColumns;
-
-        public CMember MaximumDesignRatioWholeStructureMember;
-        public CMember MaximumDesignRatioMainColumn;
-        public CMember MaximumDesignRatioMainRafter;
-        public CMember MaximumDesignRatioEndColumn;
-        public CMember MaximumDesignRatioEndRafter;
-        public CMember MaximumDesignRatioGirt;
-        public CMember MaximumDesignRatioPurlin;
-        public CMember MaximumDesignRatioColumn;
-    }
-
     public class CMemberDesignCalculations
     {
         const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
