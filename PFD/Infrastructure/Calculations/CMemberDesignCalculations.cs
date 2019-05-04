@@ -791,83 +791,92 @@ namespace PFD.Infrastructure
 
         private void SetMaximumDesignRatioByComponentType(CMember m, CLoadCombination lcomb, CMemberDesign memberDesignModel, ref sDesignResults s)
         {
-            // Output - set maximum design ratio by component Type
-            switch (m.EMemberType)
+            if (m.EMemberTypePosition == 0) return; //toto je chyba, nasiel som member co ma m.EMemberType EC ale m.EMemberTypePosition je 0
+
+            if (memberDesignModel.fMaximumDesignRatio > s.DesignResults[m.EMemberTypePosition].MaximumDesignRatio)
             {
-                case EMemberType_FS.eMC: // Main Column
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainColumn)
-                        {
-                            s.fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationMainColumn = lcomb;
-                            s.MaximumDesignRatioMainColumn = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eMR: // Main Rafter
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainRafter)
-                        {
-                            s.fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationMainRafter = lcomb;
-                            s.MaximumDesignRatioMainRafter = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eEC: // End Column
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndColumn)
-                        {
-                            s.fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationEndColumn = lcomb;
-                            s.MaximumDesignRatioEndColumn = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eER: // End Rafter
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndRafter)
-                        {
-                            s.fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationEndRafter = lcomb;
-                            s.MaximumDesignRatioEndRafter = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eG: // Girt
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioGirts)
-                        {
-                            s.fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationGirts = lcomb;
-                            s.MaximumDesignRatioGirt = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eP: // Purlin
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioPurlins)
-                        {
-                            s.fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationPurlins = lcomb;
-                            s.MaximumDesignRatioPurlin = m;
-                        }
-                        break;
-                    }
-                case EMemberType_FS.eC: // Column
-                    {
-                        if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioColumns)
-                        {
-                            s.fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
-                            s.GoverningLoadCombinationColumns = lcomb;
-                            s.MaximumDesignRatioColumn = m;
-                        }
-                        break;
-                    }
-                default:
-                    // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
-                    break;
+                s.DesignResults[m.EMemberTypePosition].MaximumDesignRatio = memberDesignModel.fMaximumDesignRatio;
+                s.DesignResults[m.EMemberTypePosition].MemberWithMaximumDesignRatio = m;
+                s.DesignResults[m.EMemberTypePosition].GoverningLoadCombination = lcomb;
             }
+            
+            //// Output - set maximum design ratio by component Type
+            //switch (m.EMemberType)
+            //{
+            //    case EMemberType_FS.eMC: // Main Column
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainColumn)
+            //            {
+            //                s.fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationMainColumn = lcomb;
+            //                s.MaximumDesignRatioMainColumn = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eMR: // Main Rafter
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioMainRafter)
+            //            {
+            //                s.fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationMainRafter = lcomb;
+            //                s.MaximumDesignRatioMainRafter = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eEC: // End Column
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndColumn)
+            //            {
+            //                s.fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationEndColumn = lcomb;
+            //                s.MaximumDesignRatioEndColumn = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eER: // End Rafter
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioEndRafter)
+            //            {
+            //                s.fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationEndRafter = lcomb;
+            //                s.MaximumDesignRatioEndRafter = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eG: // Girt
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioGirts)
+            //            {
+            //                s.fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationGirts = lcomb;
+            //                s.MaximumDesignRatioGirt = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eP: // Purlin
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioPurlins)
+            //            {
+            //                s.fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationPurlins = lcomb;
+            //                s.MaximumDesignRatioPurlin = m;
+            //            }
+            //            break;
+            //        }
+            //    case EMemberType_FS.eC: // Column
+            //        {
+            //            if (memberDesignModel.fMaximumDesignRatio > s.fMaximumDesignRatioColumns)
+            //            {
+            //                s.fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
+            //                s.GoverningLoadCombinationColumns = lcomb;
+            //                s.MaximumDesignRatioColumn = m;
+            //            }
+            //            break;
+            //        }
+            //    default:
+            //        // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+            //        break;
+            //}
         }
 
         private void SetDefaultBucklingFactors(CMember m, ref designBucklingLengthFactors sBucklingLengthFactors)
@@ -1125,82 +1134,91 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                if (s.MaximumDesignRatioMainColumn != null)
+                DesignResultItem item = s.DesignResults[EMemberType_DB.MainColumn];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - main columns\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioMainColumn.ID.ToString()}\t");
-                    if (s.GoverningLoadCombinationMainColumn != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationMainColumn.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainColumn, 3).ToString()}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioMainRafter != null)
+                item = s.DesignResults[EMemberType_DB.MainRafter];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - rafters\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioMainRafter.ID}\t");
-                    if (s.GoverningLoadCombinationMainRafter != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationMainRafter.ID }\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioMainRafter, 3)}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioEndColumn != null)
+                item = s.DesignResults[EMemberType_DB.EdgeColumn];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - end columns\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioEndColumn.ID}\t");
-                    if (s.GoverningLoadCombinationEndColumn != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationEndColumn.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioEndColumn, 3)}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioEndRafter != null)
+                item = s.DesignResults[EMemberType_DB.EdgeRafter];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - end rafters\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioEndRafter.ID}\t");
-                    if (s.GoverningLoadCombinationEndRafter != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationEndRafter.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioEndRafter, 3)}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioGirt != null)
+                item = s.DesignResults[EMemberType_DB.Girt];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - girts\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioGirt.ID}\t");
-                    if (s.GoverningLoadCombinationGirts != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationGirts.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioGirts, 3)}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioPurlin != null)
+                item = s.DesignResults[EMemberType_DB.Purlin];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - purlins\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioPurlin.ID}\t");
-                    if (s.GoverningLoadCombinationPurlins != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationPurlins.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioPurlins, 3)}\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
 
-                if (s.MaximumDesignRatioColumn != null)
+                item = s.DesignResults[EMemberType_DB.ColumnBackSide];
+                if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - columns\n");
-                    sb.Append($"Member ID: {s.MaximumDesignRatioColumn.ID}\t");
-                    if (s.GoverningLoadCombinationColumns != null)
+                    sb.Append($"Member ID: {item.MemberWithMaximumDesignRatio.ID.ToString()}\t");
+                    if (item.GoverningLoadCombination != null)
                     {
-                        sb.Append($"Load Combination ID: {s.GoverningLoadCombinationColumns.ID}\t");
-                        sb.Append($"Design Ratio η: {Math.Round(s.fMaximumDesignRatioColumns, 3)}\n\n\n");
+                        sb.Append($"Load Combination ID: {item.GoverningLoadCombination.ID}\t");
+                        sb.Append($"Design Ratio η: {Math.Round(item.MaximumDesignRatio, 3).ToString()}\n\n");
                     }
                 }
+
+                //TODO doimplementovat dalsie typy EMemberType_DB
             }
 
             return sb.ToString();
