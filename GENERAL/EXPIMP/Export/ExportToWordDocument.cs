@@ -1,9 +1,11 @@
 ﻿using BaseClasses;
 using DATABASE;
 using DATABASE.DTO;
+using M_AS4600;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -259,27 +261,29 @@ namespace EXPIMP
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberTypes]"));
             par.RemoveText(0);
 
-            var t = document.AddTable(1, 5);
+            var t = document.AddTable(1, 6);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.Window;
-
-
+            
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
-            t.Rows[0].Cells[2].Paragraphs[0].InsertText("ComponentName");
+            t.Rows[0].Cells[2].Paragraphs[0].InsertText("Component Name");
             t.Rows[0].Cells[3].Paragraphs[0].InsertText("Section");
-            t.Rows[0].Cells[4].Paragraphs[0].InsertText("Material");
+            t.Rows[0].Cells[4].Paragraphs[0].InsertText("Section Color");
+            t.Rows[0].Cells[5].Paragraphs[0].InsertText("Material");
             t.Rows[0].Cells[0].Paragraphs[0].Bold();
             t.Rows[0].Cells[1].Paragraphs[0].Bold();
             t.Rows[0].Cells[2].Paragraphs[0].Bold();
             t.Rows[0].Cells[3].Paragraphs[0].Bold();
             t.Rows[0].Cells[4].Paragraphs[0].Bold();
+            t.Rows[0].Cells[5].Paragraphs[0].Bold();
             t.Rows[0].Cells[0].Width = document.PageWidth * 0.1;
             t.Rows[0].Cells[1].Width = document.PageWidth * 0.1;
             t.Rows[0].Cells[2].Width = document.PageWidth * 0.4;
-            t.Rows[0].Cells[3].Width = document.PageWidth * 0.2;
-            t.Rows[0].Cells[4].Width = document.PageWidth * 0.2;
+            t.Rows[0].Cells[3].Width = document.PageWidth * 0.15;
+            t.Rows[0].Cells[4].Width = document.PageWidth * 0.1;
+            t.Rows[0].Cells[5].Width = document.PageWidth * 0.15;
 
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
@@ -290,7 +294,12 @@ namespace EXPIMP
                 row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color));
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
                 row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
-                row.Cells[4].Paragraphs[0].InsertText(cInfo.Material);
+                
+                row.Cells[4].Paragraphs[0].InsertText(cInfo.SectionColor);
+                row.Cells[4].FillColor = System.Drawing.Color.FromName(cInfo.SectionColor);
+                row.Cells[4].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.SectionColor));
+
+                row.Cells[5].Paragraphs[0].InsertText(cInfo.Material);
             }
             
             SetFontSizeForTable(t);
@@ -588,11 +597,11 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
                 par.StyleName = "Heading2";
 
-                //CMember governingMember = GetGoverningMember(data.sDesignResults_ULSandSLS, cInfo.MemberType);
-                //if(governingMember != null) par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
-                //CLoadCombination governingLComb = GetGoverningLoadCombination(data.sDesignResults_ULSandSLS, cInfo.MemberType);
-                //par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
-                
+                CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                if (governingMember != null) par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
+                CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                if (governingLComb != null) par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
+
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
 
@@ -606,20 +615,71 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member design details - ULS");
                 par.StyleName = "Heading3";
 
+                CCalculMember calcul = null;
+                data.dictULSDesignResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
+                if (calcul != null)
+                {
+                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul, ELSType.eLS_ULS);
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
+
                 par = par.InsertParagraphAfterSelf("Member deflections");
                 par.StyleName = "Heading3";
 
                 par = par.InsertParagraphAfterSelf("Member design details - SLS");
                 par.StyleName = "Heading3";
+
+                data.dictSLSDesignResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
+                if (calcul != null)
+                {
+                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul, ELSType.eLS_SLS);
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
+                
             }
         }
 
+        
+
+        private static void AddSimpleTableAfterParagraph(Table t, Paragraph p)
+        {
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+            //t.AutoFit = AutoFit.Window;
+
+            p.InsertTableBeforeSelf(t);
+        }
 
 
+        private static Table GetTable(DocX document, DataTable dt)
+        {
+            var t = document.AddTable(dt.Rows.Count + 1, dt.Columns.Count);
+            t.AutoFit = AutoFit.Contents;
+            //header
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j].Caption);
+                t.Rows[0].Cells[j].Paragraphs[0].Bold();
+                t.Rows[0].Cells[j].Width = document.PageWidth / dt.Columns.Count;
+            }
 
+            // For each load case add one row
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {   
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j].ToString());
+                }
+            }
 
+            SetFontSizeForTable(t);
 
-
+            return t;
+        }
 
 
 

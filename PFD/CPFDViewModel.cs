@@ -2172,145 +2172,72 @@ namespace PFD
             data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
             data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
-            data.sDesignResults_ULS = sDesignResults_ULS;
-            data.sDesignResults_SLS = sDesignResults_SLS;
-
-            foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
-            {
-                //CCalculMember cGoverningMemberResults;
-
-                //CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MemberDesignResults_ULS, vm.SelectedLoadCombinationID, mGr, out cGoverningMemberResults);
-            }
-
+            //data.sDesignResults_ULS = sDesignResults_ULS;
+            //data.sDesignResults_SLS = sDesignResults_SLS;
             
-            
+            data.dictULSDesignResults = GetDesignResultsULS();
+            data.dictSLSDesignResults = GetDesignResultsSLS();
+
+
+
 
             return data;
         }
 
 
-        // Calculate governing member design ratio
-        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsULS()
         {
-            cGoverningMemberResults = null;
+            Dictionary<EMemberType_FS_Position, CCalculMember> dictULSDesignResults = new Dictionary<EMemberType_FS_Position, CCalculMember>();
 
-            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
             {
-                float fMaximumDesignRatio = float.MinValue;
-                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
-                {
-                    // Select member with identical ID from the list of results
-                    CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
-                    if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
-
-                    if (c.fEta_max > fMaximumDesignRatio)
-                    {
-                        fMaximumDesignRatio = c.fEta_max;
-                        cGoverningMemberResults = c;
-                    }
-                }
-
-                //if (cGoverningMemberResults != null)
-                //    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
-               
+                CLoadCombination governingLoadComb = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
+                if (governingLoadComb == null) continue;
+                CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
+                if (governingMember == null) continue;
+                CCalculMember cGoverningMemberResultsULS;
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
+                dictULSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsULS);
             }
+            return dictULSDesignResults;
+        }
+        private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsSLS()
+        {
+            Dictionary<EMemberType_FS_Position, CCalculMember> dictSLSDesignResults = new Dictionary<EMemberType_FS_Position, CCalculMember>();
+
+            foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
+            {
+                CLoadCombination governingLoadComb = sDesignResults_SLS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
+                if (governingLoadComb == null) continue;
+                CMember governingMember = sDesignResults_SLS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
+                if (governingMember == null) continue;
+                CCalculMember cGoverningMemberResultsSLS;
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MemberDesignResults_SLS, governingMember, governingLoadComb.ID, mGr, out cGoverningMemberResultsSLS);
+                dictSLSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsSLS);
+            }
+            return dictSLSDesignResults;
         }
 
-        //private Dictionary<EMemberType_FS_Position, >
+        // Calculate governing member design ratio
+        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
+        {
+            CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID  && i.LoadCombination.ID == loadCombID);
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+        }
+        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, CMember m, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        {
+            CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
+            
+            // Limit zavisi od typu zatazenia (load combination) a typu pruta
+            float fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_Total;
 
-        //private CMember GetGoverningMember(sDesignResults results, EMemberType_FS memberType)
-        //{
-        //    switch (memberType)
-        //    {
-        //        case EMemberType_FS.eMC: return results.MaximumDesignRatioMainColumn;
-        //        case EMemberType_FS.eMR: return results.MaximumDesignRatioMainRafter;
-        //        case EMemberType_FS.eEC: return results.MaximumDesignRatioEndColumn;
-        //        case EMemberType_FS.eER: return results.MaximumDesignRatioEndRafter;
-        //        case EMemberType_FS.eEP: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_FS.eG: return results.MaximumDesignRatioGirt;
-        //        case EMemberType_FS.eP: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_FS.eC: return results.MaximumDesignRatioColumn;
-        //        case EMemberType_FS.eGB: return results.MaximumDesignRatioGirt;
-                
+            //Mato??? toto nechapem, potrebujem vysvetlit
+            if (loadCombID == 41) // TODO Combination of permanent load (TODO - nacitat spravne typ kombinacie, neurcovat podla cisla ID)
+                fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
 
-        //            //case EMemberType_FS_Position.DoorFrame: return results.;
-        //            //case EMemberType_FS_Position.WindowFrame: return results.;
-        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
-        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
-        //    }
-        //    return null;
-        //}
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDeflectionLimit);
+        }
 
-        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_FS_Position memberType)
-        //{
-        //    switch (memberType)
-        //    {
-        //        case EMemberType_FS_Position.MainColumn: return results.GoverningLoadCombinationMainColumn;
-        //        case EMemberType_FS_Position.MainRafter: return results.GoverningLoadCombinationMainRafter;
-        //        case EMemberType_FS_Position.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
-        //        case EMemberType_FS_Position.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
-        //        case EMemberType_FS_Position.EdgePurlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_FS_Position.Girt: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_FS_Position.Purlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_FS_Position.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_FS_Position.ColumnBackSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_FS_Position.GirtFrontSide: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_FS_Position.GirtBackSide: return results.GoverningLoadCombinationGirts;
 
-        //            //case EMemberType_FS_Position.DoorFrame: return results.;
-        //            //case EMemberType_FS_Position.WindowFrame: return results.;
-        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
-        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
-        //    }
-        //    return null;
-        //}
-        //private CMember GetGoverningMember(sDesignResults results, EMemberType_FS_Position memberType)
-        //{
-        //    switch (memberType)
-        //    {
-        //        case EMemberType_FS_Position.MainColumn: return results.MaximumDesignRatioMainColumn;
-        //        case EMemberType_FS_Position.MainRafter: return results.MaximumDesignRatioMainRafter;
-        //        case EMemberType_FS_Position.EdgeColumn: return results.MaximumDesignRatioEndColumn;
-        //        case EMemberType_FS_Position.EdgeRafter: return results.MaximumDesignRatioEndRafter;
-        //        case EMemberType_FS_Position.EdgePurlin: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_FS_Position.Girt: return results.MaximumDesignRatioGirt;
-        //        case EMemberType_FS_Position.Purlin: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_FS_Position.ColumnFrontSide: return results.MaximumDesignRatioColumn;
-        //        case EMemberType_FS_Position.ColumnBackSide: return results.MaximumDesignRatioColumn;
-        //        case EMemberType_FS_Position.GirtFrontSide: return results.MaximumDesignRatioGirt;
-        //        case EMemberType_FS_Position.GirtBackSide: return results.MaximumDesignRatioGirt;
-
-        //            //case EMemberType_FS_Position.DoorFrame: return results.;
-        //            //case EMemberType_FS_Position.WindowFrame: return results.;
-        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
-        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
-        //    }
-        //    return null;
-        //}
-
-        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_FS_Position memberType)
-        //{
-        //    switch (memberType)
-        //    {
-        //        case EMemberType_FS_Position.MainColumn: return results.GoverningLoadCombinationMainColumn;
-        //        case EMemberType_FS_Position.MainRafter: return results.GoverningLoadCombinationMainRafter;
-        //        case EMemberType_FS_Position.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
-        //        case EMemberType_FS_Position.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
-        //        case EMemberType_FS_Position.EdgePurlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_FS_Position.Girt: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_FS_Position.Purlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_FS_Position.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_FS_Position.ColumnBackSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_FS_Position.GirtFrontSide: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_FS_Position.GirtBackSide: return results.GoverningLoadCombinationGirts;
-
-        //            //case EMemberType_FS_Position.DoorFrame: return results.;
-        //            //case EMemberType_FS_Position.WindowFrame: return results.;
-        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
-        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
-        //    }
-        //    return null;
-        //}
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="AS_4600.cs" />
     <Compile Include="CCalculJoint.cs" />
     <Compile Include="CCalculMember.cs" />
+    <Compile Include="DataGridHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

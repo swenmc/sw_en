@@ -1,6 +1,7 @@
 ﻿using BaseClasses;
 using DATABASE;
 using DATABASE.DTO;
+using M_AS4600;
 using M_EC1.AS_NZS;
 using System;
 using System.Collections.Generic;
@@ -101,6 +102,8 @@ namespace EXPIMP
         public sDesignResults sDesignResults_ULSandSLS = new sDesignResults();
         public sDesignResults sDesignResults_ULS = new sDesignResults();
         public sDesignResults sDesignResults_SLS = new sDesignResults();
+        public Dictionary<EMemberType_FS_Position, CCalculMember> dictULSDesignResults;
+        public Dictionary<EMemberType_FS_Position, CCalculMember> dictSLSDesignResults;
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;

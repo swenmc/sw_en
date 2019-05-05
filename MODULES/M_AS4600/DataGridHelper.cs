@@ -1,5 +1,4 @@
 ﻿using BaseClasses;
-using M_AS4600;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace PFD
+namespace M_AS4600
 {
     public static class DataGridHelper
     {
@@ -40,6 +39,18 @@ namespace PFD
             CreateTableInDataGrid(ref dataGrid);
         }
 
+        public static DataTable GetDesignResultsInDataTable(this CCalculMember calcul, ELSType eCombinationType)
+        {
+            DeleteLists();
+
+            if (eCombinationType == ELSType.eLS_ULS)
+                SetResultsDetailsFor_ULS(calcul);
+            else
+                SetResultsDetailsFor_SLS(calcul);
+
+            return GetDataTable();
+        }
+
         private static void DeleteLists()
         {
             // Deleting lists for updating actual values
@@ -50,52 +61,12 @@ namespace PFD
 
         private static void CreateTableInDataGrid(ref DataGrid dataGrid)
         {
-            // Create Table
-            DataTable table = new DataTable("Table");
-            table.Columns.Add("Symbol", typeof(String));
-            table.Columns.Add("Value", typeof(String));
-            table.Columns.Add("Unit", typeof(String));
+            DataTable table = GetDataTable();
 
-            table.Columns.Add("Symbol1", typeof(String));
-            table.Columns.Add("Value1", typeof(String));
-            table.Columns.Add("Unit1", typeof(String));
-
-            table.Columns.Add("Symbol2", typeof(String));
-            table.Columns.Add("Value2", typeof(String));
-            table.Columns.Add("Unit2", typeof(String));
-
-            // Set Column Caption
-            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
-            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
-            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
-
-            // Create Dataset
-            DataSet ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < listPhysicalQuantity_Symbols.Count; i++)
-            {
-                DataRow row = table.NewRow();
-                try
-                {
-                    row["Symbol"] = listPhysicalQuantity_Symbols[i];
-                    row["Value"] = listPhysicalQuantity_Values[i];
-                    row["Unit"] = listPhysicalQuantity_Units[i];
-                    i++;
-                    if (i >= listPhysicalQuantity_Symbols.Count) break;
-                    row["Symbol1"] = listPhysicalQuantity_Symbols[i];
-                    row["Value1"] = listPhysicalQuantity_Values[i];
-                    row["Unit1"] = listPhysicalQuantity_Units[i];
-                    i++;
-                    if (i >= listPhysicalQuantity_Symbols.Count) break;
-                    row["Symbol2"] = listPhysicalQuantity_Symbols[i];
-                    row["Value2"] = listPhysicalQuantity_Values[i];
-                    row["Unit2"] = listPhysicalQuantity_Units[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
+            //// Create Dataset
+            //DataSet ds = new DataSet();
+            //// Add Table to Dataset
+            //ds.Tables.Add(table);
 
             int iColumnWidth_Symbol = 120;
             int iColumnWidth_Value = 80;
@@ -111,7 +82,7 @@ namespace PFD
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Width = iColumnWidth_Symbol, Binding = new Binding("Symbol2") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Width = iColumnWidth_Value, Binding = new Binding("Value2") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Width = iColumnWidth_Unit, Binding = new Binding("Unit2") });
-            dataGrid.DataContext = ds.Tables[0];  //draw the table to datagridview
+            dataGrid.DataContext = table;  //draw the table to datagridview
 
             // Styling datagrid
             //TODO - ponastavovat rozne Style property
@@ -146,6 +117,52 @@ namespace PFD
             //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
             //Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
             //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
+        }
+
+        private static DataTable GetDataTable()
+        {
+            // Create Table
+            DataTable table = new DataTable("Table");
+            table.Columns.Add("Symbol", typeof(String));
+            table.Columns.Add("Value", typeof(String));
+            table.Columns.Add("Unit", typeof(String));
+
+            table.Columns.Add("Symbol1", typeof(String));
+            table.Columns.Add("Value1", typeof(String));
+            table.Columns.Add("Unit1", typeof(String));
+
+            table.Columns.Add("Symbol2", typeof(String));
+            table.Columns.Add("Value2", typeof(String));
+            table.Columns.Add("Unit2", typeof(String));
+
+            // Set Column Caption
+            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
+            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
+            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
+            
+            for (int i = 0; i < listPhysicalQuantity_Symbols.Count; i++)
+            {
+                DataRow row = table.NewRow();
+                try
+                {
+                    row["Symbol"] = listPhysicalQuantity_Symbols[i];
+                    row["Value"] = listPhysicalQuantity_Values[i];
+                    row["Unit"] = listPhysicalQuantity_Units[i];
+                    i++;
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol1"] = listPhysicalQuantity_Symbols[i];
+                    row["Value1"] = listPhysicalQuantity_Values[i];
+                    row["Unit1"] = listPhysicalQuantity_Units[i];
+                    i++;
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol2"] = listPhysicalQuantity_Symbols[i];
+                    row["Value2"] = listPhysicalQuantity_Values[i];
+                    row["Unit2"] = listPhysicalQuantity_Units[i];
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+            return table;
         }
 
         // Member Design

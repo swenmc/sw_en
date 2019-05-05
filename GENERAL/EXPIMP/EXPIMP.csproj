@@ -158,6 +158,10 @@
       <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
       <Name>DATABASE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MODULES\M_AS4600\M_AS4600.csproj">
+      <Project>{209738F7-CDB3-4C11-98A3-E345299D9191}</Project>
+      <Name>M_AS4600</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MODULES\M_EC1\M_EC1.csproj">
       <Project>{9764D1BF-A2B3-45D6-AB93-050DCE30830C}</Project>
       <Name>M_EC1</Name>
