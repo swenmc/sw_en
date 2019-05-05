@@ -448,6 +448,24 @@
         DoorLintel = 15
     }
 
+    // TODO - Ondrej TOTO je asi zbytocna duplicita
+    // EMemberType_FS_Position a EMemberGroupNames by sme mali zlucit
+
+    public enum EMemberGroupNames
+    {
+        eMainColumn = 0,    // Internal frame
+        eRafter = 1,        // Internal frame
+        eMainColumn_EF = 2, // Edge frame
+        eRafter_EF = 3,     // Edge frame
+        eEavesPurlin = 4,
+        eGirtWall = 5,
+        ePurlin = 6,
+        eFrontColumn = 7,
+        eBackColumn = 8,
+        eFrontGirt = 9,
+        eBackGirt = 10
+    }
+
     public enum ECountry
     {
         eAustralia,
