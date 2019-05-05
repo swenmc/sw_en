@@ -59,7 +59,7 @@ namespace PFD
                 m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
                 m_arrCrSc[1].Name_short = "10075";
                 m_arrCrSc[1].m_Mat = m_arrMat[0];
-                m_arrCrSc[1].ID = (int)EMemberType_DB.DoorFrame;
+                m_arrCrSc[1].ID = (int)EMemberType_FS_Position.DoorFrame;
 
                 eTypeColumn = EMemberType_FS.eDF;
                 eTypeLintel = EMemberType_FS.eDF;
@@ -82,7 +82,7 @@ namespace PFD
                 m_arrCrSc[1] = new CCrSc_3_270XX_C_BACK_TO_BACK(0, 0.27f, 0.14f, 0.02f, 0.00115f, Colors.Beige); // Door trimmer
                 m_arrCrSc[1].Name_short = "270115btb";
                 m_arrCrSc[1].m_Mat = m_arrMat[0];
-                m_arrCrSc[1].ID = (int)EMemberType_DB.DoorTrimmer;
+                m_arrCrSc[1].ID = (int)EMemberType_FS_Position.DoorTrimmer;
 
                 eTypeColumn = EMemberType_FS.eDT;
                 crscColumn = m_arrCrSc[1];
@@ -91,7 +91,7 @@ namespace PFD
                 m_arrCrSc[2] = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Chocolate); // Door lintel
                 m_arrCrSc[2].Name_short = "27095";
                 m_arrCrSc[2].m_Mat = m_arrMat[0];
-                m_arrCrSc[2].ID = (int)EMemberType_DB.DoorLintel;
+                m_arrCrSc[2].ID = (int)EMemberType_FS_Position.DoorLintel;
 
                 eTypeLintel = EMemberType_FS.eDL;
                 crscLintel = m_arrCrSc[2];

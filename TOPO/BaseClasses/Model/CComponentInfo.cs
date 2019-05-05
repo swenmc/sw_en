@@ -21,7 +21,7 @@ namespace BaseClasses
         private string MPrefix;
         private string MColor;
         private string MComponentName;
-        private EMemberType_DB MMemberType;
+        private EMemberType_FS_Position MMemberTypePosition;
         private string MSection;
         private string MSectionColor;
         private List<string> MSections;
@@ -33,7 +33,7 @@ namespace BaseClasses
         private bool MGenerateIsThreeState;
         private bool MDisplay;
         private bool MCalculate;
-        private bool MIsCalculateEnabled;        
+        private bool MIsCalculateEnabled;
         private bool MDesign;
         private bool MIsDesignEnabled;
         private bool MMaterialList;
@@ -296,16 +296,16 @@ namespace BaseClasses
             }
         }
 
-        public EMemberType_DB MemberType
+        public EMemberType_FS_Position MemberTypePosition
         {
             get
             {
-                return MMemberType;
+                return MMemberTypePosition;
             }
 
             set
             {
-                MMemberType = value;
+                MMemberTypePosition = value;
             }
         }
 
@@ -336,7 +336,7 @@ namespace BaseClasses
             }
         }
 
-        public CComponentInfo(string prefix, string color, string componentName, string section, string sectionColor, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_DB memberType)
+        public CComponentInfo(string prefix, string color, string componentName, string section, string sectionColor, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_FS_Position memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
@@ -352,7 +352,7 @@ namespace BaseClasses
             MMaterialList = materialList;
             MSections = sections;
             MColors = colors;
-            MMemberType = memberType;
+            MMemberTypePosition = memberType;
 
             SetGenerateIsReadonly();
             SetCalculateIsEnabled();

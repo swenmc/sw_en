@@ -2217,7 +2217,7 @@ namespace PFD
             }
         }
 
-        //private Dictionary<EMemberType_DB, >
+        //private Dictionary<EMemberType_FS_Position, >
 
         //private CMember GetGoverningMember(sDesignResults results, EMemberType_FS memberType)
         //{
@@ -2234,81 +2234,81 @@ namespace PFD
         //        case EMemberType_FS.eGB: return results.MaximumDesignRatioGirt;
                 
 
-        //            //case EMemberType_DB.DoorFrame: return results.;
-        //            //case EMemberType_DB.WindowFrame: return results.;
-        //            //case EMemberType_DB.DoorTrimmer: return results.;
-        //            //case EMemberType_DB.DoorLintel: return results.;                
+        //            //case EMemberType_FS_Position.DoorFrame: return results.;
+        //            //case EMemberType_FS_Position.WindowFrame: return results.;
+        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
+        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
         //    }
         //    return null;
         //}
 
-        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_DB memberType)
+        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_FS_Position memberType)
         //{
         //    switch (memberType)
         //    {
-        //        case EMemberType_DB.MainColumn: return results.GoverningLoadCombinationMainColumn;
-        //        case EMemberType_DB.MainRafter: return results.GoverningLoadCombinationMainRafter;
-        //        case EMemberType_DB.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
-        //        case EMemberType_DB.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
-        //        case EMemberType_DB.EdgePurlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_DB.Girt: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_DB.Purlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_DB.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_DB.ColumnBackSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_DB.GirtFrontSide: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_DB.GirtBackSide: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.MainColumn: return results.GoverningLoadCombinationMainColumn;
+        //        case EMemberType_FS_Position.MainRafter: return results.GoverningLoadCombinationMainRafter;
+        //        case EMemberType_FS_Position.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
+        //        case EMemberType_FS_Position.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
+        //        case EMemberType_FS_Position.EdgePurlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_FS_Position.Girt: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.Purlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_FS_Position.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_FS_Position.ColumnBackSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_FS_Position.GirtFrontSide: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.GirtBackSide: return results.GoverningLoadCombinationGirts;
 
-        //            //case EMemberType_DB.DoorFrame: return results.;
-        //            //case EMemberType_DB.WindowFrame: return results.;
-        //            //case EMemberType_DB.DoorTrimmer: return results.;
-        //            //case EMemberType_DB.DoorLintel: return results.;                
+        //            //case EMemberType_FS_Position.DoorFrame: return results.;
+        //            //case EMemberType_FS_Position.WindowFrame: return results.;
+        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
+        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
         //    }
         //    return null;
         //}
-        //private CMember GetGoverningMember(sDesignResults results, EMemberType_DB memberType)
+        //private CMember GetGoverningMember(sDesignResults results, EMemberType_FS_Position memberType)
         //{
         //    switch (memberType)
         //    {
-        //        case EMemberType_DB.MainColumn: return results.MaximumDesignRatioMainColumn;
-        //        case EMemberType_DB.MainRafter: return results.MaximumDesignRatioMainRafter;
-        //        case EMemberType_DB.EdgeColumn: return results.MaximumDesignRatioEndColumn;
-        //        case EMemberType_DB.EdgeRafter: return results.MaximumDesignRatioEndRafter;
-        //        case EMemberType_DB.EdgePurlin: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_DB.Girt: return results.MaximumDesignRatioGirt;
-        //        case EMemberType_DB.Purlin: return results.MaximumDesignRatioPurlin;
-        //        case EMemberType_DB.ColumnFrontSide: return results.MaximumDesignRatioColumn;
-        //        case EMemberType_DB.ColumnBackSide: return results.MaximumDesignRatioColumn;
-        //        case EMemberType_DB.GirtFrontSide: return results.MaximumDesignRatioGirt;
-        //        case EMemberType_DB.GirtBackSide: return results.MaximumDesignRatioGirt;
+        //        case EMemberType_FS_Position.MainColumn: return results.MaximumDesignRatioMainColumn;
+        //        case EMemberType_FS_Position.MainRafter: return results.MaximumDesignRatioMainRafter;
+        //        case EMemberType_FS_Position.EdgeColumn: return results.MaximumDesignRatioEndColumn;
+        //        case EMemberType_FS_Position.EdgeRafter: return results.MaximumDesignRatioEndRafter;
+        //        case EMemberType_FS_Position.EdgePurlin: return results.MaximumDesignRatioPurlin;
+        //        case EMemberType_FS_Position.Girt: return results.MaximumDesignRatioGirt;
+        //        case EMemberType_FS_Position.Purlin: return results.MaximumDesignRatioPurlin;
+        //        case EMemberType_FS_Position.ColumnFrontSide: return results.MaximumDesignRatioColumn;
+        //        case EMemberType_FS_Position.ColumnBackSide: return results.MaximumDesignRatioColumn;
+        //        case EMemberType_FS_Position.GirtFrontSide: return results.MaximumDesignRatioGirt;
+        //        case EMemberType_FS_Position.GirtBackSide: return results.MaximumDesignRatioGirt;
 
-        //            //case EMemberType_DB.DoorFrame: return results.;
-        //            //case EMemberType_DB.WindowFrame: return results.;
-        //            //case EMemberType_DB.DoorTrimmer: return results.;
-        //            //case EMemberType_DB.DoorLintel: return results.;                
+        //            //case EMemberType_FS_Position.DoorFrame: return results.;
+        //            //case EMemberType_FS_Position.WindowFrame: return results.;
+        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
+        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
         //    }
         //    return null;
         //}
 
-        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_DB memberType)
+        //private CLoadCombination GetGoverningLoadCombination(sDesignResults results, EMemberType_FS_Position memberType)
         //{
         //    switch (memberType)
         //    {
-        //        case EMemberType_DB.MainColumn: return results.GoverningLoadCombinationMainColumn;
-        //        case EMemberType_DB.MainRafter: return results.GoverningLoadCombinationMainRafter;
-        //        case EMemberType_DB.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
-        //        case EMemberType_DB.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
-        //        case EMemberType_DB.EdgePurlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_DB.Girt: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_DB.Purlin: return results.GoverningLoadCombinationPurlins;
-        //        case EMemberType_DB.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_DB.ColumnBackSide: return results.GoverningLoadCombinationColumns;
-        //        case EMemberType_DB.GirtFrontSide: return results.GoverningLoadCombinationGirts;
-        //        case EMemberType_DB.GirtBackSide: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.MainColumn: return results.GoverningLoadCombinationMainColumn;
+        //        case EMemberType_FS_Position.MainRafter: return results.GoverningLoadCombinationMainRafter;
+        //        case EMemberType_FS_Position.EdgeColumn: return results.GoverningLoadCombinationEndColumn;
+        //        case EMemberType_FS_Position.EdgeRafter: return results.GoverningLoadCombinationEndRafter;
+        //        case EMemberType_FS_Position.EdgePurlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_FS_Position.Girt: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.Purlin: return results.GoverningLoadCombinationPurlins;
+        //        case EMemberType_FS_Position.ColumnFrontSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_FS_Position.ColumnBackSide: return results.GoverningLoadCombinationColumns;
+        //        case EMemberType_FS_Position.GirtFrontSide: return results.GoverningLoadCombinationGirts;
+        //        case EMemberType_FS_Position.GirtBackSide: return results.GoverningLoadCombinationGirts;
 
-        //            //case EMemberType_DB.DoorFrame: return results.;
-        //            //case EMemberType_DB.WindowFrame: return results.;
-        //            //case EMemberType_DB.DoorTrimmer: return results.;
-        //            //case EMemberType_DB.DoorLintel: return results.;                
+        //            //case EMemberType_FS_Position.DoorFrame: return results.;
+        //            //case EMemberType_FS_Position.WindowFrame: return results.;
+        //            //case EMemberType_FS_Position.DoorTrimmer: return results.;
+        //            //case EMemberType_FS_Position.DoorLintel: return results.;                
         //    }
         //    return null;
         //}

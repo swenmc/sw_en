@@ -37,38 +37,36 @@ namespace BaseClasses
         //public CMember MaximumDesignRatioPurlin;
         //public CMember MaximumDesignRatioColumn;
 
-        private Dictionary<EMemberType_DB, DesignResultItem> m_DesignResults;
-        public Dictionary<EMemberType_DB, DesignResultItem> DesignResults
+        private Dictionary<EMemberType_FS_Position, DesignResultItem> m_DesignResults;
+        public Dictionary<EMemberType_FS_Position, DesignResultItem> DesignResults
         {
             get
             {
                 if (m_DesignResults == null) InitDesignResultsDictionary();
                 return m_DesignResults;
             }
-
-            
         }
 
         private void InitDesignResultsDictionary()
         {
-            m_DesignResults = new Dictionary<EMemberType_DB, DesignResultItem>();
+            m_DesignResults = new Dictionary<EMemberType_FS_Position, DesignResultItem>();
 
-            m_DesignResults.Add(EMemberType_DB.MainColumn, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.MainRafter, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.EdgeColumn, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.EdgeRafter, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.EdgePurlin, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.Girt, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.Purlin, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.ColumnFrontSide, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.ColumnBackSide, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.GirtFrontSide, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.GirtBackSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.MainColumn, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.MainRafter, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.EdgeColumn, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.EdgeRafter, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.EdgePurlin, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.Girt, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.Purlin, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.ColumnFrontSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.ColumnBackSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.GirtFrontSide, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.GirtBackSide, new DesignResultItem());
 
-            m_DesignResults.Add(EMemberType_DB.DoorFrame, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.WindowFrame, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.DoorTrimmer, new DesignResultItem());
-            m_DesignResults.Add(EMemberType_DB.DoorLintel, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.DoorFrame, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.WindowFrame, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.DoorTrimmer, new DesignResultItem());
+            m_DesignResults.Add(EMemberType_FS_Position.DoorLintel, new DesignResultItem());
         }
     }
 }

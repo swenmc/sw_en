@@ -169,8 +169,8 @@ namespace PFD
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
             ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true).Select(s => s.ComponentName).ToList();
-            ComponentListHasFrameMembers = componentList.Where(c => c.Generate == true && c.Calculate == true).Any(c => c.MemberType == EMemberType_DB.MainColumn || c.MemberType == EMemberType_DB.MainRafter ||
-                c.MemberType == EMemberType_DB.EdgeColumn || c.MemberType == EMemberType_DB.EdgeRafter);
+            ComponentListHasFrameMembers = componentList.Where(c => c.Generate == true && c.Calculate == true).Any(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn || c.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
+                c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
         }
 
         private void SetLoadCombinations()

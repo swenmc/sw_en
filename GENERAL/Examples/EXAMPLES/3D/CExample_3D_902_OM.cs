@@ -72,7 +72,7 @@ namespace Examples
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(1);
-            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, m_arrCrSc[0], 1f/200f, 1f / 200f, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 1f/200f, 1f / 200f, 0));
 
             // Members
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);

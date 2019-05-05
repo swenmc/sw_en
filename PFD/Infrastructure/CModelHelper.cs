@@ -390,28 +390,28 @@ namespace PFD
                 foreach(CComponentInfo cInfo in componentList)
                 {
                     //toto odstranime ked bude m.EMemberTypePosition stale dobre nastavene
-                    if (m.EMemberType == EMemberType_FS.eDF && cInfo.MemberType == EMemberType_DB.DoorFrame)
+                    if (m.EMemberType == EMemberType_FS.eDF && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorFrame)
                     {
-                        m.CrScStart.ID = (int)cInfo.MemberType;
+                        m.CrScStart.ID = (int)cInfo.MemberTypePosition;
                     }
-                    if (m.EMemberType == EMemberType_FS.eDT && cInfo.MemberType == EMemberType_DB.DoorTrimmer)
+                    if (m.EMemberType == EMemberType_FS.eDT && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                     {
-                        m.CrScStart.ID = (int)cInfo.MemberType;
+                        m.CrScStart.ID = (int)cInfo.MemberTypePosition;
                     }
-                    if (m.EMemberType == EMemberType_FS.eDL && cInfo.MemberType == EMemberType_DB.DoorLintel)
+                    if (m.EMemberType == EMemberType_FS.eDL && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorLintel)
                     {
-                        m.CrScStart.ID = (int)cInfo.MemberType;
+                        m.CrScStart.ID = (int)cInfo.MemberTypePosition;
                     }
-                    if (m.EMemberType == EMemberType_FS.eWF && cInfo.MemberType == EMemberType_DB.WindowFrame)
+                    if (m.EMemberType == EMemberType_FS.eWF && cInfo.MemberTypePosition == EMemberType_FS_Position.WindowFrame)
                     {
-                        m.CrScStart.ID = (int)cInfo.MemberType;
+                        m.CrScStart.ID = (int)cInfo.MemberTypePosition;
                     }
 
 
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     if (m.Prefix == cInfo.Prefix &&
-                        m.CrScStart.ID == (int)cInfo.MemberType &&
+                        m.CrScStart.ID == (int)cInfo.MemberTypePosition &&
                         //m.EMemberTypePosition == cInfo.MemberType && //takto to chcem pouzit, Mato skusis kazdemu member nastavit typ?
                         m.BIsGenerated) // !!! Set member properties only for already generated members - deactivated members (especially girts in place where block is inserted) shouldn't be activated
                     {
@@ -423,7 +423,7 @@ namespace PFD
                         if (m.Prefix == "WF" || m.Prefix == "DF" || m.Prefix == "DL" || m.Prefix == "DT")
                         {
                             m.BIsGenerated = true;
-                        }   
+                        }
 
                         m.BIsDisplayed = cInfo.Display; //nastavenie zobrazenia pre dany member
                         m.BIsSelectedForIFCalculation = cInfo.Calculate;
@@ -436,13 +436,10 @@ namespace PFD
                         break;
                     }
                     else if(m.Prefix == cInfo.Prefix &&
-                        m.CrScStart.ID == (int)cInfo.MemberType && !m.BIsGenerated)
+                        m.CrScStart.ID == (int)cInfo.MemberTypePosition && !m.BIsGenerated)
                     {
                         if(debugging) System.Diagnostics.Trace.WriteLine("Prefix: " + m.Prefix + ", " + m.BIsGenerated + ", " + m.BIsDisplayed);
                     }
-
-                    
-
                 }
             }
             if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
@@ -453,7 +450,7 @@ namespace PFD
             int count = 0;
             foreach (CMember m in arrMembers)
             {
-                if (!m.BIsGenerated) continue;                
+                if (!m.BIsGenerated) continue;
                 if (m.BIsSelectedForIFCalculation) count++;
             }
             return count;
@@ -464,7 +461,7 @@ namespace PFD
             foreach (CMember m in arrMembers)
             {
                 if (!m.BIsGenerated) continue;
-                if (m.BIsSelectedForDesign) count++;                
+                if (m.BIsSelectedForDesign) count++;
             }
             return count;
         }

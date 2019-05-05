@@ -585,7 +585,7 @@ namespace EXPIMP
             {
                 if (!cInfo.Design) continue;
 
-                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);                
+                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
                 par.StyleName = "Heading2";
 
                 //CMember governingMember = GetGoverningMember(data.sDesignResults_ULSandSLS, cInfo.MemberType);
@@ -596,8 +596,8 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
 
-                if (cInfo.MemberType == EMemberType_DB.MainColumn || cInfo.MemberType == EMemberType_DB.MainRafter ||
-                    cInfo.MemberType == EMemberType_DB.EdgeColumn || cInfo.MemberType == EMemberType_DB.EdgeRafter)
+                if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
+                    cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
                 {
                     par = par.InsertParagraphAfterSelf("Frame internal forces");
                     par.StyleName = "Heading3";
@@ -610,14 +610,9 @@ namespace EXPIMP
                 par.StyleName = "Heading3";
 
                 par = par.InsertParagraphAfterSelf("Member design details - SLS");
-                par.StyleName = "Heading3";                
+                par.StyleName = "Heading3";
             }
         }
-
-
-        
-
-
 
 
 

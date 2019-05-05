@@ -428,7 +428,7 @@
         eMC, // Main Column
     }
 
-    public enum EMemberType_DB
+    public enum EMemberType_FS_Position
     {
         MainColumn = 1,
         MainRafter = 2,

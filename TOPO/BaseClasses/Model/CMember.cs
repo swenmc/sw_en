@@ -125,9 +125,9 @@ namespace BaseClasses
             get { return eMemberType_FS; }
             set { eMemberType_FS = value; }
         }
-        private EMemberType_DB eMemberType_DB;
+        private EMemberType_FS_Position eMemberType_DB;
 
-        public EMemberType_DB EMemberTypePosition
+        public EMemberType_FS_Position EMemberTypePosition
         {
             get { return eMemberType_DB; }
             set { eMemberType_DB = value; }

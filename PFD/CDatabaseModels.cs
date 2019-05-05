@@ -26,7 +26,7 @@ namespace PFD
         private float m_fRakeAngleFrontFrame_deg; // Angle between X-axis and first frame
         private float m_fRakeAngleBackFrame_deg; // Angle between X-axis and last frame
 
-        private Dictionary<EMemberType_DB, string> m_membersSectionsDict;
+        private Dictionary<EMemberType_FS_Position, string> m_membersSectionsDict;
 
         #region properties
         
@@ -186,7 +186,7 @@ namespace PFD
             }
         }
 
-        public Dictionary<EMemberType_DB, string> MembersSectionsDict
+        public Dictionary<EMemberType_FS_Position, string> MembersSectionsDict
         {
             get
             {
@@ -225,22 +225,22 @@ namespace PFD
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
 
-            MembersSectionsDict = new Dictionary<EMemberType_DB, string>();
-            MembersSectionsDict.Add(EMemberType_DB.MainColumn, model.MainColumn);
-            MembersSectionsDict.Add(EMemberType_DB.MainRafter, model.MainRafter);
-            MembersSectionsDict.Add(EMemberType_DB.EdgeColumn, model.EdgeColumn);
-            MembersSectionsDict.Add(EMemberType_DB.EdgeRafter, model.EdgeRafter);
-            MembersSectionsDict.Add(EMemberType_DB.EdgePurlin, model.EdgePurlin);
-            MembersSectionsDict.Add(EMemberType_DB.Girt, model.Girt);
-            MembersSectionsDict.Add(EMemberType_DB.Purlin, model.Purlin);
-            MembersSectionsDict.Add(EMemberType_DB.ColumnFrontSide, model.ColumnFrontSide);
-            MembersSectionsDict.Add(EMemberType_DB.ColumnBackSide, model.ColumnBackSide);
-            MembersSectionsDict.Add(EMemberType_DB.GirtFrontSide, model.GirtFrontSide);
-            MembersSectionsDict.Add(EMemberType_DB.GirtBackSide, model.GirtBackSide);
-            MembersSectionsDict.Add(EMemberType_DB.DoorFrame, model.DoorFrame);
-            MembersSectionsDict.Add(EMemberType_DB.DoorTrimmer, model.DoorTrimmer);
-            MembersSectionsDict.Add(EMemberType_DB.DoorLintel, model.DoorLintel);
-            MembersSectionsDict.Add(EMemberType_DB.WindowFrame, model.WindowFrame);
+            MembersSectionsDict = new Dictionary<EMemberType_FS_Position, string>();
+            MembersSectionsDict.Add(EMemberType_FS_Position.MainColumn, model.MainColumn);
+            MembersSectionsDict.Add(EMemberType_FS_Position.MainRafter, model.MainRafter);
+            MembersSectionsDict.Add(EMemberType_FS_Position.EdgeColumn, model.EdgeColumn);
+            MembersSectionsDict.Add(EMemberType_FS_Position.EdgeRafter, model.EdgeRafter);
+            MembersSectionsDict.Add(EMemberType_FS_Position.EdgePurlin, model.EdgePurlin);
+            MembersSectionsDict.Add(EMemberType_FS_Position.Girt, model.Girt);
+            MembersSectionsDict.Add(EMemberType_FS_Position.Purlin, model.Purlin);
+            MembersSectionsDict.Add(EMemberType_FS_Position.ColumnFrontSide, model.ColumnFrontSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.ColumnBackSide, model.ColumnBackSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.GirtFrontSide, model.GirtFrontSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.GirtBackSide, model.GirtBackSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.DoorFrame, model.DoorFrame);
+            MembersSectionsDict.Add(EMemberType_FS_Position.DoorTrimmer, model.DoorTrimmer);
+            MembersSectionsDict.Add(EMemberType_FS_Position.DoorLintel, model.DoorLintel);
+            MembersSectionsDict.Add(EMemberType_FS_Position.WindowFrame, model.WindowFrame);
         }
     }
 }

@@ -26,11 +26,11 @@ namespace BaseClasses
         }
 
         //TODO inicializovat dalsi enum
-        private EMemberType_DB MmemberType_DB;
-        public EMemberType_DB MemberType
+        private EMemberType_FS_Position MmemberType_FS_Position;
+        public EMemberType_FS_Position MemberType_FS_Position
         {
-            get { return MmemberType_DB; }
-            set { MmemberType_DB = value; }
+            get { return MmemberType_FS_Position; }
+            set { MmemberType_FS_Position = value; }
         }
 
         private CCrSc McrossSection;
@@ -68,11 +68,12 @@ namespace BaseClasses
         public CMemberGroup()
         { }
 
-        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, CCrSc crossSection_temp, float fDeflectionLimitPermanentLoad, float fDeflectionLimitTotal, float fTime_temp)
+        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, EMemberType_FS_Position memberTypeFS_position, CCrSc crossSection_temp, float fDeflectionLimitPermanentLoad, float fDeflectionLimitTotal, float fTime_temp)
         {
             ID = ID_temp;
             Name = sName_temp;
             MemberType_FS = memberTypeFS_temp;
+            MemberType_FS_Position = memberTypeFS_position;
             CrossSection = crossSection_temp;
             FTime = fTime_temp;
             MDeflectionLimit_PermanentLoad = fDeflectionLimitPermanentLoad;
@@ -82,11 +83,12 @@ namespace BaseClasses
             ListOfMembers = new List<CMember>();
         }
 
-        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, CCrSc crossSection_temp, List<CMember> memberList, float fTime_temp)
+        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, EMemberType_FS_Position memberTypeFS_position, CCrSc crossSection_temp, List<CMember> memberList, float fTime_temp)
         {
             ID = ID_temp;
             Name = sName_temp;
             MemberType_FS = memberTypeFS_temp;
+            MemberType_FS_Position = memberTypeFS_position;
             CrossSection = crossSection_temp;
             ListOfMembers = memberList;
             FTime = fTime_temp;

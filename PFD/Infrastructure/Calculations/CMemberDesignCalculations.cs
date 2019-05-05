@@ -1134,7 +1134,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                DesignResultItem item = s.DesignResults[EMemberType_DB.MainColumn];
+                DesignResultItem item = s.DesignResults[EMemberType_FS_Position.MainColumn];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - main columns\n");
@@ -1146,7 +1146,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.MainRafter];
+                item = s.DesignResults[EMemberType_FS_Position.MainRafter];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - rafters\n");
@@ -1158,7 +1158,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.EdgeColumn];
+                item = s.DesignResults[EMemberType_FS_Position.EdgeColumn];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - end columns\n");
@@ -1170,7 +1170,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.EdgeRafter];
+                item = s.DesignResults[EMemberType_FS_Position.EdgeRafter];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - end rafters\n");
@@ -1182,7 +1182,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.Girt];
+                item = s.DesignResults[EMemberType_FS_Position.Girt];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - girts\n");
@@ -1194,7 +1194,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.Purlin];
+                item = s.DesignResults[EMemberType_FS_Position.Purlin];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - purlins\n");
@@ -1206,7 +1206,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                item = s.DesignResults[EMemberType_DB.ColumnBackSide];
+                item = s.DesignResults[EMemberType_FS_Position.ColumnBackSide];
                 if (item.MemberWithMaximumDesignRatio != null)
                 {
                     sb.Append("Maximum design ratio - columns\n");
@@ -1218,7 +1218,7 @@ namespace PFD.Infrastructure
                     }
                 }
 
-                //TODO doimplementovat dalsie typy EMemberType_DB
+                //TODO doimplementovat dalsie typy EMemberType_FS_Position
             }
 
             return sb.ToString();
