@@ -24,8 +24,7 @@ namespace BaseClasses
             get { return MmemberType; }
             set { MmemberType = value; }
         }
-
-        //TODO inicializovat dalsi enum
+        
         private EMemberType_FS_Position MmemberType_FS_Position;
         public EMemberType_FS_Position MemberType_FS_Position
         {
