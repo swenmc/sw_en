@@ -526,6 +526,7 @@ namespace M_AS4600
         private static void SetResultsDetailsFor_SLS(CCalculMember obj_CalcDesign)
         {
             float fUnitFactor_Deflection = 1000f; // m to mm
+            float fUnitFactor_ComponentLength = 1f; // m to m
 
             int iNumberOfDecimalPlaces = 3;
             int iNumberOfDecimalPlaces_Factor = 3;
@@ -534,7 +535,7 @@ namespace M_AS4600
             int iNumberOfDecimalPlaces_Deflection = 3;
 
             string sUnit_Deflection = "[mm]";
-
+            string sUnit_ComponentLength = "[m]";
             string sUnit_Factor = "[-]";
             string sUnit_DesignRatio = "[-]";
 
@@ -550,15 +551,27 @@ namespace M_AS4600
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_zz * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Deflection);
 
-            //listPhysicalQuantity_Symbols.Add("δ tot");
-            //listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_tot * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
-            //listPhysicalQuantity_Units.Add(sUnit_Deflection);
+            listPhysicalQuantity_Symbols.Add("δ tot");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDDeflections.fDelta_tot * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Deflection);
+
+            // Span
+            listPhysicalQuantity_Symbols.Add("L");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLength_deflections * fUnitFactor_ComponentLength, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_ComponentLength);
+
+            // Limit value denominator
+            //string sLimitFraction = MATH.FractionConverter.Convert((decimal)obj_CalcDesign.fLimitDeflectionRatio,true,(decimal)0.001);
+            listPhysicalQuantity_Symbols.Add("Limit\tL/");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.iLimitDeflectionFraction_Denominator.ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Factor);
 
             listPhysicalQuantity_Symbols.Add("δ lim");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLimitDeflection * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Deflection);
 
             // Design ratio
+
             /*
             listPhysicalQuantity_Symbols.Add("η x/u");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_yu, iNumberOfDecimalPlaces_DesignRatio).ToString());
@@ -575,6 +588,10 @@ namespace M_AS4600
 
             listPhysicalQuantity_Symbols.Add("η y");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_zz, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+            listPhysicalQuantity_Symbols.Add("η tot");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_tot, iNumberOfDecimalPlaces_DesignRatio).ToString());
             listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
 

@@ -40,6 +40,30 @@ namespace BaseClasses
             set { McrossSection = value; }
         }
 
+        private int MDeflectionLimitFraction_Denominator_PermanentLoad;
+
+        public int DeflectionLimitFraction_Denominator_PermanentLoad
+        {
+            get { return MDeflectionLimitFraction_Denominator_PermanentLoad; }
+            set { MDeflectionLimitFraction_Denominator_PermanentLoad = value; }
+        }
+
+        private int MDeflectionLimitFraction_Denominator_ImposedLoad;
+
+        public int DeflectionLimitFraction_Denominator_ImposedLoad
+        {
+            get { return MDeflectionLimitFraction_Denominator_ImposedLoad; }
+            set { MDeflectionLimitFraction_Denominator_ImposedLoad = value; }
+        }
+
+        private int MDeflectionLimitFraction_Denominator_Total;
+
+        public int DeflectionLimitFraction_Denominator_Total
+        {
+            get { return MDeflectionLimitFraction_Denominator_Total; }
+            set { MDeflectionLimitFraction_Denominator_Total = value; }
+        }
+
         private float MDeflectionLimit_PermanentLoad;
 
         public float DeflectionLimit_PermanentLoad
@@ -67,6 +91,7 @@ namespace BaseClasses
         public CMemberGroup()
         { }
 
+        /*
         public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, EMemberType_FS_Position memberTypeFS_position, CCrSc crossSection_temp, float fDeflectionLimitPermanentLoad, float fDeflectionLimitTotal, float fTime_temp)
         {
             ID = ID_temp;
@@ -78,6 +103,27 @@ namespace BaseClasses
             MDeflectionLimit_PermanentLoad = fDeflectionLimitPermanentLoad;
             MDeflectionLimit_ImposedLoad = fDeflectionLimitPermanentLoad; // TODO - dopracovat samostatny limit pre imposed
             MDeflectionLimit_Total = fDeflectionLimitTotal;
+
+            ListOfMembers = new List<CMember>();
+        }
+        */
+
+        public CMemberGroup(int ID_temp, string sName_temp, EMemberType_FS memberTypeFS_temp, EMemberType_FS_Position memberTypeFS_position, CCrSc crossSection_temp, int iDeflectionLimitFraction_Denominator_PermanentLoad, int iDeflectionLimitFraction_Denominator_Total, float fTime_temp)
+        {
+            ID = ID_temp;
+            Name = sName_temp;
+            MemberType_FS = memberTypeFS_temp;
+            MemberType_FS_Position = memberTypeFS_position;
+            CrossSection = crossSection_temp;
+            FTime = fTime_temp;
+
+            MDeflectionLimitFraction_Denominator_PermanentLoad = iDeflectionLimitFraction_Denominator_PermanentLoad;
+            MDeflectionLimitFraction_Denominator_ImposedLoad = iDeflectionLimitFraction_Denominator_PermanentLoad; // TODO - dopracovat samostatny limit pre imposed
+            MDeflectionLimitFraction_Denominator_Total = iDeflectionLimitFraction_Denominator_Total;
+
+            MDeflectionLimit_PermanentLoad = 1f / (float)MDeflectionLimitFraction_Denominator_PermanentLoad;
+            MDeflectionLimit_ImposedLoad = 1f / (float)MDeflectionLimitFraction_Denominator_ImposedLoad; // TODO - dopracovat samostatny limit pre imposed
+            MDeflectionLimit_Total = 1f / (float)MDeflectionLimitFraction_Denominator_Total;
 
             ListOfMembers = new List<CMember>();
         }

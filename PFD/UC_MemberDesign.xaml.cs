@@ -104,12 +104,19 @@ namespace PFD
                     if (res == null) continue;
 
                     // Limit zavisi od typu zatazenia (load combination) a typu pruta
+                    int iDeflectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total;
                     float fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_Total;
 
-                    if (loadCombID == 41) // TODO Combination of permanent load (TODO - nacitat spravne typ kombinacie, neurcovat podla cisla ID)
-                        fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
+                    // TODO Ondrej - identifikacia ci kombinacia obsahuje len load cases typu permanent
+                    // Da sa pouzit metoda v triede CLoadCombination IsCombinationOfPermanentLoadCasesOnly()
 
-                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDeflectionLimit);
+                    if (loadCombID == 41) // TODO Combination of permanent load (TODO - nacitat spravne typ kombinacie, neurcovat podla cisla ID)
+                    {
+                        iDeflectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad;
+                        fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
+                    }
+
+                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, iDeflectionLimitFraction_Denominator, fDeflectionLimit);
 
                     if (calcul.fEta_max > fMaximumDesignRatio)
                     {

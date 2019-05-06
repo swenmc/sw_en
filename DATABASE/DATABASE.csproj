@@ -102,7 +102,6 @@
     <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
     <Compile Include="DTO\CSectionProperties.cs" />
     <Compile Include="DTO\CTrapezoidalSheetingColours.cs" />
-    <Compile Include="FractionConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -151,6 +150,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
       <Name>MATERIAL</Name>

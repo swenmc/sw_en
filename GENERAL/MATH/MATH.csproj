@@ -73,6 +73,7 @@
     <Compile Include="ARRAY\CArray.cs" />
     <Compile Include="EQUATION\CCardanoCubicEQSolver.cs" />
     <Compile Include="ALGEBRA\MathF.cs" />
+    <Compile Include="FractionConverter.cs" />
     <Compile Include="GEOMETRY\Geom2D.cs" />
     <Compile Include="GEOMETRY\Geom3D.cs" />
     <Compile Include="MATRIX\CMatrix.cs" />

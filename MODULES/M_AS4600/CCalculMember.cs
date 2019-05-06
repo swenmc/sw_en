@@ -110,7 +110,6 @@ namespace M_AS4600
         LatBracing_D2_1 eLateralBracing = LatBracing_D2_1.eNoBracing;
 
         float fl_member;
-
         float ff_y;
         float ff_u;
         float fE;
@@ -232,7 +231,10 @@ namespace M_AS4600
         public float fEta_max = 0.0f;
 
         // SLS
-        public float fLimitDeflection;
+        public float fLength_deflections; // L
+        public int iLimitDeflectionFraction_Denominator; // 300
+        public float fLimitDeflectionFraction; // 1/300
+        public float fLimitDeflection; // L /300
         public float fEta_defl_yu = 0f;
         public float fEta_defl_zv = 0f;
         public float fEta_defl_yy = 0f;
@@ -287,16 +289,17 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member, float fLimit)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member, int iLimitDeflectionFraction_Denominator_temp, float fLimitFraction)
         {
             sDDeflections = sDDeflections_x_temp;
+            fLength_deflections = member.FLength;
+            iLimitDeflectionFraction_Denominator = iLimitDeflectionFraction_Denominator_temp; // 300 - Kvoli zobrazeniu v detailoch
+            fLimitDeflectionFraction = fLimitFraction; // 1/300 - Kvoli zobrazeniu v detailoch - nepouzivam
 
-            float fLength = member.FLength;
+            if (member.EMemberType == EMemberType_FS.eMR || member.EMemberType == EMemberType_FS.eER)
+                fLength_deflections = 2 * Math.Abs(member.NodeEnd.X - member.NodeStart.X); // Total width of gable roof building - vertical deflection of apex deflection
 
-            if(member.EMemberType == EMemberType_FS.eMR || member.EMemberType == EMemberType_FS.eER)
-                fLength = 2 * Math.Abs(member.NodeEnd.X - member.NodeStart.X); // Total width of gable roof building - vertical deflection of apex deflection
-
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections, fLength, fLimit);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections, fLength_deflections, fLimitFraction);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -305,9 +308,9 @@ namespace M_AS4600
             }
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp, float fLimit)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp, float fLimitFraction)
         {
-            fLimitDeflection = fL_temp * fLimit;
+            fLimitDeflection = fL_temp * fLimitFraction;
 
             // Calculate deflection design ratio
             fEta_defl_yu = Math.Abs(sDDeflections_x_temp.fDelta_yu) / fLimitDeflection;
