@@ -598,9 +598,9 @@ namespace EXPIMP
                 par.StyleName = "Heading2";
 
                 CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
-                if (governingMember != null) par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
+                if (governingMember != null)  par = par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
                 CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
-                if (governingLComb != null) par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
+                if (governingLComb != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
 
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
