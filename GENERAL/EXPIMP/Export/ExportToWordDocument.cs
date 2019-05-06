@@ -41,7 +41,7 @@ namespace EXPIMP
                 DrawLoadCombinations(document, modelData);
                 DrawLoad(document, modelData);
                 DrawMemberDesign(document, modelData);
-                DrawJointDesign(document, modelData);
+
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -582,7 +582,8 @@ namespace EXPIMP
                 p.FontSize(fontSizeInTable);
             }
         }
-        
+
+
 
         private static void DrawMemberDesign(DocX document, CModelData data)
         {
@@ -642,45 +643,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawJointDesign(DocX document, CModelData data)
-        {
-            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
-            par.RemoveText(0);
-
-            foreach (CComponentInfo cInfo in data.ComponentList)
-            {
-                if (!cInfo.Design) continue;
-
-                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
-                par.StyleName = "Heading2";
-                
-
-                //par = par.InsertParagraphAfterSelf("Joint design details");
-                //par.StyleName = "Heading3";
-
-                //Start Joint
-                CCalculJoint calcul = null;
-                data.dictStartJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
-                if (calcul != null)
-                {
-                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
-                    Table t = GetTable(document, dt);
-                    par = par.InsertParagraphAfterSelf("");
-                    AddSimpleTableAfterParagraph(t, par);
-                }
-
-                //END Joint
-                calcul = null;
-                data.dictEndJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
-                if (calcul != null)
-                {
-                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
-                    Table t = GetTable(document, dt);
-                    par = par.InsertParagraphAfterSelf("");
-                    AddSimpleTableAfterParagraph(t, par);
-                }
-            }
-        }
+        
 
         private static void AddSimpleTableAfterParagraph(Table t, Paragraph p)
         {

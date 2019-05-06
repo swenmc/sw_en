@@ -50,14 +50,6 @@ namespace M_AS4600
 
             return GetDataTable();
         }
-        public static DataTable GetDesignResultsInDataTable(this CCalculJoint calcul)
-        {
-            DeleteLists();
-
-            SetResultsDetailsFor_ULS(calcul);
-
-            return GetDataTable();
-        }
 
         private static void DeleteLists()
         {

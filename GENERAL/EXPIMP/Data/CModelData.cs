@@ -104,8 +104,6 @@ namespace EXPIMP
         public sDesignResults sDesignResults_SLS = new sDesignResults();
         public Dictionary<EMemberType_FS_Position, CCalculMember> dictULSDesignResults;
         public Dictionary<EMemberType_FS_Position, CCalculMember> dictSLSDesignResults;
-        public Dictionary<EMemberType_FS_Position, CCalculJoint> dictStartJointResults;
-        public Dictionary<EMemberType_FS_Position, CCalculJoint> dictEndJointResults;
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
