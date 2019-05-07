@@ -2177,6 +2177,7 @@ namespace PFD
             
             data.dictULSDesignResults = GetDesignResultsULS();
             data.dictSLSDesignResults = GetDesignResultsSLS();
+            GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
 
 
 
@@ -2246,6 +2247,36 @@ namespace PFD
             cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, iDelfectionLimitFraction_Denominator, fDeflectionLimit);
         }
 
+        public void GetGoverningMemberJointsDesignDetails(out Dictionary<EMemberType_FS_Position, CCalculJoint> dictStartJointResults, out Dictionary<EMemberType_FS_Position, CCalculJoint> dictEndJointResults)
+        {
+            dictStartJointResults = new Dictionary<EMemberType_FS_Position, CCalculJoint>();
+            dictEndJointResults = new Dictionary<EMemberType_FS_Position, CCalculJoint>();
+
+            if (JointDesignResults_ULS == null) return;
+
+            foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
+            {
+                CLoadCombination governingLoadComb = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
+                if (governingLoadComb == null) continue;
+                CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
+                if (governingMember == null) continue;
+
+                CConnectionJointTypes cjStart = null;
+                CConnectionJointTypes cjEnd = null;
+                Model.GetModelMemberStartEndConnectionJoints(governingMember, out cjStart, out cjEnd);
+
+                CJointLoadCombinationRatio_ULS resStart = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
+                CJointLoadCombinationRatio_ULS resEnd = JointDesignResults_ULS.FirstOrDefault(i => i.Member.ID == governingMember.ID && i.LoadCombination.ID == governingLoadComb.ID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
+                if (resStart == null) continue;
+                if (resEnd == null) continue;
+
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
+
+                dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
+                dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);
+            }
+        }
 
     }
 }
