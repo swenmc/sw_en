@@ -63,6 +63,8 @@ namespace DATABASE
                         properties.Unit_SI = reader["unit_SI"].ToString();
                         properties.Unit_NcmkPa = reader["unit_NcmkPa"].ToString();
                         properties.Unit_NmmMpa = reader["unit_NmmMPa"].ToString();
+                        properties.VisibleInGUI = bool.Parse(reader["bVisibleInGUI"].ToString());
+                        properties.VisibleInReport = bool.Parse(reader["bVisibleInReport"].ToString());
                         items.Add(properties);
                     }
                 }

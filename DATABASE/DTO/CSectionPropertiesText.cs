@@ -16,6 +16,8 @@ namespace DATABASE.DTO
         private string m_unit_SI;
         private string m_unit_NcmkPa;
         private string m_unit_NmmMpa;
+        private bool m_visibleInGUI;
+        private bool m_visibleInReport;
 
         public int ID
         {
@@ -118,6 +120,32 @@ namespace DATABASE.DTO
             set
             {
                 m_unit_NmmMpa = value;
+            }
+        }
+
+        public bool VisibleInGUI
+        {
+            get
+            {
+                return m_visibleInGUI;
+            }
+
+            set
+            {
+                m_visibleInGUI = value;
+            }
+        }
+
+        public bool VisibleInReport
+        {
+            get
+            {
+                return m_visibleInReport;
+            }
+
+            set
+            {
+                m_visibleInReport = value;
             }
         }
 

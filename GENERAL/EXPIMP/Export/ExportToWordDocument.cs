@@ -241,7 +241,9 @@ namespace EXPIMP
             
             foreach (CSectionPropertiesText prop in details)
             {
+                if (!prop.VisibleInReport) continue;
                 if (string.IsNullOrEmpty(prop.Value)) continue;
+                if (prop.Value == "NaN") continue;
 
                 Row row = t.InsertRow();
                 row.Cells[1].Paragraphs[0].InsertText(prop.Text);

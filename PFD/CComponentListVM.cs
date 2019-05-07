@@ -574,6 +574,8 @@ namespace PFD
             {
                 ComponentDetailsList[i].Value = listSectionPropertyValue[i];
             }
+            ComponentDetailsList.RemoveAll(d => d.VisibleInGUI == false);
+
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
 
             // Material properties
