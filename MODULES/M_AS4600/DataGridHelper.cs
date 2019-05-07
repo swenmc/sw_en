@@ -709,7 +709,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fVb_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                listPhysicalQuantity_Symbols.Add("Number of screws in shear");
+                listPhysicalQuantity_Symbols.Add("n screws.V"); // Number of screws in shear
                 listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInShear.ToString());
                 listPhysicalQuantity_Units.Add("");
 
@@ -854,7 +854,7 @@ namespace M_AS4600
                     // 5.4.3 Screwed connections in tension
                     // 5.4.3.2 Pull-out and pull-over (pull-through)
 
-                    listPhysicalQuantity_Symbols.Add("Number of screws in tension");
+                    listPhysicalQuantity_Symbols.Add("n screws.N"); // Number of screws in tension
                     listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInTension.ToString());
                     listPhysicalQuantity_Units.Add("");
 
@@ -989,7 +989,7 @@ namespace M_AS4600
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                     // Pripoj plechu sekundarneho pruta
-                    listPhysicalQuantity_Symbols.Add("Number of screws in connection m2");
+                    listPhysicalQuantity_Symbols.Add("n screws.m2"); // Number of screws in connection m2
                     listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInConnectionOfSecondaryMember.ToString());
                     listPhysicalQuantity_Units.Add("");
 
@@ -1034,7 +1034,7 @@ namespace M_AS4600
                     // 5.4.3 Screwed connections in tension
                     // 5.4.3.2 Pull-out and pull-over (pull-through)
 
-                    listPhysicalQuantity_Symbols.Add("Number of screws in tension");
+                    listPhysicalQuantity_Symbols.Add("n screws.N"); // Number of screws in tension
                     listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInTension.ToString());
                     listPhysicalQuantity_Units.Add("");
 
@@ -1169,7 +1169,7 @@ namespace M_AS4600
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                     // Pripoj plechu sekundarneho pruta
-                    listPhysicalQuantity_Symbols.Add("Number of screws in connection m2");
+                    listPhysicalQuantity_Symbols.Add("n screws.m2"); // Number of screws in connection m2
                     listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInConnectionOfSecondaryMember.ToString());
                     listPhysicalQuantity_Units.Add("");
 
@@ -1262,7 +1262,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fVb_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                listPhysicalQuantity_Symbols.Add("Number of screws in shear");
+                listPhysicalQuantity_Symbols.Add("n screws.V"); // Number of screws in shear
                 listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInShear.ToString());
                 listPhysicalQuantity_Units.Add("");
 
@@ -1381,15 +1381,15 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_res_joint * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                listPhysicalQuantity_Symbols.Add("No anchors");
+                listPhysicalQuantity_Symbols.Add("n anchors");
                 listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
                 listPhysicalQuantity_Units.Add("");
 
-                listPhysicalQuantity_Symbols.Add("No anchors.t");
+                listPhysicalQuantity_Symbols.Add("n anchors.T");
                 listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
                 listPhysicalQuantity_Units.Add("");
 
-                listPhysicalQuantity_Symbols.Add("No anchors.v");
+                listPhysicalQuantity_Symbols.Add("n anchors.V");
                 listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
                 listPhysicalQuantity_Units.Add("");
 
@@ -1991,7 +1991,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fA_s1_Xdirection * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
-                listPhysicalQuantity_Symbols.Add("Number of bars");
+                listPhysicalQuantity_Symbols.Add("n bars"); // Number of bars
                 listPhysicalQuantity_Values.Add(det.iNumberOfBarsInXDirection.ToString());
                 listPhysicalQuantity_Units.Add("");
 
