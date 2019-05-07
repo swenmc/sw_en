@@ -25,6 +25,8 @@ namespace EXPIMP
             // Create a new document.
             using (DocX document = DocX.Create(fileName))
             {
+                
+
                 // The path to a template document,
                 string templatePath = resourcesFolderPath + "TemplateReport.docx";
                 // Apply a template to the document based on a path.
@@ -53,7 +55,8 @@ namespace EXPIMP
 
 
                 //CreateChapterWithBuletedList(document);
-                //CreateTOC(document);
+
+                CreateTOC(document);
 
                 // Save this document to disk.
                 document.Save();
@@ -731,7 +734,24 @@ namespace EXPIMP
 
         private static void CreateTOC(DocX document)
         {
-            document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);
+            Paragraph parTOC = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[TOC]"));
+            parTOC.RemoveText(0);
+
+            // Add the Table of Content prior to the referenced paragraph
+            var toc = document.InsertTableOfContents(parTOC, "Table of Contents", TableOfContentsSwitches.H);
+
+            // Add a page break prior to the referenced paragraph so it starts on a fresh page after the Table of Content
+            parTOC.InsertPageBreakBeforeSelf();
+
+            //TableOfContents toc = document.InsertTableOfContents("Programatically generated TOC", TableOfContentsSwitches.H);
+            //Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("Programatically generated TOC"));
+            //if (par != null)
+            //{
+            //    int index = document.Paragraphs.IndexOf(par);
+            //    document.Paragraphs[index].Remove();
+            //    par.Remove(false);
+
+            //} 
         }
         private static void CreateChapterWithBuletedList(DocX document)
         {
