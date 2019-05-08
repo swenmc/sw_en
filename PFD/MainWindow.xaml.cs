@@ -959,6 +959,7 @@ namespace PFD
                     vm.Model,
                     compList,
                     vm.MemberInternalForcesInLoadCombinations,
+                    vm.MemberDeflectionsInLoadCombinations,
                     vm.MemberDesignResults_ULS,
                     vm.MemberDesignResults_SLS,
                     vm.frameModels

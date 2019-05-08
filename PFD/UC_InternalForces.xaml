@@ -36,6 +36,10 @@
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -68,6 +72,12 @@
 
             <TextBlock Grid.Row="13" Grid.Column="0" Text="Bending Moment My [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             <Canvas Grid.Row="14" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Deflection δx [mm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="16" Grid.Column="0" Name ="Canvas_DeflectionDiagramDeltax" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
+
+            <TextBlock Grid.Row="17" Grid.Column="0" Text="Deflection δy [mm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <Canvas Grid.Row="18" Grid.Column="0" Name ="Canvas_DeflectionDiagramDeltay" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
             <Button Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" ToolTip="Display internal forces in frame members" HorizontalAlignment="Left" Name="Button_Frame_2D" Click="Button_Frame_2D_Click" Width="20" Margin="5 0 10 0" Height="20">
                 <StackPanel>

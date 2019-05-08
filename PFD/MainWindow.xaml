@@ -379,7 +379,7 @@
             <TabItem Name ="Internal_Forces">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Internal Forces" Foreground="DarkCyan"/>
+                        <TextBlock Text="Result Diagrams" Foreground="DarkCyan"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
