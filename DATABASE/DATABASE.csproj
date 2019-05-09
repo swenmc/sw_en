@@ -129,6 +129,7 @@
     <Content Include="Resources\MDBSections.db3" />
     <None Include="Resources\MDBJoints.db3" />
     <None Include="Resources\MDBModels.db3" />
+    <None Include="Resources\MDBStrings.db3" />
     <None Include="Resources\MDBTEKScrews.db3" />
     <None Include="Resources\MDBTrapezoidalSheeting.db3" />
   </ItemGroup>
