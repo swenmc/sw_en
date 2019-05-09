@@ -422,7 +422,7 @@ namespace PFD
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
             int lcombIndex = frameModel.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(UseCRSCGeometricalAxes, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(UseCRSCGeometricalAxes, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();

@@ -44,7 +44,7 @@ namespace PFD.ViewModels
             set
             {
                 MIFTypeIndex = value;
-                //"N", "Vz", "Vy", "T", "My", "Mz"
+                //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
                 if (MIFTypeIndex <= 2) MIFTypeUnit = "kN";
                 else MIFTypeUnit = "kNm";
                 NotifyPropertyChanged("IFTypeIndex");
@@ -63,7 +63,6 @@ namespace PFD.ViewModels
                 list_IFTypes = value;
             }
         }
-                
 
         public string IFTypeUnit
         {
@@ -292,7 +291,7 @@ namespace PFD.ViewModels
             IFTypeIndex = 4;
             InternalForceScale_user = 1;
 
-            list_IFTypes = new List<string>() { "N", "Vz", "Vy", "T", "My", "Mz" };
+            list_IFTypes = new List<string>() { "N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz" };
 
             MListDecimalPlaces = new List<int>() { 0, 1, 2, 3 };
             NumberOfDecimalPlacesIndex = 2;

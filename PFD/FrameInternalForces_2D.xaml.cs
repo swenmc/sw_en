@@ -27,17 +27,19 @@ namespace PFD
     {
         private CModel model;
         public List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
+        public List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations;
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
         int iLoadCombinationIndex;
         bool UseCRSCGeometricalAxes;
 
-        public FrameInternalForces_2D(bool bUseCRSCGeometricalAxes, CModel example_model, int iLoadCombinationIndex_temp, List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations)
+        public FrameInternalForces_2D(bool bUseCRSCGeometricalAxes, CModel example_model, int iLoadCombinationIndex_temp, List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> listMemberDeflectionsInLoadCombinations)
         {
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             model = example_model;
             iLoadCombinationIndex = iLoadCombinationIndex_temp;
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
+            ListMemberDeflectionsInLoadCombinations = listMemberDeflectionsInLoadCombinations;
 
             DictMemberInternalForcePoints = new Dictionary<string, List<Point>>();
 
@@ -172,6 +174,7 @@ namespace PFD
                     designBucklingLengthFactors[] sBucklingLengthFactors;
                     designMomentValuesForCb[] sMomentValuesforCb;
                     basicInternalForces[] sBIF_x;
+                    basicDeflections[] sBDef_x;
 
                     CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
                         UseCRSCGeometricalAxes,
@@ -183,9 +186,17 @@ namespace PFD
                         out sMomentValuesforCb,
                         out sBIF_x);
 
+                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
+                        model.m_arrLoadCombs[iLoadCombinationIndex],
+                        ListMemberDeflectionsInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBDef_x);
+
                     for (int c = 0; c < sBIF_x.Length; c++)
                     {
-                        float IF_Value = GetInternalForcesValue(sBIF_x[c]);
+                        float IF_Value = GetInternalForcesValue(sBIF_x[c], sBDef_x[c]);
 
                         if(IF_Value < dMinValue)
                         {
@@ -212,7 +223,7 @@ namespace PFD
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && c % 3 != 0) continue;
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && vm.ShowExtremeValues && !(c % 3 == 0 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
 
-                        float IF_Value = GetInternalForcesValue(sBIF_x[c]);
+                        float IF_Value = GetInternalForcesValue(sBIF_x[c], sBDef_x[c]);
 
                         // Ignore and do not display zero value label
                         if (MathF.d_equal(IF_Value, 0))
@@ -241,10 +252,10 @@ namespace PFD
             }
         }
 
-        private float GetInternalForcesValue(basicInternalForces bif)
+        private float GetInternalForcesValue(basicInternalForces bif, basicDeflections bdef)
         {
             FrameInternalForces_2DViewModel vm = this.DataContext as FrameInternalForces_2DViewModel;
-            //"N", "Vz", "Vy", "T", "My", "Mz"
+            //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
             switch (vm.IFTypeIndex)
             {
                 case 0: return bif.fN;
@@ -253,6 +264,8 @@ namespace PFD
                 case 3: return bif.fT;
                 case 4: return bif.fM_yy;
                 case 5: return bif.fM_zz;
+                case 6: return bdef.fDelta_yy;
+                case 7: return bdef.fDelta_zz;
                 default: throw new Exception($"Not known internal force; IFTypeIndex: {vm.IFTypeIndex}");
             }
         }
@@ -310,6 +323,7 @@ namespace PFD
             designBucklingLengthFactors[] sBucklingLengthFactors;
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[] sBIF_x;
+            basicDeflections[] sBDef_x;
 
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(UseCRSCGeometricalAxes,
                 model.m_arrMembers[memberIndex],
@@ -320,6 +334,18 @@ namespace PFD
                 out sMomentValuesforCb,
                 out sBIF_x);
 
+            if (ListMemberDeflectionsInLoadCombinations == null)
+            {
+                return listMemberInternalForcePoints; // Return empty list ???
+            }
+
+            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(UseCRSCGeometricalAxes,
+                model.m_arrMembers[memberIndex],
+                model.m_arrLoadCombs[iLoadCombinationIndex],
+                ListMemberDeflectionsInLoadCombinations,
+                iNumberOfResultsSections,
+                out sBDef_x);
+
             // First point (start at [0,0])
             listMemberInternalForcePoints.Add(new Point(0, 0));
 
@@ -328,7 +354,7 @@ namespace PFD
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
 
-                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(sBIF_x[j]);
+                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(sBIF_x[j], sBDef_x[j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 
                 //pozicie x sa ulozia, aby sa nemuseli pocitat znova
