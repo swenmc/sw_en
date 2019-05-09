@@ -119,7 +119,7 @@ namespace PFD
                 }
             }
 
-            // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia            
+            // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
             // Tu by sa mali nastavit podpory v rovine ramu (posuny UX a UZ) a pototocenie RY
             for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
             {
@@ -383,6 +383,5 @@ namespace PFD
             }
             return null;
         }
-
     }
 }

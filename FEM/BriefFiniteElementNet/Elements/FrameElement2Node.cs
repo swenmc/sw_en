@@ -525,40 +525,56 @@ namespace BriefFiniteElementNet
         // MC - docasne pridane
         public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false)
         {
-            // TODO - neviem ci maju byt uzlove deformacie zohladnene tu aj vo funkciach zatazenia
-            // Potrebujem to este skontrolovat
-            var gStartDisp = StartNode.GetNodalDisplacement(cmb);
-            var gEndDisp = EndNode.GetNodalDisplacement(cmb);
-
-            var lStartDisp = new Displacement(
-                TransformGlobalToLocal(gStartDisp.Displacements),
-                TransformGlobalToLocal(gStartDisp.Rotations));
-
-            var lEndDisp = new Displacement(
-                TransformGlobalToLocal(gEndDisp.Displacements),
-                TransformGlobalToLocal(gEndDisp.Rotations));
-
-            var displStartVector = new double[]
-            {
-                lStartDisp.DX, lStartDisp.DY, lStartDisp.DZ,
-                lStartDisp.RX, lStartDisp.RY, lStartDisp.RZ
-            };
-
-            var startDisp = Displacement.FromVector(displStartVector, 0);
-
             var displacementAtX = new Displacement(0, 0, 0, 0, 0, 0);
 
-            if (bConsiderNodalDisplacement == true)
-                displacementAtX = startDisp;
-
-            foreach (var ld in loads)
+            if (false) // Stare riesenie
             {
-                if (!cmb.ContainsKey(ld.Case))
-                    continue;
+                // TODO - neviem ci maju byt uzlove deformacie zohladnene tu aj vo funkciach zatazenia
+                // Potrebujem to este skontrolovat
+                var gStartDisp = StartNode.GetNodalDisplacement(cmb);
+                var gEndDisp = EndNode.GetNodalDisplacement(cmb);
 
-                var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x, bConsiderNodalDisplacementOnly);
+                var lStartDisp = new Displacement(
+                    TransformGlobalToLocal(gStartDisp.Displacements),
+                    TransformGlobalToLocal(gStartDisp.Rotations));
 
-                displacementAtX += cmb[ld.Case] * frc;
+                var lEndDisp = new Displacement(
+                    TransformGlobalToLocal(gEndDisp.Displacements),
+                    TransformGlobalToLocal(gEndDisp.Rotations));
+
+                var displStartVector = new double[]
+                {
+                lStartDisp.DX, lStartDisp.DY, lStartDisp.DZ,
+                lStartDisp.RX, lStartDisp.RY, lStartDisp.RZ
+                };
+
+                var startDisp = Displacement.FromVector(displStartVector, 0);
+
+                if (bConsiderNodalDisplacement == true)
+                    displacementAtX = startDisp;
+
+                foreach (var ld in loads)
+                {
+                    if (!cmb.ContainsKey(ld.Case))
+                        continue;
+
+                    var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x, bConsiderNodalDisplacementOnly);
+
+                    displacementAtX += cmb[ld.Case] * frc;
+                }
+            }
+            else // Nove riesenie
+            {
+                var disp_Global = new Displacement();
+                disp_Global = GetGlobalDeformationAt_MC(x, cmb);
+
+                //////////////////////////////////////////////////////////////////
+                // Pokus previest globalne deformacie na lokalne - nie som si isty ci mi to funguje :-/
+                // Transform to Local deformations
+                displacementAtX = new Displacement(
+                TransformGlobalToLocal(disp_Global.Displacements),
+                TransformGlobalToLocal(disp_Global.Rotations));
+                //////////////////////////////////////////////////////////////////
             }
 
             return displacementAtX;
@@ -581,7 +597,7 @@ namespace BriefFiniteElementNet
 
             displacementAtX = gStartDisp;
 
-            double length = 1;
+            double length = (this.EndNode.Location - this.StartNode.Location).Length;
 
             displacementAtX.DX = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.DX, gEndDisp.DX, x);
             displacementAtX.DY = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.DY, gEndDisp.DY, x);
@@ -603,11 +619,6 @@ namespace BriefFiniteElementNet
 
                     var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x);
 
-                    if(frc.DZ == double.NaN)
-                    {
-
-                    }
-
                     displacementAtX_Local_inLCS += cmb[ld.Case] * frc;
                 }
 
@@ -615,7 +626,7 @@ namespace BriefFiniteElementNet
                 TransformLocalToGlobal(displacementAtX_Local_inLCS.Displacements),
                 TransformLocalToGlobal(displacementAtX_Local_inLCS.Rotations));
 
-                // Add Local deformations in GCS to the global deformations
+                // Add Local deformations in GCS to the global deformations (TODO - ??? neviem ci je to spravne)
 
                 displacementAtX.DX += displacementAtX_Local_inGCS.DX;
                 displacementAtX.DY += displacementAtX_Local_inGCS.DY;

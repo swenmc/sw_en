@@ -400,6 +400,9 @@ namespace BriefFiniteElementNet
             {
                 var frElm = elm as FrameElement2Node;
 
+                if (frElm.Iz == 0 || frElm.Iy == 0)
+                    throw new ArgumentNullException("Moment of inertia is not defined.");
+
                 var l = (frElm.EndNode.Location - frElm.StartNode.Location).Length;
                 var w = GetLocalDistributedLoad(elm);
 

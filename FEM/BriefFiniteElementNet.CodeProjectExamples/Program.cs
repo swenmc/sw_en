@@ -20,7 +20,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            Example2();
+            //Example2();
+            Example2_2();// Numericky zadane parametre prierezu
             //Example3();
             //Example4();
             //Example5();
@@ -123,6 +124,104 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             e1.UseOverridedProperties =
                 e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = false;
+
+            model.Elements.Add(e1, e2, e3, e4);
+
+            n1.Constraints =
+                n2.Constraints =
+                    n3.Constraints =
+                        n4.Constraints =
+                            n5.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n5.Constraints = n5.Constraints & Constraints.MovementFixed;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);
+            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local, lc1);
+
+            e2.Loads.Add(ll);
+            e3.Loads.Add(lr);
+
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+            //wnd.Show();
+
+            model.Solve();
+
+            DisplayResultsinConsole(model, loadcombinations, true);
+        }
+
+        private static void Example2_2()
+        {
+            // Numericky zadane parametre prierezu
+            // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
+
+            Console.WriteLine("Example 2: Simple 3D Frame with distributed loads");
+
+            var model = new Model();
+
+            var n1 = new Node(-10, 0, 0);
+            var n2 = new Node(-10, 0, 6);
+            var n3 = new Node(0, 0, 8);
+            var n4 = new Node(10, 0, 6);
+            var n5 = new Node(10, 0, 0);
+
+            model.Nodes.Add(n1, n2, n3, n4, n5);
+
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+            var e2 = new FrameElement2Node(n2, n3);
+            e2.Label = "e2";
+            var e3 = new FrameElement2Node(n3, n4);
+            e3.Label = "e3";
+            var e4 = new FrameElement2Node(n4, n5);
+            e4.Label = "e4";
+
+            var A_column = 0.008700;
+            var Ay_column = 0; // 0.002585f;
+            var Az_column = 0; // 0.000702f;
+            var Iy_column = 0.0006600725;
+            var Iz_column = 2.30517E-05;
+            var J_column = 2.0752E-07;
+
+            var A_rafter = 0.007800;
+            var Ay_rafter = 0; // 0.002585f;
+            var Az_rafter = 0; // 0.000702f;
+            var Iy_rafter = 0.00037466;
+            var Iz_rafter = 2.3049E-05;
+            var J_rafter = 1.9672E-07;
+
+            e1.A = e4.A = A_column;
+            e1.Ay = e4.Ay = Ay_column;
+            e1.Az = e4.Az = Az_column;
+            e1.Iy = e4.Iy = Iy_column;
+            e1.Iz = e4.Iz = Iz_column;
+            e1.J = e4.J = J_column;
+
+            e2.A = e3.A = A_rafter;
+            e2.Ay = e3.Ay = Ay_rafter;
+            e2.Az = e3.Az = Az_rafter;
+            e2.Iy = e3.Iy = Iy_rafter;
+            e2.Iz = e3.Iz = Iz_rafter;
+            e2.J = e3.J = J_rafter;
+
+            e1.E = e2.E = e3.E = e4.E = 210e9;
+            e1.G = e2.G = e3.G = e4.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties =
+                e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = true;
 
             model.Elements.Add(e1, e2, e3, e4);
 
@@ -699,6 +798,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
         public static void DisplayResultsinConsole(Model bfenet_model, List<LoadCombination> loadcombinations, bool bWriteResultsInTXTFile)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // Set encoding - to be able to display greek alphabet symbols and letters
+
             //bool bWriteResultsInTXTFile = true; // Vypise hodnoty do suboru Results.txt na disk D (oddelene tabulatorom, je mozne vlozit do stlpcov tabulky xls)
 
             List<Force> outputresults = new List<Force>();
@@ -778,8 +879,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                         var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
                         Console.WriteLine(sMessage + "\t " + eForce);
 
-                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetGlobalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], false);
-                        Console.WriteLine(sMessage + "\t " + eDisplacement);
+                        var eDisplacement_local = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], false, true);
+                        Console.WriteLine(sMessage + "\t " + eDisplacement_local);
+
+                        var eDisplacement_global = (bfenet_model.Elements[j] as FrameElement2Node).GetGlobalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], false);
+                        Console.WriteLine(sMessage + "\t " + eDisplacement_global);
 
                         if (bWriteResultsInTXTFile)
                             outputresults.Add(eForce);

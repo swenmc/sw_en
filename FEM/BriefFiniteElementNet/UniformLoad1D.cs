@@ -135,7 +135,6 @@ namespace BriefFiniteElementNet
                 f1.Forces = frElm.TransformGlobalToLocal(gf1.Forces);
                 f1.Moments = frElm.TransformGlobalToLocal(gf1.Moments);
 
-
                 var f2 = new Force(new Vector(w.X*x, w.Y*x, w.Z*x), new Vector());
 
                 var buf = f1.Move(new Point(0, 0, 0), new Point(x, 0, 0)) +
@@ -152,6 +151,9 @@ namespace BriefFiniteElementNet
             if (elm is FrameElement2Node)
             {
                 var frElm = elm as FrameElement2Node;
+
+                if (frElm.Iz == 0 || frElm.Iy == 0)
+                    throw new ArgumentNullException("Moment of inertia is not defined.");
 
                 var l = (frElm.EndNode.Location - frElm.StartNode.Location).Length;
                 var w = GetLocalDistributedLoad(elm);
