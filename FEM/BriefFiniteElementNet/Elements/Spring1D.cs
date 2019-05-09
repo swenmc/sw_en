@@ -77,6 +77,16 @@ namespace BriefFiniteElementNet.Elements
             throw new NotImplementedException();
         }
 
+        public override Displacement GetGlobalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Displacement GetGlobalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false)
+        {
+            throw new NotImplementedException();
+        }
+
         public Spring1D() : base(2)
         {
         }

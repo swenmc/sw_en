@@ -204,6 +204,11 @@ namespace BriefFiniteElementNet
                     buf.RZ = 0; // TODO - not implemented
                 }
 
+                if (buf.DZ == double.NaN)
+                {
+
+                }
+
                 return -buf;
             }
 

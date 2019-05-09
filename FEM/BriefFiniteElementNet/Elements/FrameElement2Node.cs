@@ -572,6 +572,70 @@ namespace BriefFiniteElementNet
             return GetLocalDeformationAt_MC(x, cmb, bConsiderNodalDisplacementOnly, bConsiderNodalDisplacement);
         }
 
+        public override Displacement GetGlobalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false)
+        {
+            var gStartDisp = StartNode.GetNodalDisplacement(cmb);
+            var gEndDisp = EndNode.GetNodalDisplacement(cmb);
+
+            var displacementAtX = new Displacement(0, 0, 0, 0, 0, 0);
+
+            displacementAtX = gStartDisp;
+
+            double length = 1;
+
+            displacementAtX.DX = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.DX, gEndDisp.DX, x);
+            displacementAtX.DY = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.DY, gEndDisp.DY, x);
+            displacementAtX.DZ = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.DZ, gEndDisp.DZ, x);
+            displacementAtX.RX = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.RX, gEndDisp.RX, x);
+            displacementAtX.RY = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.RY, gEndDisp.RY, x);
+            displacementAtX.RZ = MATH.ARRAY.ArrayF.GetLinearInterpolationValuePositive(0, length, gStartDisp.RZ, gEndDisp.RZ, x);
+
+            if(!bConsiderNodalDisplacementOnly)
+            {
+                // Determinate local deformations in LCS, transform to GCS and add to the global deformations
+
+                var displacementAtX_Local_inLCS = new Displacement(0, 0, 0, 0, 0, 0);
+
+                foreach (var ld in loads)
+                {
+                    if (!cmb.ContainsKey(ld.Case))
+                        continue;
+
+                    var frc = ((Load1D)ld).GetLocalDeformationAt_MC(this, x);
+
+                    if(frc.DZ == double.NaN)
+                    {
+
+                    }
+
+                    displacementAtX_Local_inLCS += cmb[ld.Case] * frc;
+                }
+
+                var displacementAtX_Local_inGCS = new Displacement(
+                TransformLocalToGlobal(displacementAtX_Local_inLCS.Displacements),
+                TransformLocalToGlobal(displacementAtX_Local_inLCS.Rotations));
+
+                // Add Local deformations in GCS to the global deformations
+
+                displacementAtX.DX += displacementAtX_Local_inGCS.DX;
+                displacementAtX.DY += displacementAtX_Local_inGCS.DY;
+                displacementAtX.DZ += displacementAtX_Local_inGCS.DZ;
+                displacementAtX.RX += displacementAtX_Local_inGCS.RX;
+                displacementAtX.RY += displacementAtX_Local_inGCS.RY;
+                displacementAtX.RZ += displacementAtX_Local_inGCS.RZ;
+            }
+
+            return displacementAtX;
+        }
+
+        public override Displacement GetGlobalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false)
+        {
+            var cmb = new LoadCombination();
+            cmb[new LoadCase()] = 1.0;
+
+            return GetGlobalDeformationAt_MC(x, cmb, bConsiderNodalDisplacementOnly);
+        }
+
         #region transformations
 
 

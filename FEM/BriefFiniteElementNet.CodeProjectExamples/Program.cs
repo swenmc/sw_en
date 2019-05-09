@@ -778,7 +778,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                         var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
                         Console.WriteLine(sMessage + "\t " + eForce);
 
-                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetGlobalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i], false);
                         Console.WriteLine(sMessage + "\t " + eDisplacement);
 
                         if (bWriteResultsInTXTFile)

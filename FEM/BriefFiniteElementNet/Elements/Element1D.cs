@@ -77,6 +77,8 @@ namespace BriefFiniteElementNet
 
         public abstract Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false);
         public abstract Displacement GetLocalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false, bool bConsiderNodalDisplacement = false);
+        public abstract Displacement GetGlobalDeformationAt_MC(double x, LoadCombination cmb, bool bConsiderNodalDisplacementOnly = false);
+        public abstract Displacement GetGlobalDeformationAt_MC(double x, bool bConsiderNodalDisplacementOnly = false);
 
         /// <summary>
         /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.
