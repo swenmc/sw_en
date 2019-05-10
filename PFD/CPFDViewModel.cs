@@ -112,11 +112,11 @@ namespace PFD
 
         private float MDisplayIn3DRatio;
 
-
-        
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
         private bool MUseFEMSolverCalculationForSimpleBeam;
+        private bool MDeterminateMemberLocalDisplacementsForULS;
+
         // Local member load direction used for load definition, calculation of internal forces and design
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
@@ -786,6 +786,21 @@ namespace PFD
                 MUseFEMSolverCalculationForSimpleBeam = value;
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
+            }
+        }
+
+        public bool DeterminateMemberLocalDisplacementsForULS
+        {
+            get
+            {
+                return MDeterminateMemberLocalDisplacementsForULS;
+            }
+
+            set
+            {
+                MDeterminateMemberLocalDisplacementsForULS = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("DeterminateMemberLocalDisplacementsForULS");
             }
         }
 
@@ -1721,6 +1736,7 @@ namespace PFD
 
             DeterminateCombinationResultsByFEMSolver = false;
             UseFEMSolverCalculationForSimpleBeam = false;
+            DeterminateMemberLocalDisplacementsForULS = false;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -1920,7 +1936,7 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, frameModels, beamSimpleModels);
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
 

@@ -29,10 +29,8 @@ namespace PFD.ViewModels
         private int MFontSizeIndex;
         private int MFontSize;
         private List<int> MListFontSize;
-        
 
         List<string> list_IFTypes;
-       
 
         public int IFTypeIndex
         {
@@ -46,7 +44,8 @@ namespace PFD.ViewModels
                 MIFTypeIndex = value;
                 //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
                 if (MIFTypeIndex <= 2) MIFTypeUnit = "kN";
-                else MIFTypeUnit = "kNm";
+                else if(MIFTypeIndex <= 6) MIFTypeUnit = "kNm";
+                else MIFTypeUnit = "mm";
                 NotifyPropertyChanged("IFTypeIndex");
             }
         }

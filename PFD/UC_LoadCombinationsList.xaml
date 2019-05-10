@@ -18,6 +18,8 @@
                                   IsChecked="{Binding Path=DeterminateCombinationResultsByFEMSolver}">Determinate combination results by solver</CheckBox>
             <CheckBox Name ="chbUseFEMSolverCalculationForSimpleBeam" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
                                   IsChecked="{Binding Path=UseFEMSolverCalculationForSimpleBeam}">Use FEM solver calculation for simple beams</CheckBox>
+            <CheckBox Name ="chbDeterminateMemberLocalDisplacementsForULS" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
+                                  IsChecked="{Binding Path=DeterminateMemberLocalDisplacementsForULS}">Determinate local displacements for ULS combinations</CheckBox>
         </StackPanel>
     </Grid>
 </UserControl>

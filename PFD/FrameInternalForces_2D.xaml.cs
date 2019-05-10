@@ -128,8 +128,18 @@ namespace PFD
                 // Calculate Member Rotation angle (clockwise)
                 double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
                 double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
-                
-                //get list of points from Dictionary, if not exist then calculate
+
+                // Internal forces / Deformation - default unit scale factor
+                float fUnitFactor = 1;
+                float fUnitFactor_IF = 0.001f; // N to kN or Nm to kNm
+                float fUnitFactor_Def = 1000f; // m to mm
+
+                if (vm.IFTypeIndex <= 6)
+                    fUnitFactor = fUnitFactor_IF; // Forces and moments
+                else
+                    fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
+
+                // Get list of points from Dictionary, if not exist then calculate
                 List<Point> listMemberInternalForcePoints;
                 string key = $"{vm.IFTypeIndex}_{i}_{vm.InternalForceScale_user.ToString("F3")}";
                 if (DictMemberInternalForcePoints.ContainsKey(key))
@@ -138,7 +148,7 @@ namespace PFD
                 }
                 else
                 {
-                    listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
+                    listMemberInternalForcePoints = GetMemberInternalForcePoints(i, fUnitFactor, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
                 }
 
                 double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
@@ -153,8 +163,6 @@ namespace PFD
                 List<Point> points = new List<Point>();
                 foreach (Point p in listMemberInternalForcePoints)
                     points.Add(transformGroup_RandT.Transform(p));
-
-                float fUnitFactor = 0.001f; // N to kN or Nm to kNm
 
                 if (vm.ShowLabels)
                 {
@@ -296,7 +304,7 @@ namespace PFD
             //Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
-        private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
+        private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
         {
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
@@ -304,8 +312,6 @@ namespace PFD
             {
                 return listMemberInternalForcePoints; // Return empty list ???
             }
-
-            double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
 
             // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
             // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty s kladnou hodnotou
