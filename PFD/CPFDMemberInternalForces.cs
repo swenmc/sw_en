@@ -28,6 +28,7 @@ namespace PFD
         private List<ComboItem> MLoadCombinations;
 
         private bool MComponentListHasFrameMembers;
+        private bool MIsFrameMember;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -76,6 +77,14 @@ namespace PFD
             set
             {
                 MComponentTypeIndex = value;
+
+                CComponentInfo ci = m_componentList.ElementAtOrDefault(MComponentTypeIndex);
+                if (ci != null)
+                {
+                    IsFrameMember = ci.MemberTypePosition == EMemberType_FS_Position.MainColumn || ci.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
+                        ci.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || ci.MemberTypePosition == EMemberType_FS_Position.EdgeRafter;
+                }
+
                 //TODO No. 68
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
@@ -149,8 +158,21 @@ namespace PFD
                 MComponentListHasFrameMembers = value;
             }
         }
+        public bool IsFrameMember
+        {
+            get
+            {
+                return MIsFrameMember;
+            }
+
+            set
+            {
+                MIsFrameMember = value;
+            }
+        }
 
         private CLoadCombination[] m_allLoadCombinations;
+        private List<CComponentInfo> m_componentList;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -159,6 +181,7 @@ namespace PFD
             MLimitStates = limitStates;
             SetComponentList(componentList);            
             m_allLoadCombinations = allLoadCombinations;
+            
 
             // Set default
             LimitStateIndex = 0;
@@ -169,10 +192,11 @@ namespace PFD
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
             ComponentList = componentList.Where(s => s.Generate == true && s.Calculate == true).Select(s => s.ComponentName).ToList();
+            m_componentList = componentList.Where(s => s.Generate == true && s.Calculate == true).ToList();
             ComponentListHasFrameMembers = componentList.Where(c => c.Generate == true && c.Calculate == true).Any(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn || c.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                 c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
         }
-
+        
         private void SetLoadCombinations()
         {
             CLimitState limitState = LimitStates[LimitStateIndex];

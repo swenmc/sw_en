@@ -109,8 +109,9 @@ namespace PFD
                 return;
             }
             
+            
             // Frame internal forces enabled only for type of members Main Columns and Rafters
-            if (vm.ComponentListHasFrameMembers)
+            if (vm.IsFrameMember)
                 Button_Frame_2D.IsEnabled = true;
             else
                 Button_Frame_2D.IsEnabled = false;
