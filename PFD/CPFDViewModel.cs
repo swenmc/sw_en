@@ -53,6 +53,14 @@ namespace PFD
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
+
+        private int MRafterFlyBracingEveryXXPurlin;
+        private int MEdgePurlin_ILS_Number;
+        private int MGirt_ILS_Number;
+        private int MPurlin_ILS_Number;
+        private int MGirtFrontSide_ILS_Number;
+        private int MGirtBackSide_ILS_Number;
+
         private int MLoadCaseIndex;
 
         private int iFrontColumnNoInOneFrame;
@@ -607,6 +615,102 @@ namespace PFD
                 MWallCladdingThicknessIndex = value;
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RafterFlyBracingEveryXXPurlin
+        {
+            get
+            {
+                return MRafterFlyBracingEveryXXPurlin;
+            }
+
+            set
+            {
+                MRafterFlyBracingEveryXXPurlin = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("RafterFlyBracingEveryXXPurlin");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int EdgePurlin_ILS_Number
+        {
+            get
+            {
+                return MEdgePurlin_ILS_Number;
+            }
+
+            set
+            {
+                MEdgePurlin_ILS_Number = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("EdgePurlin_ILS_Number");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Girt_ILS_Number
+        {
+            get
+            {
+                return MGirt_ILS_Number;
+            }
+
+            set
+            {
+                MGirt_ILS_Number = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("Girt_ILS_Number");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Purlin_ILS_Number
+        {
+            get
+            {
+                return MPurlin_ILS_Number;
+            }
+
+            set
+            {
+                MPurlin_ILS_Number = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("Purlin_ILS_Number");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int GirtFrontSide_ILS_Number
+        {
+            get
+            {
+                return MGirtFrontSide_ILS_Number;
+            }
+
+            set
+            {
+                MGirtFrontSide_ILS_Number = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("GirtFrontSide_ILS_Number");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int GirtBackSide_ILS_Number
+        {
+            get
+            {
+                return MGirtBackSide_ILS_Number;
+            }
+
+            set
+            {
+                MGirtBackSide_ILS_Number = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("GirtBackSide_ILS_Number");
             }
         }
 
@@ -1789,6 +1893,13 @@ namespace PFD
             sBuildingGeometryData.fLengthTotal = Length;
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
+
+            sBuildingGeometryData.iRafterFlyBracingEveryXXPurlin = RafterFlyBracingEveryXXPurlin;
+            sBuildingGeometryData.iEdgePurlin_ILS_Number = EdgePurlin_ILS_Number;
+            sBuildingGeometryData.iGirt_ILS_Number = Girt_ILS_Number;
+            sBuildingGeometryData.iPurlin_ILS_Number = Purlin_ILS_Number;
+            sBuildingGeometryData.iGirtFrontSide_ILS_Number = GirtFrontSide_ILS_Number;
+            sBuildingGeometryData.iGirtBackSide_ILS_Number = GirtBackSide_ILS_Number;
 
             MGenerateSurfaceLoads =
                 MShowSurfaceLoadsAxis ||

@@ -31,6 +31,12 @@ namespace DATABASE.DTO
         string MDoorTrimmer;
         string MDoorLintel;
         string MWindowFrame;
+        string MRafterFlyBracingEveryXXPurlin;
+        string MEdgePurlin_ILS_Number;
+        string MGirt_ILS_Number;
+        string MPurlin_ILS_Number;
+        string MGirtFrontSide_ILS_Number;
+        string MGirtBackSide_ILS_Number;
 
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
@@ -333,7 +339,85 @@ namespace DATABASE.DTO
                 MWindowFrame = value;
             }
         }
- 
+
+        public string RafterFlyBracingEveryXXPurlin
+        {
+            get
+            {
+                return MRafterFlyBracingEveryXXPurlin;
+            }
+
+            set
+            {
+                MRafterFlyBracingEveryXXPurlin = value;
+            }
+        }
+
+        public string EdgePurlin_ILS_Number
+        {
+            get
+            {
+                return MEdgePurlin_ILS_Number;
+            }
+
+            set
+            {
+                MEdgePurlin_ILS_Number = value;
+            }
+        }
+
+        public string Girt_ILS_Number
+        {
+            get
+            {
+                return MGirt_ILS_Number;
+            }
+
+            set
+            {
+                MGirt_ILS_Number = value;
+            }
+        }
+
+        public string Purlin_ILS_Number
+        {
+            get
+            {
+                return MPurlin_ILS_Number;
+            }
+
+            set
+            {
+                MPurlin_ILS_Number = value;
+            }
+        }
+
+        public string GirtFrontSide_ILS_Number
+        {
+            get
+            {
+                return MGirtFrontSide_ILS_Number;
+            }
+
+            set
+            {
+                MGirtFrontSide_ILS_Number = value;
+            }
+        }
+
+        public string GirtBackSide_ILS_Number
+        {
+            get
+            {
+                return MGirtBackSide_ILS_Number;
+            }
+
+            set
+            {
+                MGirtBackSide_ILS_Number = value;
+            }
+        }
+
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------

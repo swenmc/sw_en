@@ -45,6 +45,14 @@ namespace DATABASE
                         model.DoorTrimmer = reader["doorTrimmer"].ToString();
                         model.DoorLintel = reader["doorLintel"].ToString();
                         model.WindowFrame = reader["windowFrame"].ToString();
+
+                        model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
+                        model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
+                        model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();
+                        model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
+                        model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
+                        model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
+
                         items.Add(model);
                     }
                 }
@@ -88,6 +96,13 @@ namespace DATABASE
                         model.DoorTrimmer = reader["doorTrimmer"].ToString();
                         model.DoorLintel = reader["doorLintel"].ToString();
                         model.WindowFrame = reader["windowFrame"].ToString();
+
+                        model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
+                        model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
+                        model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();
+                        model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
+                        model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
+                        model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
                     }
                 }
             }

@@ -671,6 +671,13 @@
         public float fRidgeHeight;
 
         public float fRoofPitch_deg;
+
+        public int iRafterFlyBracingEveryXXPurlin;
+        public int iEdgePurlin_ILS_Number;
+        public int iGirt_ILS_Number;
+        public int iPurlin_ILS_Number;
+        public int iGirtFrontSide_ILS_Number;
+        public int iGirtBackSide_ILS_Number;
     }
 
     public struct SnowLoadDataInput

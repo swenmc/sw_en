@@ -26,6 +26,13 @@ namespace PFD
         private float m_fRakeAngleFrontFrame_deg; // Angle between X-axis and first frame
         private float m_fRakeAngleBackFrame_deg; // Angle between X-axis and last frame
 
+        private int m_iRafterFlyBracingEveryXXPurlin;
+        private int m_iEdgePurlin_ILS_Number;
+        private int m_iGirt_ILS_Number;
+        private int m_iPurlin_ILS_Number;
+        private int m_iGirtFrontSide_ILS_Number;
+        private int m_iGirtBackSide_ILS_Number;
+
         private Dictionary<EMemberType_FS_Position, string> m_membersSectionsDict;
 
         #region properties
@@ -186,6 +193,84 @@ namespace PFD
             }
         }
 
+        public int iRafterFlyBracingEveryXXPurlin
+        {
+            get
+            {
+                return m_iRafterFlyBracingEveryXXPurlin;
+            }
+
+            set
+            {
+                m_iRafterFlyBracingEveryXXPurlin = value;
+            }
+        }
+
+        public int iEdgePurlin_ILS_Number
+        {
+            get
+            {
+                return m_iEdgePurlin_ILS_Number;
+            }
+
+            set
+            {
+                m_iEdgePurlin_ILS_Number = value;
+            }
+        }
+
+        public int iGirt_ILS_Number
+        {
+            get
+            {
+                return m_iGirt_ILS_Number;
+            }
+
+            set
+            {
+                m_iGirt_ILS_Number = value;
+            }
+        }
+
+        public int iPurlin_ILS_Number
+        {
+            get
+            {
+                return m_iPurlin_ILS_Number;
+            }
+
+            set
+            {
+                m_iPurlin_ILS_Number = value;
+            }
+        }
+
+        public int iGirtFrontSide_ILS_Number
+        {
+            get
+            {
+                return m_iGirtFrontSide_ILS_Number;
+            }
+
+            set
+            {
+                m_iGirtFrontSide_ILS_Number = value;
+            }
+        }
+
+        public int iGirtBackSide_ILS_Number
+        {
+            get
+            {
+                return m_iGirtBackSide_ILS_Number;
+            }
+
+            set
+            {
+                m_iGirtBackSide_ILS_Number = value;
+            }
+        }
+
         public Dictionary<EMemberType_FS_Position, string> MembersSectionsDict
         {
             get
@@ -224,6 +309,13 @@ namespace PFD
             fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
+
+            iRafterFlyBracingEveryXXPurlin = int.Parse(model.RafterFlyBracingEveryXXPurlin);
+            iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
+            iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);
+            iPurlin_ILS_Number = int.Parse(model.Purlin_ILS_Number);
+            iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
+            iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
 
             MembersSectionsDict = new Dictionary<EMemberType_FS_Position, string>();
             MembersSectionsDict.Add(EMemberType_FS_Position.MainColumn, model.MainColumn);

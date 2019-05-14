@@ -176,7 +176,7 @@ namespace PFD
                     int iIndexMaxValue = 0;
 
                     if (ListMemberInternalForcesInLoadCombinations == null)
-                        continue; // TODO - Sem by sa to uz nemalo ani dostat ak je prut nema vysledky
+                        continue; // TODO - Sem by sa to uz nemalo ani dostat ak prut nema vysledky
 
                     int iNumberOfDesignSections = 11;
                     designBucklingLengthFactors[] sBucklingLengthFactors;
