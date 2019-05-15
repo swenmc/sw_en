@@ -745,7 +745,14 @@ namespace PFD
             sGeometryInputData.fW = vm.GableWidth;
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
-            
+
+            sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingEveryXXPurlin;
+            sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
+            sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
+            sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;
+            sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
+            sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
+
             CalculateLoadingValues();
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
@@ -767,7 +774,7 @@ namespace PFD
                 vm.ColumnDistance,
                 vm.BottomGirtPosition,
                 vm.FrontFrameRakeAngle,
-                vm.BackFrameRakeAngle,                
+                vm.BackFrameRakeAngle,
                 DoorBlocksProperties,
                 WindowBlocksProperties,
                 compList?.ComponentList,

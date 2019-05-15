@@ -228,6 +228,13 @@ namespace PFD
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
+                RafterFlyBracingEveryXXPurlin = dmodel.iRafterFlyBracingEveryXXPurlin; // Set default position of fly bracing point and numbers of lateral intermediate supports
+                EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
+                Girt_ILS_Number = dmodel.iGirt_ILS_Number;
+                Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
+                GirtFrontSide_ILS_Number = dmodel.iGirtFrontSide_ILS_Number;
+                GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
+
                 SetResultsAreNotValid();
                 IsSetFromCode = false;
 
