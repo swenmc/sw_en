@@ -238,7 +238,13 @@ namespace PFD
 
             // TODO - poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            int iEveryXXPurlin = Math.Max(0, (int)(fL1_frame / fDist_Purlin));
+            bool bUseDefaultValueForFlyBracing = true;
+            int iEveryXXPurlin;
+
+            if (bUseDefaultValueForFlyBracing)
+                iEveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
+            else
+                iEveryXXPurlin = Math.Max(0, (int)(fL1_frame / fDist_Purlin));
             //int iEveryXXPurlin = 3; // Index of purlin 1 - every, 2 - every second purlin, 3 - every third purlin
 
             // Transverse bracing - girts, purlins, front girts, back girts
@@ -248,10 +254,11 @@ namespace PFD
             bool bUseTransverseBracingBeam_FrontGirts = true;
             bool bUseTransverseBracingBeam_BackGirts = true;
             */
-            int iNumberOfTransverseSupports_Purlins = 1; // TODO - napojit na generovanie bracing blocks alebo zadavat rucne v GUI
-            int iNumberOfTransverseSupports_Girts = 1;
-            int iNumberOfTransverseSupports_FrontGirts = 1;
-            int iNumberOfTransverseSupports_BackGirts = 1;
+            int iNumberOfTransverseSupports_EdgePurlins = sGeometryInputData.iEdgePurlin_ILS_Number; // TODO - napojit na generovanie bracing blocks alebo zadavat rucne v GUI
+            int iNumberOfTransverseSupports_Purlins = sGeometryInputData.iPurlin_ILS_Number;
+            int iNumberOfTransverseSupports_Girts = sGeometryInputData.iGirt_ILS_Number;
+            int iNumberOfTransverseSupports_FrontGirts = sGeometryInputData.iGirtFrontSide_ILS_Number;
+            int iNumberOfTransverseSupports_BackGirts = sGeometryInputData.iGirtBackSide_ILS_Number;
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].h + m_arrCrSc[(int)EMemberGroupNames.eGirtWall].b);
@@ -471,6 +478,8 @@ namespace PFD
                 {
                     m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
                     m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
+                    AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4], iNumberOfTransverseSupports_EdgePurlins);
+                    AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5], iNumberOfTransverseSupports_EdgePurlins);
                 }
             }
 
@@ -1982,7 +1991,7 @@ namespace PFD
         {
             List<CSegment_LTB> LTB_segment_group = null; // TODO - rozhodnut co sa ma generovat ak na prute nie su medzilahle podpory, nic alebo vzdy jeden segment ???
 
-            if (lTransverseSupportGroup.Count > 0)
+            if (lTransverseSupportGroup != null && lTransverseSupportGroup.Count > 0)
             {
                 LTB_segment_group = new List<CSegment_LTB>();
 
@@ -2047,12 +2056,12 @@ namespace PFD
 
         private void AssignRegularTransverseSupportGroupAndLTBsegmentGroup(CMember member, int iNumberOfTransverseSupports)
         {
-            List<CIntermediateTransverseSupport> TransverseSupportGroup_Purlins = GenerateRegularIntermediateTransverseSupports(member.FLength, iNumberOfTransverseSupports);
-            List<CSegment_LTB> LTB_segment_group_Pulins = GenerateIntermediateLTBSegmentsOnMember(TransverseSupportGroup_Purlins, false, member.FLength);
+            List<CIntermediateTransverseSupport> TransverseSupportGroup = GenerateRegularIntermediateTransverseSupports(member.FLength, iNumberOfTransverseSupports);
+            List<CSegment_LTB> LTB_segment_group = GenerateIntermediateLTBSegmentsOnMember(TransverseSupportGroup, false, member.FLength);
 
             // Assign transverse support group and LTB segment group to the member
-            member.IntermediateTransverseSupportGroup = TransverseSupportGroup_Purlins;
-            member.LTBSegmentGroup = LTB_segment_group_Pulins;
+            member.IntermediateTransverseSupportGroup = TransverseSupportGroup;
+            member.LTBSegmentGroup = LTB_segment_group;
         }
     }
 }

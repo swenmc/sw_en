@@ -779,7 +779,7 @@ namespace PFD.Infrastructure
                             bucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
                             bucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
                         }
-                        else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 1) // Defined only once
+                        else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 1) // Defined only once - prut ma rovnake faktory pre vzperne dlzky pre vsetky kombinacie.
                         {
                             bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[0];
 

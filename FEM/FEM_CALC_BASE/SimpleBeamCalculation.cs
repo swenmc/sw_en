@@ -281,7 +281,7 @@ namespace FEM_CALC_BASE
                 {
                     if (fx >= member.LTBSegmentGroup[i].SegmentStartCoord_Abs && fx <= member.LTBSegmentGroup[i].SegmentEndCoord_Abs)
                     {
-                        if (member.LTBSegmentGroup[i].BucklingLengthFactors == null) // Default
+                        if (member.LTBSegmentGroup[i].BucklingLengthFactors == null || member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 0) // Default
                         {
                             bucklingLengthFactors = new designBucklingLengthFactors();
                             bucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f;
@@ -289,7 +289,7 @@ namespace FEM_CALC_BASE
                             bucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
                             bucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
                         }
-                        else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 0) // Defined only once
+                        else if (member.LTBSegmentGroup[i].BucklingLengthFactors.Count == 1) // Defined only once - prut ma rovnake faktory pre vzperne dlzky pre vsetky kombinacie.
                         {
                             bucklingLengthFactors = member.LTBSegmentGroup[i].BucklingLengthFactors[0];
                         }
