@@ -373,7 +373,7 @@ namespace M_AS4600
                 fN_y = eq.Eq_7212_5__(fA_g, ff_y);
                 fN_oc = eq.Eq_7212_4__(fA_g, ff_oc);
                 flambda_c = eq.Eq_7212_3__(fN_y, fN_oc);
-                fN_ce = eq.Eq_7212_1__(flambda_c, fN_y);
+                fN_ce = eq.Eq_7212____(flambda_c, fN_y); // Equation 7.2.1.2(1) or 7.2.1.2(2)
 
                 // 7.2.1.3 Local buckling
                 // 7.2.1.3.1 Compression members without holes
@@ -408,12 +408,12 @@ namespace M_AS4600
                 }
 
                 fN_od = eq.Eq_7214_4__(fA_g, ff_od);
-                flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
+                flambda_d = eq.Eq_7214_3__(fN_y, fN_od);
                 fN_cd = eq.Eq_7214____(flambda_d, fN_y, fN_od);
 
-                fN_c_min = MathF.Min(fN_ce, fN_cl, fN_cd);
+                fN_c_min = MathF.Min(fN_ce, fN_cl, fN_cd); // Minimum nominal compression capacity
 
-                fEta_721_N = Math.Abs(sDIF.fN_c / fN_c_min);
+                fEta_721_N = Math.Abs(sDIF.fN_c / (fPhi_c * fN_c_min));
                 fEta_max = MathF.Max(fEta_max, fEta_721_N);
             }
             else
