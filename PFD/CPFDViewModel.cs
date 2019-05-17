@@ -54,8 +54,8 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
 
-        private int MRafterFlyBracingPositionIndex; // Combobox
-        private int MRafterFlyBracingEveryXXPurlin;
+        private int MMainColumnFlyBracingPositionIndex;
+        private int MRafterFlyBracingPositionIndex;
         private int MEdgePurlin_ILS_Number;
         private int MGirt_ILS_Number;
         private int MPurlin_ILS_Number;
@@ -230,6 +230,7 @@ namespace PFD
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
                 // Set default position of fly bracing point and numbers of lateral intermediate supports
+                MainColumnFlyBracingPositionIndex = dmodel.iMainColumnFlyBracingEveryXXGirt; // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
                 RafterFlyBracingPositionIndex = dmodel.iRafterFlyBracingEveryXXPurlin; // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
                 EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
                 Girt_ILS_Number = dmodel.iGirt_ILS_Number;
@@ -624,6 +625,23 @@ namespace PFD
                 MWallCladdingThicknessIndex = value;
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
+        public int MainColumnFlyBracingPositionIndex
+        {
+            get
+            {
+                return MMainColumnFlyBracingPositionIndex;
+            }
+
+            set
+            {
+                MMainColumnFlyBracingPositionIndex = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("MainColumnFlyBracingPositionIndex");
             }
         }
 
@@ -1904,6 +1922,7 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
+            sBuildingGeometryData.iMainColumnFlyBracingEveryXXGirt = MainColumnFlyBracingPositionIndex;
             sBuildingGeometryData.iRafterFlyBracingEveryXXPurlin = RafterFlyBracingPositionIndex;
             sBuildingGeometryData.iEdgePurlin_ILS_Number = EdgePurlin_ILS_Number;
             sBuildingGeometryData.iGirt_ILS_Number = Girt_ILS_Number;

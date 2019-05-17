@@ -26,6 +26,7 @@ namespace PFD
         private float m_fRakeAngleFrontFrame_deg; // Angle between X-axis and first frame
         private float m_fRakeAngleBackFrame_deg; // Angle between X-axis and last frame
 
+        private int m_iMainColumnFlyBracingEveryXXGirt;
         private int m_iRafterFlyBracingEveryXXPurlin;
         private int m_iEdgePurlin_ILS_Number;
         private int m_iGirt_ILS_Number;
@@ -193,6 +194,19 @@ namespace PFD
             }
         }
 
+        public int iMainColumnFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return m_iMainColumnFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                m_iMainColumnFlyBracingEveryXXGirt = value;
+            }
+        }
+
         public int iRafterFlyBracingEveryXXPurlin
         {
             get
@@ -310,6 +324,7 @@ namespace PFD
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
 
+            iMainColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
             iRafterFlyBracingEveryXXPurlin = int.Parse(model.RafterFlyBracingEveryXXPurlin);
             iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
             iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);

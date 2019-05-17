@@ -672,6 +672,7 @@
 
         public float fRoofPitch_deg;
 
+        public int iMainColumnFlyBracingEveryXXGirt;
         public int iRafterFlyBracingEveryXXPurlin;
         public int iEdgePurlin_ILS_Number;
         public int iGirt_ILS_Number;
