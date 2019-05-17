@@ -116,16 +116,28 @@ namespace PFD
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
             // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
-            Combobox_RafterFlyBracingPosition.Items.Add("None");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 2nd purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 3rd purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 4th purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 5th purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 6th purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 7th purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 8th purlin");
-            Combobox_RafterFlyBracingPosition.Items.Add("Every 9th purlin");
+            Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
+            "None",
+            "Every purlin",
+            "Every 2nd purlin",
+            "Every 3rd purlin",
+            "Every 4th purlin",
+            "Every 5th purlin",
+            "Every 6th purlin",
+            "Every 7th purlin",
+            "Every 8th purlin",
+            "Every 9th purlin"};
+
+            string[] sILS_Items = new string[]
+            {
+                "None", "1", "2", "3", "4", "5"
+            };
+
+            Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
 
             // Prepare data for generating of door blocks
             DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
