@@ -527,8 +527,8 @@ namespace PFD
             if (bGenerateGirts)
             {
                 // REFAKTOROVAT S PURLINS
-                // Define fly bracing position on rafter // Tento kod moze byt vyssie
-                float fMainColumnLength = fH1_frame;
+                // Define fly bracing position on main column // Tento kod moze byt vyssie
+                float fMainColumnLength = fH1_frame; // TODO - podla toho ci bude v H1 celkova vyska alebo strednicova
 
                 if (bUseMainColumnFlyBracingPlates && iMainColumnFlyBracing_EveryXXGirt > 0)
                 {
@@ -554,7 +554,7 @@ namespace PFD
 
                             List<CSegment_LTB> LTB_segment_group_mainColumn = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_MainColumn, false, fMainColumnLength);
 
-                            // Assign transverse support group to the rafter
+                            // Assign transverse support group to the main column
                             // Left Main Column
                             m_arrMembers[iLeftMainColumnIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_MainColumn;
                             m_arrMembers[iLeftMainColumnIndex].LTBSegmentGroup = LTB_segment_group_mainColumn;
