@@ -129,6 +129,44 @@
                         <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
+                        <TextBlock Grid.Row="6" Grid.Column="4" Text="Rafter Fly Bracing Position:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="6" Grid.Column="5" Name ="TextBox_RafterFlyBracingPosition" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+                        <!--iRafterFlyBracingEveryXXPurlin-->
+                        <ComboBox Grid.Row="6" Grid.Column="5" Name ="Combobox_RafterFlyBracingPosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RafterFlyBracingPositionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="7" Grid.Column="4" Text="Number of Edge Purlin Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="7" Grid.Column="5" Name ="TextBox_EdgePurlin_ILS_Number" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=EdgePurlin_ILS_Number, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="8" Grid.Column="4" Text="Number of Sidewall Girt Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="8" Grid.Column="5" Name ="TextBox_Girt_ILS_Number" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Girt_ILS_Number, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="9" Grid.Column="4" Text="Number of Purlin Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
+                        <TextBox Grid.Row="9" Grid.Column="5" Name ="TextBox_Purlin_ILS_Number" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Purlin_ILS_Number, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="10" Grid.Column="4" Text="Number of Front Side Girt Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="10" Grid.Column="5" Name ="TextBox_GirtFrontSide_ILS_Number" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GirtFrontSide_ILS_Number, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="11" Grid.Column="4" Text="Number of Back Side Girt Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="11" Grid.Column="5" Name ="TextBox_GirtBackSide_ILS_Number" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=GirtBackSide_ILS_Number, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
                         <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -234,7 +272,7 @@
                         <CheckBox Name="chbDisplayFloorSlab" Grid.Row="11" Grid.Column="3" IsChecked="{Binding Path=DisplayFloorSlab}">Display Floor Slab</CheckBox>
                         <CheckBox Name="chbDisplayNodalSupports" Grid.Row="12" Grid.Column="3" IsChecked="{Binding Path=DisplayNodalSupports}">Nodal Supports</CheckBox>
 
-                        <StackPanel Grid.Row="5" Grid.Column="4" Grid.RowSpan="3">
+                        <StackPanel Grid.Row="3" Grid.Column="4" Grid.RowSpan="3">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
                             <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
@@ -260,7 +298,7 @@
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="205" Margin="5,2,0,0" FontSize="16" Grid.ColumnSpan="2"/>
-                        
+
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" Grid.Row="20" 
                                   HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem">
                             <DataGrid.Columns>
@@ -338,7 +376,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <!--<ScrollViewer Name="scrollViewUC_ComponentList" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-                    <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
+                <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
                 <!--</ScrollViewer>-->
             </TabItem>
             <TabItem Name ="Joint_Input">

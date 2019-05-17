@@ -54,6 +54,7 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
 
+        private int MRafterFlyBracingPositionIndex; // Combobox
         private int MRafterFlyBracingEveryXXPurlin;
         private int MEdgePurlin_ILS_Number;
         private int MGirt_ILS_Number;
@@ -228,7 +229,8 @@ namespace PFD
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
-                RafterFlyBracingEveryXXPurlin = dmodel.iRafterFlyBracingEveryXXPurlin; // Set default position of fly bracing point and numbers of lateral intermediate supports
+                // Set default position of fly bracing point and numbers of lateral intermediate supports
+                RafterFlyBracingPositionIndex = dmodel.iRafterFlyBracingEveryXXPurlin; // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
                 EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
                 Girt_ILS_Number = dmodel.iGirt_ILS_Number;
                 Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
@@ -626,18 +628,19 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int RafterFlyBracingEveryXXPurlin
+        // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
+        public int RafterFlyBracingPositionIndex
         {
             get
             {
-                return MRafterFlyBracingEveryXXPurlin;
+                return MRafterFlyBracingPositionIndex;
             }
 
             set
             {
-                MRafterFlyBracingEveryXXPurlin = value;
+                MRafterFlyBracingPositionIndex = value;
                 SetResultsAreNotValid();
-                NotifyPropertyChanged("RafterFlyBracingEveryXXPurlin");
+                NotifyPropertyChanged("RafterFlyBracingPositionIndex"); // RafterFlyBracingEveryXXPurlin
             }
         }
 
@@ -1901,7 +1904,7 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
-            sBuildingGeometryData.iRafterFlyBracingEveryXXPurlin = RafterFlyBracingEveryXXPurlin;
+            sBuildingGeometryData.iRafterFlyBracingEveryXXPurlin = RafterFlyBracingPositionIndex;
             sBuildingGeometryData.iEdgePurlin_ILS_Number = EdgePurlin_ILS_Number;
             sBuildingGeometryData.iGirt_ILS_Number = Girt_ILS_Number;
             sBuildingGeometryData.iPurlin_ILS_Number = Purlin_ILS_Number;

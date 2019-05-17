@@ -90,11 +90,11 @@ namespace PFD
         public SnowLoadDataInput sSnowInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
-        
+
         // TODO Ondrej pouzit na zobrazovanie jednotlivych zaloziek (tabitems) aktivitu tlacitok a podobne podla toho ci existuju vysledky pre vnutorne sily, posudenie prutov, posudenie spojov
-        bool bInternalForcesResultsExists = false;
-        bool bMemberDesignResultsExists = false;
-        bool bJointDesignResultsExists = false;
+        //bool bInternalForcesResultsExists = false;
+        //bool bMemberDesignResultsExists = false;
+        //bool bJointDesignResultsExists = false;
 
         public MainWindow()
         {
@@ -115,7 +115,18 @@ namespace PFD
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
-            
+            // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
+            Combobox_RafterFlyBracingPosition.Items.Add("None");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 2nd purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 3rd purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 4th purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 5th purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 6th purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 7th purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 8th purlin");
+            Combobox_RafterFlyBracingPosition.Items.Add("Every 9th purlin");
+
             // Prepare data for generating of door blocks
             DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
 
@@ -746,7 +757,7 @@ namespace PFD
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
-            sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingEveryXXPurlin;
+            sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingPositionIndex;
             sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
             sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
             sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;

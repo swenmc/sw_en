@@ -233,19 +233,18 @@ namespace PFD
             CIntermediateTransverseSupport forkSupport = new CIntermediateTransverseSupport(1, EITSType.eBothFlanges, 0);
             m_arrIntermediateTransverseSupports[0] = forkSupport;
 
-            // Fly bracing
-            bool bUseFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
+            // Rafter fly bracing
+            // Index of purlin 0 - no bracing 1 - every, 2 - every second purlin, 3 - every third purlin, ...
+            // Poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            // TODO - poziciu fly bracing - kazda xx purlin nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
+            bool bUseRafterFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
+            bool bUseDefaultOrUserDefinedValueForFlyBracing = true; // TODO - zaviest checkbox ci sa maju pouzit hodnoty z databazy / uzivatelom nastavene, alebo sa ma generovat uplne automaticky
+            int iRafterFlyBracing_EveryXXPurlin;
 
-            bool bUseDefaultValueForFlyBracing = true;
-            int iEveryXXPurlin;
-
-            if (bUseDefaultValueForFlyBracing)
-                iEveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
+            if (bUseDefaultOrUserDefinedValueForFlyBracing)
+                iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
             else
-                iEveryXXPurlin = Math.Max(0, (int)(fL1_frame / fDist_Purlin));
-            //int iEveryXXPurlin = 3; // Index of purlin 1 - every, 2 - every second purlin, 3 - every third purlin
+                iRafterFlyBracing_EveryXXPurlin = Math.Max(0, (int)(fL1_frame / fDist_Purlin));
 
             // Transverse bracing - girts, purlins, front girts, back girts
             /*
@@ -282,13 +281,15 @@ namespace PFD
             int iOneRafterPurlinNo = 0;
             iPurlinNoInOneFrame = 0;
 
-
             bool bGeneratePurlins = componentList[(int)EMemberGroupNames.ePurlin].Generate.Value;
             if (bGeneratePurlins)
             {
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
                 iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
             }
+
+            if (iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
+                bUseRafterFlyBracingPlates = false;
 
             int iOneRafterFrontColumnNo = 0;
             iFrontColumnNoInOneFrame = 0;
@@ -556,17 +557,17 @@ namespace PFD
             if (bGeneratePurlins)
             {
                 // Define fly bracing position on rafter // Tento kod moze byt vyssie
-                if (bUseFlyBracingPlates && iEveryXXPurlin > 0)
+                if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0)
                 {
                     for (int i = 0; i < iFrameNo; i++) // Each frame
                     {
                         List<CIntermediateTransverseSupport> lTransverseSupportGroup_Rafter = new List<CIntermediateTransverseSupport>();
-                        float fFirstFlyBracePosition = fFirstPurlinPosition + (iEveryXXPurlin - 1) * fDist_Purlin;
-                        int iNumberOfFlyBracesOnRafter = fFirstFlyBracePosition < fRafterLength ? (int)((fRafterLength - fFirstFlyBracePosition) / (iEveryXXPurlin * fDist_Purlin)) + 1 : 0;
+                        float fFirstFlyBracePosition = fFirstPurlinPosition + (iRafterFlyBracing_EveryXXPurlin - 1) * fDist_Purlin;
+                        int iNumberOfFlyBracesOnRafter = fFirstFlyBracePosition < fRafterLength ? (int)((fRafterLength - fFirstFlyBracePosition) / (iRafterFlyBracing_EveryXXPurlin * fDist_Purlin)) + 1 : 0;
 
                         for (int j = 0; j < iNumberOfFlyBracesOnRafter; j++) // Each fly brace
                         {
-                            float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iEveryXXPurlin) * fDist_Purlin;
+                            float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iRafterFlyBracing_EveryXXPurlin) * fDist_Purlin;
 
                             if (fxLocationOfFlyBrace < fRafterLength)
                                 lTransverseSupportGroup_Rafter.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fRafterLength, fxLocationOfFlyBrace, 0));
@@ -785,7 +786,7 @@ namespace PFD
                     else
                         iFirstPurlinOnCurrentSideIndex = iFirstPurlinInFrameRightSide;
 
-                    if (bUseFlyBracingPlates && iEveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iEveryXXPurlin == 0)
+                    if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iRafterFlyBracing_EveryXXPurlin == 0)
                     {
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeStart, m_arrMembers[1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeEnd, m_arrMembers[1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
@@ -2035,7 +2036,7 @@ namespace PFD
         {
             List<CIntermediateTransverseSupport> TransverseSupportGroup = null;
 
-            float fFirstSupportPosition = fMemberLength / iNumberOfTransverseSupports;
+            float fFirstSupportPosition = fMemberLength / (iNumberOfTransverseSupports + 1); // number of LTB segments = number of support + 1
             float fDistOfSupports = fFirstSupportPosition;
 
             if (iNumberOfTransverseSupports > 0)
@@ -2043,7 +2044,7 @@ namespace PFD
                 TransverseSupportGroup = new List<CIntermediateTransverseSupport>();
                 for (int j = 0; j < iNumberOfTransverseSupports; j++) // Each suport
                 {
-                    float fxLocationOfSupport = fFirstSupportPosition + j * fDistOfSupports;
+                    float fxLocationOfSupport = Math.Min(fFirstSupportPosition + j * fDistOfSupports, fMemberLength);
 
                     if (fxLocationOfSupport < fMemberLength)
                         TransverseSupportGroup.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfSupport / fMemberLength, fxLocationOfSupport, 0));
