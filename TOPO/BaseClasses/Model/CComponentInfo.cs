@@ -1,4 +1,6 @@
 ﻿using BaseClasses;
+using DATABASE;
+using DATABASE.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -73,8 +75,12 @@ namespace BaseClasses
 
             set
             {
-                MSection = value;
-                NotifyPropertyChanged("Section");
+                if (MSection != value)
+                {
+                    MSection = value;
+                    SetComponentSectionColor();
+                    NotifyPropertyChanged("Section");
+                }
             }
         }
 
@@ -333,6 +339,7 @@ namespace BaseClasses
             set
             {
                 MSectionColor = value;
+                NotifyPropertyChanged("SectionColor");
             }
         }
 
@@ -392,6 +399,12 @@ namespace BaseClasses
         {
             if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") IsDesignEnabled = false;
             else IsDesignEnabled = true;
+        }
+
+        private void SetComponentSectionColor()
+        {
+            CrScProperties prop = CSectionManager.GetSectionProperties(Section);
+            SectionColor = prop.colorName;
         }
     }
 }
