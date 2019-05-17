@@ -8,9 +8,11 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Xceed.Words.NET;
 
 namespace EXPIMP
@@ -19,7 +21,7 @@ namespace EXPIMP
     {
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
-        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
+        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, Canvas canvas)
         {
             string fileName = GetReportName();
             // Create a new document.
@@ -42,7 +44,7 @@ namespace EXPIMP
                 DrawLoadCases(document, modelData);
                 DrawLoadCombinations(document, modelData);
                 DrawLoad(document, modelData);
-                DrawMemberDesign(document, modelData);
+                DrawMemberDesign(document, modelData, canvas);
                 DrawJointDesign(document, modelData);
 
 
@@ -591,7 +593,7 @@ namespace EXPIMP
 
 
 
-        private static void DrawMemberDesign(DocX document, CModelData data)
+        private static void DrawMemberDesign(DocX document, CModelData data, Canvas canvas)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberDesign]"));
             par.RemoveText(0);
@@ -610,6 +612,9 @@ namespace EXPIMP
 
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
+
+                par = par.InsertParagraphAfterSelf("");                
+                AppendImageFromCanvas(document, canvas, par);
 
                 if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                     cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
@@ -646,6 +651,22 @@ namespace EXPIMP
                     AddSimpleTableAfterParagraph(t, par);
                 }
                 
+            }
+        }
+
+        private static void AppendImageFromCanvas(DocX document, Canvas canvas, Paragraph par)
+        {
+            using (Stream stream = ExportHelper.GetCanvasStream(canvas))
+            {
+                double ratio = canvas.ActualWidth / canvas.ActualHeight;
+                // Add a simple image from disk.
+                var image = document.AddImage(stream);
+                // Set Picture Height and Width.
+                //var picture = image.CreatePicture((int)document.PageWidth, (int)(document.PageWidth * ratio));
+                var picture = image.CreatePicture( (int)canvas.ActualHeight, (int)canvas.ActualWidth);
+                //var picture = image.CreatePicture(200, 100);
+                // Insert Picture in paragraph.             
+                par.AppendPicture(picture);
             }
         }
 

@@ -1712,8 +1712,9 @@ namespace PFD
             CModelData modelData = vmPFD.GetModelData();            
             try
             {
+                UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;                
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
-                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
+                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData, uc_intForces.Canvas_AxialForceDiagram);
 
             }
             catch (Exception ex)
