@@ -75,6 +75,8 @@ namespace EXPIMP
         private float m_R_ULS_EQ;
         private float m_R_SLS;
 
+        private bool MUseCRSCGeometricalAxes;
+
         //private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -370,6 +372,20 @@ namespace EXPIMP
             set
             {
                 iFrontColumnNoInOneFrame = value;
+            }
+        }
+
+        public bool UseCRSCGeometricalAxes
+        {
+            get
+            {
+                return MUseCRSCGeometricalAxes;
+            }
+
+            set
+            {
+                MUseCRSCGeometricalAxes = value;
+                
             }
         }
 

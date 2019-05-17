@@ -2286,7 +2286,8 @@ namespace PFD
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.LoadCaseIndex = MLoadCaseIndex;
             data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
-            
+            data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;
+
             data.GeneralLoad = GeneralLoad;
             data.Wind = Wind;
             data.Snow = Snow;
@@ -2335,7 +2336,8 @@ namespace PFD
             data.dictSLSDesignResults = GetDesignResultsSLS();
             GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
 
-
+            data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
+            data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
 
 
             return data;

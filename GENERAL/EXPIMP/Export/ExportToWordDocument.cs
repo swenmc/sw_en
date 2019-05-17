@@ -613,8 +613,11 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
 
-                par = par.InsertParagraphAfterSelf("");                
-                AppendImageFromCanvas(document, canvas, par);
+                //par = par.InsertParagraphAfterSelf("");
+                par = par.InsertParagraphAfterSelf("");
+
+                par = AppendIFCanvases(document, par, data, governingLComb, governingMember);
+                //AppendImageFromCanvas(document, canvas, par);
 
                 if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
                     cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
@@ -652,6 +655,17 @@ namespace EXPIMP
                 }
                 
             }
+        }
+
+        private static Paragraph AppendIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {            
+            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            foreach (Canvas canvas in canvases)
+            {
+                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                AppendImageFromCanvas(document, canvas, par);
+            }
+            return par;
         }
 
         private static void AppendImageFromCanvas(DocX document, Canvas canvas, Paragraph par)
