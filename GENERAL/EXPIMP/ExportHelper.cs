@@ -1,6 +1,7 @@
 ﻿using BaseClasses;
 using BaseClasses.Helpers;
 using FEM_CALC_BASE;
+using MATH;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,7 +74,7 @@ namespace EXPIMP
             MemoryStream stm = new MemoryStream();
             png.Save(stm);
             stm.Position = 0;
-            
+
             //using (Stream stm2 = File.Create("canvas"+canvas.Uid+".png"))
             //{
             //    png.Save(stm2);
@@ -82,7 +83,7 @@ namespace EXPIMP
             return stm;
         }
         private static RenderTargetBitmap RenderVisual(UIElement elt)
-        {            
+        {
             Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
             elt.Measure(size);
             elt.Arrange(new Rect(size));
@@ -120,7 +121,7 @@ namespace EXPIMP
             float modelMarginLeft_x = 10;
             float modelMarginRight_x = 10;
             float modelMarginTop_y = 10;
-            float modelMarginBottom_y = 10;            
+            float modelMarginBottom_y = 10;
             float modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
             designBucklingLengthFactors[] sBucklingLengthFactors;
@@ -164,9 +165,9 @@ namespace EXPIMP
             iNumberOfDesignSections,
             out fArr_AxialForceValuesN, out fArr_ShearForceValuesVx, out fArr_ShearForceValuesVy, out fArr_TorsionMomentValuesT, out fArr_BendingMomentValuesMx,
             out fArr_BendingMomentValuesMy, out fArr_DeflectionValuesDeltax, out fArr_DeflectionValuesDeltay);
-            
+
             // Clear canvases
-            Canvas Canvas_AxialForceDiagram = new Canvas();            
+            Canvas Canvas_AxialForceDiagram = new Canvas();
             Canvas Canvas_ShearForceDiagramVx = new Canvas();
             Canvas Canvas_ShearForceDiagramVy = new Canvas();
             Canvas Canvas_TorsionMomentDiagram = new Canvas();
@@ -191,7 +192,7 @@ namespace EXPIMP
             Canvas_DeflectionDiagramDeltax.ToolTip = "Deflection Diagram Delta X";
             Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
             Canvas_DeflectionDiagramDeltay.ToolTip = "Deflection Diagram Delta Y";
-            
+
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
@@ -241,10 +242,10 @@ namespace EXPIMP
             List<Canvas> canvases = new List<Canvas>();
             if (fArr_AxialForceValuesN.Any(n => n > 0.001)) canvases.Add(Canvas_AxialForceDiagram);
             if (fArr_ShearForceValuesVx.Any(n => n > 0.001)) canvases.Add(Canvas_ShearForceDiagramVx);
-            if (fArr_ShearForceValuesVy .Any(n => n > 0.001)) canvases.Add(Canvas_ShearForceDiagramVy);
+            if (fArr_ShearForceValuesVy.Any(n => n > 0.001)) canvases.Add(Canvas_ShearForceDiagramVy);
             if (fArr_TorsionMomentValuesT.Any(n => n > 0.001)) canvases.Add(Canvas_TorsionMomentDiagram);
             if (fArr_BendingMomentValuesMx.Any(n => n > 0.001)) canvases.Add(Canvas_BendingMomentDiagramMx);
-            if (fArr_BendingMomentValuesMy .Any(n => n > 0.001)) canvases.Add(Canvas_BendingMomentDiagramMy);
+            if (fArr_BendingMomentValuesMy.Any(n => n > 0.001)) canvases.Add(Canvas_BendingMomentDiagramMy);
             if (fArr_DeflectionValuesDeltax.Any(n => n > 0.001)) canvases.Add(Canvas_DeflectionDiagramDeltax);
             if (fArr_DeflectionValuesDeltay.Any(n => n > 0.001)) canvases.Add(Canvas_DeflectionDiagramDeltay);
 
@@ -308,6 +309,324 @@ namespace EXPIMP
             }
         }
 
+
+
+        private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations)
+        {
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            double internalForceScale_user = 2;
+            bool UseCRSCGeometricalAxes = true;
+            int NumberOfDecimalPlaces = 2;
+            int FontSize = 12;
+            float fCanvasWidth = (float)990; // Size of Canvas
+            float fCanvasHeight = (float)615; // Size of Canvas
+            int scale_unit = 1; // m
+
+            List<Point> modelNodesCoordinatesInGCS = new List<Point>();
+
+            for (int i = 0; i < model.m_arrNodes.Length; i++) // Naplnime pole bodov s globanymi suradnicami modelu
+            {
+                modelNodesCoordinatesInGCS.Add(new Point(model.m_arrNodes[i].X, model.m_arrNodes[i].Z));
+            }
+
+            double dTempMax_X;
+            double dTempMin_X;
+            double dTempMax_Y;
+            double dTempMin_Y;
+            Drawing2D.CalculateModelLimits(modelNodesCoordinatesInGCS, out dTempMax_X, out dTempMin_X, out dTempMax_Y, out dTempMin_Y);
+
+            float fModel_Length_x_real = (float)(dTempMax_X - dTempMin_X);
+            float fModel_Length_y_real = (float)(dTempMax_Y - dTempMin_Y);
+            float fModel_Length_x_page;
+            float fModel_Length_y_page;
+            double dFactor_x;
+            double dFactor_y;
+            float fReal_Model_Zoom_Factor;
+            float fmodelMarginLeft_x;
+            float fmodelMarginTop_y;
+            float fmodelBottomPosition_y;
+
+            Drawing2D.CalculateBasicValue(
+            fModel_Length_x_real,
+            fModel_Length_y_real,
+            0.6f, // zoom ratio 0-1 (zoom of 2D view), zobrazime model vo velkosti 50% z canvas aby bol dostatok priestoru pre vykreslenie vn sil
+            scale_unit,
+            fCanvasWidth,
+            fCanvasHeight,
+            out fModel_Length_x_page,
+            out fModel_Length_y_page,
+            out dFactor_x,
+            out dFactor_y,
+            out fReal_Model_Zoom_Factor,
+            out fmodelMarginLeft_x,
+            out fmodelMarginTop_y,
+            out fmodelBottomPosition_y
+            );
+
+            float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
+            int factorSwitchYAxis = -1;
+
+            List<Canvas> canvases = new List<Canvas>();
+
+            for (int IFtypeIndex = 0; IFtypeIndex <= 7; IFtypeIndex++)
+            {
+                Canvas DiagramCanvas = new Canvas();
+                DiagramCanvas.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+
+                string IFTypeUnit = "";
+                //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
+                if (IFtypeIndex <= 2) IFTypeUnit = "kN";
+                else if (IFtypeIndex <= 6) IFTypeUnit = "kNm";
+                else IFTypeUnit = "mm";
+
+                bool IncludeResults = false;
+
+                // Draw each member in the model and selected internal force diagram
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    // Calculate Member Rotation angle (clockwise)
+                    double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
+                    double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
+
+                    // Internal forces / Deformation - default unit scale factor
+                    float fUnitFactor = 1;
+                    float fUnitFactor_IF = 0.001f; // N to kN or Nm to kNm
+                    float fUnitFactor_Def = 1000f; // m to mm
+
+                    if (IFtypeIndex <= 6)
+                        fUnitFactor = fUnitFactor_IF; // Forces and moments
+                    else
+                        fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
+
+                    // Get list of points from Dictionary, if not exist then calculate
+                    List<Point> listMemberInternalForcePoints = GetMemberInternalForcePoints(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
+                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, internalForceScale_user, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+
+                    double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
+                    double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
+
+                    RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
+                    TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
+                    TransformGroup transformGroup_RandT = new TransformGroup();
+                    transformGroup_RandT.Children.Add(rotateTransform);
+                    transformGroup_RandT.Children.Add(translateTransform);
+
+                    List<Point> points = new List<Point>();
+                    foreach (Point p in listMemberInternalForcePoints)
+                        points.Add(transformGroup_RandT.Transform(p));
+                    
+                    // Analyse diagram - find minimum and maximum value (find local extremes ???)
+                    // store index of extreme values
+
+                    double dMinValue = Double.PositiveInfinity;
+                    double dMaxValue = Double.NegativeInfinity;
+
+                    int iIndexMinValue = 0;
+                    int iIndexMaxValue = 0;
+
+                    if (ListMemberInternalForcesInLoadCombinations == null) continue; // TODO - Sem by sa to uz nemalo ani dostat ak prut nema vysledky
+
+                    int iNumberOfDesignSections = 11;
+                    designBucklingLengthFactors[] sBucklingLengthFactors;
+                    designMomentValuesForCb[] sMomentValuesforCb;
+                    basicInternalForces[] sBIF_x;
+                    basicDeflections[] sBDef_x;
+
+                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
+                        lcomb,
+                        ListMemberInternalForcesInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBucklingLengthFactors,
+                        out sMomentValuesforCb,
+                        out sBIF_x);
+
+                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
+                        lcomb,
+                        ListMemberDeflectionsInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBDef_x);
+
+                    for (int c = 0; c < sBIF_x.Length; c++)
+                    {
+                        float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[c], sBDef_x[c]);
+                        if (IF_Value < dMinValue)
+                        {
+                            dMinValue = IF_Value;
+                            iIndexMinValue = c;
+                        }
+                        if (IF_Value > dMaxValue)
+                        {
+                            dMaxValue = IF_Value;
+                            iIndexMaxValue = c;
+                        }
+                    }
+
+                    if (!MathF.d_equal(dMinValue, 0) || !MathF.d_equal(dMaxValue, 0)) IncludeResults = true;
+                                        
+                    for (int c = 0; c < sBIF_x.Length; c++)
+                    {                        
+                        if(c != 0 || c != (sBIF_x.Length - 1) || c != iIndexMinValue || c != iIndexMaxValue) continue;
+                        float IF_Value = GetInternalForcesValue(IFtypeIndex ,sBIF_x[c], sBDef_x[c]);
+
+                        // Ignore and do not display zero value label
+                        if (MathF.d_equal(IF_Value, 0))
+                            continue;
+
+                        string txt = (fUnitFactor * IF_Value).ToString($"F{NumberOfDecimalPlaces}");
+                        txt += " " + IFTypeUnit;
+                        //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
+                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas);
+                    }
+                    
+                    Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
+                    
+                    // Draw Member on the Internal forces polygon
+                    DrawMember(model, DiagramCanvas, i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                }
+
+                if (IncludeResults)
+                {
+                    DiagramCanvas.ToolTip = GetInternalForceText(IFtypeIndex);
+                    canvases.Add(DiagramCanvas);
+                } 
+            }
+
+            return canvases;
+        }
+
+
+
+        private static List<Point> GetMemberInternalForcePoints(CModel model, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations,
+            CMember member, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
+        {
+            List<Point> listMemberInternalForcePoints = new List<Point>();
+
+            if (ListMemberInternalForcesInLoadCombinations == null)
+            {
+                return listMemberInternalForcePoints; // Return empty list ???
+            }
+
+            // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
+            // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty s kladnou hodnotou
+            // Da sa prutu prednastavit ako strana kde ma prut zapornu zvislu os v LCS, teda -z alebo zmenit a potom sa vnutorne sily kreslia prevratene +/-
+
+            float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
+
+            const int iNumberOfResultsSections = 11;
+            double[] xLocations_rel = new double[iNumberOfResultsSections];
+
+            // Fill relative coordinates (x_rel)
+            for (int s = 0; s < iNumberOfResultsSections; s++)
+                xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
+
+            designBucklingLengthFactors[] sBucklingLengthFactors;
+            designMomentValuesForCb[] sMomentValuesforCb;
+            basicInternalForces[] sBIF_x;
+            basicDeflections[] sBDef_x;
+
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(UseCRSCGeometricalAxes,
+                member,
+                lcomb,
+                ListMemberInternalForcesInLoadCombinations,
+                iNumberOfResultsSections,
+                out sBucklingLengthFactors,
+                out sMomentValuesforCb,
+                out sBIF_x);
+
+            if (ListMemberDeflectionsInLoadCombinations == null)
+            {
+                return listMemberInternalForcePoints; // Return empty list ???
+            }
+
+            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(UseCRSCGeometricalAxes,
+                member,
+                lcomb,
+                ListMemberDeflectionsInLoadCombinations,
+                iNumberOfResultsSections,
+                out sBDef_x);
+
+            // First point (start at [0,0])
+            listMemberInternalForcePoints.Add(new Point(0, 0));
+
+            // Internal force diagram points
+            for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
+            {
+                double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * member.FLength;
+
+                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(IFtypeIndex, sBIF_x[j], sBDef_x[j]);
+                double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
+
+                //pozicie x sa ulozia, aby sa nemuseli pocitat znova
+                listMemberInternalForcePoints.Add(new Point(xlocationCoordinate, xlocationValue));
+            }
+
+            // Last point (end at [L,0])
+            listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * member.FLength, 0));
+
+            return listMemberInternalForcePoints;
+        }
+
+        private static float GetInternalForcesValue(int IFtypeIndex, basicInternalForces bif, basicDeflections bdef)
+        {
+            //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
+            switch (IFtypeIndex)
+            {
+                case 0: return bif.fN;
+                case 1: return bif.fV_zz; //bif.fV_zv???
+                case 2: return bif.fV_yy; //bif.fV_yu???
+                case 3: return bif.fT;
+                case 4: return bif.fM_yy;
+                case 5: return bif.fM_zz;
+                case 6: return bdef.fDelta_yy;
+                case 7: return bdef.fDelta_zz;
+                default: throw new Exception($"Not known internal force; IFTypeIndex: {IFtypeIndex}");
+            }
+        }
+
+        private static string GetInternalForceText(int IFtypeIndex)
+        {
+            //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
+            switch (IFtypeIndex)
+            {
+                case 0: return "Axial Force N [kN]";
+                case 1: return "Shear Force Vx [kN]";
+                case 2: return "Shear Force Vy [kN]";
+                case 3: return "Torsion Moment";
+                case 4: return "Bending Moment Mx [kNm]";
+                case 5: return "Bending Moment My[kNm]";
+                case 6: return "Deflection Diagram Delta X";
+                case 7: return "Deflection Diagram Delta Y";
+                default: throw new Exception($"Not known internal force; IFTypeIndex: {IFtypeIndex}");
+            }            
+        }
+
+        private static void DrawMember(CModel model, Canvas canvas, int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
+            float fmodelMarginLeft_x, float fmodelBottomPosition_y, SolidColorBrush color, double thickness)
+        {
+            // Draw member
+            List<Point> listMemberPoints = new List<Point>(2);
+            listMemberPoints.Add(new Point(0, 0));
+            listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+
+            double translationOffxet_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
+            double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
+
+            RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
+            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
+            TransformGroup transformGroup_RandT = new TransformGroup();
+            transformGroup_RandT.Children.Add(rotateTransform);
+            transformGroup_RandT.Children.Add(translateTransform);
+
+            List<Point> points = new List<Point>();
+            foreach (Point p in listMemberPoints)
+                points.Add(transformGroup_RandT.Transform(p));
+
+            Drawing2D.DrawPolyLine(false, points, color, PenLineCap.Flat, PenLineCap.Flat, thickness, canvas);
+        }
 
     }
 }
