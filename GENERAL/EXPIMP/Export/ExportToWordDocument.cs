@@ -21,7 +21,7 @@ namespace EXPIMP
     {
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
-        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData, Canvas canvas)
+        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
         {
             string fileName = GetReportName();
             // Create a new document.
@@ -44,7 +44,7 @@ namespace EXPIMP
                 DrawLoadCases(document, modelData);
                 DrawLoadCombinations(document, modelData);
                 DrawLoad(document, modelData);
-                DrawMemberDesign(document, modelData, canvas);
+                DrawMemberDesign(document, modelData);
                 DrawJointDesign(document, modelData);
 
 
@@ -593,7 +593,7 @@ namespace EXPIMP
 
 
 
-        private static void DrawMemberDesign(DocX document, CModelData data, Canvas canvas)
+        private static void DrawMemberDesign(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberDesign]"));
             par.RemoveText(0);
@@ -612,10 +612,8 @@ namespace EXPIMP
 
                 par = par.InsertParagraphAfterSelf("Member internal forces");
                 par.StyleName = "Heading3";
-
-                //par = par.InsertParagraphAfterSelf("");
+                                
                 par = par.InsertParagraphAfterSelf("");
-
                 par = AppendIFCanvases(document, par, data, governingLComb, governingMember);
                 //AppendImageFromCanvas(document, canvas, par);
 
@@ -663,6 +661,7 @@ namespace EXPIMP
             foreach (Canvas canvas in canvases)
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
                 AppendImageFromCanvas(document, canvas, par);
             }
             return par;

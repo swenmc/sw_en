@@ -83,21 +83,32 @@ namespace EXPIMP
         }
         private static RenderTargetBitmap RenderVisual(UIElement elt)
         {
-            PresentationSource source = PresentationSource.FromVisual(elt);
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)elt.RenderSize.Width,
-                  (int)elt.RenderSize.Height, 96, 96, PixelFormats.Default);
+            Size size = new Size(600, 150);
+            elt.Measure(size);
+            elt.Arrange(new Rect(size));
+            elt.UpdateLayout();
 
-            VisualBrush sourceBrush = new VisualBrush(elt);
-            DrawingVisual drawingVisual = new DrawingVisual();
-            DrawingContext drawingContext = drawingVisual.RenderOpen();
-            using (drawingContext)
-            {
-                drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0),
-                      new Point(elt.RenderSize.Width, elt.RenderSize.Height)));
-            }
-            rtb.Render(drawingVisual);
+            var bitmap = new RenderTargetBitmap(
+                (int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
 
-            return rtb;
+            bitmap.Render(elt);
+            return bitmap;
+
+            //PresentationSource source = PresentationSource.FromVisual(elt);
+            //RenderTargetBitmap rtb = new RenderTargetBitmap((int)elt.RenderSize.Width,
+            //      (int)elt.RenderSize.Height, 96, 96, PixelFormats.Default);
+
+            //VisualBrush sourceBrush = new VisualBrush(elt);
+            //DrawingVisual drawingVisual = new DrawingVisual();
+            //DrawingContext drawingContext = drawingVisual.RenderOpen();
+            //using (drawingContext)
+            //{
+            //    drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0),
+            //          new Point(elt.RenderSize.Width, elt.RenderSize.Height)));
+            //}
+            //rtb.Render(drawingVisual);
+
+            //return rtb;
         }
 
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
