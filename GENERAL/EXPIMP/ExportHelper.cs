@@ -82,8 +82,8 @@ namespace EXPIMP
             return stm;
         }
         private static RenderTargetBitmap RenderVisual(UIElement elt)
-        {
-            Size size = new Size(600, 150);
+        {            
+            Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
             elt.Measure(size);
             elt.Arrange(new Rect(size));
             elt.UpdateLayout();
@@ -114,8 +114,8 @@ namespace EXPIMP
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
         public static List<Canvas> GetIFCanvases(bool UseCRSCGeometricalAxes, CLoadCombination lcomb, CMember member, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections)
         {
-            float fCanvasHeight = 150; // Size of Canvas // Same size of of diagrams ???
-            float fCanvasWidth = 600;  // Size of Canvas
+            float fCanvasHeight = 180; // Size of Canvas // Same size of of diagrams ???
+            float fCanvasWidth = 720;  // Size of Canvas
 
             float modelMarginLeft_x = 10;
             float modelMarginRight_x = 10;

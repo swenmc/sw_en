@@ -21,6 +21,8 @@ namespace EXPIMP
     {
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
+        private const int imageMaxWidth = 650;
+
         public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
         {
             string fileName = GetReportName();
@@ -661,7 +663,7 @@ namespace EXPIMP
             foreach (Canvas canvas in canvases)
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
                 AppendImageFromCanvas(document, canvas, par);
             }
             return par;
@@ -671,13 +673,13 @@ namespace EXPIMP
         {
             using (Stream stream = ExportHelper.GetCanvasStream(canvas))
             {
-                double ratio = canvas.ActualWidth / canvas.ActualHeight;
+                //double ratio = document.PageWidth / canvas.ActualWidth;
                 // Add a simple image from disk.
                 var image = document.AddImage(stream);
                 // Set Picture Height and Width.
-                //var picture = image.CreatePicture((int)document.PageWidth, (int)(document.PageWidth * ratio));
+                //var picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), (int)document.PageWidth);
+
                 var picture = image.CreatePicture( (int)canvas.ActualHeight, (int)canvas.ActualWidth);
-                //var picture = image.CreatePicture(200, 100);
                 // Insert Picture in paragraph.             
                 par.AppendPicture(picture);
             }
