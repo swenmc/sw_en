@@ -183,15 +183,15 @@ namespace EXPIMP
             Canvas_ShearForceDiagramVy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
             Canvas_ShearForceDiagramVy.ToolTip = "Shear Force Vy [kN]";
             Canvas_TorsionMomentDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_TorsionMomentDiagram.ToolTip = "Torsion Moment";
+            Canvas_TorsionMomentDiagram.ToolTip = "Torsion Moment T [kNm]";
             Canvas_BendingMomentDiagramMx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
             Canvas_BendingMomentDiagramMx.ToolTip = "Bending Moment Mx [kNm]";
             Canvas_BendingMomentDiagramMy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
             Canvas_BendingMomentDiagramMy.ToolTip = "Bending Moment My [kNm]";
             Canvas_DeflectionDiagramDeltax.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_DeflectionDiagramDeltax.ToolTip = "Deflection Diagram Delta X";
+            Canvas_DeflectionDiagramDeltax.ToolTip = "Local Deflection δx [mm]";
             Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_DeflectionDiagramDeltay.ToolTip = "Deflection Diagram Delta Y";
+            Canvas_DeflectionDiagramDeltay.ToolTip = "Local Deflection δy [mm]";
 
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
@@ -651,11 +651,11 @@ namespace EXPIMP
                 case 0: return "Axial Force N [kN]";
                 case 1: return "Shear Force Vx [kN]";
                 case 2: return "Shear Force Vy [kN]";
-                case 3: return "Torsion Moment";
+                case 3: return "Torsion Moment T [kNm]";
                 case 4: return "Bending Moment Mx [kNm]";
-                case 5: return "Bending Moment My[kNm]";
-                case 6: return "Deflection Diagram Delta X";
-                case 7: return "Deflection Diagram Delta Y";
+                case 5: return "Bending Moment My [kNm]";
+                case 6: return "Local Deflection δx [mm]";
+                case 7: return "Local Deflection δy [mm]";
                 default: throw new Exception($"Not known internal force; IFTypeIndex: {IFtypeIndex}");
             }            
         }
