@@ -2338,7 +2338,7 @@ namespace PFD
 
             data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
             data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
-
+            data.frameModels = frameModels;
 
             return data;
         }

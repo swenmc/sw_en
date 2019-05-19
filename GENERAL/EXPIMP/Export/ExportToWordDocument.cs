@@ -624,6 +624,9 @@ namespace EXPIMP
                 {
                     par = par.InsertParagraphAfterSelf("Frame internal forces");
                     par.StyleName = "Heading3";
+
+                    par = par.InsertParagraphAfterSelf("");
+                    par = AppendFrameIFCanvases(document, par, data, governingLComb, governingMember);
                 }
 
                 par = par.InsertParagraphAfterSelf("Member design details - ULS");
@@ -660,6 +663,17 @@ namespace EXPIMP
         private static Paragraph AppendIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {            
             List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            foreach (Canvas canvas in canvases)
+            {
+                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                AppendImageFromCanvas(document, canvas, par);
+            }
+            return par;
+        }
+        private static Paragraph AppendFrameIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {
+            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
             foreach (Canvas canvas in canvases)
             {
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());

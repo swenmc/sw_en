@@ -309,13 +309,23 @@ namespace EXPIMP
             }
         }
 
+        public static List<Canvas> GetFrameInternalForcesCanvases(List<CFrame> frames, CMember member, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
+        {
+            CFrame model = null;
+            for (int i = 0; i < frames.Count; i++)
+            {
+                if (Array.Exists(frames[i].m_arrMembers, mem => mem.ID == member.ID)) { model = frames[i]; break; }
+            }
+            //if(model == null) frames.FirstOrDefault(); //if not found frame for member - get first frame
+            if (model == null) throw new Exception($"Frame not found for member: {member?.ID}");
+            return GetFrameInternalForcesCanvases(model, lcomb, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations, UseCRSCGeometricalAxes);
+        }
+        
 
-
-        private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations)
+        private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            double internalForceScale_user = 2;
-            bool UseCRSCGeometricalAxes = true;
+            double internalForceScale_user = 2;            
             int NumberOfDecimalPlaces = 2;
             int FontSize = 12;
             float fCanvasWidth = (float)990; // Size of Canvas
