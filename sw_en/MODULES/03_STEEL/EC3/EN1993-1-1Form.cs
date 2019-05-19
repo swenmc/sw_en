@@ -17,6 +17,7 @@ using CENEX.MODULES._03_STEEL.EC3;
 using EXPIMP;
 using DATABASE;
 //using Microsoft.Office.Interop.Excel;
+//using Microsoft.Office.Interop.Excel;
 
 namespace CENEX
 {
@@ -1861,174 +1862,174 @@ namespace CENEX
         public void WriteToExcelSpreadsheet(string fileName, System.Data.DataTable dt)
         {
 
-            //string filepath = getPath(fileName).Trim();
-            string filepath = fileName;
-            //dt = SQLProductProvider.GetExcelImport();
+            ////string filepath = getPath(fileName).Trim();
+            //string filepath = fileName;
+            ////dt = SQLProductProvider.GetExcelImport();
 
-            // dt.WriteXml(filepath, XmlWriteMode.IgnoreSchema);
+            //// dt.WriteXml(filepath, XmlWriteMode.IgnoreSchema);
 
-            Microsoft.Office.Interop.Excel.Application ExlApp = new Microsoft.Office.Interop.Excel.Application();
+            ////Microsoft.Office.Interop.Excel.Application ExlApp = new Microsoft.Office.Interop.Excel.Application();
 
-            int iCol, iRow, iColVal;
+            //int iCol, iRow, iColVal;
 
-            Object missing = System.Reflection.Missing.Value;
+            //Object missing = System.Reflection.Missing.Value;
 
-            // Open the document that was chosen by the dialog
+            //// Open the document that was chosen by the dialog
 
-            Microsoft.Office.Interop.Excel.Workbook aBook;
+            ////Workbook aBook;
 
-            try
-            {
+            //try
+            //{
 
-                //'re-initialize excel app
+            //    //'re-initialize excel app
 
-                ExlApp = new Microsoft.Office.Interop.Excel.Application();
+            //    ExlApp = new Microsoft.Office.Interop.Excel.Application();
 
-                if (ExlApp == null)
-                {
+            //    if (ExlApp == null)
+            //    {
 
-                    //'throw an exception
+            //        //'throw an exception
 
-                    throw (new Exception("Unable to Start Microsoft Excel"));
+            //        throw (new Exception("Unable to Start Microsoft Excel"));
 
-                }
+            //    }
 
-                else
-                {
+            //    else
+            //    {
 
-                    //'supresses overwrite warnings
+            //        //'supresses overwrite warnings
 
-                    ExlApp.DisplayAlerts = false;
+            //        ExlApp.DisplayAlerts = false;
 
-                    //aBook = New Excel.Workbook
+            //        //aBook = New Excel.Workbook
 
-                    //'check if file exists
+            //        //'check if file exists
 
-                    if (File.Exists(filepath))
-                    {
+            //        if (File.Exists(filepath))
+            //        {
 
-                        aBook = ExlApp.Workbooks._Open(filepath, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
+            //            aBook = ExlApp.Workbooks._Open(filepath, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
 
-                    }
+            //        }
 
-                    else
-                    {
+            //        else
+            //        {
 
-                        aBook = ExlApp.Workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+            //            aBook = ExlApp.Workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
 
-                    }//End If
+            //        }//End If
 
-                    //With ExlApp
+            //        //With ExlApp
 
-                    ExlApp.SheetsInNewWorkbook = 1;
+            //        ExlApp.SheetsInNewWorkbook = 1;
 
-                    //ExlApp.Worksheets[1].Select();
+            //        //ExlApp.Worksheets[1].Select();
 
-                    //For displaying the column name in the the excel file.
+            //        //For displaying the column name in the the excel file.
 
-                    for (iCol = 0; iCol < dt.Columns.Count; iCol++)
-                    {
+            //        for (iCol = 0; iCol < dt.Columns.Count; iCol++)
+            //        {
 
-                        //'clear column name before setting a new value
+            //            //'clear column name before setting a new value
 
-                        ExlApp.Cells[1, iCol + 1] = "";
+            //            ExlApp.Cells[1, iCol + 1] = "";
 
-                        ExlApp.Cells[1, iCol + 1] = dt.Columns[iCol].ColumnName.ToString();
+            //            ExlApp.Cells[1, iCol + 1] = dt.Columns[iCol].ColumnName.ToString();
 
-                    }//next
+            //        }//next
 
-                    //For displaying the column value row-by-row in the the excel file.
+            //        //For displaying the column value row-by-row in the the excel file.
 
-                    for (iRow = 0; iRow < dt.Rows.Count; iRow++)
-                    {
+            //        for (iRow = 0; iRow < dt.Rows.Count; iRow++)
+            //        {
 
-                        try
-                        {
+            //            try
+            //            {
 
-                            for (iColVal = 0; iColVal < dt.Columns.Count; iColVal++)
-                            {
+            //                for (iColVal = 0; iColVal < dt.Columns.Count; iColVal++)
+            //                {
 
-                                if (dt.Rows[iRow].ItemArray[iColVal] is string)
-                                {
+            //                    if (dt.Rows[iRow].ItemArray[iColVal] is string)
+            //                    {
 
-                                    ExlApp.Cells[iRow + 2, iColVal + 1] = "'" + dt.Rows[iRow].ItemArray[iColVal].ToString();
+            //                        ExlApp.Cells[iRow + 2, iColVal + 1] = "'" + dt.Rows[iRow].ItemArray[iColVal].ToString();
 
-                                }
+            //                    }
 
-                                else
-                                {
+            //                    else
+            //                    {
 
-                                    ExlApp.Cells[iRow + 2, iColVal + 1] = dt.Rows[iRow].ItemArray[iColVal].ToString();
+            //                        ExlApp.Cells[iRow + 2, iColVal + 1] = dt.Rows[iRow].ItemArray[iColVal].ToString();
 
-                                }//End If
+            //                    }//End If
 
-                            }//next
+            //                }//next
 
-                        }
+            //            }
 
-                        catch (Exception ex)
-                        {
+            //            catch (Exception ex)
+            //            {
 
-                            Console.Write("ERROR: " + ex.Message);
+            //                Console.Write("ERROR: " + ex.Message);
 
-                        }//End Try
+            //            }//End Try
 
-                    }//next
+            //        }//next
 
-                    if (File.Exists(filepath))
-                    {
+            //        if (File.Exists(filepath))
+            //        {
 
-                        ExlApp.ActiveWorkbook.Save(); //fileName)
+            //            ExlApp.ActiveWorkbook.Save(); //fileName)
 
-                    }
+            //        }
 
-                    else
-                    {
+            //        else
+            //        {
 
-                        ExlApp.ActiveWorkbook.SaveAs(filepath.Trim(), missing, missing, missing, missing, missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, missing, missing, missing, missing, missing);
+            //            ExlApp.ActiveWorkbook.SaveAs(filepath.Trim(), missing, missing, missing, missing, missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, missing, missing, missing, missing, missing);
 
-                    }//End If
+            //        }//End If
 
-                    ExlApp.ActiveWorkbook.Close(true, missing, missing);
+            //        ExlApp.ActiveWorkbook.Close(true, missing, missing);
 
-                    //End With
+            //        //End With
 
-                    //Console.Write("File exported sucessfully");
+            //        //Console.Write("File exported sucessfully");
 
-                }//End if
+            //    }//End if
 
-            }
+            //}
 
-            catch (System.Runtime.InteropServices.COMException ex)
-            {
+            //catch (System.Runtime.InteropServices.COMException ex)
+            //{
 
 
 
-                Console.Write("ERROR: " + ex.Message);
+            //    Console.Write("ERROR: " + ex.Message);
 
-            }
+            //}
 
-            catch (Exception ex)
-            {
+            //catch (Exception ex)
+            //{
 
 
 
-                Console.Write("ERROR: " + ex.Message);
+            //    Console.Write("ERROR: " + ex.Message);
 
-            }
+            //}
 
-            finally
-            {
+            //finally
+            //{
 
-                ExlApp.Quit();
+            //    ExlApp.Quit();
 
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(ExlApp);
+            //    System.Runtime.InteropServices.Marshal.ReleaseComObject(ExlApp);
 
-                aBook = null;
+            //    aBook = null;
 
-                ExlApp = null;
+            //    ExlApp = null;
 
-            }//End Try
+            //}//End Try
 
         }//End Sub
 

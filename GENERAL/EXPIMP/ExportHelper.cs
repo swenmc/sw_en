@@ -325,11 +325,11 @@ namespace EXPIMP
         private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            double internalForceScale_user = 2;            
+            //double internalForceScale_user = 2;            
             int NumberOfDecimalPlaces = 2;
             int FontSize = 12;
-            float fCanvasWidth = (float)990; // Size of Canvas
-            float fCanvasHeight = (float)615; // Size of Canvas
+            float fCanvasWidth = (float)720; // Size of Canvas
+            float fCanvasHeight = (float)446; // Size of Canvas
             int scale_unit = 1; // m
 
             List<Point> modelNodesCoordinatesInGCS = new List<Point>();
@@ -389,7 +389,20 @@ namespace EXPIMP
                 else if (IFtypeIndex <= 6) IFTypeUnit = "kNm";
                 else IFTypeUnit = "mm";
 
+                // Internal forces / Deformation - default unit scale factor
+                float fUnitFactor = 1;
+                float fUnitFactor_IF = 0.001f; // N to kN or Nm to kNm
+                float fUnitFactor_Def = 1000f; // m to mm
+
+                if (IFtypeIndex <= 6)
+                    fUnitFactor = fUnitFactor_IF; // Forces and moments
+                else
+                    fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
+
                 bool IncludeResults = false;
+
+                double bestScaleRatio = GetBestScaleRatio(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
+                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
 
                 // Draw each member in the model and selected internal force diagram
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
@@ -397,20 +410,10 @@ namespace EXPIMP
                     // Calculate Member Rotation angle (clockwise)
                     double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
                     double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
-
-                    // Internal forces / Deformation - default unit scale factor
-                    float fUnitFactor = 1;
-                    float fUnitFactor_IF = 0.001f; // N to kN or Nm to kNm
-                    float fUnitFactor_Def = 1000f; // m to mm
-
-                    if (IFtypeIndex <= 6)
-                        fUnitFactor = fUnitFactor_IF; // Forces and moments
-                    else
-                        fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
-
+                    
                     // Get list of points from Dictionary, if not exist then calculate
                     List<Point> listMemberInternalForcePoints = GetMemberInternalForcePoints(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
-                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, internalForceScale_user, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
 
                     double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
                     double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
@@ -479,7 +482,7 @@ namespace EXPIMP
                                         
                     for (int c = 0; c < sBIF_x.Length; c++)
                     {                        
-                        if(c != 0 || c != (sBIF_x.Length - 1) || c != iIndexMinValue || c != iIndexMaxValue) continue;
+                        if(c != 0 && c != (sBIF_x.Length - 1) && c != iIndexMinValue && c != iIndexMaxValue) continue;
                         float IF_Value = GetInternalForcesValue(IFtypeIndex ,sBIF_x[c], sBDef_x[c]);
 
                         // Ignore and do not display zero value label
@@ -578,6 +581,49 @@ namespace EXPIMP
             listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * member.FLength, 0));
 
             return listMemberInternalForcePoints;
+        }
+
+        private static double GetBestScaleRatio(CModel model, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations,
+            CMember[] members, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, float fReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
+        {
+            double maxLocationValue = 100;
+            double minRatio = double.MaxValue;
+            const int iNumberOfResultsSections = 11;            
+
+            designBucklingLengthFactors[] sBucklingLengthFactors;
+            designMomentValuesForCb[] sMomentValuesforCb;
+            basicInternalForces[] sBIF_x;
+            basicDeflections[] sBDef_x;
+
+            foreach (CMember member in members)
+            {
+                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(UseCRSCGeometricalAxes,
+                member,
+                lcomb,
+                ListMemberInternalForcesInLoadCombinations,
+                iNumberOfResultsSections,
+                out sBucklingLengthFactors,
+                out sMomentValuesforCb,
+                out sBIF_x);
+                
+                CMemberResultsManager.SetMemberDeflectionsInLoadCombination(UseCRSCGeometricalAxes,
+                    member,
+                    lcomb,
+                    ListMemberDeflectionsInLoadCombinations,
+                    iNumberOfResultsSections,
+                    out sBDef_x);
+
+                
+                // Internal force diagram points
+                for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
+                {
+                    float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[j], sBDef_x[j]);                    
+                    double ratio = maxLocationValue / Math.Abs(dInternalForceScale * IF_Value);
+                    if (ratio < minRatio) minRatio = ratio;
+                }
+            }
+            
+            return minRatio;
         }
 
         private static float GetInternalForcesValue(int IFtypeIndex, basicInternalForces bif, basicDeflections bdef)
