@@ -239,7 +239,7 @@ namespace PFD
             // Index of girt 0 - no bracing 1 - every, 2 - every second girt, 3 - every third girt, ...
             // Poziciu fly bracing - kazdy xx girt nastavovat v GUI, alebo umoznit urcit automaticky, napr. cca tak aby bola vdialenost medzi fly bracing rovna L1
 
-            bool bUseMainColumnFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
+            bool bUseMainColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
 
             int iMainColumnFlyBracing_EveryXXGirt;
 
@@ -259,6 +259,13 @@ namespace PFD
                 iRafterFlyBracing_EveryXXPurlin = sGeometryInputData.iRafterFlyBracingEveryXXPurlin;
             else
                 iRafterFlyBracing_EveryXXPurlin = Math.Max(0, (int)(fL1_frame / fDist_Purlin));
+
+            // Front and Back Column
+            bool bUseFrontColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
+            int iFrontColumnFlyBracing_EveryXXGirt = sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt;
+
+            bool bUseBackColumnFlyBracingPlates = true; // Use fly bracing plates in girt to column joint
+            int iBackColumnFlyBracing_EveryXXGirt = sGeometryInputData.iBackColumnFlyBracingEveryXXGirt;
 
             // Transverse bracing - girts, purlins, front girts, back girts
             /*

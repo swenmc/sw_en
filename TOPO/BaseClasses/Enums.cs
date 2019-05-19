@@ -677,6 +677,8 @@
         public int iEdgePurlin_ILS_Number;
         public int iGirt_ILS_Number;
         public int iPurlin_ILS_Number;
+        public int iFrontColumnFlyBracingEveryXXGirt;
+        public int iBackColumnFlyBracingEveryXXGirt;
         public int iGirtFrontSide_ILS_Number;
         public int iGirtBackSide_ILS_Number;
     }

@@ -116,7 +116,7 @@ namespace PFD
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
             // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
-            Combobox_MainColumnFlyBracingPosition.ItemsSource = new string[10] {
+            string[] sColumnFlyBracingPosition_Items =  new string[10] {
             "None",
             "Every girt",
             "Every 2nd girt",
@@ -127,6 +127,10 @@ namespace PFD
             "Every 7th girt",
             "Every 8th girt",
             "Every 9th girt"};
+
+            Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
 
             Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
             "None",
@@ -786,6 +790,8 @@ namespace PFD
             sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
             sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
             sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;
+            sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = vm.FrontColumnFlyBracingPositionIndex;
+            sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = vm.BackColumnFlyBracingPositionIndex;
             sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
             sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
 

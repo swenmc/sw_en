@@ -59,6 +59,8 @@ namespace PFD
         private int MEdgePurlin_ILS_Number;
         private int MGirt_ILS_Number;
         private int MPurlin_ILS_Number;
+        private int MFrontColumnFlyBracingPositionIndex;
+        private int MBackColumnFlyBracingPositionIndex;
         private int MGirtFrontSide_ILS_Number;
         private int MGirtBackSide_ILS_Number;
 
@@ -235,6 +237,8 @@ namespace PFD
                 EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
                 Girt_ILS_Number = dmodel.iGirt_ILS_Number;
                 Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
+                FrontColumnFlyBracingPositionIndex = dmodel.iFrontColumnFlyBracingEveryXXGirt;
+                BackColumnFlyBracingPositionIndex = dmodel.iBackColumnFlyBracingEveryXXGirt;
                 GirtFrontSide_ILS_Number = dmodel.iGirtFrontSide_ILS_Number;
                 GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
 
@@ -707,6 +711,38 @@ namespace PFD
                 MPurlin_ILS_Number = value;
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("Purlin_ILS_Number");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int FrontColumnFlyBracingPositionIndex
+        {
+            get
+            {
+                return MFrontColumnFlyBracingPositionIndex;
+            }
+
+            set
+            {
+                MFrontColumnFlyBracingPositionIndex = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("FrontColumnFlyBracingPositionIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int BackColumnFlyBracingPositionIndex
+        {
+            get
+            {
+                return MBackColumnFlyBracingPositionIndex;
+            }
+
+            set
+            {
+                MBackColumnFlyBracingPositionIndex = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("BackColumnFlyBracingPositionIndex");
             }
         }
 
@@ -1927,6 +1963,8 @@ namespace PFD
             sBuildingGeometryData.iEdgePurlin_ILS_Number = EdgePurlin_ILS_Number;
             sBuildingGeometryData.iGirt_ILS_Number = Girt_ILS_Number;
             sBuildingGeometryData.iPurlin_ILS_Number = Purlin_ILS_Number;
+            sBuildingGeometryData.iFrontColumnFlyBracingEveryXXGirt = FrontColumnFlyBracingPositionIndex;
+            sBuildingGeometryData.iBackColumnFlyBracingEveryXXGirt = BackColumnFlyBracingPositionIndex;
             sBuildingGeometryData.iGirtFrontSide_ILS_Number = GirtFrontSide_ILS_Number;
             sBuildingGeometryData.iGirtBackSide_ILS_Number = GirtBackSide_ILS_Number;
 

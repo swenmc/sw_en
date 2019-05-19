@@ -31,6 +31,8 @@ namespace PFD
         private int m_iEdgePurlin_ILS_Number;
         private int m_iGirt_ILS_Number;
         private int m_iPurlin_ILS_Number;
+        private int m_iFrontColumnFlyBracingEveryXXGirt;
+        private int m_iBackColumnFlyBracingEveryXXGirt;
         private int m_iGirtFrontSide_ILS_Number;
         private int m_iGirtBackSide_ILS_Number;
 
@@ -259,6 +261,32 @@ namespace PFD
             }
         }
 
+        public int iFrontColumnFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return m_iFrontColumnFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                m_iFrontColumnFlyBracingEveryXXGirt = value;
+            }
+        }
+
+        public int iBackColumnFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return m_iBackColumnFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                m_iBackColumnFlyBracingEveryXXGirt = value;
+            }
+        }
+
         public int iGirtFrontSide_ILS_Number
         {
             get
@@ -329,6 +357,8 @@ namespace PFD
             iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
             iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);
             iPurlin_ILS_Number = int.Parse(model.Purlin_ILS_Number);
+            iFrontColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
+            iBackColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
             iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
             iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
 

@@ -36,7 +36,7 @@ namespace PFD
             //    using (SQLiteDataReader reader = command.ExecuteReader())
             //    {
             //        while (reader.Read())
-            //        {                        
+            //        {
             //            color_items.Add(Tuple.Create<string, string>(reader[sColumnText].ToString(), "#"+reader[sColumnColor].ToString()));                        
             //        }
             //    }
