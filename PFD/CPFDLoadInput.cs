@@ -8,6 +8,7 @@ using System.Data.SQLite;
 using System.Configuration;
 using System.Globalization;
 using BaseClasses;
+using MATH.ARRAY;
 using DATABASE;
 using DATABASE.DTO;
 
@@ -743,6 +744,9 @@ namespace PFD
 
         protected void SetSpectralShapeFactorsFromDatabaseValues()
         {
+            List<float> sNaturalPeriod_T_Values = new List<float>();
+            List<float> sFactor_Ch_ValuesForSpecificSoilClass = new List<float>();
+
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
@@ -755,6 +759,7 @@ namespace PFD
                 string sTableName = "SiteSubSoilClass";
                 string sSiteSubSoilClass = "";
 
+                // Set site soil class string value
                 SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + SiteSubSoilClassIndex + "'", conn);
 
                 using (reader = command.ExecuteReader())
@@ -766,39 +771,25 @@ namespace PFD
                 }
 
                 sTableName = "ASNZS1170_5_Tab3_1_SSF";
-                string sPeriodT = PeriodAlongXDirectionTx.ToString();
-                string sSpectralShapeFactorChTx = "";
 
-                command = new SQLiteCommand("Select * from " + sTableName + " where periodT = '" + sPeriodT + "'", conn);
-
+                // Load all T and Ch values for the specific site subsoil class from the database
+                command = new SQLiteCommand("Select * from ASNZS1170_5_Tab3_1_SSF", conn);
                 using (reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        sSpectralShapeFactorChTx = reader[sSiteSubSoilClass].ToString();
-                        SpectralShapeFactorChTx = float.Parse(sSpectralShapeFactorChTx, nfi);
-                    }
-                }
-
-                sPeriodT = PeriodAlongYDirectionTy.ToString();
-                string sSpectralShapeFactorChTy = "";
-
-                command = new SQLiteCommand("Select * from " + sTableName + " where periodT = '" + sPeriodT + "'", conn);
-
-                using (reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        sSpectralShapeFactorChTy = reader[sSiteSubSoilClass].ToString();
-                        SpectralShapeFactorChTy = float.Parse(sSpectralShapeFactorChTy, nfi);
+                        sNaturalPeriod_T_Values.Add(float.Parse(reader["periodT"].ToString(), nfi));
+                        sFactor_Ch_ValuesForSpecificSoilClass.Add(float.Parse(reader[sSiteSubSoilClass].ToString(), nfi));
                     }
                 }
 
                 reader.Close();
+
+                // Interpolate value - depends on natural period Tx, resp. Ty
+                SpectralShapeFactorChTx = ArrayF.GetLinearInterpolationValuePositive(PeriodAlongXDirectionTx, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
+                SpectralShapeFactorChTy = ArrayF.GetLinearInterpolationValuePositive(PeriodAlongYDirectionTy, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
             }
         }
-
-        
 
         protected void SetLocationDependentDataFromDatabaseValues()
         {
