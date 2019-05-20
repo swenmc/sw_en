@@ -460,6 +460,7 @@ namespace PFD
             // Load Generation
             // General loading
             //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
+            // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
             float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", vm.RoofCladdingThicknessIndex);
             float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", vm.WallCladdingThicknessIndex);
 
@@ -478,15 +479,20 @@ namespace PFD
             // Temporary values - napojit na model a spocitat presne hmotnost ramu a zatazenie
             // Napojit na tab Compoment
 
+            /////////////////////////////////////////////////////
+            // TO Ondrej - toto tu by som potreboval napojit a pripadne presunut inam
+            // Po tom co sa urci 3D geometria a vstupy z GUI potrebujem vypocitat hmotnosti a frekvencie
+            /////////////////////////////////////////////////////
+
             float fPurlinMassPerMeter = 20; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
             float fEdgePurlinMassPerMeter = 30; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Eave Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
             float fGirtMassPerMeter = 15; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Girt a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
             float fMainColumnMassPerMeter = 75; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Column a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
             float fMainRafterMassPerMeter = 85; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Rafter a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
 
-            float fMainColumnMomentOfInteria_yu = 1.48e-4f; // m^4 // Box 63020, nacitat z databazy prierezov
+            float fMainColumnMomentOfInteria_yu = 1.48e-4f; // m^4 // // Component List Box 63020, nacitat z databazy prierezov
             float fMainColumnMomentOfInteria_zv = 1.86e-5f; // m^4
-            float fMainColumnMaterial_E = 2.1e+11f; // Pa
+            float fMainColumnMaterial_E = 2.1e+11f; // Pa // Material
 
             // Napojit na parametre v CExample_3D_901_PF (dedi od obecneho modelu, mozno je spravnejsie pouzivat v projekte PFD CExample_3D_901_PF nez obecny CModel)
             // Obecny CModel tieto parametre nema a asi by ani nemal mat, mozeme vytvorit potomka CModel specialne pre projekt PFD
@@ -631,10 +637,10 @@ namespace PFD
             sSeisInputData.eSiteSubsoilClass = loadInput.SiteSubSoilClass;
             sSeisInputData.fProximityToFault_D_km = loadInput.FaultDistanceDmin; // km
             sSeisInputData.fZoneFactor_Z = loadInput.ZoneFactorZ;
-            sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
-            sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
-            sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
-            sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
+            //sSeisInputData.fPeriodAlongXDirection_Tx = loadInput.PeriodAlongXDirectionTx; //sec
+            //sSeisInputData.fPeriodAlongYDirection_Ty = loadInput.PeriodAlongYDirectionTy; //sec
+            //sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
+            //sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
 
             eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
         }
@@ -1131,7 +1137,7 @@ namespace PFD
                     uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                     CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
                     vmJD.IsSetFromCode = true;
-                    vmJD.LimitStateIndex = 0;                    
+                    vmJD.LimitStateIndex = 0;
                     vmJD.SetComponentList(componentsList);
                     vmJD.IsSetFromCode = false;
                     vmJD.ComponentTypeIndex = 0;
@@ -1715,10 +1721,10 @@ namespace PFD
 
             WaitWindow ww = new WaitWindow("DOC");
             ww.Show();
-            CModelData modelData = vmPFD.GetModelData();            
+            CModelData modelData = vmPFD.GetModelData();
             try
             {
-                //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;                
+                //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
             }

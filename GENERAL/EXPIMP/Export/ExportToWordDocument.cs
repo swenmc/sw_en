@@ -29,8 +29,6 @@ namespace EXPIMP
             // Create a new document.
             using (DocX document = DocX.Create(fileName))
             {
-                
-
                 // The path to a template document,
                 string templatePath = resourcesFolderPath + "TemplateReport.docx";
                 // Apply a template to the document based on a path.
@@ -55,8 +53,6 @@ namespace EXPIMP
                 //DrawModel3D(document, viewPort);
                 //DrawBasicGeometry(document, null);
                 //DrawLoad(document, null);
-
-
 
                 //CreateChapterWithBuletedList(document);
 
@@ -303,7 +299,7 @@ namespace EXPIMP
                 row.Cells[1].FillColor = System.Drawing.Color.FromName(cInfo.Color);
                 row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color));
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
-                row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);                
+                row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
                 row.Cells[4].Paragraphs[0].InsertText("");
                 row.Cells[4].FillColor = System.Drawing.Color.FromName(cInfo.SectionColor);
                 row.Cells[4].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.SectionColor));
@@ -347,7 +343,7 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_3.s_ULS]", data.Snow.fs_ULS_Nu_1.ToString(nfi)); //???
             document.ReplaceText("[CCalcul_1170_3.s_SLS]", data.Snow.fs_SLS_Nu_1.ToString(nfi)); //???
 
-            ////Wind Load
+            // Wind Load
             document.ReplaceText("[AnnualProbabilityULS_Wind]", data.AnnualProbabilityULS_Wind.ToString(nfi));
             document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(nfi));
             document.ReplaceText("[EWindRegion]", data.WindRegion);
@@ -432,13 +428,13 @@ namespace EXPIMP
             document.ReplaceText("[FaultDistanceDmin]", data.FaultDistanceDmin.ToString(nfi));
             document.ReplaceText("[FaultDistanceDmax]", data.FaultDistanceDmax.ToString(nfi));
             document.ReplaceText("[ZoneFactorZ]", data.ZoneFactorZ.ToString(nfi));
-            document.ReplaceText("[PeriodAlongYDirectionTx]", data.PeriodAlongXDirectionTx.ToString(nfi));
-            document.ReplaceText("[PeriodAlongYDirectionTy]", data.PeriodAlongYDirectionTy.ToString(nfi));
-            document.ReplaceText("[SpectralShapeFactorChTx]", data.SpectralShapeFactorChTx.ToString(nfi));
-            document.ReplaceText("[SpectralShapeFactorChTy]", data.SpectralShapeFactorChTy.ToString(nfi));
 
             document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTy]", data.Eq.fPeriodAlongYDirection_Ty.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTx]", data.Eq.fSpectralShapeFactor_Ch_Tx.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTy]", data.Eq.fSpectralShapeFactor_Ch_Ty.ToString(nfi));
 
             // ULS
             document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(nfi));

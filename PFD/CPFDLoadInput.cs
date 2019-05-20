@@ -40,14 +40,14 @@ namespace PFD
         private float MFaultDistanceDmin;
         private float MFaultDistanceDmax;
         private float MZoneFactorZ;
-        private float MPeriodAlongXDirectionTx;
-        private float MPeriodAlongYDirectionTy;
-        private float MSpectralShapeFactorChTx;
-        private float MSpectralShapeFactorChTy;
+        //private float MPeriodAlongXDirectionTx;
+        //private float MPeriodAlongYDirectionTy;
+        //private float MSpectralShapeFactorChTx;
+       // private float MSpectralShapeFactorChTy;
         private float MAdditionalDeadActionRoof;
         private float MAdditionalDeadActionWall;
         private float MImposedActionRoof;
-        
+
         private List<string> m_ListLocations;
         private List<string> m_ListDesignLife;
         private List<string> m_ListImportanceClass;
@@ -308,7 +308,7 @@ namespace PFD
 
                 SiteSubSoilClass = (ESiteSubSoilClass)MSiteSubSoilClassIndex;
 
-                SetSpectralShapeFactorsFromDatabaseValues();
+                //SetSpectralShapeFactorsFromDatabaseValues();
 
                 NotifyPropertyChanged("SiteSubSoilClassIndex");
             }
@@ -363,7 +363,7 @@ namespace PFD
                 NotifyPropertyChanged("ZoneFactorZ");
             }
         }
-
+        /*
         //-------------------------------------------------------------------------------------------------------------
         public float PeriodAlongXDirectionTx
         {
@@ -439,6 +439,7 @@ namespace PFD
                 NotifyPropertyChanged("SpectralShapeFactorChTy");
             }
         }
+        */
 
         //-------------------------------------------------------------------------------------------------------------
         public float AdditionalDeadActionRoof
@@ -726,8 +727,8 @@ namespace PFD
             SiteElevation = sloadInputTextBoxes.SiteElevation;
             FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin_km;
             FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax_km;
-            PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
-            PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
+            //PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
+            //PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
             AdditionalDeadActionRoof = sloadInputTextBoxes.AdditionalDeadActionRoof;
             AdditionalDeadActionWall = sloadInputTextBoxes.AdditionalDeadActionWall;
             ImposedActionRoof = sloadInputTextBoxes.ImposedActionRoof;
@@ -742,6 +743,7 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /*
         protected void SetSpectralShapeFactorsFromDatabaseValues()
         {
             List<float> sNaturalPeriod_T_Values = new List<float>();
@@ -790,7 +792,7 @@ namespace PFD
                 SpectralShapeFactorChTy = ArrayF.GetLinearInterpolationValuePositive(PeriodAlongYDirectionTy, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
             }
         }
-
+        */
         protected void SetLocationDependentDataFromDatabaseValues()
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -862,7 +864,7 @@ namespace PFD
                 reader.Close();
             }
 
-            SetSpectralShapeFactorsFromDatabaseValues();
+            //SetSpectralShapeFactorsFromDatabaseValues();
         }
 
         protected void SetAnnualProbabilityValuesFromDatabaseValues()

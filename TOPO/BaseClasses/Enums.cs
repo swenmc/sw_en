@@ -731,10 +731,10 @@
         public string sSiteSubsoilClass;
         public float fProximityToFault_D_km; // km
         public float fZoneFactor_Z;
-        public float fPeriodAlongXDirection_Tx; // sec
-        public float fPeriodAlongYDirection_Ty; // sec
-        public float fSpectralShapeFactor_Ch_Tx;
-        public float fSpectralShapeFactor_Ch_Ty;
+        //public float fPeriodAlongXDirection_Tx; // sec
+        //public float fPeriodAlongYDirection_Ty; // sec
+        //public float fSpectralShapeFactor_Ch_Tx;
+        //public float fSpectralShapeFactor_Ch_Ty;
     }
 
     public struct FreeSurfaceLoadsMemberTypeData

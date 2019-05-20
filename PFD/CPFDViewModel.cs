@@ -1940,6 +1940,9 @@ namespace PFD
         }
 
         //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
+        // TO Ondrej - pointa bola a je oddelit to tak aby sme mohli vygenerovat samostatne 3D geometriu a potom inou metodou vypocitat zatazenia
+        // Pre vypocet zatazeni potrebujeme data z 3D geometrie
+
         public void CreateModel()
         {
             BuildingGeometryDataInput sBuildingGeometryData;
@@ -2366,10 +2369,10 @@ namespace PFD
             data.FaultDistanceDmin = _loadInput.FaultDistanceDmin;
             data.FaultDistanceDmax = _loadInput.FaultDistanceDmax;
             data.ZoneFactorZ = _loadInput.ZoneFactorZ;
-            data.PeriodAlongXDirectionTx = _loadInput.PeriodAlongXDirectionTx;
-            data.PeriodAlongYDirectionTy = _loadInput.PeriodAlongYDirectionTy;
-            data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
-            data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
+            //data.PeriodAlongXDirectionTx = _loadInput.PeriodAlongXDirectionTx;
+            //data.PeriodAlongYDirectionTy = _loadInput.PeriodAlongYDirectionTy;
+            //data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
+            //data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
             data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
             //data.sDesignResults_ULS = sDesignResults_ULS;

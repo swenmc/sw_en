@@ -64,6 +64,11 @@ namespace M_EC1.AS_NZS
         public float fG_tot_x;
         public float fG_tot_y;
 
+        public float fPeriodAlongXDirection_Tx;
+        public float fPeriodAlongYDirection_Ty;
+        public float fSpectralShapeFactor_Ch_Tx;
+        public float fSpectralShapeFactor_Ch_Ty;
+
         // ULS
         // X-direction
         public float fN_TxD_ULS;
@@ -100,17 +105,19 @@ namespace M_EC1.AS_NZS
             float fR_ULS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilityULS_EQ);
             float fR_SLS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilitySLS);
 
-            fN_TxD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
-            fN_TyD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
+            SetSpectralShapeFactorsFromDatabaseValues(sSeisInput.sSiteSubsoilClass);
 
-            fN_TxD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongXDirection_Tx);
-            fN_TyD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, sSeisInput.fPeriodAlongYDirection_Ty);
+            fN_TxD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, /*sSeisInput.*/fPeriodAlongXDirection_Tx);
+            fN_TyD_ULS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilityULS_EQ, sSeisInput.fProximityToFault_D_km, /*sSeisInput.*/fPeriodAlongYDirection_Ty);
 
-            fC_Tx_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TxD_ULS);
-            fC_Ty_ULS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TyD_ULS);
+            fN_TxD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, /*sSeisInput.*/fPeriodAlongXDirection_Tx);
+            fN_TyD_SLS = GetNearFaultFactor_N_TD(sBuildInput.fAnnualProbabilitySLS, sSeisInput.fProximityToFault_D_km, /*sSeisInput.*/fPeriodAlongYDirection_Ty);
 
-            fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
-            fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
+            fC_Tx_ULS = AS_NZS_1170_5.Eq_31_1____(/*sSeisInput.*/fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TxD_ULS);
+            fC_Ty_ULS = AS_NZS_1170_5.Eq_31_1____(/*sSeisInput.*/fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_ULS, fN_TyD_ULS);
+
+            fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(/*sSeisInput.*/fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
+            fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(/*sSeisInput.*/fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
 
             fC_d_T1x_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_stab);
             fC_d_T1x_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass, out fk_Nu_Tx_ULS_strength);
@@ -180,6 +187,7 @@ namespace M_EC1.AS_NZS
             // Interpolation
             return (float)ArrayF.GetLinearInterpolationValuePositive(fRequiredAnnualProbabilityOfExceedance, Table_3_5_Column1, Table_3_5_Column2);
         }
+
         protected float GetNearFaultFactor_N_TD(float fRequiredAnnualProbabilityOfExceedance, float fD_km, float fT)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -227,6 +235,61 @@ namespace M_EC1.AS_NZS
                     return 1f + (fN_max_T - 1f) * (20f - fD_km) / 18f; // 2 km < D <= 20 km
                 else
                     return 1f; // D > 20 km
+            }
+        }
+
+        protected void SetSpectralShapeFactorsFromDatabaseValues(string sSiteSubsoilClass)
+        {
+            // TODO - docasne nastavene na E - pri prvom spusteni je neinicializovane
+            // Je potrebne doriesit aby sa to pocitalo po poradi
+
+            if (sSiteSubsoilClass == null)
+                sSiteSubsoilClass = "E";
+
+            List<float> sNaturalPeriod_T_Values = new List<float>();
+            List<float> sFactor_Ch_ValuesForSpecificSoilClass = new List<float>();
+
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            // Connect to database
+            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteDataReader reader = null;
+
+                string sTableName = "SiteSubSoilClass";
+                //string sSiteSubSoilClass = "";
+
+                // Set site soil class string value
+                /*SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + sSeisInput. SiteSubSoilClassIndex + "'", conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        sSiteSubSoilClass = reader["class"].ToString();
+                    }
+                }
+                */
+                sTableName = "ASNZS1170_5_Tab3_1_SSF";
+
+                // Load all T and Ch values for the specific site subsoil class from the database
+                SQLiteCommand command = new SQLiteCommand("Select * from ASNZS1170_5_Tab3_1_SSF", conn);
+                using (reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        sNaturalPeriod_T_Values.Add(float.Parse(reader["periodT"].ToString(), nfi));
+                        sFactor_Ch_ValuesForSpecificSoilClass.Add(float.Parse(reader[sSiteSubsoilClass].ToString(), nfi));
+                    }
+                }
+
+                reader.Close();
+
+                // Interpolate value - depends on natural period Tx, resp. Ty
+                fSpectralShapeFactor_Ch_Tx = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongXDirection_Tx, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
+                fSpectralShapeFactor_Ch_Ty = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongYDirection_Ty, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
             }
         }
     }

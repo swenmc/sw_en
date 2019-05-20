@@ -62,10 +62,10 @@ namespace EXPIMP
         private float m_FaultDistanceDmin;
         private float m_FaultDistanceDmax;
         private float m_ZoneFactorZ;
-        private float m_PeriodAlongXDirectionTx;
-        private float m_PeriodAlongYDirectionTy;
-        private float m_SpectralShapeFactorChTx;
-        private float m_SpectralShapeFactorChTy;
+        //private float m_PeriodAlongXDirectionTx;
+        //private float m_PeriodAlongYDirectionTy;
+        //private float m_SpectralShapeFactorChTx;
+        //private float m_SpectralShapeFactorChTy;
         private float m_AdditionalDeadActionRoof;
         private float m_AdditionalDeadActionWall;
         private float m_ImposedActionRoof;
@@ -682,7 +682,7 @@ namespace EXPIMP
                 m_ZoneFactorZ = value;
             }
         }
-
+        /*
         public float PeriodAlongXDirectionTx
         {
             get
@@ -734,7 +734,7 @@ namespace EXPIMP
                 m_SpectralShapeFactorChTy = value;
             }
         }
-
+        */
         public float AdditionalDeadActionRoof
         {
             get
@@ -832,8 +832,7 @@ namespace EXPIMP
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CModelData()
-        {            
+        {
         }
-        
     }
 }
