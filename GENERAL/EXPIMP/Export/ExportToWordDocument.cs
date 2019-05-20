@@ -21,7 +21,7 @@ namespace EXPIMP
     {
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
-        private const int imageMaxWidth = 650;
+        private const int imageMaxWidth = 720;
 
         public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
         {
@@ -299,16 +299,14 @@ namespace EXPIMP
             {
                 Row row = t.InsertRow();
                 row.Cells[0].Paragraphs[0].InsertText(cInfo.Prefix);
-                row.Cells[1].Paragraphs[0].InsertText(cInfo.Color);
+                row.Cells[1].Paragraphs[0].InsertText("");
                 row.Cells[1].FillColor = System.Drawing.Color.FromName(cInfo.Color);
                 row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color));
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
-                row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
-                
-                row.Cells[4].Paragraphs[0].InsertText(cInfo.SectionColor);
+                row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);                
+                row.Cells[4].Paragraphs[0].InsertText("");
                 row.Cells[4].FillColor = System.Drawing.Color.FromName(cInfo.SectionColor);
                 row.Cells[4].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.SectionColor));
-
                 row.Cells[5].Paragraphs[0].InsertText(cInfo.Material);
             }
             
@@ -495,12 +493,12 @@ namespace EXPIMP
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
 
             ExportHelper.SaveViewPortContentAsImage(viewPort);
-            double ratio = viewPort.ActualWidth / viewPort.ActualHeight;
+            double ratio = imageMaxWidth / viewPort.ActualWidth;
 
             // Add a simple image from disk.
             var image = document.AddImage("ViewPort.png");
             // Set Picture Height and Width.
-            var picture = image.CreatePicture((int)document.PageWidth, (int)(document.PageWidth * ratio));
+            var picture = image.CreatePicture((int)(viewPort.ActualHeight * ratio), imageMaxWidth);
             // Insert Picture in paragraph.
             par.RemoveText(0);
             par.AppendPicture(picture);
