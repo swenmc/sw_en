@@ -240,14 +240,18 @@ namespace EXPIMP
             Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltay, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltay);
 
             List<Canvas> canvases = new List<Canvas>();
-            if (fArr_AxialForceValuesN.Any(n => n > 0.001)) canvases.Add(Canvas_AxialForceDiagram);
-            if (fArr_ShearForceValuesVx.Any(n => n > 0.001)) canvases.Add(Canvas_ShearForceDiagramVx);
-            if (fArr_ShearForceValuesVy.Any(n => n > 0.001)) canvases.Add(Canvas_ShearForceDiagramVy);
-            if (fArr_TorsionMomentValuesT.Any(n => n > 0.001)) canvases.Add(Canvas_TorsionMomentDiagram);
-            if (fArr_BendingMomentValuesMx.Any(n => n > 0.001)) canvases.Add(Canvas_BendingMomentDiagramMx);
-            if (fArr_BendingMomentValuesMy.Any(n => n > 0.001)) canvases.Add(Canvas_BendingMomentDiagramMy);
-            if (fArr_DeflectionValuesDeltax.Any(n => n > 0.001)) canvases.Add(Canvas_DeflectionDiagramDeltax);
-            if (fArr_DeflectionValuesDeltay.Any(n => n > 0.001)) canvases.Add(Canvas_DeflectionDiagramDeltay);
+            double limitForce = 1e-1;
+            double limitMoment = 1e-1;
+            double limitDeflection = 1e-6;
+            // To Ondrej - tu treba brat absolutnu hodnotu (v diagrame mozu byt zaporne aj kladne)
+            if (fArr_AxialForceValuesN.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_AxialForceDiagram);
+            if (fArr_ShearForceValuesVx.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVx);
+            if (fArr_ShearForceValuesVy.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVy);
+            if (fArr_TorsionMomentValuesT.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_TorsionMomentDiagram);
+            if (fArr_BendingMomentValuesMx.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMx);
+            if (fArr_BendingMomentValuesMy.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMy);
+            if (fArr_DeflectionValuesDeltax.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltax);
+            if (fArr_DeflectionValuesDeltay.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltay);
 
             return canvases;
         }
@@ -477,6 +481,9 @@ namespace EXPIMP
                             iIndexMaxValue = c;
                         }
                     }
+
+                    // TODO Ondrej - Tieto limity "0" by mali byt rovnake ako limity pre diagramy samostatnych prutov podla typu IF (IFtypeIndex)
+                    // aby sa nestalo ze tam bude diagram pre ram ale nie pre prut
 
                     if (!MathF.d_equal(dMinValue, 0) || !MathF.d_equal(dMaxValue, 0)) IncludeResults = true;
                                         
