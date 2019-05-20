@@ -873,15 +873,11 @@ namespace PFD
             AnnualProbabilityULS_Snow = prob.AnnualProbabilityULS_Snow;
             AnnualProbabilityULS_EQ = prob.AnnualProbabilityULS_EQ;
             AnnualProbabilitySLS = prob.AnnualProbabilitySLS;
-            
+
             R_ULS_Wind = prob.R_ULS_Wind;
             R_ULS_Snow = prob.R_ULS_Snow;
             R_ULS_EQ = prob.R_ULS_EQ;
             R_SLS = prob.R_SLS;
         }
-
-
-
-
     }
 }

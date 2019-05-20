@@ -2189,6 +2189,7 @@ namespace PFD
             SetComponentListAccordingToDoors();
             SetComponentListAccordingToWindows();
         }
+
         private void SetComponentListAccordingToDoors()
         {
             if (ModelHasPersonelDoor()) _componentVM.AddPersonelDoor();
@@ -2198,6 +2199,7 @@ namespace PFD
             else _componentVM.RemoveRollerDoor();
 
         }
+
         private void SetComponentListAccordingToWindows()
         {
             if (ModelHasWindow()) _componentVM.AddWindow();
@@ -2212,6 +2214,7 @@ namespace PFD
             }
             return false;
         }
+
         private bool ModelHasRollerDoor()
         {
             foreach (DoorProperties d in DoorBlocksProperties)
@@ -2220,12 +2223,14 @@ namespace PFD
             }
             return false;
         }
+
         private bool ModelHasWindow()
         {
             if (WindowBlocksProperties == null) return false;
 
             return WindowBlocksProperties.Count > 0;
         }
+
         private void SetIsEnabledLocalMembersAxis()
         {
             //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
@@ -2239,6 +2244,7 @@ namespace PFD
 
             if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
         }
+
         private void SetIsEnabledSurfaceLoadsAxis()
         {
             //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
@@ -2288,6 +2294,7 @@ namespace PFD
 
             this.PropertyChanged(sender, e);
         }
+
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             SetResultsAreNotValid();
@@ -2298,8 +2305,6 @@ namespace PFD
         {
             if (PropertyChanged != null) this.PropertyChanged(sender, e);
         }
-
-
 
         public CModelData GetModelData()
         {
@@ -2381,7 +2386,6 @@ namespace PFD
             return data;
         }
 
-
         private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsULS()
         {
             Dictionary<EMemberType_FS_Position, CCalculMember> dictULSDesignResults = new Dictionary<EMemberType_FS_Position, CCalculMember>();
@@ -2398,6 +2402,7 @@ namespace PFD
             }
             return dictULSDesignResults;
         }
+
         private Dictionary<EMemberType_FS_Position, CCalculMember> GetDesignResultsSLS()
         {
             Dictionary<EMemberType_FS_Position, CCalculMember> dictSLSDesignResults = new Dictionary<EMemberType_FS_Position, CCalculMember>();
@@ -2421,6 +2426,7 @@ namespace PFD
             CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID  && i.LoadCombination.ID == loadCombID);
             cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
         }
+
         public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, CMember m, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
@@ -2473,6 +2479,5 @@ namespace PFD
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);
             }
         }
-
     }
 }
