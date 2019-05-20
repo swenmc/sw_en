@@ -296,7 +296,7 @@ namespace PFD
                 iGirtNoInOneFrame = 2 * iOneColumnGirtNo;
             }
 
-            if (iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
+            if (!bGenerateGirts || iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
                 bUseMainColumnFlyBracingPlates = false;
 
             float fFirstGirtPosition = fBottomGirtPosition;
@@ -313,7 +313,7 @@ namespace PFD
                 iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
             }
 
-            if (iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
+            if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
                 bUseRafterFlyBracingPlates = false;
 
             int iOneRafterFrontColumnNo = 0;
@@ -381,6 +381,9 @@ namespace PFD
                 iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
             }
 
+            if (!bGenerateFrontGirts || iFrontColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
+                bUseFrontColumnFlyBracingPlates = false;
+
             // Number of Nodes - Back Girts
             int iBackIntermediateColumnNodesForGirtsOneRafterNo = 0;
             int iBackIntermediateColumnNodesForGirtsOneFrameNo = 0;
@@ -411,6 +414,9 @@ namespace PFD
                 // Girts in the middle are considered twice - remove one set
                 iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
             }
+
+            if (!bGenerateBackGirts || iBackColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
+                bUseBackColumnFlyBracingPlates = false;
 
             m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame];
@@ -493,19 +499,28 @@ namespace PFD
 
                 // Main Column
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[iCrscColumnIndex], eColumnType, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseMainColumnFlyBracingPlates, iMainColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_Girt, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0]);
+
                 // Rafters
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[iCrscRafterIndex], eRafterType, null, null, fRafterStart, fRafterEnd, 0f, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseRafterFlyBracingPlates, iRafterFlyBracing_EveryXXPurlin, fFirstPurlinPosition, fDist_Purlin, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1]);
+
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[iCrscRafterIndex], eRafterType, null, null, fRafterEnd, fRafterStart, 0f, 0);
+                // Reversed sequence of ILS
+                CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseRafterFlyBracingPlates, iRafterFlyBracing_EveryXXPurlin, fFirstPurlinPosition, fDist_Purlin, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2]);
+
                 // Main Column
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[iCrscColumnIndex], eColumnType, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
+                // Reversed sequence of ILS
+                CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseMainColumnFlyBracingPlates, iMainColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_Girt, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3]);
 
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
                 {
                     m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
                     m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
-                    AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4], iNumberOfTransverseSupports_EdgePurlins);
-                    AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5], iNumberOfTransverseSupports_EdgePurlins);
+                    CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4], iNumberOfTransverseSupports_EdgePurlins);
+                    CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5], iNumberOfTransverseSupports_EdgePurlins);
                 }
             }
 
@@ -533,73 +548,20 @@ namespace PFD
             int i_temp_numberofMembers = iMainColumnNo + iRafterNo + iEavesPurlinNoInOneFrame * (iFrameNo - 1);
             if (bGenerateGirts)
             {
-                // REFAKTOROVAT S PURLINS
-                // Define fly bracing position on main column // Tento kod moze byt vyssie
-                float fMainColumnLength = fH1_frame; // TODO - podla toho ci bude v H1 celkova vyska alebo strednicova
-
-                if (bUseMainColumnFlyBracingPlates && iMainColumnFlyBracing_EveryXXGirt > 0)
-                {
-                    for (int i = 0; i < iFrameNo; i++) // Each frame
-                    {
-                        List<CIntermediateTransverseSupport> lTransverseSupportGroup_MainColumn = new List<CIntermediateTransverseSupport>();
-                        float fFirstFlyBracePosition = fFirstGirtPosition + (iMainColumnFlyBracing_EveryXXGirt - 1) * fDist_Girt;
-                        int iNumberOfFlyBracesOnMainColumn = fFirstFlyBracePosition < fMainColumnLength ? (int)((fMainColumnLength - fFirstFlyBracePosition) / (iMainColumnFlyBracing_EveryXXGirt * fDist_Girt)) + 1 : 0;
-
-                        for (int j = 0; j < iNumberOfFlyBracesOnMainColumn; j++) // Each fly brace
-                        {
-                            float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iMainColumnFlyBracing_EveryXXGirt) * fDist_Girt;
-
-                            if (fxLocationOfFlyBrace < fMainColumnLength)
-                                lTransverseSupportGroup_MainColumn.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fMainColumnLength, fxLocationOfFlyBrace, 0));
-                            // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
-                        }
-
-                        if (lTransverseSupportGroup_MainColumn.Count > 0)
-                        {
-                            int iLeftMainColumnIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0;
-                            int iRightMainColumnIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3;
-
-                            List<CSegment_LTB> LTB_segment_group_mainColumn = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_MainColumn, false, fMainColumnLength);
-
-                            // Assign transverse support group to the main column
-                            // Left Main Column
-                            m_arrMembers[iLeftMainColumnIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_MainColumn;
-                            m_arrMembers[iLeftMainColumnIndex].LTBSegmentGroup = LTB_segment_group_mainColumn;
-
-                            // Right Main Column
-                            // Pre pravy column su suradnice opacne orientovane, takze pouzit L - x
-                            List<CIntermediateTransverseSupport> lTransverseSupportGroup_MainColumn_Reverse = new List<CIntermediateTransverseSupport>();
-                            List<CSegment_LTB> LTB_segment_group_mainColumn_Reverse = new List<CSegment_LTB>();
-
-                            for (int j = 0; j < lTransverseSupportGroup_MainColumn.Count; j++)
-                            {
-                                int iSupportIndex = lTransverseSupportGroup_MainColumn.Count - j - 1;
-                                CIntermediateTransverseSupport lTransverseSupport = new CIntermediateTransverseSupport(j+1, lTransverseSupportGroup_MainColumn[iSupportIndex].Type, 1f - lTransverseSupportGroup_MainColumn[iSupportIndex].Fx_position_rel, fMainColumnLength - lTransverseSupportGroup_MainColumn[iSupportIndex].Fx_position_abs);
-                                lTransverseSupportGroup_MainColumn_Reverse.Add(lTransverseSupport);
-                            }
-
-                            LTB_segment_group_mainColumn_Reverse = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_MainColumn_Reverse, false, fMainColumnLength);
-
-                            m_arrMembers[iRightMainColumnIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_MainColumn_Reverse;
-                            m_arrMembers[iRightMainColumnIndex].LTBSegmentGroup = LTB_segment_group_mainColumn_Reverse;
-                        }
-                    }
-                }
-
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FS.eG, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + j]);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j], iNumberOfTransverseSupports_Girts);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j], iNumberOfTransverseSupports_Girts);
                     }
 
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FS.eG, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j]);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], iNumberOfTransverseSupports_Girts);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], iNumberOfTransverseSupports_Girts);
                     }
                 }
             }
@@ -634,56 +596,6 @@ namespace PFD
             i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGeneratePurlins)
             {
-                // REFAKTOROVAT S GIRTS
-                // Define fly bracing position on rafter // Tento kod moze byt vyssie
-                if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0)
-                {
-                    for (int i = 0; i < iFrameNo; i++) // Each frame
-                    {
-                        List<CIntermediateTransverseSupport> lTransverseSupportGroup_Rafter = new List<CIntermediateTransverseSupport>();
-                        float fFirstFlyBracePosition = fFirstPurlinPosition + (iRafterFlyBracing_EveryXXPurlin - 1) * fDist_Purlin;
-                        int iNumberOfFlyBracesOnRafter = fFirstFlyBracePosition < fRafterLength ? (int)((fRafterLength - fFirstFlyBracePosition) / (iRafterFlyBracing_EveryXXPurlin * fDist_Purlin)) + 1 : 0;
-
-                        for (int j = 0; j < iNumberOfFlyBracesOnRafter; j++) // Each fly brace
-                        {
-                            float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iRafterFlyBracing_EveryXXPurlin) * fDist_Purlin;
-
-                            if (fxLocationOfFlyBrace < fRafterLength)
-                                lTransverseSupportGroup_Rafter.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fRafterLength, fxLocationOfFlyBrace, 0));
-                            // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
-                        }
-
-                        if (lTransverseSupportGroup_Rafter.Count > 0)
-                        {
-                            int iLeftRafterIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1;
-                            int iRightRafterIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2;
-
-                            List<CSegment_LTB> LTB_segment_group_Rafter = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Rafter, false, fRafterLength);
-
-                            // Assign transverse support group to the rafter
-                            // Left Rafter
-                            m_arrMembers[iLeftRafterIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
-                            m_arrMembers[iLeftRafterIndex].LTBSegmentGroup = LTB_segment_group_Rafter;
-                            // Right Rafter
-                            // Pre pravy rafter su suradnice opacne orientovane, takze pouzit L - x
-                            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Rafter_Reverse = new List<CIntermediateTransverseSupport>();
-                            List<CSegment_LTB> LTB_segment_group_Rafter_Reverse = new List<CSegment_LTB>();
-
-                            for (int j = 0; j < lTransverseSupportGroup_Rafter.Count; j++)
-                            {
-                                int iSupportIndex = lTransverseSupportGroup_Rafter.Count - j - 1;
-                                CIntermediateTransverseSupport lTransverseSupport = new CIntermediateTransverseSupport(j + 1, lTransverseSupportGroup_Rafter[iSupportIndex].Type, 1f - lTransverseSupportGroup_Rafter[iSupportIndex].Fx_position_rel, fRafterLength - lTransverseSupportGroup_Rafter[iSupportIndex].Fx_position_abs);
-                                lTransverseSupportGroup_Rafter_Reverse.Add(lTransverseSupport);
-                            }
-
-                            LTB_segment_group_Rafter_Reverse = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Rafter_Reverse, false, fRafterLength);
-
-                            m_arrMembers[iRightRafterIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter_Reverse;
-                            m_arrMembers[iRightRafterIndex].LTBSegmentGroup = LTB_segment_group_Rafter_Reverse;
-                        }
-                    }
-                }
-
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
@@ -705,14 +617,14 @@ namespace PFD
                         }
 
                         m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j], iNumberOfTransverseSupports_Purlins);
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
 
                         m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], iNumberOfTransverseSupports_Purlins);
                     }
                 }
             }
@@ -729,7 +641,7 @@ namespace PFD
             i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGenerateFrontColumns)
             {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation);
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, eccentricityColumnFront_Z, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation, bUseFrontColumnFlyBracingPlates, iFrontColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_FrontGirts);
             }
 
             // Back Columns
@@ -745,7 +657,7 @@ namespace PFD
             i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
             if (bGenerateBackColumns)
             {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation);
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, eccentricityColumnBack_Z, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation, bUseBackColumnFlyBracingPlates, iBackColumnFlyBracing_EveryXXGirt, fBottomGirtPosition, fDist_BackGirts);
             }
 
             // Front Girts
@@ -1564,17 +1476,32 @@ namespace PFD
             }
         }
 
-        public void AddColumnsMembers(int i_temp_numberofNodes, int i_temp_numberofMembers, int iOneRafterColumnNo, int iColumnNoInOneFrame, CMemberEccentricity eccentricityColumn, float fColumnAlignmentStart, float fColumnAlignmentEnd, CCrSc section, float fMemberRotation)
+        public void AddColumnsMembers(
+            int i_temp_numberofNodes,
+            int i_temp_numberofMembers,
+            int iOneRafterColumnNo,
+            int iColumnNoInOneFrame,
+            CMemberEccentricity eccentricityColumn,
+            float fColumnAlignmentStart,
+            float fColumnAlignmentEnd,
+            CCrSc section,
+            float fMemberRotation,
+            bool bUseFlyBracing,
+            int iFlyBracing_Every_XXSupportingMember,
+            float fFirstSupportingMemberPositionAbsolute,
+            float fSupportingMembersDistance)
         {
             // Members - Columns
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FS.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + i]);
             }
 
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
                 m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fFirstSupportingMemberPositionAbsolute, fSupportingMembersDistance, ref m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i]);
             }
         }
 
@@ -1648,7 +1575,7 @@ namespace PFD
                     for (int j = 0; j < iOneColumnGirtNo_temp; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + j], m_arrNodes[i_temp_numberofNodes + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, fMemberRotation, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + j], iNumberOfTransverseSupports);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + j], iNumberOfTransverseSupports);
                     }
 
                     iTemp += iOneColumnGirtNo_temp;
@@ -1658,7 +1585,7 @@ namespace PFD
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
                     }
 
                     iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
@@ -1669,7 +1596,7 @@ namespace PFD
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneFrameNo - iArrNumberOfNodesPerColumn[iOneRafterColumnNo - 1] + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iTemp + j], iNumberOfTransverseSupports);
                     }
 
                     iTemp += iArrNumberOfNodesPerColumn[i - 1];
@@ -1688,7 +1615,7 @@ namespace PFD
                     for (int j = 0; j < iOneColumnGirtNo_temp; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, -fMemberRotation, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j], iNumberOfTransverseSupports);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j], iNumberOfTransverseSupports);
                     }
 
                     iTemp += iOneColumnGirtNo_temp;
@@ -1698,7 +1625,7 @@ namespace PFD
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
                         m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, -fMemberRotation, 0);
-                        AssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j], iNumberOfTransverseSupports);
+                        CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j], iNumberOfTransverseSupports);
                     }
 
                     iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
@@ -2169,7 +2096,7 @@ namespace PFD
             return TransverseSupportGroup;
         }
 
-        private void AssignRegularTransverseSupportGroupAndLTBsegmentGroup(CMember member, int iNumberOfTransverseSupports)
+        private void CreateAndAssignRegularTransverseSupportGroupAndLTBsegmentGroup(CMember member, int iNumberOfTransverseSupports)
         {
             List<CIntermediateTransverseSupport> TransverseSupportGroup = GenerateRegularIntermediateTransverseSupports(member.FLength, iNumberOfTransverseSupports);
             List<CSegment_LTB> LTB_segment_group = GenerateIntermediateLTBSegmentsOnMember(TransverseSupportGroup, false, member.FLength);
@@ -2177,6 +2104,103 @@ namespace PFD
             // Assign transverse support group and LTB segment group to the member
             member.IntermediateTransverseSupportGroup = TransverseSupportGroup;
             member.LTBSegmentGroup = LTB_segment_group;
+        }
+
+        private void CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(
+        bool bUseFlyBracing,
+        int iFlyBracing_Every_XXSupportingMember,
+        float fFirstSupportingMemberPositionAbsolute,
+        float fSupportingMembersDistance,
+        ref CMember member,
+        out List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member,
+        out List<CSegment_LTB> LTB_segment_group_Member)
+        {
+            lTransverseSupportGroup_Member = null;
+            LTB_segment_group_Member = null;
+
+            // Define fly bracing positions and LTB segments on member
+            float fMemberLength = member.FLength;
+
+            if (bUseFlyBracing && iFlyBracing_Every_XXSupportingMember > 0)
+            {
+                    lTransverseSupportGroup_Member = new List<CIntermediateTransverseSupport>();
+                    float fFirstFlyBracePosition = fFirstSupportingMemberPositionAbsolute + (iFlyBracing_Every_XXSupportingMember - 1) * fSupportingMembersDistance;
+                    int iNumberOfFlyBracesOnMember = fFirstFlyBracePosition < fMemberLength ? (int)((fMemberLength - fFirstFlyBracePosition) / (iFlyBracing_Every_XXSupportingMember * fSupportingMembersDistance)) + 1 : 0;
+
+                    for (int j = 0; j < iNumberOfFlyBracesOnMember; j++) // Each fly brace
+                    {
+                        float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iFlyBracing_Every_XXSupportingMember) * fSupportingMembersDistance;
+
+                        if (fxLocationOfFlyBrace < fMemberLength)
+                            lTransverseSupportGroup_Member.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fMemberLength, fxLocationOfFlyBrace, 0));
+                        // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
+                    }
+
+                    if (lTransverseSupportGroup_Member.Count > 0)
+                    {
+                        LTB_segment_group_Member = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Member, false, fMemberLength);
+                    }
+            }
+        }
+
+        private void CreateAndAssignIrregularTransverseSupportGroupAndLTBsegmentGroup(
+            bool bUseFlyBracing,
+            int iFlyBracing_Every_XXSupportingMember,
+            float fFirstSupportingMemberPositionAbsolute,
+            float fSupportingMembersDistance,
+            ref CMember member)
+        {
+            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member;
+            List<CSegment_LTB> LTB_segment_group_Member;
+
+            CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(
+                bUseFlyBracing,
+                iFlyBracing_Every_XXSupportingMember,
+                fFirstSupportingMemberPositionAbsolute,
+                fSupportingMembersDistance,
+                ref member,
+                out lTransverseSupportGroup_Member,
+                out LTB_segment_group_Member);
+
+            if (lTransverseSupportGroup_Member != null && lTransverseSupportGroup_Member.Count > 0)
+            {
+                // Assign transverse support group to the member
+                member.IntermediateTransverseSupportGroup = lTransverseSupportGroup_Member;
+                member.LTBSegmentGroup = LTB_segment_group_Member;
+            }
+        }
+
+        private void CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(
+            bool bUseFlyBracing,
+            int iFlyBracing_Every_XXSupportingMember,
+            float fFirstSupportingMemberPositionAbsolute,
+            float fSupportingMembersDistance,
+            ref CMember member)
+        {
+            // Suradnice pre member opacne orientovane, takze pouzit L - x
+            float fmemberLength = member.FLength;
+            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member = new List<CIntermediateTransverseSupport>();
+            List<CSegment_LTB> LTB_segment_group_Member = new List<CSegment_LTB>();
+            CreateIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseFlyBracing, iFlyBracing_Every_XXSupportingMember, fBottomGirtPosition, fDist_Girt, ref member, out lTransverseSupportGroup_Member, out LTB_segment_group_Member);
+
+            // Reverse ILS and LTB segments
+            List<CIntermediateTransverseSupport> lTransverseSupportGroup_Member_Reverse = new List<CIntermediateTransverseSupport>();
+            List<CSegment_LTB> LTB_segment_group_Member_Reverse = new List<CSegment_LTB>();
+
+            if (lTransverseSupportGroup_Member != null && lTransverseSupportGroup_Member.Count != 0) // List is initialized and some intermediate supports exists
+            {
+                for (int j = 0; j < lTransverseSupportGroup_Member.Count; j++)
+                {
+                    int iSupportIndex = lTransverseSupportGroup_Member.Count - j - 1;
+                    CIntermediateTransverseSupport lTransverseSupport = new CIntermediateTransverseSupport(j + 1, lTransverseSupportGroup_Member[iSupportIndex].Type, 1f - lTransverseSupportGroup_Member[iSupportIndex].Fx_position_rel, fmemberLength - lTransverseSupportGroup_Member[iSupportIndex].Fx_position_abs);
+                    lTransverseSupportGroup_Member_Reverse.Add(lTransverseSupport);
+                }
+
+                LTB_segment_group_Member_Reverse = GenerateIntermediateLTBSegmentsOnMember(lTransverseSupportGroup_Member_Reverse, false, fmemberLength);
+
+                member.IntermediateTransverseSupportGroup = lTransverseSupportGroup_Member_Reverse;
+                member.LTBSegmentGroup = LTB_segment_group_Member_Reverse;
+            }
         }
     }
 }
