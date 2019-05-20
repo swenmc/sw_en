@@ -19,7 +19,6 @@ namespace EXPIMP
     {
         public static RenderTargetBitmap SaveViewPortContentAsImage(Viewport3D viewPort)
         {
-
             // Scale dimensions from 96 dpi to 600 dpi.
             double scale = 300 / 96;
             RenderTargetBitmap bmp = new RenderTargetBitmap((int)(scale * viewPort.ActualWidth),
@@ -49,8 +48,6 @@ namespace EXPIMP
             RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width, (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
             rtb.Render(canvas);
             return rtb;
-
-
 
             //// Scale dimensions from 96 dpi to 600 dpi.
             //double scale = 300 / 96;
@@ -82,6 +79,7 @@ namespace EXPIMP
 
             return stm;
         }
+
         private static RenderTargetBitmap RenderVisual(UIElement elt)
         {
             Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
@@ -240,9 +238,9 @@ namespace EXPIMP
             Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltay, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltay);
 
             List<Canvas> canvases = new List<Canvas>();
-            double limitForce = 1e-1;
-            double limitMoment = 1e-1;
-            double limitDeflection = 1e-6;
+            double limitForce = 1e-3; // 0.001 kN
+            double limitMoment = 1e-3; // 0.001 kNm
+            double limitDeflection = 1e-2; // 0.01 mm
             // To Ondrej - tu treba brat absolutnu hodnotu (v diagrame mozu byt zaporne aj kladne)
             if (fArr_AxialForceValuesN.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_AxialForceDiagram);
             if (fArr_ShearForceValuesVx.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVx);
@@ -255,7 +253,6 @@ namespace EXPIMP
 
             return canvases;
         }
-
 
         public static void TransformIFStructureOnMemberToFloatArrays(
             bool bUseResultsForGeometricalCRSCAxis, // Use cross-section geometrical axis IF or principal axis IF
@@ -324,12 +321,11 @@ namespace EXPIMP
             if (model == null) throw new Exception($"Frame not found for member: {member?.ID}");
             return GetFrameInternalForcesCanvases(model, lcomb, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations, UseCRSCGeometricalAxes);
         }
-        
 
         private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            //double internalForceScale_user = 2;            
+            //double internalForceScale_user = 2;
             int NumberOfDecimalPlaces = 2;
             int FontSize = 12;
             float fCanvasWidth = (float)720; // Size of Canvas
@@ -431,7 +427,7 @@ namespace EXPIMP
                     List<Point> points = new List<Point>();
                     foreach (Point p in listMemberInternalForcePoints)
                         points.Add(transformGroup_RandT.Transform(p));
-                    
+
                     // Analyse diagram - find minimum and maximum value (find local extremes ???)
                     // store index of extreme values
 
@@ -486,9 +482,9 @@ namespace EXPIMP
                     // aby sa nestalo ze tam bude diagram pre ram ale nie pre prut
 
                     if (!MathF.d_equal(dMinValue, 0) || !MathF.d_equal(dMaxValue, 0)) IncludeResults = true;
-                                        
+
                     for (int c = 0; c < sBIF_x.Length; c++)
-                    {                        
+                    {
                         if(c != 0 && c != (sBIF_x.Length - 1) && c != iIndexMinValue && c != iIndexMaxValue) continue;
                         float IF_Value = GetInternalForcesValue(IFtypeIndex ,sBIF_x[c], sBDef_x[c]);
 
@@ -512,13 +508,11 @@ namespace EXPIMP
                 {
                     DiagramCanvas.ToolTip = GetInternalForceText(IFtypeIndex);
                     canvases.Add(DiagramCanvas);
-                } 
+                }
             }
 
             return canvases;
         }
-
-
 
         private static List<Point> GetMemberInternalForcePoints(CModel model, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations,
             CMember member, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
@@ -595,7 +589,7 @@ namespace EXPIMP
         {
             double maxLocationValue = 100;
             double minRatio = double.MaxValue;
-            const int iNumberOfResultsSections = 11;            
+            const int iNumberOfResultsSections = 11;
 
             designBucklingLengthFactors[] sBucklingLengthFactors;
             designMomentValuesForCb[] sMomentValuesforCb;
@@ -620,16 +614,14 @@ namespace EXPIMP
                     iNumberOfResultsSections,
                     out sBDef_x);
 
-                
                 // Internal force diagram points
                 for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
                 {
-                    float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[j], sBDef_x[j]);                    
+                    float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[j], sBDef_x[j]);
                     double ratio = maxLocationValue / Math.Abs(dInternalForceScale * IF_Value);
                     if (ratio < minRatio) minRatio = ratio;
                 }
             }
-            
             return minRatio;
         }
 
@@ -664,7 +656,7 @@ namespace EXPIMP
                 case 6: return "Local Deflection δx [mm]";
                 case 7: return "Local Deflection δy [mm]";
                 default: throw new Exception($"Not known internal force; IFTypeIndex: {IFtypeIndex}");
-            }            
+            }
         }
 
         private static void DrawMember(CModel model, Canvas canvas, int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
@@ -690,6 +682,5 @@ namespace EXPIMP
 
             Drawing2D.DrawPolyLine(false, points, color, PenLineCap.Flat, PenLineCap.Flat, thickness, canvas);
         }
-
     }
 }

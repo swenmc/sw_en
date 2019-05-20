@@ -44,7 +44,7 @@ namespace PFD
                     }
                 }
 
-                List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frameMembers, model.m_arrLoadCases);
+                List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForNodesAndMembers(frameNodes, frameMembers, model.m_arrLoadCases);
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
                 List<CNSupport> frameSupports = model.GetFrameCNSupports();
                 CFrame frame = new CFrame(frameMembers.ToArray(), frameNodes.ToArray(), frameLoadCases.ToArray(), frameLoadCombinations.ToArray(), frameSupports.ToArray());
@@ -86,7 +86,7 @@ namespace PFD
                     if (simpleBeamMember.CrScStart == null)
                         continue;
 
-                    List<CLoadCase> simpleBeamLoadCases = CModelHelper.GetLoadCasesForMembers(new List<CMember> { simpleBeamMember }, model.m_arrLoadCases);
+                    List<CLoadCase> simpleBeamLoadCases = CModelHelper.GetLoadCasesForNodesAndMembers(simpleBeamNodes, new List<CMember> { simpleBeamMember }, model.m_arrLoadCases);
                     List<CLoadCombination> simpleBeamLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(simpleBeamLoadCases.ToArray(), model.m_arrLoadCombs);
                     List<CNSupport> simpleBeamSupports = model.GetSimpleBeamCNSupports();
                     CBeam_Simple beam = new CBeam_Simple(simpleBeamMember, simpleBeamNodes.ToArray(), simpleBeamLoadCases.ToArray(), simpleBeamLoadCombinations.ToArray(), simpleBeamSupports.ToArray());
@@ -194,7 +194,7 @@ namespace PFD
             return simpleBeamSupports;
         }
 
-        public static List<CLoadCase> GetLoadCasesForMembers(List<CMember> members, CLoadCase[] allLoadCases)
+        public static List<CLoadCase> GetLoadCasesForNodesAndMembers(List<CNode> nodes, List<CMember> members, CLoadCase[] allLoadCases)
         {
             List<CLoadCase> listOfOriginalLoadCases = allLoadCases.ToList();
             List<CLoadCase> listOfNewLoadCases = new List<CLoadCase>();
@@ -213,6 +213,16 @@ namespace PFD
                 lc_new.MemberLoadsList = lc.MemberLoadsList;
                 lc_new.SurfaceLoadsList = lc.SurfaceLoadsList;
 
+                // Nodal Loads
+                List<CNLoad> listOfOriginalNodalLoads = lc.NodeLoadsList;
+                List<CNLoad> listOfNewNodalLoads = new List<CNLoad>();
+
+                foreach (CNLoad load in listOfOriginalNodalLoads)
+                {
+                    if (nodes.Exists(n => n.ID == load.Node.ID)) listOfNewNodalLoads.Add(load);
+                }
+
+                // Member Loads
                 List<CMLoad> listOfOriginalMemberLoads = lc.MemberLoadsList;
                 List<CMLoad> listOfNewMemberLoads = new List<CMLoad>();
 
@@ -236,7 +246,7 @@ namespace PFD
 
                 //if (loads.Count > 0)
                 //{
-                    lc_new.NodeLoadsList = null;
+                    lc_new.NodeLoadsList = listOfNewNodalLoads;
                     lc_new.SurfaceLoadsList = null;
                     lc_new.MemberLoadsList = listOfNewMemberLoads;
                     listOfNewLoadCases.Add(lc_new);
@@ -306,6 +316,16 @@ namespace PFD
             for (int i = 0; i < simpleBeams.Count; i++)
             {
                 if (Array.Exists(simpleBeams[i].m_arrMembers, mem => mem.ID == m.ID)) return i;
+            }
+
+            return -1; //not found
+        }
+
+        public static int GetNodeIndexInFrame(this CFrame frame, CNode n)
+        {
+            for (int i = 0; i < frame.m_arrNodes.Length; i++)
+            {
+                if (frame.m_arrNodes[i].ID == n.ID) return i;
             }
 
             return -1; //not found

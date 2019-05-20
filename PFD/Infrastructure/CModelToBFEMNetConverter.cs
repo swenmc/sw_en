@@ -214,6 +214,28 @@ namespace PFD
             // Loads
             for (int i = 0; i < loadcases.Count; i++) // Each load case
             {
+                for (int j = 0; j < topomodel.m_arrLoadCases[i].NodeLoadsList.Count; j++) // Each nodal load
+                {
+                    if (topomodel.m_arrLoadCases[i].NodeLoadsList[j] == null) continue;
+
+                    NodalLoad BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].NodeLoadsList[j], loadcases[i]);
+                    if (BFEMLoad != null)
+                    {
+                        int iNodeIndex_FN = -1;
+
+                        // Konvertovat len uzlove zatazenie ramu
+                        if (topomodel is CFrame) // Frame model
+                        {
+                            CFrame frame = (CFrame)topomodel;
+
+                            // Zatazenie odkazuje na globalne ID uzla, ale tu sa zmeni na ID uzla v BFENet (0-4)
+                            iNodeIndex_FN = frame.GetNodeIndexInFrame(topomodel.m_arrLoadCases[i].NodeLoadsList[j].Node);
+
+                            nodeCollection[iNodeIndex_FN].Loads.Add(BFEMLoad);
+                        }
+                    }
+                }
+
                 for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
                 {
                     // TODO - prepracovat system pre priradzovanie typovych objektov Loads, Supports a podobne,
@@ -288,6 +310,54 @@ namespace PFD
                 loadtype = LoadType.Quake;
 
             return loadtype;
+        }
+
+        private static NodalLoad GetBFEMLoad(CNLoad nodeLoad, LoadCase loadCase)
+        {
+            var nl = new NodalLoad();
+
+            if (nodeLoad is CNLoadSingle)
+            {
+                CNLoadSingle nodeLoad_single = (CNLoadSingle)nodeLoad;
+
+                switch (nodeLoad_single.NLoadType)
+                {
+                    case ENLoadType.eNLT_Fx:
+                        nl.Force = new Force(nodeLoad_single.Value, 0, 0, 0, 0, 0);
+                        break;
+                    case ENLoadType.eNLT_Fy:
+                        nl.Force = new Force(0, nodeLoad_single.Value, 0, 0, 0, 0);
+                        break;
+                    case ENLoadType.eNLT_Fz:
+                        nl.Force = new Force(0, 0, nodeLoad_single.Value, 0, 0, 0);
+                        break;
+                    case ENLoadType.eNLT_Mx:
+                        nl.Force = new Force(0, 0, 0, nodeLoad_single.Value, 0, 0);
+                        break;
+                    case ENLoadType.eNLT_My:
+                        nl.Force = new Force(0, 0, 0, 0, nodeLoad_single.Value, 0);
+                        break;
+                    case ENLoadType.eNLT_Mz:
+                        nl.Force = new Force(0, 0, 0, 0, 0, nodeLoad_single.Value);
+                        break;
+                    case ENLoadType.eNLT_OTHER:
+                    default:
+                        // Exception - not implemented
+                        throw new Exception("Not implemented load type.");
+                        //nl.Force = new Force(0, 0, 0, 0, 0, 0);
+                        //break;
+                }
+            }
+            else
+            {
+                CNLoadAll nodeLoad_all = (CNLoadAll)nodeLoad;
+                nl.Force = new Force(nodeLoad_all.Value_FX, nodeLoad_all.Value_FY, nodeLoad_all.Value_FZ, nodeLoad_all.Value_MX, nodeLoad_all.Value_MY, nodeLoad_all.Value_MZ);
+            }
+
+            // Set load case
+            nl.Case = loadCase;
+
+            return nl;
         }
 
         private static Load GetBFEMLoad(CMLoad memberLoad, LoadCase loadCase)
