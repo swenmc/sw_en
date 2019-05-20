@@ -113,6 +113,9 @@ namespace EXPIMP
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
         public static List<Canvas> GetIFCanvases(bool UseCRSCGeometricalAxes, CLoadCombination lcomb, CMember member, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections)
         {
+            List<Canvas> canvases = new List<Canvas>();
+            if (lcomb == null || member == null || listMemberLoadForces == null || listMemberDeflections == null) return canvases;
+
             float fCanvasHeight = 180; // Size of Canvas // Same size of of diagrams ???
             float fCanvasWidth = 720;  // Size of Canvas
 
@@ -236,8 +239,7 @@ namespace EXPIMP
 
             Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltax, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltax);
             Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltay, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltay);
-
-            List<Canvas> canvases = new List<Canvas>();
+                        
             double limitForce = 1e-3; // 0.001 kN
             double limitMoment = 1e-3; // 0.001 kNm
             double limitDeflection = 1e-2; // 0.01 mm
@@ -312,6 +314,8 @@ namespace EXPIMP
 
         public static List<Canvas> GetFrameInternalForcesCanvases(List<CFrame> frames, CMember member, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
+            if (frames == null || member == null || lcomb == null || ListMemberInternalForcesInLoadCombinations == null || ListMemberDeflectionsInLoadCombinations == null) return new List<Canvas>();
+
             CFrame model = null;
             for (int i = 0; i < frames.Count; i++)
             {
