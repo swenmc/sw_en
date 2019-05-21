@@ -157,15 +157,19 @@ namespace M_AS4600
                     row["Value"] = listPhysicalQuantity_Values[i];
                     row["Unit"] = listPhysicalQuantity_Units[i];
                     i++;
-                    if (i >= listPhysicalQuantity_Symbols.Count) break;
-                    row["Symbol1"] = listPhysicalQuantity_Symbols[i];
-                    row["Value1"] = listPhysicalQuantity_Values[i];
-                    row["Unit1"] = listPhysicalQuantity_Units[i];
-                    i++;
-                    if (i >= listPhysicalQuantity_Symbols.Count) break;
-                    row["Symbol2"] = listPhysicalQuantity_Symbols[i];
-                    row["Value2"] = listPhysicalQuantity_Values[i];
-                    row["Unit2"] = listPhysicalQuantity_Units[i];
+                    if (i < listPhysicalQuantity_Symbols.Count)
+                    {
+                        row["Symbol1"] = listPhysicalQuantity_Symbols[i];
+                        row["Value1"] = listPhysicalQuantity_Values[i];
+                        row["Unit1"] = listPhysicalQuantity_Units[i];
+                        i++;
+                    }
+                    if (i < listPhysicalQuantity_Symbols.Count)
+                    {
+                        row["Symbol2"] = listPhysicalQuantity_Symbols[i];
+                        row["Value2"] = listPhysicalQuantity_Values[i];
+                        row["Unit2"] = listPhysicalQuantity_Units[i];
+                    }
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
