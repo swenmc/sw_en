@@ -151,34 +151,46 @@ namespace EXPIMP
 
         private static Paragraph DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
         {
-            var t = document.AddTable(1, 4);
+            var t = document.AddTable(1, 5);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.Window;
-            
-            t.Rows[0].Cells[0].Paragraphs[0].InsertText("Text");
-            t.Rows[0].Cells[1].Paragraphs[0].InsertText("Symbol");
-            t.Rows[0].Cells[2].Paragraphs[0].InsertText("Value");
-            t.Rows[0].Cells[3].Paragraphs[0].InsertText("Unit");
-            t.Rows[0].Cells[0].Paragraphs[0].Bold();
+
+            var imagePath = $"{resourcesFolderPath}steelcoil01.png";
+            var picWidth = 250;
+            var picHeight = 250;
+            var image = document.AddImage(imagePath);
+            // Set Picture Height and Width.
+            var picture = image.CreatePicture(picHeight, picWidth);
+
+            t.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);
+            t.Rows[0].Cells[1].Paragraphs[0].InsertText("Text");
+            t.Rows[0].Cells[2].Paragraphs[0].InsertText("Symbol");
+            t.Rows[0].Cells[3].Paragraphs[0].InsertText("Value");
+            t.Rows[0].Cells[4].Paragraphs[0].InsertText("Unit");
             t.Rows[0].Cells[1].Paragraphs[0].Bold();
             t.Rows[0].Cells[2].Paragraphs[0].Bold();
             t.Rows[0].Cells[3].Paragraphs[0].Bold();
-            t.Rows[0].Cells[0].Width = document.PageWidth * 0.6;
-            t.Rows[0].Cells[1].Width = document.PageWidth * 0.13;
-            t.Rows[0].Cells[2].Width = document.PageWidth * 0.13;
-            t.Rows[0].Cells[3].Width = document.PageWidth * 0.13;
+            t.Rows[0].Cells[4].Paragraphs[0].Bold();
+            
+            t.Rows[0].Cells[0].Width = picWidth;
+            t.Rows[0].Cells[1].Width = (document.PageWidth - picWidth) * 0.7;
+            t.Rows[0].Cells[2].Width = (document.PageWidth - picWidth) * 0.1;
+            t.Rows[0].Cells[3].Width = (document.PageWidth - picWidth) * 0.1;
+            t.Rows[0].Cells[4].Width = (document.PageWidth - picWidth) * 0.1;
 
             foreach (CMaterialPropertiesText prop in details)
             {
                 if (string.IsNullOrEmpty(prop.Value)) continue;
 
                 Row row = t.InsertRow();
-                row.Cells[0].Paragraphs[0].InsertText(prop.Text);
-                row.Cells[1].Paragraphs[0].InsertText(prop.Symbol);
-                row.Cells[2].Paragraphs[0].InsertText(prop.Value);
-                row.Cells[3].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
+                row.Cells[1].Paragraphs[0].InsertText(prop.Text);
+                row.Cells[2].Paragraphs[0].InsertText(prop.Symbol);
+                row.Cells[3].Paragraphs[0].InsertText(prop.Value);
+                row.Cells[4].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
             }
+            t.MergeCellsInColumn(0, 0, t.Rows.Count - 1);
+
             p = p.InsertParagraphAfterSelf(p);
             p.RemoveText(0);
             p.InsertTableBeforeSelf(t);
@@ -218,7 +230,7 @@ namespace EXPIMP
 
             var picWidth = 200;
             var picHeight = 400;
-            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.jpg"); // TO Ondrej - co je lepsie JPG alebo PNG format ??? ak  je priehladny tak png a inak je to jedno
+            var image = document.AddImage($"{resourcesFolderPath}crsc{crsc}.png"); //zmenil som na PNG - aby bolo vidno spodny okraj tabulky a tiez optimalizacia velkosti
             // Set Picture Height and Width.
             var picture = image.CreatePicture(picHeight, picWidth);
 
