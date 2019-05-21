@@ -171,7 +171,6 @@ namespace PFD
         // Door trimmers bude potrebne pridat do zoznamov typov prutov ktore su zatazene surface loads, tu je komplikacia ze kazdy prut moze mat inu zatazovaciu sirku
         // vid FreeSurfaceLoadsMemberTypeData
 
-
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -1920,6 +1919,7 @@ namespace PFD
 
         private void _loadInput_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // To Ondrej - asi som nieco pokazil, lebo ked menim Load input tak sa to sem nedostane
             SetResultsAreNotValid();
         }
 

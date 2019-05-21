@@ -78,23 +78,13 @@ namespace PFD
         public ObservableCollection<DoorProperties> DoorBlocksProperties;
         public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
-        public CPFDLoadInput loadInput;
-        public CCalcul_1170_1 generalLoad;
-        public CCalcul_1170_2 wind;
-        public CCalcul_1170_3 snow;
-        public CCalcul_1170_5 eq;
-
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
         public BuildingGeometryDataInput sGeometryInputData;
+        public CPFDLoadInput loadInput;
         public SnowLoadDataInput sSnowInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
-
-        // TODO Ondrej pouzit na zobrazovanie jednotlivych zaloziek (tabitems) aktivitu tlacitok a podobne podla toho ci existuju vysledky pre vnutorne sily, posudenie prutov, posudenie spojov
-        //bool bInternalForcesResultsExists = false;
-        //bool bMemberDesignResultsExists = false;
-        //bool bJointDesignResultsExists = false;
 
         public MainWindow()
         {
@@ -477,7 +467,7 @@ namespace PFD
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
-            generalLoad = new CCalcul_1170_1(
+          vm.GeneralLoad = new CCalcul_1170_1(
                 fMass_Roof,
                 fMass_Wall,
                 loadInput.AdditionalDeadActionRoof,
@@ -492,7 +482,7 @@ namespace PFD
             sSnowInputData.eSnowRegion = (ESnowRegion)loadInput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
             sSnowInputData.eExposureCategory = (ERoofExposureCategory)loadInput.ExposureCategoryIndex;
             sSnowInputData.fh_0_SiteElevation_meters = loadInput.SiteElevation;
-            snow = new CCalcul_1170_3(sBuildingInputData, sGeometryInputData, sSnowInputData);
+            vm.Snow = new CCalcul_1170_3(sBuildingInputData, sGeometryInputData, sSnowInputData);
         }
 
         public void CalculateWindLoad()
@@ -501,7 +491,7 @@ namespace PFD
             sWindInputData.iAngleWindDirection = loadInput.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(loadInput.TerrainCategoryIndex);
 
-            wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
+            vm.Wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 
         // TODO - refaktorovat tuto funkciu s UC_Load
@@ -536,7 +526,7 @@ namespace PFD
             //sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadInput.SpectralShapeFactorChTx;
             //sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadInput.SpectralShapeFactorChTy;
 
-            eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
+            vm.Eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
         }
 
         // Priblizne riesenie (tuhy prievlak)
@@ -722,10 +712,10 @@ namespace PFD
             // Calculate load values
             CalculateLoadingValues((CModel_PFD_01_GR)vm.Model);
 
-            vm.Model.CalculateLoadValuesAndGenerateLoads(generalLoad,
-                wind,
-                snow,
-                eq,
+            vm.Model.CalculateLoadValuesAndGenerateLoads(vm.GeneralLoad,
+                vm.Wind,
+                vm.Snow,
+                vm.Eq,
                 vm.GenerateNodalLoads,
                 vm.GenerateLoadsOnGirts,
                 vm.GenerateLoadsOnPurlins,

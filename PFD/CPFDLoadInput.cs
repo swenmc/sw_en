@@ -66,6 +66,7 @@ namespace PFD
         private ERoofExposureCategory MEExposureCategory;
         private EWindRegion MEWindRegion;
         private ESiteSubSoilClass MESiteSubSoilClass;
+        private bool MModelCalculatedResultsValid;
 
         //-------------------------------------------------------------------------------------------------------------
         public int LocationIndex
@@ -85,6 +86,7 @@ namespace PFD
 
                 IsSetFromCode = false;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("LocationIndex");
             }
         }
@@ -101,9 +103,10 @@ namespace PFD
                 MDesignLifeIndex = value;
 
                 DesignLife_Value = CDatabaseManager.GetDesignLifeValueFromDatabase(MDesignLifeIndex);
-                
+
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("DesignLifeIndex");
             }
         }
@@ -122,6 +125,7 @@ namespace PFD
 
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("ImportanceClassIndex");
             }
         }
@@ -138,6 +142,7 @@ namespace PFD
             {
                 MAnnualProbabilityULS_Wind = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AnnualProbabilityULS_Wind");
             }
         }
@@ -154,6 +159,7 @@ namespace PFD
             {
                MAnnualProbabilityULS_Snow = value;
 
+               SetResultsAreNotValid();
                NotifyPropertyChanged("AnnualProbabilityULS_Snow");
             }
         }
@@ -170,6 +176,7 @@ namespace PFD
             {
                 MAnnualProbabilityULS_EQ = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AnnualProbabilityULS_EQ");
             }
         }
@@ -186,6 +193,7 @@ namespace PFD
             {
                 MAnnualProbabilitySLS = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AnnualProbabilitySLS");
             }
         }
@@ -204,6 +212,7 @@ namespace PFD
                     throw new ArgumentException("Site elevation must be between 0 and 2000 meters");
                 MSiteElevation = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("SiteElevation");
             }
         }
@@ -220,6 +229,7 @@ namespace PFD
             {
                 MSnowRegionIndex = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("SnowRegionIndex");
             }
         }
@@ -238,6 +248,7 @@ namespace PFD
 
                 MEExposureCategory = (ERoofExposureCategory)MExposureCategory;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("ExposureCategoryIndex");
             }
         }
@@ -256,6 +267,7 @@ namespace PFD
 
                 WindRegion = (EWindRegion)MWindRegionIndex;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("WindRegionIndex");
             }
         }
@@ -272,6 +284,7 @@ namespace PFD
             {
                 MTerrainCategoryIndex = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("TerrainCategoryIndex");
             }
         }
@@ -288,6 +301,7 @@ namespace PFD
             {
                 MAngleWindDirectionIndex = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AngleWindDirectionIndex");
             }
         }
@@ -310,6 +324,7 @@ namespace PFD
 
                 //SetSpectralShapeFactorsFromDatabaseValues();
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("SiteSubSoilClassIndex");
             }
         }
@@ -326,6 +341,7 @@ namespace PFD
             {
                 MFaultDistanceDmin = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("FaultDistanceDmin");
             }
         }
@@ -342,6 +358,7 @@ namespace PFD
             {
                 MFaultDistanceDmax = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("FaultDistanceDmax");
             }
         }
@@ -360,6 +377,7 @@ namespace PFD
                     throw new ArgumentException("Zone factor must be between 0.01 and 0.90");
                 MZoneFactorZ = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("ZoneFactorZ");
             }
         }
@@ -455,6 +473,7 @@ namespace PFD
                     throw new ArgumentException("Additional dead action value must be between 0.0 and 10.0 kN/m²");
                 MAdditionalDeadActionRoof = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AdditionalDeadActionRoof");
             }
         }
@@ -473,6 +492,7 @@ namespace PFD
                     throw new ArgumentException("Additional dead action value must be between 0.0 and 10.0 kN/m²");
                 MAdditionalDeadActionWall = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("AdditionalDeadActionWall");
             }
         }
@@ -491,6 +511,7 @@ namespace PFD
                     throw new ArgumentException("Imposed action value must be between 0.0 and 5.0 kN/m²");
                 MImposedActionRoof = value;
 
+                SetResultsAreNotValid();
                 NotifyPropertyChanged("ImposedActionRoof");
             }
         }
@@ -711,6 +732,20 @@ namespace PFD
             }
         }
 
+        public bool ModelCalculatedResultsValid
+        {
+            get
+            {
+                return MModelCalculatedResultsValid;
+            }
+
+            set
+            {
+                MModelCalculatedResultsValid = value;
+                NotifyPropertyChanged("ModelCalculatedResultsValid");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -880,6 +915,11 @@ namespace PFD
             R_ULS_Snow = prob.R_ULS_Snow;
             R_ULS_EQ = prob.R_ULS_EQ;
             R_SLS = prob.R_SLS;
+        }
+
+        private void SetResultsAreNotValid()
+        {
+            ModelCalculatedResultsValid = false;
         }
     }
 }
