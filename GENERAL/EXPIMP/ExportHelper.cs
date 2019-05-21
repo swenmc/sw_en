@@ -332,8 +332,8 @@ namespace EXPIMP
             //double internalForceScale_user = 2;
             int NumberOfDecimalPlaces = 2;
             int FontSize = 12;
-            float fCanvasWidth = (float)720; // Size of Canvas
-            float fCanvasHeight = (float)446; // Size of Canvas
+            float fCanvasWidth = (float)720; // Size of Canvas  990/580
+            float fCanvasHeight = (float)422; // Size of Canvas
             int scale_unit = 1; // m
 
             List<Point> modelNodesCoordinatesInGCS = new List<Point>();

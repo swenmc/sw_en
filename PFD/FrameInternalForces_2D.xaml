@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="FrameInternalForces_2D" Height="685" Width="1200" MouseWheel="Window_MouseWheel">
+        Title="FrameInternalForces_2D" Height="665" Width="1200" MouseWheel="Window_MouseWheel">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -47,6 +47,6 @@
                   SelectedIndex="{Binding FontSizeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding ListFontSizes}" Height="22" Width="50"/>
             </StackPanel>
         </StackPanel>
-        <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
+        <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="580" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>
