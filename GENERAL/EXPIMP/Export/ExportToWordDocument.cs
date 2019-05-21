@@ -327,6 +327,9 @@ namespace EXPIMP
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
+            DrawBasicLoadParameters(document);
+            DrawDeadLoadParameters(document);
+
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
             document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
@@ -480,6 +483,61 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS]", data.Eq.fC_d_T1y_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(nfi));
         }
+
+        private static void DrawBasicLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[BasicLoadParameters]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadBasicLoadParameters());
+        }
+        private static void DrawDeadLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[DeadLoad]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadDeadLoadParameters());
+        }
+
+        private static Paragraph DrawDataExportTable(DocX document, Paragraph p, List<DataExportTables> items)
+        {
+            if (items == null || items.Count < 1) return p;
+
+            var t = document.AddTable(items.Count, 4);
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+            t.AutoFit = AutoFit.ColumnWidth;
+            
+            //temp
+            string language = "en";
+
+            int i = 0;
+            foreach (DataExportTables item in items)
+            {
+                Row row = t.Rows[i];
+                i++;
+                if(language == "cz") row.Cells[0].Paragraphs[0].InsertText(item.Description_CSY);
+                else if (language == "sk") row.Cells[0].Paragraphs[0].InsertText(item.Description_SVK);
+                else row.Cells[0].Paragraphs[0].InsertText(item.Description_ENU_USA);
+
+                row.Cells[1].Paragraphs[0].InsertText(item.Symbol);
+                row.Cells[2].Paragraphs[0].InsertText($"[{item.Identificator}]");
+                row.Cells[3].Paragraphs[0].InsertText(item.Unit);
+            }
+
+            t.Rows[0].Cells[0].Width = (document.PageWidth * 0.7) * 0.4;    //0.7 je taka konstanta, aby sa tabulka zmestila na stranu :-D
+            t.Rows[0].Cells[1].Width = (document.PageWidth * 0.7) * 0.1;
+            t.Rows[0].Cells[2].Width = (document.PageWidth * 0.7) * 0.3;
+            t.Rows[0].Cells[3].Width = (document.PageWidth * 0.7) * 0.2;
+
+            p = p.InsertParagraphAfterSelf(p);            
+            p.InsertTableBeforeSelf(t);
+
+            SetFontSizeForTable(t);
+
+            return p;
+        }
+
         private static void DrawModel3D(DocX document, Viewport3D viewPort)
         {
             document.InsertParagraph("Structural model in 3D environment: ");
