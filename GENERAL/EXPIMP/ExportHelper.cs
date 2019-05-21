@@ -116,15 +116,10 @@ namespace EXPIMP
             List<Canvas> canvases = new List<Canvas>();
             if (lcomb == null || member == null || listMemberLoadForces == null || listMemberDeflections == null) return canvases;
 
-            float fCanvasHeight = 180; // Size of Canvas // Same size of of diagrams ???
-            float fCanvasWidth = 720;  // Size of Canvas
-
-            float modelMarginLeft_x = 10;
-            float modelMarginRight_x = 10;
-            float modelMarginTop_y = 10;
-            float modelMarginBottom_y = 10;
-            float modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
-
+            //Original Size - 620:160
+            float fCanvasHeight = 160; // Size of Canvas // Same size of of diagrams ???
+            float fCanvasWidth = 620;  // Size of Canvas
+            
             designBucklingLengthFactors[] sBucklingLengthFactors;
             designMomentValuesForCb[] sMomentValuesforCb; // Nepouziva sa
 
@@ -193,6 +188,16 @@ namespace EXPIMP
             Canvas_DeflectionDiagramDeltax.ToolTip = "Local Deflection δx [mm]";
             Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
             Canvas_DeflectionDiagramDeltay.ToolTip = "Local Deflection δy [mm]";
+
+            //TOTO
+            //toto nastavenie dole tu nema byt. Bude nutne prerobit vykreslovanie v canvasoch. Zvacsit okraje napravo a dole. Mozno potom aj roztiahnut canvas v dokumente na max sirku 720.
+            fCanvasHeight = 150; 
+            fCanvasWidth = 600;
+            float modelMarginLeft_x = 10;
+            float modelMarginRight_x = 10;
+            float modelMarginTop_y = 10;
+            float modelMarginBottom_y = 10;
+            float modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
