@@ -39,15 +39,16 @@ namespace PFD
 
         public int iFrameNodesNo = 5;
 
-        int iMainColumnNo;
-        int iRafterNo;
-        int iEavesPurlinNo;
-        int iGirtNoInOneFrame;
-        int iPurlinNoInOneFrame;
-        int iFrontColumnNoInOneFrame;
-        int iBackColumnNoInOneFrame;
-        int iFrontGirtsNoInOneFrame;
-        int iBackGirtsNoInOneFrame;
+        public int iMainColumnNo;
+        public int iRafterNo;
+        public int iEavesPurlinNo;
+        public int iGirtNoInOneFrame;
+        public int iEavesPurlinNoInOneFrame = 2;
+        public int iPurlinNoInOneFrame;
+        public int iFrontColumnNoInOneFrame;
+        public int iBackColumnNoInOneFrame;
+        public int iFrontGirtsNoInOneFrame;
+        public int iBackGirtsNoInOneFrame;
 
         int[] iArrNumberOfNodesPerFrontColumn;
         int[] iArrNumberOfNodesPerBackColumn;
@@ -57,7 +58,7 @@ namespace PFD
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
         public CModel_PFD_01_GR
-            (
+        (
                 BuildingGeometryDataInput sGeometryInputData,
                 //float fH1_temp,
                 //float fW_temp,
@@ -72,17 +73,7 @@ namespace PFD
                 float fBackFrameRakeAngle_temp_deg,
                 ObservableCollection<DoorProperties> doorBlocksProperties,
                 ObservableCollection<WindowProperties> windowBlocksProperties,
-                ObservableCollection<CComponentInfo> componentList,
-                CCalcul_1170_1 generalLoad,
-                CCalcul_1170_2 wind,
-                CCalcul_1170_3 snow,
-                CCalcul_1170_5 eq,
-                bool bGenerateNodalLoads,
-                bool bGenerateLoadsOnGirts,
-                bool bGenerateLoadsOnPurlins,
-                bool bGenerateLoadsOnColumns,
-                bool bGenerateLoadsOnFrameMembers,
-                bool bGenerateSurfaceLoads
+                ObservableCollection<CComponentInfo> componentList
             )
         {
             fH1_frame = sGeometryInputData.fH_1;
@@ -115,7 +106,6 @@ namespace PFD
 
             fRoofPitch_rad = (float)Math.Atan((fH2_frame - fH1_frame) / (0.5f * fW_frame));
 
-            const int iEavesPurlinNoInOneFrame = 2;
             iEavesPurlinNo = iEavesPurlinNoInOneFrame * (iFrameNo - 1);
             iMainColumnNo = iFrameNo * 2;
             iRafterNo = iFrameNo * 2;
@@ -1182,6 +1172,21 @@ namespace PFD
             }
             #endregion
 
+            SetJointDefaultParameters();
+        }
+
+        public override void CalculateLoadValuesAndGenerateLoads(
+                CCalcul_1170_1 generalLoad,
+                CCalcul_1170_2 wind,
+                CCalcul_1170_3 snow,
+                CCalcul_1170_5 eq,
+                bool bGenerateNodalLoads,
+                bool bGenerateLoadsOnGirts,
+                bool bGenerateLoadsOnPurlins,
+                bool bGenerateLoadsOnColumns,
+                bool bGenerateLoadsOnFrameMembers,
+                bool bGenerateSurfaceLoads)
+        {
             // Loading
             #region Load Cases
             // Load Cases
@@ -1387,8 +1392,6 @@ namespace PFD
             m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength", ELSType.eLS_ULS);
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
             #endregion
-
-            SetJointDefaultParameters();
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)

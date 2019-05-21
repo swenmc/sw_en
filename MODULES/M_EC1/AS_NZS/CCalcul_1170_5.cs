@@ -22,7 +22,7 @@ namespace M_EC1.AS_NZS
         /*
         4.3.2 Serviceability limit state
         The structural ductility factor, μ, for the serviceability limit state SLS1 shall be
-        1.0 ≤ nu ≤ 1.25 and for SLS2 shall be within the limits 1.0. ≤ n ≤ 2.0.
+        1.0 ≤ nu ≤ 1.25 and for SLS2 shall be within the limits 1.0. ≤ nu ≤ 2.0.
         */
         public float fNu_SLS = 1.00f; // Structural ductility factor, 1.6.4.2.2
 
@@ -94,8 +94,11 @@ namespace M_EC1.AS_NZS
 
         public CCalcul_1170_5(float fT_1x, float fT_1y, float param_fG_tot_x, float param_fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
+            fPeriodAlongXDirection_Tx = fT_1x;
+            fPeriodAlongYDirection_Ty = fT_1y;
             fG_tot_x = param_fG_tot_x;
             fG_tot_y = param_fG_tot_y;
+
             // AS/NZS 4600:2018 - 1.6.4.2.4 Structural performance factor (a)
             if (1 < fNu_ULS && fNu_ULS <= 2)
                 fS_p_ULS_strength = 1.3f - 0.3f * fNu_ULS;
@@ -148,7 +151,7 @@ namespace M_EC1.AS_NZS
             fV_y_ULS_strength = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_strength, fG_tot_y);
             fV_y_SLS = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_SLS, fG_tot_y);
 
-            // TODO - tento vypocet nezohladnuje ine zatazenie a tuhost koncovych ramov
+            // TODO - tento vypocet nezohladnuje ine zatazenie a tuhost koncovych ramov, je to potrebne dopracovat
         }
 
         protected float GetReturnPeriodFactor_R(float fRequiredAnnualProbabilityOfExceedance)
@@ -286,11 +289,11 @@ namespace M_EC1.AS_NZS
                 }
 
                 reader.Close();
-
-                // Interpolate value - depends on natural period Tx, resp. Ty
-                fSpectralShapeFactor_Ch_Tx = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongXDirection_Tx, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
-                fSpectralShapeFactor_Ch_Ty = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongYDirection_Ty, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
             }
+
+            // Interpolate value - depends on natural period Tx, resp. Ty
+            fSpectralShapeFactor_Ch_Tx = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongXDirection_Tx, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
+            fSpectralShapeFactor_Ch_Ty = ArrayF.GetLinearInterpolationValuePositive(fPeriodAlongYDirection_Ty, sNaturalPeriod_T_Values.ToArray(), sFactor_Ch_ValuesForSpecificSoilClass.ToArray());
         }
     }
 }

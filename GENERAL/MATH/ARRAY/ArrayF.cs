@@ -290,5 +290,48 @@ namespace MATH.ARRAY
                 }
             }
         }
+
+        public static void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
+        }
+
+        public static void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0, 0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
+        }
+
     }
 }

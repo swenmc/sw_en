@@ -1939,74 +1939,6 @@ namespace PFD
             if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
-        //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
-        // TO Ondrej - pointa bola a je oddelit to tak aby sme mohli vygenerovat samostatne 3D geometriu a potom inou metodou vypocitat zatazenia
-        // Pre vypocet zatazeni potrebujeme data z 3D geometrie
-
-        public void CreateModel()
-        {
-            BuildingGeometryDataInput sBuildingGeometryData;
-
-            // Centerline dimenions
-            sBuildingGeometryData.fW = GableWidth;
-            sBuildingGeometryData.fL = Length;
-            sBuildingGeometryData.fH_1 = WallHeight;
-            sBuildingGeometryData.fH_2 = fh2;
-
-            sBuildingGeometryData.fRoofPitch_deg = RoofPitch_deg;
-
-            // Total dimensions
-            sBuildingGeometryData.fWidthTotal = GableWidth;
-            sBuildingGeometryData.fLengthTotal = Length;
-            sBuildingGeometryData.fEaveHeight = WallHeight;
-            sBuildingGeometryData.fRidgeHeight = fh2;
-
-            sBuildingGeometryData.iMainColumnFlyBracingEveryXXGirt = MainColumnFlyBracingPositionIndex;
-            sBuildingGeometryData.iRafterFlyBracingEveryXXPurlin = RafterFlyBracingPositionIndex;
-            sBuildingGeometryData.iEdgePurlin_ILS_Number = EdgePurlin_ILS_Number;
-            sBuildingGeometryData.iGirt_ILS_Number = Girt_ILS_Number;
-            sBuildingGeometryData.iPurlin_ILS_Number = Purlin_ILS_Number;
-            sBuildingGeometryData.iFrontColumnFlyBracingEveryXXGirt = FrontColumnFlyBracingPositionIndex;
-            sBuildingGeometryData.iBackColumnFlyBracingEveryXXGirt = BackColumnFlyBracingPositionIndex;
-            sBuildingGeometryData.iGirtFrontSide_ILS_Number = GirtFrontSide_ILS_Number;
-            sBuildingGeometryData.iGirtBackSide_ILS_Number = GirtBackSide_ILS_Number;
-
-            MGenerateSurfaceLoads =
-                MShowSurfaceLoadsAxis ||
-                MGenerateLoadsOnGirts ||
-                MGenerateLoadsOnPurlins ||
-                MGenerateLoadsOnColumns ||
-                MGenerateLoadsOnFrameMembers;
-
-            // Create 3D model of structure including loading
-            MModel = new CModel_PFD_01_GR(
-                    sBuildingGeometryData,
-                    //WallHeight,
-                    //GableWidth,
-                    //fL1,
-                    Frames,
-                    //fh2,
-                    GirtDistance,
-                    PurlinDistance,
-                    ColumnDistance,
-                    BottomGirtPosition,
-                    FrontFrameRakeAngle,
-                    BackFrameRakeAngle,
-                    DoorBlocksProperties,
-                    WindowBlocksProperties,
-                    ComponentList,
-                    GeneralLoad,
-                    Wind,
-                    Snow,
-                    Eq,
-                    MGenerateNodalLoads,
-                    MGenerateLoadsOnGirts,
-                    MGenerateLoadsOnPurlins,
-                    MGenerateLoadsOnColumns,
-                    MGenerateLoadsOnFrameMembers,
-                    MGenerateSurfaceLoads);
-        }
-
         public void Run()
         {
             if (!_worker.IsBusy) _worker.RunWorkerAsync();
@@ -2124,48 +2056,6 @@ namespace PFD
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
             PFDMainWindow.UpdateResults();
-        }
-
-        private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
-        {
-            if (array != null)
-            {
-                min = max = array[0];
-
-                foreach (float f in array)
-                {
-                    if (Math.Abs(f) > Math.Abs(min))
-                        min = f;
-
-                    if (Math.Abs(f) > Math.Abs(max))
-                        max = f;
-                }
-            }
-            else // Exception
-            {
-                min = max = float.MaxValue;
-            }
-        }
-
-        private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
-        {
-            if (array != null)
-            {
-                min = max = array[0, 0];
-
-                foreach (float f in array)
-                {
-                    if (Math.Abs(f) > Math.Abs(min))
-                        min = f;
-
-                    if (Math.Abs(f) > Math.Abs(max))
-                        max = f;
-                }
-            }
-            else // Exception
-            {
-                min = max = float.MaxValue;
-            }
         }
 
         private void SetDesignMembersLists(CMemberDesignCalculations mdc)

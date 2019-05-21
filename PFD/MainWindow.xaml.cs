@@ -104,56 +104,8 @@ namespace PFD
             InitializeComponent();
             splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
-            // Fill model combobox items
-            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
-            // Cladding (type and colors)
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
-            CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
-            CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
-
-            Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
-            Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
-
-            // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
-            string[] sColumnFlyBracingPosition_Items =  new string[10] {
-            "None",
-            "Every girt",
-            "Every 2nd girt",
-            "Every 3rd girt",
-            "Every 4th girt",
-            "Every 5th girt",
-            "Every 6th girt",
-            "Every 7th girt",
-            "Every 8th girt",
-            "Every 9th girt"};
-
-            Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-
-            Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
-            "None",
-            "Every purlin",
-            "Every 2nd purlin",
-            "Every 3rd purlin",
-            "Every 4th purlin",
-            "Every 5th purlin",
-            "Every 6th purlin",
-            "Every 7th purlin",
-            "Every 8th purlin",
-            "Every 9th purlin"};
-
-            string[] sILS_Items = new string[]
-            {
-                "None", "1", "2", "3", "4", "5"
-            };
-
-            Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
+            // Set items in comboboxes and default values
+            SetInitialItemsInComboboxes();
 
             // Prepare data for generating of door blocks
             DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
@@ -167,62 +119,18 @@ namespace PFD
             if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
             else loadInput_UC = (UC_Loads)Loads.Content;
             loadInput = loadInput_UC.DataContext as CPFDLoadInput;
-            
+
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
-            
 
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
-            // Calculate loading values as an input to draw loads in 3D
-            CalculateLoadingValues();
-
-            // TODO No. 199 - Ondrej - tu potrebujeme vyriesit zavislosti, pocitame zatazenie, ale to zavisi na geometrii modelu, takze sa to pocita s nulovymi rozmermi
-            // Najprv by sme mali vyrobit len geometricky model a potom pocitat zatazenia, problem je ze tie sa teraz vyrabaju v spolocnej triede spolu s modelom
-            // Takze v CModel_PFD_01_GR by trebalo oddelit fyzicku konstrukciu a load cases, load combinations, loads ....
-
-            vm.GeneralLoad = generalLoad;
-            vm.Wind = wind;
-            vm.Snow = snow;
-            vm.Eq = eq;
-            vm.Loadinput = loadInput;
-
-            //vm.CreateModel();
-
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-
-            if (vm.MemberDesignResults_ULS == null)
-            {
-                //Internal_Forces.IsEnabled = false;
-                //Member_Design.IsEnabled = false;
-                //Joint_Design.IsEnabled = false;
-
-                //Member_Design.Visibility = Visibility.Hidden;
-                //Internal_Forces.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                //Internal_Forces.IsEnabled = true;
-                //Member_Design.IsEnabled = true;
-                //Joint_Design.IsEnabled = true;
-
-                //Member_Design.Visibility = Visibility.Visible;
-                //Internal_Forces.Visibility = Visibility.Visible;
-            }
-
-            //// Update display options
-            //UpdateDisplayOptions();
-
-            //// Create 3D window
-            //Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[0]);
-
-            //// Display model in 3D preview frame
-            //Frame1.Content = page1;
 
             UpdateAll();
 
@@ -428,14 +336,33 @@ namespace PFD
             MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
         }
 
-        private void CalculateLoadingValues()
+        private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            // Input - TabItem Components
-            //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-            //UC_ComponentList componentList_UC = (UC_ComponentList)Member_Input.Content;
-            //tu som nenasiel ziaden ViewModel napojeny na dany User Control
-            //DataGrid grid = componentList_UC.Datagrid_Components;
+            DateTime start = DateTime.Now;
+            // Clear results of previous calculation
+            DeleteCalculationResults();
 
+            // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
+            SetMaterialValuesFromDatabase();
+            SetCrossSectionValuesFromDatabase();
+
+            System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
+
+            vm.GenerateMemberLoadsIfNotGenerated();
+
+            Solver solver = new Solver(vm.UseFEMSolverCalculationForSimpleBeam);
+            vm.SolverWindow = solver;
+            
+            vm.Run();
+            solver.ShowDialog();
+
+            vm.ModelCalculatedResultsValid = true;
+            SetUIElementsVisibility();
+            // TODO - implementovat vypocet
+        }
+
+        private void CalculateLoadingValues(CModel_PFD_01_GR model)
+        {
             // Input - TabItem Loads
             UC_Loads loadInput_UC = null;
             if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
@@ -473,35 +400,25 @@ namespace PFD
             // Snow  (AS / NZS 1170.3)
             CalculateSnowLoad();
 
-            // TODO - napojit vstupy z TabItem Components a TabItem Main (rozmery, hmotnosti, pocet prvkov)
-            // 30.7.2018
+            // TODO - refaktorovat vypocet dlzkovej hmotnosti prutov - dlzkove hmotnosti sa pouziju aj v Material List a aj pre vypocet Dead Loads
+            float fPurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.ePurlin].A_g * model.m_arrMat[(int)EMemberGroupNames.ePurlin].m_fRho); // [kg] A_g * Rho
+            float fEdgePurlinMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].A_g * model.m_arrMat[(int)EMemberGroupNames.eEavesPurlin].m_fRho); // [kg] A_g * Rho
+            float fGirtMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eGirtWall].A_g * model.m_arrMat[(int)EMemberGroupNames.eGirtWall].m_fRho); // [kg] A_g * Rho
+            float fMainColumnMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].A_g * model.m_arrMat[(int)EMemberGroupNames.eMainColumn].m_fRho); // [kg] A_g * Rho
+            float fMainRafterMassPerMeter = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eRafter].A_g * model.m_arrMat[(int)EMemberGroupNames.eRafter].m_fRho); // [kg] A_g * Rho
 
-            // Temporary values - napojit na model a spocitat presne hmotnost ramu a zatazenie
-            // Napojit na tab Compoment
+            float fMainColumnMomentOfInteria_yu = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_y); // m^4
+            float fMainColumnMomentOfInteria_zv = (float)(model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].I_z); // m^4
+            float fMainColumnMaterial_E = model.m_arrMat[(int)EMemberGroupNames.eMainColumn].m_fE; // Pa // Material Young's modulus
 
-            /////////////////////////////////////////////////////
-            // TO Ondrej - toto tu by som potreboval napojit a pripadne presunut inam
-            // Po tom co sa urci 3D geometria a vstupy z GUI potrebujem vypocitat hmotnosti a frekvencie
-            /////////////////////////////////////////////////////
+            // TODO - do buducna napojit na parametre v CModel_PFD (dedi od obecneho modelu CExample)
+            // CModel_PFD by mal byt obecny predok pre rozne tvary budov systemu FS
 
-            float fPurlinMassPerMeter = 20; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
-            float fEdgePurlinMassPerMeter = 30; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Eave Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
-            float fGirtMassPerMeter = 15; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Girt a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
-            float fMainColumnMassPerMeter = 75; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Column a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
-            float fMainRafterMassPerMeter = 85; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Rafter a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
-
-            float fMainColumnMomentOfInteria_yu = 1.48e-4f; // m^4 // // Component List Box 63020, nacitat z databazy prierezov
-            float fMainColumnMomentOfInteria_zv = 1.86e-5f; // m^4
-            float fMainColumnMaterial_E = 2.1e+11f; // Pa // Material
-
-            // Napojit na parametre v CExample_3D_901_PF (dedi od obecneho modelu, mozno je spravnejsie pouzivat v projekte PFD CExample_3D_901_PF nez obecny CModel)
-            // Obecny CModel tieto parametre nema a asi by ani nemal mat, mozeme vytvorit potomka CModel specialne pre projekt PFD
-
-            int iNumberOfEavePurlins_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
-            int iNumberOfPurlins_x = 10; // TODO - napojit na model alebo priamo na example CExample_3D_901
-            int iNumberOfGirts_x = 8; // TODO - napojit na model alebo priamo na example CExample_3D_901
-            int iNumberOfMainColumns_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
-            int iNumberOfMainRafters_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
+            int iNumberOfEavePurlins_x = model.iEavesPurlinNoInOneFrame;
+            int iNumberOfPurlins_x = model.iPurlinNoInOneFrame;
+            int iNumberOfGirts_x = model.iGirtNoInOneFrame;
+            int iNumberOfMainColumns_x = 2; // TODO - napojit na model
+            int iNumberOfMainRafters_x = 2; // TODO - napojit na model
 
             float fLoadingWidth_Frame_x = vm.fL1; // Zatazovacia sirka ramu
             float fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians);
@@ -511,28 +428,30 @@ namespace PFD
             float fMass_Girts_x = iNumberOfGirts_x * fGirtMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Frame_x = iNumberOfMainColumns_x * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
 
-            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
-            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            // Pre stlpy uvazujeme polovicu vysky
+            float fMass_Wall_x_kg = 0.5f * iNumberOfMainColumns_x * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_x_kg = iNumberOfMainRafters_x * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_x = fMass_Frame_x + fMass_Girts_x + fMass_Wall_x_kg + fMass_EavePurlins_x + fMass_Purlins_x + fMass_Roof_x_kg;
 
             float fT_1x = GetPeriod(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E, fMass_Total_x);  // TODO  napojit Column Iy (AS 4600 - Ix)
 
-            int iNumberOfMainColumns_y = 5; //  // TODO - napojit na model alebo priamo na example CExample_3D_901, pocet ramov (da sa pouzit aj vm z GUI)
-            int iNumberOfMainRafters_y = iNumberOfMainColumns_y; // Pocet ramov je rovnaky ako pocet stlpov
+            int iNumberOfMainColumns_y = model.iFrameNo;
+            int iNumberOfMainRafters_y = iNumberOfMainColumns_y; // Pocet rafters je rovnaky ako pocet stlpov
             int iNumberOfPurlins_y = (iNumberOfMainColumns_y - 1) * (iNumberOfPurlins_x / 2); // Number of bays (number of frames - 1) * Number of purlins per half of building width
             int iNumberOfEavePurlins_y = (iNumberOfMainColumns_y - 1);
-            int iNumberOfGirtsInWallPerMainColumn = 4; // TODO - napojit na model alebo priamo na example CExample_3D_901 (pocet girts na vysku stlpa)
+            int iNumberOfGirtsInWallPerMainColumn = model.iGirtNoInOneFrame / iNumberOfMainColumns_x; // Pocet girts na vysku stlpa
             int iNumberOfGirts_y = (iNumberOfMainColumns_x - 1) * iNumberOfGirtsInWallPerMainColumn;
 
             float fMass_Purlins_y = iNumberOfPurlins_y * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_EavePurlins_y = iNumberOfEavePurlins_y * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Girts_y = iNumberOfGirts_y * fGirtMassPerMeter * fLoadingWidth_Frame_x;
-            float fMass_Frame_y = iNumberOfMainColumns_y * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+            float fMass_Frame_y = iNumberOfMainColumns_y * fMainColumnMassPerMeter * 0.5f * vm.WallHeight + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+            // TODO - pre smer Y pripocitat vahu polovice sirky * polovice vysky prednej a zadnej steny
 
-            float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu
+            float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu v smere Y - polovica budovy
 
-            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_y_kg = vm.Length * 0.5f * vm.WallHeight * (fMass_Wall + (loadInput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
             float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadInput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_y = fMass_Frame_y + fMass_Girts_y + fMass_Wall_y_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
@@ -554,31 +473,6 @@ namespace PFD
 
             // Earthquake / Seismic Design  (NZS 1170.5)
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
-        }
-
-        private void Calculate_Click(object sender, RoutedEventArgs e)
-        {
-            DateTime start = DateTime.Now;
-            // Clear results of previous calculation
-            DeleteCalculationResults();
-
-            // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
-            SetMaterialValuesFromDatabase();
-            SetCrossSectionValuesFromDatabase();
-
-            System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
-
-            vm.GenerateMemberLoadsIfNotGenerated();
-
-            Solver solver = new Solver(vm.UseFEMSolverCalculationForSimpleBeam);
-            vm.SolverWindow = solver;
-            
-            vm.Run();
-            solver.ShowDialog();
-
-            vm.ModelCalculatedResultsValid = true;
-            SetUIElementsVisibility();
-            // TODO - implementovat vypocet
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
@@ -801,14 +695,6 @@ namespace PFD
             sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
             sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
 
-            CalculateLoadingValues();
-
-            bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
-                vm.GenerateSurfaceLoads ||
-                vm.GenerateLoadsOnGirts ||
-                vm.GenerateLoadsOnPurlins ||
-                vm.GenerateLoadsOnColumns;
-
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
                 sGeometryInputData,
@@ -825,8 +711,18 @@ namespace PFD
                 vm.BackFrameRakeAngle,
                 DoorBlocksProperties,
                 WindowBlocksProperties,
-                compList?.ComponentList,
-                generalLoad,
+                compList?.ComponentList);
+
+            bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
+                vm.GenerateSurfaceLoads ||
+                vm.GenerateLoadsOnGirts ||
+                vm.GenerateLoadsOnPurlins ||
+                vm.GenerateLoadsOnColumns;
+
+            // Calculate load values
+            CalculateLoadingValues((CModel_PFD_01_GR)vm.Model);
+
+            vm.Model.CalculateLoadValuesAndGenerateLoads(generalLoad,
                 wind,
                 snow,
                 eq,
@@ -835,8 +731,7 @@ namespace PFD
                 vm.GenerateLoadsOnPurlins,
                 vm.GenerateLoadsOnColumns,
                 vm.GenerateLoadsOnFrameMembers,
-                generateSurfaceLoads
-                );
+                generateSurfaceLoads);
 
             // Create 3D window
             UpdateDisplayOptions();
@@ -871,7 +766,7 @@ namespace PFD
             CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
             if (compListVM.NoCompomentsForCalculate())
             {
-                Internal_Forces.IsEnabled = false;                
+                Internal_Forces.IsEnabled = false;
                 ButtonCalculateForces.IsEnabled = false;
             }
             if (compListVM.NoCompomentsForDesign())
@@ -881,57 +776,14 @@ namespace PFD
                 Footing_Design.IsEnabled = false;
             }
 
-            if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;            
+            if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;
             else Part_List.IsEnabled = true;
-
-
         }
+
         private void UnCheckToggleButtons()
         {
             if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
             if(btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
-        }
-
-        private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
-        {
-            if (array != null)
-            {
-                min = max = array[0, 0];
-
-                foreach (float f in array)
-                {
-                    if (Math.Abs(f) > Math.Abs(min))
-                        min = f;
-
-                    if (Math.Abs(f) > Math.Abs(max))
-                        max = f;
-                }
-            }
-            else // Exception
-            {
-                min = max = float.MaxValue;
-            }
-        }
-
-        private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
-        {
-            if (array != null)
-            {
-                min = max = array[0];
-
-                foreach (float f in array)
-                {
-                    if (Math.Abs(f) > Math.Abs(min))
-                        min = f;
-
-                    if (Math.Abs(f) > Math.Abs(max))
-                        max = f;
-                }
-            }
-            else // Exception
-            {
-                min = max = float.MaxValue;
-            }
         }
 
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
@@ -1036,9 +888,9 @@ namespace PFD
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
                  
                 if (Member_Design.Content == null)
-                {                    
+                {
                     Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
-                } 
+                }
                 else
                 {
                     ////setuje sa v public void UpdateResults()
@@ -1080,7 +932,6 @@ namespace PFD
                 // Not implemented like UC;
             };
         }
-        
 
         public void ShowMessageBoxInPFDWindow(string text)
         {
@@ -1112,7 +963,7 @@ namespace PFD
 
                     CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
                     vmIF.IsSetFromCode = true;
-                    vmIF.LimitStateIndex = 0;                    
+                    vmIF.LimitStateIndex = 0;
                     vmIF.SetComponentList(componentsList);
                     vmIF.IsSetFromCode = false;
                     vmIF.ComponentTypeIndex = 0;
@@ -1406,7 +1257,7 @@ namespace PFD
                     
                     //double minLoadY = load.PointsGCS
                     //m.NodeStart.Y
-                    
+
                 }
             }
             else
@@ -1685,6 +1536,60 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
             Frame1.UpdateLayout();
+        }
+
+        private void SetInitialItemsInComboboxes()
+        {
+            // Fill model combobox items
+            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+            // Cladding (type and colors)
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
+            CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
+            CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
+
+            Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
+            Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
+
+            // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
+            string[] sColumnFlyBracingPosition_Items = new string[10] {
+            "None",
+            "Every girt",
+            "Every 2nd girt",
+            "Every 3rd girt",
+            "Every 4th girt",
+            "Every 5th girt",
+            "Every 6th girt",
+            "Every 7th girt",
+            "Every 8th girt",
+            "Every 9th girt"};
+
+            Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+
+            Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
+            "None",
+            "Every purlin",
+            "Every 2nd purlin",
+            "Every 3rd purlin",
+            "Every 4th purlin",
+            "Every 5th purlin",
+            "Every 6th purlin",
+            "Every 7th purlin",
+            "Every 8th purlin",
+            "Every 9th purlin"};
+
+            string[] sILS_Items = new string[]
+            {
+                "None", "1", "2", "3", "4", "5"
+            };
+
+            Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
         }
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
