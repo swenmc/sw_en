@@ -10,15 +10,13 @@ namespace DATABASE
 {
     public static class CStringsManager
     {
-
-
         public static List<DataExportTables> LoadBasicLoadParameters()
         {
-            return LoadStringsTable("BasicLoadParameters");            
+            return LoadStringsTable("BasicLoadParameters");
         }
         public static List<DataExportTables> LoadDeadLoadParameters()
         {
-            return LoadStringsTable("AS1170_1");            
+            return LoadStringsTable("AS1170_1");
         }
 
         private static List<DataExportTables> LoadStringsTable(string tableName)
@@ -29,6 +27,20 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["StringsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
+
+                /*
+                // TO Ondrej - pokus zmazat riadky s null ID
+                if (true)
+                {
+                    string queryString = $"Delete from " + tableName + " where ID = NULL";
+                    SQLiteCommand command_delete = new SQLiteCommand(queryString, conn);
+                    string queryString2 = $"Delete from " + tableName + " where ID = ''";
+                    SQLiteCommand command_delete2 = new SQLiteCommand(queryString2, conn);
+                    string queryString3 = $"Delete from " + tableName + " where ID IS NULL";
+                    SQLiteCommand command_delete3 = new SQLiteCommand(queryString3, conn);
+                }*/
+
+
                 SQLiteCommand command = new SQLiteCommand($"Select * from {tableName}", conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
@@ -45,6 +57,11 @@ namespace DATABASE
         private static DataExportTables GetDataForExport(SQLiteDataReader reader)
         {
             //To Mato: v databaze ak je ID,tak tam nemaju co hladat NULL hodnoty
+            // To Ondrej: Mam taky mensi problem s convertorom http://converttosqlite.com/convert
+            // Ak je v xls nejako dotknuta bunka na prazdnom riadku, tak to vsetky tie prazdne riadky konvertuje do sql
+            // Chcel som to zmazat cez SQL prikaz vid vyssie ale nezadarilo sa.
+            // Mozes mi urobit taku utilitku ze ked zmenim databazove subory, tak pri spusteni programu mi to automaticky odmaze zo vsetkych databaz a vsetkych tabuliek
+
             if (reader.IsDBNull(reader.GetOrdinal("ID"))) return null;
 
             DataExportTables data = new DataExportTables();
@@ -56,7 +73,7 @@ namespace DATABASE
             data.Identificator = reader["Identificator"].ToString();
             data.Unit = reader["Unit"].ToString();
             if (reader.IsDBNull(reader.GetOrdinal("UnitFactor"))) data.UnitFactor = 1;
-            else data.UnitFactor = reader.GetFloat(reader.GetOrdinal("UnitFactor"));             
+            else data.UnitFactor = reader.GetFloat(reader.GetOrdinal("UnitFactor"));
             
             return data;
         }
