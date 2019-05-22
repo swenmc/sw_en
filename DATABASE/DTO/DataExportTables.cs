@@ -15,7 +15,7 @@ namespace DATABASE.DTO
         string m_Symbol;
         string m_Identificator;
         string m_Unit;
-        float m_UnitFactor;
+        string m_UnitIdentificator;
 
         public int ID
         {
@@ -107,17 +107,17 @@ namespace DATABASE.DTO
                 m_Unit = value;
             }
         }
-
-        public float UnitFactor
+        
+        public string UnitIdentificator
         {
             get
             {
-                return m_UnitFactor;
+                return m_UnitIdentificator;
             }
 
             set
             {
-                m_UnitFactor = value;
+                m_UnitIdentificator = value;
             }
         }
 

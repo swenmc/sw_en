@@ -84,11 +84,13 @@
   <ItemGroup>
     <Compile Include="CComponentManager.cs" />
     <Compile Include="CJointsManager.cs" />
+    <Compile Include="CQuantityLibrary.cs" />
     <Compile Include="CStringsManager.cs" />
     <Compile Include="CTEKScrewsManager.cs" />
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\QuantityLibraryItem.cs" />
     <Compile Include="DTO\DataExportTables.cs" />
     <Compile Include="DTO\CAnnualProbability.cs" />
     <Compile Include="DTO\CMatProperties.cs" />

@@ -1,9 +1,11 @@
 ﻿using BaseClasses;
 using BaseClasses.Helpers;
+using DATABASE.DTO;
 using FEM_CALC_BASE;
 using MATH;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -691,5 +693,21 @@ namespace EXPIMP
 
             Drawing2D.DrawPolyLine(false, points, color, PenLineCap.Flat, PenLineCap.Flat, thickness, canvas);
         }
+
+
+        public static string GetValueString(float value, string identificator, Dictionary<string, DataExportTables> allItemsDict, Dictionary<string, QuantityLibraryItem> quantityLibrary, NumberFormatInfo nfi)
+        {
+            DataExportTables item = null;
+            allItemsDict.TryGetValue(identificator, out item);
+            if (item == null) return value.ToString(nfi); //ak sa to tuna dostane,tak v podstate je nejaka chyba
+
+            QuantityLibraryItem qlItem = null;
+            quantityLibrary.TryGetValue(item.UnitIdentificator, out qlItem);
+            if(qlItem == null) return value.ToString(nfi); //ak sa to tuna dostane,tak v podstate je nejaka chyba
+
+            if (qlItem.ID == 1) return string.Empty; //Blank
+            else return (value * qlItem.ReportUnitFactor).ToString($"F{qlItem.ReportDecimalPlaces}", nfi);
+        }
+
     }
 }

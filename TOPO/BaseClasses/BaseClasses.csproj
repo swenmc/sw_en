@@ -95,6 +95,7 @@
     <Compile Include="GraphObj\CDimensionArc.cs" />
     <Compile Include="GraphObj\CDimensionLinear.cs" />
     <Compile Include="GraphObj\PointF.cs" />
+    <Compile Include="Helpers\ValueDisplayHelper.cs" />
     <Compile Include="Helpers\CrScFactory.cs" />
     <Compile Include="Helpers\ConversionsHelper.cs" />
     <Compile Include="Helpers\MaterialFactory.cs" />

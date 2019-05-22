@@ -49,6 +49,32 @@ namespace DATABASE
         {
             return LoadStringsTable("NZS1170_5");
         }
+        public static List<DataExportTables> LoadAll()
+        {
+            List<DataExportTables> allItems = new List<DataExportTables>();
+
+            allItems.AddRange(LoadStringsTable("BasicGeometry"));
+            allItems.AddRange(LoadStringsTable("BasicLoadParameters"));        
+            allItems.AddRange(LoadStringsTable("AS1170_1_DL"));
+            allItems.AddRange(LoadStringsTable("AS1170_1_SL"));
+            allItems.AddRange(LoadStringsTable("AS1170_1_IL"));
+            allItems.AddRange(LoadStringsTable("AS1170_2"));
+            allItems.AddRange(LoadStringsTable("AS1170_3"));
+            allItems.AddRange(LoadStringsTable("NZS1170_5"));
+
+            return allItems;
+        }
+        public static Dictionary<string, DataExportTables> GetAllDict()
+        {
+            List<DataExportTables> allItems = LoadAll();
+            Dictionary<string, DataExportTables> dict = new Dictionary<string, DataExportTables>();
+            foreach (DataExportTables d in allItems)
+            {
+                dict.Add(d.Identificator, d);
+            }
+            return dict;
+        }
+
 
         private static List<DataExportTables> LoadStringsTable(string tableName)
         {
@@ -112,8 +138,7 @@ namespace DATABASE
             // Do buducna je este otazka ako by sme to urobili pre palce, stopy, libry, unce a dalsie imperialne jednotky, ktore su popularne v GB a v USA
 
             data.Unit = reader["Unit"].ToString();
-            if (reader.IsDBNull(reader.GetOrdinal("UnitFactor"))) data.UnitFactor = 1;
-            else data.UnitFactor = reader.GetFloat(reader.GetOrdinal("UnitFactor"));
+            data.UnitIdentificator = reader["UnitIdentificator"].ToString();            
             
             return data;
         }

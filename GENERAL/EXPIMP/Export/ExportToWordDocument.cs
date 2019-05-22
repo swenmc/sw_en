@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using BaseClasses.Helpers;
 using DATABASE;
 using DATABASE.DTO;
 using M_AS4600;
@@ -342,21 +343,25 @@ namespace EXPIMP
             DrawWindLoadParameters(document);
             DrawSeismicLoadParameters(document);
 
+            Dictionary<string, DataExportTables> allItems = CStringsManager.GetAllDict();
+            Dictionary<string, QuantityLibraryItem> quantityLibrary = CQuantityLibrary.GetQuantityLibrary();
+            ValueDisplayHelper vdh = new ValueDisplayHelper(allItems, quantityLibrary, nfi);
+            
             // Basic parameters
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
             document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
-            document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(nfi));
-            document.ReplaceText("[R_SLS]", data.R_SLS.ToString(nfi));
-            document.ReplaceText("[SiteElevation]", data.SiteElevation.ToString(nfi));
-
+            document.ReplaceText("[AnnualProbabilitySLS]", vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS"));
+            document.ReplaceText("[R_SLS]", vdh.GetStringReport(data.R_SLS, "R_SLS"));
+            document.ReplaceText("[SiteElevation]", vdh.GetStringReport(data.SiteElevation, "SiteElevation"));
+            
             // Dead Load
-            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", data.GeneralLoad.fDeadLoad_Wall.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", data.GeneralLoad.fDeadLoad_Roof.ToString(nfi));
-            document.ReplaceText("[AdditionalDeadActionWall]", data.AdditionalDeadActionWall.ToString(nfi));
-            document.ReplaceText("[AdditionalDeadActionRoof]", data.AdditionalDeadActionRoof.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", data.GeneralLoad.fDeadLoadTotal_Wall.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", data.GeneralLoad.fDeadLoadTotal_Roof.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", vdh.GetStringReport(data.GeneralLoad.fDeadLoad_Wall, "CCalcul_1170_1.DeadLoad_Wall"));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", vdh.GetStringReport(data.GeneralLoad.fDeadLoad_Roof, "CCalcul_1170_1.DeadLoad_Roof"));
+            document.ReplaceText("[AdditionalDeadActionWall]", vdh.GetStringReport(data.AdditionalDeadActionWall, "AdditionalDeadActionWall"));
+            document.ReplaceText("[AdditionalDeadActionRoof]", vdh.GetStringReport(data.AdditionalDeadActionRoof, "AdditionalDeadActionRoof"));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", vdh.GetStringReport(data.GeneralLoad.fDeadLoadTotal_Wall, "CCalcul_1170_1.DeadLoadTotal_Wall"));
+            document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", vdh.GetStringReport(data.GeneralLoad.fDeadLoadTotal_Roof, "CCalcul_1170_1.DeadLoadTotal_Roof"));
 
             // Imposed Load
             document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(nfi));
@@ -532,7 +537,7 @@ namespace EXPIMP
 
                 row.Cells[1].Paragraphs[0].InsertText(item.Symbol);
                 row.Cells[2].Paragraphs[0].InsertText($"[{item.Identificator}]");
-                row.Cells[3].Paragraphs[0].InsertText(item.Unit);
+                row.Cells[3].Paragraphs[0].InsertText(CQuantityLibrary.GetReportUnit(item.UnitIdentificator));
             }
 
             double dTableWidthFactor = 0.55; // Maximalna hodnota je cca 0.7 - konstanta, aby sa tabulka zmestila na stranu A4
@@ -540,9 +545,11 @@ namespace EXPIMP
             // To Ondrej: Nepochopil som uplne ako ten faktor funguje. Tabulku ImposedLoad to zmensuje u ostatnych sa to javi, ze ich takmer vzdy roztiahne na celu sirku. Pointa je dosiahnut aby boli vsetky bunky v stlpcoch pod sebou rovnako siroke
             // Nemusi to byt vzdy roztiahnute maximalne na sirku stranky, potom je v bunkach casto velmi vela volneho miesta. Byvaly sef take riadky volal "nudle".
             // Chcel by som dosiahnut stav ze stlpce text, symbol, value, unit budu vo vsetkych tabulkach priblizne rovnako siroke (nemyslim len tabulky zatazenia, ale napriec celym protokolom)
+            // Robim co mozem..treba poskusat ten AutoFit, lebo mne sa nezda, ze to funguje uplne tak ako by som chcel :-)
+            // Kludne mozme nastavit AutoFit.ColumnWidth a napriec celym dokumentom nastavit nejake cisla napevno pre sirky stlpcov
 
             t.Rows[0].Cells[0].Width = (document.PageWidth * dTableWidthFactor) * 0.6; // To Ondrej - sucet tychto 4 faktorov ma byt presne 1.00? Prvy stlpec by mal byt sirsi, ostatne uzsie
-            t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
+            t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1; // To Mato - ano presne tak
             t.Rows[0].Cells[2].Width = (document.PageWidth * dTableWidthFactor) * 0.2;
             t.Rows[0].Cells[3].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
 
