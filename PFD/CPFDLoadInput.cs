@@ -101,12 +101,13 @@ namespace PFD
             set
             {
                 MDesignLifeIndex = value;
-
+                IsSetFromCode = true;
                 DesignLife_Value = CDatabaseManager.GetDesignLifeValueFromDatabase(MDesignLifeIndex);
 
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
                 SetResultsAreNotValid();
+                IsSetFromCode = false;
                 NotifyPropertyChanged("DesignLifeIndex");
             }
         }
@@ -122,10 +123,11 @@ namespace PFD
             set
             {
                 MImportanceClassIndex = value;
-
+                IsSetFromCode = true;
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
                 SetResultsAreNotValid();
+                IsSetFromCode = false;
                 NotifyPropertyChanged("ImportanceClassIndex");
             }
         }

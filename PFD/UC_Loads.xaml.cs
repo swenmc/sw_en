@@ -94,6 +94,7 @@ namespace PFD
             if (sender == null) return;
             CPFDLoadInput loadInput = sender as CPFDLoadInput;
             if (loadInput != null && loadInput.IsSetFromCode) return;
+            
         }
 
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)

@@ -104,11 +104,7 @@ namespace PFD
             WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
-
-            UC_Loads loadInput_UC = null;
-            if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
-            else loadInput_UC = (UC_Loads)Loads.Content;
-            loadInput = loadInput_UC.DataContext as CPFDLoadInput;
+            SetLoadInput();
 
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput);
@@ -124,7 +120,7 @@ namespace PFD
 
             UpdateAll();
 
-            vm.Model.GroupModelMembers();
+            vm.Model.GroupModelMembers();            
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
@@ -168,6 +164,11 @@ namespace PFD
                 CComponentListVM vm = sender as CComponentListVM;
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 //else if (e.PropertyName == "ComponentDetailsList") return;
+            }
+            else if (sender is CPFDLoadInput)
+            {
+                //CPFDLoadInput vm = sender as CPFDLoadInput;
+                //if (e.PropertyName != "ModelCalculatedResultsValid") return;  //osetrene uz v CPFDViewModel                
             }
             else if (sender is CComponentInfo)
             {
@@ -351,14 +352,20 @@ namespace PFD
             // TODO - implementovat vypocet
         }
 
+        private CPFDLoadInput SetLoadInput()
+        {
+            if (loadInput == null)
+            {
+                if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
+                UC_Loads loadInput_UC = (UC_Loads)Loads.Content;
+                loadInput = loadInput_UC.DataContext as CPFDLoadInput;
+            }
+            
+            return loadInput;
+        }
+
         private void CalculateLoadingValues(CModel_PFD_01_GR model)
         {
-            // Input - TabItem Loads
-            UC_Loads loadInput_UC = null;
-            if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
-            else loadInput_UC = (UC_Loads)Loads.Content;
-            loadInput = loadInput_UC.DataContext as CPFDLoadInput;
-
             // Basic data
             sBuildingInputData.location = (ELocation)loadInput.LocationIndex;                    // locations (cities) enum
             sBuildingInputData.fDesignLife_Value = loadInput.DesignLife_Value;                   // Database value in years
@@ -833,7 +840,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
-                if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
+                //if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoadCases)
             {
@@ -1620,10 +1627,7 @@ namespace PFD
             
             try
             {
-                UC_Loads loadInput_UC = null;
-                if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
-                else loadInput_UC = (UC_Loads)Loads.Content;
-                vmPFD._loadInput = loadInput_UC.DataContext as CPFDLoadInput;
+                //vmPFD._loadInput = loadInput;
                 CModelData modelData = vmPFD.GetModelData();
 
                 //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;

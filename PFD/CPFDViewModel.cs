@@ -1916,11 +1916,15 @@ namespace PFD
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
         }
-
+        
         private void _loadInput_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // To Ondrej - asi som nieco pokazil, lebo ked menim Load input tak sa to sem nedostane
+            CPFDLoadInput vm = sender as CPFDLoadInput;
+            if (vm.IsSetFromCode) return;
+            
             SetResultsAreNotValid();
+
+            if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
         private void ComponentVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
