@@ -64,6 +64,7 @@ namespace EXPIMP
             }
             Process.Start(fileName);
         }
+
         private static string GetReportName()
         {
             int count = 0;
@@ -77,11 +78,13 @@ namespace EXPIMP
             }
             return fileName;
         }
+
         private static CProjectInfo GetProjectInfo()
         {
             CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
             return pInfo;
         }
+
         private static void DrawProjectInfo(DocX document, CProjectInfo pInfo)
         {
             document.ReplaceText("[ProjectName]", pInfo.ProjectName);
@@ -89,10 +92,13 @@ namespace EXPIMP
             document.ReplaceText("[ProjectNumber]", pInfo.ProjectNumber);
             document.ReplaceText("[ProjectPart]", pInfo.ProjectPart);
         }
+
         private static void DrawBasicGeometry(DocX document, CModelData data)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
+
+            DrawBasicGeometryParameters(document);
 
             document.ReplaceText("[GableWidth]", data.GableWidth.ToString(nfi));
             document.ReplaceText("[Length]", data.Length.ToString(nfi));
@@ -101,10 +107,8 @@ namespace EXPIMP
             document.ReplaceText("[GirtDistance]", data.GirtDistance.ToString(nfi));
             document.ReplaceText("[PurlinDistance]", data.PurlinDistance.ToString(nfi));
             document.ReplaceText("[ColumnDistance]", data.ColumnDistance.ToString(nfi));
-
-            //document.ReplaceText("[RoofPitch_deg]", );
-            //document.ReplaceText("[RoofPitch_deg]", );
         }
+
         private static void DrawMaterial(DocX document, CModelData data)
         {
             var diffMaterials = data.ComponentList.Select(c => c.Material).Distinct();
@@ -199,6 +203,7 @@ namespace EXPIMP
 
             return p;
         }
+
         private static void DrawCrossSections(DocX document, CModelData data)
         {
             var diffCrsc = data.ComponentList.Select(c => c.Section).Distinct();
@@ -221,6 +226,7 @@ namespace EXPIMP
             }
 
         }
+
         private static Paragraph DrawCrossSectionTable(DocX document, Paragraph p, string crsc, List<CSectionPropertiesText> details)
         {
             var t = document.AddTable(1, 5);
@@ -274,6 +280,7 @@ namespace EXPIMP
 
             return p;
         }
+
         private static void DrawComponentList(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberTypes]"));
@@ -322,6 +329,7 @@ namespace EXPIMP
 
             par.InsertTableBeforeSelf(t);
         }
+
         private static void DrawLoad(DocX document, CModelData data)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -329,25 +337,34 @@ namespace EXPIMP
 
             DrawBasicLoadParameters(document);
             DrawDeadLoadParameters(document);
+            DrawImposedLoadParameters(document);
+            DrawSnowLoadParameters(document);
+            DrawWindLoadParameters(document);
+            DrawSeismicLoadParameters(document);
 
+            // Basic parameters
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
             document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
             document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(nfi));
             document.ReplaceText("[R_SLS]", data.R_SLS.ToString(nfi));
             document.ReplaceText("[SiteElevation]", data.SiteElevation.ToString(nfi));
-            
-            
+
+            // Dead Load
             document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", data.GeneralLoad.fDeadLoad_Wall.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", data.GeneralLoad.fDeadLoad_Roof.ToString(nfi));
             document.ReplaceText("[AdditionalDeadActionWall]", data.AdditionalDeadActionWall.ToString(nfi));
             document.ReplaceText("[AdditionalDeadActionRoof]", data.AdditionalDeadActionRoof.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Wall]", data.GeneralLoad.fDeadLoadTotal_Wall.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", data.GeneralLoad.fDeadLoadTotal_Roof.ToString(nfi));
+
+            // Imposed Load
             document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(nfi));
+
+            // Snow Load
             document.ReplaceText("[AnnualProbabilityULS_Snow]", data.AnnualProbabilityULS_Snow.ToString(nfi));
             document.ReplaceText("[R_ULS_Snow]", data.R_ULS_Snow.ToString(nfi));
-            
+
             document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", data.Snow.eSnowElevationRegion.GetFriendlyName());
             document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", data.Snow.fs_g_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", data.Snow.fs_g_SLS.ToString(nfi));
@@ -363,7 +380,7 @@ namespace EXPIMP
             document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(nfi));
             document.ReplaceText("[EWindRegion]", data.WindRegion);
             document.ReplaceText("[TerrainCategory]", data.TerrainCategory);
-            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(nfi));  
+            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", data.Wind.fV_R_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", data.Wind.fV_R_SLS.ToString(nfi));
@@ -371,20 +388,8 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_2.M_s]", data.Wind.fM_s.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.M_t]", data.Wind.fM_t.ToString(nfi));
 
+            // Hodnoty sa daju pocitat pre rozne smery vetra N, W, E, S. Zatial budeme zobrazovat len hodnoty s indexom[0]
 
-
-            ////Hodnotysadajupocitatrozne pre smeryvetraN, W, E, S.Zatialbudemezobrazovatlenhodnoty s indexom[0]
-            ////Wind direction multiplier           Md =    [CCalcul_1170_2.fM_D_array_values_9[0]]
-            ////Site wind speed Vsit, β.ULS= [CCalcul_1170_2.V_sit_ULS_Theta_9[0]] m/s
-            ////Site wind speed             Vsit, β.SLS= [CCalcul_1170_2.V_sit_SLS_Theta_9[0]] m/s
-            ////Design wind speed           Vdes, θ.ULS=[CCalcul_1170_2.V_des_ULS_Theta_4[0]] m/s
-            ////Design wind speed           Vdes, θ.SLS= [CCalcul_1170_2.V_des_SLS_Theta_4[0]] m/s
-            ////Density of air              ρair =  [CCalcul_1170_2.Rho_air] kg/m3
-            ////Dynamic response factor         Cdyn =  [CCalcul_1170_2.C_dyn]
-            ////Basic wind pressure pb.ULS =    [CCalcul_1170_2.p_basic_ULS_Theta_4[0]] kN/m2
-            ////Basic wind pressure         pb.SLS =    [CCalcul_1170_2.p_basic_SLS_Theta_4[0]] kN/m2
-            
-            
             document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", data.Wind.fM_D_array_values_9[0].ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
@@ -395,48 +400,8 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_2.C_dyn]", data.Wind.fC_dyn.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", data.Wind.fp_basic_ULS_Theta_4[0].ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", data.Wind.fp_basic_SLS_Theta_4[0].ToString(nfi));
-            
 
-            ////5.7.	Seismic Load
-            ////Equivalent static method parameters
-
-            ////Annual probability of exceedance ULS:		[AnnualProbabilityULS_EQ]
-            ////        Return period               RULS.EQ =	[R_ULS_EQ]
-            ////        Site subsoil class                  [ESiteSubSoilClass]
-            ////        Fault distance              Dmin = 	[FaultDistanceDmin]
-            ////        km
-            ////        Fault distance Dmax =  [FaultDistanceDmax] km
-            ////Zone factor Z = [ZoneFactorZ]
-            ////Natural period along X-direction Tx =    [PeriodAlongYDirectionTx] s
-            ////Natural period along Y-direction Ty =    [PeriodAlongYDirectionTy] s
-            ////Spectral shape factor           Ch(Tx) =	[SpectralShapeFactorChTx]
-            ////        Spectral shape factor Ch(Ty) =	[SpectralShapeFactorChTy]
-
-            ////        ULS
-            ////TODO – potrebujemespristupnitpremenne v objektecez properties
-            ////Structural ductility factor ULS     μ =	[CCalcul_1170_5.Nu_ULS]
-            ////        Structural performance factor ULS       Sp =	[CCalcul_1170_5.S_p_ULS_strength]
-
-            ////        Near-fault factor               N(Tx, D) =[CCalcul_1170_5.N_TxD_ULS]
-            ////        Elastic site hazard spectrum        C(Tx) =	[CCalcul_1170_5.C_Tx_ULS]
-            ////        Factor kμ(Tx) =	[CCalcul_1170_5.k_Nu_Tx_ULS]
-            ////        Horizontal design action coefficient        Cd(Tx) =	[CCalcul_1170_5.C_d_T1x_ULS_strength]
-            ////        Contributing weight         Gtot.x=	[CCalcul_1170_5.G_tot_x]
-            ////        kN
-            ////        Horizontal static force Vx =    [CCalcul_1170_5.V_x_ULS_strength] kN
-
-            ////Near-fault factor               N(Ty, D) =[CCalcul_1170_5.N_TyD_ULS]
-            ////        Elastic site hazard spectrum        C(Ty) =	[CCalcul_1170_5.C_Ty_ULS]
-            ////        Factor kμ(Ty) =	[CCalcul_1170_5.k_Nu_Ty_ULS]
-            ////        Horizontal design action coefficient        Cd(Ty) =	[CCalcul_1170_5.C_d_T1y_ULS_strength]
-            ////        Contributing weight         Gtot.y=	[CCalcul_1170_5.G_tot_y]
-            ////        kN
-            ////        Horizontal static force Vx =    [CCalcul_1170_5.V_y_ULS_strength] kN
-
-            ////SLS - TODO
-            ////Structural ductility factor SLS μ = [CCalcul_1170_5.Nu_SLS]
-            ////Structural performance factor SLS   Sp =	[CCalcul_1170_5.S_p_SLS]
-
+            // Seismic Load
             document.ReplaceText("[AnnualProbabilityULS_EQ]", data.AnnualProbabilityULS_EQ.ToString(nfi));
             document.ReplaceText("[R_ULS_EQ]", data.R_ULS_EQ.ToString(nfi));
             document.ReplaceText("[ESiteSubSoilClass]", data.SiteSubSoilClass);
@@ -446,12 +411,13 @@ namespace EXPIMP
 
             document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.PeriodAlongXDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTy]", data.Eq.fPeriodAlongYDirection_Ty.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTx]", data.Eq.fSpectralShapeFactor_Ch_Tx.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTy]", data.Eq.fSpectralShapeFactor_Ch_Ty.ToString(nfi));
 
             // ULS
+            // TO Ondrej - tu by to chcelo do tabulky riadok s textom Ultimiate Limit State
             document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(nfi));
             // X-direction
@@ -468,6 +434,9 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
 
             // SLS
+            // TO Ondrej - tu by to chcelo do tabulky riadok s textom Serviceability Limit State
+            // alebo tu tabulku rozdelit na dve tabulky a tie texty tam dat ako nazov tabulky
+
             document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
             document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
             // X-direction
@@ -484,6 +453,14 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(nfi));
         }
 
+        private static void DrawBasicGeometryParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[BasicGeometryParameters]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadBasicGeometryParameters());
+        }
+
         private static void DrawBasicLoadParameters(DocX document)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[BasicLoadParameters]"));
@@ -491,12 +468,45 @@ namespace EXPIMP
 
             par = DrawDataExportTable(document, par, CStringsManager.LoadBasicLoadParameters());
         }
+
         private static void DrawDeadLoadParameters(DocX document)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[DeadLoad]"));
             par.RemoveText(0);
 
-            par = DrawDataExportTable(document, par, CStringsManager.LoadDeadLoadParameters());
+            par = DrawDataExportTable(document, par, CStringsManager.LoadDeadLoadParameters_AS1170_1());
+        }
+
+        private static void DrawImposedLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[ImposedLoad]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadImposedLoadParameters_AS1170_1());
+        }
+
+        private static void DrawSnowLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[SnowLoad]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadSnowLoadParameters_AS1170_3());
+        }
+
+        private static void DrawWindLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadWindLoadParameters_AS1170_2());
+        }
+
+        private static void DrawSeismicLoadParameters(DocX document)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[SeismicLoad]"));
+            par.RemoveText(0);
+
+            par = DrawDataExportTable(document, par, CStringsManager.LoadSeismicLoadParameters_NZS1170_5());
         }
 
         private static Paragraph DrawDataExportTable(DocX document, Paragraph p, List<DataExportTables> items)
@@ -507,7 +517,7 @@ namespace EXPIMP
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.ColumnWidth;
-            
+
             //temp
             string language = "en";
 
@@ -525,12 +535,18 @@ namespace EXPIMP
                 row.Cells[3].Paragraphs[0].InsertText(item.Unit);
             }
 
-            t.Rows[0].Cells[0].Width = (document.PageWidth * 0.7) * 0.4;    //0.7 je taka konstanta, aby sa tabulka zmestila na stranu :-D
-            t.Rows[0].Cells[1].Width = (document.PageWidth * 0.7) * 0.1;
-            t.Rows[0].Cells[2].Width = (document.PageWidth * 0.7) * 0.3;
-            t.Rows[0].Cells[3].Width = (document.PageWidth * 0.7) * 0.2;
+            double dTableWidthFactor = 0.55; // Maximalna hodnota je cca 0.7 - konstanta, aby sa tabulka zmestila na stranu A4
 
-            p = p.InsertParagraphAfterSelf(p);            
+            // To Ondrej: Nepochopil som uplne ako ten faktor funguje. Tabulku ImposedLoad to zmensuje u ostatnych sa to javi, ze ich takmer vzdy roztiahne na celu sirku. Pointa je dosiahnut aby boli vsetky bunky v stlpcoch pod sebou rovnako siroke
+            // Nemusi to byt vzdy roztiahnute maximalne na sirku stranky, potom je v bunkach casto velmi vela volneho miesta. Byvaly sef take riadky volal "nudle".
+            // Chcel by som dosiahnut stav ze stlpce text, symbol, value, unit budu vo vsetkych tabulkach priblizne rovnako siroke (nemyslim len tabulky zatazenia, ale napriec celym protokolom)
+
+            t.Rows[0].Cells[0].Width = (document.PageWidth * dTableWidthFactor) * 0.6; // To Ondrej - sucet tychto 4 faktorov ma byt presne 1.00? Prvy stlpec by mal byt sirsi, ostatne uzsie
+            t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
+            t.Rows[0].Cells[2].Width = (document.PageWidth * dTableWidthFactor) * 0.2;
+            t.Rows[0].Cells[3].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
+
+            p = p.InsertParagraphAfterSelf(p);
             p.InsertTableBeforeSelf(t);
 
             SetFontSizeForTable(t);
@@ -554,6 +570,7 @@ namespace EXPIMP
             p.AppendPicture(picture);
             p.InsertPageBreakAfterSelf();
         }
+
         private static void DrawModel3DToDoc(DocX document, Viewport3D viewPort)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
@@ -570,6 +587,7 @@ namespace EXPIMP
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
         }
+
         private static void DrawLoadCases(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCases]"));
@@ -595,12 +613,13 @@ namespace EXPIMP
             {
                 Row row = t.InsertRow();
                 row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
-                row.Cells[1].Paragraphs[0].InsertText(lc.Name);                
+                row.Cells[1].Paragraphs[0].InsertText(lc.Name);
                 row.Cells[2].Paragraphs[0].InsertText(lc.Type.GetFriendlyName());
             }            
             SetFontSizeForTable(t);
             par.InsertTableBeforeSelf(t);
         }
+
         private static void DrawLoadCombinations(DocX document, CModelData data)
         {
             Paragraph parULS = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCombinationsULS]"));
@@ -645,8 +664,6 @@ namespace EXPIMP
             SetFontSizeForTable(parSLS.FollowingTable);
         }
 
-
-
         private static void SetFontSizeForTable(Table table)
         {
             if (table == null) return;
@@ -656,8 +673,6 @@ namespace EXPIMP
                 p.FontSize(fontSizeInTable);
             }
         }
-
-
 
         private static void DrawMemberDesign(DocX document, CModelData data)
         {
@@ -735,6 +750,7 @@ namespace EXPIMP
             }
             return par;
         }
+
         private static Paragraph AppendFrameIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {
             List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
@@ -814,7 +830,6 @@ namespace EXPIMP
             p.InsertTableBeforeSelf(t);
         }
 
-
         private static Table GetTable(DocX document, DataTable dt)
         {
             var t = document.AddTable(dt.Rows.Count + 1, dt.Columns.Count);
@@ -841,13 +856,6 @@ namespace EXPIMP
             return t;
         }
 
-
-
-
-
-
-
-
         private static void CreateTOC(DocX document)
         {
             Paragraph parTOC = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[TOC]"));
@@ -869,6 +877,7 @@ namespace EXPIMP
 
             //} 
         }
+
         private static void CreateChapterWithBuletedList(DocX document)
         {
             // Add a paragraph at the end of the template.
@@ -996,7 +1005,6 @@ namespace EXPIMP
         //    var p = document.InsertParagraph();
         //    p.AppendPicture(picture);
         //}
-
     }
 }
 

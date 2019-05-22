@@ -10,13 +10,44 @@ namespace DATABASE
 {
     public static class CStringsManager
     {
+        public static List<DataExportTables> LoadBasicGeometryParameters()
+        {
+            return LoadStringsTable("BasicGeometry");
+        }
+
         public static List<DataExportTables> LoadBasicLoadParameters()
         {
             return LoadStringsTable("BasicLoadParameters");
         }
-        public static List<DataExportTables> LoadDeadLoadParameters()
+
+        public static List<DataExportTables> LoadDeadLoadParameters_AS1170_1()
         {
-            return LoadStringsTable("AS1170_1");
+            return LoadStringsTable("AS1170_1_DL");
+        }
+
+        public static List<DataExportTables> LoadServiceLoadParameters_AS1170_1()
+        {
+            return LoadStringsTable("AS1170_1_SL");
+        }
+
+        public static List<DataExportTables> LoadImposedLoadParameters_AS1170_1()
+        {
+            return LoadStringsTable("AS1170_1_IL");
+        }
+
+        public static List<DataExportTables> LoadWindLoadParameters_AS1170_2()
+        {
+            return LoadStringsTable("AS1170_2");
+        }
+
+        public static List<DataExportTables> LoadSnowLoadParameters_AS1170_3()
+        {
+            return LoadStringsTable("AS1170_3");
+        }
+
+        public static List<DataExportTables> LoadSeismicLoadParameters_NZS1170_5()
+        {
+            return LoadStringsTable("NZS1170_5");
         }
 
         private static List<DataExportTables> LoadStringsTable(string tableName)
@@ -56,9 +87,10 @@ namespace DATABASE
 
         private static DataExportTables GetDataForExport(SQLiteDataReader reader)
         {
-            //To Mato: v databaze ak je ID,tak tam nemaju co hladat NULL hodnoty
+            // To Mato: v databaze ak je ID,tak tam nemaju co hladat NULL hodnoty
             // To Ondrej: Mam taky mensi problem s convertorom http://converttosqlite.com/convert
-            // Ak je v xls nejako dotknuta bunka na prazdnom riadku, tak to vsetky tie prazdne riadky konvertuje do sql
+            // Ak je v xls nejako dotknuta bunka na prazdnom riadku pod tabulkou, tak to vsetky tie prazdne riadky konvertuje do sql
+            // Blbe je ze v tom editore SQL co mam to neviem zmazat hromadne, ale len po jednotlivych riadkoch
             // Chcel som to zmazat cez SQL prikaz vid vyssie ale nezadarilo sa.
             // Mozes mi urobit taku utilitku ze ked zmenim databazove subory, tak pri spusteni programu mi to automaticky odmaze zo vsetkych databaz a vsetkych tabuliek
 
@@ -71,6 +103,14 @@ namespace DATABASE
             data.Description_SVK = reader["Description_SVK"].ToString();
             data.Symbol = reader["Symbol"].ToString();
             data.Identificator = reader["Identificator"].ToString();
+
+            // To Ondrej
+            // V databaze je novy stlpec UnitIdentificator
+            // Jeho hodnota zodpoveda stlpcu UnitIdentificator v novej tabulke QuantityLibrary
+            // V tejto tabulke su jednotky, v ktorych sa pocita v programe, jednotky ktore sa maju zobrazovat v GUI a v reporte, faktory na prepocet jednotiek a pocty desatinnych miest
+            // Mrkni na to ci by to takto mohlo fungovat
+            // Do buducna je este otazka ako by sme to urobili pre palce, stopy, libry, unce a dalsie imperialne jednotky, ktore su popularne v GB a v USA
+
             data.Unit = reader["Unit"].ToString();
             if (reader.IsDBNull(reader.GetOrdinal("UnitFactor"))) data.UnitFactor = 1;
             else data.UnitFactor = reader.GetFloat(reader.GetOrdinal("UnitFactor"));
