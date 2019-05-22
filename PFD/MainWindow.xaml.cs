@@ -1616,9 +1616,16 @@ namespace PFD
 
             WaitWindow ww = new WaitWindow("DOC");
             ww.Show();
-            CModelData modelData = vmPFD.GetModelData();
+
+            
             try
             {
+                UC_Loads loadInput_UC = null;
+                if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
+                else loadInput_UC = (UC_Loads)Loads.Content;
+                vmPFD._loadInput = loadInput_UC.DataContext as CPFDLoadInput;
+                CModelData modelData = vmPFD.GetModelData();
+
                 //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
