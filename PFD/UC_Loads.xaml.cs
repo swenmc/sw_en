@@ -17,6 +17,9 @@ using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
 using DATABASE;
+using System.Globalization;
+using DATABASE.DTO;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -32,16 +35,6 @@ namespace PFD
 
             sGeometryInputData = geometryInputData;
 
-            // Connect to database and fill items of all comboboxes
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
-            //CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);
-
             List<string> listLocations = CDatabaseManager.GetStringList("MainSQLiteDB", "nzLocations", "city");
             List<string> listDesignLife = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life");
             List<string> listImportanceClass = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt");
@@ -51,6 +44,17 @@ namespace PFD
             List<string> listTerrainCategory = CDatabaseManager.GetStringList("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb");
             List<string> listSiteSubSoilClass = CDatabaseManager.GetStringList("MainSQLiteDB", "SiteSubSoilClass", "class");
             
+            //To Mato tu som chcel doplnit tu 278 do GUI...akurat,ze tu to nie je iba o zobrazovani, lebo tu su konkretne hodnoty
+            // cize napr. jednotka by sa dala dat do modelu a zobrazit v GUI
+            // ale uz napr. pocet desatinnych miest neovplyvnis,lebo to je pouzivatelsky vstup
+            // rovnako asi nema vyznam ten Unit faktor            
+            //NumberFormatInfo nfi = new NumberFormatInfo();
+            //nfi.NumberDecimalSeparator = ".";
+            //Dictionary<string, DataExportTables> allItems = CStringsManager.GetAllDict();
+            //Dictionary<string, QuantityLibraryItem> quantityLibrary = CQuantityLibrary.GetQuantityLibrary();
+            //ValueDisplayHelper vdh = new ValueDisplayHelper(allItems, quantityLibrary, nfi);
+
+
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
@@ -64,8 +68,7 @@ namespace PFD
             sloadInputComboBoxes.TerrainCategoryIndex = 4;     // Default terrain category 3
             sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
 
-            loadInputTextBoxValues sloadInputTextBoxes;
-
+            loadInputTextBoxValues sloadInputTextBoxes;            
             sloadInputTextBoxes.SiteElevation = 30;               // m  // nastavovat tu - zavisi od Location Index
             sloadInputTextBoxes.FaultDistanceDmin_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
             sloadInputTextBoxes.FaultDistanceDmax_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
