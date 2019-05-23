@@ -136,7 +136,14 @@ namespace BaseClasses
             SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
             Generate(loadCaseGroups, "[G, Ws.i, Ws.e]", "AS/NZS 1170.0, cl. 4.3(a)(d)", ELSType.eLS_SLS);
-            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q] ψs = 0.7;
+            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[9], ψE * m_arrLoadCaseGroups[1]][G, Es, ψE Q] ψE = 0;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
+            Generate(loadCaseGroups, "[G, Es, ψE Q] ψE = 0", "AS/NZS 1170.0, cl. 4.3(a)(b)(e)", ELSType.eLS_SLS);
+            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q] ψs = 0.7;
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
@@ -145,13 +152,7 @@ namespace BaseClasses
             SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
             Generate(loadCaseGroups, "[G, Ss, ψs Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.3(a)(b)(f)", ELSType.eLS_SLS);
-            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[9], ψE * m_arrLoadCaseGroups[1]][G, Es, ψE Q] ψE = 0;
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
-            Generate(loadCaseGroups, "[G, Es, ψE Q] ψE = 0", "AS/NZS 1170.0, cl. 4.3(a)(b)(e)", ELSType.eLS_SLS);
+            
 
             FilterCombinationsByWindDirection();
             SetIDandNameForCombinations();
