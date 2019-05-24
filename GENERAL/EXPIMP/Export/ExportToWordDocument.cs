@@ -689,24 +689,29 @@ namespace EXPIMP
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
                 if (!cInfo.Design) continue;
-
-                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
-                par.StyleName = "Heading2";
-
+                
                 //CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
                 //if (governingMember != null)  par = par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
                 //CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
                 //if (governingLComb != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
 
-                CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
-                if (governingMemberULS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (ULS): {governingMemberULS.ID}");
+                CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;                
                 CLoadCombination governingLCombULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
-                if (governingLCombULS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (ULS): {governingLCombULS.ID}");
-
-                CMember governingMemberSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
-                if (governingMemberSLS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (SLS): {governingMemberSLS.ID}");
+                CMember governingMemberSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;                
                 CLoadCombination governingLCombSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                
+
+                //To Mato - potrebujem aby si skontroloval,ci je tato podmienka OK. 
+                // Cize ak dostanem null pre ULS/SLS member alebo load combination, tak nic negenerujem
+                if (governingLCombSLS == null || governingLCombULS == null || governingMemberULS == null || governingMemberSLS == null) continue;
+
+                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
+                par.StyleName = "Heading2";
+                if (governingMemberULS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (ULS): {governingMemberULS.ID}");
+                if (governingLCombULS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (ULS): {governingLCombULS.ID}");
+                if (governingMemberSLS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (SLS): {governingMemberSLS.ID}");
                 if (governingLCombSLS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (SLS): {governingLCombSLS.ID}");
+                
 
                 if (governingLCombULS.ID == governingLCombSLS.ID && governingMemberULS.ID == governingMemberSLS.ID)
                 {
