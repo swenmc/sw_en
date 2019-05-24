@@ -85,14 +85,12 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         public CProjectInfo(string projectName, string site, string projectNumber, string projectPart, DateTime date)
         {
-            m_ProjectName = projectName;
-            m_Site = site;
-            m_ProjectNumber = projectNumber;
-            m_ProjectPart = projectPart;
+            // TO Ondrej - ak to uzivatel neneditoval a je to nevyplnene typu null, tak to potom assertuje pri exporte
+            m_ProjectName = projectName == null ? "" : projectName;
+            m_Site = site = site == null ? "" : site;
+            m_ProjectNumber = projectNumber == null ? "" : projectNumber;
+            m_ProjectPart = projectPart == null ? "" : projectPart;
             m_Date = date;
         }
-
-
-
     }
 }

@@ -175,20 +175,28 @@ namespace EXPIMP
             Canvas Canvas_DeflectionDiagramDeltay = new Canvas();
 
             Canvas_AxialForceDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_AxialForceDiagram.Name = "AxialForce_N";
             Canvas_AxialForceDiagram.ToolTip = "Axial Force N [kN]";
             Canvas_ShearForceDiagramVx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_ShearForceDiagramVx.Name = "ShearForce_Vx";
             Canvas_ShearForceDiagramVx.ToolTip = "Shear Force Vx [kN]";
             Canvas_ShearForceDiagramVy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_ShearForceDiagramVy.Name = "ShearForce_Vy";
             Canvas_ShearForceDiagramVy.ToolTip = "Shear Force Vy [kN]";
             Canvas_TorsionMomentDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_TorsionMomentDiagram.Name = "TorsionMoment_T";
             Canvas_TorsionMomentDiagram.ToolTip = "Torsion Moment T [kNm]";
             Canvas_BendingMomentDiagramMx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_BendingMomentDiagramMx.Name = "BendingMoment_Mx";
             Canvas_BendingMomentDiagramMx.ToolTip = "Bending Moment Mx [kNm]";
             Canvas_BendingMomentDiagramMy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_BendingMomentDiagramMy.Name = "BendingMoment_My";
             Canvas_BendingMomentDiagramMy.ToolTip = "Bending Moment My [kNm]";
             Canvas_DeflectionDiagramDeltax.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_DeflectionDiagramDeltax.Name = "LocalDeflection_Delta_x";
             Canvas_DeflectionDiagramDeltax.ToolTip = "Local Deflection δx [mm]";
             Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+            Canvas_DeflectionDiagramDeltay.Name = "LocalDeflection_Delta_y";
             Canvas_DeflectionDiagramDeltay.ToolTip = "Local Deflection δy [mm]";
 
             //TOTO
@@ -394,6 +402,38 @@ namespace EXPIMP
                 Canvas DiagramCanvas = new Canvas();
                 DiagramCanvas.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
 
+                // Urcenie specifickeho mena canvasu pre jednoznacnu identifikaciu
+                switch (IFtypeIndex)
+                {
+                    case 0:
+                        DiagramCanvas.Name = "AxialForce_N";
+                        break;
+                    case 1:
+                        DiagramCanvas.Name = "ShearForce_Vx";
+                        break;
+                    case 2:
+                        DiagramCanvas.Name = "ShearForce_Vy";
+                        break;
+                    case 3:
+                        DiagramCanvas.Name = "TorsionMoment_T";
+                        break;
+                    case 4:
+                        DiagramCanvas.Name = "BendingMoment_Mx";
+                        break;
+                    case 5:
+                        DiagramCanvas.Name = "BendingMoment_My";
+                        break;
+                    case 6:
+                        DiagramCanvas.Name = "LocalDeflection_Delta_x";
+                        break;
+                    case 7:
+                        DiagramCanvas.Name = "LocalDeflection_Delta_y";
+                        break;
+                    default:
+                        DiagramCanvas.Name = "";
+                        break;
+                }
+
                 string IFTypeUnit = "";
                 //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
                 if (IFtypeIndex <= 2) IFTypeUnit = "kN";
@@ -406,7 +446,7 @@ namespace EXPIMP
                 float fUnitFactor_Def = 1000f; // m to mm
 
                 if (IFtypeIndex <= 6)
-                    fUnitFactor = fUnitFactor_IF; // Forces and moments
+                    fUnitFactor = fUnitFactor_IF;  // Forces and moments
                 else
                     fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
 

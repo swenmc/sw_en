@@ -691,20 +691,22 @@ namespace EXPIMP
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
                 if (!cInfo.Design) continue;
-                
+
                 //CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
                 //if (governingMember != null)  par = par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
                 //CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
                 //if (governingLComb != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
 
+                ///////////////////////////////////
+                // POVODNY KOD
+                ///////////////////////////////////
+
+                /*
                 CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;                
                 CLoadCombination governingLCombULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
                 CMember governingMemberSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;                
                 CLoadCombination governingLCombSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
-                
 
-                //To Mato - potrebujem aby si skontroloval,ci je tato podmienka OK. 
-                // Cize ak dostanem null pre ULS/SLS member alebo load combination, tak nic negenerujem
                 if (governingLCombSLS == null || governingLCombULS == null || governingMemberULS == null || governingMemberSLS == null) continue;
 
                 par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
@@ -783,10 +785,95 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("");
                     AddSimpleTableAfterParagraph(t, par);
                 }
+                */
+
+
+
+                ///////////////////////////////////
+                // NOVY KOD
+                ///////////////////////////////////
+
+                // TO Ondrej - rozdelil som to na dva bloky ULS, SLS, mozno sa to da zabalit do nejakej funkcie
+                // Chcel by som ULS a SLS zobrazovat uplne oddelene
+
+                // Ultimate limit state - ULS
                 
+                CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                CLoadCombination governingLCombULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                if (governingLCombULS == null || governingMemberULS == null) continue; // Toto by mal byt mozno assert, lebo nie je v poriadku ak sa component posudzuje a nic sa nenajde
+
+                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
+                par.StyleName = "Heading2";
+
+                par = par.InsertParagraphAfterSelf("Member internal forces and design ULS");
+                par.StyleName = "Heading3";
+
+                if (governingMemberULS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (ULS): {governingMemberULS.ID}");
+                if (governingLCombULS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (ULS): {governingLCombULS.ID}");
+
+                par = par.InsertParagraphAfterSelf("Member internal forces ULS");
+                par.StyleName = "Heading4";
+                par = par.InsertParagraphAfterSelf("");
+                par = AppendMemberResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); // TODO Ondrej - To by sa malo nahradit funkciou ktora vrati len canvas pre internal forces (N,Vx,Vy,T,Mx,My)
+
+                if (cInfo.IsFrameMember())
+                {
+                    par = par.InsertParagraphAfterSelf("Frame internal forces ULS");
+                    par.StyleName = "Heading4";
+                    par = par.InsertParagraphAfterSelf("");
+                    par = AppendFrameResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); // TODO Ondrej - To by sa malo nahradit funkciou ktora vrati len canvas pre internal forces (N,Vx,Vy,T,Mx,My)
+                }
+                par = par.InsertParagraphAfterSelf("Member design details - ULS");
+                par.StyleName = "Heading4";
+
+                CCalculMember calcul = null;
+                data.dictULSDesignResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
+                if (calcul != null)
+                {
+                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul, ELSType.eLS_ULS);
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
+
+                // Serviceability limit state - SLS
+
+                CMember governingMemberSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                CLoadCombination governingLCombSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                if (governingLCombSLS == null || governingMemberSLS == null) continue; // Toto by mal byt mozno assert, lebo nie je v poriadku ak sa component posudzuje a nic sa nenajde
+
+                par = par.InsertParagraphAfterSelf("Member deflection and design SLS");
+                par.StyleName = "Heading3";
+
+                if (governingMemberSLS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (SLS): {governingMemberSLS.ID}");
+                if (governingLCombSLS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (SLS): {governingLCombSLS.ID}");
+
+                par = par.InsertParagraphAfterSelf("Member deflections SLS");
+                par.StyleName = "Heading4";
+                par = par.InsertParagraphAfterSelf("");
+                par = AppendMemberResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS); // TODO Ondrej - To by sa malo nahradit funkciou ktora, vrati len canvas pre deflections (Delta x, Detla y)
+
+                if (cInfo.IsFrameMember())
+                {
+                    par = par.InsertParagraphAfterSelf("Frame deflections SLS");
+                    par.StyleName = "Heading4";
+                    par = par.InsertParagraphAfterSelf("");
+                    par = AppendFrameResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);  // TODO Ondrej - To by sa malo nahradit funkciou, ktora vrati len canvas pre deflections (Delta x, Detla y)
+                }
+
+                par = par.InsertParagraphAfterSelf("Member design details - SLS");
+                par.StyleName = "Heading4";
+
+                data.dictSLSDesignResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
+                if (calcul != null)
+                {
+                    DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul, ELSType.eLS_SLS);
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
             }
         }
-        
 
         private static Paragraph AppendIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {            
@@ -808,6 +895,67 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
                 //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
                 AppendImageFromCanvas(document, canvas, par);
+            }
+            return par;
+        }
+
+        // TO Ondrej - nove funkcie - len pre ULS alebo SLS / member alebo ram
+        private static Paragraph AppendMemberResultsCanvases_ULS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {
+            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.Name != "LocalDeflection_Delta_x" && canvas.Name != "LocalDeflection_Delta_y")
+                {
+                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                    AppendImageFromCanvas(document, canvas, par);
+                }
+            }
+            return par;
+        }
+
+        private static Paragraph AppendFrameResultsCanvases_ULS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {
+            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.Name != "LocalDeflection_Delta_x" && canvas.Name != "LocalDeflection_Delta_y")
+                {
+                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                    AppendImageFromCanvas(document, canvas, par);
+                }
+            }
+            return par;
+        }
+
+        private static Paragraph AppendMemberResultsCanvases_SLS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {
+            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.Name == "LocalDeflection_Delta_x" || canvas.Name == "LocalDeflection_Delta_y")
+                {
+                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                    AppendImageFromCanvas(document, canvas, par);
+                }
+            }
+            return par;
+        }
+
+        private static Paragraph AppendFrameResultsCanvases_SLS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
+        {
+            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
+            foreach (Canvas canvas in canvases)
+            {
+                if (canvas.Name == "LocalDeflection_Delta_x" || canvas.Name == "LocalDeflection_Delta_y")
+                {
+                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                    AppendImageFromCanvas(document, canvas, par);
+                }
             }
             return par;
         }
@@ -911,7 +1059,9 @@ namespace EXPIMP
             parTOC.RemoveText(0);
 
             // Add the Table of Content prior to the referenced paragraph
-            var toc = document.InsertTableOfContents(parTOC, "Table of Contents", TableOfContentsSwitches.H);
+
+            int iContentMaxLevel = 2; // Maximalna uroven nadpisu "heading", ktora ma byt pridana do obsahu - TO Ondrej - nejako mi to nefunguje :(
+            var toc = document.InsertTableOfContents(parTOC, "Table of Contents", TableOfContentsSwitches.H, null, iContentMaxLevel, 0);
 
             // Add a page break prior to the referenced paragraph so it starts on a fresh page after the Table of Content
             parTOC.InsertPageBreakBeforeSelf();
