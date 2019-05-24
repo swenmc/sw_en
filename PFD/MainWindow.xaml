@@ -256,11 +256,18 @@
                         <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
+                        <Button Grid.Row="0" Grid.Column="3" Margin="0" Padding="0"  Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project informations" Width="35" Height="35" Click="btnProjectInfo_Click">
+                            <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            
+                        </Button>
 
-                        <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" IsChecked="{Binding Path=LightDirectional}">Directional Light</CheckBox>
-                        <CheckBox Name="chbLightPoint" Grid.Row="1" Grid.Column="3" IsChecked="{Binding Path=LightPoint}" >Point Light</CheckBox>
-                        <CheckBox Name="chbLightSpot" Grid.Row="2" Grid.Column="3" IsChecked="{Binding Path=LightSpot}">SpotLight</CheckBox>
-                        <CheckBox Name="chbLightAmbient" Grid.Row="3" Grid.Column="3" IsChecked="{Binding Path=LightAmbient}">Ambient Light</CheckBox>
+                        <StackPanel Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Orientation="Vertical">
+                            <CheckBox Name="chbLightDirectional" IsChecked="{Binding Path=LightDirectional}">Directional Light</CheckBox>
+                            <CheckBox Name="chbLightPoint" IsChecked="{Binding Path=LightPoint}" >Point Light</CheckBox>
+                            <CheckBox Name="chbLightSpot" IsChecked="{Binding Path=LightSpot}">SpotLight</CheckBox>
+                            <CheckBox Name="chbLightAmbient" IsChecked="{Binding Path=LightAmbient}">Ambient Light</CheckBox>
+                        </StackPanel>
+                        
 
                         <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" IsChecked="{Binding Path=MaterialDiffuse}">Diffuse Material</CheckBox>
                         <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>

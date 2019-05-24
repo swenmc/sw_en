@@ -1836,11 +1836,13 @@ namespace PFD
         }
 
         private CComponentListVM _componentVM;
+        private CProjectInfoVM _projectInfoVM;
+
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM, CPFDLoadInput loadInput)
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -1848,12 +1850,13 @@ namespace PFD
 
             _componentVM = componentVM;
             SetComponentListAccordingToDoorsAndWindows();
-
             _componentVM.PropertyChanged += ComponentVM_PropertyChanged;
             ComponentList = _componentVM.ComponentList;
 
             _loadInput = loadInput;
             _loadInput.PropertyChanged += _loadInput_PropertyChanged;
+
+            _projectInfoVM = projectInfoVM;
 
             LightDirectional = false;
             LightPoint = false;
@@ -2280,6 +2283,7 @@ namespace PFD
             data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
             data.frameModels = frameModels;
 
+            data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             return data;
         }
 

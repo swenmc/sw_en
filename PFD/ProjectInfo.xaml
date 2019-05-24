@@ -1,0 +1,63 @@
+﻿<Window x:Class="PFD.ProjectInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        Title="Project Information" Height="300" Width="400">
+    <!--<Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Name="ProjectInfoGrid" Margin="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Project Name:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="0" Grid.Column="1" Name ="TextBox_ProjectName" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=ProjectName, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Project Site:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Site" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=Site, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Project Number:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_ProjectNumber" HorizontalAlignment="Stretch"
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=ProjectNumber, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Project Part:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_ProjectPart" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=ProjectPart, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Project Date:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <DatePicker Height="25" Name ="DatePicker_ProjectDate" Grid.Row="4" Grid.Column="1" Text="{Binding Path=ProjectDate, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></DatePicker>
+
+            <Button Grid.Column="1" Grid.Row="5" Width="100" Height="25" Name="btnOK" Click="btnOK_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom">OK</Button>
+
+        </Grid>
+    </ScrollViewer>
+</Window>

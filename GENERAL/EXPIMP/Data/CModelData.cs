@@ -77,7 +77,8 @@ namespace EXPIMP
 
         private bool MUseCRSCGeometricalAxes;
 
-        //private CModel_PFD MModel;
+        private CProjectInfo projectInfo;
+
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
         public float fL1;
@@ -111,6 +112,7 @@ namespace EXPIMP
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
+        
 
         private CModel MModel;
 
@@ -823,6 +825,19 @@ namespace EXPIMP
             set
             {
                 m_R_SLS = value;
+            }
+        }
+
+        public CProjectInfo ProjectInfo
+        {
+            get
+            {
+                return projectInfo;
+            }
+
+            set
+            {
+                projectInfo = value;
             }
         }
 

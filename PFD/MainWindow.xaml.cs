@@ -86,6 +86,8 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
+        private CProjectInfoVM projectInfoVM;
+
         public MainWindow()
         {
             // Initial Screen
@@ -106,8 +108,10 @@ namespace PFD
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
             SetLoadInput();
 
+            projectInfoVM = new CProjectInfoVM();
+            
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
@@ -1642,6 +1646,12 @@ namespace PFD
             {
                 ww.Close();
             }
+        }
+
+        private void btnProjectInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ProjectInfo pi = new ProjectInfo(projectInfoVM);
+            pi.ShowDialog();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace EXPIMP
                 document.ApplyTemplate(templatePath);
 
                 DrawModel3DToDoc(document, viewPort);
-                DrawProjectInfo(document, GetProjectInfo());
+                DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
                 DrawMaterial(document, modelData);
                 DrawCrossSections(document, modelData);
@@ -80,14 +80,16 @@ namespace EXPIMP
             return fileName;
         }
 
-        private static CProjectInfo GetProjectInfo()
-        {
-            CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
-            return pInfo;
-        }
+        //private static CProjectInfo GetProjectInfo()
+        //{
+        //    CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
+        //    return pInfo;
+        //}
 
         private static void DrawProjectInfo(DocX document, CProjectInfo pInfo)
         {
+            if (pInfo == null) return;
+
             document.ReplaceText("[ProjectName]", pInfo.ProjectName);
             document.ReplaceText("[ProjectSite]", pInfo.Site);
             document.ReplaceText("[ProjectNumber]", pInfo.ProjectNumber);
