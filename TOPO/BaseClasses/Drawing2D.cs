@@ -1724,7 +1724,7 @@ namespace BaseClasses
         /// <param name="endCap"></param>
         /// <param name="thickness"></param>
         /// <param name="canvas"></param>
-        public static void DrawPolyLine(float[] arrPointsCoordX, float[] arrPointsCoordY, double dCanvasTop, double dCanvasLeft, float fFactorX, float fFactorY,
+        public static PointCollection DrawPolyLine(float[] arrPointsCoordX, float[] arrPointsCoordY, double dCanvasTop, double dCanvasLeft, float fFactorX, float fFactorY,
             float marginLeft_x, float bottomPosition_y, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvas)
         {
             PointCollection points = new PointCollection();
@@ -1745,6 +1745,8 @@ namespace BaseClasses
             Canvas.SetTop(myLine, dCanvasTop);
             Canvas.SetLeft(myLine, dCanvasLeft);
             canvas.Children.Add(myLine);
+
+            return points;
         }
 
         public static void DrawRectangle(SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas canvas, Point lt, Point br)
@@ -2088,7 +2090,7 @@ namespace BaseClasses
 
         // TODO No 44 Ondrej
         // Temporary - TODO Ondrej zjednotit metody pre vykreslovanie v 2D do nejakej zakladnej triedy (mozno uz nejaka aj existuje v inom projekte "SW_EN\GRAPHICS\PAINT" alebo swen_GUI\WindowPaint)
-        public static void DrawAxisInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+        public static Point DrawAxisInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
         {
             float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
@@ -2098,12 +2100,14 @@ namespace BaseClasses
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
+            PointCollection xAxisPoints = null;
 
             if (bYOrientationIsUp) // Up (Forces N, Vx, Vy)
             {
+                //To Mato: to je co za cislo 1.02f ???
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
-                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
+                xAxisPoints = Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented upwards)
@@ -2114,13 +2118,15 @@ namespace BaseClasses
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
                 // x-axis (middle)
-                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
+                xAxisPoints = Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented downwards)
                 Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
+            Point AxisIntersection = xAxisPoints.FirstOrDefault();
+            return AxisIntersection;
         }
 
         public static void DrawYValuesCurveInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
@@ -2144,7 +2150,8 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawYValuesPolygonInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, List <Point> listPoints, float fCanvasWidth, float fCanvasHeight,
+        //p is Axis intersection
+        public static void DrawYValuesPolygonInCanvas(Point p, bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
         float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
         {
             float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
@@ -2152,23 +2159,24 @@ namespace BaseClasses
 
             float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
-
-            if (arrPointsCoordY != null)
+            
+            if (arrPointsCoordY == null || arrPointsCoordX == null) return;
+            
+            if (!bYOrientationIsUp) // Draw positive values below x-axis
             {
-                if (!bYOrientationIsUp) // Draw positive values below x-axis
-                {
-                    for (int i = 0; i < arrPointsCoordY.Length; i++)
-                        arrPointsCoordY[i] *= -1f;
-
-                    for (int i = 0; i < listPoints.Count; i++)
-                    {
-                        double dNewValueY = listPoints[i].Y * -1f;
-                        listPoints[i] = new Point(listPoints[i].X, dNewValueY);
-                    }
-                }
-
-                Drawing2D.DrawPolygon(listPoints, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3f, canvas);
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                    arrPointsCoordY[i] *= -1f;
             }
+
+            List<Point> listPoints = new List<Point>();
+            listPoints.Add(new Point(p.X, p.Y));
+            for (int i = 0; i < arrPointsCoordY.Length; i++)
+            {
+                listPoints.Add(new Point(modelMarginLeft_x + arrPointsCoordX[i] * fFactorX, modelMarginTop_y - arrPointsCoordY[i] * fFactorY));
+            }
+            listPoints.Add(new Point(modelMarginLeft_x + xValueMax * fFactorX, p.Y));
+
+            Drawing2D.DrawPolygon(listPoints, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3f, canvas);
         }
 
 
