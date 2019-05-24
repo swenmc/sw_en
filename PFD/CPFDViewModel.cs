@@ -2269,8 +2269,8 @@ namespace PFD
             //data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
             data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
-            //data.sDesignResults_ULS = sDesignResults_ULS;
-            //data.sDesignResults_SLS = sDesignResults_SLS;
+            data.sDesignResults_ULS = sDesignResults_ULS;
+            data.sDesignResults_SLS = sDesignResults_SLS;
             
             data.dictULSDesignResults = GetDesignResultsULS();
             data.dictSLSDesignResults = GetDesignResultsSLS();

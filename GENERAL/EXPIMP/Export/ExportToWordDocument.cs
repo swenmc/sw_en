@@ -693,26 +693,60 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
                 par.StyleName = "Heading2";
 
-                CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
-                if (governingMember != null)  par = par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
-                CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
-                if (governingLComb != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
+                //CMember governingMember = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                //if (governingMember != null)  par = par.InsertParagraphAfterSelf($"Governing member ID: {governingMember.ID}");
+                //CLoadCombination governingLComb = data.sDesignResults_ULSandSLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                //if (governingLComb != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID: {governingLComb.ID}");
 
-                par = par.InsertParagraphAfterSelf("Member internal forces");
-                par.StyleName = "Heading3";
-                                
-                par = par.InsertParagraphAfterSelf("");
-                par = AppendIFCanvases(document, par, data, governingLComb, governingMember);
-                //AppendImageFromCanvas(document, canvas, par);
+                CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                if (governingMemberULS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (ULS): {governingMemberULS.ID}");
+                CLoadCombination governingLCombULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                if (governingLCombULS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (ULS): {governingLCombULS.ID}");
 
-                if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter ||
-                    cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                CMember governingMemberSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
+                if (governingMemberSLS != null) par = par.InsertParagraphAfterSelf($"Governing member ID (SLS): {governingMemberSLS.ID}");
+                CLoadCombination governingLCombSLS = data.sDesignResults_SLS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
+                if (governingLCombSLS != null) par = par.InsertParagraphAfterSelf($"Governing load combination ID (SLS): {governingLCombSLS.ID}");
+
+                if (governingLCombULS.ID == governingLCombSLS.ID && governingMemberULS.ID == governingMemberSLS.ID)
                 {
-                    par = par.InsertParagraphAfterSelf("Frame internal forces");
+                    par = par.InsertParagraphAfterSelf("Member internal forces");
                     par.StyleName = "Heading3";
-
                     par = par.InsertParagraphAfterSelf("");
-                    par = AppendFrameIFCanvases(document, par, data, governingLComb, governingMember);
+                    par = AppendIFCanvases(document, par, data, governingLCombULS, governingMemberULS);
+
+                    if (cInfo.IsFrameMember())
+                    {
+                        par = par.InsertParagraphAfterSelf("Frame internal forces");
+                        par.StyleName = "Heading3";
+                        par = par.InsertParagraphAfterSelf("");
+                        par = AppendFrameIFCanvases(document, par, data, governingLCombULS, governingMemberSLS);
+                    }
+                }
+                else
+                {
+                    par = par.InsertParagraphAfterSelf("Member internal forces ULS");
+                    par.StyleName = "Heading3";
+                    par = par.InsertParagraphAfterSelf("");
+                    par = AppendIFCanvases(document, par, data, governingLCombULS, governingMemberULS);
+
+                    par = par.InsertParagraphAfterSelf("Member internal forces SLS");
+                    par.StyleName = "Heading3";
+                    par = par.InsertParagraphAfterSelf("");
+                    par = AppendIFCanvases(document, par, data, governingLCombSLS, governingMemberSLS);
+
+                    if (cInfo.IsFrameMember())
+                    {
+                        par = par.InsertParagraphAfterSelf("Frame internal forces ULS");
+                        par.StyleName = "Heading3";
+                        par = par.InsertParagraphAfterSelf("");
+                        par = AppendFrameIFCanvases(document, par, data, governingLCombULS, governingMemberULS);
+
+                        par = par.InsertParagraphAfterSelf("Frame internal forces SLS");
+                        par.StyleName = "Heading3";
+                        par = par.InsertParagraphAfterSelf("");
+                        par = AppendFrameIFCanvases(document, par, data, governingLCombSLS, governingMemberSLS);
+                    }
                 }
 
                 par = par.InsertParagraphAfterSelf("Member design details - ULS");
@@ -745,6 +779,7 @@ namespace EXPIMP
                 
             }
         }
+        
 
         private static Paragraph AppendIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {            

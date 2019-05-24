@@ -406,5 +406,15 @@ namespace BaseClasses
             CrScProperties prop = CSectionManager.GetSectionProperties(Section);
             SectionColor = prop.colorName;
         }
+
+        public bool IsFrameMember()
+        {
+            if (MemberTypePosition == EMemberType_FS_Position.MainColumn || MemberTypePosition == EMemberType_FS_Position.MainRafter ||
+                MemberTypePosition == EMemberType_FS_Position.EdgeColumn || MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+            {
+                return true;
+            }
+            else return false;
+        }
     }
 }
