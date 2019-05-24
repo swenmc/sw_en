@@ -54,9 +54,17 @@
 
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Project Date:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <DatePicker Height="25" Name ="DatePicker_ProjectDate" Grid.Row="4" Grid.Column="1" Text="{Binding Path=ProjectDate, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></DatePicker>
+            <DatePicker Height="25" Name ="DatePicker_ProjectDate" Grid.Row="4" Grid.Column="1" SelectedDate="{Binding Path=ProjectDate, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"></DatePicker>
 
-            <Button Grid.Column="1" Grid.Row="5" Width="100" Height="25" Name="btnOK" Click="btnOK_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom">OK</Button>
+            <StackPanel Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                <Button Width="80" Height="25" Name="BtnSaveProjectInfo" Content="Save" Margin="0 0 10 0"
+                 Click="BtnSaveProjectInfo_Click"/>
+                <Button Width="80" Height="25" Name="BtnLoadProjectInfo" Content="Load" Margin="0 0 10 0"
+                 Click="BtnLoadProjectInfo_Click"/>
+                <Button  Width="80" Height="25" Name="btnOK" Margin="0 0 0 0"
+                         Click="btnOK_Click">OK</Button>
+            </StackPanel>
+            
 
         </Grid>
     </ScrollViewer>

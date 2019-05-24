@@ -123,5 +123,15 @@ namespace PFD
             CProjectInfo pi = new CProjectInfo(m_ProjectName, m_Site, m_ProjectNumber, m_ProjectPart, m_Date);
             return pi;
         }
+
+        public void SetViewModel(CProjectInfo pi)
+        {
+            if (pi == null) return;
+            ProjectName = pi.ProjectName;
+            ProjectNumber = pi.ProjectNumber;
+            ProjectPart = pi.ProjectPart;
+            Site = pi.Site;
+            ProjectDate = pi.Date;
+        }
     }
 }

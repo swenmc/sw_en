@@ -1,7 +1,11 @@
-﻿using System;
+﻿using BaseClasses;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,6 +43,58 @@ namespace PFD
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnSaveProjectInfo_Click(object sender, RoutedEventArgs e)
+        {
+            CProjectInfoVM vm = this.DataContext as CProjectInfoVM;
+            CProjectInfo pi = vm.GetProjectInfo();
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Data Files (*.cnx)|*.cnx";
+            sfd.DefaultExt = "cnx";
+            sfd.AddExtension = true;
+            sfd.FileName = pi.ProjectName;
+            
+            if (sfd.ShowDialog() == true)
+            {
+                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(stream, pi);
+                    stream.Close();
+                }
+            }
+        }
+
+        private void BtnLoadProjectInfo_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Data Files (*.cnx)|*.cnx";
+            ofd.DefaultExt = "cnx";
+            ofd.AddExtension = true;
+
+            if (ofd.ShowDialog() == true)
+            {
+                OpenFile(ofd.FileName);
+            }
+        }
+
+        private void OpenFile(string fileName)
+        {
+            CProjectInfo deserializedProjectInfo = null;
+            
+            using (Stream stream = File.Open(fileName, FileMode.Open))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                deserializedProjectInfo = (CProjectInfo)binaryFormatter.Deserialize(stream);
+            }
+
+            CProjectInfoVM vm = this.DataContext as CProjectInfoVM;
+            if (deserializedProjectInfo != null)
+            {
+                vm.SetViewModel(deserializedProjectInfo);
+            }
         }
     }
 }
