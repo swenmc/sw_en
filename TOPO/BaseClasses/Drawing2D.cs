@@ -2102,9 +2102,12 @@ namespace BaseClasses
             float fPositionOfXaxisToTheEndOfYAxis = 0;
             PointCollection xAxisPoints = null;
 
-            if (bYOrientationIsUp) // Up (Forces N, Vx, Vy)
+            if (bYOrientationIsUp) // Up (Forces N, Vx, Vy) // Tu sa urcuje ci sa kladne hodnoty veliciny vykresluju smerom hore alebo dole, tj kam smeruje osa y
             {
                 //To Mato: to je co za cislo 1.02f ???
+                // To Ondrej: To je moja "konstanta" - os x je o 2% dlhsia nez maximalna x suradnica diagramu, blbe je ze pre y som to neurobil :)
+                // Asi by bolo lepsie ak by boli osy dhsie o nejaku fixnu hodnotu
+
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
                 xAxisPoints = Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
@@ -2114,7 +2117,7 @@ namespace BaseClasses
                 Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
-            else // Down (Torsion and bending moments T, Mx, My)
+            else // Down (Torsion and bending moments T, Mx, My and deflections delta)
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
                 // x-axis (middle)
@@ -2178,8 +2181,5 @@ namespace BaseClasses
 
             Drawing2D.DrawPolygon(listPoints, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3f, canvas);
         }
-
-
-        
     }
 }
