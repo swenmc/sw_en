@@ -525,8 +525,7 @@ namespace EXPIMP
             var t = document.AddTable(items.Count, 4);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
-            t.AutoFit = AutoFit.ColumnWidth;
-
+            
             //temp
             string language = "en";
 
@@ -544,7 +543,7 @@ namespace EXPIMP
                 row.Cells[3].Paragraphs[0].InsertText(CQuantityLibrary.GetReportUnit(item.UnitIdentificator));
             }
 
-            double dTableWidthFactor = 0.55; // Maximalna hodnota je cca 0.7 - konstanta, aby sa tabulka zmestila na stranu A4
+            //double dTableWidthFactor = 0.55; // Maximalna hodnota je cca 0.7 - konstanta, aby sa tabulka zmestila na stranu A4
 
             // To Ondrej: Nepochopil som uplne ako ten faktor funguje. Tabulku ImposedLoad to zmensuje u ostatnych sa to javi, ze ich takmer vzdy roztiahne na celu sirku. Pointa je dosiahnut aby boli vsetky bunky v stlpcoch pod sebou rovnako siroke
             // Nemusi to byt vzdy roztiahnute maximalne na sirku stranky, potom je v bunkach casto velmi vela volneho miesta. Byvaly sef take riadky volal "nudle".
@@ -552,15 +551,19 @@ namespace EXPIMP
             // Robim co mozem..treba poskusat ten AutoFit, lebo mne sa nezda, ze to funguje uplne tak ako by som chcel :-)
             // Kludne mozme nastavit AutoFit.ColumnWidth a napriec celym dokumentom nastavit nejake cisla napevno pre sirky stlpcov
 
-            t.Rows[0].Cells[0].Width = (document.PageWidth * dTableWidthFactor) * 0.6; // To Ondrej - sucet tychto 4 faktorov ma byt presne 1.00? Prvy stlpec by mal byt sirsi, ostatne uzsie
-            t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1; // To Mato - ano presne tak
-            t.Rows[0].Cells[2].Width = (document.PageWidth * dTableWidthFactor) * 0.2;
-            t.Rows[0].Cells[3].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
+            //t.Rows[0].Cells[0].Width = (document.PageWidth * dTableWidthFactor) * 0.6; // To Ondrej - sucet tychto 4 faktorov ma byt presne 1.00? Prvy stlpec by mal byt sirsi, ostatne uzsie
+            //t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1; // To Mato - ano presne tak
+            //t.Rows[0].Cells[2].Width = (document.PageWidth * dTableWidthFactor) * 0.2;
+            //t.Rows[0].Cells[3].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
 
             p = p.InsertParagraphAfterSelf(p);
             p.InsertTableBeforeSelf(t);
 
             SetFontSizeForTable(t);
+
+            float tableWidth = 480f;
+            t.AutoFit = AutoFit.ColumnWidth;
+            t.SetWidthsPercentage(new[] { 50f, 15f, 20f, 15f }, tableWidth);
 
             return p;
         }
