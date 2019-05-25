@@ -256,8 +256,8 @@
                         <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project information" Width="35" Height="35" Click="btnProjectInfo_Click">
-                            <Image Source="Resources/info.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                        <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project details" Width="20" Height="20" Click="btnProjectInfo_Click">
+                            <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                         </Button>
 
                         <StackPanel Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Orientation="Vertical">

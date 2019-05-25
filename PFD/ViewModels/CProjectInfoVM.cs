@@ -106,10 +106,7 @@ namespace PFD
         public CProjectInfoVM()
         {
             ProjectDate = DateTime.Now;
-            
         }
-
-        
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

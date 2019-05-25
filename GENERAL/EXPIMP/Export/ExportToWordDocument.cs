@@ -94,6 +94,8 @@ namespace EXPIMP
             document.ReplaceText("[ProjectSite]", pInfo.Site);
             document.ReplaceText("[ProjectNumber]", pInfo.ProjectNumber);
             document.ReplaceText("[ProjectPart]", pInfo.ProjectPart);
+
+            document.ReplaceText("[Date]", pInfo.Date.ToString("dd/MM/yyyy"));
         }
 
         private static void DrawBasicGeometry(DocX document, CModelData data)
