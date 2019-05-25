@@ -113,11 +113,11 @@ namespace EXPIMP
         }
 
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
-        public static List<Canvas> GetIFCanvases(bool UseCRSCGeometricalAxes, CLoadCombination lcomb, CMember member, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections)
+        public static List<Canvas> GetIFCanvases(bool IsULS, bool UseCRSCGeometricalAxes, CLoadCombination lcomb, CMember member, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections)
         {
             List<Canvas> canvases = new List<Canvas>();
             if (lcomb == null || member == null || listMemberLoadForces == null || listMemberDeflections == null) return canvases;
-
+            
             //Original Size - 620:160
             float fCanvasHeight = 160; // Size of Canvas // Same size of of diagrams ???
             float fCanvasWidth = 620;  // Size of Canvas
@@ -163,41 +163,7 @@ namespace EXPIMP
             iNumberOfDesignSections,
             out fArr_AxialForceValuesN, out fArr_ShearForceValuesVx, out fArr_ShearForceValuesVy, out fArr_TorsionMomentValuesT, out fArr_BendingMomentValuesMx,
             out fArr_BendingMomentValuesMy, out fArr_DeflectionValuesDeltax, out fArr_DeflectionValuesDeltay);
-
-            // Clear canvases
-            Canvas Canvas_AxialForceDiagram = new Canvas();
-            Canvas Canvas_ShearForceDiagramVx = new Canvas();
-            Canvas Canvas_ShearForceDiagramVy = new Canvas();
-            Canvas Canvas_TorsionMomentDiagram = new Canvas();
-            Canvas Canvas_BendingMomentDiagramMx = new Canvas();
-            Canvas Canvas_BendingMomentDiagramMy = new Canvas();
-            Canvas Canvas_DeflectionDiagramDeltax = new Canvas();
-            Canvas Canvas_DeflectionDiagramDeltay = new Canvas();
-
-            Canvas_AxialForceDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_AxialForceDiagram.Name = "AxialForce_N";
-            Canvas_AxialForceDiagram.ToolTip = "Axial Force N [kN]";
-            Canvas_ShearForceDiagramVx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_ShearForceDiagramVx.Name = "ShearForce_Vx";
-            Canvas_ShearForceDiagramVx.ToolTip = "Shear Force Vx [kN]";
-            Canvas_ShearForceDiagramVy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_ShearForceDiagramVy.Name = "ShearForce_Vy";
-            Canvas_ShearForceDiagramVy.ToolTip = "Shear Force Vy [kN]";
-            Canvas_TorsionMomentDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_TorsionMomentDiagram.Name = "TorsionMoment_T";
-            Canvas_TorsionMomentDiagram.ToolTip = "Torsion Moment T [kNm]";
-            Canvas_BendingMomentDiagramMx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_BendingMomentDiagramMx.Name = "BendingMoment_Mx";
-            Canvas_BendingMomentDiagramMx.ToolTip = "Bending Moment Mx [kNm]";
-            Canvas_BendingMomentDiagramMy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_BendingMomentDiagramMy.Name = "BendingMoment_My";
-            Canvas_BendingMomentDiagramMy.ToolTip = "Bending Moment My [kNm]";
-            Canvas_DeflectionDiagramDeltax.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_DeflectionDiagramDeltax.Name = "LocalDeflection_Delta_x";
-            Canvas_DeflectionDiagramDeltax.ToolTip = "Local Deflection δx [mm]";
-            Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
-            Canvas_DeflectionDiagramDeltay.Name = "LocalDeflection_Delta_y";
-            Canvas_DeflectionDiagramDeltay.ToolTip = "Local Deflection δy [mm]";
+            
 
             //TOTO
             //toto nastavenie dole tu nema byt. Bude nutne prerobit vykreslovanie v canvasoch. Zvacsit okraje napravo a dole. Mozno potom aj roztiahnut canvas v dokumente na max sirku 720.
@@ -208,66 +174,110 @@ namespace EXPIMP
             float modelMarginTop_y = 10;
             float modelMarginBottom_y = 10;
             float modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
-
-            Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
-            Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
-            Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
-
-            Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_TorsionMomentDiagram);
-            Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMx);
-            Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
-
-            Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltax);
-            Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltay);
-
-            // TODO
-            // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
-
-            // Draw y values
-
-            // TODO Ondrej - skusal som vykreslovat diagram ako polygon ale zatial neuspesne, zase je tu "rozpor" v tom na akej urovni prepocitat hodnoty do zobrazovacich jednotiek
-            // Chcelo by to nejako pekne zjednotit s vykreslovanim FrameInternalForces, ale tu je to zlozitejsie lebo som navymyslal rozne pozicie a orientaciu osi +/-y podla toho ake su minimalne a maximalne hodnoty a ci sa jedna o sily alebo ohybove momenty
-
-            //List<Point> listAxialForceValuesN = AddFirstAndLastDiagramPoint(fArr_AxialForceValuesN, member, 40, arrPointsCoordX, -1, 0.01, 1);
-            //Drawing2D.DrawYValuesPolygonInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, listAxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
-
-            Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
-            Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
-            Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
-
-            Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_TorsionMomentDiagram);
-            Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMx);
-            Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
-
-            Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltax);
-            Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltay);
-
-            // Draw values description
             int iNumberOfDecimalPlaces = 2;
-            Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_AxialForceValuesN, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_AxialForceDiagram);
-            Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_ShearForceValuesVx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_ShearForceDiagramVx);
-            Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_ShearForceValuesVy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_ShearForceDiagramVy);
 
-            Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_TorsionMomentValuesT, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_TorsionMomentDiagram);
-            Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_BendingMomentValuesMx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMx);
-            Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_BendingMomentValuesMy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMy);
-
-            Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltax, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltax);
-            Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltay, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltay);
-                        
             double limitForce = 1e-3; // 0.001 kN
             double limitMoment = 1e-3; // 0.001 kNm
             double limitDeflection = 1e-2; // 0.01 mm
-            // To Ondrej - tu treba brat absolutnu hodnotu (v diagrame mozu byt zaporne aj kladne)
-            if (fArr_AxialForceValuesN.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_AxialForceDiagram);
-            if (fArr_ShearForceValuesVx.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVx);
-            if (fArr_ShearForceValuesVy.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVy);
-            if (fArr_TorsionMomentValuesT.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_TorsionMomentDiagram);
-            if (fArr_BendingMomentValuesMx.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMx);
-            if (fArr_BendingMomentValuesMy.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMy);
-            if (fArr_DeflectionValuesDeltax.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltax);
-            if (fArr_DeflectionValuesDeltay.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltay);
+            
+            if (IsULS)
+            {
+                Canvas Canvas_AxialForceDiagram = new Canvas();
+                Canvas Canvas_ShearForceDiagramVx = new Canvas();
+                Canvas Canvas_ShearForceDiagramVy = new Canvas();
+                Canvas Canvas_TorsionMomentDiagram = new Canvas();
+                Canvas Canvas_BendingMomentDiagramMx = new Canvas();
+                Canvas Canvas_BendingMomentDiagramMy = new Canvas();
 
+
+                Canvas_AxialForceDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_AxialForceDiagram.Name = "AxialForce_N";
+                Canvas_AxialForceDiagram.ToolTip = "Axial Force N [kN]";
+                Canvas_ShearForceDiagramVx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_ShearForceDiagramVx.Name = "ShearForce_Vx";
+                Canvas_ShearForceDiagramVx.ToolTip = "Shear Force Vx [kN]";
+                Canvas_ShearForceDiagramVy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_ShearForceDiagramVy.Name = "ShearForce_Vy";
+                Canvas_ShearForceDiagramVy.ToolTip = "Shear Force Vy [kN]";
+                Canvas_TorsionMomentDiagram.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_TorsionMomentDiagram.Name = "TorsionMoment_T";
+                Canvas_TorsionMomentDiagram.ToolTip = "Torsion Moment T [kNm]";
+                Canvas_BendingMomentDiagramMx.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_BendingMomentDiagramMx.Name = "BendingMoment_Mx";
+                Canvas_BendingMomentDiagramMx.ToolTip = "Bending Moment Mx [kNm]";
+                Canvas_BendingMomentDiagramMy.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_BendingMomentDiagramMy.Name = "BendingMoment_My";
+                Canvas_BendingMomentDiagramMy.ToolTip = "Bending Moment My [kNm]";
+
+                Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+                Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
+                Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
+
+                Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_TorsionMomentDiagram);
+                Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMx);
+                Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
+
+
+
+                // TODO
+                // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
+
+                // Draw y values
+
+                // TODO Ondrej - skusal som vykreslovat diagram ako polygon ale zatial neuspesne, zase je tu "rozpor" v tom na akej urovni prepocitat hodnoty do zobrazovacich jednotiek
+                // Chcelo by to nejako pekne zjednotit s vykreslovanim FrameInternalForces, ale tu je to zlozitejsie lebo som navymyslal rozne pozicie a orientaciu osi +/-y podla toho ake su minimalne a maximalne hodnoty a ci sa jedna o sily alebo ohybove momenty
+
+                //List<Point> listAxialForceValuesN = AddFirstAndLastDiagramPoint(fArr_AxialForceValuesN, member, 40, arrPointsCoordX, -1, 0.01, 1);
+                //Drawing2D.DrawYValuesPolygonInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, listAxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+
+                Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+                Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
+                Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
+
+                Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_TorsionMomentDiagram);
+                Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMx);
+                Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
+
+
+                // Draw values description
+                
+                Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_AxialForceValuesN, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_AxialForceDiagram);
+                Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_ShearForceValuesVx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_ShearForceDiagramVx);
+                Drawing2D.DrawTexts(true, true, ConversionsHelper.ConvertArrayFloatToString(fArr_ShearForceValuesVy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_ShearForceDiagramVy);
+
+                Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_TorsionMomentValuesT, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_TorsionMomentDiagram);
+                Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_BendingMomentValuesMx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMx);
+                Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_BendingMomentValuesMy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMy);
+
+                if (fArr_AxialForceValuesN.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_AxialForceDiagram);
+                if (fArr_ShearForceValuesVx.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVx);
+                if (fArr_ShearForceValuesVy.Any(n => Math.Abs(n) > limitForce)) canvases.Add(Canvas_ShearForceDiagramVy);
+                if (fArr_TorsionMomentValuesT.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_TorsionMomentDiagram);
+                if (fArr_BendingMomentValuesMx.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMx);
+                if (fArr_BendingMomentValuesMy.Any(n => Math.Abs(n) > limitMoment)) canvases.Add(Canvas_BendingMomentDiagramMy);
+
+            }
+            else if (!IsULS)
+            {
+                Canvas Canvas_DeflectionDiagramDeltax = new Canvas();
+                Canvas Canvas_DeflectionDiagramDeltay = new Canvas();
+                Canvas_DeflectionDiagramDeltax.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_DeflectionDiagramDeltax.Name = "LocalDeflection_Delta_x";
+                Canvas_DeflectionDiagramDeltax.ToolTip = "Local Deflection δx [mm]";
+                Canvas_DeflectionDiagramDeltay.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+                Canvas_DeflectionDiagramDeltay.Name = "LocalDeflection_Delta_y";
+                Canvas_DeflectionDiagramDeltay.ToolTip = "Local Deflection δy [mm]";
+                Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltax);
+                Drawing2D.DrawAxisInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltay);
+
+                Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltax);
+                Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_DeflectionDiagramDeltay);
+
+                Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltax, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltax, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltax);
+                Drawing2D.DrawTexts(false, true, ConversionsHelper.ConvertArrayFloatToString(fArr_DeflectionValuesDeltay, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_DeflectionValuesDeltay, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_DeflectionDiagramDeltay);
+                if (fArr_DeflectionValuesDeltax.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltax);
+                if (fArr_DeflectionValuesDeltay.Any(n => Math.Abs(n) > limitDeflection)) canvases.Add(Canvas_DeflectionDiagramDeltay);
+            }
             return canvases;
         }
 
@@ -327,7 +337,7 @@ namespace EXPIMP
             }
         }
 
-        public static List<Canvas> GetFrameInternalForcesCanvases(List<CFrame> frames, CMember member, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
+        public static List<Canvas> GetFrameInternalForcesCanvases(bool isULS, List<CFrame> frames, CMember member, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
             if (frames == null || member == null || lcomb == null || ListMemberInternalForcesInLoadCombinations == null || ListMemberDeflectionsInLoadCombinations == null) return new List<Canvas>();
 
@@ -338,10 +348,12 @@ namespace EXPIMP
             }
             //if(model == null) frames.FirstOrDefault(); //if not found frame for member - get first frame
             if (model == null) throw new Exception($"Frame not found for member: {member?.ID}");
-            return GetFrameInternalForcesCanvases(model, lcomb, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations, UseCRSCGeometricalAxes);
+            if(isULS) return GetFrameInternalForcesCanvasesULS(model, lcomb, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations, UseCRSCGeometricalAxes);
+            else return GetFrameInternalForcesCanvasesSLS(model, lcomb, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations, UseCRSCGeometricalAxes);
+
         }
 
-        private static List<Canvas> GetFrameInternalForcesCanvases(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
+        private static List<Canvas> GetFrameInternalForcesCanvasesULS(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
         {
             ////////////////////////////////////////////////////////////////////////////////////////////////
             //double internalForceScale_user = 2;
@@ -397,7 +409,7 @@ namespace EXPIMP
 
             List<Canvas> canvases = new List<Canvas>();
 
-            for (int IFtypeIndex = 0; IFtypeIndex <= 7; IFtypeIndex++)
+            for (int IFtypeIndex = 0; IFtypeIndex <= 5; IFtypeIndex++)
             {
                 Canvas DiagramCanvas = new Canvas();
                 DiagramCanvas.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
@@ -551,6 +563,230 @@ namespace EXPIMP
                     
                     Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
                     
+                    // Draw Member on the Internal forces polygon
+                    DrawMember(model, DiagramCanvas, i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                }
+
+                if (IncludeResults)
+                {
+                    DiagramCanvas.ToolTip = GetInternalForceText(IFtypeIndex);
+                    canvases.Add(DiagramCanvas);
+                }
+            }
+
+            return canvases;
+        }
+
+        private static List<Canvas> GetFrameInternalForcesCanvasesSLS(CFrame model, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations, bool UseCRSCGeometricalAxes)
+        {
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            //double internalForceScale_user = 2;
+            int NumberOfDecimalPlaces = 2;
+            int FontSize = 12;
+            float fCanvasWidth = (float)720; // Size of Canvas  990/580
+            float fCanvasHeight = (float)422; // Size of Canvas
+            int scale_unit = 1; // m
+
+            List<Point> modelNodesCoordinatesInGCS = new List<Point>();
+
+            for (int i = 0; i < model.m_arrNodes.Length; i++) // Naplnime pole bodov s globanymi suradnicami modelu
+            {
+                modelNodesCoordinatesInGCS.Add(new Point(model.m_arrNodes[i].X, model.m_arrNodes[i].Z));
+            }
+
+            double dTempMax_X;
+            double dTempMin_X;
+            double dTempMax_Y;
+            double dTempMin_Y;
+            Drawing2D.CalculateModelLimits(modelNodesCoordinatesInGCS, out dTempMax_X, out dTempMin_X, out dTempMax_Y, out dTempMin_Y);
+
+            float fModel_Length_x_real = (float)(dTempMax_X - dTempMin_X);
+            float fModel_Length_y_real = (float)(dTempMax_Y - dTempMin_Y);
+            float fModel_Length_x_page;
+            float fModel_Length_y_page;
+            double dFactor_x;
+            double dFactor_y;
+            float fReal_Model_Zoom_Factor;
+            float fmodelMarginLeft_x;
+            float fmodelMarginTop_y;
+            float fmodelBottomPosition_y;
+
+            Drawing2D.CalculateBasicValue(
+            fModel_Length_x_real,
+            fModel_Length_y_real,
+            0.6f, // zoom ratio 0-1 (zoom of 2D view), zobrazime model vo velkosti 50% z canvas aby bol dostatok priestoru pre vykreslenie vn sil
+            scale_unit,
+            fCanvasWidth,
+            fCanvasHeight,
+            out fModel_Length_x_page,
+            out fModel_Length_y_page,
+            out dFactor_x,
+            out dFactor_y,
+            out fReal_Model_Zoom_Factor,
+            out fmodelMarginLeft_x,
+            out fmodelMarginTop_y,
+            out fmodelBottomPosition_y
+            );
+
+            float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
+            int factorSwitchYAxis = -1;
+
+            List<Canvas> canvases = new List<Canvas>();
+
+            for (int IFtypeIndex = 6; IFtypeIndex <= 7; IFtypeIndex++)
+            {
+                Canvas DiagramCanvas = new Canvas();
+                DiagramCanvas.RenderSize = new Size(fCanvasWidth, fCanvasHeight);
+
+                // Urcenie specifickeho mena canvasu pre jednoznacnu identifikaciu
+                switch (IFtypeIndex)
+                {
+                    case 0:
+                        DiagramCanvas.Name = "AxialForce_N";
+                        break;
+                    case 1:
+                        DiagramCanvas.Name = "ShearForce_Vx";
+                        break;
+                    case 2:
+                        DiagramCanvas.Name = "ShearForce_Vy";
+                        break;
+                    case 3:
+                        DiagramCanvas.Name = "TorsionMoment_T";
+                        break;
+                    case 4:
+                        DiagramCanvas.Name = "BendingMoment_Mx";
+                        break;
+                    case 5:
+                        DiagramCanvas.Name = "BendingMoment_My";
+                        break;
+                    case 6:
+                        DiagramCanvas.Name = "LocalDeflection_Delta_x";
+                        break;
+                    case 7:
+                        DiagramCanvas.Name = "LocalDeflection_Delta_y";
+                        break;
+                    default:
+                        DiagramCanvas.Name = "";
+                        break;
+                }
+
+                string IFTypeUnit = "";
+                //"N", "Vz", "Vy", "T", "My", "Mz", "δy", "δz"
+                if (IFtypeIndex <= 2) IFTypeUnit = "kN";
+                else if (IFtypeIndex <= 6) IFTypeUnit = "kNm";
+                else IFTypeUnit = "mm";
+
+                // Internal forces / Deformation - default unit scale factor
+                float fUnitFactor = 1;
+                float fUnitFactor_IF = 0.001f; // N to kN or Nm to kNm
+                float fUnitFactor_Def = 1000f; // m to mm
+
+                if (IFtypeIndex <= 6)
+                    fUnitFactor = fUnitFactor_IF;  // Forces and moments
+                else
+                    fUnitFactor = fUnitFactor_Def; // Deformations (Displacement / Deflection, Rotation)
+
+                bool IncludeResults = false;
+
+                double bestScaleRatio = GetBestScaleRatio(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
+                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+
+                // Draw each member in the model and selected internal force diagram
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    // Calculate Member Rotation angle (clockwise)
+                    double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
+                    double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
+
+                    // Get list of points from Dictionary, if not exist then calculate
+                    List<Point> listMemberInternalForcePoints = GetMemberInternalForcePoints(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
+                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+
+                    double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
+                    double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
+
+                    RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
+                    TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
+                    TransformGroup transformGroup_RandT = new TransformGroup();
+                    transformGroup_RandT.Children.Add(rotateTransform);
+                    transformGroup_RandT.Children.Add(translateTransform);
+
+                    List<Point> points = new List<Point>();
+                    foreach (Point p in listMemberInternalForcePoints)
+                        points.Add(transformGroup_RandT.Transform(p));
+
+                    // Analyse diagram - find minimum and maximum value (find local extremes ???)
+                    // store index of extreme values
+
+                    double dMinValue = Double.PositiveInfinity;
+                    double dMaxValue = Double.NegativeInfinity;
+
+                    int iIndexMinValue = 0;
+                    int iIndexMaxValue = 0;
+
+                    if (ListMemberInternalForcesInLoadCombinations == null) continue; // TODO - Sem by sa to uz nemalo ani dostat ak prut nema vysledky
+
+                    int iNumberOfDesignSections = 11;
+                    designBucklingLengthFactors[] sBucklingLengthFactors;
+                    designMomentValuesForCb[] sMomentValuesforCb;
+                    basicInternalForces[] sBIF_x;
+                    basicDeflections[] sBDef_x;
+
+                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
+                        lcomb,
+                        ListMemberInternalForcesInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBucklingLengthFactors,
+                        out sMomentValuesforCb,
+                        out sBIF_x);
+
+                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(
+                        UseCRSCGeometricalAxes,
+                        model.m_arrMembers[i],
+                        lcomb,
+                        ListMemberDeflectionsInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBDef_x);
+
+                    for (int c = 0; c < sBIF_x.Length; c++)
+                    {
+                        float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[c], sBDef_x[c]);
+                        if (IF_Value < dMinValue)
+                        {
+                            dMinValue = IF_Value;
+                            iIndexMinValue = c;
+                        }
+                        if (IF_Value > dMaxValue)
+                        {
+                            dMaxValue = IF_Value;
+                            iIndexMaxValue = c;
+                        }
+                    }
+
+                    // TODO Ondrej - Tieto limity "0" by mali byt rovnake ako limity pre diagramy samostatnych prutov podla typu IF (IFtypeIndex)
+                    // aby sa nestalo ze tam bude diagram pre ram ale nie pre prut
+
+                    if (!MathF.d_equal(dMinValue, 0) || !MathF.d_equal(dMaxValue, 0)) IncludeResults = true;
+
+                    for (int c = 0; c < sBIF_x.Length; c++)
+                    {
+                        if (c != 0 && c != (sBIF_x.Length - 1) && c != iIndexMinValue && c != iIndexMaxValue) continue;
+                        float IF_Value = GetInternalForcesValue(IFtypeIndex, sBIF_x[c], sBDef_x[c]);
+
+                        // Ignore and do not display zero value label
+                        if (MathF.d_equal(IF_Value, 0))
+                            continue;
+
+                        string txt = (fUnitFactor * IF_Value).ToString($"F{NumberOfDecimalPlaces}");
+                        txt += " " + IFTypeUnit;
+                        //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
+                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas);
+                    }
+
+                    Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
+
                     // Draw Member on the Internal forces polygon
                     DrawMember(model, DiagramCanvas, i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
                 }

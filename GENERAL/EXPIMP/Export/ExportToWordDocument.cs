@@ -181,7 +181,7 @@ namespace EXPIMP
             t.Rows[0].Cells[2].Paragraphs[0].Bold();
             t.Rows[0].Cells[3].Paragraphs[0].Bold();
             t.Rows[0].Cells[4].Paragraphs[0].Bold();
-            
+
             t.Rows[0].Cells[0].Width = picWidth;
             t.Rows[0].Cells[1].Width = (document.PageWidth - picWidth) * 0.7;
             t.Rows[0].Cells[2].Width = (document.PageWidth - picWidth) * 0.1;
@@ -261,7 +261,7 @@ namespace EXPIMP
             t.Rows[0].Cells[2].Width = (document.PageWidth - picWidth) * 0.1;
             t.Rows[0].Cells[3].Width = (document.PageWidth - picWidth) * 0.1;
             t.Rows[0].Cells[4].Width = (document.PageWidth - picWidth) * 0.1;
-            
+
             foreach (CSectionPropertiesText prop in details)
             {
                 if (!prop.VisibleInReport) continue;
@@ -275,7 +275,7 @@ namespace EXPIMP
                 row.Cells[4].Paragraphs[0].InsertText(prop.Unit_NmmMpa);
             }
 
-            t.MergeCellsInColumn(0, 0, t.Rows.Count-1);
+            t.MergeCellsInColumn(0, 0, t.Rows.Count - 1);
 
             p = p.InsertParagraphAfterSelf(p);
             p.RemoveText(0);
@@ -295,7 +295,7 @@ namespace EXPIMP
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.Window;
-            
+
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
             t.Rows[0].Cells[2].Paragraphs[0].InsertText("Component Name");
@@ -329,7 +329,7 @@ namespace EXPIMP
                 row.Cells[4].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.SectionColor));
                 row.Cells[5].Paragraphs[0].InsertText(cInfo.Material);
             }
-            
+
             SetFontSizeForTable(t);
 
             par.InsertTableBeforeSelf(t);
@@ -350,7 +350,7 @@ namespace EXPIMP
             Dictionary<string, DataExportTables> allItems = CStringsManager.GetAllDict();
             Dictionary<string, QuantityLibraryItem> quantityLibrary = CQuantityLibrary.GetQuantityLibrary();
             ValueDisplayHelper vdh = new ValueDisplayHelper(allItems, quantityLibrary, nfi);
-            
+
             // Basic parameters
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
@@ -358,7 +358,7 @@ namespace EXPIMP
             document.ReplaceText("[AnnualProbabilitySLS]", vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS"));
             document.ReplaceText("[R_SLS]", vdh.GetStringReport(data.R_SLS, "R_SLS"));
             document.ReplaceText("[SiteElevation]", vdh.GetStringReport(data.SiteElevation, "SiteElevation"));
-            
+
             // Dead Load
             document.ReplaceText("[CCalcul_1170_1.DeadLoad_Wall]", vdh.GetStringReport(data.GeneralLoad.fDeadLoad_Wall, "CCalcul_1170_1.DeadLoad_Wall"));
             document.ReplaceText("[CCalcul_1170_1.DeadLoad_Roof]", vdh.GetStringReport(data.GeneralLoad.fDeadLoad_Roof, "CCalcul_1170_1.DeadLoad_Roof"));
@@ -525,7 +525,7 @@ namespace EXPIMP
             var t = document.AddTable(items.Count, 4);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
-            
+
             //temp
             string language = "en";
 
@@ -534,7 +534,7 @@ namespace EXPIMP
             {
                 Row row = t.Rows[i];
                 i++;
-                if(language == "cz") row.Cells[0].Paragraphs[0].InsertText(item.Description_CSY);
+                if (language == "cz") row.Cells[0].Paragraphs[0].InsertText(item.Description_CSY);
                 else if (language == "sk") row.Cells[0].Paragraphs[0].InsertText(item.Description_SVK);
                 else row.Cells[0].Paragraphs[0].InsertText(item.Description_ENU_USA);
 
@@ -542,19 +542,6 @@ namespace EXPIMP
                 row.Cells[2].Paragraphs[0].InsertText($"[{item.Identificator}]");
                 row.Cells[3].Paragraphs[0].InsertText(CQuantityLibrary.GetReportUnit(item.UnitIdentificator));
             }
-
-            //double dTableWidthFactor = 0.55; // Maximalna hodnota je cca 0.7 - konstanta, aby sa tabulka zmestila na stranu A4
-
-            // To Ondrej: Nepochopil som uplne ako ten faktor funguje. Tabulku ImposedLoad to zmensuje u ostatnych sa to javi, ze ich takmer vzdy roztiahne na celu sirku. Pointa je dosiahnut aby boli vsetky bunky v stlpcoch pod sebou rovnako siroke
-            // Nemusi to byt vzdy roztiahnute maximalne na sirku stranky, potom je v bunkach casto velmi vela volneho miesta. Byvaly sef take riadky volal "nudle".
-            // Chcel by som dosiahnut stav ze stlpce text, symbol, value, unit budu vo vsetkych tabulkach priblizne rovnako siroke (nemyslim len tabulky zatazenia, ale napriec celym protokolom)
-            // Robim co mozem..treba poskusat ten AutoFit, lebo mne sa nezda, ze to funguje uplne tak ako by som chcel :-)
-            // Kludne mozme nastavit AutoFit.ColumnWidth a napriec celym dokumentom nastavit nejake cisla napevno pre sirky stlpcov
-
-            //t.Rows[0].Cells[0].Width = (document.PageWidth * dTableWidthFactor) * 0.6; // To Ondrej - sucet tychto 4 faktorov ma byt presne 1.00? Prvy stlpec by mal byt sirsi, ostatne uzsie
-            //t.Rows[0].Cells[1].Width = (document.PageWidth * dTableWidthFactor) * 0.1; // To Mato - ano presne tak
-            //t.Rows[0].Cells[2].Width = (document.PageWidth * dTableWidthFactor) * 0.2;
-            //t.Rows[0].Cells[3].Width = (document.PageWidth * dTableWidthFactor) * 0.1;
 
             p = p.InsertParagraphAfterSelf(p);
             p.InsertTableBeforeSelf(t);
@@ -629,7 +616,7 @@ namespace EXPIMP
                 row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
                 row.Cells[1].Paragraphs[0].InsertText(lc.Name);
                 row.Cells[2].Paragraphs[0].InsertText(lc.Type.GetFriendlyName());
-            }            
+            }
             SetFontSizeForTable(t);
             par.InsertTableBeforeSelf(t);
         }
@@ -640,7 +627,7 @@ namespace EXPIMP
             Paragraph parSLS = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[LoadCombinationsSLS]"));
             parULS.RemoveText(0);
             parSLS.RemoveText(0);
-            
+
 
             var t = parULS.FollowingTable;
             // For each load case add one row
@@ -650,10 +637,10 @@ namespace EXPIMP
                 t.AutoFit = AutoFit.Fixed;
 
                 Row row = t.InsertRow();
-                
+
                 //row.Cells[0].Paragraphs[0].InsertText(lc.ID.ToString());
                 row.Cells[0].Paragraphs[0].InsertText(lc.Name);
-                row.Cells[1].Paragraphs[0].InsertText(lc.eLComType == ELSType.eLS_ULS ? "ULS": "SLS");
+                row.Cells[1].Paragraphs[0].InsertText(lc.eLComType == ELSType.eLS_ULS ? "ULS" : "SLS");
 
                 StringBuilder sb = new StringBuilder();
                 for (int j = 0; j < lc.LoadCasesList.Count; j++)
@@ -692,7 +679,7 @@ namespace EXPIMP
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberDesign]"));
             par.RemoveText(0);
-            
+
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
                 if (!cInfo.Design) continue;
@@ -802,7 +789,7 @@ namespace EXPIMP
                 // Chcel by som ULS a SLS zobrazovat uplne oddelene
 
                 // Ultimate limit state - ULS
-                
+
                 CMember governingMemberULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].MemberWithMaximumDesignRatio;
                 CLoadCombination governingLCombULS = data.sDesignResults_ULS.DesignResults[cInfo.MemberTypePosition].GoverningLoadCombination;
                 if (governingLCombULS == null || governingMemberULS == null) continue; // Toto by mal byt mozno assert, lebo nie je v poriadku ak sa component posudzuje a nic sa nenajde
@@ -819,14 +806,14 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member internal forces ULS");
                 par.StyleName = "Heading4";
                 par = par.InsertParagraphAfterSelf("");
-                par = AppendMemberResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); // TODO Ondrej - To by sa malo nahradit funkciou ktora vrati len canvas pre internal forces (N,Vx,Vy,T,Mx,My)
+                par = AppendMemberResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); 
 
                 if (cInfo.IsFrameMember())
                 {
                     par = par.InsertParagraphAfterSelf("Frame internal forces ULS");
                     par.StyleName = "Heading4";
                     par = par.InsertParagraphAfterSelf("");
-                    par = AppendFrameResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS); // TODO Ondrej - To by sa malo nahradit funkciou ktora vrati len canvas pre internal forces (N,Vx,Vy,T,Mx,My)
+                    par = AppendFrameResultsCanvases_ULS(document, par, data, governingLCombULS, governingMemberULS);
                 }
                 par = par.InsertParagraphAfterSelf("Member design details - ULS");
                 par.StyleName = "Heading4";
@@ -856,14 +843,14 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Member deflections SLS");
                 par.StyleName = "Heading4";
                 par = par.InsertParagraphAfterSelf("");
-                par = AppendMemberResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS); // TODO Ondrej - To by sa malo nahradit funkciou ktora, vrati len canvas pre deflections (Delta x, Detla y)
+                par = AppendMemberResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS); 
 
                 if (cInfo.IsFrameMember())
                 {
                     par = par.InsertParagraphAfterSelf("Frame deflections SLS");
                     par.StyleName = "Heading4";
                     par = par.InsertParagraphAfterSelf("");
-                    par = AppendFrameResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);  // TODO Ondrej - To by sa malo nahradit funkciou, ktora vrati len canvas pre deflections (Delta x, Detla y)
+                    par = AppendFrameResultsCanvases_SLS(document, par, data, governingLCombSLS, governingMemberSLS);  
                 }
 
                 par = par.InsertParagraphAfterSelf("Member design details - SLS");
@@ -879,50 +866,24 @@ namespace EXPIMP
                 }
             }
         }
-
-        private static Paragraph AppendIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
-        {            
-            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
-            foreach (Canvas canvas in canvases)
-            {
-                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                AppendImageFromCanvas(document, canvas, par);
-            }
-            return par;
-        }
-
-        private static Paragraph AppendFrameIFCanvases(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
-        {
-            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
-            foreach (Canvas canvas in canvases)
-            {
-                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                AppendImageFromCanvas(document, canvas, par);
-            }
-            return par;
-        }
-
+        
         // TO Ondrej - nove funkcie - len pre ULS alebo SLS / member alebo ram
+        // Done
         private static Paragraph AppendMemberResultsCanvases_ULS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {
-            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            List<Canvas> canvases = ExportHelper.GetIFCanvases(true, data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
             foreach (Canvas canvas in canvases)
             {
-                if (canvas.Name != "LocalDeflection_Delta_x" && canvas.Name != "LocalDeflection_Delta_y")
-                {
-                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                    AppendImageFromCanvas(document, canvas, par);
-                }
+                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                AppendImageFromCanvas(document, canvas, par);
             }
             return par;
         }
 
         private static Paragraph AppendFrameResultsCanvases_ULS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {
-            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
+            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(true, data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
             foreach (Canvas canvas in canvases)
             {
                 if (canvas.Name != "LocalDeflection_Delta_x" && canvas.Name != "LocalDeflection_Delta_y")
@@ -937,30 +898,25 @@ namespace EXPIMP
 
         private static Paragraph AppendMemberResultsCanvases_SLS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {
-            List<Canvas> canvases = ExportHelper.GetIFCanvases(data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
+            List<Canvas> canvases = ExportHelper.GetIFCanvases(false, data.UseCRSCGeometricalAxes, lcomb, member, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations);
             foreach (Canvas canvas in canvases)
             {
-                if (canvas.Name == "LocalDeflection_Delta_x" || canvas.Name == "LocalDeflection_Delta_y")
-                {
-                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                    AppendImageFromCanvas(document, canvas, par);
-                }
+                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                AppendImageFromCanvas(document, canvas, par);
             }
             return par;
         }
 
         private static Paragraph AppendFrameResultsCanvases_SLS(DocX document, Paragraph par, CModelData data, CLoadCombination lcomb, CMember member)
         {
-            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
+            List<Canvas> canvases = ExportHelper.GetFrameInternalForcesCanvases(false, data.frameModels, member, lcomb, data.MemberInternalForcesInLoadCombinations, data.MemberDeflectionsInLoadCombinations, data.UseCRSCGeometricalAxes);
             foreach (Canvas canvas in canvases)
             {
-                if (canvas.Name == "LocalDeflection_Delta_x" || canvas.Name == "LocalDeflection_Delta_y")
-                {
-                    par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
-                    //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
-                    AppendImageFromCanvas(document, canvas, par);
-                }
+                par = par.InsertParagraphAfterSelf(canvas.ToolTip.ToString());
+                //par = par.InsertParagraphAfterSelf("");  //novy odsek aby nedavalo obrazok vedla textu, Ak sa natiahne obrazok na sirku...tak sa toto moze zmazat.
+                AppendImageFromCanvas(document, canvas, par);
+
             }
             return par;
         }
@@ -975,7 +931,7 @@ namespace EXPIMP
                 // Set Picture Height and Width.
                 //var picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), (int)document.PageWidth);
 
-                var picture = image.CreatePicture( (int)canvas.ActualHeight, (int)canvas.ActualWidth);
+                var picture = image.CreatePicture((int)canvas.ActualHeight, (int)canvas.ActualWidth);
                 // Insert Picture in paragraph.             
                 par.AppendPicture(picture);
             }
@@ -1046,7 +1002,7 @@ namespace EXPIMP
 
             // For each load case add one row
             for (int i = 0; i < dt.Rows.Count; i++)
-            {   
+            {
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
                     t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j].ToString());
