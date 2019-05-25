@@ -2100,8 +2100,7 @@ namespace BaseClasses
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
-            PointCollection xAxisPoints = null;
-
+            
             if (bYOrientationIsUp) // Up (Forces N, Vx, Vy) // Tu sa urcuje ci sa kladne hodnoty veliciny vykresluju smerom hore alebo dole, tj kam smeruje osa y
             {
                 //To Mato: to je co za cislo 1.02f ???
@@ -2110,7 +2109,8 @@ namespace BaseClasses
 
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
-                xAxisPoints = Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
+                
+                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented upwards)
@@ -2120,15 +2120,18 @@ namespace BaseClasses
             else // Down (Torsion and bending moments T, Mx, My and deflections delta)
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
+                
                 // x-axis (middle)
-                xAxisPoints = Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
+                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented downwards)
                 Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
-            Point AxisIntersection = xAxisPoints.FirstOrDefault();
+            double AxisIntX = modelMarginLeft_x;
+            double AxisIntY = modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis;
+            Point AxisIntersection = new Point(AxisIntX, AxisIntY);
             return AxisIntersection;
         }
 
@@ -2175,7 +2178,7 @@ namespace BaseClasses
             listPoints.Add(new Point(p.X, p.Y));
             for (int i = 0; i < arrPointsCoordY.Length; i++)
             {
-                listPoints.Add(new Point(modelMarginLeft_x + arrPointsCoordX[i] * fFactorX, modelMarginTop_y - arrPointsCoordY[i] * fFactorY));
+                listPoints.Add(new Point(modelMarginLeft_x + arrPointsCoordX[i] * fFactorX, p.Y - arrPointsCoordY[i] * fFactorY));
             }
             listPoints.Add(new Point(modelMarginLeft_x + xValueMax * fFactorX, p.Y));
 
