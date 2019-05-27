@@ -1839,11 +1839,31 @@ namespace BaseClasses
 
             // NOTE - docasne vykreslujeme body na ktore sa viaze text
             DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
+            //DrawPoint(new Point(posx, posy), Brushes.Red, Brushes.Red, 2, canvas);
 
             Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
             Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
 
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
+            canvas.Children.Add(textBlock);
+        }
+        public static void DrawText(string text, double posx, double posy, double fontSize, bool bYOrientationIsUp, VerticalAlignment valign, SolidColorBrush color, Canvas canvas)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            //textBlock.Background = new SolidColorBrush(Colors.Red);
+            textBlock.FontSize = fontSize;
+            Size txtSize = MeasureString(textBlock, text);
+
+            // NOTE - docasne vykreslujeme body na ktore sa viaze text
+            //DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
+            
+            Canvas.SetLeft(textBlock, posx);
+            if(valign == VerticalAlignment.Center) Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+            else if(valign == VerticalAlignment.Top) Canvas.SetTop(textBlock, posy - txtSize.Height);
+            else Canvas.SetTop(textBlock, posy);
+
             canvas.Children.Add(textBlock);
         }
 
@@ -1972,7 +1992,7 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawTexts(bool bYOrientationIsUp, bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+        public static void DrawTexts(Point p, bool bYOrientationIsUp, bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
         {
             if (!bYOrientationIsUp) // Draw positive values below x-axis
@@ -1980,57 +2000,7 @@ namespace BaseClasses
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                     arrPointsCoordY[i] *= -1f;
             }
-
-            // BUG 211 - pokusy
-            float fMinValue = float.MaxValue;
-            float fMaxValue = float.MinValue;
-
-            for (int i = 0; i < arrPointsCoordY.Length; i++)
-            {
-                if(arrPointsCoordY[i] < fMinValue)
-                   fMinValue = arrPointsCoordY[i];
-
-                if (arrPointsCoordY[i] > fMaxValue)
-                   fMaxValue = arrPointsCoordY[i];
-            }
-
-            float fPosun = fMinValue + fMaxValue;
-
-            float[] arrPointsCoordYTemp = new float[arrPointsCoordY.Length];
-
-            // Bug 211 - pokus - upravit suradnice y pre text tak ze sa posunu o tolko aky je posun polyline
-
-            if (fMinValue > 0) // Ak su vsetky hodnoty kladne
-            {
-                for (int i = 0; i < arrPointsCoordY.Length; i++)
-                {
-                    if (!bYOrientationIsUp)
-                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i] + fPosun;
-                    else
-                        arrPointsCoordYTemp[i] = arrPointsCoordY[i];
-                }
-            }
-            else if (fMaxValue < 0) // Ak su vsetky hodnoty zaporne
-            {
-                for (int i = 0; i < arrPointsCoordY.Length; i++)
-                {
-                    if (!bYOrientationIsUp)
-                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i];
-                    else
-                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fPosun;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < arrPointsCoordY.Length; i++)
-                {
-                    if (!bYOrientationIsUp)
-                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i] + fMaxValue;
-                    else
-                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fMinValue;
-                }
-            }
-
+            
             float fFactorX = 1.0f;
             float fFactorY = 1.0f;
 
@@ -2041,29 +2011,31 @@ namespace BaseClasses
 
                 float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
                 fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+                if (float.IsInfinity(fFactorY))
+                {
+                    fFactorY = 1.0f;
+                }
             }
 
             for (int i = 0; i < array_text.Length; i++)
-            {
-                // Pridavne hodnoty, aby texty nelezali na krivke, mali by sa pocitat z hodnot a sklonu krivky
-
-                float fAdditionalPositionOffset_x;
-                float fAdditionalPositionOffset_y;
-
-                if (arrPointsCoordYTemp[i] < 0)
+            {                
+                VerticalAlignment va = VerticalAlignment.Bottom;
+                if (bYOrientationIsUp)
                 {
-                    fAdditionalPositionOffset_x = -150;
-                    fAdditionalPositionOffset_y = -80;
+                    if (arrPointsCoordY[i] > 0) va = VerticalAlignment.Top;
+                    else va = VerticalAlignment.Bottom;
+
+                    DrawPoint(new Point(p.X + fFactorX * arrPointsCoordX[i], p.Y - fFactorY * arrPointsCoordY[i]), Brushes.Red, Brushes.Red, 2, canvas);
+                    DrawText(array_text[i], (p.X + fFactorX * arrPointsCoordX[i]), (p.Y - fFactorY * arrPointsCoordY[i]), 12, bYOrientationIsUp, va, color, canvas);
                 }
                 else
                 {
-                    fAdditionalPositionOffset_x = 10;
-                    fAdditionalPositionOffset_y = 10;
-                }
+                    if (arrPointsCoordY[i] < 0) va = VerticalAlignment.Top;
+                    else va = VerticalAlignment.Bottom;
 
-                DrawText(array_text[i], (modelMarginLeft_x + fFactorX * arrPointsCoordX[i]) + fAdditionalPositionOffset_x,
-                                        (modelBottomPosition_y - fFactorY * arrPointsCoordYTemp[i]) + fAdditionalPositionOffset_y,
-                                        0, 12, color, canvas);
+                    DrawPoint(new Point(p.X + fFactorX * arrPointsCoordX[i], p.Y + fFactorY * arrPointsCoordY[i]), Brushes.Red, Brushes.Red, 2, canvas);
+                    DrawText(array_text[i], (p.X + fFactorX * arrPointsCoordX[i]), (p.Y + fFactorY * arrPointsCoordY[i]), 12, bYOrientationIsUp, va, color, canvas);
+                }                
             }
         }
 
@@ -2098,6 +2070,14 @@ namespace BaseClasses
 
             float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+
+            if (float.IsInfinity(fFactorY))
+            {
+                fFactorY = fCanvasHeight - modelMarginTop_y - modelMarginBottom_y;
+                yValueMin = -0.5f;
+                yValueMax = 0.5f;
+                yRangeOfValues = yAxisLength = 1;
+            }
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
             
