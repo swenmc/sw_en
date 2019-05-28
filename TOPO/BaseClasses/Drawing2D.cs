@@ -9,6 +9,7 @@ using MATH;
 using CRSC;
 using System.Globalization;
 using BaseClasses.GraphObj;
+using BaseClasses.Helpers;
 
 namespace BaseClasses
 {
@@ -2058,6 +2059,29 @@ namespace BaseClasses
             }
 
             return (float)((fCanvasDimension - fMarginValue1 - fMarginValue2) / fAxisLength);
+        }
+
+
+        public static void DrawXYDiagramToCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+            float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
+        {
+            Point p = Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, canvas);
+
+            // TODO
+            // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
+            bool drawPolygons = true;
+            if (!drawPolygons)
+            {
+                Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, canvas);
+            }
+            else
+            {
+                Drawing2D.DrawYValuesPolygonInCanvas(p, true, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, canvas);                
+
+            }
+            // Draw values description
+            int iNumberOfDecimalPlaces = 2;
+            Drawing2D.DrawTexts(p, true, true, ConversionsHelper.ConvertArrayFloatToString(arrPointsCoordY, iNumberOfDecimalPlaces), arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, canvas);
         }
 
         // TODO No 44 Ondrej

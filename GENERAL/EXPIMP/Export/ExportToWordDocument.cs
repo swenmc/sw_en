@@ -925,12 +925,9 @@ namespace EXPIMP
         {
             using (Stream stream = ExportHelper.GetCanvasStream(canvas))
             {
-                //double ratio = document.PageWidth / canvas.ActualWidth;
                 // Add a simple image from disk.
                 var image = document.AddImage(stream);
                 // Set Picture Height and Width.
-                //var picture = image.CreatePicture((int)(canvas.ActualHeight * ratio), (int)document.PageWidth);
-
                 var picture = image.CreatePicture((int)canvas.ActualHeight, (int)canvas.ActualWidth);
                 // Insert Picture in paragraph.             
                 par.AppendPicture(picture);
