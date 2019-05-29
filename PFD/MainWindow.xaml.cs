@@ -686,16 +686,30 @@ namespace PFD
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
-            //TO Mato - potrebujeme toto niekam???
-            //sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = vm.MainColumnFlyBracingPositionIndex;
-            //sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingPositionIndex;
-            //sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
-            //sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
-            //sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;
-            //sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = vm.FrontColumnFlyBracingPositionIndex;
-            //sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = vm.BackColumnFlyBracingPositionIndex;
-            //sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
-            //sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
+            CComponentInfo ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if(ci != null) sGeometryInputData.iMainColumnFlyBracingEveryXXGirt =  ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (ci != null) sGeometryInputData.iRafterFlyBracingEveryXXPurlin = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            if (ci != null) sGeometryInputData.iEdgePurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (ci != null) sGeometryInputData.iGirt_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (ci != null) sGeometryInputData.iPurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
+            if (ci != null) sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
+            if (ci != null) sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (ci != null) sGeometryInputData.iGirtFrontSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
 
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
