@@ -77,11 +77,46 @@ namespace PFD
                     if (!ValidateGirts()) { cInfo.IsSetFromCode = true; cInfo.Generate = !cInfo.Generate; ValidateGirts(); cInfo.IsSetFromCode = false; return; }
                     SetGirtsAndColumns(cInfo);
                 }
+
+                if (e.PropertyName == "ILS")
+                {
+                    SetSameILS(cInfo);              
+                }
             }
 
             PropertyChanged(sender, e);
         }
 
+        private void SetSameILS(CComponentInfo cInfo)
+        {
+            CComponentInfo cInfo2 = null;
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
+            {
+                cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            }
+
+            if (cInfo2 != null && cInfo.ILS != cInfo2.ILS) cInfo2.ILS = cInfo.ILS;
+        }
 
 
         private bool ValidateGirts()

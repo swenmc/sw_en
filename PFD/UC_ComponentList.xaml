@@ -126,11 +126,13 @@
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding ILS_Items}"/>
+                            <Setter Property="IsEnabled" Value="{Binding IsCalculateEnabled}"/>
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding ILS_Items}"/>
+                            <Setter Property="IsEnabled" Value="{Binding IsCalculateEnabled}"/>
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
