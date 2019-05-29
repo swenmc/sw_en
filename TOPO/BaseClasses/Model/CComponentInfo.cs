@@ -25,8 +25,10 @@ namespace BaseClasses
         private string MComponentName;
         private EMemberType_FS_Position MMemberTypePosition;
         private string MSection;
+        private string MILS;
         private string MSectionColor;
         private List<string> MSections;
+        private List<string> MILS_Items;
         private List<string> MColors;
         private string MMaterial;
         private bool? MGenerate;
@@ -343,7 +345,35 @@ namespace BaseClasses
             }
         }
 
-        public CComponentInfo(string prefix, string color, string componentName, string section, string sectionColor, string material, bool? generate, bool display, bool calculate, bool design, bool materialList, List<string> sections, List<string> colors, EMemberType_FS_Position memberType)
+        public string ILS
+        {
+            get
+            {
+                return MILS;
+            }
+
+            set
+            {
+                MILS = value;
+                NotifyPropertyChanged("ILS");
+            }
+        }
+
+        public List<string> ILS_Items
+        {
+            get
+            {
+                return MILS_Items;
+            }
+
+            set
+            {
+                MILS_Items = value;
+            }
+        }
+
+        public CComponentInfo(string prefix, string color, string componentName, string section, string sectionColor, string material, string ils, bool? generate, bool display, 
+            bool calculate, bool design, bool materialList, List<string> sections, List<string> ilsItems, List<string> colors, EMemberType_FS_Position memberType)
         {
             MIsSetFromCode = false;
             MPrefix = prefix;
@@ -352,12 +382,14 @@ namespace BaseClasses
             MSection = section;
             MSectionColor = sectionColor;
             MMaterial = material;
+            MILS = ils;
             MGenerate = generate;
             MDisplay = display;
             MCalculate = calculate;
             MDesign = design;
             MMaterialList = materialList;
             MSections = sections;
+            MILS_Items = ilsItems;
             MColors = colors;
             MMemberTypePosition = memberType;
 

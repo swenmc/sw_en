@@ -28,7 +28,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" IsReadOnly="True" Header="Prefix" Width="Auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ComponentName}" IsReadOnly="True" Header="ComponentName" Width="120"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Component Color" ToolTipService.ToolTip="Select color" Width="110" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="Com. Color" ToolTipService.ToolTip="Select component color" Width="70" SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Color}"/>
@@ -96,7 +96,7 @@
                     SelectedValueBinding="{Binding Color, UpdateSourceTrigger=PropertyChanged}" 
                     ItemsSource ="{Binding Source={StaticResource Colors}}">
                 </DataGridComboBoxColumn>-->
-                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="80" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridComboBoxColumn Header="Section" ToolTipService.ToolTip="Select section" Width="70" SelectedValueBinding="{Binding Section, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="ItemsSource" Value="{Binding Sections}"/>
@@ -108,7 +108,7 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding SectionColor}" IsReadOnly="True" Header="Section Color" Width="110">
+                <DataGridTextColumn Binding="{Binding SectionColor}" ToolTipService.ToolTip="Select section color" IsReadOnly="True" Header="Sec. Color" Width="80">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding SectionColor}"/>
@@ -121,27 +121,22 @@
                     SelectedValueBinding="{Binding Material, UpdateSourceTrigger=PropertyChanged}"
                     ItemsSource ="{Binding Source={StaticResource Materials}}">
                 </DataGridComboBoxColumn>
-                
-                <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto">
-                    <!--<DataGridCheckBoxColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid Background="{TemplateBinding Background}">
-                                            <ContentPresenter VerticalAlignment="Center" />
-                                        </Grid>
-                                        <ControlTemplate.Triggers>                                            
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Background" Value="Pink" />
-                                                <Setter Property="Foreground" Value="Blue" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+
+                <DataGridComboBoxColumn Header="ILS" ToolTipService.ToolTip="Select ILS" Width="Auto" SelectedValueBinding="{Binding ILS, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding ILS_Items}"/>
                         </Style>
-                    </DataGridCheckBoxColumn.CellStyle>-->
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding ILS_Items}"/>
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+                
+
+                <DataGridCheckBoxColumn Binding="{Binding Generate, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding GenerateIsReadonly}" Header="Generate" Width="Auto">                   
                     <DataGridCheckBoxColumn.ElementStyle>                        
                         <Style TargetType="CheckBox">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -155,11 +150,7 @@
                             <Setter Property="IsEnabled" Value="{Binding GenerateIsEnabled}"/>
                         </Style>
                     </DataGridCheckBoxColumn.EditingElementStyle>                
-                </DataGridCheckBoxColumn>
-                <!--<DataGridCheckBoxColumn Binding="{Binding Display, UpdateSourceTrigger=PropertyChanged}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate, UpdateSourceTrigger=PropertyChanged}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design, UpdateSourceTrigger=PropertyChanged}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList, UpdateSourceTrigger=PropertyChanged}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>-->
+                </DataGridCheckBoxColumn>                
                 <DataGridTemplateColumn Header="Display">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

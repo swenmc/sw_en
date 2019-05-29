@@ -686,15 +686,16 @@ namespace PFD
             sGeometryInputData.fL = vm.Length;
             sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
-            sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = vm.MainColumnFlyBracingPositionIndex;
-            sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingPositionIndex;
-            sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
-            sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
-            sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;
-            sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = vm.FrontColumnFlyBracingPositionIndex;
-            sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = vm.BackColumnFlyBracingPositionIndex;
-            sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
-            sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
+            //TO Mato - potrebujeme toto niekam???
+            //sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = vm.MainColumnFlyBracingPositionIndex;
+            //sGeometryInputData.iRafterFlyBracingEveryXXPurlin = vm.RafterFlyBracingPositionIndex;
+            //sGeometryInputData.iEdgePurlin_ILS_Number = vm.EdgePurlin_ILS_Number;
+            //sGeometryInputData.iGirt_ILS_Number = vm.Girt_ILS_Number;
+            //sGeometryInputData.iPurlin_ILS_Number = vm.Purlin_ILS_Number;
+            //sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = vm.FrontColumnFlyBracingPositionIndex;
+            //sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = vm.BackColumnFlyBracingPositionIndex;
+            //sGeometryInputData.iGirtFrontSide_ILS_Number = vm.GirtFrontSide_ILS_Number;
+            //sGeometryInputData.iGirtBackSide_ILS_Number = vm.GirtBackSide_ILS_Number;
 
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
@@ -1552,45 +1553,45 @@ namespace PFD
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
-            // TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
-            string[] sColumnFlyBracingPosition_Items = new string[10] {
-            "None",
-            "Every girt",
-            "Every 2nd girt",
-            "Every 3rd girt",
-            "Every 4th girt",
-            "Every 5th girt",
-            "Every 6th girt",
-            "Every 7th girt",
-            "Every 8th girt",
-            "Every 9th girt"};
+            //// TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
+            //string[] sColumnFlyBracingPosition_Items = new string[10] {
+            //"None",
+            //"Every girt",
+            //"Every 2nd girt",
+            //"Every 3rd girt",
+            //"Every 4th girt",
+            //"Every 5th girt",
+            //"Every 6th girt",
+            //"Every 7th girt",
+            //"Every 8th girt",
+            //"Every 9th girt"};
 
-            Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            //Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            //Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
+            //Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
 
-            Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
-            "None",
-            "Every purlin",
-            "Every 2nd purlin",
-            "Every 3rd purlin",
-            "Every 4th purlin",
-            "Every 5th purlin",
-            "Every 6th purlin",
-            "Every 7th purlin",
-            "Every 8th purlin",
-            "Every 9th purlin"};
+            //Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
+            //"None",
+            //"Every purlin",
+            //"Every 2nd purlin",
+            //"Every 3rd purlin",
+            //"Every 4th purlin",
+            //"Every 5th purlin",
+            //"Every 6th purlin",
+            //"Every 7th purlin",
+            //"Every 8th purlin",
+            //"Every 9th purlin"};
 
-            string[] sILS_Items = new string[]
-            {
-                "None", "1", "2", "3", "4", "5"
-            };
+            //string[] sILS_Items = new string[]
+            //{
+            //    "None", "1", "2", "3", "4", "5"
+            //};
 
-            Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
-            Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
+            //Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
+            //Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
+            //Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
+            //Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
+            //Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
         }
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)

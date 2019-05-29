@@ -54,15 +54,15 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
 
-        private int MMainColumnFlyBracingPositionIndex;
-        private int MRafterFlyBracingPositionIndex;
-        private int MEdgePurlin_ILS_Number;
-        private int MGirt_ILS_Number;
-        private int MPurlin_ILS_Number;
-        private int MFrontColumnFlyBracingPositionIndex;
-        private int MBackColumnFlyBracingPositionIndex;
-        private int MGirtFrontSide_ILS_Number;
-        private int MGirtBackSide_ILS_Number;
+        //private int MMainColumnFlyBracingPositionIndex;
+        //private int MRafterFlyBracingPositionIndex;
+        //private int MEdgePurlin_ILS_Number;
+        //private int MGirt_ILS_Number;
+        //private int MPurlin_ILS_Number;
+        //private int MFrontColumnFlyBracingPositionIndex;
+        //private int MBackColumnFlyBracingPositionIndex;
+        //private int MGirtFrontSide_ILS_Number;
+        //private int MGirtBackSide_ILS_Number;
 
         private int MLoadCaseIndex;
 
@@ -230,16 +230,17 @@ namespace PFD
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
-                // Set default position of fly bracing point and numbers of lateral intermediate supports
-                MainColumnFlyBracingPositionIndex = dmodel.iMainColumnFlyBracingEveryXXGirt; // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
-                RafterFlyBracingPositionIndex = dmodel.iRafterFlyBracingEveryXXPurlin; // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
-                EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
-                Girt_ILS_Number = dmodel.iGirt_ILS_Number;
-                Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
-                FrontColumnFlyBracingPositionIndex = dmodel.iFrontColumnFlyBracingEveryXXGirt;
-                BackColumnFlyBracingPositionIndex = dmodel.iBackColumnFlyBracingEveryXXGirt;
-                GirtFrontSide_ILS_Number = dmodel.iGirtFrontSide_ILS_Number;
-                GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
+                _componentVM.SetILSProperties(dmodel);
+                //// Set default position of fly bracing point and numbers of lateral intermediate supports
+                //MainColumnFlyBracingPositionIndex = dmodel.iMainColumnFlyBracingEveryXXGirt; // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
+                //RafterFlyBracingPositionIndex = dmodel.iRafterFlyBracingEveryXXPurlin; // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
+                //EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
+                //Girt_ILS_Number = dmodel.iGirt_ILS_Number;
+                //Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
+                //FrontColumnFlyBracingPositionIndex = dmodel.iFrontColumnFlyBracingEveryXXGirt;
+                //BackColumnFlyBracingPositionIndex = dmodel.iBackColumnFlyBracingEveryXXGirt;
+                //GirtFrontSide_ILS_Number = dmodel.iGirtFrontSide_ILS_Number;
+                //GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
 
                 SetResultsAreNotValid();
                 IsSetFromCode = false;
@@ -631,151 +632,151 @@ namespace PFD
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
-        public int MainColumnFlyBracingPositionIndex
-        {
-            get
-            {
-                return MMainColumnFlyBracingPositionIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //// 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
+        //public int MainColumnFlyBracingPositionIndex
+        //{
+        //    get
+        //    {
+        //        return MMainColumnFlyBracingPositionIndex;
+        //    }
 
-            set
-            {
-                MMainColumnFlyBracingPositionIndex = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("MainColumnFlyBracingPositionIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MMainColumnFlyBracingPositionIndex = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("MainColumnFlyBracingPositionIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
-        public int RafterFlyBracingPositionIndex
-        {
-            get
-            {
-                return MRafterFlyBracingPositionIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //// 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
+        //public int RafterFlyBracingPositionIndex
+        //{
+        //    get
+        //    {
+        //        return MRafterFlyBracingPositionIndex;
+        //    }
 
-            set
-            {
-                MRafterFlyBracingPositionIndex = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("RafterFlyBracingPositionIndex"); // RafterFlyBracingEveryXXPurlin
-            }
-        }
+        //    set
+        //    {
+        //        MRafterFlyBracingPositionIndex = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("RafterFlyBracingPositionIndex"); // RafterFlyBracingEveryXXPurlin
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int EdgePurlin_ILS_Number
-        {
-            get
-            {
-                return MEdgePurlin_ILS_Number;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int EdgePurlin_ILS_Number
+        //{
+        //    get
+        //    {
+        //        return MEdgePurlin_ILS_Number;
+        //    }
 
-            set
-            {
-                MEdgePurlin_ILS_Number = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("EdgePurlin_ILS_Number");
-            }
-        }
+        //    set
+        //    {
+        //        MEdgePurlin_ILS_Number = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("EdgePurlin_ILS_Number");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int Girt_ILS_Number
-        {
-            get
-            {
-                return MGirt_ILS_Number;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int Girt_ILS_Number
+        //{
+        //    get
+        //    {
+        //        return MGirt_ILS_Number;
+        //    }
 
-            set
-            {
-                MGirt_ILS_Number = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("Girt_ILS_Number");
-            }
-        }
+        //    set
+        //    {
+        //        MGirt_ILS_Number = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("Girt_ILS_Number");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int Purlin_ILS_Number
-        {
-            get
-            {
-                return MPurlin_ILS_Number;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int Purlin_ILS_Number
+        //{
+        //    get
+        //    {
+        //        return MPurlin_ILS_Number;
+        //    }
 
-            set
-            {
-                MPurlin_ILS_Number = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("Purlin_ILS_Number");
-            }
-        }
+        //    set
+        //    {
+        //        MPurlin_ILS_Number = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("Purlin_ILS_Number");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int FrontColumnFlyBracingPositionIndex
-        {
-            get
-            {
-                return MFrontColumnFlyBracingPositionIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int FrontColumnFlyBracingPositionIndex
+        //{
+        //    get
+        //    {
+        //        return MFrontColumnFlyBracingPositionIndex;
+        //    }
 
-            set
-            {
-                MFrontColumnFlyBracingPositionIndex = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("FrontColumnFlyBracingPositionIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MFrontColumnFlyBracingPositionIndex = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("FrontColumnFlyBracingPositionIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int BackColumnFlyBracingPositionIndex
-        {
-            get
-            {
-                return MBackColumnFlyBracingPositionIndex;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int BackColumnFlyBracingPositionIndex
+        //{
+        //    get
+        //    {
+        //        return MBackColumnFlyBracingPositionIndex;
+        //    }
 
-            set
-            {
-                MBackColumnFlyBracingPositionIndex = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("BackColumnFlyBracingPositionIndex");
-            }
-        }
+        //    set
+        //    {
+        //        MBackColumnFlyBracingPositionIndex = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("BackColumnFlyBracingPositionIndex");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int GirtFrontSide_ILS_Number
-        {
-            get
-            {
-                return MGirtFrontSide_ILS_Number;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int GirtFrontSide_ILS_Number
+        //{
+        //    get
+        //    {
+        //        return MGirtFrontSide_ILS_Number;
+        //    }
 
-            set
-            {
-                MGirtFrontSide_ILS_Number = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("GirtFrontSide_ILS_Number");
-            }
-        }
+        //    set
+        //    {
+        //        MGirtFrontSide_ILS_Number = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("GirtFrontSide_ILS_Number");
+        //    }
+        //}
 
-        //-------------------------------------------------------------------------------------------------------------
-        public int GirtBackSide_ILS_Number
-        {
-            get
-            {
-                return MGirtBackSide_ILS_Number;
-            }
+        ////-------------------------------------------------------------------------------------------------------------
+        //public int GirtBackSide_ILS_Number
+        //{
+        //    get
+        //    {
+        //        return MGirtBackSide_ILS_Number;
+        //    }
 
-            set
-            {
-                MGirtBackSide_ILS_Number = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("GirtBackSide_ILS_Number");
-            }
-        }
+        //    set
+        //    {
+        //        MGirtBackSide_ILS_Number = value;
+        //        SetResultsAreNotValid();
+        //        NotifyPropertyChanged("GirtBackSide_ILS_Number");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int LoadCaseIndex

@@ -129,7 +129,7 @@
                         <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="4" Text="Frame Column Fly Bracing Position:" HorizontalAlignment="Left" Margin="5,0"
+                        <!--<TextBlock Grid.Row="6" Grid.Column="4" Text="Frame Column Fly Bracing Position:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="6" Grid.Column="5" Name ="Combobox_MainColumnFlyBracingPosition" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=MainColumnFlyBracingPositionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -172,7 +172,7 @@
                         <TextBlock Grid.Row="14" Grid.Column="4" Text="Number of Back Side Girt Intermediate Supports:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
                         <ComboBox Grid.Row="14" Grid.Column="5" Name ="Combobox_GirtBackSide_ILS_Number" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=GirtBackSide_ILS_Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=GirtBackSide_ILS_Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
 
                         <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />

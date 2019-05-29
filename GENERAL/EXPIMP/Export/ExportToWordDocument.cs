@@ -291,10 +291,9 @@ namespace EXPIMP
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MemberTypes]"));
             par.RemoveText(0);
 
-            var t = document.AddTable(1, 6);
+            var t = document.AddTable(1, 7);
             t.Design = TableDesign.TableGrid;
-            t.Alignment = Alignment.left;
-            t.AutoFit = AutoFit.Window;
+            t.Alignment = Alignment.left;            
 
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
@@ -302,19 +301,15 @@ namespace EXPIMP
             t.Rows[0].Cells[3].Paragraphs[0].InsertText("Section");
             t.Rows[0].Cells[4].Paragraphs[0].InsertText("Section Color");
             t.Rows[0].Cells[5].Paragraphs[0].InsertText("Material");
+            t.Rows[0].Cells[6].Paragraphs[0].InsertText("ILS");
             t.Rows[0].Cells[0].Paragraphs[0].Bold();
             t.Rows[0].Cells[1].Paragraphs[0].Bold();
             t.Rows[0].Cells[2].Paragraphs[0].Bold();
             t.Rows[0].Cells[3].Paragraphs[0].Bold();
             t.Rows[0].Cells[4].Paragraphs[0].Bold();
             t.Rows[0].Cells[5].Paragraphs[0].Bold();
-            t.Rows[0].Cells[0].Width = document.PageWidth * 0.1;
-            t.Rows[0].Cells[1].Width = document.PageWidth * 0.1;
-            t.Rows[0].Cells[2].Width = document.PageWidth * 0.4;
-            t.Rows[0].Cells[3].Width = document.PageWidth * 0.15;
-            t.Rows[0].Cells[4].Width = document.PageWidth * 0.1;
-            t.Rows[0].Cells[5].Width = document.PageWidth * 0.15;
-
+            t.Rows[0].Cells[6].Paragraphs[0].Bold();
+            
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
                 Row row = t.InsertRow();
@@ -328,9 +323,14 @@ namespace EXPIMP
                 row.Cells[4].FillColor = System.Drawing.Color.FromName(cInfo.SectionColor);
                 row.Cells[4].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.SectionColor));
                 row.Cells[5].Paragraphs[0].InsertText(cInfo.Material);
+                row.Cells[6].Paragraphs[0].InsertText(cInfo.ILS);
             }
 
             SetFontSizeForTable(t);
+
+            float tableWidth = 525f;
+            t.AutoFit = AutoFit.ColumnWidth;
+            t.SetWidthsPercentage(new[] { 7f, 12f, 28f, 13f, 12f, 13f, 15f }, tableWidth);
 
             par.InsertTableBeforeSelf(t);
         }
