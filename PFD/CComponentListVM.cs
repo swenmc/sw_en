@@ -68,6 +68,7 @@ namespace PFD
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "GenerateIsEnabled") return;
+                if (e.PropertyName == "ILS_Items") return;
 
                 if (e.PropertyName == "Material") SetComponentDetails();
                 else if (e.PropertyName == "Section") SetComponentDetails();
@@ -515,6 +516,11 @@ namespace PFD
                 }
                 return MColumnFlyBracingPosition_Items;
             }
+            set
+            {
+                MColumnFlyBracingPosition_Items = value;                
+                NotifyPropertyChanged("ColumnFlyBracingPosition_Items");
+            }
         }
         public List<string> RafterFlyBracingPosition_Items
         {
@@ -526,6 +532,11 @@ namespace PFD
                         "Every 6th purlin", "Every 7th purlin", "Every 8th purlin", "Every 9th purlin"};
                 }
                 return MRafterFlyBracingPosition_Items;
+            }
+            set
+            {
+                MRafterFlyBracingPosition_Items = value;
+                NotifyPropertyChanged("RafterFlyBracingPosition_Items");
             }
         }
         public List<string> DefaultILS_Items
@@ -800,6 +811,76 @@ namespace PFD
         public bool NoCompomentsForMaterialList()
         {
             return !ComponentList.Any(c => c.MaterialList == true);
+        }
+
+        public void SetRafterFlyBracingPosition_Items(int iPurlinsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iPurlinsNum; i++)
+            {
+                if(i == 0) items.Add("None");
+                if (i == 1) items.Add("Every purlin");
+                if (i == 2) items.Add("Every 2nd purlin");
+                if (i == 3) items.Add("Every 3rd purlin");
+                if (i >= 4) items.Add($"Every {i}th purlin");
+
+            }
+            RafterFlyBracingPosition_Items = items;
+            CComponentInfo MR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (MR != null) MR.ILS_Items = items;
+            CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+            if (ER != null) ER.ILS_Items = items;
+        }
+        
+        public void SetColumnFlyBracingPosition_Items(int iGirtsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iGirtsNum; i++)
+            {
+                if (i == 0) items.Add("None");
+                if (i == 1) items.Add("Every girt");
+                if (i == 2) items.Add("Every 2nd girt");
+                if (i == 3) items.Add("Every 3rd girt");
+                if (i >= 4) items.Add($"Every {i}th girt");
+
+            }
+            ColumnFlyBracingPosition_Items = items;
+            CComponentInfo MC = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if (MC != null) MC.ILS_Items = items;
+            CComponentInfo EC = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            if (EC != null) EC.ILS_Items = items;
+        }
+        public void SetFrontColumnFlyBracingPosition_Items(int iFrontColumnGirtsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iFrontColumnGirtsNum; i++)
+            {
+                if (i == 0) items.Add("None");
+                if (i == 1) items.Add("Every girt");
+                if (i == 2) items.Add("Every 2nd girt");
+                if (i == 3) items.Add("Every 3rd girt");
+                if (i >= 4) items.Add($"Every {i}th girt");
+
+            }
+            ColumnFlyBracingPosition_Items = items;
+            CComponentInfo CFS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
+            if (CFS != null) CFS.ILS_Items = items;            
+        }
+        public void SetBackColumnFlyBracingPosition_Items(int iBackColumnGirtsNum)
+        {
+            List<string> items = new List<string>();
+            for (int i = 0; i <= iBackColumnGirtsNum; i++)
+            {
+                if (i == 0) items.Add("None");
+                if (i == 1) items.Add("Every girt");
+                if (i == 2) items.Add("Every 2nd girt");
+                if (i == 3) items.Add("Every 3rd girt");
+                if (i >= 4) items.Add($"Every {i}th girt");
+
+            }
+            ColumnFlyBracingPosition_Items = items;
+            CComponentInfo CBS = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
+            if (CBS != null) CBS.ILS_Items = items;
         }
     }
 }

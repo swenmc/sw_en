@@ -73,9 +73,10 @@ namespace PFD
                 float fBackFrameRakeAngle_temp_deg,
                 ObservableCollection<DoorProperties> doorBlocksProperties,
                 ObservableCollection<WindowProperties> windowBlocksProperties,
-                ObservableCollection<CComponentInfo> componentList
+                CComponentListVM componentListVM
             )
         {
+            ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
             fH1_frame = sGeometryInputData.fH_1;
             fW_frame = sGeometryInputData.fW;
             fL_tot = sGeometryInputData.fL;
@@ -285,6 +286,7 @@ namespace PFD
                 iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
                 iGirtNoInOneFrame = 2 * iOneColumnGirtNo;
             }
+            componentListVM.SetColumnFlyBracingPosition_Items(iOneColumnGirtNo);
 
             if (!bGenerateGirts || iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
                 bUseMainColumnFlyBracingPlates = false;
@@ -302,6 +304,7 @@ namespace PFD
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
                 iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
             }
+            componentListVM.SetRafterFlyBracingPosition_Items(iOneRafterPurlinNo);
 
             if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
                 bUseRafterFlyBracingPlates = false;
@@ -370,6 +373,7 @@ namespace PFD
                 // Girts in the middle are considered twice - remove one set
                 iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
             }
+            componentListVM.SetFrontColumnFlyBracingPosition_Items(iOneColumnGirtNo);
 
             if (!bGenerateFrontGirts || iFrontColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
                 bUseFrontColumnFlyBracingPlates = false;
@@ -404,6 +408,7 @@ namespace PFD
                 // Girts in the middle are considered twice - remove one set
                 iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
             }
+            componentListVM.SetBackColumnFlyBracingPosition_Items(iOneColumnGirtNo);
 
             if (!bGenerateBackGirts || iBackColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
                 bUseBackColumnFlyBracingPlates = false;

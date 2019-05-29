@@ -167,7 +167,8 @@ namespace PFD
             {
                 CComponentListVM vm = sender as CComponentListVM;
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
-                //else if (e.PropertyName == "ComponentDetailsList") return;
+                if (e.PropertyName == "ColumnFlyBracingPosition_Items") return;
+                if (e.PropertyName == "RafterFlyBracingPosition_Items") return;
             }
             else if (sender is CPFDLoadInput)
             {
@@ -181,6 +182,8 @@ namespace PFD
                 if (e.PropertyName == "IsSetFromCode") return;
                 if (e.PropertyName == "GenerateIsEnabled") return;
                 if (e.PropertyName == "GenerateIsReadonly") return;
+                if (e.PropertyName == "ILS_Items") return;
+                if (e.PropertyName == "ILS") return;
 
                 if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
@@ -727,7 +730,7 @@ namespace PFD
                 vm.BackFrameRakeAngle,
                 DoorBlocksProperties,
                 WindowBlocksProperties,
-                compList?.ComponentList);
+                compList);
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                 vm.GenerateSurfaceLoads ||

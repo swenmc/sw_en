@@ -369,6 +369,7 @@ namespace BaseClasses
             set
             {
                 MILS_Items = value;
+                NotifyPropertyChanged("ILS_Items");
             }
         }
 
