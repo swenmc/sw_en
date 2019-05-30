@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BaseClasses.Helpers
@@ -25,6 +26,19 @@ namespace BaseClasses.Helpers
                 return array_string;
             }
             return null;
+        }
+
+        public static double GetDoubleFromText(string strValue)
+        {
+            // only space, capital A-Z, lowercase a-z, and digits 0-9 are allowed in the string
+            //string s  = Regex.Replace(strValue, "[^0-9,.]", "");
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            strValue = strValue.Replace(",", ".");
+            int index = strValue.IndexOf(" ");
+            if (index > 0) strValue = strValue.Substring(0, index);
+            return double.Parse(strValue, nfi);
         }
     }
 }

@@ -242,6 +242,8 @@ namespace PFD
                         //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
                         Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, vm.FontSize, Brushes.SlateGray, Canvas_InternalForceDiagram);
                     }
+
+                    Drawing2D.DetectAndResolveTextColisions(Canvas_InternalForceDiagram);
                 }
 
                 Drawing2D.DrawPolygon(

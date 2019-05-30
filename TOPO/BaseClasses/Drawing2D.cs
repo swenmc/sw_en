@@ -375,7 +375,7 @@ namespace BaseClasses
                 canvasDimensions = MirrorYCoordinates(Dimensions);
                 canvasMemberOutline = MirrorYCoordinates(MemberOutline);
                 canvasBendLines = MirrorYCoordinates(BendLines);
-                if(note2D != null) note2D.MirrorYCoordinates();
+                if (note2D != null) note2D.MirrorYCoordinates();
             }
             else
             {
@@ -491,7 +491,7 @@ namespace BaseClasses
         private static List<CLine2D> ConvertRealPointsToCanvasDrawingPoints(List<CLine2D> lines, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
             if (lines == null) return new List<CLine2D>();
-            
+
             List<CLine2D> updatedLines = new List<CLine2D>(lines);
             foreach (CLine2D l in updatedLines)
             {
@@ -1004,7 +1004,7 @@ namespace BaseClasses
             {
                 if (dashArray != null) myLine.StrokeDashArray = dashArray;
                 else myLine.StrokeDashArray = dashStyle.Dashes;
-            }            
+            }
 
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
@@ -1056,7 +1056,7 @@ namespace BaseClasses
                 else
                     points.Add(new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * listPoints[0].X, modelMarginBottom_y - dReal_Model_Zoom_Factor * listPoints[0].Y)); // Last point is same as first one
             }
-            
+
             Polyline myLine = new Polyline();
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
@@ -1066,7 +1066,7 @@ namespace BaseClasses
             myLine.StrokeEndLineCap = endCap;
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
-            
+
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
@@ -1093,7 +1093,7 @@ namespace BaseClasses
             Canvas.SetLeft(myLine, canvasLeft);
             imageCanvas.Children.Add(myLine);
         }
-        
+
         public static void DrawPolygon(List<Point> listPoints, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
         {
             if (listPoints == null) return;
@@ -1101,7 +1101,7 @@ namespace BaseClasses
 
             double canvasLeft = listPoints.Min(p => p.X);
             double canvasTop = listPoints.Min(p => p.Y);
-            
+
             Polygon polygon = new Polygon();
             polygon.Stretch = Stretch.Fill;
             polygon.Stroke = stroke_color;
@@ -1125,7 +1125,7 @@ namespace BaseClasses
                 circle.Width = diameter;
                 circle.StrokeThickness = thickness;
                 circle.Stroke = color;
-                
+
                 double left = center.X - (diameter / 2) + thickness / 2;
                 double top = center.Y - (diameter / 2) + thickness / 2;
                 Canvas.SetLeft(circle, left);
@@ -1405,13 +1405,13 @@ namespace BaseClasses
             lSlopeLine2.Y1 = lPrimaryLine.Y2 + coord;
             lSlopeLine2.X2 = lPrimaryLine.X2 + coord;
             lSlopeLine2.Y2 = lPrimaryLine.Y2 - coord;
-            
+
             RotateDimension(dim.ControlPointStart, dRotation_deg, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
             double textPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1);
             double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
-            
+
             // Draw dimension line
             DrawLine(lPrimaryLine, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid);
             // Draw extension line - start
@@ -1538,7 +1538,7 @@ namespace BaseClasses
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
             double slopeDeg = Geom2D.RadiansToDegrees(slope);
-            double radius = Math.Abs(pCenter.X - pStart.X) * fPositionOfArcFactor;            
+            double radius = Math.Abs(pCenter.X - pStart.X) * fPositionOfArcFactor;
             Size size = new Size(radius, radius);
 
 
@@ -1558,7 +1558,7 @@ namespace BaseClasses
             {
                 if (pCenter.Y > pStart.Y && pCenter.Y > pEnd.Y) //center on the bottom
                 {
-                    if(pStart.X > pEnd.X) direction = SweepDirection.Counterclockwise;
+                    if (pStart.X > pEnd.X) direction = SweepDirection.Counterclockwise;
                     else direction = SweepDirection.Clockwise;
                 }
                 else
@@ -1567,13 +1567,13 @@ namespace BaseClasses
                     else direction = SweepDirection.Counterclockwise;
                 }
             }
-            
+
 
             Point pathStartPoint = new Point(pCenter.X + (pStart.X - pCenter.X) * fPositionOfArcFactor, pCenter.Y + (pStart.Y - pCenter.Y) * fPositionOfArcFactor);
             Point pathTowardsPoint = Geom2D.RotatePoint(pathStartPoint, pCenter, direction == SweepDirection.Counterclockwise ? -slopeDeg : slopeDeg);
 
-            ArcSegment arc = new ArcSegment(pathTowardsPoint, size, slopeDeg, false, direction, true );
-            
+            ArcSegment arc = new ArcSegment(pathTowardsPoint, size, slopeDeg, false, direction, true);
+
             PathGeometry pathGeometry = new PathGeometry();
             PathFigure figure = new PathFigure();
             figure.StartPoint = pathStartPoint;
@@ -1859,10 +1859,10 @@ namespace BaseClasses
 
             // NOTE - docasne vykreslujeme body na ktore sa viaze text
             //DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
-            
+
             Canvas.SetLeft(textBlock, posx);
-            if(valign == VerticalAlignment.Center) Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
-            else if(valign == VerticalAlignment.Top) Canvas.SetTop(textBlock, posy - txtSize.Height);
+            if (valign == VerticalAlignment.Center) Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+            else if (valign == VerticalAlignment.Top) Canvas.SetTop(textBlock, posy - txtSize.Height);
             else Canvas.SetTop(textBlock, posy);
 
             canvas.Children.Add(textBlock);
@@ -1876,7 +1876,7 @@ namespace BaseClasses
             //textBlock.Background = new SolidColorBrush(Colors.Red);
             textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
-            
+
             if (bIsTextOutSide)
             {
                 if (refPoint.Y > posy) //top
@@ -2001,7 +2001,7 @@ namespace BaseClasses
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                     arrPointsCoordY[i] *= -1f;
             }
-            
+
             float fFactorX = 1.0f;
             float fFactorY = 1.0f;
 
@@ -2019,7 +2019,7 @@ namespace BaseClasses
             }
 
             for (int i = 0; i < array_text.Length; i++)
-            {                
+            {
                 VerticalAlignment va = VerticalAlignment.Bottom;
                 if (bYOrientationIsUp)
                 {
@@ -2036,7 +2036,7 @@ namespace BaseClasses
 
                     DrawPoint(new Point(p.X + fFactorX * arrPointsCoordX[i], p.Y + fFactorY * arrPointsCoordY[i]), Brushes.Red, Brushes.Red, 2, canvas);
                     DrawText(array_text[i], (p.X + fFactorX * arrPointsCoordX[i]), (p.Y + fFactorY * arrPointsCoordY[i]), 12, bYOrientationIsUp, va, color, canvas);
-                }                
+                }
             }
         }
 
@@ -2076,7 +2076,7 @@ namespace BaseClasses
             }
             else
             {
-                Drawing2D.DrawYValuesPolygonInCanvas(p, true, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, canvas);                
+                Drawing2D.DrawYValuesPolygonInCanvas(p, true, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, canvas);
 
             }
             // Draw values description
@@ -2104,7 +2104,7 @@ namespace BaseClasses
             }
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
-            
+
             if (bYOrientationIsUp) // Up (Forces N, Vx, Vy) // Tu sa urcuje ci sa kladne hodnoty veliciny vykresluju smerom hore alebo dole, tj kam smeruje osa y
             {
                 //To Mato: to je co za cislo 1.02f ???
@@ -2113,7 +2113,7 @@ namespace BaseClasses
 
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
-                
+
                 Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
@@ -2124,7 +2124,7 @@ namespace BaseClasses
             else // Down (Torsion and bending moments T, Mx, My and deflections delta)
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
-                
+
                 // x-axis (middle)
                 Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
@@ -2169,9 +2169,9 @@ namespace BaseClasses
 
             float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
-            
+
             if (arrPointsCoordY == null || arrPointsCoordX == null) return;
-            
+
             if (!bYOrientationIsUp) // Draw positive values below x-axis
             {
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
@@ -2188,5 +2188,43 @@ namespace BaseClasses
 
             Drawing2D.DrawPolygon(listPoints, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3f, canvas);
         }
+
+
+        public static void DetectAndResolveTextColisions(Canvas canvas)
+        {
+            canvas.UpdateLayout();
+
+            foreach (UIElement elem in canvas.Children)
+            {
+                if (!elem.IsVisible) continue;
+                if (!(elem is TextBlock)) continue;
+
+                TextBlock tb = elem as TextBlock;
+                double top1 = Canvas.GetTop(elem);
+                double left1 = Canvas.GetLeft(elem);
+                Rect r = new Rect(new Point(left1, top1), tb.RenderSize);                
+
+                foreach (UIElement elem2 in canvas.Children)
+                {
+                    if (!elem2.IsVisible) continue;
+                    if (elem2 == elem) continue;
+                    if (!(elem2 is TextBlock)) continue;
+
+                    TextBlock tb2 = elem2 as TextBlock;
+                    double top2 = Canvas.GetTop(elem2);
+                    double left2 = Canvas.GetLeft(elem2);
+                    Rect r2 = new Rect(new Point(left2, top2), tb2.RenderSize);                    
+                    if (r.IntersectsWith(r2))
+                    {
+                        double v1 = ConversionsHelper.GetDoubleFromText(tb.Text);
+                        double v2 = ConversionsHelper.GetDoubleFromText(tb2.Text);
+                        if (Math.Abs(v1) >= Math.Abs(v2)) tb2.Visibility = Visibility.Hidden;
+                        else { tb.Visibility = Visibility.Hidden; break; } 
+                    }
+                } //inner foreach
+            } //outer foreach
+        }
+        
+
     }
 }
