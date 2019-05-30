@@ -524,6 +524,7 @@ namespace EXPIMP
 
                 if (IncludeResults)
                 {
+                    Drawing2D.DetectAndResolveTextColisions(DiagramCanvas);
                     DiagramCanvas.ToolTip = GetInternalForceText(IFtypeIndex);
                     canvases.Add(DiagramCanvas);
                 }
@@ -748,6 +749,7 @@ namespace EXPIMP
 
                 if (IncludeResults)
                 {
+                    Drawing2D.DetectAndResolveTextColisions(DiagramCanvas);
                     DiagramCanvas.ToolTip = GetInternalForceText(IFtypeIndex);
                     canvases.Add(DiagramCanvas);
                 }

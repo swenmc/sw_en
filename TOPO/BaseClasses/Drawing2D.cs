@@ -2196,24 +2196,30 @@ namespace BaseClasses
 
             foreach (UIElement elem in canvas.Children)
             {
-                if (!elem.IsVisible) continue;
+                if (elem.Visibility == Visibility.Hidden) continue;
+                //if (!elem.IsVisible) continue;
                 if (!(elem is TextBlock)) continue;
 
                 TextBlock tb = elem as TextBlock;
+                Size s1 = MeasureString(tb, tb.Text);
                 double top1 = Canvas.GetTop(elem);
                 double left1 = Canvas.GetLeft(elem);
-                Rect r = new Rect(new Point(left1, top1), tb.RenderSize);                
+                //Rect r = new Rect(new Point(left1, top1), tb.RenderSize);  
+                Rect r = new Rect(new Point(left1, top1), s1);
 
                 foreach (UIElement elem2 in canvas.Children)
                 {
-                    if (!elem2.IsVisible) continue;
+                    if (elem2.Visibility == Visibility.Hidden) continue;
+                    //if (!elem2.IsVisible) continue;
                     if (elem2 == elem) continue;
                     if (!(elem2 is TextBlock)) continue;
 
                     TextBlock tb2 = elem2 as TextBlock;
+                    Size s2 = MeasureString(tb2, tb2.Text);
                     double top2 = Canvas.GetTop(elem2);
                     double left2 = Canvas.GetLeft(elem2);
-                    Rect r2 = new Rect(new Point(left2, top2), tb2.RenderSize);                    
+                    //Rect r2 = new Rect(new Point(left2, top2), tb2.RenderSize);
+                    Rect r2 = new Rect(new Point(left2, top2), s2);
                     if (r.IntersectsWith(r2))
                     {
                         double v1 = ConversionsHelper.GetDoubleFromText(tb.Text);
