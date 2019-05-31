@@ -902,8 +902,6 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign)
             {
-                //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
-                //UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
                  
                 if (Member_Design.Content == null)
@@ -942,6 +940,10 @@ namespace PFD
             //{
             //    DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
             //}
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
+            {   
+                if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm.Model);
+            }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {
                 Part_List.Content = new UC_MaterialList(vm.Model);

@@ -122,7 +122,7 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
-    <Compile Include="CComponentListVM.cs" />
+    <Compile Include="ViewModels\CComponentListVM.cs" />
     <Compile Include="CComboBoxHelper.cs" />
     <Compile Include="CComponentParamsViewList.cs" />
     <Compile Include="CComponentParamsViewString.cs" />
@@ -131,6 +131,7 @@
     <Compile Include="CComponentParamsView.cs" />
     <Compile Include="CDatabaseModels.cs" />
     <Compile Include="CPFDJointsDesign.cs" />
+    <Compile Include="ViewModels\CJointsVM.cs" />
     <Compile Include="CPFDMemberInternalForces.cs" />
     <Compile Include="CPFDMemberDesign.cs" />
     <Compile Include="CPFDLoadInput.cs" />
@@ -186,6 +187,9 @@
     <Compile Include="TextBoxEnterKeyUpdateBehavior.cs" />
     <Compile Include="UC_FootingInput.xaml.cs">
       <DependentUpon>UC_FootingInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC_Joints.xaml.cs">
+      <DependentUpon>UC_Joints.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CProjectInfoVM.cs" />
     <Compile Include="ViewModels\CLoadCaseView.cs" />
@@ -282,6 +286,10 @@
     <Page Include="UC_FootingInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC_Joints.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WindTerrainCategories2.xaml">
       <Generator>MSBuild:Compile</Generator>
