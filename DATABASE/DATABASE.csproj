@@ -90,6 +90,7 @@
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\CConnectionDescription.cs" />
     <Compile Include="DTO\QuantityLibraryItem.cs" />
     <Compile Include="DTO\DataExportTables.cs" />
     <Compile Include="DTO\CAnnualProbability.cs" />
