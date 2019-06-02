@@ -16,6 +16,7 @@ namespace PFD
     {        
         CModel_PFD Model;
         CJointsVM vm;
+        Dictionary<int, List<CConnectionJointTypes>> jointsDict;
 
 
         public UC_Joints(CModel_PFD model)
@@ -30,7 +31,33 @@ namespace PFD
 
             vm.JointTypeIndex = 1;
             ArrangeConnectionJoints();
+
+
+            //-----------------------------------------------
+            TempCreateGridAndShowResultsCount();
         }
+
+
+        private void TempCreateGridAndShowResultsCount()
+        {
+            TabItem tab = vm.TabItems.FirstOrDefault();
+            if (tab == null) return;
+            StackPanel sp = new StackPanel();
+            DataGrid dg = new DataGrid();
+            List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
+            foreach (CConnectionDescription cd in vm.JointTypes)
+            {
+                Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
+                results.Add(t);
+            }
+
+            dg.ItemsSource = results;
+            sp.Children.Add(dg);
+            tab.Content = sp;
+
+        }
+       
+
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -40,12 +67,7 @@ namespace PFD
             if (e.PropertyName == "TabItems") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
-            //int count = 0;
-            //foreach (CConnectionJointTypes joint in Model.m_arrConnectionJoints)
-            //{
-            //    if (joint is CConnectionJoint_A001) count++;
-            //}
-            //MessageBox.Show($"Count: {count}");
+           
 
 
 
@@ -53,14 +75,12 @@ namespace PFD
 
         private void ArrangeConnectionJoints()
         {
-            Dictionary<int, List<CConnectionJointTypes>> jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
+            jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
             foreach (CConnectionDescription c in vm.JointTypes)
             {
                 jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
             }
             
-            
-
         }
 
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
