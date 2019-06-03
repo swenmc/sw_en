@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace PFD
 {
@@ -398,21 +399,44 @@ namespace PFD
                         ti.Header = plate.Name;
                         
                         StackPanel sp = new StackPanel();
-                        
-                        DataTable dt = new DataTable();
-                        dt.Columns.Add("Property");
-                        dt.Columns.Add("Value");                        
-                        
-                        dt.Rows.Add("fArea", plate.fArea);
-                        dt.Rows.Add("fA_g", plate.fA_g);
-                        dt.Rows.Add("fA_n", plate.fA_n);
-                        dt.Rows.Add("fA_vn_zv", plate.fA_vn_zv);
-                        dt.Rows.Add("fA_v_zv", plate.fA_v_zv);
-                        dt.Rows.Add("fHeight_hy", plate.fHeight_hy);
 
-                        DataGrid dg = new DataGrid();
-                        dg.ItemsSource = dt.AsDataView();
-                        sp.Children.Add(dg);
+                        if (plate.ScrewArrangement != null)
+                        {
+                            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+                            sp.Children.Add(new Label() { Content = "Screw Arrangement: " });
+                            DataGrid dgSA = new DataGrid();
+                            dgSA.ItemsSource = screwArrangementParams;
+                            //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
+                            sp.Children.Add(dgSA);
+                        }
+
+                        sp.Children.Add(new Label() { Content = "Geometry: ", Margin = new Thickness(0,15,0,0) });
+                        List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);                        
+                        DataGrid dgGeomParams = new DataGrid();
+                        dgGeomParams.ItemsSource = geometryParams;                    
+                        sp.Children.Add(dgGeomParams);
+
+                        sp.Children.Add(new Label() { Content = "Details: ", Margin = new Thickness(0, 15, 0, 0) });
+                        List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
+                        DataGrid dgDetails = new DataGrid();
+                        dgDetails.ItemsSource = details;
+                        sp.Children.Add(dgDetails);
+
+
+                        //DataTable dt = new DataTable();
+                        //dt.Columns.Add("Property");
+                        //dt.Columns.Add("Value");                        
+                        
+                        //dt.Rows.Add("fArea", plate.fArea);
+                        //dt.Rows.Add("fA_g", plate.fA_g);
+                        //dt.Rows.Add("fA_n", plate.fA_n);
+                        //dt.Rows.Add("fA_vn_zv", plate.fA_vn_zv);
+                        //dt.Rows.Add("fA_v_zv", plate.fA_v_zv);
+                        //dt.Rows.Add("fHeight_hy", plate.fHeight_hy);
+
+                        //DataGrid dg = new DataGrid();
+                        //dg.ItemsSource = dt.AsDataView();
+                        //sp.Children.Add(dg);
                         ti.Content = sp;
                         tabItems.Add(ti);
                     }

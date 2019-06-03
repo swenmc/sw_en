@@ -24,6 +24,10 @@ namespace PFD
         private int m_SelectedTabIndex;
         public bool IsSetFromCode = false;
 
+        private List<CComponentParamsView> m_ScrewArrangementParameters;
+        private List<CComponentParamsView> m_ComponentGeometry;
+        private List<CComponentParamsView> m_ComponentDetails;
+
         //-------------------------------------------------------------------------------------------------------------
         public int JointTypeIndex
         {
@@ -79,6 +83,45 @@ namespace PFD
             {
                 m_SelectedTabIndex = value;
                 NotifyPropertyChanged("SelectedTabIndex");
+            }
+        }
+
+        public List<CComponentParamsView> ScrewArrangementParameters
+        {
+            get
+            {
+                return m_ScrewArrangementParameters;
+            }
+
+            set
+            {
+                m_ScrewArrangementParameters = value;
+            }
+        }
+
+        public List<CComponentParamsView> ComponentGeometry
+        {
+            get
+            {
+                return m_ComponentGeometry;
+            }
+
+            set
+            {
+                m_ComponentGeometry = value;
+            }
+        }
+
+        public List<CComponentParamsView> ComponentDetails
+        {
+            get
+            {
+                return m_ComponentDetails;
+            }
+
+            set
+            {
+                m_ComponentDetails = value;
             }
         }
 
