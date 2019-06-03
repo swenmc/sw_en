@@ -26,7 +26,7 @@
         <ComboBox Grid.Row="0" Grid.Column="1" Name="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=JointTypes}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=JointTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-        <TabControl ItemsSource="{Binding Path=TabItems}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="TabControlMain">
+        <TabControl ItemsSource="{Binding Path=TabItems}" SelectedIndex="{Binding Path=SelectedTabIndex}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="TabControlMain">
             
         </TabControl>
         

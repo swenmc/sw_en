@@ -3,6 +3,7 @@ using DATABASE.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,9 +30,9 @@ namespace PFD
             vm.PropertyChanged += HandleJointsPropertyChangedEvent;
             this.DataContext = vm;
 
-            vm.JointTypeIndex = 1;
             ArrangeConnectionJoints();
 
+            vm.JointTypeIndex = 1;
 
             //-----------------------------------------------
             TempCreateGridAndShowResultsCount();
@@ -65,6 +66,7 @@ namespace PFD
             if (vm != null && vm.IsSetFromCode) return;
 
             if (e.PropertyName == "TabItems") return;
+            if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
            
@@ -363,23 +365,77 @@ namespace PFD
                     return null;
                     //throw new Exception($"Type of connection joint [{strType}] not recognized. (Method GetTypeFor)");
             }
-        } 
+        }
 
         private void SetDynamicTabs(CJointsVM vm)
         {
+            if (jointsDict == null) ArrangeConnectionJoints();
             List<TabItem> tabItems = new List<TabItem>();
-            TabItem t1 = new TabItem();
-            t1.Header = "T1 header";
 
-            TabItem t2 = new TabItem();
-            t2.Header = "T2 header";
+            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+            List<CConnectionJointTypes> list_joints = jointsDict[con.ID];
+            //all joints in list sholud be the same!
+            CConnectionJointTypes joint = list_joints.FirstOrDefault();
 
-            TabItem t3 = new TabItem();
-            t3.Header = "T3 header";
-            if(vm.JointTypeIndex >= 0) tabItems.Add(t1);
-            if (vm.JointTypeIndex >= 1) tabItems.Add(t2);
-            if (vm.JointTypeIndex >= 2) tabItems.Add(t3);
+            if (joint == null)
+            {
+                TabItem t1 = new TabItem();                
+                t1.Header = "Results";
+                StackPanel sp = new StackPanel();
+                Label l = new Label();
+                l.Content = "No joints found for selected type.";
+                sp.Children.Add(l);
+                t1.Content = sp;
+                tabItems.Add(t1);
+            }
+            else
+            {
+                if (joint.m_arrPlates != null)
+                {                    
+                    foreach (CPlate plate in joint.m_arrPlates)
+                    {
+                        TabItem ti = new TabItem();
+                        ti.Header = plate.Name;
+                        
+                        StackPanel sp = new StackPanel();
+                        
+                        DataTable dt = new DataTable();
+                        dt.Columns.Add("Property");
+                        dt.Columns.Add("Value");                        
+                        
+                        dt.Rows.Add("fArea", plate.fArea);
+                        dt.Rows.Add("fA_g", plate.fA_g);
+                        dt.Rows.Add("fA_n", plate.fA_n);
+                        dt.Rows.Add("fA_vn_zv", plate.fA_vn_zv);
+                        dt.Rows.Add("fA_v_zv", plate.fA_v_zv);
+                        dt.Rows.Add("fHeight_hy", plate.fHeight_hy);
+
+                        DataGrid dg = new DataGrid();
+                        dg.ItemsSource = dt.AsDataView();
+                        sp.Children.Add(dg);
+                        ti.Content = sp;
+                        tabItems.Add(ti);
+                    }
+                }
+                
+                //TabItem t1 = new TabItem();
+                //t1.Header = "T1 header";
+
+                //TabItem t2 = new TabItem();
+                //t2.Header = "T2 header";
+
+                //TabItem t3 = new TabItem();
+                //t3.Header = "T3 header";
+                //if (vm.JointTypeIndex >= 0) tabItems.Add(t1);
+                //if (vm.JointTypeIndex >= 1) tabItems.Add(t2);
+                //if (vm.JointTypeIndex >= 2) tabItems.Add(t3);
+
+            }
+
+
+            
             vm.TabItems = tabItems;
+            vm.SelectedTabIndex = 0;
         }
 
         

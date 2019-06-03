@@ -14,12 +14,14 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+
         private int m_JointTypeIndex;
         private List<CConnectionDescription> m_JointTypes;
 
         private List<TabItem> m_TabItems;
 
 
+        private int m_SelectedTabIndex;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -66,6 +68,20 @@ namespace PFD
             }
         }
 
+        public int SelectedTabIndex
+        {
+            get
+            {
+                return m_SelectedTabIndex;
+            }
+
+            set
+            {
+                m_SelectedTabIndex = value;
+                NotifyPropertyChanged("SelectedTabIndex");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -73,8 +89,7 @@ namespace PFD
         {
             JointTypes = CJointsManager.LoadJointsConnectionDescriptions();
             JointTypeIndex = 0;
-
-            
+            SelectedTabIndex = 0;
 
             IsSetFromCode = false;
         }
