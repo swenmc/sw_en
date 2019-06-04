@@ -401,58 +401,54 @@ namespace PFD
                         ti.Header = plate.Name;
                         
                         StackPanel sp = new StackPanel();
+                        
+                        //Grid grid = new Grid();
+                        //RowDefinition row = new RowDefinition();                        
+                        //row.Height = new GridLength(40);
+                        //grid.RowDefinitions.Add(row);
+
+                        //row = new RowDefinition();
+                        //row.Height = new GridLength(1.0, GridUnitType.Star);
+                        //grid.RowDefinitions.Add(row);
+
+                        //row = new RowDefinition();
+                        //row.Height = new GridLength(40);
+                        //grid.RowDefinitions.Add(row);
+
+                        //row = new RowDefinition();
+                        //row.Height = new GridLength(1.0, GridUnitType.Star);
+                        //grid.RowDefinitions.Add(row);
+
+                        //row = new RowDefinition();
+                        //row.Height = new GridLength(40);
+                        //grid.RowDefinitions.Add(row);
+
+                        //row = new RowDefinition();
+                        //row.Height = new GridLength(1.0, GridUnitType.Star);
+                        //grid.RowDefinitions.Add(row);
+                        
 
                         if (plate.ScrewArrangement != null)
-                        {
+                        {                            
                             List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                            sp.Children.Add(new Label() { Content = "Screw Arrangement: " });
-                            DataGrid dgSA = new DataGrid();
-                            dgSA.ItemsSource = screwArrangementParams;
-                            dgSA.AutoGenerateColumns = false;
-                            dgSA.IsEnabled = true;
-                            dgSA.IsReadOnly = false;
-                            dgSA.HeadersVisibility = DataGridHeadersVisibility.None;
-                            dgSA.SelectionMode = DataGridSelectionMode.Single;
-                            dgSA.SelectionUnit = DataGridSelectionUnit.Cell;                            
-
-                            DataGridTextColumn tc1 = new DataGridTextColumn();
-                            tc1.Binding = new Binding("Name");
-                            tc1.CellStyle = GetReadonlyCellStyle();
-                            tc1.IsReadOnly = true;
-                            dgSA.Columns.Add(tc1);
-
-                            DataGridTextColumn tc2 = new DataGridTextColumn();
-                            tc2.Binding = new Binding("ShortCut");
-                            tc2.CellStyle = GetReadonlyCellStyle();
-                            tc2.IsReadOnly = true;
-                            dgSA.Columns.Add(tc2);
-
-                            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();                            
-                            tc3.IsReadOnly = false;
-                            tc3.CellTemplate = GetDataTemplate();
-                            dgSA.Columns.Add(tc3);
-                            
-                            DataGridTextColumn tc4 = new DataGridTextColumn();
-                            tc4.Binding = new Binding("Unit");
-                            tc4.CellStyle = GetReadonlyCellStyle();
-                            tc4.IsReadOnly = true;
-                            dgSA.Columns.Add(tc4);
-                            
-                            //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
-                            sp.Children.Add(dgSA);
+                            Label lSA = new Label() { Content = "Screw Arrangement: " };
+                            //lSA.SetValue(Grid.RowProperty, 0);
+                            sp.Children.Add(lSA);
+                            sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
                         }
 
-                        sp.Children.Add(new Label() { Content = "Geometry: ", Margin = new Thickness(0,15,0,0) });
-                        List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);                        
-                        DataGrid dgGeomParams = new DataGrid();
-                        dgGeomParams.ItemsSource = geometryParams;                    
-                        sp.Children.Add(dgGeomParams);
+                        Label l = new Label() { Content = "Geometry: ", Margin = new Thickness(0, 15, 0, 0) };
+                        //l.SetValue(Grid.RowProperty, 2);
+                        sp.Children.Add(l);
+                        List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
+                        sp.Children.Add(GetDatagridForGeometry(geometryParams));
 
-                        sp.Children.Add(new Label() { Content = "Details: ", Margin = new Thickness(0, 15, 0, 0) });
+                        l = new Label() { Content = "Details: ", Margin = new Thickness(0, 15, 0, 0) };
+                        //l.SetValue(Grid.RowProperty, 4);
+                        sp.Children.Add(l);
+
                         List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
-                        DataGrid dgDetails = new DataGrid();
-                        dgDetails.ItemsSource = details;
-                        sp.Children.Add(dgDetails);
+                        sp.Children.Add(GetDatagridForDetails(details));
                         
                         ti.Content = sp;
                         tabItems.Add(ti);
@@ -462,6 +458,141 @@ namespace PFD
                         
             vm.TabItems = tabItems;
             vm.SelectedTabIndex = 0;
+        }
+
+        private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
+        {   
+            DataGrid dgSA = new DataGrid();            
+            //dgSA.SetValue(Grid.RowProperty, 1);
+            dgSA.ItemsSource = screwArrangementParams;
+            dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dgSA.AutoGenerateColumns = false;
+            dgSA.IsEnabled = true;
+            dgSA.IsReadOnly = false;
+            dgSA.HeadersVisibility = DataGridHeadersVisibility.None;
+            dgSA.SelectionMode = DataGridSelectionMode.Single;
+            dgSA.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgSA.Columns.Add(tc4);
+
+            //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
+            return dgSA;
+        }
+
+        private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
+        {
+            DataGrid dg = new DataGrid();
+            //dg.SetValue(Grid.RowProperty, 3);
+            dg.ItemsSource = geometryParams;
+            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dg.AutoGenerateColumns = false;
+            dg.IsEnabled = true;
+            dg.IsReadOnly = false;
+            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.SelectionMode = DataGridSelectionMode.Single;
+            dg.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc2);
+
+            DataGridTextColumn tc3 = new DataGridTextColumn();
+            tc3.Binding = new Binding("Value");
+            Style style = new Style(typeof(TextBlock));            
+            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            tc3.ElementStyle = style;            
+            tc3.IsReadOnly = false;
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc4);
+            return dg;
+        }
+
+        private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
+        {
+            DataGrid dg = new DataGrid();
+            //dg.SetValue(Grid.RowProperty, 5);
+            dg.ItemsSource = detailsParams;
+            dg.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dg.AutoGenerateColumns = false;
+            dg.IsEnabled = true;
+            dg.IsReadOnly = true;
+            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.SelectionMode = DataGridSelectionMode.Single;
+            dg.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc2);
+
+            DataGridTextColumn tc3 = new DataGridTextColumn();
+            tc3.Binding = new Binding("Value");
+            Style style = new Style(typeof(TextBlock));
+            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            tc3.ElementStyle = style;
+            tc3.CellStyle = GetReadonlyCellStyle();
+            tc3.IsReadOnly = true;
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dg.Columns.Add(tc4);
+            return dg;
         }
 
 
