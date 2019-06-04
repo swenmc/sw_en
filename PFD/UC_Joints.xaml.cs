@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Xml;
 
 namespace PFD
 {
@@ -406,6 +410,51 @@ namespace PFD
                             sp.Children.Add(new Label() { Content = "Screw Arrangement: " });
                             DataGrid dgSA = new DataGrid();
                             dgSA.ItemsSource = screwArrangementParams;
+                            dgSA.AutoGenerateColumns = false;
+                            dgSA.IsEnabled = true;
+                            dgSA.IsReadOnly = false;
+                            dgSA.HeadersVisibility = DataGridHeadersVisibility.None;
+                            dgSA.SelectionMode = DataGridSelectionMode.Single;
+                            dgSA.SelectionUnit = DataGridSelectionUnit.Cell;                            
+
+                            DataGridTextColumn tc1 = new DataGridTextColumn();
+                            tc1.Binding = new Binding("Name");
+                            tc1.CellStyle = GetReadonlyCellStyle();
+                            tc1.IsReadOnly = true;
+                            dgSA.Columns.Add(tc1);
+
+                            DataGridTextColumn tc2 = new DataGridTextColumn();
+                            tc2.Binding = new Binding("ShortCut");
+                            tc2.CellStyle = GetReadonlyCellStyle();
+                            tc2.IsReadOnly = true;
+                            dgSA.Columns.Add(tc2);
+
+                            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();                            
+                            tc3.IsReadOnly = false;
+                            tc3.CellTemplate = GetDataTemplate();
+
+                            //FrameworkElementFactory factory1 = new FrameworkElementFactory(typeof(ContentControl));
+                            //Binding b1 = new Binding();
+                            ////b1.Mode = BindingMode.TwoWay;
+                            //factory1.SetValue(ContentControl.ContentProperty, b1);
+                            ////factory1.SetValue(ContentControl.StyleProperty, );
+
+                            ////factory1.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(chkSelect_Checked));
+                            //DataTemplate cellTemplate1 = new DataTemplate();
+                            //cellTemplate1.VisualTree = factory1;
+                            //tc3.CellTemplate = cellTemplate1;
+
+
+                            dgSA.Columns.Add(tc3);
+
+
+                            DataGridTextColumn tc4 = new DataGridTextColumn();
+                            tc4.Binding = new Binding("Unit");
+                            tc4.CellStyle = GetReadonlyCellStyle();
+                            tc4.IsReadOnly = true;
+                            dgSA.Columns.Add(tc4);
+
+                            
                             //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
                             sp.Children.Add(dgSA);
                         }
@@ -440,28 +489,215 @@ namespace PFD
                         ti.Content = sp;
                         tabItems.Add(ti);
                     }
-                }
-                
-                //TabItem t1 = new TabItem();
-                //t1.Header = "T1 header";
-
-                //TabItem t2 = new TabItem();
-                //t2.Header = "T2 header";
-
-                //TabItem t3 = new TabItem();
-                //t3.Header = "T3 header";
-                //if (vm.JointTypeIndex >= 0) tabItems.Add(t1);
-                //if (vm.JointTypeIndex >= 1) tabItems.Add(t2);
-                //if (vm.JointTypeIndex >= 2) tabItems.Add(t3);
-
+                }                
             }
-
-
+            
             
             vm.TabItems = tabItems;
             vm.SelectedTabIndex = 0;
         }
 
+
+        private Style GetReadonlyCellStyle()
+        {
+            Style style = new Style(typeof(DataGridCell));
+            style.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Colors.WhiteSmoke)));
+            style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
+            return style;
+        }
+
+        //private Style TemplateColumnStyle()
+        //{
+
+        //    Style style = new Style(typeof(ContentControl));
+            
+        //    DataTrigger trigger = new DataTrigger();
+        //    trigger.Binding = new Binding("CheckType");
+        //    trigger.Value = "CheckBox";
+        //    trigger.Set
+
+        //    style.Triggers.Add(trigger);
+
+        //    < Style TargetType = "ContentControl" >
+ 
+        //                                     < Style.Triggers >
+ 
+        //                                         < DataTrigger Binding = "{Binding CheckType}" Value = "CheckBox" >
+    
+        //                                                < Setter Property = "ContentTemplate" >
+     
+        //                                                     < Setter.Value >
+     
+        //                                                         < DataTemplate >
+     
+        //                                                             < CheckBox HorizontalAlignment = "Center" IsChecked = "{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         
+        //                                                            </ DataTemplate >
+        
+        //                                                        </ Setter.Value >
+        
+        //                                                    </ Setter >
+        
+        //                                                </ DataTrigger >
+        
+        //                                                < DataTrigger Binding = "{Binding CheckType}" Value = "ComboBox" >
+           
+        //                                                       < Setter Property = "ContentTemplate" >
+            
+        //                                                            < Setter.Value >
+            
+        //                                                                < DataTemplate >
+            
+        //                                                                    < ComboBox HorizontalAlignment = "Right" SelectedValue = "{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource = "{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 
+        //                                                                     </ DataTemplate >
+                 
+        //                                                                 </ Setter.Value >
+                 
+        //                                                             </ Setter >
+                 
+        //                                                         </ DataTrigger >
+                 
+        //                                                         < DataTrigger Binding = "{Binding CheckType}" Value = "TextBox" >
+                    
+        //                                                                < Setter Property = "ContentTemplate" >
+                     
+        //                                                                     < Setter.Value >
+                     
+        //                                                                         < DataTemplate >
+                     
+        //                                                                             < TextBox TextAlignment = "Right" Text = "{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                        
+        //                                                                            </ DataTemplate >
+                        
+        //                                                                        </ Setter.Value >
+                        
+        //                                                                    </ Setter >
+                        
+        //                                                                </ DataTrigger >
+                        
+        //                                                            </ Style.Triggers >
+                        
+        //                                                        </ Style >
+        //}
+
+
+        private DataTemplate GetDataTemplate()
+        {
+            DataTemplate retVal = null;
+            StringBuilder sb = new StringBuilder();
+
+            //sb.Append("<DataTemplate>");
+            //sb.Append("<ContentControl Content=\"{Binding}\"><ContentControl.Style><Style TargetType=\"ContentControl\">");
+            //sb.Append("<Style.Triggers>");
+            //sb.Append("<DataTrigger Binding = \"{ Binding CheckType}\" Value = \"CheckBox\">");
+            //sb.Append("<Setter Property = \"ContentTemplate\">");
+            //sb.Append("<Setter.Value >");
+            //sb.Append("<DataTemplate >");
+            //sb.Append("<CheckBox HorizontalAlignment = \"Center\" IsChecked = \"{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\" />");
+            //sb.Append("</DataTemplate>");
+            //sb.Append("</Setter.Value>");
+            //sb.Append("</Setter>");
+            //sb.Append("</DataTrigger>");
+            //sb.Append("<DataTrigger Binding = \"{ Binding CheckType}\" Value = \"ComboBox\" >");
+            //sb.Append("<Setter Property = \"ContentTemplate\" >");
+            //sb.Append("<Setter.Value>");
+            //sb.Append("<DataTemplate>");
+            //sb.Append("<ComboBox HorizontalAlignment = \"Right\" SelectedValue = \"{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\" ItemsSource = \"{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}\" />");
+            //sb.Append("</DataTemplate>");
+            //sb.Append("</Setter.Value>");
+            //sb.Append("</Setter>");
+            //sb.Append("</DataTrigger>");
+            //sb.Append("<DataTrigger Binding = \"{ Binding CheckType}\" Value = \"TextBox\">");
+            //sb.Append("<Setter Property = \"ContentTemplate\">");
+            //sb.Append("<Setter.Value>");
+            //sb.Append("<DataTemplate>");
+            //sb.Append("<TextBox TextAlignment = \"Right\" Text = \"{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}\" />");
+            //sb.Append("</DataTemplate>");
+            //sb.Append("</Setter.Value>");
+            //sb.Append("</Setter>");
+            //sb.Append("</DataTrigger>");
+            //sb.Append("</Style.Triggers>");
+            //sb.Append("</Style>");
+            //sb.Append("</ContentControl.Style>");
+            //sb.Append("</ContentControl>");
+            //sb.Append("</DataTemplate>");
+
+
+            var context = new ParserContext();
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>
+            <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            <DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
+            <Setter Property='ContentTemplate'>
+            <Setter.Value>
+            <DataTemplate>
+            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' />
+            </DataTemplate>
+            </Setter.Value>
+            </Setter>
+            </DataTrigger>
+            </Style.Triggers>
+            </Style>
+            </ContentControl.Style>
+            </ContentControl>
+            </DataTemplate>";
+
+
+
+            //string s = @"<Style TargetType='ContentControl'><Style.Triggers>
+            //<DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
+            //<Setter Property='ContentTemplate'>
+            //<Setter.Value>
+            //<DataTemplate>
+            //<CheckBox HorizontalAlignment='Center' IsChecked='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            //</DataTemplate>
+            //</Setter.Value>
+            //</Setter>
+            //</DataTrigger>
+            //<DataTrigger Binding='{Binding CheckType}' Value='ComboBox' >
+            //<Setter Property='ContentTemplate'>
+            //<Setter.Value>
+            //<DataTemplate>
+            //<ComboBox HorizontalAlignment='Right' SelectedValue='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' ItemsSource='{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}' />
+            //</DataTemplate>
+            //</Setter.Value>
+            //</Setter>
+            //</DataTrigger>
+            //<DataTrigger Binding='{Binding CheckType}' Value='TextBox'>
+            //<Setter Property='ContentTemplate'>
+            //<Setter.Value>
+            //<DataTemplate>
+            //<TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' />
+            //</DataTemplate>
+            //</Setter.Value>
+            //</Setter>
+            //</DataTrigger>
+            //</Style.Triggers>
+            //</Style>";
+
+            retVal = XamlReader.Parse(s, context) as DataTemplate;
+            
+
+            return retVal;
+        }
     }
 }
