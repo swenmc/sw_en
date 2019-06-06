@@ -464,7 +464,7 @@ namespace PFD
         {   
             DataGrid dgSA = new DataGrid();            
             //dgSA.SetValue(Grid.RowProperty, 1);
-            dgSA.ItemsSource = screwArrangementParams;
+            dgSA.ItemsSource = screwArrangementParams;            
             dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
             dgSA.AutoGenerateColumns = false;
             dgSA.IsEnabled = true;
@@ -500,8 +500,17 @@ namespace PFD
             tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dgSA.Columns.Add(tc4);
 
+            foreach (CComponentParamsView cpw in screwArrangementParams)
+            {
+                cpw.PropertyChanged += HandleComponentParamsViewPropertyChangedEvent;
+            }
+
             //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
             return dgSA;
+        }
+        private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            HandleJointsPropertyChangedEvent(sender, e);            
         }
 
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
