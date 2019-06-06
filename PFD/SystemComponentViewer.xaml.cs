@@ -1462,13 +1462,13 @@ namespace PFD
                         if (item.Name.Contains(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " "))
                         {
                             int circleNum = int.Parse(item.Name.Substring((CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " ").Length));                            
-                            UpdateCircleSequencesNumberOfScrews(circleNum, itemStr, ref arrangementTemp);
+                            CPlateHelper.UpdateCircleSequencesNumberOfScrews(circleNum, itemStr, ref arrangementTemp);
                         }
                         // Changed Radius
                         if (item.Name.Contains(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " "))
                         {
                             int circleNum = int.Parse(item.Name.Substring((CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " ").Length));
-                            UpdateCircleSequencesRadius(circleNum, fLengthUnitFactor, itemStr, ref arrangementTemp);
+                            CPlateHelper.UpdateCircleSequencesRadius(circleNum, fLengthUnitFactor, itemStr, ref arrangementTemp);
                         }
 
                         // Corner screws
@@ -1649,47 +1649,47 @@ namespace PFD
             }
         }
 
-        private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
-        {
-            int numberOfScrews = int.Parse(itemNewValueString.Value);
-            if (numberOfScrews < 2) return; // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+        //private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
+        //{
+        //    int numberOfScrews = int.Parse(itemNewValueString.Value);
+        //    if (numberOfScrews < 2) return; // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
 
-            // Change each group
-            foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            {
-                IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
-                CConnectorSequence seq = null;
-                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
-                if (seq != null) seq.INumberOfConnectors = numberOfScrews;
-                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
-                if (seq != null) seq.INumberOfConnectors = numberOfScrews;
-            }
-            // Recalculate total number of screws in the arrangement
-            arrangementTemp.RecalculateTotalNumberOfScrews();
-        }
+        //    // Change each group
+        //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+        //    {
+        //        IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
+        //        CConnectorSequence seq = null;
+        //        seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
+        //        if (seq != null) seq.INumberOfConnectors = numberOfScrews;
+        //        seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
+        //        if (seq != null) seq.INumberOfConnectors = numberOfScrews;
+        //    }
+        //    // Recalculate total number of screws in the arrangement
+        //    arrangementTemp.RecalculateTotalNumberOfScrews();
+        //}
 
-        private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
-        {
-            float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-            if (!IsValidCircleRadius(radius, arrangementTemp)) throw new Exception("Radius is not valid.");  //if radius is not valid => return
-            // Change each group
-            foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            {
-                IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence); // Bug - To Ondrej tu je nejaka chyba v pretypovani, ja som to kedysi menil, aby mi to slo prelozit ale ... :)
-                CConnectorSequence seq = null;
-                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
-                if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
-                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
-                if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
-            }
-        }
+        //private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
+        //{
+        //    float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+        //    if (!IsValidCircleRadius(radius, arrangementTemp)) throw new Exception("Radius is not valid.");  //if radius is not valid => return
+        //    // Change each group
+        //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+        //    {
+        //        IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence); // Bug - To Ondrej tu je nejaka chyba v pretypovani, ja som to kedysi menil, aby mi to slo prelozit ale ... :)
+        //        CConnectorSequence seq = null;
+        //        seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
+        //        if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
+        //        seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
+        //        if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
+        //    }
+        //}
 
-        private bool IsValidCircleRadius(float radius, CScrewArrangementCircleApexOrKnee arrangementTemp)
-        {
-            float fAdditionalMargin = 0.02f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
-            if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
-            else return false;
-        }
+        //private bool IsValidCircleRadius(float radius, CScrewArrangementCircleApexOrKnee arrangementTemp)
+        //{
+        //    float fAdditionalMargin = 0.02f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
+        //    if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
+        //    else return false;
+        //}
 
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {

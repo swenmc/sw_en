@@ -23,7 +23,8 @@ namespace PFD
         CModel_PFD Model;
         CJointsVM vm;
         Dictionary<int, List<CConnectionJointTypes>> jointsDict;
-        
+        List<CConnectionJointTypes> list_joints;
+
         public UC_Joints(CModel_PFD model)
         {
             InitializeComponent();
@@ -376,7 +377,7 @@ namespace PFD
             List<TabItem> tabItems = new List<TabItem>();
 
             CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
-            List<CConnectionJointTypes> list_joints = jointsDict[con.ID];
+            list_joints = jointsDict[con.ID];
             //all joints in list sholud be the same!
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
 
@@ -510,6 +511,25 @@ namespace PFD
         }
         private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+            foreach (CConnectionJointTypes joint in list_joints)
+            {
+                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+                List<CComponentParamsView> screwArrangementParams = CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+                if (screwArrangementParams != null)
+                {
+                    
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                    DataGrid dgSA = sp.Children[1] as DataGrid;
+                    dgSA.ItemsSource = screwArrangementParams;
+                    foreach (CComponentParamsView cpw in screwArrangementParams)
+                    {
+                        cpw.PropertyChanged += HandleComponentParamsViewPropertyChangedEvent;
+                    }
+                }
+            }
+
             HandleJointsPropertyChangedEvent(sender, e);            
         }
 
