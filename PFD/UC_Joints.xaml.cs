@@ -37,32 +37,9 @@ namespace PFD
 
             ArrangeConnectionJoints();
 
-            vm.JointTypeIndex = 1;
-
-            //-----------------------------------------------
-            TempCreateGridAndShowResultsCount();
+            vm.JointTypeIndex = 0;
         }
-
-
-        private void TempCreateGridAndShowResultsCount()
-        {
-            TabItem tab = vm.TabItems.FirstOrDefault();
-            if (tab == null) return;
-            StackPanel sp = new StackPanel();
-            DataGrid dg = new DataGrid();
-            List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
-            foreach (CConnectionDescription cd in vm.JointTypes)
-            {
-                Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
-                results.Add(t);
-            }
-
-            dg.ItemsSource = results;
-            sp.Children.Add(dg);
-            tab.Content = sp;
-        }
-       
-
+        
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -72,9 +49,7 @@ namespace PFD
             if (e.PropertyName == "TabItems") return;
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
-
-           
-
+            
 
 
         }
@@ -677,6 +652,41 @@ namespace PFD
 
             retVal = XamlReader.Parse(s, context) as DataTemplate;
             return retVal;
+        }
+
+        private void showAllJointsCount_Checked(object sender, RoutedEventArgs e)
+        {            
+            CreateGridAndShowResultsCount();
+        }
+        private void CreateGridAndShowResultsCount()
+        {
+            List<TabItem> tabItems = new List<TabItem>();
+            TabItem tab = new TabItem();
+            tab.Header = "Joint types count";
+            if (tab == null) return;
+            StackPanel sp = new StackPanel();
+            DataGrid dg = new DataGrid();
+            dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
+            foreach (CConnectionDescription cd in vm.JointTypes)
+            {
+                Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
+                results.Add(t);
+            }
+
+            dg.ItemsSource = results;
+            sp.Children.Add(dg);
+            tab.Content = sp;
+
+            tabItems.Add(tab);
+            
+            vm.TabItems = tabItems;
+            vm.SelectedTabIndex = 0;
+        }
+
+        private void showAllJointsCount_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SetDynamicTabs(vm);
         }
     }
 }

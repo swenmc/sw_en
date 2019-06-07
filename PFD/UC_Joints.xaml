@@ -25,6 +25,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Joint Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="0" Grid.Column="1" Name="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=JointTypes}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=JointTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <ToggleButton Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Right" Margin="0 0 10 0" Name="showAllJointsCount" Checked="showAllJointsCount_Checked" Unchecked="showAllJointsCount_Unchecked">Show joints count</ToggleButton>
 
         <TabControl ItemsSource="{Binding Path=TabItems}" SelectedIndex="{Binding Path=SelectedTabIndex}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="TabControlMain">
             
