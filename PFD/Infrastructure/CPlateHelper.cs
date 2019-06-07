@@ -197,11 +197,13 @@ namespace PFD
         }
 
 
-        public static List<CComponentParamsView> DataGridScrewArrangement_ValueChanged(CComponentParamsView item, CPlate plate)
+        public static void DataGridScrewArrangement_ValueChanged(CComponentParamsView item, CPlate plate)
         {
-            List<CComponentParamsView> listScrewArrangementProperties = null;
-            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             
+            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+
             // Set current screw arrangement parameters
             if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
             {
@@ -209,11 +211,13 @@ namespace PFD
                 if (item is CComponentParamsViewString)
                 {
                     CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                    if (string.IsNullOrEmpty(itemStr.Value)) return null;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
 
                     // Circle screws
                     // Changed number of circles
@@ -222,7 +226,7 @@ namespace PFD
                         int numberOfCirclesInGroup = int.Parse(itemStr.Value);
                         arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
 
-                        listScrewArrangementProperties = GetScrewArrangementProperties(arrangementTemp);
+                        //listScrewArrangementProperties = GetScrewArrangementProperties(arrangementTemp);
                         //vm.SetScrewArrangementProperties(arrangementTemp);
                     }
 
@@ -240,10 +244,10 @@ namespace PFD
                     }
 
                     // Corner screws
-                    if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_xS.Name)) arrangementTemp.FPositionOfCornerSequence_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_yS.Name)) arrangementTemp.FPositionOfCornerSequence_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_xS.Name)) arrangementTemp.FPositionOfCornerSequence_x = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PositionOfCornerSequence_yS.Name)) arrangementTemp.FPositionOfCornerSequence_y = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = item_val / fLengthUnitFactor;
                 }
                 else if (item is CComponentParamsViewBool)
                 {
@@ -270,11 +274,13 @@ namespace PFD
                 if (item is CComponentParamsViewString)
                 {
                     CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                    if (string.IsNullOrEmpty(itemStr.Value)) return null;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
 
                     // TODO - Ondrej, TODO No. 105
                     // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
@@ -283,31 +289,31 @@ namespace PFD
 
                     if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3.ToString(); }
                     if (item.Name == "Number of screws in column SQ3") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3.ToString(); }
-                    if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4.ToString(); }
                     if (item.Name == "Number of screws in column SQ4") { int num = 0; int.TryParse(itemStr.Value, out num); if (num > 0) arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = num; else itemStr.Value = arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4.ToString(); }
-                    if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = item_val / fLengthUnitFactor;
                 }
                 else if (item is CComponentParamsViewList)
                 {
@@ -325,11 +331,13 @@ namespace PFD
                 if (item is CComponentParamsViewString)
                 {
                     CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                    if (string.IsNullOrEmpty(itemStr.Value)) return null;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscColumnDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = item_val / fLengthUnitFactor;
 
                     // TODO - Ondrej, TODO No. 105
                     // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
@@ -338,31 +346,31 @@ namespace PFD
 
                     if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ3") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ3 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ3") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ3 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ3") arrangementTemp.fx_c_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ3") arrangementTemp.fy_c_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ3") arrangementTemp.fDistanceOfPointsX_SQ3 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ3") arrangementTemp.fDistanceOfPointsY_SQ3 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ4") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ4 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ4") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ4 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ4") arrangementTemp.fx_c_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ4") arrangementTemp.fy_c_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ4") arrangementTemp.fDistanceOfPointsX_SQ4 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ4") arrangementTemp.fDistanceOfPointsY_SQ4 = item_val / fLengthUnitFactor;
                 }
                 else if (item is CComponentParamsViewList)
                 {
@@ -380,21 +388,23 @@ namespace PFD
                 if (item is CComponentParamsViewString)
                 {
                     CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                    if (string.IsNullOrEmpty(itemStr.Value)) return null;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
                     if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = item_val / fLengthUnitFactor;
 
                     if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
                     if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
-                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = item_val / fLengthUnitFactor;
                 }
                 else if (item is CComponentParamsViewList)
                 {
@@ -409,8 +419,6 @@ namespace PFD
             {
                 // Screw arrangement is not implemented
             }
-
-            return listScrewArrangementProperties;
         }
 
         public static void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
@@ -453,6 +461,220 @@ namespace PFD
             float fAdditionalMargin = 0.02f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
             if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
             else return false;
+        }
+
+
+        public static void DataGridGeometryParams_ValueChanged(CComponentParamsView item, CPlate plate)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+            float fDegToRadianFactor = 180f / MathF.fPI;
+
+            bool bUseRoofSlope = true;
+
+            CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+            if (itemStr == null) return;
+            float item_val = 0;
+            if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
+
+            // Set current basic geometry of plate
+            if (plate is CConCom_Plate_BB_BG)
+            {
+                CConCom_Plate_BB_BG plateTemp = (CConCom_Plate_BB_BG)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.AnchorArrangement as CAnchorArrangement_BB_BG, plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_KE) // Nepouzivat, kym nebude zobecnene screw arrangement
+            {
+                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_XR = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else if (plate is CConCom_Plate_O)
+            {
+                CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_X2 = item_val / fLengthUnitFactor; // Oznacene ako BR ale premenna je bX2
+                if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+
+                if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
+            else
+            {
+                // Plate is not implemented
+            }            
         }
 
         public static List<CComponentParamsView> GetComponentProperties(CPlate plate)

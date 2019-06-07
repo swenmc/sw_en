@@ -135,7 +135,7 @@ namespace BaseClasses
 
             UpdatePlateData_Basic(screwArrangement);
         }
-
+        
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
             fWidth_bx = m_fbX;

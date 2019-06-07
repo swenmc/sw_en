@@ -487,20 +487,22 @@ namespace PFD
 
             foreach (CComponentParamsView cpw in screwArrangementParams)
             {
-                cpw.PropertyChanged += HandleComponentParamsViewPropertyChangedEvent;
+                cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
             }
 
             //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
             return dgSA;
         }
-        private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void HandleScrewArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CComponentParamsView)) return;
             CComponentParamsView item = sender as CComponentParamsView;
             foreach (CConnectionJointTypes joint in list_joints)
             {
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
-                List<CComponentParamsView> screwArrangementParams = CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+                CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
+                List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+                
                 if (screwArrangementParams != null)
                 {
                     ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
@@ -509,7 +511,7 @@ namespace PFD
                     dgSA.ItemsSource = screwArrangementParams;
                     foreach (CComponentParamsView cpw in screwArrangementParams)
                     {
-                        cpw.PropertyChanged += HandleComponentParamsViewPropertyChangedEvent;
+                        cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
                     }
                 }
             }
@@ -559,7 +561,37 @@ namespace PFD
             tc4.IsReadOnly = true;
             tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dg.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in geometryParams)
+            {
+                cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+            }
+
             return dg;
+        }
+
+        private void HandleGeometryComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+            foreach (CConnectionJointTypes joint in list_joints)
+            {
+                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+                CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
+
+                ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+                StackPanel sp = sw.Content as StackPanel;
+                DataGrid dgGeometry = sp.Children[3] as DataGrid;
+                DataGrid dgDetails = sp.Children[5] as DataGrid;
+                List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
+                foreach (CComponentParamsView cpw in geometryParams)
+                {
+                    cpw.PropertyChanged += HandleGeometryComponentParamsViewPropertyChangedEvent;
+                }
+                dgGeometry.ItemsSource = geometryParams;
+                dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
+            }
+            HandleJointsPropertyChangedEvent(sender, e);
         }
 
         private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
