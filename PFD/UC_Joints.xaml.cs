@@ -375,9 +375,16 @@ namespace PFD
                     {
                         TabItem ti = new TabItem();
                         ti.Header = plate.Name;
-                        
+
+                        ScrollViewer sw = new ScrollViewer();
+                        sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        //sw.Width = 600;
                         StackPanel sp = new StackPanel();
-                        
+                        sp.Width = 580;
+                        sp.VerticalAlignment = VerticalAlignment.Top;
+                        sp.HorizontalAlignment = HorizontalAlignment.Left;
+
                         //Grid grid = new Grid();
                         //RowDefinition row = new RowDefinition();                        
                         //row.Height = new GridLength(40);
@@ -402,7 +409,7 @@ namespace PFD
                         //row = new RowDefinition();
                         //row.Height = new GridLength(1.0, GridUnitType.Star);
                         //grid.RowDefinitions.Add(row);
-                        
+
 
                         if (plate.ScrewArrangement != null)
                         {                            
@@ -425,8 +432,10 @@ namespace PFD
 
                         List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
                         sp.Children.Add(GetDatagridForDetails(details));
-                        
-                        ti.Content = sp;
+
+                        sw.Content = sp;
+
+                        ti.Content = sw;
                         tabItems.Add(ti);
                     }
                 }                
@@ -494,8 +503,8 @@ namespace PFD
                 List<CComponentParamsView> screwArrangementParams = CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
                 if (screwArrangementParams != null)
                 {
-                    
-                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                    ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+                    StackPanel sp = sw.Content as StackPanel;
                     DataGrid dgSA = sp.Children[1] as DataGrid;
                     dgSA.ItemsSource = screwArrangementParams;
                     foreach (CComponentParamsView cpw in screwArrangementParams)
@@ -661,12 +670,17 @@ namespace PFD
         private void CreateGridAndShowResultsCount()
         {
             List<TabItem> tabItems = new List<TabItem>();
+            
             TabItem tab = new TabItem();
             tab.Header = "Joint types count";
             if (tab == null) return;
+            ScrollViewer sw = new ScrollViewer();
+            sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             StackPanel sp = new StackPanel();
             DataGrid dg = new DataGrid();
             dg.HeadersVisibility = DataGridHeadersVisibility.None;
+            dg.MinWidth = 500;
             List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
             foreach (CConnectionDescription cd in vm.JointTypes)
             {
@@ -676,7 +690,8 @@ namespace PFD
 
             dg.ItemsSource = results;
             sp.Children.Add(dg);
-            tab.Content = sp;
+            sw.Content = sp;
+            tab.Content = sw;
 
             tabItems.Add(tab);
             
