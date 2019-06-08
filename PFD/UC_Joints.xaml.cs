@@ -19,7 +19,7 @@ namespace PFD
     /// Interaction logic for UC_MemberDesign.xaml
     /// </summary>
     public partial class UC_Joints : UserControl
-    {        
+    {
         CModel_PFD Model;
         CJointsVM vm;
         Dictionary<int, List<CConnectionJointTypes>> jointsDict;
@@ -28,9 +28,9 @@ namespace PFD
         public UC_Joints(CModel_PFD model)
         {
             InitializeComponent();
-                        
+
             Model = model;
-            
+
             vm = new CJointsVM();
             vm.PropertyChanged += HandleJointsPropertyChangedEvent;
             this.DataContext = vm;
@@ -38,8 +38,9 @@ namespace PFD
             ArrangeConnectionJoints();
 
             vm.JointTypeIndex = 0;
+            //DebugJoints();
         }
-        
+
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -49,9 +50,20 @@ namespace PFD
             if (e.PropertyName == "TabItems") return;
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
-            
 
 
+
+        }
+
+        private void DebugJoints()
+        {
+            int count = 0;
+            foreach (CConnectionJointTypes joint in Model.m_arrConnectionJoints)
+            {
+                count++;
+                if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
+                else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
+            }
         }
 
         private void ArrangeConnectionJoints()
@@ -69,6 +81,15 @@ namespace PFD
             List<CConnectionJointTypes> items = Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
             List<CConnectionJointTypes> resItems = new List<CConnectionJointTypes>();
 
+            System.Diagnostics.Trace.WriteLine($"{con.ID}. {con.Name} {con.JoinType}");
+            int count = 0;
+            foreach (CConnectionJointTypes joint in items)
+            {
+                count++;
+                if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
+                else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
+            }
+
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
@@ -83,10 +104,9 @@ namespace PFD
                         break;
                     //2   Knee - main rafter to column
                     case 2:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainRafter &&
-                            joint.m_SecondaryMembers != null && 
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainColumn ||
-                                joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                        if (( joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn ||
+                            joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn) &&
+                            joint.m_SecondaryMembers != null && joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainRafter
                             )
                             resItems.Add(joint);
                         break;
@@ -105,9 +125,9 @@ namespace PFD
                         break;
                     //5   Knee - edge rafter to column
                     case 5:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
-                            joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                        if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn ||
+                            joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn) &&
+                            joint.m_SecondaryMembers != null && joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeRafter
                             )
                             resItems.Add(joint);
                         break;
@@ -121,17 +141,17 @@ namespace PFD
                         break;
                     //7   Purlin to main rafter
                     case 7:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Purlin &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainRafter)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                             )
                             resItems.Add(joint);
                         break;
                     //8   Purlin to edge rafter
                     case 8:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Purlin &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Purlin)
                             )
                             resItems.Add(joint);
                         break;
@@ -153,68 +173,98 @@ namespace PFD
                         break;
                     //11  Edge purlin to main rafter
                     case 11:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainRafter)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                             )
                             resItems.Add(joint);
                         break;
                     //12  Edge purlin to edge rafter
                     case 12:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeRafter)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                             )
                             resItems.Add(joint);
                         break;
                     //13  Girt to main column
                     case 13:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
                             )
                             resItems.Add(joint);
                         break;
                     //14  Girt to edge column
                     case 14:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
                             )
                             resItems.Add(joint);
                         break;
                     //15  Base - wind post - front
                     case 15:
-
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                            resItems.Add(joint);
                         break;
                     //16  Base - wind post - back
                     case 16:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                            resItems.Add(joint);
                         break;
                     //17  Wind post to edge rafter - front
                     case 17:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                            )
+                            resItems.Add(joint);
                         break;
                     //18  Wind post to edge rafter - back
                     case 18:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                            )
+                            resItems.Add(joint);
                         break;
                     //19  Girt to edge column -front
                     case 19:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
                             )
                             resItems.Add(joint);
                         break;
                     //20  Girt to edge column -back
                     case 20:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                            )
+                            resItems.Add(joint);                        
                         break;
                     //21  Girt to wind post -front
                     case 21:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
+                            )
+                            resItems.Add(joint);
                         break;
                     //22  Girt to wind post -back
                     case 22:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.ColumnBackSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                            )
+                            resItems.Add(joint);                        
                         break;
                     //23  Base - door trimmer
                     case 23:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
+                            resItems.Add(joint);
                         break;
                     //24  Door trimmer to girt
                     case 24:
@@ -250,6 +300,8 @@ namespace PFD
                         break;
                     //28  Base - door frame
                     case 28:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            resItems.Add(joint);
                         break;
                     //29  Door frame to girt
                     case 29:
