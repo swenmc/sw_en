@@ -51,8 +51,8 @@ namespace PFD
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
-
-
+            
+            
         }
 
         private void DebugJoints()
@@ -568,7 +568,8 @@ namespace PFD
                 }
             }
 
-            HandleJointsPropertyChangedEvent(sender, e);            
+            vm.ChangedScrewArrangementParameter = item;
+            //HandleJointsPropertyChangedEvent(sender, e);            
         }
 
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
@@ -643,7 +644,8 @@ namespace PFD
                 dgGeometry.ItemsSource = geometryParams;
                 dgDetails.ItemsSource = CPlateHelper.GetComponentDetails(plate);
             }
-            HandleJointsPropertyChangedEvent(sender, e);
+            vm.ChangedGeometryParameter = item;
+            //HandleJointsPropertyChangedEvent(sender, e);
         }
 
         private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)

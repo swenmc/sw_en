@@ -143,7 +143,7 @@ namespace PFD
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
-
+        private bool MRecreateJoints;
         // Popis pre Ondreja - doors and windows
         // GUI
 
@@ -1674,6 +1674,33 @@ namespace PFD
             }
         }
 
+        public CJointsVM JointsVM
+        {
+            get
+            {
+                return _jointsVM;
+            }
+
+            set
+            {
+                _jointsVM = value;
+                _jointsVM.PropertyChanged += _jointsVM_PropertyChanged;
+            }
+        }
+
+        public bool RecreateJoints
+        {
+            get
+            {
+                return MRecreateJoints;
+            }
+
+            set
+            {
+                MRecreateJoints = value;
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -1838,14 +1865,16 @@ namespace PFD
 
         private CComponentListVM _componentVM;
         private CProjectInfoVM _projectInfoVM;
+        private CJointsVM _jointsVM;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
+            CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
-            IsSetFromCode = true;
+            IsSetFromCode = true;            
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
 
@@ -1856,7 +1885,7 @@ namespace PFD
 
             _loadInput = loadInput;
             _loadInput.PropertyChanged += _loadInput_PropertyChanged;
-
+            
             _projectInfoVM = projectInfoVM;
 
             LightDirectional = false;
@@ -1914,13 +1943,26 @@ namespace PFD
             ModelIndex = modelIndex;
 
             MModelCalculatedResultsValid = false;
+            MRecreateJoints = true;
 
             IsSetFromCode = false;
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
         }
-        
+
+        private void _jointsVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            CJointsVM vm = sender as CJointsVM;
+            if (vm.IsSetFromCode) return;
+            if (e.PropertyName == "TabItems") return;
+            if (e.PropertyName == "JointTypeIndex") return;
+            if (e.PropertyName == "JointTypes") return;
+            if (e.PropertyName == "SelectedTabIndex") return;
+
+            if (PropertyChanged != null) PropertyChanged(sender, e);
+        }
+
         private void _loadInput_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             CPFDLoadInput vm = sender as CPFDLoadInput;

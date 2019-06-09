@@ -124,9 +124,17 @@ namespace PFD
 
             UpdateAll();
 
-            vm.Model.GroupModelMembers();            
-        }
+            vm.Model.GroupModelMembers();
+            vm.RecreateJoints = false;
 
+            if (Joint_Input.Content == null)
+            {
+                UC_Joints uc_joints = new UC_Joints(vm.Model);
+                Joint_Input.Content = uc_joints;
+                vm.JointsVM = uc_joints.DataContext as CJointsVM;                
+            }
+        }
+        
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -174,6 +182,11 @@ namespace PFD
             {
                 //CPFDLoadInput vm = sender as CPFDLoadInput;
                 //if (e.PropertyName != "ModelCalculatedResultsValid") return;  //osetrene uz v CPFDViewModel                
+            }
+            else if (sender is CJointsVM)
+            {
+                CJointsVM vm = sender as CJointsVM;
+                
             }
             else if (sender is CComponentInfo)
             {
@@ -714,6 +727,12 @@ namespace PFD
             ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
 
+            List<CConnectionJointTypes> joints = null;
+            if (!vm.RecreateJoints)
+            {
+                joints = vm.Model.m_arrConnectionJoints;
+            }
+
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
                 sGeometryInputData,
@@ -730,7 +749,8 @@ namespace PFD
                 vm.BackFrameRakeAngle,
                 DoorBlocksProperties,
                 WindowBlocksProperties,
-                compList);
+                compList,
+                joints);
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                 vm.GenerateSurfaceLoads ||

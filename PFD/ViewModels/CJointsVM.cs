@@ -19,14 +19,16 @@ namespace PFD
         private List<CConnectionDescription> m_JointTypes;
 
         private List<TabItem> m_TabItems;
-
-
+        
         private int m_SelectedTabIndex;
+
+        private CComponentParamsView m_ChangedScrewArrangementParameter;
+        private CComponentParamsView m_ChangedGeometryParameter;
         public bool IsSetFromCode = false;
 
-        private List<CComponentParamsView> m_ScrewArrangementParameters;
-        private List<CComponentParamsView> m_ComponentGeometry;
-        private List<CComponentParamsView> m_ComponentDetails;
+        //private List<CComponentParamsView> m_ScrewArrangementParameters;
+        //private List<CComponentParamsView> m_ComponentGeometry;
+        //private List<CComponentParamsView> m_ComponentDetails;
 
         //-------------------------------------------------------------------------------------------------------------
         public int JointTypeIndex
@@ -86,44 +88,72 @@ namespace PFD
             }
         }
 
-        public List<CComponentParamsView> ScrewArrangementParameters
+        public CComponentParamsView ChangedScrewArrangementParameter
         {
             get
             {
-                return m_ScrewArrangementParameters;
+                return m_ChangedScrewArrangementParameter;
             }
 
             set
             {
-                m_ScrewArrangementParameters = value;
+                m_ChangedScrewArrangementParameter = value;
+                NotifyPropertyChanged("ChangedScrewArrangementParameter");
             }
         }
 
-        public List<CComponentParamsView> ComponentGeometry
+        public CComponentParamsView ChangedGeometryParameter
         {
             get
             {
-                return m_ComponentGeometry;
+                return m_ChangedGeometryParameter;
             }
 
             set
             {
-                m_ComponentGeometry = value;
+                m_ChangedGeometryParameter = value;
+                NotifyPropertyChanged("ChangedGeometryParameter");
             }
         }
 
-        public List<CComponentParamsView> ComponentDetails
-        {
-            get
-            {
-                return m_ComponentDetails;
-            }
+        //public List<CComponentParamsView> ScrewArrangementParameters
+        //{
+        //    get
+        //    {
+        //        return m_ScrewArrangementParameters;
+        //    }
 
-            set
-            {
-                m_ComponentDetails = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_ScrewArrangementParameters = value;
+        //    }
+        //}
+
+        //public List<CComponentParamsView> ComponentGeometry
+        //{
+        //    get
+        //    {
+        //        return m_ComponentGeometry;
+        //    }
+
+        //    set
+        //    {
+        //        m_ComponentGeometry = value;
+        //    }
+        //}
+
+        //public List<CComponentParamsView> ComponentDetails
+        //{
+        //    get
+        //    {
+        //        return m_ComponentDetails;
+        //    }
+
+        //    set
+        //    {
+        //        m_ComponentDetails = value;
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
