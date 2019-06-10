@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace BaseClasses
 {
@@ -38,6 +39,7 @@ namespace BaseClasses
             FTime = fTime;
         }
 
+        [JsonConstructor]
         public CIntermediateTransverseSupport(int id, EITSType etype, float fx_rel, float fx_abs, int fTime = 0)
         {
             ID = id;
