@@ -28,6 +28,8 @@ namespace BaseClasses
             }
         }
 
+        public CAnchorArrangement_BB_BG() { }
+
         public CAnchorArrangement_BB_BG(CAnchor referenceAnchor_temp)
         {
             IHolesNumber = 2; // 2 Otvory

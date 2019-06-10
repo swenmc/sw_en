@@ -49,6 +49,7 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bDisplayGlobalAxis = true;
 
             vm.JointTypeIndex = 0;
         }
@@ -494,7 +495,7 @@ namespace PFD
                     }
                 }
 
-                displayJoint(sDisplayOptions, joint);
+                displayJoint(sDisplayOptions, joint.Clone());
             }
 
             vm.TabItems = tabItems;
@@ -819,7 +820,7 @@ namespace PFD
 
             if (joint.m_MainMember != null)
             {
-                CMember m = joint.m_MainMember.Clone();
+                CMember m = joint.m_MainMember;//.Clone();
 
                 // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
 
@@ -851,7 +852,7 @@ namespace PFD
             {
                 for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
                 {
-                    CMember m = joint.m_SecondaryMembers[i].Clone();
+                    CMember m = joint.m_SecondaryMembers[i];//.Clone();
 
                     // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
 

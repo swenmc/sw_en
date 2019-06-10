@@ -47,7 +47,7 @@ namespace BaseClasses
 
         [NonSerialized]
         public GeometryModel3D Visual_Plate;
-        [NonSerialized]
+        //[NonSerialized]
         public CAnchorArrangement AnchorArrangement;
         public CScrewArrangement ScrewArrangement;
 

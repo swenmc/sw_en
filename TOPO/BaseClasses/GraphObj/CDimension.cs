@@ -39,7 +39,7 @@ namespace BaseClasses.GraphObj
                 m_DisplayedText = value;
             }
         }
-
+        public CDimension() { }
         public CDimension(Point refPoint) : this(refPoint, "") { }
 
         public CDimension(Point refPoint, string text)

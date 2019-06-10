@@ -100,7 +100,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-
+        public CDimensionLinear() { }
         public CDimensionLinear(Point pRef, Point pStart, Point pEnd) : this(pRef, pStart, pEnd, true, true)
         {}
 
