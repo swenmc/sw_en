@@ -791,34 +791,34 @@ namespace PFD
 
             // Pruty treba naklonovat a upravit im dlzku
             // Dlzku prutov treba urcit podla maximalneho rozmeru plechov (, aby neboli pruty prilis dlhe
-          float fMemberLength = 0;
+            float fMemberLength = 0;
 
-          for (int i = 0; i < joint.m_arrPlates.Length; i++)
-          {
-              fMemberLength = Math.Max(joint.m_arrPlates[i].fWidth_bx, joint.m_arrPlates[i].fHeight_hy);
-          }
+            for (int i = 0; i < joint.m_arrPlates.Length; i++)
+            {
+                fMemberLength = Math.Max(joint.m_arrPlates[i].fWidth_bx, joint.m_arrPlates[i].fHeight_hy);
+            }
 
-          float fLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
 
-          fMemberLength *= fLengthFactor;
+            fMemberLength *= fLengthFactor;
 
-          CModel jointModel = new CModel();
+            CModel jointModel = new CModel();
 
-          jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
+            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
 
-          int iNumberMainMembers = 0;
-          int iNumberSecondaryMembers = 0;
+            int iNumberMainMembers = 0;
+            int iNumberSecondaryMembers = 0;
 
-          if (joint.m_MainMember != null)
-              iNumberMainMembers = 1;
+            if (joint.m_MainMember != null)
+                iNumberMainMembers = 1;
 
-          if (joint.m_SecondaryMembers != null)
-              iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
+            if (joint.m_SecondaryMembers != null)
+                iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
 
-          jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
+            jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
 
-          if (joint.m_MainMember != null)
-          {
+            if (joint.m_MainMember != null)
+            {
                 CMember m = joint.m_MainMember.Clone();
 
                 // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
@@ -845,10 +845,10 @@ namespace PFD
                 jointModel.m_arrMembers[0] = m;
 
                 //TODO - este potrebujem vyriesit ze plech a pruty v spoji su nejako transformovane.
-          }
+            }
 
-          if (joint.m_SecondaryMembers != null)
-          {
+            if (joint.m_SecondaryMembers != null)
+            {
                 for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
                 {
                     CMember m = joint.m_SecondaryMembers[i].Clone();
@@ -880,23 +880,23 @@ namespace PFD
                 }
             }
 
-          List<CNode> nodeList = new List<CNode>();
+            List<CNode> nodeList = new List<CNode>();
 
-          for(int i = 0; i < jointModel.m_arrMembers.Length; i++)
-          {
+            for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
+            {
                 // TODO - dopracovat, pridavat len uzly ktore este neboli pridane
-                nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
-                nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
-          }
+                if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
+                if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
+            }
 
-          //jointModel.m_arrNodes = new CNode[nodeList.Count];
-          jointModel.m_arrNodes = nodeList.ToArray();
+            //jointModel.m_arrNodes = new CNode[nodeList.Count];
+            jointModel.m_arrNodes = nodeList.ToArray();
 
-          Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
+            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
 
-          // Display model in 3D preview frame
-          FrameJointPreview3D.Content = page1;
-          FrameJointPreview3D.UpdateLayout();
+            // Display model in 3D preview frame
+            FrameJointPreview3D.Content = page1;
+            FrameJointPreview3D.UpdateLayout();
         }
     }
 }
