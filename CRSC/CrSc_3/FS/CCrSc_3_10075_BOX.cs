@@ -37,6 +37,7 @@ namespace CRSC
             get { return m_fd; }
             set { m_fd = value; }
         }
+        public CCrSc_3_10075_BOX() { }
 
         public CCrSc_3_10075_BOX(float fh, float fb, float ft) : this(0, fh, fb, ft, Colors.Red) { }
         public CCrSc_3_10075_BOX(int iID_temp, float fh, float fb, float ft, Color color_temp)
