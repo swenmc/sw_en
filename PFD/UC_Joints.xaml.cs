@@ -817,13 +817,19 @@ namespace PFD
 
           if (joint.m_MainMember != null)
           {
-              jointModel.m_arrMembers[0] = joint.m_MainMember;
+                CMember m = new CMember();
+                m = joint.m_MainMember; //m = joint.m_MainMember.Clone(); // TODO - Ondrej
+                jointModel.m_arrMembers[0] = m;
           }
 
           if (joint.m_SecondaryMembers != null)
           {
-              for(int i = 0; i< joint.m_SecondaryMembers.Length; i++)
-                  jointModel.m_arrMembers[1+i] = joint.m_SecondaryMembers[i];
+                for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                {
+                    CMember m = new CMember();
+                    m = joint.m_SecondaryMembers[i]; //m = joint.m_SecondaryMembers[i].Clone(); // Ondrej
+                    jointModel.m_arrMembers[1 + i] = m;
+                }
           }
 
           List<CNode> nodeList = new List<CNode>();
