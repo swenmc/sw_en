@@ -819,7 +819,31 @@ namespace PFD
           {
                 CMember m = new CMember();
                 m = joint.m_MainMember; //m = joint.m_MainMember.Clone(); // TODO - Ondrej
+
+                // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
+
+                // Zistit, ktory uzol pruta je uzol spoja
+                CNode nodeJoint = joint.m_Node; // Joint Node
+                CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+
+                if (joint.m_Node == m.NodeStart)
+                    nodeOtherEnd = m.NodeEnd;
+                else
+                    nodeOtherEnd = m.NodeStart;
+
+                float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                nodeOtherEnd.X = nodeJoint.X + fX;
+                nodeOtherEnd.Y = nodeJoint.Y + fY;
+                nodeOtherEnd.Z = nodeJoint.Z + fZ;
+
+                m.Fill_Basic();
+
                 jointModel.m_arrMembers[0] = m;
+
+                //TODO - este potrebujem vyriesit ze plech a pruty v spoji su nejako transformovane.
           }
 
           if (joint.m_SecondaryMembers != null)
@@ -828,9 +852,33 @@ namespace PFD
                 {
                     CMember m = new CMember();
                     m = joint.m_SecondaryMembers[i]; //m = joint.m_SecondaryMembers[i].Clone(); // Ondrej
+
+                    // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
+
+                    // Zistit, ktory uzol pruta je uzol spoja
+                    CNode nodeJoint = joint.m_Node; // Joint Node
+                    CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+
+                    if (joint.m_Node == m.NodeStart)
+                        nodeOtherEnd = m.NodeEnd;
+                    else
+                        nodeOtherEnd = m.NodeStart;
+
+                    float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    nodeOtherEnd.X = nodeJoint.X + fX;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ;
+
+                    m.Fill_Basic();
+
                     jointModel.m_arrMembers[1 + i] = m;
+
+                    //TODO - este potrebujem vyriesit ze plech a pruty v spoji su nejako transformovane.
                 }
-          }
+            }
 
           List<CNode> nodeList = new List<CNode>();
 
