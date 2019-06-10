@@ -34,6 +34,7 @@ namespace CRSC
             set { m_fc_lip = value; }
         }
 
+        public CCrSc_3_I_LIPS() { }
         public CCrSc_3_I_LIPS(int iID_temp, float fh, float fb, float fc_lip, float ft, Color color_temp)
         {
             ID = iID_temp;

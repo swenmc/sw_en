@@ -53,6 +53,7 @@ namespace CRSC
             set { m_fd = value; }
         }
 
+        public CCrSc_3_63020_BOX() { }
         public CCrSc_3_63020_BOX(float fh, float fb, float ft, int iNumberOfStiffeners) 
             : this(0, fh, fb, ft, iNumberOfStiffeners, Colors.Chocolate) { }
         public CCrSc_3_63020_BOX(int iID_temp, float fh, float fb, float ft, int iNumberOfStiffeners, Color color_temp)

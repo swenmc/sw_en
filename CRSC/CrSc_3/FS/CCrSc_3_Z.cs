@@ -40,6 +40,7 @@ namespace CRSC
             set { m_fb_flange = value; }
         }
 
+        public CCrSc_3_Z() { }
         public CCrSc_3_Z(int iID_temp, float fh, float fb_flange_temp, float fc_lip, float ft, Color color_temp)
         {
             ID = iID_temp;
