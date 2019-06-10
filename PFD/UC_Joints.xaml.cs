@@ -20,6 +20,7 @@ namespace PFD
     /// </summary>
     public partial class UC_Joints : UserControl
     {
+        DisplayOptions sDisplayOptions;
         CModel_PFD Model;
         CJointsVM vm;
         Dictionary<int, List<CConnectionJointTypes>> jointsDict;
@@ -40,17 +41,16 @@ namespace PFD
             vm.JointTypeIndex = 0;
             //DebugJoints();
 
-            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;
             sDisplayOptions.bUseEmissiveMaterial = true;
             sDisplayOptions.bColorsAccordingToMembers = true;
+            sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseLightAmbient = true;
-
-            displayJoint(sDisplayOptions);
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -80,7 +80,6 @@ namespace PFD
             {
                 jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
             }
-
         }
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
         {
@@ -443,7 +442,7 @@ namespace PFD
                         sp.HorizontalAlignment = HorizontalAlignment.Left;
 
                         //Grid grid = new Grid();
-                        //RowDefinition row = new RowDefinition();                        
+                        //RowDefinition row = new RowDefinition();
                         //row.Height = new GridLength(40);
                         //grid.RowDefinitions.Add(row);
 
@@ -496,6 +495,8 @@ namespace PFD
                         tabItems.Add(ti);
                     }
                 }
+
+                displayJoint(sDisplayOptions, joint);
             }
 
             vm.TabItems = tabItems;
@@ -785,9 +786,53 @@ namespace PFD
         {
             SetDynamicTabs(vm);
         }
-        private void displayJoint(DisplayOptions sDisplayOptions)
+        private void displayJoint(DisplayOptions sDisplayOptions, CConnectionJointTypes joint)
         {
-          Page3Dmodel page1 = new Page3Dmodel(Model, sDisplayOptions, null);
+          // TO Ondrej - tuto funkciu treba trosku ucesat
+          // Mala by za zavolat hned pri zobrazeni tabu
+
+          // Pruty treba naklonovat a upravit im dlzku
+          // Dlzku prutov treba urcit podla rozmeru plechov
+
+          CModel jointModel = new CModel();
+
+          jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
+
+          int iNumberMainMembers = 0;
+          int iNumberSecondaryMembers = 0;
+
+          if (joint.m_MainMember != null)
+              iNumberMainMembers = 1;
+
+          if (joint.m_SecondaryMembers != null)
+              iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
+
+          jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
+
+          if (joint.m_MainMember != null)
+          {
+              jointModel.m_arrMembers[0] = joint.m_MainMember;
+          }
+
+          if (joint.m_SecondaryMembers != null)
+          {
+              for(int i = 0; i< joint.m_SecondaryMembers.Length; i++)
+                  jointModel.m_arrMembers[1+i] = joint.m_SecondaryMembers[i];
+          }
+
+          List<CNode> nodeList = new List<CNode>();
+
+          for(int i = 0; i < jointModel.m_arrMembers.Length; i++)
+          {
+                // TODO - dopracovat, pridavat len uzly ktore este neboli pridane
+                nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
+                nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
+          }
+
+          //jointModel.m_arrNodes = new CNode[nodeList.Count];
+          jointModel.m_arrNodes = nodeList.ToArray();
+
+          Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
 
           // Display model in 3D preview frame
           FrameJointPreview3D.Content = page1;
