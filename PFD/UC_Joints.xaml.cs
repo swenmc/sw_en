@@ -864,9 +864,9 @@ namespace PFD
                     float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
 
-                    nodeOtherEnd.X = nodeJoint.X + fX;
-                    nodeOtherEnd.Y = nodeJoint.Y + fY;
-                    nodeOtherEnd.Z = nodeJoint.Z + fZ;
+                    nodeOtherEnd.X = nodeJoint.X + fX * fMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMemberLength;
 
                     m.Fill_Basic();
 
