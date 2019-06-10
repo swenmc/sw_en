@@ -788,11 +788,17 @@ namespace PFD
         }
         private void displayJoint(DisplayOptions sDisplayOptions, CConnectionJointTypes joint)
         {
-          // TO Ondrej - tuto funkciu treba trosku ucesat
-          // Mala by za zavolat hned pri zobrazeni tabu
+            // TO Ondrej - tuto funkciu treba trosku ucesat
+            // Mala by za zavolat hned pri zobrazeni tabu
 
-          // Pruty treba naklonovat a upravit im dlzku
-          // Dlzku prutov treba urcit podla rozmeru plechov
+            // Pruty treba naklonovat a upravit im dlzku
+            // Dlzku prutov treba urcit podla maximalneho rozmeru plechov (, aby neboli pruty prilis dlhe
+          float fMemberLength = 0;
+
+          for (int i = 0; i < joint.m_arrPlates.Length; i++)
+          {
+              fMemberLength = Math.Max(joint.m_arrPlates[i].fWidth_bx, joint.m_arrPlates[i].fHeight_hy);
+          }
 
           CModel jointModel = new CModel();
 
