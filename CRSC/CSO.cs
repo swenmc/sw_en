@@ -6,7 +6,7 @@ namespace CRSC
 {
     // THIN-WALLED OPENED CROSS-SECTION PROPERTIES CALCULATION
     // Opened cross section characteristic calculation (closed cell are not allowed)
-
+    [Serializable]
     public class CSO : CCrSc_TW
     {
         // CONSTRUCTOR

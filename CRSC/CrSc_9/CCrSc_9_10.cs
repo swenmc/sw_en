@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace CRSC
 {
+    [Serializable]
     public class CCrSc_9_10 : CCrSc_0_05
     {
       // Solid rectangle

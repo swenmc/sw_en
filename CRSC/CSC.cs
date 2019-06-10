@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace CRSC
 {
     // THIN-WALLED CLOSED CROSS-SECTION PROPERTIES CALCULATION
-
+    [Serializable]
     public class CSC : CSO
     {
         private double _A_t;

@@ -37,8 +37,6 @@ namespace PFD
             this.DataContext = vm;
 
             ArrangeConnectionJoints();
-
-            vm.JointTypeIndex = 0;
             //DebugJoints();
 
             sDisplayOptions = new DisplayOptions();
@@ -51,6 +49,8 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseLightAmbient = true;
+
+            vm.JointTypeIndex = 0;
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -817,8 +817,7 @@ namespace PFD
 
           if (joint.m_MainMember != null)
           {
-                CMember m = new CMember();
-                m = joint.m_MainMember; //m = joint.m_MainMember.Clone(); // TODO - Ondrej
+                CMember m = joint.m_MainMember.Clone();
 
                 // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
 
@@ -850,8 +849,7 @@ namespace PFD
           {
                 for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
                 {
-                    CMember m = new CMember();
-                    m = joint.m_SecondaryMembers[i]; //m = joint.m_SecondaryMembers[i].Clone(); // Ondrej
+                    CMember m = joint.m_SecondaryMembers[i].Clone();
 
                     // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
 

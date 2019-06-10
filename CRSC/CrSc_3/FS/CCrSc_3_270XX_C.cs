@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using DATABASE;
 using DATABASE.DTO;
+using Newtonsoft.Json;
 
 namespace CRSC
 {
@@ -52,6 +53,8 @@ namespace CRSC
         }
 
         public CCrSc_3_270XX_C(float fh, float fb, float ft) : this(0, fh, fb, ft, Colors.Red) { }
+
+        [JsonConstructor]
         public CCrSc_3_270XX_C(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
             ID = iID_temp;

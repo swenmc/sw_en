@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,19 @@ namespace BaseClasses
 {
     public static class ExtensionMethods
     {
+        public static T Clone<T>(this T source)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+            
+            var serialized = JsonConvert.SerializeObject(source, settings);
+            return JsonConvert.DeserializeObject<T>(serialized, settings);
+        }
+
         public static string GetFriendlyName(this ELCType lcType)
         {
             switch (lcType)

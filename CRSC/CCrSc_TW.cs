@@ -9,7 +9,7 @@ using DATABASE.DTO;
 namespace CRSC
 {
     // THIN-WALLED CROSS-SECTION PROPERTIES CALCULATION
-
+    [Serializable]
     public abstract class CCrSc_TW : CCrSc
     {
         #region variables
@@ -382,7 +382,7 @@ namespace CRSC
         {
             this.DatabaseID = dto.DatabaseID;
             this.Name_short = dto.sectionName_short;
-            this.CSColor = (Color)ColorConverter.ConvertFromString(dto.colorName);
+            if(dto.colorName != null) this.CSColor = (Color)ColorConverter.ConvertFromString(dto.colorName);
             this.h = dto.h;
             this.b = dto.b;
 

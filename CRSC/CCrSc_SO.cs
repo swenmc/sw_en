@@ -3,7 +3,7 @@
 namespace CRSC
 {
     // SOLID / MASSIVE CROSS-SECTION PROPERTIES CALCULATION
-
+    [Serializable]
     public class CCrSc_SO : CCrSc
     {
         public CCrSc_SO() { }
