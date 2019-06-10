@@ -39,6 +39,18 @@ namespace PFD
 
             vm.JointTypeIndex = 0;
             //DebugJoints();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bColorsAccordingToMembers = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bUseLightAmbient = true;
+
+            displayJoint(sDisplayOptions);
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -50,11 +62,7 @@ namespace PFD
             if (e.PropertyName == "TabItems") return;
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
-
-            
-            
         }
-
         private void DebugJoints()
         {
             int count = 0;
@@ -65,7 +73,6 @@ namespace PFD
                 else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
             }
         }
-
         private void ArrangeConnectionJoints()
         {
             jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
@@ -73,9 +80,8 @@ namespace PFD
             {
                 jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
             }
-            
-        }
 
+        }
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
         {
             List<CConnectionJointTypes> items = Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
@@ -104,7 +110,7 @@ namespace PFD
                         break;
                     //2   Knee - main rafter to column
                     case 2:
-                        if (( joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn ||
+                        if ((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn ||
                             joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn) &&
                             joint.m_SecondaryMembers != null && joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.MainRafter
                             )
@@ -243,7 +249,7 @@ namespace PFD
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
                             )
-                            resItems.Add(joint);                        
+                            resItems.Add(joint);
                         break;
                     //21  Girt to wind post -front
                     case 21:
@@ -259,7 +265,7 @@ namespace PFD
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
                             )
-                            resItems.Add(joint);                        
+                            resItems.Add(joint);
                         break;
                     //23  Base - door trimmer
                     case 23:
@@ -389,7 +395,7 @@ namespace PFD
                 case "T002": return typeof(CConnectionJoint_T002);
                 case "T003": return typeof(CConnectionJoint_T003);
                 case "TA01": return typeof(CConnectionJoint_TA01);
-                case "TB01": return typeof(CConnectionJoint_TB01);                
+                case "TB01": return typeof(CConnectionJoint_TB01);
                 default:
 
                     //temp it should throw exceoton if there is not recognized joint type
@@ -397,7 +403,6 @@ namespace PFD
                     //throw new Exception($"Type of connection joint [{strType}] not recognized. (Method GetTypeFor)");
             }
         }
-
         private void SetDynamicTabs(CJointsVM vm)
         {
             if (jointsDict == null) ArrangeConnectionJoints();
@@ -410,7 +415,7 @@ namespace PFD
 
             if (joint == null)
             {
-                TabItem t1 = new TabItem();                
+                TabItem t1 = new TabItem();
                 t1.Header = "Results";
                 StackPanel sp = new StackPanel();
                 Label l = new Label();
@@ -422,7 +427,7 @@ namespace PFD
             else
             {
                 if (joint.m_arrPlates != null)
-                {                    
+                {
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         TabItem ti = new TabItem();
@@ -464,7 +469,7 @@ namespace PFD
 
 
                         if (plate.ScrewArrangement != null)
-                        {                            
+                        {
                             List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
                             Label lSA = new Label() { Content = "Screw Arrangement: " };
                             //lSA.SetValue(Grid.RowProperty, 0);
@@ -490,18 +495,17 @@ namespace PFD
                         ti.Content = sw;
                         tabItems.Add(ti);
                     }
-                }                
+                }
             }
-                        
+
             vm.TabItems = tabItems;
             vm.SelectedTabIndex = 0;
         }
-
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
-        {   
-            DataGrid dgSA = new DataGrid();            
+        {
+            DataGrid dgSA = new DataGrid();
             //dgSA.SetValue(Grid.RowProperty, 1);
-            dgSA.ItemsSource = screwArrangementParams;            
+            dgSA.ItemsSource = screwArrangementParams;
             dgSA.HorizontalAlignment = HorizontalAlignment.Stretch;
             dgSA.AutoGenerateColumns = false;
             dgSA.IsEnabled = true;
@@ -554,7 +558,7 @@ namespace PFD
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
                 List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                
+
                 if (screwArrangementParams != null)
                 {
                     ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
@@ -571,7 +575,6 @@ namespace PFD
             vm.ChangedScrewArrangementParameter = item;
             //HandleJointsPropertyChangedEvent(sender, e);            
         }
-
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
         {
             DataGrid dg = new DataGrid();
@@ -601,9 +604,9 @@ namespace PFD
 
             DataGridTextColumn tc3 = new DataGridTextColumn();
             tc3.Binding = new Binding("Value");
-            Style style = new Style(typeof(TextBlock));            
+            Style style = new Style(typeof(TextBlock));
             style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            tc3.ElementStyle = style;            
+            tc3.ElementStyle = style;
             tc3.IsReadOnly = false;
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dg.Columns.Add(tc3);
@@ -622,7 +625,6 @@ namespace PFD
 
             return dg;
         }
-
         private void HandleGeometryComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CComponentParamsView)) return;
@@ -647,7 +649,6 @@ namespace PFD
             vm.ChangedGeometryParameter = item;
             //HandleJointsPropertyChangedEvent(sender, e);
         }
-
         private DataGrid GetDatagridForDetails(List<CComponentParamsView> detailsParams)
         {
             DataGrid dg = new DataGrid();
@@ -693,8 +694,6 @@ namespace PFD
             dg.Columns.Add(tc4);
             return dg;
         }
-
-
         private Style GetReadonlyCellStyle()
         {
             Style style = new Style(typeof(DataGridCell));
@@ -702,7 +701,6 @@ namespace PFD
             style.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush(Colors.Black)));
             return style;
         }
-
         private DataTemplate GetDataTemplate()
         {
             DataTemplate retVal = null;
@@ -748,15 +746,14 @@ namespace PFD
             retVal = XamlReader.Parse(s, context) as DataTemplate;
             return retVal;
         }
-
         private void showAllJointsCount_Checked(object sender, RoutedEventArgs e)
-        {            
+        {
             CreateGridAndShowResultsCount();
         }
         private void CreateGridAndShowResultsCount()
         {
             List<TabItem> tabItems = new List<TabItem>();
-            
+
             TabItem tab = new TabItem();
             tab.Header = "Joint types count";
             if (tab == null) return;
@@ -780,14 +777,21 @@ namespace PFD
             tab.Content = sw;
 
             tabItems.Add(tab);
-            
+
             vm.TabItems = tabItems;
             vm.SelectedTabIndex = 0;
         }
-
         private void showAllJointsCount_Unchecked(object sender, RoutedEventArgs e)
         {
             SetDynamicTabs(vm);
+        }
+        private void displayJoint(DisplayOptions sDisplayOptions)
+        {
+          Page3Dmodel page1 = new Page3Dmodel(Model, sDisplayOptions, null);
+
+          // Display model in 3D preview frame
+          FrameJointPreview3D.Content = page1;
+          FrameJointPreview3D.UpdateLayout();
         }
     }
 }
