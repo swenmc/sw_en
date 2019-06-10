@@ -798,6 +798,10 @@ namespace PFD
               fMemberLength = Math.Max(joint.m_arrPlates[i].fWidth_bx, joint.m_arrPlates[i].fHeight_hy);
           }
 
+          float fLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+
+          fMemberLength *= fLengthFactor;
+
           CModel jointModel = new CModel();
 
           jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
