@@ -11,12 +11,12 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
-    // BD, BE, BF, BJ
-    // One middle web stiffener, 4 segments
-    // 50020 (single and nested) and 63020
+    // BA, BB, BC, BG
+    // Two web stiffeners, 6 segments
+    // 270 single and nested
 
     [Serializable]
-    public class CScrewArrangement_BX_1:CScrewArrangement
+    public class CScrewArrangement_BX_2:CScrewArrangement
     {
         private float m_fCrscColumnDepth;
 
@@ -48,7 +48,7 @@ namespace BaseClasses
             }
         }
 
-        float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
+        float m_fStiffenerSize; // Cross-section stiffener dimension (without screws)
 
         public float FStiffenerSize
         {
@@ -78,24 +78,36 @@ namespace BaseClasses
         public float fy_c_SQ2;
         public float fDistanceOfPointsX_SQ2;
         public float fDistanceOfPointsY_SQ2;
-
-        // Right group
         public int iNumberOfScrewsInRow_xDirection_SQ3;
         public int iNumberOfScrewsInColumn_yDirection_SQ3;
         public float fx_c_SQ3;
         public float fy_c_SQ3;
         public float fDistanceOfPointsX_SQ3;
         public float fDistanceOfPointsY_SQ3;
+
+        // Right group
         public int iNumberOfScrewsInRow_xDirection_SQ4;
         public int iNumberOfScrewsInColumn_yDirection_SQ4;
         public float fx_c_SQ4;
         public float fy_c_SQ4;
         public float fDistanceOfPointsX_SQ4;
         public float fDistanceOfPointsY_SQ4;
+        public int iNumberOfScrewsInRow_xDirection_SQ5;
+        public int iNumberOfScrewsInColumn_yDirection_SQ5;
+        public float fx_c_SQ5;
+        public float fy_c_SQ5;
+        public float fDistanceOfPointsX_SQ5;
+        public float fDistanceOfPointsY_SQ5;
+        public int iNumberOfScrewsInRow_xDirection_SQ6;
+        public int iNumberOfScrewsInColumn_yDirection_SQ6;
+        public float fx_c_SQ6;
+        public float fy_c_SQ6;
+        public float fDistanceOfPointsX_SQ6;
+        public float fDistanceOfPointsY_SQ6;
 
-        public CScrewArrangement_BX_1() { }
+        public CScrewArrangement_BX_2() { }
 
-        public CScrewArrangement_BX_1(
+        public CScrewArrangement_BX_2(
             CScrew referenceScrew_temp,
             float fCrscColumnDepth_temp,
             float fCrscWebStraightDepth_temp,
@@ -111,7 +123,18 @@ namespace BaseClasses
             float fx_c_SQ2_temp,
             float fy_c_SQ2_temp,
             float fDistanceOfPointsX_SQ2_temp,
-            float fDistanceOfPointsY_SQ2_temp) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp + iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp, referenceScrew_temp)
+            float fDistanceOfPointsY_SQ2_temp,
+            int iNumberOfScrewsInRow_xDirection_SQ3_temp,
+            int iNumberOfScrewsInColumn_yDirection_SQ3_temp,
+            float fx_c_SQ3_temp,
+            float fy_c_SQ3_temp,
+            float fDistanceOfPointsX_SQ3_temp,
+            float fDistanceOfPointsY_SQ3_temp
+
+            ) : base(iNumberOfScrewsInRow_xDirection_SQ1_temp * iNumberOfScrewsInColumn_yDirection_SQ1_temp +
+                     iNumberOfScrewsInRow_xDirection_SQ2_temp * iNumberOfScrewsInColumn_yDirection_SQ2_temp +
+                     iNumberOfScrewsInRow_xDirection_SQ3_temp * iNumberOfScrewsInColumn_yDirection_SQ3_temp,
+                     referenceScrew_temp)
         {
             referenceScrew = referenceScrew_temp;
             FCrscColumnDepth = fCrscColumnDepth_temp;
@@ -132,6 +155,13 @@ namespace BaseClasses
             fy_c_SQ2 = fy_c_SQ2_temp;
             fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
             fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+
+            iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_SQ3_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_SQ3_temp;
+            fx_c_SQ3 = fx_c_SQ3_temp;
+            fy_c_SQ3 = fy_c_SQ3_temp;
+            fDistanceOfPointsX_SQ3 = fDistanceOfPointsX_SQ3_temp;
+            fDistanceOfPointsY_SQ3 = fDistanceOfPointsY_SQ3_temp;
 
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups,one group on one side of column member
 
@@ -172,23 +202,24 @@ namespace BaseClasses
             seq2.HolesCentersPoints = new Point[seq2.INumberOfConnectors];
             ListOfSequenceGroups[0].ListSequence.Add(seq2);
 
-            ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
-            ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
+            CScrewRectSequence seq3 = new CScrewRectSequence();
+            seq3.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
+            seq3.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
+            seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
+            seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
+            seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
+            seq3.INumberOfConnectors = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
+            seq3.HolesCentersPoints = new Point[seq3.INumberOfConnectors];
+            ListOfSequenceGroups[0].ListSequence.Add(seq3);
 
-            if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
-                iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
+            ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
+            ListOfSequenceGroups[0].NumberOfRectangularSequences = 3;
+
+            if (iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0 &&
+                iNumberOfScrewsInRow_xDirection_SQ5 != 0 && iNumberOfScrewsInColumn_yDirection_SQ5 != 0 &&
+                iNumberOfScrewsInRow_xDirection_SQ6 != 0 && iNumberOfScrewsInColumn_yDirection_SQ6 != 0)
             {
                 ListOfSequenceGroups.Add(new CScrewSequenceGroup());
-
-                CScrewRectSequence seq3 = new CScrewRectSequence();
-                seq3.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
-                seq3.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
-                seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
-                seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
-                seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
-                seq3.INumberOfConnectors = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
-                seq3.HolesCentersPoints = new Point[seq3.INumberOfConnectors];
-                ListOfSequenceGroups[1].ListSequence.Add(seq3);
 
                 CScrewRectSequence seq4 = new CScrewRectSequence();
                 seq4.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
@@ -200,8 +231,28 @@ namespace BaseClasses
                 seq4.HolesCentersPoints = new Point[seq4.INumberOfConnectors];
                 ListOfSequenceGroups[1].ListSequence.Add(seq4);
 
+                CScrewRectSequence seq5 = new CScrewRectSequence();
+                seq5.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ5;
+                seq5.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ5;
+                seq5.ReferencePoint = new Point(fx_c_SQ5, fy_c_SQ5);
+                seq5.DistanceOfPointsX = fDistanceOfPointsX_SQ5;
+                seq5.DistanceOfPointsY = fDistanceOfPointsY_SQ5;
+                seq5.INumberOfConnectors = seq5.NumberOfScrewsInRow_xDirection * seq5.NumberOfScrewsInColumn_yDirection;
+                seq5.HolesCentersPoints = new Point[seq5.INumberOfConnectors];
+                ListOfSequenceGroups[1].ListSequence.Add(seq5);
+
+                CScrewRectSequence seq6 = new CScrewRectSequence();
+                seq6.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ6;
+                seq6.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ6;
+                seq6.ReferencePoint = new Point(fx_c_SQ6, fy_c_SQ6);
+                seq6.DistanceOfPointsX = fDistanceOfPointsX_SQ6;
+                seq6.DistanceOfPointsY = fDistanceOfPointsY_SQ6;
+                seq6.INumberOfConnectors = seq6.NumberOfScrewsInRow_xDirection * seq6.NumberOfScrewsInColumn_yDirection;
+                seq6.HolesCentersPoints = new Point[seq6.INumberOfConnectors];
+                ListOfSequenceGroups[1].ListSequence.Add(seq6);
+
                 ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 0;
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 3;
 
                 // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
                 RecalculateTotalNumberOfScrews();
@@ -237,36 +288,45 @@ namespace BaseClasses
             // Left side
             ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
             ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            ListOfSequenceGroups[0].ListSequence[2].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[2]);
+
             // Set radii of connectors / screws in the group
             ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Translate from [0,0] on plate to the final position
             TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
             TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
+            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[2]);
 
             // Right side
-            CScrewRectSequence seq3 = new CScrewRectSequence();
-            seq3.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints;
-            seq3.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), seq3);
-
             CScrewRectSequence seq4 = new CScrewRectSequence();
-            seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
+            seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints;
             seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), seq4);
+
+            CScrewRectSequence seq5 = new CScrewRectSequence();
+            seq5.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
+            seq5.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), seq5);
+
+            CScrewRectSequence seq6 = new CScrewRectSequence();
+            seq6.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[2].HolesCentersPoints;
+            seq6.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * (2 * flZ + fbX), seq6);
 
             // Add mirrored sequences into the list
             if (ListOfSequenceGroups.Count == 1) // Just in case that mirrored (right side) group doesn't exists
             {
                 ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
 
-                ListOfSequenceGroups[1].ListSequence.Add(seq3);
                 ListOfSequenceGroups[1].ListSequence.Add(seq4);
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                ListOfSequenceGroups[1].ListSequence.Add(seq5);
+                ListOfSequenceGroups[1].ListSequence.Add(seq6);
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 3;
             }
             else // In case that group already exists set current sequences
             {
-                ListOfSequenceGroups[1].ListSequence[0] = seq3;
-                ListOfSequenceGroups[1].ListSequence[1] = seq4;
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+                ListOfSequenceGroups[1].ListSequence[0] = seq4;
+                ListOfSequenceGroups[1].ListSequence[1] = seq5;
+                ListOfSequenceGroups[1].ListSequence[2] = seq6;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 3;
             }
 
             ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
@@ -284,6 +344,8 @@ namespace BaseClasses
             Calc_HolesControlPointsCoord3D(fbX, flZ, ft);
             GenerateConnectors_BasePlate();
         }
+
+        // Povodne funkcie - refaktorovat s CScrewArrangement_BX_1.cs
 
         void Calc_HolesControlPointsCoord3D(float fbX, float flZ, float ft)
         {
@@ -326,7 +388,7 @@ namespace BaseClasses
             {
                 CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
 
-                if(i < IHolesNumber /2) // Left side (rotation 0 deg about y-axis)
+                if(i < IHolesNumber / 2) // Left side (rotation 0 deg about y-axis)
                     Screws[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Mass, 0, 0, 0, true);
                 else // Right side (rotation 180 deg about y-axis)
                     Screws[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Mass, 0, 180, 0, true);

@@ -1345,8 +1345,8 @@ namespace PFD
         //        ft = databaseComponents.arr_Serie_B_Dimension[i, 3] / 1000f;
         //        iNumberofHoles = (int)databaseComponents.arr_Serie_B_Dimension[i, 4];
 
-        //        CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(iNumberofHoles, referenceScrew, referenceAnchor);
-        //        platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BB_BG, true)); // B
+        //        CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(iNumberofHoles, referenceScrew, referenceAnchor);
+        //        platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BX_01, true)); // B
         //    }
         //    plates.Add("Serie B", platesInSerie1);
 

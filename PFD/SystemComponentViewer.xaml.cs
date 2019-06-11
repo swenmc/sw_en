@@ -204,7 +204,13 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
+                3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2* 0.008f - 2 * 0.002f, 0.058f,
+                3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+                3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+                3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
             CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -250,40 +256,43 @@ namespace PFD
                         // "BI" - 8
                         // "BJ" - 9
 
-                        // TODO - doplnit arrangements pre vsetky typy plechov
-                        /*
-                        if (vm.ComponentIndex == 0) // BA
+                        switch (vm.ComponentIndex)
                         {
-                            if (vm.ScrewArrangementIndex == 0) // Undefined
-                                plate.ScrewArrangement = null;
-                            else
-                                plate.ScrewArrangement = screwArrangement_BB_BG;
-                        }
-                        else if (vm.ComponentIndex == 1) // BB
-                        {
-                            if (vm.ScrewArrangementIndex == 0) // Undefined
-                                plate.ScrewArrangement = null;
-                            else
-                                plate.ScrewArrangement = screwArrangement_BB_BG;
-                        }
-                        else if (vm.ComponentIndex == 6) // BG
-                        {
-                            if (vm.ScrewArrangementIndex == 0) // Undefined
-                                plate.ScrewArrangement = null;
-                            else
-                                plate.ScrewArrangement = screwArrangement_BB_BG;
-                        }
-                        else
-                        {
-                            // TODO - doplnit vsetky typy base plates a arrangements
-                            if (vm.ScrewArrangementIndex == 0) // Undefined
-                                plate.ScrewArrangement = null;
-                            else
-                                plate.ScrewArrangement = screwArrangement_BB_BG;
-                        }
-                        */
+                            case 0: // BA
+                            case 1: // BB
+                            case 2: // BC
+                            case 6: // BG
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate.ScrewArrangement = null;
+                                    else
+                                        plate.ScrewArrangement = screwArrangement_BX_02;
 
-                        plate.ScrewArrangement = screwArrangement_BB_BG;
+                                    break;
+                                }
+                            case 3: // BD
+                            case 4: // BE
+                            case 5: // BF
+                            case 9: // BJ
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate.ScrewArrangement = null;
+                                    else
+                                        plate.ScrewArrangement = screwArrangement_BX_01;
+
+                                    break;
+                                }
+                            default:
+                                {
+                                    // TODO - doplnit vsetky typy base plates a arrangements
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate.ScrewArrangement = null;
+                                    else
+                                        plate.ScrewArrangement = screwArrangement_BX_01;
+
+                                    break;
+                                }
+                        }
 
                         break;
                     }
@@ -876,7 +885,7 @@ namespace PFD
                         
             SetFrame2DSize();
 
-            //page2D.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);            
+            //page2D.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);
 
             if (useTransformOptions)
             {
@@ -1051,7 +1060,13 @@ namespace PFD
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
                 CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-                CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+                CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
+                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+                CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+                    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+                    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -1087,7 +1102,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, anchorArrangement_BB_BG, screwArrangement_BB_BG, true); // B
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, anchorArrangement_BB_BG, screwArrangement_BX_01, true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
