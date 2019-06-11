@@ -1,6 +1,5 @@
 ﻿using BaseClasses.GraphObj;
 
-
 namespace BaseClasses
 {
     public class CConnectionJoint_TA01 : CConnectionJointTypes
@@ -42,16 +41,19 @@ namespace BaseClasses
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BX_1 screwArrangement = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement screwArrangement;
+            string sPlatePrefix;
+
+            SetPlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, fh_plate, out sPlatePrefix, out screwArrangement);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_BB_BG("BB", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_BB_BG(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new CPoint(0, m_MainMember.FLength - fAlignment_x, /*m_MainMember.CrScStart.y_max*/ + 0.5f * fb_plate, -0.5f * fh_plate, 0);
-                m_arrPlates[0] = new CConCom_Plate_BB_BG("BB", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_BB_BG(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }
     }

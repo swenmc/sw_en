@@ -38,16 +38,19 @@ namespace BaseClasses
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BX_1 screwArrangement = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.010f - 2 * 0.002f, 0.17f, 3, 3, 0.023f, 0.023f, 0.032f, 0.032f, 3, 3, 0.023f, 0.203f, 0.032f, 0.032f);
+            CScrewArrangement screwArrangement;
+            string sPlatePrefix;
+
+            SetPlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, fh_plate, out sPlatePrefix, out screwArrangement);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_BB_BG("BG", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_BB_BG(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
 
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new CPoint(0, m_MainMember.FLength - fAlignment_x, /*m_MainMember.CrScStart.y_max*/ + 0.5f * fb_plate, m_MainMember.EccentricityEnd.MFz_local - 0.5f * fh_plate, 0);
-                m_arrPlates[0] = new CConCom_Plate_BB_BG("BG", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_BB_BG(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }
     }

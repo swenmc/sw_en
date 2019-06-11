@@ -39,7 +39,7 @@ namespace FEM_CALC_1Din2D
            // Pokus dat to dokopy - 29.1.2019
 
            MATERIAL.CMat mat = new MATERIAL.CMat();
-           CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1,0.63f,0.18f,0.00195f,0,System.Windows.Media.Colors.Coral);
+           CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0, System.Windows.Media.Colors.Coral);
            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0, System.Windows.Media.Colors.Cyan);
 
            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat,crsc1, crsc2,20f, 6f, 8f, 1f, 0f, 1f, 1f, 1f);

@@ -1,4 +1,5 @@
-﻿using MATERIAL;
+﻿using System;
+using MATERIAL;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
@@ -68,6 +69,96 @@ namespace BaseClasses
             BIsGenerated = true;
             // Set as default property that joint should be displayed
             BIsDisplayed = true;
+        }
+
+
+        // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
+        protected void SetPlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew, float fh_plate, out string platePrefix, out CScrewArrangement screwArrangement)
+        {
+            // TODO - Urobit nastavovanie rozmerov dynamicky podla velkosti prierezu / vyztuh a plechu
+            // Nacitat velkosti vyztuh z parametrov prierezu, medzery a polohu skrutiek urcovat dynamicky
+            CScrewArrangement_BX_2 screwArrangement1_10075 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
+                    2, 1, 0.02f, 0.015f, 0.03f, 0.03f,
+                    2, 1, 0.02f, 0.050f, 0.03f, 0.03f,
+                    2, 1, 0.02f, 0.085f, 0.03f, 0.03f);
+            CScrewArrangement_BX_1 screwArrangement1_63020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_1 screwArrangement1_50020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
+                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                    3, 5, 0.05f, 0.330f, 0.05f, 0.05f);
+            CScrewArrangement_BX_2 screwArrangement2 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+                    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+                    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+
+            if (sSectionNameDatabase == "10075")
+            {
+                platePrefix = "BI";
+                screwArrangement = screwArrangement1_10075; // TODO - definovat iny typ
+            }
+            else if (sSectionNameDatabase == "27055")
+            {
+                platePrefix = "BG";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "27095")
+            {
+                platePrefix = "BG";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "27095n")
+            {
+                platePrefix = "BB";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "270115")
+            {
+                platePrefix = "BG";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "270115btb")
+            {
+                platePrefix = "BA";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "270115n")
+            {
+                platePrefix = "BB";
+                screwArrangement = screwArrangement2;
+            }
+            else if (sSectionNameDatabase == "50020")
+            {
+                platePrefix = "BD";
+                screwArrangement = screwArrangement1_50020;
+            }
+            else if (sSectionNameDatabase == "50020n")
+            {
+                platePrefix = "BE";
+                screwArrangement = screwArrangement1_50020;
+            }
+            else if (sSectionNameDatabase == "63020")
+            {
+                platePrefix = "BF";
+                screwArrangement = screwArrangement1_63020;
+            }
+            else if (sSectionNameDatabase == "63020s1")
+            {
+                platePrefix = "BF";
+                screwArrangement = screwArrangement1_63020;
+            }
+            else if (sSectionNameDatabase == "63020s2")
+            {
+                platePrefix = "BF";
+                screwArrangement = screwArrangement1_63020;
+            }
+            else
+            {
+                platePrefix = "";
+                screwArrangement = null;
+                throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
+                                                  "Base plate of cross-section with this name is not implemented");
+            }
         }
     }
 }
