@@ -1713,7 +1713,7 @@ namespace PFD
                     jStart.BIsSelectedForMaterialList = false;
                 }
 
-                if (jEnd != null) jEnd.BIsDisplayed = false;
+                if (jEnd != null)
                 {
                     jEnd.BIsGenerated = false;
                     jEnd.BIsDisplayed = false;

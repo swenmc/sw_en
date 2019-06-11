@@ -170,6 +170,7 @@ namespace PFD
                     if (viewModel.WindowBlocksProperties.Count > 0) btnDisplayWindowBlock.IsEnabled = true;
                     else btnDisplayWindowBlock.IsEnabled = false;
                 }
+                vm.RecreateJoints = true;
             }
             else if (sender is CComponentListVM)
             {
@@ -177,16 +178,19 @@ namespace PFD
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 if (e.PropertyName == "ColumnFlyBracingPosition_Items") return;
                 if (e.PropertyName == "RafterFlyBracingPosition_Items") return;
+
+                this.vm.RecreateJoints = true;
             }
             else if (sender is CPFDLoadInput)
             {
                 //CPFDLoadInput vm = sender as CPFDLoadInput;
                 //if (e.PropertyName != "ModelCalculatedResultsValid") return;  //osetrene uz v CPFDViewModel                
+                vm.RecreateJoints = false;
             }
             else if (sender is CJointsVM)
             {
-                CJointsVM vm = sender as CJointsVM;
-                
+                //CJointsVM vm = sender as CJointsVM;
+                vm.RecreateJoints = false;
             }
             else if (sender is CComponentInfo)
             {

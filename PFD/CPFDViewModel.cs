@@ -256,6 +256,7 @@ namespace PFD
                 WallCladdingColorIndex = 22;
                 ModelCalculatedResultsValid = false;
 
+                RecreateJoints = true;
                 NotifyPropertyChanged("ModelIndex");
             }
         }
