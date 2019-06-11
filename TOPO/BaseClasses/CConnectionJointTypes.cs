@@ -88,9 +88,9 @@ namespace BaseClasses
                     3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
                     3, 5, 0.05f, 0.330f, 0.05f, 0.05f);
             CScrewArrangement_BX_2 screwArrangement2 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-                    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-                    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+                    3, 1, 0.025f, 0.03f, 0.03f, 0.05f,
+                    3, 1, 0.025f, 0.14f, 0.03f, 0.05f,
+                    3, 1, 0.025f, 0.26f, 0.03f, 0.05f);
 
             if (sSectionNameDatabase == "10075")
             {
