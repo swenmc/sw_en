@@ -16,6 +16,7 @@ namespace PFD
         private string MShortCut;
         private string MUnit;
         private string MCheckType;
+        private bool MIsEnabled;
 
         public string Name
         {
@@ -83,13 +84,27 @@ namespace PFD
             }
         }
 
-        public CComponentParamsView(string name, string shortcut, string unit, string checkType)
+        public bool IsEnabled
+        {
+            get
+            {
+                return MIsEnabled;
+            }
+
+            set
+            {
+                MIsEnabled = value;
+            }
+        }
+
+        public CComponentParamsView(string name, string shortcut, string unit, string checkType, bool isEnabled = true)
         {
             MName = name;
             MShortCut = shortcut;
             //MValue = value;
             MUnit = unit;
             MCheckType = checkType;
+            MIsEnabled = isEnabled;
         }
 
         //-------------------------------------------------------------------------------------------------------------

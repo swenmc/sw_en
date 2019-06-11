@@ -163,9 +163,12 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ContentControl Content="{Binding}">
-                                    <ContentControl.Style>
+                                    <ContentControl.Style>                                        
                                         <Style TargetType="ContentControl">
                                             <Style.Triggers>
+                                                <!--<DataTrigger Binding="{Binding IsReadonly}" Value="0" >
+                                                    <Setter Property="Background" Value="WhiteSmoke" />
+                                                </DataTrigger>-->
                                                 <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
@@ -184,10 +187,10 @@
                                                         </Setter.Value>
                                                     </Setter>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
+                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">                                                    
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
-                                                            <DataTemplate>
+                                                            <DataTemplate>                                                                
                                                                 <TextBox TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                                             </DataTemplate>
                                                         </Setter.Value>

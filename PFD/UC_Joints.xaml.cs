@@ -719,7 +719,7 @@ namespace PFD
             context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
             context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
 
-            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>
+            string s = @"<DataTemplate><ContentControl Content='{Binding}'><ContentControl.Style><Style TargetType='ContentControl'><Style.Triggers>            
             <DataTrigger Binding='{Binding CheckType}' Value='CheckBox'>
             <Setter Property='ContentTemplate'>
             <Setter.Value>
@@ -742,7 +742,7 @@ namespace PFD
             <Setter Property='ContentTemplate'>
             <Setter.Value>
             <DataTemplate>
-            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' />
+            <TextBox TextAlignment='Right' Text='{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}' IsEnabled='{Binding IsEnabled}' />
             </DataTemplate>
             </Setter.Value>
             </Setter>

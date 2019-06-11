@@ -32,7 +32,7 @@
             </TabControl>
         </ScrollViewer>
 
-        <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Content="FrameJointPreview" Name="FrameJointPreview3D"
+        <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="FrameJointPreview" Name="FrameJointPreview3D"
                HorizontalAlignment="Center" VerticalAlignment="Bottom" NavigationUIVisibility="Hidden" 
                Height="430" Width="570"/>
 
