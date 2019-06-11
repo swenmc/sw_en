@@ -872,9 +872,9 @@ namespace PFD
                     screwArrangmenetProperties.Add(new CComponentParamsViewString("Distance between screws y SQ4", "y4", (Math.Round(rectArrangement.fDistanceOfPointsY_SQ4 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 }
             }
-            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BB_BG)
+            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BX_1)
             {
-                CScrewArrangement_BB_BG rectArrangement = (CScrewArrangement_BB_BG)screwArrangement;
+                CScrewArrangement_BX_1 rectArrangement = (CScrewArrangement_BX_1)screwArrangement;
 
                 List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
@@ -1345,7 +1345,7 @@ namespace PFD
         //        ft = databaseComponents.arr_Serie_B_Dimension[i, 3] / 1000f;
         //        iNumberofHoles = (int)databaseComponents.arr_Serie_B_Dimension[i, 4];
 
-        //        CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(iNumberofHoles, referenceScrew, referenceAnchor);
+        //        CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(iNumberofHoles, referenceScrew, referenceAnchor);
         //        platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BB_BG, true)); // B
         //    }
         //    plates.Add("Serie B", platesInSerie1);

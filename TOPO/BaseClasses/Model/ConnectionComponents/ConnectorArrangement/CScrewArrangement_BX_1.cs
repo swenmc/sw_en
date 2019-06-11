@@ -11,8 +11,11 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    // BD, BE, BF, BG, BJ
+    // One middle stiffener, 4 segments
+
     [Serializable]
-    public class CScrewArrangement_BB_BG:CScrewArrangement
+    public class CScrewArrangement_BX_1:CScrewArrangement
     {
         private float m_fCrscColumnDepth;
 
@@ -89,9 +92,9 @@ namespace BaseClasses
         public float fDistanceOfPointsX_SQ4;
         public float fDistanceOfPointsY_SQ4;
 
-        public CScrewArrangement_BB_BG() { }
+        public CScrewArrangement_BX_1() { }
 
-        public CScrewArrangement_BB_BG(
+        public CScrewArrangement_BX_1(
             CScrew referenceScrew_temp,
             float fCrscColumnDepth_temp,
             float fCrscWebStraightDepth_temp,

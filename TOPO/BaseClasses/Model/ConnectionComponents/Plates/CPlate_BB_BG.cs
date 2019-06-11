@@ -74,7 +74,7 @@ namespace BaseClasses
             float fRotation_y_deg,
             float fRotation_z_deg,
             CAnchorArrangement_BB_BG anchorArrangement_temp,
-            CScrewArrangement_BB_BG screwArrangement_temp,
+            CScrewArrangement_BX_1 screwArrangement_temp,
             bool bIsDisplayed)
         {
             Name = sName_temp;

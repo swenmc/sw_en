@@ -111,9 +111,9 @@ namespace PFD
                     screwArrangmenetProperties.Add(new CComponentParamsViewString("Distance between screws y SQ4", "y4", (Math.Round(rectArrangement.fDistanceOfPointsY_SQ4 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 }
             }
-            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BB_BG)
+            else if (screwArrangement != null && screwArrangement is CScrewArrangement_BX_1)
             {
-                CScrewArrangement_BB_BG rectArrangement = (CScrewArrangement_BB_BG)screwArrangement;
+                CScrewArrangement_BX_1 rectArrangement = (CScrewArrangement_BX_1)screwArrangement;
 
                 List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
 
@@ -324,9 +324,9 @@ namespace PFD
                 arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
                 plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
             }
-            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BB_BG)
+            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BX_1)
             {
-                CScrewArrangement_BB_BG arrangementTemp = (CScrewArrangement_BB_BG)plate.ScrewArrangement;
+                CScrewArrangement_BX_1 arrangementTemp = (CScrewArrangement_BX_1)plate.ScrewArrangement;
 
                 if (item is CComponentParamsViewString)
                 {

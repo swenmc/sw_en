@@ -38,7 +38,7 @@ namespace BaseClasses
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BB_BG screwArrangement = new CScrewArrangement_BB_BG(referenceScrew, fh_plate, fh_plate - 2 * 0.010f - 2 * 0.002f, 0.17f, 3, 3, 0.023f, 0.023f, 0.032f, 0.032f, 3, 3, 0.023f, 0.203f, 0.032f, 0.032f);
+            CScrewArrangement_BX_1 screwArrangement = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.010f - 2 * 0.002f, 0.17f, 3, 3, 0.023f, 0.023f, 0.032f, 0.032f, 3, 3, 0.023f, 0.203f, 0.032f, 0.032f);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_BB_BG("BG", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees

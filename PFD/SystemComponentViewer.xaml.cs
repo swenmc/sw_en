@@ -204,7 +204,7 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
             CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -1051,7 +1051,7 @@ namespace PFD
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
                 CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+                CScrewArrangement_BX_1 screwArrangement_BB_BG = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -1550,9 +1550,9 @@ namespace PFD
                     arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
                 }
-                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BB_BG)
+                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_BX_1)
                 {
-                    CScrewArrangement_BB_BG arrangementTemp = (CScrewArrangement_BB_BG)plate.ScrewArrangement;
+                    CScrewArrangement_BX_1 arrangementTemp = (CScrewArrangement_BX_1)plate.ScrewArrangement;
 
                     if (item is CComponentParamsViewString)
                     {
