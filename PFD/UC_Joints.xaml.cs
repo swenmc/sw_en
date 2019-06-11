@@ -546,6 +546,16 @@ namespace PFD
                 cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
             }
 
+            CComponentParamsView c = screwArrangementParams.FirstOrDefault(p => p.Name == CParamsResources.CrscDepthS.Name);
+            if (c != null)
+            {
+                int index = screwArrangementParams.IndexOf(c);
+                DataGridRow row = (DataGridRow)dgSA.ItemContainerGenerator.ContainerFromIndex(index);
+                //row.IsEnabled = false; (Bug 292 ale nefunguje)
+                //asi treba rozsirit CComponentParamsView o IsReadonlyProperty a nabindovat
+
+            }
+
             //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
             return dgSA;
         }
