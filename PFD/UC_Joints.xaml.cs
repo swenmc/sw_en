@@ -900,7 +900,7 @@ namespace PFD
 
             for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
             {
-                // TODO - dopracovat, pridavat len uzly ktore este neboli pridane
+                // Pridavat len uzly ktore este neboli pridane
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
             }
