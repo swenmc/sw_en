@@ -123,8 +123,8 @@ namespace BaseClasses
 
             GenerateConnectors(screwArrangement_temp, false);
 
-            fWidth_bx = m_fbX1 + m_fbX2;
-            fHeight_hy = m_fhY;
+            Width_bx = m_fbX1 + m_fbX2;
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -225,8 +225,8 @@ namespace BaseClasses
 
             GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
 
-            fWidth_bx = m_fbX1 + m_fbX2;
-            fHeight_hy = m_fhY;
+            Width_bx = m_fbX1 + m_fbX2;
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

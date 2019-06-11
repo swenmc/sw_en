@@ -29,8 +29,8 @@ namespace EXPIMP
                 while (!namesOK)
                 {
                     count++;
-                    fileNameHoles = string.Format("{0}_{1}x{2}_HOLES_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
-                    fileNameSetup = string.Format("{0}_{1}x{2}_SETUP_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+                    fileNameHoles = string.Format("{0}_{1}x{2}_HOLES_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.Width_bx * fUnitFactor, 3), Math.Round(plate.Height_hy * fUnitFactor, 3), count);
+                    fileNameSetup = string.Format("{0}_{1}x{2}_SETUP_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.Width_bx * fUnitFactor, 3), Math.Round(plate.Height_hy * fUnitFactor, 3), count);
                     fileNameHolesPath = string.Format("{0}\\{1}", folder, fileNameHoles);
                     fileNameSetupPath = string.Format("{0}\\{1}", folder, fileNameSetup);
 

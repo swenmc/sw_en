@@ -497,7 +497,7 @@ namespace BaseClasses
             CComponentPrefixes component = CModelsManager.GetModelComponent((int)EMemberType + 1);
 
             Prefix = component.ComponentPrefix;
-            Name = component.ComponentName;            
+            Name = component.ComponentName;
 
             // Member is generated
             BIsGenerated = true;

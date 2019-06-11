@@ -153,8 +153,8 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            fWidth_bx = 2 * m_fbX1 + 2 * m_fbX2 + m_fbX3;
-            fHeight_hy = m_fhY;
+            Width_bx = 2 * m_fbX1 + 2 * m_fbX2 + m_fbX3;
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

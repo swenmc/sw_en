@@ -2139,8 +2139,8 @@ namespace PFD
                         string[] plateParams = new string[14];
                         plateParams[0] = count.ToString();
                         plateParams[1] = plate.Name;
-                        plateParams[2] = Math.Round(plate.fWidth_bx,3).ToString();
-                        plateParams[3] = Math.Round(plate.fHeight_hy,3).ToString();
+                        plateParams[2] = Math.Round(plate.Width_bx,3).ToString();
+                        plateParams[3] = Math.Round(plate.Height_hy,3).ToString();
                         plateParams[4] = Math.Round(plate.Ft * fUnitFactor_Length_m_to_mm, 2).ToString();
                         plateParams[5] = Math.Round(plate.fArea, 3).ToString();
                         plateParams[6] = Math.Round(plate.fVolume, 4).ToString();
@@ -2289,11 +2289,11 @@ namespace PFD
                         string[] plateParams = new string[14];
                         plateParams[0] = count.ToString();
                         plateParams[1] = plate.Name;
-                        plateParams[2] = Math.Round(plate.fWidth_bx, 3).ToString();
-                        plateParams[3] = Math.Round(plate.fHeight_hy, 3).ToString();
+                        plateParams[2] = Math.Round(plate.Width_bx, 3).ToString();
+                        plateParams[3] = Math.Round(plate.Height_hy, 3).ToString();
                         plateParams[4] = Math.Round(plate.Ft * fUnitFactor_Length_m_to_mm, 2).ToString();
                         plateParams[5] = Math.Round(plate.fArea, 3).ToString();
-                        plateParams[6] = Math.Round(plate.fVolume, 4).ToString();                        
+                        plateParams[6] = Math.Round(plate.fVolume, 4).ToString();
                         plateParams[7] = Math.Round(plate.fMass, 1).ToString();
                         plateParams[8] = pInfo.Amount.ToString();
                         totalAmount += pInfo.Amount;

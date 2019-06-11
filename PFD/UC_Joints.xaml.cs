@@ -787,21 +787,32 @@ namespace PFD
         }
         private void displayJoint(DisplayOptions sDisplayOptions, CConnectionJointTypes joint)
         {
-            // TO Ondrej - tuto funkciu treba trosku ucesat
-            // Mala by za zavolat hned pri zobrazeni tabu
+            // TO Ondrej - tuto funkciu treba trosku ucesat, refaktorovat casti kodu pre Main Member a cast pre Secondary Members
 
-            // Pruty treba naklonovat a upravit im dlzku
-            // Dlzku prutov treba urcit podla maximalneho rozmeru plechov (, aby neboli pruty prilis dlhe
-            float fMemberLength = 0;
+            // Problem 1 - ani jeden z uzlov pruta, ktore patria ku joint nekonci v spoji (vyskytuje sa najma pre main member, napr purlin pripojena k rafter)
+            // TODO - problem je u main members ak nekoncia v uzle spoja
+            // TODO - potrebujeme vytvorit funkciu (Drawing3D.cs PointLiesOnLineSegment), ktora najde vsetky "medzilahle" uzly, ktore lezia na prute, naplni nejaky zoznam uzlov v objekte pruta (List<CNode>IntermediateNodes)
+            // TODO - potom vieme pre Main Member zistit, ktory z tychto uzlov je joint Node a vykreslit segment main member na jednu a na druhu stranu od tohto uzla
+
+            // Problem 2 - joint nema spravne definovany main member (definovany je napr. ako main member je napriklad zadany prut rovnakeho typu s najnizsim ID)
+            // TODO - vyssie uvedeny zoznam medzilahlych uzlov na prute vieme pouzit aj na to ze ak Main member nie je skutocny main member prisluchajuci ku spoju ale len prvy prut rovnakeho typu, tak mozeme najst taky prut, ktory ma v zozname IntermediateNodes joint.m_Node
+            // a zaroven je rovnakeho typu ako main member, to by mal byt skutocny main member, ktory patri k joint.m_Node a mozeme ho nahradit
+            // tento problem by sme mali riesit uz niekde pred touto funkciou, idealne uz pri vytvarani spojov v CModel_PFD_01_GR.cs
+
+            float fMainMemberLength = 0;
+            float fSecondaryMemberLength = 0;
 
             for (int i = 0; i < joint.m_arrPlates.Length; i++)
             {
-                fMemberLength = Math.Max(joint.m_arrPlates[i].fWidth_bx, joint.m_arrPlates[i].fHeight_hy);
+                fMainMemberLength = Math.Max(joint.m_arrPlates[i].Width_bx, joint.m_arrPlates[i].Height_hy);
+                fSecondaryMemberLength = fMainMemberLength;
             }
 
-            float fLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fMainMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fSecondaryMemberLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
 
-            fMemberLength *= fLengthFactor;
+            fMainMemberLength *= fMainMemberLengthFactor;
+            fSecondaryMemberLength *= fSecondaryMemberLengthFactor;
 
             CModel jointModel = new CModel();
 
@@ -822,30 +833,32 @@ namespace PFD
             {
                 CMember m = joint.m_MainMember;//.Clone();
 
-                // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
-
-                // Zistit, ktory uzol pruta je uzol spoja
                 CNode nodeJoint = joint.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
 
-                if (joint.m_Node == m.NodeStart)
+                if (joint.m_Node.ID == m.NodeStart.ID)
+                {
                     nodeOtherEnd = m.NodeEnd;
+                    m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
                 else
+                {
                     nodeOtherEnd = m.NodeStart;
+                    m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
 
                 float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                 float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                 float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
 
-                nodeOtherEnd.X = nodeJoint.X + fX;
-                nodeOtherEnd.Y = nodeJoint.Y + fY;
-                nodeOtherEnd.Z = nodeJoint.Z + fZ;
+                nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
 
                 m.Fill_Basic();
 
-                jointModel.m_arrMembers[0] = m;
-
-                //TODO - este potrebujem vyriesit ze plech a pruty v spoji su nejako transformovane.
+                jointModel.m_arrMembers[0] = m; // Set new member (member array)
+                joint.m_MainMember = m; // Set new member (joint)
             }
 
             if (joint.m_SecondaryMembers != null)
@@ -854,30 +867,32 @@ namespace PFD
                 {
                     CMember m = joint.m_SecondaryMembers[i];//.Clone();
 
-                    // TODO - Zmenit suradnicu uzla v prute, na ktorom nie je joint a prepocitat dlzku pruta
-
-                    // Zistit, ktory uzol pruta je uzol spoja
                     CNode nodeJoint = joint.m_Node; // Joint Node
                     CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
 
-                    if (joint.m_Node == m.NodeStart)
+                    if (joint.m_Node.ID == m.NodeStart.ID)
+                    {
                         nodeOtherEnd = m.NodeEnd;
+                        m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    }
                     else
+                    {
                         nodeOtherEnd = m.NodeStart;
+                        m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    }
 
                     float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                     float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
 
-                    nodeOtherEnd.X = nodeJoint.X + fX * fMemberLength;
-                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMemberLength;
-                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMemberLength;
+                    nodeOtherEnd.X = nodeJoint.X + fX * fSecondaryMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fSecondaryMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fSecondaryMemberLength;
 
                     m.Fill_Basic();
 
-                    jointModel.m_arrMembers[1 + i] = m;
-
-                    //TODO - este potrebujem vyriesit ze plech a pruty v spoji su nejako transformovane.
+                    jointModel.m_arrMembers[1 + i] = m; // Set new member (member array)
+                    joint.m_SecondaryMembers[i] = m; // Set new member (joint)
                 }
             }
 

@@ -201,8 +201,8 @@ namespace BaseClasses
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
-            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
-            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
+            Width_bx = Math.Max(m_fbX1, m_fbX2);
+            Height_hy = Math.Max(m_fhY1, m_fhY2);
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

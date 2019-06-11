@@ -15,8 +15,36 @@ namespace BaseClasses
     public abstract class CPlate : CConnectionComponentEntity3D
     {
         public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FS
-        public float fWidth_bx;
-        public float fHeight_hy;
+
+        private float fWidth_bx; // Rozvinuta sirka - horizontalny smer
+
+        public float Width_bx
+        {
+            get
+            {
+                return fWidth_bx;
+            }
+
+            set
+            {
+                fWidth_bx = value;
+            }
+        }
+
+        private float fHeight_hy; // Rozvinuta vyska - vertikalny smer
+
+        public float Height_hy
+        {
+            get
+            {
+                return fHeight_hy;
+            }
+
+            set
+            {
+                fHeight_hy = value;
+            }
+        }
 
         private float m_ft; // Thickness
 
@@ -67,7 +95,7 @@ namespace BaseClasses
             {
                 m_drillingRoutePoints = value;
             }
-        }        
+        }
         private CDimension[] m_dimensions; // Pole kot pre Plate
         public CDimension[] Dimensions
         {

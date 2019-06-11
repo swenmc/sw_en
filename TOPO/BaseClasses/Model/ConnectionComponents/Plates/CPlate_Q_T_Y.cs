@@ -105,8 +105,8 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            fWidth_bx = m_fbX;
-            fHeight_hy = m_fhY;
+            Width_bx = m_fbX;
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -142,8 +142,8 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            fWidth_bx = m_fbX;
-            fHeight_hy = m_fhY;
+            Width_bx = m_fbX;
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

@@ -138,8 +138,8 @@ namespace BaseClasses
         
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
-            fWidth_bx = m_fbX;
-            fHeight_hy = m_fhY;
+            Width_bx = m_fbX + 2 * m_flZ; // Total width
+            Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

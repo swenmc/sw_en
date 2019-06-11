@@ -284,8 +284,8 @@ namespace PFD
                         int iQuantity = 1;
                         string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.Name;
 
-                        float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx;
-                        float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy;
+                        float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].Width_bx;
+                        float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].Height_hy;
                         float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
                         float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
                         float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
@@ -300,8 +300,8 @@ namespace PFD
                             for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
                             {
                                 if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
-                                MathF.d_equal(ListOfPlateGroups[k].fWidth_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx) &&
-                                MathF.d_equal(ListOfPlateGroups[k].fHeight_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy) &&
+                                MathF.d_equal(ListOfPlateGroups[k].Width_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].Width_bx) &&
+                                MathF.d_equal(ListOfPlateGroups[k].Height_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].Height_hy) &&
                                 MathF.d_equal(ListOfPlateGroups[k].Ft, model.m_arrConnectionJoints[i].m_arrPlates[j].Ft) &&
                                 MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
                                 {

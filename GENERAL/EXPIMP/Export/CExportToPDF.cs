@@ -36,7 +36,7 @@ namespace EXPIMP
             while (!nameOK)
             {
                 count++;
-                fileName = string.Format("{0}_{1}x{2}_{3:D3}.pdf", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+                fileName = string.Format("{0}_{1}x{2}_{3:D3}.pdf", GetPlateSerieName(plate), Math.Round(plate.Width_bx * fUnitFactor, 3), Math.Round(plate.Height_hy * fUnitFactor, 3), count);
 
                 if (!System.IO.File.Exists(fileName)) nameOK = true;
             }
