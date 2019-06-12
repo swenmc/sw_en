@@ -545,18 +545,7 @@ namespace PFD
             {
                 cpw.PropertyChanged += HandleScrewArrangementComponentParamsViewPropertyChangedEvent;
             }
-
-            CComponentParamsView c = screwArrangementParams.FirstOrDefault(p => p.Name == CParamsResources.CrscDepthS.Name);
-            if (c != null)
-            {
-                int index = screwArrangementParams.IndexOf(c);
-                DataGridRow row = (DataGridRow)dgSA.ItemContainerGenerator.ContainerFromIndex(index);
-                //row.IsEnabled = false; (Bug 292 ale nefunguje)
-                //asi treba rozsirit CComponentParamsView o IsReadonlyProperty a nabindovat
-
-            }
-
-            //dgSA.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ScrewArrangementParameters"));
+            
             return dgSA;
         }
         private void HandleScrewArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -612,14 +601,19 @@ namespace PFD
             tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dg.Columns.Add(tc2);
 
-            DataGridTextColumn tc3 = new DataGridTextColumn();
-            tc3.Binding = new Binding("Value");
-            Style style = new Style(typeof(TextBlock));
-            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            tc3.ElementStyle = style;
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
             tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
             tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
             dg.Columns.Add(tc3);
+                        
+            //DataGridTextColumn tc3 = new DataGridTextColumn();
+            //tc3.Binding = new Binding("Value");            
+            //Style style = new Style(typeof(TextBlock));
+            //style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            //tc3.ElementStyle = style;
+            //tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            //dg.Columns.Add(tc3);
 
             DataGridTextColumn tc4 = new DataGridTextColumn();
             tc4.Binding = new Binding("Unit");
@@ -754,6 +748,22 @@ namespace PFD
             </DataTemplate>";
 
             retVal = XamlReader.Parse(s, context) as DataTemplate;
+            return retVal;
+        }
+
+        private DataGridTextColumn GetDataGridTextColumn()
+        {
+            DataGridTextColumn retVal = null;
+
+            var context = new ParserContext();
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+
+            string s = @"<DataGridTextColumn Header='It3' Width='60' IsReadOnly='{Binding IsReadOnly}' Binding='{Binding Value, Mode=TwoWay}'>
+            <DataGridTextColumn.ElementStyle><Style TargetType='{x:Type TextBlock}' ><Setter Property='HorizontalAlignment' Value='Right' /></Style>
+            </DataGridTextColumn.ElementStyle></DataGridTextColumn>";
+
+            retVal = XamlReader.Parse(s, context) as DataGridTextColumn;
             return retVal;
         }
         private void showAllJointsCount_Checked(object sender, RoutedEventArgs e)

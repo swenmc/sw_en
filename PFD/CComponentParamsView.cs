@@ -17,6 +17,7 @@ namespace PFD
         private string MUnit;
         private string MCheckType;
         private bool MIsEnabled;
+        private bool MIsReadOnly;
 
         public string Name
         {
@@ -94,6 +95,20 @@ namespace PFD
             set
             {
                 MIsEnabled = value;
+                MIsReadOnly = !MIsEnabled;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return MIsReadOnly;
+            }
+
+            set
+            {
+                MIsReadOnly = value;
             }
         }
 
@@ -105,6 +120,7 @@ namespace PFD
             MUnit = unit;
             MCheckType = checkType;
             MIsEnabled = isEnabled;
+            MIsReadOnly = !MIsEnabled;
         }
 
         //-------------------------------------------------------------------------------------------------------------

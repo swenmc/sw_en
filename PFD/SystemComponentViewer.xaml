@@ -236,10 +236,10 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="It3" Width="60" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" >
+                    <DataGridTextColumn Header="It3" Width="60" IsReadOnly="{Binding IsReadOnly}" Binding="{Binding Value, Mode=TwoWay}" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />                                
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
