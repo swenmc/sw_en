@@ -1,4 +1,5 @@
-﻿using BaseClasses;
+﻿using _3DTools;
+using BaseClasses;
 using BaseClasses.Helpers;
 using DATABASE.DTO;
 using FEM_CALC_BASE;
@@ -48,6 +49,18 @@ namespace EXPIMP
         public static Stream GetCanvasStream(Canvas canvas)
         {
             RenderTargetBitmap bmp = RenderVisual(canvas);
+            PngBitmapEncoder png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bmp));
+
+            MemoryStream stm = new MemoryStream();
+            png.Save(stm);
+            stm.Position = 0;
+
+            return stm;
+        }
+        public static Stream GetViewPortStream(Viewport3D viewPort)
+        {
+            RenderTargetBitmap bmp = RenderVisual(viewPort);
             PngBitmapEncoder png = new PngBitmapEncoder();
             png.Frames.Add(BitmapFrame.Create(bmp));
 
@@ -940,6 +953,138 @@ namespace EXPIMP
 
             if (qlItem.ID == 1) return string.Empty; //Blank
             else return (value * qlItem.ReportUnitFactor).ToString($"F{qlItem.ReportDecimalPlaces}", nfi);
+        }
+
+        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint)
+        {
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bColorsAccordingToMembers = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bDisplayGlobalAxis = true;
+
+            float fMainMemberLength = 0;
+            float fSecondaryMemberLength = 0;
+
+            for (int i = 0; i < joint.m_arrPlates.Length; i++)
+            {
+                fMainMemberLength = Math.Max(joint.m_arrPlates[i].Width_bx, joint.m_arrPlates[i].Height_hy);
+                fSecondaryMemberLength = fMainMemberLength;
+            }
+
+            float fMainMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fSecondaryMemberLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+
+            fMainMemberLength *= fMainMemberLengthFactor;
+            fSecondaryMemberLength *= fSecondaryMemberLengthFactor;
+
+            CModel jointModel = new CModel();
+
+            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
+
+            int iNumberMainMembers = 0;
+            int iNumberSecondaryMembers = 0;
+
+            if (joint.m_MainMember != null)
+                iNumberMainMembers = 1;
+
+            if (joint.m_SecondaryMembers != null)
+                iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
+
+            jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
+
+            if (joint.m_MainMember != null)
+            {
+                CMember m = joint.m_MainMember;//.Clone();
+
+                CNode nodeJoint = joint.m_Node; // Joint Node
+                CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+
+                if (joint.m_Node.ID == m.NodeStart.ID)
+                {
+                    nodeOtherEnd = m.NodeEnd;
+                    m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
+                else
+                {
+                    nodeOtherEnd = m.NodeStart;
+                    m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
+
+                float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
+
+                m.Fill_Basic();
+
+                jointModel.m_arrMembers[0] = m; // Set new member (member array)
+                joint.m_MainMember = m; // Set new member (joint)
+            }
+
+            if (joint.m_SecondaryMembers != null)
+            {
+                for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                {
+                    CMember m = joint.m_SecondaryMembers[i];//.Clone();
+
+                    CNode nodeJoint = joint.m_Node; // Joint Node
+                    CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+
+                    if (joint.m_Node.ID == m.NodeStart.ID)
+                    {
+                        nodeOtherEnd = m.NodeEnd;
+                        m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    }
+                    else
+                    {
+                        nodeOtherEnd = m.NodeStart;
+                        m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    }
+
+                    float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    nodeOtherEnd.X = nodeJoint.X + fX * fSecondaryMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fSecondaryMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fSecondaryMemberLength;
+
+                    m.Fill_Basic();
+
+                    jointModel.m_arrMembers[1 + i] = m; // Set new member (member array)
+                    joint.m_SecondaryMembers[i] = m; // Set new member (joint)
+                }
+            }
+
+            List<CNode> nodeList = new List<CNode>();
+
+            for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
+            {
+                // Pridavat len uzly ktore este neboli pridane
+                if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
+                if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
+            }
+
+            //jointModel.m_arrNodes = new CNode[nodeList.Count];
+            jointModel.m_arrNodes = nodeList.ToArray();
+
+            Trackport3D _trackport = new Trackport3D();
+            _trackport.Background = new SolidColorBrush(Colors.Black);
+            _trackport.Width = 570;
+            _trackport.Height = 430;            
+            _trackport.ViewPort.RenderSize = new Size(570, 430);
+            Drawing3D.DrawToTrackPort(_trackport, jointModel, sDisplayOptions, null);
+            return _trackport.ViewPort;            
         }
 
     }

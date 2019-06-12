@@ -933,6 +933,18 @@ namespace EXPIMP
                 par.AppendPicture(picture);
             }
         }
+        private static void AppendImageFromViewPort(DocX document, Viewport3D viewPort, Paragraph par)
+        {
+            using (Stream stream = ExportHelper.GetViewPortStream(viewPort))
+            {
+                // Add a simple image from disk.
+                var image = document.AddImage(stream);
+                // Set Picture Height and Width.
+                var picture = image.CreatePicture((int)viewPort.ActualHeight, (int)viewPort.ActualWidth);
+                // Insert Picture in paragraph.             
+                par.AppendPicture(picture);
+            }
+        }
 
         private static void DrawJointDesign(DocX document, CModelData data)
         {
@@ -950,11 +962,18 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Design Details - Member Start Joint");
                 par.StyleName = "Heading3";
 
+                
+
                 //Start Joint
                 CCalculJoint calcul = null;
                 data.dictStartJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
                 if (calcul != null)
                 {
+                    //DrawModel3DToDoc(document, viewPort);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
+                    viewPort.UpdateLayout();
+                    AppendImageFromViewPort(document, viewPort, par);
+
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
                     Table t = GetTable(document, dt);
                     par = par.InsertParagraphAfterSelf("");
