@@ -160,17 +160,7 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
 
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
-
-                if (e.PropertyName.Contains("DoorBlocksProperties"))
-                {
-                    if (viewModel.DoorBlocksProperties.Count > 0) btnDisplayDoorBlock.IsEnabled = true;
-                    else btnDisplayDoorBlock.IsEnabled = false;
-                }
-                if (e.PropertyName.Contains("WindowBlocksProperties"))
-                {
-                    if (viewModel.WindowBlocksProperties.Count > 0) btnDisplayWindowBlock.IsEnabled = true;
-                    else btnDisplayWindowBlock.IsEnabled = false;
-                }
+                
                 vm.RecreateJoints = true;
             }
             else if (sender is CComponentListVM)
@@ -235,7 +225,7 @@ namespace PFD
             }
 
             SetUIElementsVisibility();
-            UnCheckToggleButtons();
+            
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
@@ -823,13 +813,7 @@ namespace PFD
             if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;
             else Part_List.IsEnabled = true;
         }
-
-        private void UnCheckToggleButtons()
-        {
-            if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
-            if(btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
-        }
-
+        
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
@@ -885,6 +869,7 @@ namespace PFD
             {                
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
+                LabelDoors.Focus();
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
             {
@@ -1451,139 +1436,142 @@ namespace PFD
             Frame1.UpdateLayout(); // Nutne kvôli pridaniu riadku a update v GUI
         }
 
-        private void btnDisplayDoorBlock_Checked(object sender, RoutedEventArgs e)
-        {
-            if (btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
 
-            CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
+        //temp To Mato - Som zakomentoval, ale pokial z toho nic nepotrebujeme,tak to treba zmazat
 
-            if (modelPFD.DoorsModels == null) return;
-            if (modelPFD.DoorsModels.Count == 0) return;
+        //private void btnDisplayDoorBlock_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if (btnDisplayWindowBlock.IsChecked == true) btnDisplayWindowBlock.IsChecked = false;
 
-            int index = Datagrid_DoorsAndGates.SelectedIndex;
-            if (index < 0) index = 0;
-            CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
-            if (doorModel == null) return;
+        //    CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
 
-            //// Girt
-            ////------------------------------------------------
-            //// TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
-            //// Tento kod by mal byt zmazany
-            //CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            //CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            //CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            //refgirt.EccentricityStart = eccentricity;
-            //refgirt.EccentricityEnd = eccentricity;
-            //refgirt.DTheta_x = Math.PI / 2;
+        //    if (modelPFD.DoorsModels == null) return;
+        //    if (modelPFD.DoorsModels.Count == 0) return;
 
-            //CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            //CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            //CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
-            ////------------------------------------------------
+        //    int index = Datagrid_DoorsAndGates.SelectedIndex;
+        //    if (index < 0) index = 0;
+        //    CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
+        //    if (doorModel == null) return;
 
+        //    //// Girt
+        //    ////------------------------------------------------
+        //    //// TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+        //    //// Tento kod by mal byt zmazany
+        //    //CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+        //    //CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+        //    //CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+        //    //refgirt.EccentricityStart = eccentricity;
+        //    //refgirt.EccentricityEnd = eccentricity;
+        //    //refgirt.DTheta_x = Math.PI / 2;
 
-
-            //DoorProperties props = null;
-            //if (Datagrid_DoorsAndGates.SelectedIndex != -1) props = vm.DoorBlocksProperties.ElementAtOrDefault(Datagrid_DoorsAndGates.SelectedIndex);
-            //else props = vm.DoorBlocksProperties.FirstOrDefault();
-            //if (props == null) return;
-
-            //// TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_001_DoorInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
-            //// V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
-            //// Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
-
-            //// Druha moznost je vytvorit konrektny zobrazovany blok znova.
-            //// V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddDoorBlock, tj. 
-            //// 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
-            //// 2. Vyrobi sa blok door = new CBlock_3D_001_DoorInBay(....)
-
-            //CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
-
-            DisplayOptions displayOptions = new DisplayOptions();
-            displayOptions.bUseDiffuseMaterial = true;
-            displayOptions.bUseEmissiveMaterial = true;
-            displayOptions.bUseLightAmbient = true;
-            displayOptions.bDisplaySolidModel = true;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplayJoints = true;
-
-            Page3Dmodel page1 = new Page3Dmodel(doorModel, displayOptions, null);
-
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
-        }
-
-        private void btnDisplayDoorBlock_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
-
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
-        }
-
-        private void btnDisplayWindowBlock_Checked(object sender, RoutedEventArgs e)
-        {
-            if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
-
-            //------------------------------------------------
-            // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
-            // Tento kod by mal byt zmazany
-            // Girt
-            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            refgirt.EccentricityStart = eccentricity;
-            refgirt.EccentricityEnd = eccentricity;
-            refgirt.DTheta_x = Math.PI / 2;
-
-            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
-            //------------------------------------------------
+        //    //CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+        //    //CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+        //    //CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+        //    ////------------------------------------------------
 
 
 
-            WindowProperties props = null;
-            if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
-            else props = vm.WindowBlocksProperties.FirstOrDefault();
-            if (props == null) return;
+        //    //DoorProperties props = null;
+        //    //if (Datagrid_DoorsAndGates.SelectedIndex != -1) props = vm.DoorBlocksProperties.ElementAtOrDefault(Datagrid_DoorsAndGates.SelectedIndex);
+        //    //else props = vm.DoorBlocksProperties.FirstOrDefault();
+        //    //if (props == null) return;
 
-            // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
-            // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
-            // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+        //    //// TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_001_DoorInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+        //    //// V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+        //    //// Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
 
-            // Druha moznost je vytvorit konrektny zobrazovany blok znova.
-            // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
-            // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
-            // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+        //    //// Druha moznost je vytvorit konrektny zobrazovany blok znova.
+        //    //// V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddDoorBlock, tj. 
+        //    //// 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+        //    //// 2. Vyrobi sa blok door = new CBlock_3D_001_DoorInBay(....)
 
-            CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+        //    //CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumnLeft, mColumnRight, 4.5f, 4f, 0.3f);
 
-            DisplayOptions displayOptions = new DisplayOptions();
-            displayOptions.bUseDiffuseMaterial = true;
-            displayOptions.bUseEmissiveMaterial = true;
-            displayOptions.bUseLightAmbient = true;
-            displayOptions.bDisplaySolidModel = true;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplayJoints = true;
+        //    DisplayOptions displayOptions = new DisplayOptions();
+        //    displayOptions.bUseDiffuseMaterial = true;
+        //    displayOptions.bUseEmissiveMaterial = true;
+        //    displayOptions.bUseLightAmbient = true;
+        //    displayOptions.bDisplaySolidModel = true;
+        //    displayOptions.bDisplayMembers = true;
+        //    displayOptions.bDisplayJoints = true;
 
-            Page3Dmodel page1 = new Page3Dmodel(model, displayOptions, null);
+        //    Page3Dmodel page1 = new Page3Dmodel(doorModel, displayOptions, null);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
-        }
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
+        //}
 
-        private void btnDisplayWindowBlock_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+        //private void btnDisplayDoorBlock_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
-        }
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
+        //}
+
+        //private void btnDisplayWindowBlock_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if (btnDisplayDoorBlock.IsChecked == true) btnDisplayDoorBlock.IsChecked = false;
+
+        //    //------------------------------------------------
+        //    // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+        //    // Tento kod by mal byt zmazany
+        //    // Girt
+        //    CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+        //    CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+        //    CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+        //    refgirt.EccentricityStart = eccentricity;
+        //    refgirt.EccentricityEnd = eccentricity;
+        //    refgirt.DTheta_x = Math.PI / 2;
+
+        //    CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+        //    CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+        //    CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+        //    //------------------------------------------------
+
+
+
+        //    WindowProperties props = null;
+        //    if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
+        //    else props = vm.WindowBlocksProperties.FirstOrDefault();
+        //    if (props == null) return;
+
+        //    // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+        //    // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+        //    // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+
+        //    // Druha moznost je vytvorit konrektny zobrazovany blok znova.
+        //    // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
+        //    // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+        //    // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+
+        //    CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+
+        //    DisplayOptions displayOptions = new DisplayOptions();
+        //    displayOptions.bUseDiffuseMaterial = true;
+        //    displayOptions.bUseEmissiveMaterial = true;
+        //    displayOptions.bUseLightAmbient = true;
+        //    displayOptions.bDisplaySolidModel = true;
+        //    displayOptions.bDisplayMembers = true;
+        //    displayOptions.bDisplayJoints = true;
+
+        //    Page3Dmodel page1 = new Page3Dmodel(model, displayOptions, null);
+
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
+        //}
+
+        //private void btnDisplayWindowBlock_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    Frame1.UpdateLayout();
+        //}
 
         private void SetInitialItemsInComboboxes()
         {

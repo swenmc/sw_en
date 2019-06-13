@@ -332,7 +332,7 @@
                 </TabItem.Header>
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                        <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
                                   HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
@@ -392,8 +392,7 @@
                                     ItemsSource="{Binding Source={StaticResource WindowColumns}}" />
                             </DataGrid.Columns>
                         </DataGrid>
-
-                        <ToggleButton Name="btnDisplayDoorBlock" VerticalAlignment="Center" 
+                        <!--<ToggleButton Name="btnDisplayDoorBlock" VerticalAlignment="Center" 
                                       ToolTip="Display door block" IsEnabled="True"
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
                                       Width="30" Height="30" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
@@ -404,8 +403,8 @@
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
                                       Width="30" Height="30" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
                             <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </ToggleButton>
-                        <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Height="430" Width="570"/>
+                        </ToggleButton>-->
+                        <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="0,5,0,0" Height="430" Width="570"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>            
