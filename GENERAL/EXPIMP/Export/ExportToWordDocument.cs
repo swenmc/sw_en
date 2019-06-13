@@ -971,7 +971,7 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("Design Details - Member Start Joint");
                     par.StyleName = "Heading3";
 
-                    //DrawModel3DToDoc(document, viewPort);
+                    par = par.InsertParagraphAfterSelf("");
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
@@ -997,6 +997,7 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("Design Details - Member End Joint");
                     par.StyleName = "Heading3";
 
+                    par = par.InsertParagraphAfterSelf("");
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
