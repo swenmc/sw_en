@@ -941,7 +941,7 @@ namespace EXPIMP
                 var image = document.AddImage(stream);
                 // Set Picture Height and Width.
                 var picture = image.CreatePicture((int)viewPort.ActualHeight, (int)viewPort.ActualWidth);
-                // Insert Picture in paragraph.             
+                // Insert Picture in paragraph.
                 par.AppendPicture(picture);
             }
         }
@@ -955,20 +955,22 @@ namespace EXPIMP
             {
                 if (!cInfo.Design) continue;
 
-                par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
-                par.StyleName = "Heading2";
+                bool bStartJointDesignDetailsExist = false;
 
-
-                par = par.InsertParagraphAfterSelf("Design Details - Member Start Joint");
-                par.StyleName = "Heading3";
-
-                
-
-                //Start Joint
+                // Start Joint
                 CCalculJoint calcul = null;
                 data.dictStartJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
                 if (calcul != null)
                 {
+                    bStartJointDesignDetailsExist = true;
+
+                    // Display Member type heading
+                    par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
+                    par.StyleName = "Heading2";
+
+                    par = par.InsertParagraphAfterSelf("Design Details - Member Start Joint");
+                    par.StyleName = "Heading3";
+
                     //DrawModel3DToDoc(document, viewPort);
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
                     viewPort.UpdateLayout();
@@ -980,13 +982,25 @@ namespace EXPIMP
                     AddSimpleTableAfterParagraph(t, par);
                 }
 
-                par = par.InsertParagraphAfterSelf("Design Details - Member End Joint");
-                par.StyleName = "Heading3";
-                //END Joint
+                // End Joint
                 calcul = null;
                 data.dictEndJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
                 if (calcul != null)
                 {
+                    if (!bStartJointDesignDetailsExist)
+                    {
+                        // Display Member type heading in case that it wasn't displayed in the start joint block
+                        par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
+                        par.StyleName = "Heading2";
+                    }
+
+                    par = par.InsertParagraphAfterSelf("Design Details - Member End Joint");
+                    par.StyleName = "Heading3";
+
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
+                    viewPort.UpdateLayout();
+                    AppendImageFromViewPort(document, viewPort, par);
+
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
                     Table t = GetTable(document, dt);
                     par = par.InsertParagraphAfterSelf("");
