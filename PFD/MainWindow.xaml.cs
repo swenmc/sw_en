@@ -52,21 +52,22 @@ namespace PFD
         {
             eGeneral = 0,
             eMember_Input = 1,
-            eJoint_Input = 2,
-            eFooting_Input = 3,
-            eLoads = 4,
+            eDoorsAndWindows = 2,
+            eJoint_Input = 3,
+            eFooting_Input = 4,
+            eLoads = 5,
 
-            eLoadCases = 5,
-            eLoadCombinations = 6,
+            eLoadCases = 6,
+            eLoadCombinations = 7,
 
-            eInternalForces = 7,
-            eMemberDesign = 8,
-            eJointDesign = 9,
-            eFootingDesign = 10,
+            eInternalForces = 8,
+            eMemberDesign = 9,
+            eJointDesign = 10,
+            eFootingDesign = 11,
 
-            ePartList = 11,
-            eQuoation = 12,
-            eDoorsAndWindows = 13
+            ePartList = 12,
+            eQuoation = 13
+            
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -880,6 +881,11 @@ namespace PFD
                 //defined in xaml
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
             }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
+            {                
+                if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
+                FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
+            }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
             {
                 if (Footing_Input.Content == null) Footing_Input.Content = new UC_FootingInput();
@@ -959,11 +965,7 @@ namespace PFD
                     //CPFDJointsDesign jointsDesignVM = uc_jointDesign.DataContext as CPFDJointsDesign;
                     //jointsDesignVM.SetComponentList(compListVM.ComponentList);                    
                 }
-            }
-            //else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
-            //{
-            //    DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);
-            //}
+            }            
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
             {   
                 if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm.Model);
@@ -1696,6 +1698,100 @@ namespace PFD
         {
             ProjectInfo pi = new ProjectInfo(projectInfoVM);
             pi.ShowDialog();
+        }
+
+        private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e != null && e.Source != null)
+            {
+                DataGrid dg = e.Source as DataGrid;
+                if (!dg.IsLoaded) return;
+                if (!dg.IsMouseOver) return;
+            }
+
+            CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
+
+            if (modelPFD.DoorsModels == null) return;
+            if (modelPFD.DoorsModels.Count == 0) return;
+
+            int index = Datagrid_DoorsAndGates.SelectedIndex;
+            if (index < 0) index = 0;
+            CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
+            if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
+            if (doorModel == null) return;
+
+            DisplayOptions displayOptions = new DisplayOptions();
+            displayOptions.bUseDiffuseMaterial = true;
+            displayOptions.bUseEmissiveMaterial = true;
+            displayOptions.bUseLightAmbient = true;
+            displayOptions.bDisplaySolidModel = true;
+            displayOptions.bDisplayMembers = true;
+            displayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
+
+            // Display model in 3D preview frame
+            FrameDoorWindowPreview3D.Content = page3D;
+            FrameDoorWindowPreview3D.UpdateLayout();
+        }
+
+        private void Datagrid_Windows_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source != null)
+            {
+                DataGrid dg = e.Source as DataGrid;
+                if (!dg.IsLoaded) return;
+                if (!dg.IsMouseOver) return;
+            }
+            //Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
+
+            //------------------------------------------------
+            // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+            //
+            // Tento kod by mal byt zmazany
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+            //------------------------------------------------
+            
+
+            WindowProperties props = null;
+            if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
+            if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
+            if (props == null) return;
+
+            // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+            // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+            // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+
+            // Druha moznost je vytvorit konrektny zobrazovany blok znova.
+            // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
+            // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+            // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+
+            CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+
+            DisplayOptions displayOptions = new DisplayOptions();
+            displayOptions.bUseDiffuseMaterial = true;
+            displayOptions.bUseEmissiveMaterial = true;
+            displayOptions.bUseLightAmbient = true;
+            displayOptions.bDisplaySolidModel = true;
+            displayOptions.bDisplayMembers = true;
+            displayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
+
+            // Display model in 3D preview frame
+            FrameDoorWindowPreview3D.Content = page3D;
+            FrameDoorWindowPreview3D.UpdateLayout();
         }
     }
 }

@@ -310,10 +310,33 @@
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
-                        <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="205" Margin="5,2,0,0" FontSize="16" Grid.ColumnSpan="2"/>
-
-                        <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" Grid.Row="20" 
-                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem">
+                        
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name ="Member_Input">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Members" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <!--<ScrollViewer Name="scrollViewUC_ComponentList" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+                <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
+                <!--</ScrollViewer>-->
+            </TabItem>
+            <TabItem Name ="DoorsAndWindows">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Doors and Windows" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                                   Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
+                        <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
                                     SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
@@ -339,8 +362,11 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" Grid.Row="21" 
-                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" Grid.ColumnSpan="6" AddingNewItem="Datagrid_Windows_AddingNewItem">
+                        <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                                   Text="Windows" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
+                        <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  AddingNewItem="Datagrid_Windows_AddingNewItem" SelectionChanged="Datagrid_Windows_SelectionChanged">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="70"
                                     SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
@@ -367,31 +393,22 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <ToggleButton Name="btnDisplayDoorBlock" Grid.Row="20" Grid.Column="4" VerticalAlignment="Center" 
+                        <ToggleButton Name="btnDisplayDoorBlock" VerticalAlignment="Center" 
                                       ToolTip="Display door block" IsEnabled="True"
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
                                       Width="30" Height="30" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
                             <Image Source="Resources/door.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                         </ToggleButton>
-                        <ToggleButton Name="btnDisplayWindowBlock" Grid.Row="21" Grid.Column="4" VerticalAlignment="Center" 
+                        <ToggleButton Name="btnDisplayWindowBlock" VerticalAlignment="Center" 
                                       ToolTip="Display window block" IsEnabled="True"
                                       HorizontalAlignment="Left" Margin="20 0 0 0" 
                                       Width="30" Height="30" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
                             <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                         </ToggleButton>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Name ="Member_Input">
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Members" Foreground="Blue"/>
+                        <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Height="430" Width="570"/>
                     </StackPanel>
-                </TabItem.Header>
-                <!--<ScrollViewer Name="scrollViewUC_ComponentList" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-                <local:UC_ComponentList x:Name="uc_ComponentList"></local:UC_ComponentList>
-                <!--</ScrollViewer>-->
-            </TabItem>
+                </ScrollViewer>
+            </TabItem>            
             <TabItem Name ="Joint_Input">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -469,13 +486,7 @@
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            <TabItem Name ="DoorsAndWindows">
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Doors and Windows" Foreground="Green"/>
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
+            
         </TabControl>
         <Frame Grid.Row="0" Grid.RowSpan="2" Name ="Frame1" Content="Portal Frame 3D Preview"
                HorizontalContentAlignment="Stretch" 
