@@ -243,6 +243,7 @@ namespace PFD
             DeleteCalculationResults();
             UpdateAll();
 
+
             //kvoli Doors Models,  najprv musi byt update
             if (sender is DoorProperties)
             {
@@ -1815,6 +1816,11 @@ namespace PFD
         private void Datagrid_Windows_GotFocus(object sender, RoutedEventArgs e)
         {
             if (actualPreview != 2) Datagrid_Windows_SelectionChanged(sender, null);
+        }
+
+        private void FrameDoorWindowPreview3D_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
