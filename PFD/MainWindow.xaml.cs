@@ -1698,6 +1698,8 @@ namespace PFD
             pi.ShowDialog();
         }
 
+
+        int actualPreview = 0;
         private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!Datagrid_DoorsAndGates.IsLoaded) return;
@@ -1732,6 +1734,7 @@ namespace PFD
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
             FrameDoorWindowPreview3D.UpdateLayout();
+            actualPreview = 1;
         }
 
         private void Datagrid_Windows_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1792,6 +1795,17 @@ namespace PFD
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
             FrameDoorWindowPreview3D.UpdateLayout();
+            actualPreview = 2;
+        }
+
+        private void Datagrid_DoorsAndGates_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (actualPreview != 1) Datagrid_DoorsAndGates_SelectionChanged(sender, null);
+        }
+
+        private void Datagrid_Windows_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (actualPreview != 2) Datagrid_Windows_SelectionChanged(sender, null);
         }
     }
 }
