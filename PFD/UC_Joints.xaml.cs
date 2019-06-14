@@ -934,17 +934,7 @@ namespace PFD
             FrameJointPreview3D.Content = page1;
             FrameJointPreview3D.UpdateLayout();
         }
-
-        //private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        //{
-        //    e.Handled = true;
-        //}
-
-        //private void ScrollViewer_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        //{
-        //    e.Handled = true;
-        //}
-
+        
         private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             e.Handled = true;
