@@ -243,6 +243,16 @@ namespace PFD
             DeleteCalculationResults();
             UpdateAll();
 
+            //kvoli Doors Models,  najprv musi byt update
+            if (sender is DoorProperties)
+            {
+                Datagrid_DoorsAndGates_SelectionChanged(null, null);
+            }
+            else if (sender is WindowProperties)
+            {
+                Datagrid_Windows_SelectionChanged(null, null);
+            }
+
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
         }
 
@@ -1702,7 +1712,7 @@ namespace PFD
         int actualPreview = 0;
         private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!Datagrid_DoorsAndGates.IsLoaded) return;
+            //if (!Datagrid_DoorsAndGates.IsLoaded) return;
             if (e != null && e.Source != null)
             {
                 DataGrid dg = e.Source as DataGrid;
@@ -1739,7 +1749,6 @@ namespace PFD
 
         private void Datagrid_Windows_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!Datagrid_Windows.IsLoaded) return;
             if (e != null && e.Source != null)
             {
                 DataGrid dg = e.Source as DataGrid;
