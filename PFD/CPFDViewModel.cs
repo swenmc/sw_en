@@ -53,7 +53,8 @@ namespace PFD
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
-
+        
+        private bool MSynchonizeGUI;
         //private int MMainColumnFlyBracingPositionIndex;
         //private int MRafterFlyBracingPositionIndex;
         //private int MEdgePurlin_ILS_Number;
@@ -1702,6 +1703,20 @@ namespace PFD
             }
         }
 
+        public bool SynchonizeGUI
+        {
+            get
+            {
+                return MSynchonizeGUI;
+            }
+
+            set
+            {
+                MSynchonizeGUI = value;
+                NotifyPropertyChanged("SynchonizeGUI");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -1945,6 +1960,7 @@ namespace PFD
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
+            MSynchonizeGUI = true;
 
             IsSetFromCode = false;
 

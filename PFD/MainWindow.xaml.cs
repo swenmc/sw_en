@@ -236,14 +236,20 @@ namespace PFD
 
             SetUIElementsVisibility();
             
-            //load the popup
-            SplashScreen splashScreen = new SplashScreen("loading2.gif");
-            splashScreen.Show(false);
+            
 
-            DeleteCalculationResults();
-            UpdateAll();
+            if (vm.SynchonizeGUI)
+            {
+                //load the popup
+                SplashScreen splashScreen = new SplashScreen("loading2.gif");
+                splashScreen.Show(false);
 
+                DeleteCalculationResults();
+                UpdateAll();
 
+                splashScreen.Close(TimeSpan.FromSeconds(0.1));
+            }
+            
             //kvoli Doors Models,  najprv musi byt update
             if (sender is DoorProperties)
             {
@@ -253,8 +259,6 @@ namespace PFD
             {
                 Datagrid_Windows_SelectionChanged(null, null);
             }
-
-            splashScreen.Close(TimeSpan.FromSeconds(0.1));
         }
 
         private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
