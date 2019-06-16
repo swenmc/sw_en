@@ -263,8 +263,7 @@
                             <CheckBox Name="chbLightPoint" IsChecked="{Binding Path=LightPoint}" >Point Light</CheckBox>
                             <CheckBox Name="chbLightSpot" IsChecked="{Binding Path=LightSpot}">SpotLight</CheckBox>
                             <CheckBox Name="chbLightAmbient" IsChecked="{Binding Path=LightAmbient}">Ambient Light</CheckBox>
-                        </StackPanel>
-                        
+                        </StackPanel>                        
 
                         <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" IsChecked="{Binding Path=MaterialDiffuse}">Diffuse Material</CheckBox>
                         <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>

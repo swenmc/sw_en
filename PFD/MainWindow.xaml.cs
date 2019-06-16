@@ -773,10 +773,10 @@ namespace PFD
                 joints);
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
-                vm.GenerateSurfaceLoads ||
-                vm.GenerateLoadsOnGirts ||
-                vm.GenerateLoadsOnPurlins ||
-                vm.GenerateLoadsOnColumns;
+                                        vm.GenerateSurfaceLoads ||
+                                        vm.GenerateLoadsOnGirts ||
+                                        vm.GenerateLoadsOnPurlins ||
+                                        vm.GenerateLoadsOnColumns;
 
             // Calculate load values
             CalculateLoadingValues((CModel_PFD_01_GR)vm.Model);
