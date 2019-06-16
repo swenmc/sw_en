@@ -90,13 +90,7 @@ namespace PFD
             fFrontFrameRakeAngle_deg = fFrontFrameRakeAngle_temp_deg;
             fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
 
-            //fH1_frame = fH1_temp;
-            //fW_frame = fW_temp;
-            //fL1_frame = fL1_temp;
-            iFrameNo = iFrameNo_temp;
-            //fH2_frame = fH2_temp;
-
-            //fL_tot = (iFrameNo - 1) * fL1_frame;
+            iFrameNo = iFrameNo_temp;                        
             fL1_frame = fL_tot / (iFrameNo - 1);
 
             fDist_Girt = fDist_Girt_temp;
@@ -971,7 +965,6 @@ namespace PFD
             #region Load Cases
             // Load Cases
             CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
-
             m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
             #endregion
 
@@ -1152,16 +1145,7 @@ namespace PFD
             #region Load Combinations
             // Load Combinations
             CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
-            generator.GenerateAll();
-            //generator.GenerateULS();
-            //generator.GenerateSLS();
-            //generator.WriteCombinationsLoadCases();
-            //generator.WritePermutations();
-            //generator.WriteCombinations();
-
-            //m_arrLoadCombs = new CLoadCombination[generator.Combinations.Count];
-            //for (int i = 0; i < m_arrLoadCombs.Length; i++)
-            //    m_arrLoadCombs[i] = generator.Combinations[i];
+            generator.GenerateAll();            
             m_arrLoadCombs = generator.Combinations.ToArray();
             #endregion
 

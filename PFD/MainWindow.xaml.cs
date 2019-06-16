@@ -67,7 +67,7 @@ namespace PFD
 
             ePartList = 12,
             eQuoation = 13
-            
+
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
-        
+
         public ObservableCollection<DoorProperties> DoorBlocksProperties;
         public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
@@ -110,7 +110,7 @@ namespace PFD
             SetLoadInput();
 
             projectInfoVM = new CProjectInfoVM();
-            
+
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
@@ -132,10 +132,10 @@ namespace PFD
             {
                 UC_Joints uc_joints = new UC_Joints(vm.Model);
                 Joint_Input.Content = uc_joints;
-                vm.JointsVM = uc_joints.DataContext as CJointsVM;                
+                vm.JointsVM = uc_joints.DataContext as CJointsVM;
             }
         }
-        
+
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -143,7 +143,7 @@ namespace PFD
             if (sender is CPFDViewModel)
             {
                 CPFDViewModel viewModel = sender as CPFDViewModel;
-                if(viewModel == null) return;
+                if (viewModel == null) return;
                 if (viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
 
                 if (e.PropertyName == "RoofCladdingIndex")
@@ -160,7 +160,7 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
 
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
-                
+
                 vm.RecreateJoints = true;
             }
             else if (sender is CComponentListVM)
@@ -235,20 +235,15 @@ namespace PFD
             }
 
             SetUIElementsVisibility();
-            
-            
 
-            if (vm.SynchonizeGUI)
-            {
-                //load the popup
-                SplashScreen splashScreen = new SplashScreen("loading2.gif");
-                splashScreen.Show(false);
+            //load the popup
+            SplashScreen splashScreen = new SplashScreen("loading2.gif");
+            splashScreen.Show(false);
 
-                DeleteCalculationResults();
-                UpdateAll();
+            DeleteCalculationResults();
+            UpdateAll();
 
-                splashScreen.Close(TimeSpan.FromSeconds(0.1));
-            }
+            splashScreen.Close(TimeSpan.FromSeconds(0.1));
             
             //kvoli Doors Models,  najprv musi byt update
             if (sender is DoorProperties)
@@ -289,7 +284,7 @@ namespace PFD
         private bool AreDoorsOrWindowsOnBuildingSide(string sBuildingSide)
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
- 
+
             foreach (DoorProperties d in vm.DoorBlocksProperties)
             {
                 if (d.sBuildingSide == sBuildingSide) return true;
@@ -383,7 +378,7 @@ namespace PFD
 
             Solver solver = new Solver(vm.UseFEMSolverCalculationForSimpleBeam);
             vm.SolverWindow = solver;
-            
+
             vm.Run();
             solver.ShowDialog();
 
@@ -400,7 +395,7 @@ namespace PFD
                 UC_Loads loadInput_UC = (UC_Loads)Loads.Content;
                 loadInput = loadInput_UC.DataContext as CPFDLoadInput;
             }
-            
+
             return loadInput;
         }
 
@@ -423,7 +418,7 @@ namespace PFD
 
             // Load Generation
             // General loading
-            //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
+            // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
             float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", vm.RoofCladdingThicknessIndex);
             float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", vm.WallCladdingThicknessIndex);
@@ -514,13 +509,13 @@ namespace PFD
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
-          vm.GeneralLoad = new CCalcul_1170_1(
-                fMass_Roof,
-                fMass_Wall,
-                loadInput.AdditionalDeadActionRoof,
-                loadInput.AdditionalDeadActionWall,
-                loadInput.ImposedActionRoof,
-                GlobalConstants.G_ACCELERATION);
+            vm.GeneralLoad = new CCalcul_1170_1(
+                  fMass_Roof,
+                  fMass_Wall,
+                  loadInput.AdditionalDeadActionRoof,
+                  loadInput.AdditionalDeadActionWall,
+                  loadInput.ImposedActionRoof,
+                  GlobalConstants.G_ACCELERATION);
         }
 
         public void CalculateSnowLoad()
@@ -654,7 +649,6 @@ namespace PFD
         private void UpdateDisplayOptions()
         {
             // Get display options from GUI
-
             sDisplayOptions.bUseLightDirectional = vm.LightDirectional;
             sDisplayOptions.bUseLightPoint = vm.LightPoint;
             sDisplayOptions.bUseLightSpot = vm.LightSpot;
@@ -708,59 +702,19 @@ namespace PFD
 
         private void UpdateAll()
         {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
+
+            UpdateGeometryInputData();
+
+            List<CConnectionJointTypes> joints = null;
+            if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-
-            // Set current geometry data to calculate loads
-            sGeometryInputData.fH_2 = vm.fh2;
-            sGeometryInputData.fH_1 = vm.WallHeight;
-            sGeometryInputData.fW = vm.GableWidth;
-            sGeometryInputData.fL = vm.Length;
-            sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
-
-            CComponentInfo ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
-            if(ci != null) sGeometryInputData.iMainColumnFlyBracingEveryXXGirt =  ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (ci != null) sGeometryInputData.iRafterFlyBracingEveryXXPurlin = ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
-            if (ci != null) sGeometryInputData.iEdgePurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (ci != null) sGeometryInputData.iGirt_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-            if (ci != null) sGeometryInputData.iPurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
-            if (ci != null) sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
-            if (ci != null) sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
-
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (ci != null) sGeometryInputData.iGirtFrontSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
-
-            List<CConnectionJointTypes> joints = null;
-            if (!vm.RecreateJoints)
-            {
-                joints = vm.Model.m_arrConnectionJoints;
-            }
-
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
                 sGeometryInputData,
-                //vm.WallHeight,
-                //vm.GableWidth,
-                //vm.fL1,
                 vm.Frames,
-                //vm.fh2,
                 vm.GirtDistance,
                 vm.PurlinDistance,
                 vm.ColumnDistance,
@@ -792,14 +746,55 @@ namespace PFD
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
 
-            // Create 3D window
-            UpdateDisplayOptions();
+            if (vm.SynchonizeGUI)
+            {
+                // Create 3D window
+                UpdateDisplayOptions();
 
-            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+                Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            Frame1.UpdateLayout();
+                // Display model in 3D preview frame
+                Frame1.Content = page1;
+                Frame1.UpdateLayout();
+            }
+        }
+
+
+        private void UpdateGeometryInputData()
+        {
+            CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
+            // Set current geometry data to calculate loads
+            sGeometryInputData.fH_2 = vm.fh2;
+            sGeometryInputData.fH_1 = vm.WallHeight;
+            sGeometryInputData.fW = vm.GableWidth;
+            sGeometryInputData.fL = vm.Length;
+            sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
+
+            CComponentInfo ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
+            if (ci != null) sGeometryInputData.iMainColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
+            if (ci != null) sGeometryInputData.iRafterFlyBracingEveryXXPurlin = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
+            if (ci != null) sGeometryInputData.iEdgePurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
+            if (ci != null) sGeometryInputData.iGirt_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+            if (ci != null) sGeometryInputData.iPurlin_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
+            if (ci != null) sGeometryInputData.iFrontColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
+            if (ci != null) sGeometryInputData.iBackColumnFlyBracingEveryXXGirt = ci.ILS_Items.IndexOf(ci.ILS);
+
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+            if (ci != null) sGeometryInputData.iGirtFrontSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+            ci = compList.ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+            if (ci != null) sGeometryInputData.iGirtBackSide_ILS_Number = ci.ILS_Items.IndexOf(ci.ILS);
+
         }
 
         private void SetUIElementsVisibility()
@@ -838,7 +833,7 @@ namespace PFD
             if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;
             else Part_List.IsEnabled = true;
         }
-        
+
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
@@ -891,7 +886,7 @@ namespace PFD
                 //if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
-            {                
+            {
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
                 FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
                 LabelDoors.Focus();
@@ -943,7 +938,7 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign)
             {
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
-                 
+
                 if (Member_Design.Content == null)
                 {
                     Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
@@ -958,7 +953,7 @@ namespace PFD
                     //CPFDMemberDesign memberDesignVM = uc_memberDesign.DataContext as CPFDMemberDesign;
                     //memberDesignVM.SetComponentList(compListVM.ComponentList);
                 }
-                
+
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign)
             {
@@ -975,9 +970,9 @@ namespace PFD
                     //CPFDJointsDesign jointsDesignVM = uc_jointDesign.DataContext as CPFDJointsDesign;
                     //jointsDesignVM.SetComponentList(compListVM.ComponentList);                    
                 }
-            }            
+            }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
-            {   
+            {
                 if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm.Model);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
@@ -1124,8 +1119,8 @@ namespace PFD
                         {
                             frameMembers.Add(m);
 
-                            if(bDebugging)
-                               System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
+                            if (bDebugging)
+                                System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                         }
                     }
                 }
@@ -1221,7 +1216,7 @@ namespace PFD
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
-                            
+
 
                         }
                     }
@@ -1264,8 +1259,8 @@ namespace PFD
                 if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
                     || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
                 {
-                    if(bDebugging)
-                       System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
+                    if (bDebugging)
+                        System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
                     return true;
                 }
             }
@@ -1289,13 +1284,13 @@ namespace PFD
 
             if (MaxLoadY < minY) return 0;
             else if (MinLoadY > maxY) return 0;
-            
+
             if (MinLoadY < minY) MinLoadY = minY;
             if (MaxLoadY > maxY) MaxLoadY = maxY;
 
             double b = (MaxLoadY - MinLoadY) / (maxY - minY);
-            if(bDebugging)
-               System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
+            if (bDebugging)
+                System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
             return b;
         }
 
@@ -1311,7 +1306,7 @@ namespace PFD
                 if (m.EMemberType == EMemberType_FS.eMR)
                 {
                     //urcit x1,x2 pre member v LCS
-                    
+
                     //double minLoadY = load.PointsGCS
                     //m.NodeStart.Y
 
@@ -1321,7 +1316,7 @@ namespace PFD
             {
                 //todo
             }
-            
+
             return new List<double> { x1, x2 };
         }
 
@@ -1667,7 +1662,7 @@ namespace PFD
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
                 CMainReportExport.ReportAllDataToPDFFile(viewPort, modelData, list);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -1687,7 +1682,7 @@ namespace PFD
             WaitWindow ww = new WaitWindow("DOC");
             ww.Show();
 
-            
+
             try
             {
                 //vmPFD._loadInput = loadInput;
@@ -1778,7 +1773,7 @@ namespace PFD
             CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
             CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
             //------------------------------------------------
-            
+
 
             WindowProperties props = null;
             if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
