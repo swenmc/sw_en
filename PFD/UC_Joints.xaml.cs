@@ -63,6 +63,17 @@ namespace PFD
             if (e.PropertyName == "TabItems") return;
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
+
+            if (e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
+            {
+                CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+                list_joints = jointsDict[con.ID];
+                //all joints in list sholud be the same!
+                CConnectionJointTypes joint = list_joints.FirstOrDefault();
+
+                displayJoint(sDisplayOptions, joint.Clone());
+            } 
+            
         }
         private void DebugJoints()
         {
@@ -87,13 +98,17 @@ namespace PFD
             List<CConnectionJointTypes> items = Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
             List<CConnectionJointTypes> resItems = new List<CConnectionJointTypes>();
 
-            System.Diagnostics.Trace.WriteLine($"{con.ID}. {con.Name} {con.JoinType}");
-            int count = 0;
-            foreach (CConnectionJointTypes joint in items)
+            bool debugging = false;
+            if (debugging)
             {
-                count++;
-                if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
-                else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
+                System.Diagnostics.Trace.WriteLine($"{con.ID}. {con.Name} {con.JoinType}");
+                int count = 0;
+                foreach (CConnectionJointTypes joint in items)
+                {
+                    count++;
+                    if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
+                    else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
+                }
             }
 
             foreach (CConnectionJointTypes joint in items)
@@ -557,6 +572,8 @@ namespace PFD
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
                 List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+
+                CPlateHelper.UpdateAllPlateData(plate);                
 
                 if (screwArrangementParams != null)
                 {
