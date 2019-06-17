@@ -875,6 +875,14 @@ namespace PFD
             {
                 CMember m = joint.m_MainMember;
 
+                if (!joint.m_Node.Equals(m.NodeStart) && !joint.m_Node.Equals(m.NodeEnd))
+                {
+                    //throw new Exception(m.ID + " " + m.Name);
+
+
+
+                } 
+
                 CNode nodeJoint = joint.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
 
@@ -883,16 +891,19 @@ namespace PFD
                     nodeOtherEnd = m.NodeEnd;
                     m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                 }
-                else
+                else if (joint.m_Node.ID == m.NodeEnd.ID)
                 {
                     nodeOtherEnd = m.NodeStart;
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
+                else
+                {
+                    nodeOtherEnd = nodeJoint;
                 }
 
                 float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                 float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                 float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
-
                 nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
                 nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
                 nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
