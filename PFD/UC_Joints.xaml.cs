@@ -871,6 +871,7 @@ namespace PFD
 
             jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
 
+            // Main Member
             if (joint.m_MainMember != null)
             {
                 CMember m = joint.m_MainMember;
@@ -915,13 +916,25 @@ namespace PFD
                 }
                 else
                 {
-                    //tymto si nie som isty...co som tu vystrojil
-                    m.NodeStart.X = nodeJoint.X - fMainMemberLength / 2;
-                    m.NodeStart.Y = nodeJoint.Y - fMainMemberLength / 2;
-                    m.NodeStart.Z = nodeJoint.Z - fMainMemberLength / 2;
-                    m.NodeEnd.X = nodeJoint.X + fMainMemberLength / 2;
-                    m.NodeEnd.Y = nodeJoint.Y + fMainMemberLength / 2;
-                    m.NodeEnd.Z = nodeJoint.Z + fMainMemberLength / 2;
+                    // Relativny priemet casti pruta medzi zaciatocnym uzlom a uzlom spoja do GCS
+                    fX = (m.NodeStart.X - nodeJoint.X) / m.FLength;
+                    fY = (m.NodeStart.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (m.NodeStart.Z - nodeJoint.Z) / m.FLength;
+
+                    // Nastavenie novych suradnic - zaciatok skrateneho (orezaneho) pruta
+                    m.NodeStart.X = nodeJoint.X + fX * fMainMemberLength / 2;
+                    m.NodeStart.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
+                    m.NodeStart.Z = nodeJoint.Z + fY * fMainMemberLength / 2;
+
+                    // Relativny priemet casti pruta medzi uzlom spoja a koncovym uzlom do GCS
+                    fX = (m.NodeEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (m.NodeEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (m.NodeEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    // Nastavenie novych suradnic - koniec skrateneho (orezaneho) pruta
+                    m.NodeEnd.X = nodeJoint.X + fX * fMainMemberLength / 2;
+                    m.NodeEnd.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
+                    m.NodeEnd.Z = nodeJoint.Z + fY * fMainMemberLength / 2;
                 }
 
                 //float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
@@ -937,6 +950,7 @@ namespace PFD
                 joint.m_MainMember = m; // Set new member (joint)
             }
 
+            // Secondary members
             if (joint.m_SecondaryMembers != null)
             {
                 for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
@@ -979,7 +993,7 @@ namespace PFD
                 // Pridavat len uzly ktore este neboli pridane
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
-            }                        
+            }
             jointModel.m_arrNodes = nodeList.ToArray();
 
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
