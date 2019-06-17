@@ -163,6 +163,7 @@ namespace BaseClasses
 
         public CScrew(string sName_temp, string gauge)
         {
+            Name = sName_temp;
             CTEKScrewProperties screwProperties = CTEKScrewsManager.GetScrewProperties(gauge);
             SetScrewValuesFromDatabase(screwProperties);
         }

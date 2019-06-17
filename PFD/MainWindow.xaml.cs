@@ -1708,7 +1708,6 @@ namespace PFD
             pi.ShowDialog();
         }
 
-
         int actualPreview = 0;
         private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1756,6 +1755,11 @@ namespace PFD
                 if (!dg.IsMouseOver) return;
             }
             //Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
+            // TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
+            // ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
+            // Mali by sa tiez dat urcit z parametrov globalneho modelu
+            // Tieto parametre sa totiz nastavuju pri vytvarani objektu bloku v CModel_01_PFD
+            // vid metoda DeterminateBasicPropertiesToInsertBlock
 
             //------------------------------------------------
             // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
@@ -1773,7 +1777,6 @@ namespace PFD
             CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
             CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
             //------------------------------------------------
-
 
             WindowProperties props = null;
             if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
