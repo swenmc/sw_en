@@ -2024,7 +2024,7 @@ namespace BaseClasses
             if (node == NodeEnd) return false; //ak je koncovy, tak nie je Intermediate Node
 
             double d = R3.distanceToSegment(new R3(node.X, node.Y, node.Z), new R3(NodeStart.X, NodeStart.Y, NodeStart.Z), new R3(NodeEnd.X, NodeEnd.Y, NodeEnd.Z));
-            if (MathF.d_equal(d, 0, 0.0000001)) return true;
+            if (MathF.d_equal(d, 0, 0.0001)) return true;
             else return false;
         }
 
