@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using System.Xml;
 
 namespace PFD
@@ -898,6 +899,16 @@ namespace PFD
                     fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                     fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
                     nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
                     nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
                     nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
@@ -910,31 +921,69 @@ namespace PFD
                     fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                     fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
                     nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
                     nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
                     nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
                 else
                 {
+                    fMainMemberLength *= 2; // Zdvojnasobime vykreslovanu dlzku pruta kedze vykreslujeme na 2 strany od nodeJoint
+
                     // Relativny priemet casti pruta medzi zaciatocnym uzlom a uzlom spoja do GCS
                     fX = (m.NodeStart.X - nodeJoint.X) / m.FLength;
                     fY = (m.NodeStart.Y - nodeJoint.Y) / m.FLength;
                     fZ = (m.NodeStart.Z - nodeJoint.Z) / m.FLength;
 
+                    // TO Ondrej - ak je prut velmi dlhy a fX az fZ su velmi male cisla, tak pre pripad ze jointNode je blizko k Start alebo End Node hlavneho pruta
+                    // vyjde vzdialenost (fX, resp. fY, fZ) * fMainMemberLength velmi mala
+                    // Urobil som to tak ze urcim vektor z absolutnych dlzok priemetu a potom ho normalizujem, takze absolutna vzdialenost priemetu nodeJoint a m.NodeStart, resp. m.NodeEnd
+                    // by nemala hrat rolu, mozes sa na to pozriet. Mozno Ta napadne nieco elegantnejsie, rozdiel vidiet napriklad pri spoji girt to Main column
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D vStart = new Vector3D(m.NodeStart.X - nodeJoint.X, m.NodeStart.Y - nodeJoint.Y, m.NodeStart.Z - nodeJoint.Z);
+                    vStart.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)vStart.X;
+                    fY = (float)vStart.Y;
+                    fZ = (float)vStart.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
                     // Nastavenie novych suradnic - zaciatok skrateneho (orezaneho) pruta
                     m.NodeStart.X = nodeJoint.X + fX * fMainMemberLength / 2;
                     m.NodeStart.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
-                    m.NodeStart.Z = nodeJoint.Z + fY * fMainMemberLength / 2;
+                    m.NodeStart.Z = nodeJoint.Z + fZ * fMainMemberLength / 2;
 
                     // Relativny priemet casti pruta medzi uzlom spoja a koncovym uzlom do GCS
                     fX = (m.NodeEnd.X - nodeJoint.X) / m.FLength;
                     fY = (m.NodeEnd.Y - nodeJoint.Y) / m.FLength;
                     fZ = (m.NodeEnd.Z - nodeJoint.Z) / m.FLength;
 
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D vEnd = new Vector3D(m.NodeEnd.X - nodeJoint.X, m.NodeEnd.Y - nodeJoint.Y, m.NodeEnd.Z - nodeJoint.Z);
+                    vEnd.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)vEnd.X;
+                    fY = (float)vEnd.Y;
+                    fZ = (float)vEnd.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
                     // Nastavenie novych suradnic - koniec skrateneho (orezaneho) pruta
                     m.NodeEnd.X = nodeJoint.X + fX * fMainMemberLength / 2;
                     m.NodeEnd.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
-                    m.NodeEnd.Z = nodeJoint.Z + fY * fMainMemberLength / 2;
+                    m.NodeEnd.Z = nodeJoint.Z + fZ * fMainMemberLength / 2;
+
+                    m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    m.FAlignment_End = 0;   // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                 }
 
                 //float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
@@ -974,6 +1023,15 @@ namespace PFD
                     float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
                     float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
 
                     nodeOtherEnd.X = nodeJoint.X + fX * fSecondaryMemberLength;
                     nodeOtherEnd.Y = nodeJoint.Y + fY * fSecondaryMemberLength;
