@@ -885,28 +885,51 @@ namespace PFD
 
                 CNode nodeJoint = joint.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+                float fX;
+                float fY;
+                float fZ;
 
                 if (joint.m_Node.ID == m.NodeStart.ID)
                 {
                     nodeOtherEnd = m.NodeEnd;
                     m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+
+                    fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+                    nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
                 else if (joint.m_Node.ID == m.NodeEnd.ID)
                 {
                     nodeOtherEnd = m.NodeStart;
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+
+                    fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+                    nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
                 else
                 {
-                    nodeOtherEnd = nodeJoint;
+                    //tymto si nie som isty...co som tu vystrojil
+                    m.NodeStart.X = nodeJoint.X - fMainMemberLength / 2;
+                    m.NodeStart.Y = nodeJoint.Y - fMainMemberLength / 2;
+                    m.NodeStart.Z = nodeJoint.Z - fMainMemberLength / 2;
+                    m.NodeEnd.X = nodeJoint.X + fMainMemberLength / 2;
+                    m.NodeEnd.Y = nodeJoint.Y + fMainMemberLength / 2;
+                    m.NodeEnd.Z = nodeJoint.Z + fMainMemberLength / 2;
                 }
 
-                float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
-                float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
-                float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
-                nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
-                nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
-                nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
+                //float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                //float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                //float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+                //nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                //nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                //nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
 
                 m.Fill_Basic();
 
