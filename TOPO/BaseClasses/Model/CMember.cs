@@ -1,4 +1,5 @@
 ﻿using _3DTools;
+using BaseClasses.Helpers;
 using CRSC;
 using DATABASE;
 using DATABASE.DTO;
@@ -266,6 +267,21 @@ namespace BaseClasses
         {
             get { return m_color; }
             set { m_color = value; }
+        }
+        
+        private List<CNode> m_IntermediateNodes;
+        public List<CNode> IntermediateNodes
+        {
+            get
+            {
+                if (m_IntermediateNodes == null) m_IntermediateNodes = new List<CNode>();
+                return m_IntermediateNodes;
+            }
+
+            set
+            {
+                m_IntermediateNodes = value;
+            }
         }
         //public List<Point3D> WireFramePoints;
 
@@ -1996,5 +2012,21 @@ namespace BaseClasses
             }
             
         }
+
+
+        public bool IsIntermediateNode(CNode node)
+        {
+            if (node == null) return false;
+            if (NodeStart == null) return false;
+            if (NodeEnd == null) return false;
+
+            if (node == NodeStart) return false;   // ak je pociatocny, tak nie je Intermediate Node
+            if (node == NodeEnd) return false; //ak je koncovy, tak nie je Intermediate Node
+
+            double d = R3.distanceToSegment(new R3(node.X, node.Y, node.Z), new R3(NodeStart.X, NodeStart.Y, NodeStart.Z), new R3(NodeEnd.X, NodeEnd.Y, NodeEnd.Z));
+            if (MathF.d_equal(d, 0, 0.0000001)) return true;
+            else return false;
+        }
+
     } // End of Class CMember
 }

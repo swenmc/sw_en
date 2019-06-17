@@ -1156,7 +1156,26 @@ namespace PFD
             m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength", ELSType.eLS_ULS);
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
             #endregion
+            
+            FillIntermediateNodesForMembers();
         }
+        private void FillIntermediateNodesForMembers()
+        {
+            foreach (CMember m in this.m_arrMembers)
+            {
+                foreach (CNode n in this.m_arrNodes)
+                {
+                    if (m.IsIntermediateNode(n)) m.IntermediateNodes.Add(n);
+                }
+            }
+
+            foreach (CMember m in this.m_arrMembers)
+            {
+                if(m.IntermediateNodes.Count > 0) System.Diagnostics.Trace.WriteLine($"ID:{m.ID} Name:{m.Name} IntNodesCount: {m.IntermediateNodes.Count}");
+            }
+        }
+
+
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
         {

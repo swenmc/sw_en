@@ -836,7 +836,8 @@ namespace PFD
             // TODO - potom vieme pre Main Member zistit, ktory z tychto uzlov je joint Node a vykreslit segment main member na jednu a na druhu stranu od tohto uzla
 
             // Problem 2 - joint nema spravne definovany main member (definovany je napr. ako main member prut rovnakeho typu s najnizsim ID)
-            // TODO - vyssie uvedeny zoznam medzilahlych uzlov na prute vieme pouzit aj na to ze ak Main member nie je skutocny main member prisluchajuci ku spoju ale len prvy prut rovnakeho typu, tak mozeme najst taky prut, ktory ma v zozname IntermediateNodes joint.m_Node
+            // TODO - vyssie uvedeny zoznam medzilahlych uzlov na prute vieme pouzit aj na to ze ak Main member nie je skutocny main member prisluchajuci ku spoju ale len prvy prut rovnakeho typu, 
+            // tak mozeme najst taky prut, ktory ma v zozname IntermediateNodes joint.m_Node
             // a zaroven je rovnakeho typu ako main member, to by mal byt skutocny main member, ktory patri k joint.m_Node a mozeme ho nahradit
             // tento problem by sme mali riesit uz niekde pred touto funkciou, idealne uz pri vytvarani spojov v CModel_PFD_01_GR.cs
 
@@ -872,7 +873,7 @@ namespace PFD
 
             if (joint.m_MainMember != null)
             {
-                CMember m = joint.m_MainMember;//.Clone();
+                CMember m = joint.m_MainMember;
 
                 CNode nodeJoint = joint.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
@@ -906,7 +907,7 @@ namespace PFD
             {
                 for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
                 {
-                    CMember m = joint.m_SecondaryMembers[i];//.Clone();
+                    CMember m = joint.m_SecondaryMembers[i];
 
                     CNode nodeJoint = joint.m_Node; // Joint Node
                     CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
@@ -944,9 +945,7 @@ namespace PFD
                 // Pridavat len uzly ktore este neboli pridane
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
-            }
-
-            //jointModel.m_arrNodes = new CNode[nodeList.Count];
+            }                        
             jointModel.m_arrNodes = nodeList.ToArray();
 
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
