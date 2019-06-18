@@ -12,30 +12,29 @@
         <System:Double x:Key="theTextBoxWidthLarge">250</System:Double>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid Margin="5,10,5,5">
+        <Grid Margin="5,5,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="0"/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="30"/>                
+                <RowDefinition Height="430"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Joint Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             <ComboBox Grid.Row="0" Grid.Column="1" Name="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=JointTypes}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=JointTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <ToggleButton Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Right" Margin="0,0,5,18" Name="showAllJointsCount" Checked="showAllJointsCount_Checked" Unchecked="showAllJointsCount_Unchecked">Show joints count</ToggleButton>
+            <ToggleButton Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Right" Margin="0,0,5,5" Name="showAllJointsCount" Checked="showAllJointsCount_Checked" Unchecked="showAllJointsCount_Unchecked">Show joints count</ToggleButton>
 
-            <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                <TabControl  ItemsSource="{Binding Path=TabItems}" SelectedIndex="{Binding Path=SelectedTabIndex}"  Name="TabControlMain">
-                </TabControl>
-            </ScrollViewer>
-
-            <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="FrameJointPreview" Name="FrameJointPreview3D"
+            <Frame Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="FrameJointPreview" Name="FrameJointPreview3D"
                HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" 
                Height="430" Width="570" MouseWheel="FrameJointPreview3D_MouseWheel"/>
+            
+            <!--<ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">-->
+            <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=TabItems}" SelectedIndex="{Binding Path=SelectedTabIndex}"  Name="TabControlMain">
+                </TabControl>
+            <!--</ScrollViewer>-->
 
         </Grid>
     </ScrollViewer>

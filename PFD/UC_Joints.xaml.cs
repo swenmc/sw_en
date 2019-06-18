@@ -449,14 +449,14 @@ namespace PFD
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         TabItem ti = new TabItem();
-                        ti.Header = plate.Name;
-
-                        ScrollViewer sw = new ScrollViewer();
-                        sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                        sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                        //sw.Width = 600;
+                        ti.Header = plate.Name;                        
+                        
+                        //ScrollViewer sw = new ScrollViewer();
+                        //sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        //sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        //sw.Width = 560;
                         StackPanel sp = new StackPanel();
-                        sp.Width = 580;
+                        sp.Width = 560;
                         sp.VerticalAlignment = VerticalAlignment.Top;
                         sp.HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -508,9 +508,9 @@ namespace PFD
                         List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
                         sp.Children.Add(GetDatagridForDetails(details));
 
-                        sw.Content = sp;
+                        //sw.Content = sp;
 
-                        ti.Content = sw;
+                        ti.Content = sp;
                         tabItems.Add(ti);
                     }
                 }
@@ -582,8 +582,9 @@ namespace PFD
 
                 if (screwArrangementParams != null)
                 {
-                    ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-                    StackPanel sp = sw.Content as StackPanel;
+                    //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+                    //StackPanel sp = sw.Content as StackPanel;
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;                    
                     DataGrid dgSA = sp.Children[1] as DataGrid;
                     dgSA.ItemsSource = screwArrangementParams;
                     foreach (CComponentParamsView cpw in screwArrangementParams)
@@ -660,8 +661,9 @@ namespace PFD
                 CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
                 CPlateHelper.DataGridGeometryParams_ValueChanged(item, plate);
 
-                ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
-                StackPanel sp = sw.Content as StackPanel;
+                //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+                //StackPanel sp = sw.Content as StackPanel;
+                StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
                 DataGrid dgGeometry = sp.Children[3] as DataGrid;
                 DataGrid dgDetails = sp.Children[5] as DataGrid;
                 List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
