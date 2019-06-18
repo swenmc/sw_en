@@ -79,14 +79,14 @@ namespace BaseClasses
             if (fRafterVectorDirection > 0)
             {
                 fControlPointXCoord = m_Node.X - 0.5f * m_fb_1;
-                fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft);
-                fControlPointYCoord2 = (float)(m_Node.Y + 0.5f * m_MainMember.CrScStart.b + 1.5f * m_ft);
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/- 0.5f * m_ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /* + 0.5f * m_MainMember.CrScStart.b*/ + 1.5f * m_ft);
             }
             else
             {
                 fControlPointXCoord = m_Node.X + 0.5f * m_fb_1;
-                fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft - m_ft);
-                fControlPointYCoord2 = (float)(m_Node.Y + 0.5f * m_MainMember.CrScStart.b + 1.5f * m_ft - m_ft);
+                fControlPointYCoord1 = (float)(m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - 0.5f * m_ft - m_ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + 1.5f * m_ft - m_ft);
             }
 
             CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1, 0);

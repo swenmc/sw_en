@@ -47,12 +47,12 @@ namespace BaseClasses
             float fControlPointPosition_x = 0.0f;
 
             if (m_MainMember != null)
-                fControlPointPosition_x = 0.5f * (float)m_MainMember.CrScStart.b + m_ft_main_plate;
+                fControlPointPosition_x = (float)m_MainMember.CrScStart.y_max /*0.5f * (float)m_MainMember.CrScStart.b*/ + m_ft_main_plate;
 
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            CPoint ControlPoint_P1 = new CPoint(0, fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
+            CPoint ControlPoint_P1 = new CPoint(0, fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_ft + flocaleccentricity_z, 0);
 
             int iConnectorNumberinOnePlate = 32;
             CScrew referenceScrew = new CScrew("TEK", "12");
@@ -64,8 +64,12 @@ namespace BaseClasses
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
+                //18/06/2019 Ked otocime plechy spoja zo start do end joint je potrebne predovsetkym u nesymetrickeho hlavneho pruta nastavit ine odsadenie na konci
+                if (m_MainMember != null)
+                    fControlPointPosition_x = -(float)m_MainMember.CrScStart.y_min + m_ft_main_plate;
+
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
+                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /* -0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_ft + flocaleccentricity_z, 0);
 
                 m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
             }
