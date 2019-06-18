@@ -1242,7 +1242,7 @@ namespace BaseClasses
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
         {
-            double nodesSize = 0.01;
+            double nodesSize = 0.01; // Polovica dlzky strany kocky alebo polomer gule
             Model3DGroup model3D_group = new Model3DGroup();
 
             if (model.m_arrNodes != null)
@@ -1253,7 +1253,16 @@ namespace BaseClasses
                     {
                         Point3D p = new Point3D(model.m_arrNodes[i].X, model.m_arrNodes[i].Y, model.m_arrNodes[i].Z);
 
-                        model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));
+                        // TODO Ondrej - presunut / refaktorovat metodu GetCube, aby bolo vsetko v balicku CVolume
+                        // Pridal som moznost ci chceme vykreslit uzol ako gulicku alebo kocku
+                        // Pripadne mozes upravit celu triedu CVolume, je tam teraz trosku chaos a duplicity, rozne mozne konstruktory pre to iste atd :)
+
+                        // Sphere
+                        GraphObj.CVolume sphere = new GraphObj.CVolume();
+                        model3D_group.Children.Add(sphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(Colors.Cyan))));
+
+                        // Cube
+                        //model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));
                     }
                 }
             }
@@ -2065,6 +2074,8 @@ namespace BaseClasses
             return norm;
         }
 
+        // TODO Ondrej - tato metoda by sa mala refaktorovat s tym co je v GraphObj, trieda CVolume
+        // V tejto zlozke by mali byt metody pre generovanie geometrie pre vsetky 2D a 3D geometricke utvary
 
         public static GeometryModel3D GetCube(Point3D p, double size, Brush brush)
         {
