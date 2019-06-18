@@ -600,6 +600,7 @@
         public bool bDisplayJoints;
         public bool bDisplayPlates;
         public bool bDisplayConnectors;
+        public bool bDisplayNodes;
         public bool bDisplayFoundations;
         public bool bDisplayFloorSlab;
         public bool bDisplayNodalSupports;
@@ -620,6 +621,7 @@
         public bool bDisplayMemberPrefix;
         public bool bDisplayMemberCrossSectionStartName;
         public bool bDisplayMemberRealLength;
+        public bool bDisplayNodesDescription;
 
         public bool bDisplayLoads;
         public bool bDisplayLoadsLabels;

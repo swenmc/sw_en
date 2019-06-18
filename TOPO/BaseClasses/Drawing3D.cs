@@ -81,8 +81,9 @@ namespace BaseClasses
                 if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
-                //temp
-                //gr.Children.Add(CreateModelNodes_Model3DGroup(model));
+                Model3DGroup nodes3DGroup = null;
+                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
+                if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
                                 
@@ -127,12 +128,12 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
-                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
-                    Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);                    
+                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);                    
                 }
-
-
-
+                if (sDisplayOptions.bDisplayNodesDescription)
+                {
+                    Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
             }
 
             _trackport.SetupScene();
@@ -1219,13 +1220,6 @@ namespace BaseClasses
                         tb.Foreground = Brushes.Coral;
                         tb.Background = Brushes.Black; // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
                         
-                        // TODO Ondrej - vylepsit vykreslovanie a odsadenie
-                        // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
-                        // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
-                        // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
-                        // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
-                        // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
-
                         float fOffsetZ = 0.06f;
                         float fOffsetX = 0.06f;
                         Point3D pTextPosition = new Point3D();

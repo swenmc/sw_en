@@ -277,6 +277,7 @@
                         <CheckBox Name="chbDisplayJoints" Grid.Row="6" Grid.Column="3" IsChecked="{Binding Path=DisplayJoints}">Display Joints</CheckBox>
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" IsChecked="{Binding Path=DisplayPlates}">Display Plates</CheckBox>
                         <CheckBox Name="chbDisplayConnectors" Grid.Row="8" Grid.Column="3" IsChecked="{Binding Path=DisplayConnectors}">Display Connectors</CheckBox>
+                        <CheckBox Name="chbDisplayNodes" Grid.Row="9" Grid.Column="3" IsChecked="{Binding Path=DisplayNodes}">Display Nodes</CheckBox>
 
                         <CheckBox Name="chbDisplayFoundations" Grid.Row="10" Grid.Column="3" IsChecked="{Binding Path=DisplayFoundations}">Display Foundations</CheckBox>
                         <CheckBox Name="chbDisplayFloorSlab" Grid.Row="11" Grid.Column="3" IsChecked="{Binding Path=DisplayFloorSlab}">Display Floor Slab</CheckBox>
@@ -288,6 +289,7 @@
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
                             <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Display Cross-Section name</CheckBox>
                             <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
+                            <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
                         </StackPanel>
 
                         <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="15" Grid.Column="3" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>

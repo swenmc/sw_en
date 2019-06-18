@@ -661,6 +661,7 @@ namespace PFD
             sDisplayOptions.bDisplayJoints = vm.DisplayJoints;
             sDisplayOptions.bDisplayPlates = vm.DisplayPlates;
             sDisplayOptions.bDisplayConnectors = vm.DisplayConnectors;
+            sDisplayOptions.bDisplayNodes = vm.DisplayNodes;
 
             sDisplayOptions.bDisplayFoundations = vm.DisplayFoundations;
             sDisplayOptions.bDisplayFloorSlab = vm.DisplayFloorSlab;
@@ -671,6 +672,7 @@ namespace PFD
             sDisplayOptions.bDisplayMemberPrefix = vm.ShowMemberPrefix;
             sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
             sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
+            sDisplayOptions.bDisplayNodesDescription = vm.ShowNodesDescription;
 
             sDisplayOptions.bDisplayMembersCenterLines = vm.DisplayMembersCenterLines;
             sDisplayOptions.bDisplaySolidModel = vm.DisplaySolidModel;

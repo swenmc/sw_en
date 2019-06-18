@@ -79,6 +79,7 @@ namespace PFD
         private bool m_DisplayJoints;
         private bool m_DisplayPlates;
         private bool m_DisplayConnectors;
+        private bool m_DisplayNodes;
         private bool m_DisplayFoundations;
         private bool m_DisplayFloorSlab;
         private bool m_DisplayNodalSupports;
@@ -121,6 +122,7 @@ namespace PFD
         private bool MShowMemberPrefix;
         private bool MShowMemberCrossSectionStartName;
         private bool MShowMemberRealLength;
+        private bool MShowNodesDescription;
 
         private float MDisplayIn3DRatio;
 
@@ -1529,6 +1531,19 @@ namespace PFD
                 NotifyPropertyChanged("DisplayConnectors");
             }
         }
+        public bool DisplayNodes
+        {
+            get
+            {
+                return m_DisplayNodes;
+            }
+
+            set
+            {
+                m_DisplayNodes = value;                
+                NotifyPropertyChanged("DisplayNodes");
+            }
+        }
 
         public bool DisplayFoundations
         {
@@ -1714,6 +1729,20 @@ namespace PFD
             {
                 MSynchonizeGUI = value;
                 NotifyPropertyChanged("SynchonizeGUI");
+            }
+        }
+
+        public bool ShowNodesDescription
+        {
+            get
+            {
+                return MShowNodesDescription;
+            }
+
+            set
+            {
+                MShowNodesDescription = value;
+                NotifyPropertyChanged("ShowNodesDescription");
             }
         }
 
@@ -1914,6 +1943,7 @@ namespace PFD
             DisplayJoints = false;
             DisplayPlates = false;
             DisplayConnectors = false;
+            DisplayNodes = false;
             DisplayFoundations = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
@@ -1927,6 +1957,8 @@ namespace PFD
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
+
+            ShowNodesDescription = false;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
