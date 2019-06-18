@@ -1217,7 +1217,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
-                        tb.Foreground = Brushes.Coral;
+                        tb.Foreground = Brushes.Cyan; // Ina farba ako pre popis prutov
                         tb.Background = Brushes.Black; // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
                         
                         float fOffsetZ = 0.06f;
@@ -1242,7 +1242,7 @@ namespace BaseClasses
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
         {
-            double nodesSize = 0.02;
+            double nodesSize = 0.01;
             Model3DGroup model3D_group = new Model3DGroup();
 
             if (model.m_arrNodes != null)
@@ -1253,7 +1253,7 @@ namespace BaseClasses
                     {
                         Point3D p = new Point3D(model.m_arrNodes[i].X, model.m_arrNodes[i].Y, model.m_arrNodes[i].Z);
 
-                        model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Red)));
+                        model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));
                     }
                 }
             }
