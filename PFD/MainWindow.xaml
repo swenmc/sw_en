@@ -329,6 +329,7 @@
                 </TabItem.Header>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
+                        <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="5,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
                         <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
@@ -388,20 +389,8 @@
                                     SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
                                     ItemsSource="{Binding Source={StaticResource WindowColumns}}" />
                             </DataGrid.Columns>
-                        </DataGrid>
-                        <!--<ToggleButton Name="btnDisplayDoorBlock" VerticalAlignment="Center" 
-                                      ToolTip="Display door block" IsEnabled="True"
-                                      HorizontalAlignment="Left" Margin="20 0 0 0" 
-                                      Width="30" Height="30" Checked="btnDisplayDoorBlock_Checked" Unchecked="btnDisplayDoorBlock_Unchecked">
-                            <Image Source="Resources/door.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </ToggleButton>
-                        <ToggleButton Name="btnDisplayWindowBlock" VerticalAlignment="Center" 
-                                      ToolTip="Display window block" IsEnabled="True"
-                                      HorizontalAlignment="Left" Margin="20 0 0 0" 
-                                      Width="30" Height="30" Checked="btnDisplayWindowBlock_Checked" Unchecked="btnDisplayWindowBlock_Unchecked">
-                            <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </ToggleButton>-->
-                        <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="0,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
+                        </DataGrid>                        
+                        
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>            
