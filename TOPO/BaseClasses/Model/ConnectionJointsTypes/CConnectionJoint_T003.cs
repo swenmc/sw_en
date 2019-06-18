@@ -46,9 +46,9 @@ namespace BaseClasses
             if (m_MainMember != null)
             {
                 if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
-                    fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.b + m_ft_main_plate;
+                    fAlignment_x = (float)m_MainMember.CrScStart.y_max /*0.5f * (float)m_MainMember.CrScStart.b*/ + m_ft_main_plate;
                 else
-                    fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.h + m_ft_main_plate;
+                    fAlignment_x = (float)m_MainMember.CrScStart.z_max /*0.5f * (float)m_MainMember.CrScStart.h*/ + m_ft_main_plate;
             }
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
@@ -82,6 +82,15 @@ namespace BaseClasses
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
+                //18/06/2019 Ked otocime plechy spoja zo start do end joint je potrebne predovsetkym u nesymetrickeho hlavneho pruta nastavit ine odsadenie na konci
+                if (m_MainMember != null)
+                {
+                    if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
+                        fAlignment_x = -(float)m_MainMember.CrScStart.y_min + m_ft_main_plate;
+                    else
+                        fAlignment_x = -(float)m_MainMember.CrScStart.z_min + m_ft_main_plate;
+                }
+
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
                 ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
