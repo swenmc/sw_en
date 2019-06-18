@@ -710,6 +710,7 @@ namespace PFD
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
+            else if(vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
