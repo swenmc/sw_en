@@ -106,6 +106,7 @@ namespace BaseClasses
         public CConCom_Plate_O()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_O;
             BIsDisplayed = true;
         }
 
@@ -125,6 +126,7 @@ namespace BaseClasses
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_O;
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 6;
