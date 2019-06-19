@@ -2242,6 +2242,7 @@ namespace PFD
 
                 if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
                 else if (deserializedPlate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
+                else if (deserializedPlate.ScrewArrangement is CScrewArrangement_O) vm.ScrewArrangementIndex = 1;
                 else vm.ScrewArrangementIndex = 0;
 
                 plate = deserializedPlate;

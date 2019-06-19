@@ -606,6 +606,7 @@ namespace BaseClasses
         protected override Point3DCollection GetDefinitionPoints()
         {
             Point3DCollection pMeshPositions = new Point3DCollection();
+            if (arrPoints3D == null) return pMeshPositions;
 
             foreach (Point3D point in arrPoints3D)
                 pMeshPositions.Add(point);
