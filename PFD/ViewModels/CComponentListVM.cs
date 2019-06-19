@@ -679,8 +679,6 @@ namespace PFD
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirtBackSide_ILS_Number];
         }
-        
-
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

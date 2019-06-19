@@ -591,8 +591,8 @@ namespace BaseClasses
 
             float fAdditional_x = fSlope_rad > 0 ? 0 : FCrscRafterDepth * (float)Math.Tan(-fSlope_rad); // Falling knee (distance in x direction for 0 deg
 
-            float fx_c2 = Geom2D.GetRotatedPosition_x_CCW_rad(flZ + fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
-            float fy_c2 = fhY_1 + Geom2D.GetRotatedPosition_y_CCW_rad(flZ + fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
+            float fx_c2 = flZ + Geom2D.GetRotatedPosition_x_CCW_rad(fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
+            float fy_c2 = fhY_1 + Geom2D.GetRotatedPosition_y_CCW_rad(fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
 
             if (ListOfSequenceGroups != null && ListOfSequenceGroups.Count == 2)
             {

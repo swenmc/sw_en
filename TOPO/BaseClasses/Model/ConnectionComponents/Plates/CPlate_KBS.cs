@@ -63,8 +63,6 @@ namespace BaseClasses
             float fx_temp = Fl_Z * (float)Math.Cos(fBeta);
             float fy_temp = Fl_Z * (float)Math.Sin(fBeta);
 
-            float fy_temp2 = Fl_Z * (float)Math.Tan(FSlope_rad);
-
             float fx_temp3 = Fl_Z / (float)Math.Cos(fBeta);
 
             // Falling knee
@@ -87,7 +85,7 @@ namespace BaseClasses
             PointsOut2D[4].Y = Fh_Y2;
 
             PointsOut2D[5].X = 0;
-            PointsOut2D[5].Y = Fh_Y1 - (FSlope_rad > 0 ? fy_temp2 : 0);
+            PointsOut2D[5].Y = Fh_Y1;
         }
 
         public override void Calc_Coord3D()
