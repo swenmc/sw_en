@@ -549,11 +549,16 @@ namespace BaseClasses
             float fhY_1,
             float fSlope_rad)
         {
-            float fDistanceOfCenterFromLeftEdge = fbX / 4f;
-            float fx_c1 = fDistanceOfCenterFromLeftEdge;
-            float fy_c1 = flZ + ((fhY_1 / 2f) / (float)Math.Cos(fSlope_rad)) + (fDistanceOfCenterFromLeftEdge * (float)Math.Tan(fSlope_rad));
+            float fcut = 0.005f;
 
-            float fx_c2 = fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
+            // Riadiaci bod je vlavo dole [0, 0]
+            float fCenterPosition_original_unrotated_x = ((fbX / 2f) / (float)Math.Cos(fSlope_rad)) - fcut - 0.5f * FCrscRafterDepth;
+            float fCenterPosition_original_unrotated_y = 0.5f * FCrscRafterDepth;
+
+            float fx_c1 = Geom2D.GetRotatedPosition_x_CCW_rad(fCenterPosition_original_unrotated_x, fCenterPosition_original_unrotated_y, fSlope_rad);
+            float fy_c1 = flZ + Geom2D.GetRotatedPosition_y_CCW_rad(fCenterPosition_original_unrotated_x, fCenterPosition_original_unrotated_y, fSlope_rad);
+
+            float fx_c2 = fbX - fx_c1; // Symmetrical
             float fy_c2 = fy_c1;
 
             if (ListOfSequenceGroups != null && ListOfSequenceGroups.Count == 2)
