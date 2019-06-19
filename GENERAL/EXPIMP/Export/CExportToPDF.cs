@@ -47,10 +47,9 @@ namespace EXPIMP
         {
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) return "APEX";
             else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) return "KNEE";
+            else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_O) return "KNEE FACE";
             else return "PLATE";
         }
-
-        
 
         public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, CPlate plate, CProductionInfo pInfo)
         {
@@ -389,6 +388,16 @@ namespace EXPIMP
                 else
                     sFileName = "KD_FK";
             }
+            else if (plate is CConCom_Plate_O)
+            {
+                CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "O_RK";
+                else
+                    sFileName = "O_FK";
+            }
             else
             {
                 // Not defined
@@ -401,7 +410,9 @@ namespace EXPIMP
 
                 if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) // J
                     gfx.DrawImage(image, 120, 45);
-                else // K
+                else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+                    gfx.DrawImage(image, 458, 2);
+                else // O
                     gfx.DrawImage(image, 458, 2);
             }
 
@@ -579,6 +590,16 @@ namespace EXPIMP
                 else
                     plateName = "Knee Plate - falling";
             }
+            else if (plate is CConCom_Plate_O)
+            {
+                CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Face Plate - rising";
+                else
+                    plateName = "Knee Face Plate - falling";
+            }
             else
             {
                 // Not defined
@@ -587,7 +608,7 @@ namespace EXPIMP
             }
 
             decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
-            
+
             XFont font1 = new XFont(fontFamily, 14, XFontStyle.Bold);
             XFont font2 = new XFont(fontFamily, 12, XFontStyle.Regular);
 
