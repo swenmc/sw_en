@@ -2090,7 +2090,7 @@ namespace PFD
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
-            else if (plate is CConCom_Plate_O) return 5; // Plate O
+            //else if (plate is CConCom_Plate_O) return 5; // Plate O - pozor nie 5 ale 0
             else return 0;
         }
 

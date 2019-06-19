@@ -144,6 +144,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BriefFiniteElementNet.Valid
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BFEMNet", "BFEMNet", "{841AAC24-D243-4375-A3D6-F4424864F0A4}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupSystemComponentViewer", "SetupSystemComponentViewer\SetupSystemComponentViewer.vdproj", "{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,7 @@ Global
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|ARM.Build.0 = Debug|Any CPU
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|x64.Build.0 = Debug|Any CPU
 		{28044445-E8DD-4041-B534-3FEE5C07237F}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -478,8 +481,8 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|ARM.Build.0 = Debug|Any CPU
-		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|x64.Build.0 = Debug|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -852,7 +855,6 @@ Global
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Any CPU.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|ARM.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Mixed Platforms.ActiveCfg = Release
-		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Mixed Platforms.Build.0 = Release
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|x64.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|x86.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Release|Any CPU.ActiveCfg = Release
@@ -1040,6 +1042,25 @@ Global
 		{FC6E4877-B949-4522-BD35-116172A20925}.Release|x64.Build.0 = Release|Any CPU
 		{FC6E4877-B949-4522-BD35-116172A20925}.Release|x86.ActiveCfg = Release|Any CPU
 		{FC6E4877-B949-4522-BD35-116172A20925}.Release|x86.Build.0 = Release|Any CPU
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|Any CPU.ActiveCfg = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|Any CPU.Build.0 = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|ARM.ActiveCfg = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|ARM.Build.0 = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|Mixed Platforms.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|x64.ActiveCfg = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|x64.Build.0 = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|x86.ActiveCfg = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Debug|x86.Build.0 = Debug
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|Any CPU.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|Any CPU.Build.0 = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|ARM.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|ARM.Build.0 = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|Mixed Platforms.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|Mixed Platforms.Build.0 = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|x64.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|x64.Build.0 = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|x86.ActiveCfg = Release
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1093,10 +1114,11 @@ Global
 		{7A20CE01-552E-457A-A9C3-18BED244D897} = {841AAC24-D243-4375-A3D6-F4424864F0A4}
 		{FC6E4877-B949-4522-BD35-116172A20925} = {841AAC24-D243-4375-A3D6-F4424864F0A4}
 		{841AAC24-D243-4375-A3D6-F4424864F0A4} = {31ABDBB2-53AB-4296-A003-E91CECB9CE51}
+		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30} = {E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
