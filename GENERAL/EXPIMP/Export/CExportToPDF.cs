@@ -113,6 +113,7 @@ namespace EXPIMP
             DrawFSAddress(gfx);
             gfx.Dispose();
 
+            canvas.UpdateLayout();
             DrawCanvas_PDF(canvas, page, canvasWidth);
         }
 
