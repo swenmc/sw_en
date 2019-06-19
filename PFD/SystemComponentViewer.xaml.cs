@@ -2090,6 +2090,7 @@ namespace PFD
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
+            else if (plate is CConCom_Plate_O) return 5; // Plate O
             else return 0;
         }
 
@@ -2238,7 +2239,6 @@ namespace PFD
 
                 //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
                 // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
-                
 
                 if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
                 else if (deserializedPlate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
