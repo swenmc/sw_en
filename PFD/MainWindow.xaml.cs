@@ -130,7 +130,7 @@ namespace PFD
 
             if (Joint_Input.Content == null)
             {
-                UC_Joints uc_joints = new UC_Joints(vm.Model);
+                UC_Joints uc_joints = new UC_Joints(vm);
                 Joint_Input.Content = uc_joints;
                 vm.JointsVM = uc_joints.DataContext as CJointsVM;
             }
@@ -160,17 +160,13 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
 
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
-
-                vm.RecreateJoints = true;
             }
             else if (sender is CComponentListVM)
             {
-                CComponentListVM vm = sender as CComponentListVM;
+                CComponentListVM clVM = sender as CComponentListVM;
                 //if (e.PropertyName == "SelectedComponentIndex") return;  //osetrene uz v CPFDViewModel
                 if (e.PropertyName == "ColumnFlyBracingPosition_Items") return;
                 if (e.PropertyName == "RafterFlyBracingPosition_Items") return;
-
-                this.vm.RecreateJoints = true;
             }
             else if (sender is CPFDLoadInput)
             {
@@ -202,6 +198,10 @@ namespace PFD
                 if (e.PropertyName == "GenerateIsReadonly") return;
                 if (e.PropertyName == "ILS_Items") return;
                 if (e.PropertyName == "ILS") return;
+                if (e.PropertyName == "Section")
+                {
+                    vm.RecreateJoints = true; //need to recreate joint when Section was changed
+                }
 
                 if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {
@@ -243,6 +243,7 @@ namespace PFD
             DeleteCalculationResults();
             UpdateAll();
 
+
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
             
             //kvoli Doors Models,  najprv musi byt update
@@ -254,6 +255,8 @@ namespace PFD
             {
                 Datagrid_Windows_SelectionChanged(null, null);
             }
+
+            if(vm.RecreateJoints) vm.RecreateJoints = false;
         }
 
         private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
@@ -729,6 +732,13 @@ namespace PFD
                 compList,
                 joints);
 
+            if (vm.RecreateJoints)
+            {
+                UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
+                uc_joints.ArrangeConnectionJoints();
+                vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+            }
+
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
                                         vm.GenerateLoadsOnGirts ||
@@ -976,7 +986,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
             {
-                if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm.Model);
+                if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {

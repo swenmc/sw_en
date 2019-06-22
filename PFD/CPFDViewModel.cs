@@ -293,6 +293,7 @@ namespace PFD
                     iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -317,6 +318,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("Length");
             }
         }
@@ -341,6 +343,7 @@ namespace PFD
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -370,6 +373,7 @@ namespace PFD
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("RoofPitch");
             }
         }
@@ -394,6 +398,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -415,6 +420,7 @@ namespace PFD
 
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -434,6 +440,7 @@ namespace PFD
 
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -470,6 +477,7 @@ namespace PFD
                     MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));
                 }
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
@@ -488,6 +496,7 @@ namespace PFD
                     throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("BottomGirtPosition");
             }
         }
@@ -512,6 +521,7 @@ namespace PFD
                 }
                 MFrontFrameRakeAngle = value;
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("FrontFrameRakeAngle");
             }
         }
@@ -536,6 +546,7 @@ namespace PFD
                 }
                 MBackFrameRakeAngle = value;
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("BackFrameRakeAngle");
             }
         }
@@ -552,6 +563,7 @@ namespace PFD
             {
                 MRoofCladdingIndex = value;
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
         }
@@ -566,8 +578,7 @@ namespace PFD
 
             set
             {
-                MRoofCladdingColorIndex = value;
-
+                MRoofCladdingColorIndex = value;                
                 NotifyPropertyChanged("RoofCladdingColorIndex");
             }
         }
@@ -600,6 +611,7 @@ namespace PFD
             {
                 MWallCladdingIndex = value;
                 SetResultsAreNotValid();
+                RecreateJoints = true;
                 NotifyPropertyChanged("WallCladdingIndex");
             }
         }
@@ -2033,9 +2045,10 @@ namespace PFD
                 e.PropertyName == "Design")
             {
                 SetResultsAreNotValid();
+                return;
             }
 
-            if (PropertyChanged != null) PropertyChanged(sender, e);
+            //if (PropertyChanged != null) PropertyChanged(sender, e);
         }
 
         public void Run()

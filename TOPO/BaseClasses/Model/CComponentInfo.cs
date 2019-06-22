@@ -80,7 +80,9 @@ namespace BaseClasses
                 if (MSection != value)
                 {
                     MSection = value;
+                    IsSetFromCode = true;
                     SetComponentSectionColor();
+                    IsSetFromCode = false;
                     NotifyPropertyChanged("Section");
                 }
             }

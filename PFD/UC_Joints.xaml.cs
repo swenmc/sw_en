@@ -22,16 +22,16 @@ namespace PFD
     public partial class UC_Joints : UserControl
     {
         DisplayOptions sDisplayOptions;
-        CModel_PFD Model;
+        CPFDViewModel _pfdVM;
         CJointsVM vm;
         Dictionary<int, List<CConnectionJointTypes>> jointsDict;
         List<CConnectionJointTypes> list_joints;
 
-        public UC_Joints(CModel_PFD model)
+        public UC_Joints(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
-            Model = model;
+            _pfdVM = pfdVM;
 
             vm = new CJointsVM();
             vm.PropertyChanged += HandleJointsPropertyChangedEvent;
@@ -79,14 +79,14 @@ namespace PFD
         private void DebugJoints()
         {
             int count = 0;
-            foreach (CConnectionJointTypes joint in Model.m_arrConnectionJoints)
+            foreach (CConnectionJointTypes joint in _pfdVM.Model.m_arrConnectionJoints)
             {
                 count++;
                 if (joint.m_SecondaryMembers != null) System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition} {joint.m_SecondaryMembers.Count()} {joint.m_SecondaryMembers[0].EMemberTypePosition}");
                 else System.Diagnostics.Trace.WriteLine($"{count}. {joint.GetType()} {joint.m_MainMember.EMemberTypePosition}");
             }
         }
-        private void ArrangeConnectionJoints()
+        public void ArrangeConnectionJoints()
         {
             jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
             foreach (CConnectionDescription c in vm.JointTypes)
@@ -96,7 +96,7 @@ namespace PFD
         }
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
         {
-            List<CConnectionJointTypes> items = Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
+            List<CConnectionJointTypes> items = _pfdVM.Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
             List<CConnectionJointTypes> resItems = new List<CConnectionJointTypes>();
 
             bool debugging = false;

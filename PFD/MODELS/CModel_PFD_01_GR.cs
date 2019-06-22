@@ -171,7 +171,7 @@ namespace PFD
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);
 
-            CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
+            //CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
                                                                            // See UC component list
 
             // TODO - nastavovat v GUI - zaviest databazu pre rozne typy prutov a typy load combinations
