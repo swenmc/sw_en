@@ -122,18 +122,13 @@ namespace PFD
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-
+            
             UpdateAll();
 
             vm.Model.GroupModelMembers();
             vm.RecreateJoints = false;
 
-            if (Joint_Input.Content == null)
-            {
-                UC_Joints uc_joints = new UC_Joints(vm);
-                Joint_Input.Content = uc_joints;
-                vm.JointsVM = uc_joints.DataContext as CJointsVM;
-            }
+            
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
@@ -732,6 +727,13 @@ namespace PFD
                 WindowBlocksProperties,
                 compList,
                 joints);
+
+            if (Joint_Input.Content == null)
+            {
+                UC_Joints uc_joints = new UC_Joints(vm);
+                Joint_Input.Content = uc_joints;
+                vm.JointsVM = uc_joints.DataContext as CJointsVM;
+            }
 
             if (vm.RecreateJoints)
             {

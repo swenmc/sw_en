@@ -375,7 +375,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
-                NotifyPropertyChanged("RoofPitch");
+                NotifyPropertyChanged("RoofPitch_deg");
             }
         }
 
