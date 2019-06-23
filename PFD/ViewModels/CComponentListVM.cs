@@ -656,9 +656,9 @@ namespace PFD
             if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt];
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin];
+            if (ci != null) ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin);
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin];
+            if (ci != null) ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin);
 
             
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
