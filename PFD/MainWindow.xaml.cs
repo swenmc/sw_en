@@ -727,20 +727,8 @@ namespace PFD
                 WindowBlocksProperties,
                 compList,
                 joints);
-
-            if (Joint_Input.Content == null)
-            {
-                UC_Joints uc_joints = new UC_Joints(vm);
-                Joint_Input.Content = uc_joints;
-                vm.JointsVM = uc_joints.DataContext as CJointsVM;
-            }
-
-            if (vm.RecreateJoints)
-            {
-                UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
-                uc_joints.ArrangeConnectionJoints();
-                vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
-            }
+            
+            UpdateUC_Joints();
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
@@ -775,6 +763,23 @@ namespace PFD
             }
         }
 
+
+        private void UpdateUC_Joints()
+        {
+            if (Joint_Input.Content == null)
+            {
+                UC_Joints uc_joints = new UC_Joints(vm);
+                Joint_Input.Content = uc_joints;
+                vm.JointsVM = uc_joints.DataContext as CJointsVM;
+            }
+
+            if (vm.RecreateJoints)
+            {
+                UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
+                uc_joints.ArrangeConnectionJoints();
+                vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+            }
+        }
 
         private void UpdateGeometryInputData()
         {
