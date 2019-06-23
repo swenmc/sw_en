@@ -29,6 +29,14 @@ namespace PFD
 
             Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase);
         }
+        public Page3Dmodel(CModel joint_model, DisplayOptions sDisplayOptions_temp)
+        {
+            sDisplayOptions = sDisplayOptions_temp;
+
+            InitializeComponent();
+
+            Drawing3D.DrawJointToTrackPort(_trackport, joint_model, sDisplayOptions);
+        }
 
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)
         {

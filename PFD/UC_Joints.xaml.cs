@@ -50,7 +50,7 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplayGlobalAxis = false;
 
             vm.JointTypeIndex = 0;
         }
@@ -1056,7 +1056,7 @@ namespace PFD
             }
             jointModel.m_arrNodes = nodeList.ToArray();
 
-            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, null);
+            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
 
             // Display model in 3D preview frame
             FrameJointPreview3D.Content = page1;

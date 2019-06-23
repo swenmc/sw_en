@@ -139,6 +139,116 @@ namespace BaseClasses
             _trackport.SetupScene();
         }
 
+        public static void DrawJointToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)
+        {
+            //DateTime start = DateTime.Now;
+
+            // Color of Trackport
+            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            centerModel = true;
+            //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+            if (model != null)
+            {
+                float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z = 0f;
+                CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                
+                fModel_Length_X = 0;
+                fModel_Length_Y = 0;
+                fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                
+                Transform3DGroup transGr = new Transform3DGroup();
+                transGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
+                centerModelTransGr = new Transform3DGroup();
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));                
+                //TODO pokial Mato bude chciet
+                //tu by sa to teoreticky dalo rozsirit tak,ze sa model zarotuje este podla typu Joint
+                //metoda by mala parametre rotateX, rotateY, rotateZ
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));                
+                transGr.Children.Add(centerModelTransGr);
+
+                // Global coordinate system - axis
+                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);                                
+                if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
+
+                Model3DGroup gr = new Model3DGroup();                
+                Model3D membersModel3D = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                if (membersModel3D != null) gr.Children.Add(membersModel3D);
+                //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+
+                Model3DGroup jointsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
+                //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+
+                bool displayOtherObjects3D = true;
+                Model3DGroup othersModel3DGroup = null;
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
+                if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+                //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+                
+                Model3DGroup nodes3DGroup = null;
+                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
+                if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
+
+                Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
+
+                if (centerModel)
+                {
+                    //translate transform to model center
+                    //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                    ((Model3D)gr).Transform = transGr;
+
+                    Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * 2);
+                    _trackport.PerspectiveCamera.Position = cameraPosition;
+                    _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
+                }
+                else
+                {
+                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    _trackport.PerspectiveCamera.Position = cameraPosition;
+                    _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
+                }
+
+                _trackport.Model = (Model3D)gr;
+
+                // Add centerline member model
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
+
+                // Add WireFrame Model
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
+                {
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+                }
+                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+                {
+                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+                }
+                //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+
+                if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
+                {
+                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);                    
+                }
+                if (sDisplayOptions.bDisplayNodesDescription)
+                {
+                    Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+            }
+
+            _trackport.SetupScene();
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         // Get model centre
         public static Point3D GetModelCentre(CModel model)
