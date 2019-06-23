@@ -140,6 +140,7 @@ namespace PFD
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
+            if (vm.IsSetFromCode) return;
             if (sender is CPFDViewModel)
             {
                 CPFDViewModel viewModel = sender as CPFDViewModel;
@@ -190,7 +191,7 @@ namespace PFD
                 vm.RecreateJoints = false;
             }
             else if (sender is CComponentInfo)
-            {
+            {   
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "IsSetFromCode") return;

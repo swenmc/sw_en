@@ -246,7 +246,6 @@ namespace PFD
                 //GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
 
                 SetResultsAreNotValid();
-                IsSetFromCode = false;
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fL1 = MLength / (MFrames - 1);
@@ -259,7 +258,9 @@ namespace PFD
                 WallCladdingColorIndex = 22;
                 ModelCalculatedResultsValid = false;
 
+                
                 RecreateJoints = true;
+                IsSetFromCode = false;
                 NotifyPropertyChanged("ModelIndex");
             }
         }
@@ -820,7 +821,9 @@ namespace PFD
             set
             {
                 MModel = value;
+                IsSetFromCode = true;
                 SetModelBays();
+                IsSetFromCode = false;
             }
         }
 
