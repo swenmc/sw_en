@@ -480,7 +480,7 @@
                VerticalContentAlignment="Stretch" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Margin="5,5,5,88" Grid.Column="1"/>
 
-        <ToggleButton Grid.Row="0" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Name="BtnSynchronizeGUI" IsChecked="{Binding Path=SynchonizeGUI}">Synchronize GUI</ToggleButton>
+        <ToggleButton Grid.Row="0" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Name="BtnSynchronizeGUI" IsChecked="{Binding Path=SynchronizeGUI}">Synchronize GUI</ToggleButton>
         
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
             <!--<StackPanel Orientation="Horizontal">

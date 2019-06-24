@@ -154,8 +154,7 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
-
-                if (e.PropertyName == "ModelCalculatedResultsValid") return;
+                if (e.PropertyName == "ModelCalculatedResultsValid") return;                
             }
             else if (sender is CComponentListVM)
             {
@@ -711,24 +710,27 @@ namespace PFD
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
             else if(vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
 
-            // Create Model
-            // Kitset Steel Gable Enclosed Buildings
-            // TODO - nove parametre pre nastavenie hodnot zatazenia
-            vm.Model = new CModel_PFD_01_GR(
-                sGeometryInputData,
-                vm.Frames,
-                vm.GirtDistance,
-                vm.PurlinDistance,
-                vm.ColumnDistance,
-                vm.BottomGirtPosition,
-                vm.FrontFrameRakeAngle,
-                vm.BackFrameRakeAngle,
-                DoorBlocksProperties,
-                WindowBlocksProperties,
-                compList,
-                joints);
-            
-            UpdateUC_Joints();
+            if (vm.RecreateModel)
+            {
+                // Create Model
+                // Kitset Steel Gable Enclosed Buildings
+                // TODO - nove parametre pre nastavenie hodnot zatazenia
+                vm.Model = new CModel_PFD_01_GR(
+                    sGeometryInputData,
+                    vm.Frames,
+                    vm.GirtDistance,
+                    vm.PurlinDistance,
+                    vm.ColumnDistance,
+                    vm.BottomGirtPosition,
+                    vm.FrontFrameRakeAngle,
+                    vm.BackFrameRakeAngle,
+                    DoorBlocksProperties,
+                    WindowBlocksProperties,
+                    compList,
+                    joints);
+
+                UpdateUC_Joints();
+            }            
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
@@ -750,7 +752,7 @@ namespace PFD
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
 
-            if (vm.SynchonizeGUI)
+            if (vm.SynchronizeGUI)
             {
                 // Create 3D window
                 UpdateDisplayOptions();
@@ -1080,31 +1082,7 @@ namespace PFD
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
         }
-
-        private void chbDisplayLoadsOnPurlinsAndGirts_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //UpdateAll();
-            }
-        }
-
-        private void chbDisplayLoadsOnPurlinsAndGirts_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //chbDisplayLoadsOnFrames.IsChecked = false;
-                //UpdateAll();
-            }
-        }
-
-        private void chbDisplayLoadsOnFrames_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //UpdateAll();
-            }
-        }
+        
 
         private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
         {

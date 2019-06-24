@@ -54,7 +54,8 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         
-        private bool MSynchonizeGUI;
+        private bool MSynchronizeGUI;
+        private bool MRecreateModel;
         //private int MMainColumnFlyBracingPositionIndex;
         //private int MRafterFlyBracingPositionIndex;
         //private int MEdgePurlin_ILS_Number;
@@ -260,6 +261,7 @@ namespace PFD
 
                 
                 RecreateJoints = true;
+                RecreateModel = true;
                 IsSetFromCode = false;
                 NotifyPropertyChanged("ModelIndex");
             }
@@ -295,6 +297,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -320,6 +323,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("Length");
             }
         }
@@ -345,6 +349,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -375,6 +380,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("RoofPitch_deg");
             }
         }
@@ -400,6 +406,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -422,6 +429,7 @@ namespace PFD
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -442,6 +450,7 @@ namespace PFD
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -479,6 +488,7 @@ namespace PFD
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
@@ -498,6 +508,7 @@ namespace PFD
                 MBottomGirtPosition = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("BottomGirtPosition");
             }
         }
@@ -523,6 +534,7 @@ namespace PFD
                 MFrontFrameRakeAngle = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("FrontFrameRakeAngle");
             }
         }
@@ -548,6 +560,7 @@ namespace PFD
                 MBackFrameRakeAngle = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("BackFrameRakeAngle");
             }
         }
@@ -565,6 +578,7 @@ namespace PFD
                 MRoofCladdingIndex = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
         }
@@ -579,7 +593,8 @@ namespace PFD
 
             set
             {
-                MRoofCladdingColorIndex = value;                
+                MRoofCladdingColorIndex = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("RoofCladdingColorIndex");
             }
         }
@@ -596,6 +611,7 @@ namespace PFD
             {
                 MRoofCladdingThicknessIndex = value;
                 SetResultsAreNotValid();
+                RecreateModel = false;
                 NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
         }
@@ -613,6 +629,7 @@ namespace PFD
                 MWallCladdingIndex = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
+                RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingIndex");
             }
         }
@@ -628,7 +645,7 @@ namespace PFD
             set
             {
                 MWallCladdingColorIndex = value;
-
+                RecreateModel = false;
                 NotifyPropertyChanged("WallCladdingColorIndex");
             }
         }
@@ -645,6 +662,7 @@ namespace PFD
             {
                 MWallCladdingThicknessIndex = value;
                 SetResultsAreNotValid();
+                RecreateModel = false;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
         }
@@ -807,6 +825,7 @@ namespace PFD
             {
                 MLoadCaseIndex = value;
                 SetResultsAreNotValid();
+                RecreateModel = true;
                 NotifyPropertyChanged("LoadCaseIndex");
             }
         }
@@ -838,6 +857,7 @@ namespace PFD
             {
                 MShowLoads = value;
                 SetIsEnabledSurfaceLoadsAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowLoads");
             }
         }
@@ -852,6 +872,7 @@ namespace PFD
             set
             {
                 MShowNodalLoads = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowNodalLoads");
             }
         }
@@ -880,6 +901,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnGirts = value;
+                RecreateModel = false;
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnGirts");
             }
@@ -895,6 +917,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnPurlins = value;
+                RecreateModel = false;
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnPurlins");
             }
@@ -910,6 +933,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnColumns = value;
+                RecreateModel = false;
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnColumns");
             }
@@ -925,6 +949,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnFrameMembers = value;
+                RecreateModel = false;
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnFrameMembers");
             }
@@ -942,6 +967,7 @@ namespace PFD
                 MShowSurfaceLoads = value;
                 if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
                 SetIsEnabledSurfaceLoadsAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowSurfaceLoads");
             }
         }
@@ -957,6 +983,7 @@ namespace PFD
             {
                 MDeterminateCombinationResultsByFEMSolver = value;
                 SetResultsAreNotValid();
+                RecreateModel = false;
                 NotifyPropertyChanged("DeterminateCombinationResultsByFEMSolver");
             }
         }
@@ -972,6 +999,7 @@ namespace PFD
             {
                 MUseFEMSolverCalculationForSimpleBeam = value;
                 SetResultsAreNotValid();
+                RecreateModel = false;
                 NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
             }
         }
@@ -987,6 +1015,7 @@ namespace PFD
             {
                 MDeterminateMemberLocalDisplacementsForULS = value;
                 SetResultsAreNotValid();
+                RecreateModel = false;
                 NotifyPropertyChanged("DeterminateMemberLocalDisplacementsForULS");
             }
         }
@@ -1001,6 +1030,7 @@ namespace PFD
             set
             {
                 MUseCRSCGeometricalAxes = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("UseCRSCGeometricalAxes");
             }
         }
@@ -1015,6 +1045,7 @@ namespace PFD
             set
             {
                 MShowMemberDescription = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberDescription");
             }
         }
@@ -1029,6 +1060,7 @@ namespace PFD
             set
             {
                 MShowMemberID = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberID");
             }
         }
@@ -1043,6 +1075,7 @@ namespace PFD
             set
             {
                 MShowMemberPrefix = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberPrefix");
             }
         }
@@ -1057,6 +1090,7 @@ namespace PFD
             set
             {
                 MShowMemberCrossSectionStartName = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberCrossSectionStartName");
             }
         }
@@ -1071,6 +1105,7 @@ namespace PFD
             set
             {
                 MShowMemberRealLength = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberRealLength");
             }
         }
@@ -1085,6 +1120,7 @@ namespace PFD
             set
             {
                 MShowLoadsLabels = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowLoadsLabels");
             }
         }
@@ -1099,6 +1135,7 @@ namespace PFD
             set
             {
                 MShowLoadsLabelsUnits = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowLoadsLabelsUnits");
             }
         }
@@ -1113,6 +1150,7 @@ namespace PFD
             set
             {
                 MDisplayIn3DRatio = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("MDisplayIn3DRatio");
             }
         }
@@ -1121,7 +1159,7 @@ namespace PFD
         public bool ShowGlobalAxis
         {
             get { return MShowGlobalAxis; }
-            set { MShowGlobalAxis = value; NotifyPropertyChanged("ShowGlobalAxis"); }
+            set { MShowGlobalAxis = value; RecreateModel = false; NotifyPropertyChanged("ShowGlobalAxis"); }
         }
         public bool ShowLocalMembersAxis
         {
@@ -1133,6 +1171,7 @@ namespace PFD
             set
             {
                 MShowLocalMembersAxis = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowLocalMembersAxis");
             }
         }
@@ -1146,6 +1185,7 @@ namespace PFD
             set
             {
                 MIsEnabledLocalMembersAxis = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("IsEnabledLocalMembersAxis");
             }
         }
@@ -1159,6 +1199,7 @@ namespace PFD
             set
             {
                 MShowSurfaceLoadsAxis = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowSurfaceLoadsAxis");
             }
         }
@@ -1172,6 +1213,7 @@ namespace PFD
             set
             {
                 MIsEnabledSurfaceLoadsAxis = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
             }
         }
@@ -1277,6 +1319,7 @@ namespace PFD
                 {
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                 }
+                RecreateModel = true;
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
         }
@@ -1319,6 +1362,7 @@ namespace PFD
                 {
                     w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                 }
+                RecreateModel = true;
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
@@ -1397,6 +1441,7 @@ namespace PFD
             set
             {
                 MModelCalculatedResultsValid = value;
+                RecreateModel = true;
                 NotifyPropertyChanged("ModelCalculatedResultsValid");
             }
         }
@@ -1411,6 +1456,7 @@ namespace PFD
             set
             {
                 m_LightDirectional = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("LightDirectional");
             }
         }
@@ -1425,6 +1471,7 @@ namespace PFD
             set
             {
                 m_LightPoint = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("LightPoint");
             }
         }
@@ -1439,6 +1486,7 @@ namespace PFD
             set
             {
                 m_LightSpot = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("LightSpot");
             }
         }
@@ -1453,6 +1501,7 @@ namespace PFD
             set
             {
                 m_LightAmbient = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("LightAmbient");
             }
         }
@@ -1468,6 +1517,7 @@ namespace PFD
             {
                 m_MaterialDiffuse = value;
                 if (!m_MaterialDiffuse && !m_MaterialEmissive) MaterialEmissive = true;
+                RecreateModel = false;
                 NotifyPropertyChanged("MaterialDiffuse");
             }
         }
@@ -1483,6 +1533,7 @@ namespace PFD
             {
                 m_MaterialEmissive = value;
                 if (!m_MaterialEmissive && !m_MaterialDiffuse) MaterialDiffuse = true;
+                RecreateModel = false;
                 NotifyPropertyChanged("MaterialEmissive");
             }
         }
@@ -1499,6 +1550,7 @@ namespace PFD
                 m_DisplayMembers = value;
                 if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
                 SetIsEnabledLocalMembersAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayMembers");
             }
         }
@@ -1513,6 +1565,7 @@ namespace PFD
             set
             {
                 m_DisplayJoints = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayJoints");
             }
         }
@@ -1528,6 +1581,7 @@ namespace PFD
             {
                 m_DisplayPlates = value;
                 if (m_DisplayPlates) DisplayJoints = true;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayPlates");
             }
         }
@@ -1543,6 +1597,7 @@ namespace PFD
             {
                 m_DisplayConnectors = value;
                 if (m_DisplayConnectors) DisplayJoints = true;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayConnectors");
             }
         }
@@ -1555,7 +1610,8 @@ namespace PFD
 
             set
             {
-                m_DisplayNodes = value;                
+                m_DisplayNodes = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayNodes");
             }
         }
@@ -1570,6 +1626,7 @@ namespace PFD
             set
             {
                 m_DisplayFoundations = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayFoundations");
             }
         }
@@ -1584,6 +1641,7 @@ namespace PFD
             set
             {
                 m_DisplayFloorSlab = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayFloorSlab");
             }
         }
@@ -1598,6 +1656,7 @@ namespace PFD
             set
             {
                 m_DisplayNodalSupports = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayNodalSupports");
             }
         }
@@ -1613,6 +1672,7 @@ namespace PFD
             {
                 m_DisplayMembersCenterLines = value;
                 SetIsEnabledLocalMembersAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayMembersCenterLines");
             }
         }
@@ -1628,6 +1688,7 @@ namespace PFD
             {
                 m_DisplaySolidModel = value;
                 SetIsEnabledLocalMembersAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplaySolidModel");
             }
         }
@@ -1643,6 +1704,7 @@ namespace PFD
             {
                 m_DisplayWireFrameModel = value;
                 SetIsEnabledLocalMembersAxis();
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayWireFrameModel");
             }
         }
@@ -1657,6 +1719,7 @@ namespace PFD
             set
             {
                 m_DisplayDistinguishedColorMember = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayDistinguishedColorMember");
             }
         }
@@ -1671,6 +1734,7 @@ namespace PFD
             set
             {
                 m_DisplayTransparentModelMember = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("DisplayTransparentModelMember");
             }
         }
@@ -1687,6 +1751,7 @@ namespace PFD
                 if (m_ColorsAccordingToMembers != value)
                 {
                     m_ColorsAccordingToMembers = value;
+                    RecreateModel = false;
                     NotifyPropertyChanged("ColorsAccordingToMembers");
                 }
             }
@@ -1733,17 +1798,17 @@ namespace PFD
             }
         }
 
-        public bool SynchonizeGUI
+        public bool SynchronizeGUI
         {
             get
             {
-                return MSynchonizeGUI;
+                return MSynchronizeGUI;
             }
 
             set
             {
-                MSynchonizeGUI = value;
-                NotifyPropertyChanged("SynchonizeGUI");
+                MSynchronizeGUI = value;
+                if(MSynchronizeGUI) NotifyPropertyChanged("SynchronizeGUI");
             }
         }
 
@@ -1757,7 +1822,21 @@ namespace PFD
             set
             {
                 MShowNodesDescription = value;
+                RecreateModel = false;
                 NotifyPropertyChanged("ShowNodesDescription");
+            }
+        }
+
+        public bool RecreateModel
+        {
+            get
+            {
+                return MRecreateModel;
+            }
+
+            set
+            {
+                MRecreateModel = value;
             }
         }
 
@@ -1969,6 +2048,7 @@ namespace PFD
             DisplayTransparentModelMember = false;
             ColorsAccordingToMembers = true;
             ColorsAccordingToSections = false;
+            RecreateModel = true;
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
@@ -2007,7 +2087,7 @@ namespace PFD
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
-            MSynchonizeGUI = true;
+            MSynchronizeGUI = true;
 
             IsSetFromCode = false;
 
