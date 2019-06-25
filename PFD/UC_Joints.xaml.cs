@@ -52,7 +52,7 @@ namespace PFD
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplayGlobalAxis = false;
 
-            vm.JointTypeIndex = 0;
+            vm.JointTypeIndex = 1;
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -430,6 +430,7 @@ namespace PFD
             list_joints = jointsDict[con.ID];
             //all joints in list sholud be the same!
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
+            CDatabaseComponents dcomponents = new CDatabaseComponents();
 
             if (joint == null)
             {
@@ -485,13 +486,24 @@ namespace PFD
                         //row.Height = new GridLength(1.0, GridUnitType.Star);
                         //grid.RowDefinitions.Add(row);
 
+                        StackPanel spSA = new StackPanel();
+                        sp.Width = 550;
+                        spSA.Orientation = Orientation.Horizontal;
+                        Label lSA = new Label() { Content = "Screw Arrangement: " };
+                        ComboBox selectSA = new ComboBox();
+                        selectSA.Width = 200;
+                        selectSA.Height = 20;
+                        selectSA.Items.Clear();
+                        
+                        selectSA.ItemsSource =  dcomponents.arr_Serie_J_ScrewArrangement_Names;
+                        spSA.Children.Add(lSA);
+                        spSA.Children.Add(selectSA);
+                        sp.Children.Add(spSA);
 
                         if (plate.ScrewArrangement != null)
                         {
                             List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                            Label lSA = new Label() { Content = "Screw Arrangement: " };
-                            //lSA.SetValue(Grid.RowProperty, 0);
-                            sp.Children.Add(lSA);
+                            //lSA.SetValue(Grid.RowProperty, 0);                            
                             sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
                         }
 

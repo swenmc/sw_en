@@ -2034,9 +2034,9 @@ namespace PFD
             MaterialDiffuse = true;
             MaterialEmissive = false;
             DisplayMembers = true;
-            DisplayJoints = true;
-            DisplayPlates = true;
-            DisplayConnectors = true;
+            DisplayJoints = false;
+            DisplayPlates = false;
+            DisplayConnectors = false;
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayFloorSlab = false;
@@ -2087,7 +2087,7 @@ namespace PFD
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
-            MSynchronizeGUI = true;
+            MSynchronizeGUI = false;
 
             IsSetFromCode = false;
 

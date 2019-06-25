@@ -201,7 +201,7 @@ namespace PFD
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
-            
+
             float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
 
             // Set current screw arrangement parameters
@@ -674,7 +674,7 @@ namespace PFD
             else
             {
                 // Plate is not implemented
-            }            
+            }
         }
 
         public static List<CComponentParamsView> GetComponentProperties(CPlate plate)
@@ -880,5 +880,312 @@ namespace PFD
         }
 
 
+        public static void ScrewArrangementChanged(CPlate plate, int screwArrangementIndex)
+        {
+            int iNumberofHoles = 0;
+
+            CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.18f, 0.5f, true);
+            CScrew referenceScrew = new CScrew("TEK", "14");
+
+            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
+            CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
+                3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
+                3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
+                3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
+                3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
+            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+            CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
+            CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+            CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
+
+            bool bUseAdditionalConnectors = true;
+            int iNumberOfAdditionalConnectorsInCorner = 4;
+            int iConnectorNumberInCircleSequence = 20;
+            float fConnectorRadiusInCircleSequence = 0.25f;
+
+            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+            gr1.NumberOfHalfCircleSequences = 2;
+            gr1.NumberOfRectangularSequences = 4;
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr1);
+            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+            gr2.NumberOfHalfCircleSequences = 2;
+            gr2.NumberOfRectangularSequences = 4;
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr2);
+
+            CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
+            //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        if (plate is CConCom_Plate_BB_BG)
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else
+                                plate.ScrewArrangement = screwArrangement_BX_02;
+                        }
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        if (plate is CConCom_Plate_JA) // JA
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleApex;
+                            else // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else // JB
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleApex;
+                            else // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        if (plate is CConCom_Plate_KA) // KA
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else if (plate is CConCom_Plate_KB) // KB
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(screwArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+
+                        }
+                        else if (plate is CConCom_Plate_KC) // KC
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(screwArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else if (plate is CConCom_Plate_KD) // KD
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(screwArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else // KE - TODO - screws are not implemented !!!
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(screwArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        if (screwArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (screwArrangementIndex == 1) // Rectangular - Plate O
+                            plate.ScrewArrangement = screwArrangement_O;
+
+                        break;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        break;
+                    }
+            }
+        }
+
+
+        public static string[] GetPlateScrewArangementTypes(CPlate plate)
+        {
+            CDatabaseComponents dc = new CDatabaseComponents();
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        return dc.arr_Serie_B_ScrewArrangement_Names;
+                    }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        return dc.arr_Serie_L_ScrewArrangement_Names;
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        return dc.arr_Serie_LL_ScrewArrangement_Names;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+
+                        return dc.arr_Serie_F_ScrewArrangement_Names;
+
+
+                    }
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_S:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_T:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_X:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_Y:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        return dc.arr_Serie_J_ScrewArrangement_Names;
+                        //ScrewArrangementIndex = 2;                        
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        return dc.arr_Serie_K_ScrewArrangement_Names;
+                        //ScrewArrangementIndex = 2;                        
+                    }
+                case ESerieTypePlate.eSerie_N:
+                    {
+                        return new string[] { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        return dc.arr_Serie_O_ScrewArrangement_Names;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        return new string[] { "" };
+                    }
+            }
+        }
+
+
+        public static int GetPlateScrewArangementIndex(CPlate plate)
+        {
+            CDatabaseComponents dc = new CDatabaseComponents();
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_BX_1) return 1;
+                        else if (plate.ScrewArrangement is CScrewArrangement_BX_2) return 2;
+                        else return 0;
+                        
+                        //??? mato
+                        //dc.arr_Serie_B_ScrewArrangement_Names;
+                        //nenasiel som odpovedajuce triedy k arr_Serie_B_ScrewArrangement_Names
+                        //je potrebne nieco na zaklade coho povieme aky index to je podla toho aky screw arrangement ma Plate
+                    }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_L) return 1;
+                        else return 0;                        
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_LL) return 1;
+                        else return 0;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_F) return 1;
+                        else return 0;
+                    }
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        return 0;
+                        
+                    }
+                case ESerieTypePlate.eSerie_S:
+                    {
+                        return 0;
+                    }
+                case ESerieTypePlate.eSerie_T:
+                    {
+                        return 0;
+                    }
+                case ESerieTypePlate.eSerie_X:
+                    {
+                        return 0;
+                    }
+                case ESerieTypePlate.eSerie_Y:
+                    {
+                        return 0;
+                    }
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
+                        else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
+                        else return 0;                        
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
+                        else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
+                        else return 0;
+                    }
+                case ESerieTypePlate.eSerie_N:
+                    {
+                        return 0;                        
+                    }
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_O) return 1;                        
+                        else return 0;                        
+                    }
+                default:
+                    {
+                        // Not implemented
+                        return 0;
+                        
+                    }
+            }
+        }
     }
 }
