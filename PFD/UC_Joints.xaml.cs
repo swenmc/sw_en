@@ -66,12 +66,8 @@ namespace PFD
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
             if (e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
-            {
-                CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
-                list_joints = jointsDict[con.ID];
-                //all joints in list sholud be the same!
-                CConnectionJointTypes joint = list_joints.FirstOrDefault();
-
+            {   
+                CConnectionJointTypes joint = GetSelectedJoint();
                 displayJoint(sDisplayOptions, joint.Clone());
             } 
             
@@ -544,7 +540,8 @@ namespace PFD
             ComboBox cbSA = sender as ComboBox;
             if (cbSA == null) return;
             CPlateHelper.ScrewArrangementChanged(plate, cbSA.SelectedIndex);
-
+            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+            
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
 
@@ -553,6 +550,8 @@ namespace PFD
             CConnectionJointTypes jointClone = joint.Clone();
             displayJoint(sDisplayOptions, jointClone);
         }
+
+        
 
         private CPlate GetSelectedPlate()
         {
@@ -629,7 +628,7 @@ namespace PFD
                 CPlateHelper.DataGridScrewArrangement_ValueChanged(item, plate);
                 List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
 
-                CPlateHelper.UpdateAllPlateData(plate);                
+                CPlateHelper.UpdatePlateScrewArrangementData(plate);                
 
                 if (screwArrangementParams != null)
                 {

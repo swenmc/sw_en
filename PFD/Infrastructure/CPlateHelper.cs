@@ -868,16 +868,7 @@ namespace PFD
             return details;
         }
 
-        public static void UpdateAllPlateData(CPlate plate)
-        {
-            if (plate.ScrewArrangement != null)
-                plate.ScrewArrangement.UpdateArrangmentData();
-
-            if (plate is CConCom_Plate_BB_BG) // Base plates
-                plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
-            else // other plates (without anchors)
-                plate.UpdatePlateData(plate.ScrewArrangement);
-        }
+        
 
 
         public static void ScrewArrangementChanged(CPlate plate, int screwArrangementIndex)
@@ -918,6 +909,9 @@ namespace PFD
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
+
+            //To Mato tu sa prepisuju nejake defaulty...lebo tu dole vidim  0.63f
+            //double w = plate.Width_bx; tu som chcel to cislo nejako dostat zo samotnej Plate
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
             CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
@@ -1187,5 +1181,18 @@ namespace PFD
                     }
             }
         }
+
+
+        public static void UpdatePlateScrewArrangementData(CPlate plate)
+        {
+            if (plate.ScrewArrangement != null) plate.ScrewArrangement.UpdateArrangmentData();
+
+            if (plate is CConCom_Plate_BB_BG) // Base plates
+                plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
+            else // other plates (without anchors)
+                plate.UpdatePlateData(plate.ScrewArrangement);
+        }
+
+        
     }
 }
