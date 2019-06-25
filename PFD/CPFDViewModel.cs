@@ -2034,9 +2034,9 @@ namespace PFD
             MaterialDiffuse = true;
             MaterialEmissive = false;
             DisplayMembers = true;
-            DisplayJoints = false;
-            DisplayPlates = false;
-            DisplayConnectors = false;
+            DisplayJoints = true;
+            DisplayPlates = true;
+            DisplayConnectors = true;
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayFloorSlab = false;

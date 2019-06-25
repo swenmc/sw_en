@@ -514,6 +514,7 @@ namespace PFD
                         tabItems.Add(ti);
                     }
                 }
+
                 CConnectionJointTypes jointClone = joint.Clone();
                 displayJoint(sDisplayOptions, jointClone);
             }

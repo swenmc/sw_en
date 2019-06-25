@@ -15,6 +15,8 @@ namespace BaseClasses
         public Point3D m_ControlPoint;
         public CNode[] m_arrAssignedNodesWithJointType;
         public bool bIsJointDefinedinGCS;
+
+        [NonSerialized]
         public Model3DGroup Visual_ConnectionJoint;
 
         private CJointDesignDetails m_DesignDetails;
