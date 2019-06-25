@@ -536,17 +536,18 @@ namespace PFD
         {
             CPlate plate = GetSelectedPlate();
             if (plate == null) return;
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return;
 
             ComboBox cbSA = sender as ComboBox;
             if (cbSA == null) return;
-            CPlateHelper.ScrewArrangementChanged(plate, cbSA.SelectedIndex);
+            CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
             CPlateHelper.UpdatePlateScrewArrangementData(plate);
             
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
 
-            CConnectionJointTypes joint = GetSelectedJoint();
-            if (joint == null) return;
+            
             CConnectionJointTypes jointClone = joint.Clone();
             displayJoint(sDisplayOptions, jointClone);
         }

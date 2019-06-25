@@ -871,7 +871,7 @@ namespace PFD
         
 
 
-        public static void ScrewArrangementChanged(CPlate plate, int screwArrangementIndex)
+        public static void ScrewArrangementChanged(CConnectionJointTypes joint, CPlate plate, int screwArrangementIndex)
         {
             int iNumberofHoles = 0;
 
