@@ -496,7 +496,8 @@ namespace BaseClasses
                                     }
 
                                     // Add plate connectors
-                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
+                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
                                     {
                                         Model3DGroup plateConnectorsModelGroup = new Model3DGroup();

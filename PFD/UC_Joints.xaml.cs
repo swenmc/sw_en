@@ -424,13 +424,8 @@ namespace PFD
         private void SetDynamicTabs(CJointsVM vm)
         {
             if (jointsDict == null) ArrangeConnectionJoints();
-            List<TabItem> tabItems = new List<TabItem>();
-
-            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
-            list_joints = jointsDict[con.ID];
-            //all joints in list sholud be the same!
-            CConnectionJointTypes joint = list_joints.FirstOrDefault();
-            CDatabaseComponents dcomponents = new CDatabaseComponents();
+            List<TabItem> tabItems = new List<TabItem>();            
+            CConnectionJointTypes joint = GetSelectedJoint();
 
             if (joint == null)
             {
@@ -450,79 +445,10 @@ namespace PFD
                     foreach (CPlate plate in joint.m_arrPlates)
                     {
                         TabItem ti = new TabItem();
-                        ti.Header = plate.Name;                        
-                        
-                        //ScrollViewer sw = new ScrollViewer();
-                        //sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                        //sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                        //sw.Width = 560;
-                        StackPanel sp = new StackPanel();
-                        sp.Width = 560;
-                        sp.VerticalAlignment = VerticalAlignment.Top;
-                        sp.HorizontalAlignment = HorizontalAlignment.Left;
+                        ti.Header = plate.Name;
 
-                        //Grid grid = new Grid();
-                        //RowDefinition row = new RowDefinition();
-                        //row.Height = new GridLength(40);
-                        //grid.RowDefinitions.Add(row);
+                        SetTabContent(ti, plate);
 
-                        //row = new RowDefinition();
-                        //row.Height = new GridLength(1.0, GridUnitType.Star);
-                        //grid.RowDefinitions.Add(row);
-
-                        //row = new RowDefinition();
-                        //row.Height = new GridLength(40);
-                        //grid.RowDefinitions.Add(row);
-
-                        //row = new RowDefinition();
-                        //row.Height = new GridLength(1.0, GridUnitType.Star);
-                        //grid.RowDefinitions.Add(row);
-
-                        //row = new RowDefinition();
-                        //row.Height = new GridLength(40);
-                        //grid.RowDefinitions.Add(row);
-
-                        //row = new RowDefinition();
-                        //row.Height = new GridLength(1.0, GridUnitType.Star);
-                        //grid.RowDefinitions.Add(row);
-
-                        StackPanel spSA = new StackPanel();
-                        sp.Width = 550;
-                        spSA.Orientation = Orientation.Horizontal;
-                        Label lSA = new Label() { Content = "Screw Arrangement: " };
-                        ComboBox selectSA = new ComboBox();
-                        selectSA.Width = 200;
-                        selectSA.Height = 20;
-                        selectSA.Items.Clear();
-                        
-                        selectSA.ItemsSource =  dcomponents.arr_Serie_J_ScrewArrangement_Names;
-                        spSA.Children.Add(lSA);
-                        spSA.Children.Add(selectSA);
-                        sp.Children.Add(spSA);
-
-                        if (plate.ScrewArrangement != null)
-                        {
-                            List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                            //lSA.SetValue(Grid.RowProperty, 0);                            
-                            sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
-                        }
-
-                        Label l = new Label() { Content = "Geometry: ", Margin = new Thickness(0, 15, 0, 0) };
-                        //l.SetValue(Grid.RowProperty, 2);
-                        sp.Children.Add(l);
-                        List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
-                        sp.Children.Add(GetDatagridForGeometry(geometryParams));
-
-                        l = new Label() { Content = "Details: ", Margin = new Thickness(0, 15, 0, 0) };
-                        //l.SetValue(Grid.RowProperty, 4);
-                        sp.Children.Add(l);
-
-                        List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
-                        sp.Children.Add(GetDatagridForDetails(details));
-
-                        //sw.Content = sp;
-
-                        ti.Content = sp;
                         tabItems.Add(ti);
                     }
                 }
@@ -534,6 +460,118 @@ namespace PFD
             vm.TabItems = tabItems;
             vm.SelectedTabIndex = 0;
         }
+
+        private void SetTabContent(TabItem ti, CPlate plate)
+        {
+            //ScrollViewer sw = new ScrollViewer();
+            //sw.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            //sw.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            //sw.Width = 560;
+            StackPanel sp = new StackPanel();
+            sp.Width = 560;
+            sp.VerticalAlignment = VerticalAlignment.Top;
+            sp.HorizontalAlignment = HorizontalAlignment.Left;
+
+            //Grid grid = new Grid();
+            //RowDefinition row = new RowDefinition();
+            //row.Height = new GridLength(40);
+            //grid.RowDefinitions.Add(row);
+
+            //row = new RowDefinition();
+            //row.Height = new GridLength(1.0, GridUnitType.Star);
+            //grid.RowDefinitions.Add(row);
+
+            //row = new RowDefinition();
+            //row.Height = new GridLength(40);
+            //grid.RowDefinitions.Add(row);
+
+            //row = new RowDefinition();
+            //row.Height = new GridLength(1.0, GridUnitType.Star);
+            //grid.RowDefinitions.Add(row);
+
+            //row = new RowDefinition();
+            //row.Height = new GridLength(40);
+            //grid.RowDefinitions.Add(row);
+
+            //row = new RowDefinition();
+            //row.Height = new GridLength(1.0, GridUnitType.Star);
+            //grid.RowDefinitions.Add(row);
+
+            StackPanel spSA = new StackPanel();
+            sp.Width = 550;
+            spSA.Orientation = Orientation.Horizontal;
+            Label lSA = new Label() { Content = "Screw Arrangement: " };
+            ComboBox selectSA = new ComboBox();
+            selectSA.Width = 200;
+            selectSA.Height = 20;
+            selectSA.ItemsSource = CPlateHelper.GetPlateScrewArangementTypes(plate);
+            selectSA.SelectedIndex = CPlateHelper.GetPlateScrewArangementIndex(plate);
+            selectSA.SelectionChanged += SelectSA_SelectionChanged;
+            spSA.Children.Add(lSA);
+            spSA.Children.Add(selectSA);
+            sp.Children.Add(spSA);
+
+            if (plate.ScrewArrangement != null)
+            {
+                List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
+                //lSA.SetValue(Grid.RowProperty, 0);                            
+                sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
+            }
+
+            Label l = new Label() { Content = "Geometry: ", Margin = new Thickness(0, 15, 0, 0) };
+            //l.SetValue(Grid.RowProperty, 2);
+            sp.Children.Add(l);
+            List<CComponentParamsView> geometryParams = CPlateHelper.GetComponentProperties(plate);
+            sp.Children.Add(GetDatagridForGeometry(geometryParams));
+
+            l = new Label() { Content = "Details: ", Margin = new Thickness(0, 15, 0, 0) };
+            //l.SetValue(Grid.RowProperty, 4);
+            sp.Children.Add(l);
+
+            List<CComponentParamsView> details = CPlateHelper.GetComponentDetails(plate);
+            sp.Children.Add(GetDatagridForDetails(details));
+
+            //sw.Content = sp;
+
+            ti.Content = sp;
+        }
+
+        private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CPlate plate = GetSelectedPlate();
+            if (plate == null) return;
+
+            ComboBox cbSA = sender as ComboBox;
+            if (cbSA == null) return;
+            CPlateHelper.ScrewArrangementChanged(plate, cbSA.SelectedIndex);
+
+            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
+            SetTabContent(ti, plate);
+
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return;
+            CConnectionJointTypes jointClone = joint.Clone();
+            displayJoint(sDisplayOptions, jointClone);
+        }
+
+        private CPlate GetSelectedPlate()
+        {
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return null;
+            if (joint.m_arrPlates == null) return null;
+
+            return joint.m_arrPlates[vm.SelectedTabIndex];
+        }
+
+        private CConnectionJointTypes GetSelectedJoint()
+        {
+            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+            list_joints = jointsDict[con.ID];
+            //all joints in list sholud be the same!
+            CConnectionJointTypes joint = list_joints.FirstOrDefault();
+            return joint;
+        }
+
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
         {
             DataGrid dgSA = new DataGrid();
