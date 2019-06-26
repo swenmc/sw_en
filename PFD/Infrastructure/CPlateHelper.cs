@@ -868,9 +868,6 @@ namespace PFD
             return details;
         }
 
-        
-
-
         public static void ScrewArrangementChanged(CConnectionJointTypes joint, CPlate plate, int screwArrangementIndex)
         {
             int iNumberofHoles = 0;
@@ -879,10 +876,53 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
+
+            // Default values
+            // Member cross-section parameters
+            // Base Plate
+            float fColumnDepth = 0.63f;
+            float fColumnWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * 0.002f;
+            float fColumnWebSiffenerSize_1 = 0.18f;
+
+            // Apex, knee plate
+            float fRafterDepth = 0.63f;
+            float fRafterWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * 0.002f;
+            float fRafterWebSiffenerSize_1 = 0.18f;
+
+            // Circle arrangement
+            bool bUseAdditionalConnectors = true;
+            int iNumberOfAdditionalConnectorsInCorner = 4;
+            int iConnectorNumberInCircleSequence = 20;
+            float fConnectorRadiusInCircleSequence = 0.25f;
+            float fAdditionalConnectorDistance = 0.03f;
+
+            // V pripade ze plate je priradena spoju, mozeme ako default pouzit parametre urcene podla members definovanych v spoji
+            if (joint != null)
+            {
+                // Base plate, knee joint - column is main member
+                fColumnDepth = (float)joint.m_MainMember.CrScStart.h;
+                fColumnWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * (float)joint.m_MainMember.CrScStart.t_min; // TODO - nacitat z databazy
+                fColumnWebSiffenerSize_1 = 0.18f; // TODO dopracovat do databazy, zohladnit pocet vyztuh, asymetricka poloha
+
+                if (joint.m_SecondaryMembers != null) // Apex, knee, ... for knee joint - column is main member and rafter is secondary member
+                {
+                    fRafterDepth = (float)joint.m_SecondaryMembers[0].CrScStart.h;
+                    fRafterWebStraightDepth = fColumnDepth - 2 * 0.025f - 2 * (float)joint.m_SecondaryMembers[0].CrScStart.t_min; // TODO - nacitat z databazy
+                    fRafterWebSiffenerSize_1 = 0.2857142f * (float)joint.m_SecondaryMembers[0].CrScStart.h; // TODO dopracovat do databazy, zohladnit pocet vyztuh, asymetricka poloha
+
+                    // Recalculate default radius and number of screws depending on cross-section depth
+                    float fMinimumDistanceBetweenScrews = 0.02f;
+                    fAdditionalConnectorDistance = Math.Max(fMinimumDistanceBetweenScrews, 0.05f * fRafterWebStraightDepth);
+                    fConnectorRadiusInCircleSequence = 0.45f * fRafterWebStraightDepth; // TODO - dynamicky podla velkosti prierezu
+                    float fDistanceBetweenScrewsInCircle = 0.05f;
+                    iConnectorNumberInCircleSequence = (int)((2f * MathF.fPI * fConnectorRadiusInCircleSequence) / fDistanceBetweenScrewsInCircle); // 20; // TODO - dynamicky podla velkosti prierezu
+                }
+            }
+
+            CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, fColumnDepth, fColumnDepth - 2 * 0.025f - 2 * 0.002f, 0.18f,
                 3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
                 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-            CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2 * 0.008f - 2 * 0.002f, 0.058f,
+            CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, fColumnDepth, fColumnDepth - 2 * 0.008f - 2 * 0.002f, 0.058f,
                 3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
                 3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
                 3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
@@ -890,11 +930,6 @@ namespace PFD
             CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
             CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
-
-            bool bUseAdditionalConnectors = true;
-            int iNumberOfAdditionalConnectorsInCorner = 4;
-            int iConnectorNumberInCircleSequence = 20;
-            float fConnectorRadiusInCircleSequence = 0.25f;
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
             CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
@@ -910,13 +945,10 @@ namespace PFD
             gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
 
-            //To Mato tu sa prepisuju nejake defaulty...lebo tu dole vidim  0.63f
-            //double w = plate.Width_bx; tu som chcel to cislo nejako dostat zo samotnej Plate
-
-            CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
+            CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
             //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, fRafterDepth, fRafterWebStraightDepth, fRafterWebSiffenerSize_1, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
 
             switch (plate.m_ePlateSerieType_FS)
             {
@@ -1021,7 +1053,6 @@ namespace PFD
             }
         }
 
-
         public static string[] GetPlateScrewArangementTypes(CPlate plate)
         {
             CDatabaseComponents dc = new CDatabaseComponents();
@@ -1041,10 +1072,7 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_F:
                     {
-
                         return dc.arr_Serie_F_ScrewArrangement_Names;
-
-
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {
@@ -1069,12 +1097,12 @@ namespace PFD
                 case ESerieTypePlate.eSerie_J:
                     {
                         return dc.arr_Serie_J_ScrewArrangement_Names;
-                        //ScrewArrangementIndex = 2;                        
+                        //ScrewArrangementIndex = 2; 
                     }
                 case ESerieTypePlate.eSerie_K:
                     {
                         return dc.arr_Serie_K_ScrewArrangement_Names;
-                        //ScrewArrangementIndex = 2;                        
+                        //ScrewArrangementIndex = 2;
                     }
                 case ESerieTypePlate.eSerie_N:
                     {
@@ -1091,7 +1119,6 @@ namespace PFD
                     }
             }
         }
-
 
         public static int GetPlateScrewArangementIndex(CPlate plate)
         {
@@ -1114,7 +1141,7 @@ namespace PFD
                     {
                         if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_L) return 1;
-                        else return 0;                        
+                        else return 0;
                     }
                 case ESerieTypePlate.eSerie_LL:
                     {
@@ -1165,13 +1192,13 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_N:
                     {
-                        return 0;                        
+                        return 0;
                     }
                 case ESerieTypePlate.eSerie_O:
                     {
                         if (plate.ScrewArrangement == null) return 0;
-                        else if (plate.ScrewArrangement is CScrewArrangement_O) return 1;                        
-                        else return 0;                        
+                        else if (plate.ScrewArrangement is CScrewArrangement_O) return 1; 
+                        else return 0;
                     }
                 default:
                     {
@@ -1182,7 +1209,6 @@ namespace PFD
             }
         }
 
-
         public static void UpdatePlateScrewArrangementData(CPlate plate)
         {
             if (plate.ScrewArrangement != null) plate.ScrewArrangement.UpdateArrangmentData();
@@ -1192,7 +1218,5 @@ namespace PFD
             else // other plates (without anchors)
                 plate.UpdatePlateData(plate.ScrewArrangement);
         }
-
-        
     }
 }
