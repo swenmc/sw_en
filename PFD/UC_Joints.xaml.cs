@@ -51,6 +51,8 @@ namespace PFD
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayNodes = true;
+            sDisplayOptions.bDisplayNodesDescription = true;
 
             vm.JointTypeIndex = 1;
         }
