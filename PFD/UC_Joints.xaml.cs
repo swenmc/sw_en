@@ -53,8 +53,8 @@ namespace PFD
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayNodes = true;
             sDisplayOptions.bDisplayNodesDescription = true;
-            sDisplayOptions.bColorsAccordingToMembers = false;
-            sDisplayOptions.bColorsAccordingToSections = true;
+            sDisplayOptions.bColorsAccordingToMembers = true;
+            sDisplayOptions.bColorsAccordingToSections = false;
 
             vm.JointTypeIndex = 1;
         }

@@ -81,6 +81,7 @@ namespace BaseClasses
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_Q;
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 8;
