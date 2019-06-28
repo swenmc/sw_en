@@ -55,5 +55,10 @@ namespace BaseClasses
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, 0.05f, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, 90, rotation_x_member, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees
         }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_E001(m_Node, m_MainMember, m_SecondaryMembers[0], BIsDisplayed);
+        }
     }
 }

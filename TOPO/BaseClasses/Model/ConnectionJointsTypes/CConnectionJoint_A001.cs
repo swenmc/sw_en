@@ -15,6 +15,7 @@ namespace BaseClasses
         float m_fh_2;
         float m_ft;
         float m_fSlope_rad;
+        float m_fJointAngleAboutZ_deg;
 
         public CConnectionJoint_A001() { }
 
@@ -29,6 +30,7 @@ namespace BaseClasses
 
             m_fb = fb_temp;
             m_fSlope_rad = fSLope_rad_temp;
+            m_fJointAngleAboutZ_deg = fJointAngleAboutZ_deg;
             m_fh_1 = (float)m_MainMember.CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * 0.5f * m_fb;
             m_ft = ft;
@@ -71,6 +73,11 @@ namespace BaseClasses
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees
             m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+        }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_A001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb, m_ft, m_fJointAngleAboutZ_deg, BIsDisplayed);
         }
     }
 }

@@ -138,7 +138,7 @@ namespace PFD
                     ((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
 
                     Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-                    if(sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null);
+                    if(sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null, null);
                     
                     _trackport.Model = (Model3D)gr;
                 }

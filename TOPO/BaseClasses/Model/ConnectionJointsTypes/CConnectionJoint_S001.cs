@@ -13,6 +13,7 @@ namespace BaseClasses
     {
         // Column to Main Rafter Joint
         float m_ft;
+        bool m_bSwitchConnectedSide_Z;
 
         public CConnectionJoint_S001() { }
 
@@ -26,7 +27,7 @@ namespace BaseClasses
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
             BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
-
+            m_bSwitchConnectedSide_Z = bSwitchConnectedSide_Z;
             m_ft = 0.002f;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
@@ -98,6 +99,11 @@ namespace BaseClasses
 
                 m_arrPlates[0] = pPlate1;
             }
+        }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_bSwitchConnectedSide_Z, BIsDisplayed);
         }
     }
 }

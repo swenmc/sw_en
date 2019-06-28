@@ -17,6 +17,9 @@ namespace BaseClasses
         float m_fPlate_Angle_RightLeg_BX1;
         float m_fPlate_Angle_RightLeg_BX2;
         float m_fPlate_Angle_Height;
+        string m_sPlateType_F;
+        EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
+        bool m_bIsAlignmentMainMemberWidth;
 
         public CConnectionJoint_T003() { }
 
@@ -24,6 +27,9 @@ namespace BaseClasses
         {
             bIsJointDefinedinGCS = false;
 
+            m_sPlateType_F = sPlateType_F;
+            m_ePlateNumberAndPosition = ePlateNumberAndPosition;
+            m_bIsAlignmentMainMemberWidth = bIsAlignmentMainMemberWidth;
             m_Node = Node_temp;
             m_MainMember = MainMember_temp;
             m_SecondaryMembers = new CMember[1];
@@ -124,6 +130,11 @@ namespace BaseClasses
                         m_arrPlates[0] = pLeftPlate;
                 }
             }
+        }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_T003(m_sPlateType_F, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, m_bIsAlignmentMainMemberWidth, BIsDisplayed);
         }
     }
 }

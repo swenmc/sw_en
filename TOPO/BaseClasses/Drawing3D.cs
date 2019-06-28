@@ -43,7 +43,7 @@ namespace BaseClasses
                 }
 
                 // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);
+                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, (centerModel ? centerModelTransGr : null));
 
                 if (sDisplayOptions.bDisplaySurfaceLoadAxis) DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
 
@@ -167,7 +167,7 @@ namespace BaseClasses
                 centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 
                 // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);                                
+                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);                                
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
 
                 Model3DGroup gr = new Model3DGroup();                
@@ -797,7 +797,7 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         // Draw GCS Axis
-        public static void DrawGlobalAxis(Viewport3D viewPort, CModel model)
+        public static void DrawGlobalAxis(Viewport3D viewPort, CModel model, Transform3D trans)
         {
             float flineThickness = 3;
             // Global coordinate system - axis
@@ -852,13 +852,12 @@ namespace BaseClasses
             wZ.Point2 = pAxisZ;
             wZ.Thickness = flineThickness;
             wZ.Color = Colors.Blue;
-
-            //priprava na centrovanie modelu                
-            if (centerModel)
+            
+            if (trans != null)
             {
-                wX.Transform = centerModelTransGr;
-                wY.Transform = centerModelTransGr;
-                wZ.Transform = centerModelTransGr;
+                wX.Transform = trans;
+                wY.Transform = trans;
+                wZ.Transform = trans;
             }
 
             viewPort.Children.Add(wX);

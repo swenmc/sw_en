@@ -53,5 +53,10 @@ namespace BaseClasses
                 m_arrPlates[0] = new CConCom_Plate_BB_BG(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_TB01(m_Node, m_MainMember, BIsDisplayed);
+        }
     }
 }

@@ -18,6 +18,8 @@ namespace BaseClasses
         float m_fh_2;
         float m_ft;
         float m_fSlope_rad;
+        float m_ft_rafter;
+        float m_fJointAngleAboutZ_deg;
 
         public CConnectionJoint_B001() { }
 
@@ -38,6 +40,8 @@ namespace BaseClasses
             m_fb_1 = (float)m_MainMember.CrScStart.h;
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * m_fb_2;
             m_ft = ft;
+            m_ft_rafter = ft_rafter;
+            m_fJointAngleAboutZ_deg = fJointAngleAboutZ_deg;
 
             float ftemp_a = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             float ftemp_b = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
@@ -144,6 +148,11 @@ namespace BaseClasses
             double y = (a1 * c2 - a2 * c1) / det;
 
             return new Point(x, y);
+        }
+
+        public override CConnectionJointTypes RecreateJoint()
+        {
+            return new CConnectionJoint_B001(m_Node, m_MainMember, m_SecondaryMembers[0], m_fSlope_rad, m_fb_2, m_fh_1, m_ft, m_ft_rafter, m_fJointAngleAboutZ_deg, BIsDisplayed);
         }
     }
 }

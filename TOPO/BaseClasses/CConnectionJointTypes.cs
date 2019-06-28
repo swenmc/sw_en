@@ -162,5 +162,10 @@ namespace BaseClasses
                                                   "Base plate of cross-section with this name is not implemented");
             }
         }
+
+        public virtual CConnectionJointTypes RecreateJoint()
+        {
+            return null;
+        }
     }
 }

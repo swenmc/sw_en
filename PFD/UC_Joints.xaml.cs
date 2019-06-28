@@ -64,7 +64,7 @@ namespace PFD
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             CConnectionJointTypes joint = GetSelectedJoint();
-            displayJoint(joint.Clone());
+            displayJoint(joint);
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -80,7 +80,7 @@ namespace PFD
             if (e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
             {   
                 CConnectionJointTypes joint = GetSelectedJoint();
-                displayJoint(joint.Clone());
+                displayJoint(joint);
             } 
             
         }
@@ -460,10 +460,8 @@ namespace PFD
                         tabItems.Add(ti);
                     }
                 }
-
-                CConnectionJointTypes jointClone = joint.Clone();
-                displayJoint(jointClone);
                 
+                displayJoint(joint);
             }
 
             vm.TabItems = tabItems;
@@ -560,9 +558,7 @@ namespace PFD
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
 
-            
-            CConnectionJointTypes jointClone = joint.Clone();
-            displayJoint(jointClone);
+            displayJoint(joint);
         }
 
         
@@ -582,6 +578,7 @@ namespace PFD
             list_joints = jointsDict[con.ID];
             //all joints in list sholud be the same!
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
+            //CConnectionJointTypes joint = list_joints.LastOrDefault();
             return joint;
         }
 
@@ -895,6 +892,7 @@ namespace PFD
         }
         private void displayJoint(CConnectionJointTypes joint)
         {
+            CConnectionJointTypes jointClone = joint.Clone();
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //sDisplayOptions = new DisplayOptions();
             //sDisplayOptions.bUseDiffuseMaterial = true;
@@ -929,9 +927,9 @@ namespace PFD
             float fMainMemberLength = 0;
             float fSecondaryMemberLength = 0;
 
-            for (int i = 0; i < joint.m_arrPlates.Length; i++)
+            for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
             {
-                fMainMemberLength = Math.Max(joint.m_arrPlates[i].Width_bx, joint.m_arrPlates[i].Height_hy);
+                fMainMemberLength = Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
                 fSecondaryMemberLength = fMainMemberLength;
             }
 
@@ -943,25 +941,25 @@ namespace PFD
 
             CModel jointModel = new CModel();
 
-            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
+            //jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
 
             int iNumberMainMembers = 0;
             int iNumberSecondaryMembers = 0;
 
-            if (joint.m_MainMember != null)
+            if (jointClone.m_MainMember != null)
                 iNumberMainMembers = 1;
 
-            if (joint.m_SecondaryMembers != null)
-                iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
+            if (jointClone.m_SecondaryMembers != null)
+                iNumberSecondaryMembers = jointClone.m_SecondaryMembers.Length;
 
             jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
 
             // Main Member
-            if (joint.m_MainMember != null)
+            if (jointClone.m_MainMember != null)
             {
-                CMember m = joint.m_MainMember;
+                CMember m = jointClone.m_MainMember;
 
-                if (!joint.m_Node.Equals(m.NodeStart) && !joint.m_Node.Equals(m.NodeEnd))
+                if (!jointClone.m_Node.Equals(m.NodeStart) && !jointClone.m_Node.Equals(m.NodeEnd))
                 {
                     //throw new Exception(m.ID + " " + m.Name);
 
@@ -969,13 +967,13 @@ namespace PFD
 
                 } 
 
-                CNode nodeJoint = joint.m_Node; // Joint Node
+                CNode nodeJoint = jointClone.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
                 float fX;
                 float fY;
                 float fZ;
 
-                if (joint.m_Node.ID == m.NodeStart.ID)
+                if (jointClone.m_Node.ID == m.NodeStart.ID)
                 {
                     nodeOtherEnd = m.NodeEnd;
                     m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -997,7 +995,7 @@ namespace PFD
                     nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
                     nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
-                else if (joint.m_Node.ID == m.NodeEnd.ID)
+                else if (jointClone.m_Node.ID == m.NodeEnd.ID)
                 {
                     nodeOtherEnd = m.NodeStart;
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -1080,20 +1078,20 @@ namespace PFD
                 m.Fill_Basic();
 
                 jointModel.m_arrMembers[0] = m; // Set new member (member array)
-                joint.m_MainMember = m; // Set new member (joint)
+                jointClone.m_MainMember = m; // Set new member (joint)                
             }
 
             // Secondary members
-            if (joint.m_SecondaryMembers != null)
+            if (jointClone.m_SecondaryMembers != null)
             {
-                for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                for (int i = 0; i < jointClone.m_SecondaryMembers.Length; i++)
                 {
-                    CMember m = joint.m_SecondaryMembers[i];
+                    CMember m = jointClone.m_SecondaryMembers[i];
 
-                    CNode nodeJoint = joint.m_Node; // Joint Node
+                    CNode nodeJoint = jointClone.m_Node; // Joint Node
                     CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
 
-                    if (joint.m_Node.ID == m.NodeStart.ID)
+                    if (jointClone.m_Node.ID == m.NodeStart.ID)
                     {
                         nodeOtherEnd = m.NodeEnd;
                         m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -1124,10 +1122,10 @@ namespace PFD
                     m.Fill_Basic();
 
                     jointModel.m_arrMembers[1 + i] = m; // Set new member (member array)
-                    joint.m_SecondaryMembers[i] = m; // Set new member (joint)
+                    jointClone.m_SecondaryMembers[i] = m; // Set new member (joint)
                 }
             }
-
+            
             List<CNode> nodeList = new List<CNode>();
 
             for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
@@ -1137,6 +1135,9 @@ namespace PFD
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
             }
             jointModel.m_arrNodes = nodeList.ToArray();
+
+            jointClone = joint.RecreateJoint();
+            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
 
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
 
