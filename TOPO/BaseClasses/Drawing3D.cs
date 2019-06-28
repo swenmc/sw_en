@@ -157,17 +157,15 @@ namespace BaseClasses
                 fModel_Length_Z = 0;
                 Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
                 
-                Transform3DGroup transGr = new Transform3DGroup();
-                transGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr = new Transform3DGroup();
-                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));                
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
                 //TODO pokial Mato bude chciet
                 //tu by sa to teoreticky dalo rozsirit tak,ze sa model zarotuje este podla typu Joint
                 //metoda by mala parametre rotateX, rotateY, rotateZ
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
-                centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));                
-                transGr.Children.Add(centerModelTransGr);
-
+                centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);                                
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
@@ -181,8 +179,12 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup jointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions, new SolidColorBrush(Colors.Blue));
+                if (jointsModel3DGroup != null)
+                {
+                    gr.Children.Add(jointsModel3DGroup);
+
+                } 
                 //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 bool displayOtherObjects3D = true;
@@ -200,8 +202,7 @@ namespace BaseClasses
                 if (centerModel)
                 {
                     //translate transform to model center
-                    //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
-                    ((Model3D)gr).Transform = transGr;
+                    ((Model3D)gr).Transform = centerModelTransGr;
 
                     Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * 2);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
