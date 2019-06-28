@@ -562,7 +562,7 @@ namespace BaseClasses
 
             // All in one mesh
             MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
+            //mesh.Positions = new Point3DCollection();
             mesh.Positions = GetDefinitionPoints();
 
             // Add Positions of plate edge nodes

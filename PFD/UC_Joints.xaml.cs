@@ -32,6 +32,7 @@ namespace PFD
             InitializeComponent();
 
             _pfdVM = pfdVM;
+            _pfdVM.PropertyChanged += _pfdVM_PropertyChanged;
 
             vm = new CJointsVM();
             vm.PropertyChanged += HandleJointsPropertyChangedEvent;
@@ -39,24 +40,31 @@ namespace PFD
 
             ArrangeConnectionJoints();
             //DebugJoints();
+            sDisplayOptions = _pfdVM.GetDisplayOptions();
 
-            sDisplayOptions = new DisplayOptions();
-            sDisplayOptions.bUseDiffuseMaterial = true;
-            sDisplayOptions.bUseEmissiveMaterial = false;
-            sDisplayOptions.bColorsAccordingToMembers = true;
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayNodes = true;
-            sDisplayOptions.bDisplayNodesDescription = true;
-            sDisplayOptions.bColorsAccordingToMembers = true;
-            sDisplayOptions.bColorsAccordingToSections = false;
+            //sDisplayOptions = new DisplayOptions();
+            //sDisplayOptions.bUseDiffuseMaterial = true;
+            //sDisplayOptions.bUseEmissiveMaterial = false;
+            //sDisplayOptions.bColorsAccordingToMembers = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bUseLightAmbient = true;
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayNodes = true;
+            //sDisplayOptions.bDisplayNodesDescription = true;
+            //sDisplayOptions.bColorsAccordingToMembers = true;
+            //sDisplayOptions.bColorsAccordingToSections = false;
 
             vm.JointTypeIndex = 1;
+        }
+
+        private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            CConnectionJointTypes joint = GetSelectedJoint();
+            displayJoint(joint.Clone());
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -72,7 +80,7 @@ namespace PFD
             if (e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
             {   
                 CConnectionJointTypes joint = GetSelectedJoint();
-                displayJoint(sDisplayOptions, joint.Clone());
+                displayJoint(joint.Clone());
             } 
             
         }
@@ -454,7 +462,8 @@ namespace PFD
                 }
 
                 CConnectionJointTypes jointClone = joint.Clone();
-                displayJoint(sDisplayOptions, jointClone);
+                displayJoint(jointClone);
+                
             }
 
             vm.TabItems = tabItems;
@@ -553,7 +562,7 @@ namespace PFD
 
             
             CConnectionJointTypes jointClone = joint.Clone();
-            displayJoint(sDisplayOptions, jointClone);
+            displayJoint(jointClone);
         }
 
         
@@ -884,8 +893,26 @@ namespace PFD
         {
             SetDynamicTabs(vm);
         }
-        private void displayJoint(DisplayOptions sDisplayOptions, CConnectionJointTypes joint)
+        private void displayJoint(CConnectionJointTypes joint)
         {
+            sDisplayOptions = _pfdVM.GetDisplayOptions();
+            //sDisplayOptions = new DisplayOptions();
+            //sDisplayOptions.bUseDiffuseMaterial = true;
+            //sDisplayOptions.bUseEmissiveMaterial = false;
+            //sDisplayOptions.bColorsAccordingToMembers = true;
+            //sDisplayOptions.bDisplayMembers = true;
+            //sDisplayOptions.bDisplaySolidModel = true;
+            //sDisplayOptions.bDisplayPlates = true;
+            //sDisplayOptions.bDisplayConnectors = true;
+            //sDisplayOptions.bDisplayJoints = true;
+            //sDisplayOptions.bUseLightAmbient = true;
+            //sDisplayOptions.bDisplayGlobalAxis = false;
+            //sDisplayOptions.bDisplayNodes = true;
+            //sDisplayOptions.bDisplayNodesDescription = true;
+            //sDisplayOptions.bColorsAccordingToMembers = true;
+            //sDisplayOptions.bColorsAccordingToSections = false;
+
+
             // TO Ondrej - tuto funkciu treba trosku ucesat, refaktorovat casti kodu pre Main Member a cast pre Secondary Members
 
             // Problem 1 - ani jeden z uzlov pruta, ktore patria ku joint nekonci v spoji (vyskytuje sa najma pre main member, napr purlin pripojena k rafter)

@@ -2034,9 +2034,9 @@ namespace PFD
             MaterialDiffuse = true;
             MaterialEmissive = false;
             DisplayMembers = true;
-            DisplayJoints = false;
-            DisplayPlates = false;
-            DisplayConnectors = false;
+            DisplayJoints = true;
+            DisplayPlates = true;
+            DisplayConnectors = true;
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayFloorSlab = false;
@@ -2567,6 +2567,65 @@ namespace PFD
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);
             }
+        }
+
+        public DisplayOptions GetDisplayOptions()
+        {
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            // Get display options from GUI
+            sDisplayOptions.bUseLightDirectional = LightDirectional;
+            sDisplayOptions.bUseLightPoint = LightPoint;
+            sDisplayOptions.bUseLightSpot = LightSpot;
+            sDisplayOptions.bUseLightAmbient = LightAmbient;
+
+            sDisplayOptions.bUseDiffuseMaterial = MaterialDiffuse;
+            sDisplayOptions.bUseEmissiveMaterial = MaterialEmissive;
+
+            sDisplayOptions.bDisplayMembers = DisplayMembers;
+            sDisplayOptions.bDisplayJoints = DisplayJoints;
+            sDisplayOptions.bDisplayPlates = DisplayPlates;
+            sDisplayOptions.bDisplayConnectors = DisplayConnectors;
+            sDisplayOptions.bDisplayNodes = DisplayNodes;
+
+            sDisplayOptions.bDisplayFoundations = DisplayFoundations;
+            sDisplayOptions.bDisplayFloorSlab = DisplayFloorSlab;
+            sDisplayOptions.bDisplayNodalSupports = DisplayNodalSupports;
+
+            sDisplayOptions.bDisplayMemberDescription = ShowMemberDescription;
+            sDisplayOptions.bDisplayMemberID = ShowMemberID;
+            sDisplayOptions.bDisplayMemberPrefix = ShowMemberPrefix;
+            sDisplayOptions.bDisplayMemberCrossSectionStartName = ShowMemberCrossSectionStartName;
+            sDisplayOptions.bDisplayMemberRealLength = ShowMemberRealLength;
+            sDisplayOptions.bDisplayNodesDescription = ShowNodesDescription;
+
+            sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
+            sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
+            sDisplayOptions.bDisplayWireFrameModel = DisplayWireFrameModel;
+
+            sDisplayOptions.bDistinguishedColor = DisplayDistinguishedColorMember;
+            sDisplayOptions.bTransparentMemberModel = DisplayTransparentModelMember;
+
+            sDisplayOptions.bDisplayGlobalAxis = ShowGlobalAxis;
+            sDisplayOptions.bDisplayLocalMembersAxis = ShowLocalMembersAxis;
+            sDisplayOptions.bDisplaySurfaceLoadAxis = ShowSurfaceLoadsAxis;
+
+            sDisplayOptions.bDisplayLoads = ShowLoads;
+            sDisplayOptions.bDisplayNodalLoads = ShowNodalLoads;
+            sDisplayOptions.bDisplayMemberLoads = ShowLoadsOnMembers;
+            sDisplayOptions.bDisplayMemberLoads_Girts = ShowLoadsOnGirts;
+            sDisplayOptions.bDisplayMemberLoads_Purlins = ShowLoadsOnPurlins;
+            sDisplayOptions.bDisplayMemberLoads_Columns = ShowLoadsOnColumns;
+            sDisplayOptions.bDisplayMemberLoads_Frames = ShowLoadsOnFrameMembers;
+            sDisplayOptions.bDisplaySurfaceLoads = ShowSurfaceLoads;
+
+            sDisplayOptions.bDisplayLoadsLabels = ShowLoadsLabels;
+            sDisplayOptions.bDisplayLoadsLabelsUnits = ShowLoadsLabelsUnits;
+
+            sDisplayOptions.DisplayIn3DRatio = DisplayIn3DRatio;
+            sDisplayOptions.bColorsAccordingToMembers = ColorsAccordingToMembers;
+            sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
+
+            return sDisplayOptions;
         }
     }
 }

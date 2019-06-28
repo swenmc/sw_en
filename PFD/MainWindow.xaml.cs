@@ -644,61 +644,63 @@ namespace PFD
             }
         }
 
-        private void UpdateDisplayOptions()
-        {
-            // Get display options from GUI
-            sDisplayOptions.bUseLightDirectional = vm.LightDirectional;
-            sDisplayOptions.bUseLightPoint = vm.LightPoint;
-            sDisplayOptions.bUseLightSpot = vm.LightSpot;
-            sDisplayOptions.bUseLightAmbient = vm.LightAmbient;
 
-            sDisplayOptions.bUseDiffuseMaterial = vm.MaterialDiffuse;
-            sDisplayOptions.bUseEmissiveMaterial = vm.MaterialEmissive;
 
-            sDisplayOptions.bDisplayMembers = vm.DisplayMembers;
-            sDisplayOptions.bDisplayJoints = vm.DisplayJoints;
-            sDisplayOptions.bDisplayPlates = vm.DisplayPlates;
-            sDisplayOptions.bDisplayConnectors = vm.DisplayConnectors;
-            sDisplayOptions.bDisplayNodes = vm.DisplayNodes;
+        //private void UpdateDisplayOptions()
+        //{
+        //    // Get display options from GUI
+        //    sDisplayOptions.bUseLightDirectional = vm.LightDirectional;
+        //    sDisplayOptions.bUseLightPoint = vm.LightPoint;
+        //    sDisplayOptions.bUseLightSpot = vm.LightSpot;
+        //    sDisplayOptions.bUseLightAmbient = vm.LightAmbient;
 
-            sDisplayOptions.bDisplayFoundations = vm.DisplayFoundations;
-            sDisplayOptions.bDisplayFloorSlab = vm.DisplayFloorSlab;
-            sDisplayOptions.bDisplayNodalSupports = vm.DisplayNodalSupports;
+        //    sDisplayOptions.bUseDiffuseMaterial = vm.MaterialDiffuse;
+        //    sDisplayOptions.bUseEmissiveMaterial = vm.MaterialEmissive;
 
-            sDisplayOptions.bDisplayMemberDescription = vm.ShowMemberDescription;
-            sDisplayOptions.bDisplayMemberID = vm.ShowMemberID;
-            sDisplayOptions.bDisplayMemberPrefix = vm.ShowMemberPrefix;
-            sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
-            sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
-            sDisplayOptions.bDisplayNodesDescription = vm.ShowNodesDescription;
+        //    sDisplayOptions.bDisplayMembers = vm.DisplayMembers;
+        //    sDisplayOptions.bDisplayJoints = vm.DisplayJoints;
+        //    sDisplayOptions.bDisplayPlates = vm.DisplayPlates;
+        //    sDisplayOptions.bDisplayConnectors = vm.DisplayConnectors;
+        //    sDisplayOptions.bDisplayNodes = vm.DisplayNodes;
 
-            sDisplayOptions.bDisplayMembersCenterLines = vm.DisplayMembersCenterLines;
-            sDisplayOptions.bDisplaySolidModel = vm.DisplaySolidModel;
-            sDisplayOptions.bDisplayWireFrameModel = vm.DisplayWireFrameModel;
+        //    sDisplayOptions.bDisplayFoundations = vm.DisplayFoundations;
+        //    sDisplayOptions.bDisplayFloorSlab = vm.DisplayFloorSlab;
+        //    sDisplayOptions.bDisplayNodalSupports = vm.DisplayNodalSupports;
 
-            sDisplayOptions.bDistinguishedColor = vm.DisplayDistinguishedColorMember;
-            sDisplayOptions.bTransparentMemberModel = vm.DisplayTransparentModelMember;
+        //    sDisplayOptions.bDisplayMemberDescription = vm.ShowMemberDescription;
+        //    sDisplayOptions.bDisplayMemberID = vm.ShowMemberID;
+        //    sDisplayOptions.bDisplayMemberPrefix = vm.ShowMemberPrefix;
+        //    sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
+        //    sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
+        //    sDisplayOptions.bDisplayNodesDescription = vm.ShowNodesDescription;
 
-            sDisplayOptions.bDisplayGlobalAxis = vm.ShowGlobalAxis;
-            sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
-            sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
+        //    sDisplayOptions.bDisplayMembersCenterLines = vm.DisplayMembersCenterLines;
+        //    sDisplayOptions.bDisplaySolidModel = vm.DisplaySolidModel;
+        //    sDisplayOptions.bDisplayWireFrameModel = vm.DisplayWireFrameModel;
 
-            sDisplayOptions.bDisplayLoads = vm.ShowLoads;
-            sDisplayOptions.bDisplayNodalLoads = vm.ShowNodalLoads;
-            sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
-            sDisplayOptions.bDisplayMemberLoads_Girts = vm.ShowLoadsOnGirts;
-            sDisplayOptions.bDisplayMemberLoads_Purlins = vm.ShowLoadsOnPurlins;
-            sDisplayOptions.bDisplayMemberLoads_Columns = vm.ShowLoadsOnColumns;
-            sDisplayOptions.bDisplayMemberLoads_Frames = vm.ShowLoadsOnFrameMembers;
-            sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
+        //    sDisplayOptions.bDistinguishedColor = vm.DisplayDistinguishedColorMember;
+        //    sDisplayOptions.bTransparentMemberModel = vm.DisplayTransparentModelMember;
 
-            sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
-            sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
+        //    sDisplayOptions.bDisplayGlobalAxis = vm.ShowGlobalAxis;
+        //    sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
+        //    sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
 
-            sDisplayOptions.DisplayIn3DRatio = vm.DisplayIn3DRatio;
-            sDisplayOptions.bColorsAccordingToMembers = vm.ColorsAccordingToMembers;
-            sDisplayOptions.bColorsAccordingToSections = vm.ColorsAccordingToSections;
-        }
+        //    sDisplayOptions.bDisplayLoads = vm.ShowLoads;
+        //    sDisplayOptions.bDisplayNodalLoads = vm.ShowNodalLoads;
+        //    sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
+        //    sDisplayOptions.bDisplayMemberLoads_Girts = vm.ShowLoadsOnGirts;
+        //    sDisplayOptions.bDisplayMemberLoads_Purlins = vm.ShowLoadsOnPurlins;
+        //    sDisplayOptions.bDisplayMemberLoads_Columns = vm.ShowLoadsOnColumns;
+        //    sDisplayOptions.bDisplayMemberLoads_Frames = vm.ShowLoadsOnFrameMembers;
+        //    sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
+
+        //    sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
+        //    sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
+
+        //    sDisplayOptions.DisplayIn3DRatio = vm.DisplayIn3DRatio;
+        //    sDisplayOptions.bColorsAccordingToMembers = vm.ColorsAccordingToMembers;
+        //    sDisplayOptions.bColorsAccordingToSections = vm.ColorsAccordingToSections;
+        //}
 
         private void UpdateAll()
         {
@@ -755,7 +757,8 @@ namespace PFD
             if (vm.SynchronizeGUI)
             {
                 // Create 3D window
-                UpdateDisplayOptions();
+                //UpdateDisplayOptions();
+                sDisplayOptions = vm.GetDisplayOptions();
 
                 Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
 
