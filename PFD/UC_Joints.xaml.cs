@@ -42,7 +42,7 @@ namespace PFD
 
             sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;
-            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = false;
             sDisplayOptions.bColorsAccordingToMembers = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplaySolidModel = true;
@@ -53,6 +53,8 @@ namespace PFD
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayNodes = true;
             sDisplayOptions.bDisplayNodesDescription = true;
+            sDisplayOptions.bColorsAccordingToMembers = false;
+            sDisplayOptions.bColorsAccordingToSections = true;
 
             vm.JointTypeIndex = 1;
         }
