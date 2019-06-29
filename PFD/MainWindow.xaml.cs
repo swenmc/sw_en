@@ -999,7 +999,7 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
             {
-                if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm);
+                //if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {

@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using System.Xml;
 
 namespace PFD
@@ -40,29 +41,28 @@ namespace PFD
 
             ArrangeConnectionJoints();
             //DebugJoints();
-            sDisplayOptions = _pfdVM.GetDisplayOptions();
-
-            //sDisplayOptions = new DisplayOptions();
-            //sDisplayOptions.bUseDiffuseMaterial = true;
-            //sDisplayOptions.bUseEmissiveMaterial = false;
-            //sDisplayOptions.bColorsAccordingToMembers = true;
-            //sDisplayOptions.bDisplayMembers = true;
-            //sDisplayOptions.bDisplaySolidModel = true;
-            //sDisplayOptions.bDisplayPlates = true;
-            //sDisplayOptions.bDisplayConnectors = true;
-            //sDisplayOptions.bDisplayJoints = true;
-            //sDisplayOptions.bUseLightAmbient = true;
-            //sDisplayOptions.bDisplayGlobalAxis = false;
-            //sDisplayOptions.bDisplayNodes = true;
-            //sDisplayOptions.bDisplayNodesDescription = true;
-            //sDisplayOptions.bColorsAccordingToMembers = true;
-            //sDisplayOptions.bColorsAccordingToSections = false;
-
             vm.JointTypeIndex = 1;
+
+
+            //vsetok kod dole su len pokusy nastavit hned po loade aplikace v tabe Joints prvy tab na aktivny, lebo sa mi zda ako disablovany...nic s tym neviem spravit
+            //JointsTabControl.SelectedIndex = 0;
+            //JointsTabControl.SelectedItem = vm.TabItems[vm.SelectedTabIndex];
+            //vm.TabItems[vm.SelectedTabIndex].Focus();
+            //UpdateLayout();
+
+            //this.Dispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
+            //{
+            //    JointsTabControl.SelectedIndex = 0;
+            //    //JointsTabControl.SelectedItem = JointsTabControl.Items[0];
+            //    JointsTabControl.Focus();
+            //    // Do something to update my gui
+            //}));
+
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (!(sender is CPFDViewModel)) return;
             CConnectionJointTypes joint = GetSelectedJoint();
             displayJoint(joint);
         }
@@ -541,6 +541,8 @@ namespace PFD
             //sw.Content = sp;
 
             ti.Content = sp;
+            ti.IsEnabled = true;
+           
         }
 
         private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -552,13 +554,26 @@ namespace PFD
 
             ComboBox cbSA = sender as ComboBox;
             if (cbSA == null) return;
-            CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
-            CPlateHelper.UpdatePlateScrewArrangementData(plate);
+            ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);
+            //CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
+            //CPlateHelper.UpdatePlateScrewArrangementData(plate);
             
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
 
             displayJoint(joint);
+
+            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void ChangeAllSameJointsPlateScrewArrangement(int screwArrangementIndex)
+        {
+            List<CConnectionJointTypes> joints = GetSelectedJoints();
+            foreach (CConnectionJointTypes joint in joints)
+            {                
+                CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
+                CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
+            }            
         }
 
         
@@ -580,6 +595,11 @@ namespace PFD
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
             //CConnectionJointTypes joint = list_joints.LastOrDefault();
             return joint;
+        }
+        private List<CConnectionJointTypes> GetSelectedJoints()
+        {
+            CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
+            return jointsDict[con.ID];
         }
 
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
@@ -1137,6 +1157,12 @@ namespace PFD
             jointModel.m_arrNodes = nodeList.ToArray();
 
             jointClone = joint.RecreateJoint();
+            jointClone.m_arrPlates = joint.m_arrPlates;
+            //for (int i = 0; jointClone.m_arrPlates != null && i < jointClone.m_arrPlates.Length; i++)
+            //{
+                
+
+            //}
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
 
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);

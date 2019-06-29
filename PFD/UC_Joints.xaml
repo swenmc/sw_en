@@ -32,7 +32,8 @@
                Height="430" Width="570" MouseWheel="FrameJointPreview3D_MouseWheel"/>
             
             <!--<ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">-->
-            <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=TabItems}" SelectedIndex="{Binding Path=SelectedTabIndex}"  Name="TabControlMain">
+            <TabControl Name="JointsTabControl" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=TabItems}" 
+                        SelectedIndex="{Binding Path=SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                 </TabControl>
             <!--</ScrollViewer>-->
 
