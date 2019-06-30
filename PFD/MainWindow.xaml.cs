@@ -38,6 +38,7 @@ using BriefFiniteElementNet.Controls;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using System.IO;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -362,7 +363,14 @@ namespace PFD
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            DateTime start = DateTime.Now;
+            List<ModelValidationError> errors = ValidationHelper.ValidateModel(vm.Model);
+            if (errors.Count > 0)
+            {
+                MessageBox.Show(ValidationHelper.GetErrorsString(errors));
+                return;
+            }
+            
+            //DateTime start = DateTime.Now;
             // Clear results of previous calculation
             DeleteCalculationResults();
 
@@ -370,7 +378,7 @@ namespace PFD
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
 
-            System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.GenerateMemberLoadsIfNotGenerated();
 
