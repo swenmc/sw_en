@@ -48,6 +48,7 @@ namespace EXPIMP
                 DrawMemberDesign(document, modelData);
                 DrawJointDesign(document, modelData);
 
+                
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -972,7 +973,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 
@@ -998,7 +999,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 

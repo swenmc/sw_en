@@ -2472,6 +2472,7 @@ namespace PFD
             data.frameModels = frameModels;
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
+            data.DisplayOptions = GetDisplayOptions();
             return data;
         }
 

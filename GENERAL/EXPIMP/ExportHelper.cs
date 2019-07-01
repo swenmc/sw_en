@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace EXPIMP
 {
@@ -955,26 +956,23 @@ namespace EXPIMP
             else return (value * qlItem.ReportUnitFactor).ToString($"F{qlItem.ReportDecimalPlaces}", nfi);
         }
 
-        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint)
+        
+        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions)
         {
-            DisplayOptions sDisplayOptions = new DisplayOptions();
-            sDisplayOptions.bUseDiffuseMaterial = true;
-            sDisplayOptions.bUseEmissiveMaterial = true;
-            sDisplayOptions.bColorsAccordingToMembers = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bUseLightAmbient = true;
-            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplayJoints = true;            
 
+            CConnectionJointTypes jointClone = joint.Clone();
+            
             float fMainMemberLength = 0;
             float fSecondaryMemberLength = 0;
 
-            for (int i = 0; i < joint.m_arrPlates.Length; i++)
+            for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
             {
-                fMainMemberLength = Math.Max(joint.m_arrPlates[i].Width_bx, joint.m_arrPlates[i].Height_hy);
+                fMainMemberLength = Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
                 fSecondaryMemberLength = fMainMemberLength;
             }
 
@@ -986,61 +984,139 @@ namespace EXPIMP
 
             CModel jointModel = new CModel();
 
-            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { joint };
-
             int iNumberMainMembers = 0;
             int iNumberSecondaryMembers = 0;
 
-            if (joint.m_MainMember != null)
+            if (jointClone.m_MainMember != null)
                 iNumberMainMembers = 1;
 
-            if (joint.m_SecondaryMembers != null)
-                iNumberSecondaryMembers = joint.m_SecondaryMembers.Length;
+            if (jointClone.m_SecondaryMembers != null)
+                iNumberSecondaryMembers = jointClone.m_SecondaryMembers.Length;
 
             jointModel.m_arrMembers = new CMember[iNumberMainMembers + iNumberSecondaryMembers];
 
-            if (joint.m_MainMember != null)
+            // Main Member
+            if (jointClone.m_MainMember != null)
             {
-                CMember m = joint.m_MainMember;//.Clone();
-
-                CNode nodeJoint = joint.m_Node; // Joint Node
+                CMember m = jointClone.m_MainMember;
+                CNode nodeJoint = jointClone.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+                float fX;
+                float fY;
+                float fZ;
 
-                if (joint.m_Node.ID == m.NodeStart.ID)
+                if (jointClone.m_Node.ID == m.NodeStart.ID)
                 {
                     nodeOtherEnd = m.NodeEnd;
                     m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+
+                    fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
+                    nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
-                else
+                else if (jointClone.m_Node.ID == m.NodeEnd.ID)
                 {
                     nodeOtherEnd = m.NodeStart;
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+
+                    fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
+                    nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
+                    nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
+                    nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
                 }
+                else
+                {
+                    fMainMemberLength *= 2; // Zdvojnasobime vykreslovanu dlzku pruta kedze vykreslujeme na 2 strany od nodeJoint
 
-                float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
-                float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
-                float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
+                    // Relativny priemet casti pruta medzi zaciatocnym uzlom a uzlom spoja do GCS
+                    fX = (m.NodeStart.X - nodeJoint.X) / m.FLength;
+                    fY = (m.NodeStart.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (m.NodeStart.Z - nodeJoint.Z) / m.FLength;
 
-                nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
-                nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
-                nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
+                    // TO Ondrej - ak je prut velmi dlhy a fX az fZ su velmi male cisla, tak pre pripad ze jointNode je blizko k Start alebo End Node hlavneho pruta
+                    // vyjde vzdialenost (fX, resp. fY, fZ) * fMainMemberLength velmi mala
+                    // Urobil som to tak ze urcim vektor z absolutnych dlzok priemetu a potom ho normalizujem, takze absolutna vzdialenost priemetu nodeJoint a m.NodeStart, resp. m.NodeEnd
+                    // by nemala hrat rolu, mozes sa na to pozriet. Mozno Ta napadne nieco elegantnejsie, rozdiel vidiet napriklad pri spoji girt to Main column
 
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D vStart = new Vector3D(m.NodeStart.X - nodeJoint.X, m.NodeStart.Y - nodeJoint.Y, m.NodeStart.Z - nodeJoint.Z);
+                    vStart.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)vStart.X;
+                    fY = (float)vStart.Y;
+                    fZ = (float)vStart.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
+                    // Nastavenie novych suradnic - zaciatok skrateneho (orezaneho) pruta
+                    m.NodeStart.X = nodeJoint.X + fX * fMainMemberLength / 2;
+                    m.NodeStart.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
+                    m.NodeStart.Z = nodeJoint.Z + fZ * fMainMemberLength / 2;
+
+                    // Relativny priemet casti pruta medzi uzlom spoja a koncovym uzlom do GCS
+                    fX = (m.NodeEnd.X - nodeJoint.X) / m.FLength;
+                    fY = (m.NodeEnd.Y - nodeJoint.Y) / m.FLength;
+                    fZ = (m.NodeEnd.Z - nodeJoint.Z) / m.FLength;
+
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D vEnd = new Vector3D(m.NodeEnd.X - nodeJoint.X, m.NodeEnd.Y - nodeJoint.Y, m.NodeEnd.Z - nodeJoint.Z);
+                    vEnd.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)vEnd.X;
+                    fY = (float)vEnd.Y;
+                    fZ = (float)vEnd.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
+                    // Nastavenie novych suradnic - koniec skrateneho (orezaneho) pruta
+                    m.NodeEnd.X = nodeJoint.X + fX * fMainMemberLength / 2;
+                    m.NodeEnd.Y = nodeJoint.Y + fY * fMainMemberLength / 2;
+                    m.NodeEnd.Z = nodeJoint.Z + fZ * fMainMemberLength / 2;
+
+                    m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                    m.FAlignment_End = 0;   // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
+                }
+                
                 m.Fill_Basic();
 
                 jointModel.m_arrMembers[0] = m; // Set new member (member array)
-                joint.m_MainMember = m; // Set new member (joint)
+                jointClone.m_MainMember = m; // Set new member (joint)                
             }
 
-            if (joint.m_SecondaryMembers != null)
+            // Secondary members
+            if (jointClone.m_SecondaryMembers != null)
             {
-                for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                for (int i = 0; i < jointClone.m_SecondaryMembers.Length; i++)
                 {
-                    CMember m = joint.m_SecondaryMembers[i];//.Clone();
+                    CMember m = jointClone.m_SecondaryMembers[i];
 
-                    CNode nodeJoint = joint.m_Node; // Joint Node
+                    CNode nodeJoint = jointClone.m_Node; // Joint Node
                     CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
 
-                    if (joint.m_Node.ID == m.NodeStart.ID)
+                    if (jointClone.m_Node.ID == m.NodeStart.ID)
                     {
                         nodeOtherEnd = m.NodeEnd;
                         m.FAlignment_End = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
@@ -1055,6 +1131,15 @@ namespace EXPIMP
                     float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
                     float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
 
+                    //-------------------------------------------------------------------------------------------------------------------------------
+                    // TODO - Pokus vyriesit prilis kratke pruty
+                    Vector3D v = new Vector3D(nodeOtherEnd.X - nodeJoint.X, nodeOtherEnd.Y - nodeJoint.Y, nodeOtherEnd.Z - nodeJoint.Z);
+                    v.Normalize(); // Normalizujeme vektor priemetov, aby dlzky neboli prilis male
+                    fX = (float)v.X;
+                    fY = (float)v.Y;
+                    fZ = (float)v.Z;
+                    //-------------------------------------------------------------------------------------------------------------------------------
+
                     nodeOtherEnd.X = nodeJoint.X + fX * fSecondaryMemberLength;
                     nodeOtherEnd.Y = nodeJoint.Y + fY * fSecondaryMemberLength;
                     nodeOtherEnd.Z = nodeJoint.Z + fZ * fSecondaryMemberLength;
@@ -1062,7 +1147,7 @@ namespace EXPIMP
                     m.Fill_Basic();
 
                     jointModel.m_arrMembers[1 + i] = m; // Set new member (member array)
-                    joint.m_SecondaryMembers[i] = m; // Set new member (joint)
+                    jointClone.m_SecondaryMembers[i] = m; // Set new member (joint)
                 }
             }
 
@@ -1074,16 +1159,19 @@ namespace EXPIMP
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeStart) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeStart);
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
             }
-
-            //jointModel.m_arrNodes = new CNode[nodeList.Count];
             jointModel.m_arrNodes = nodeList.ToArray();
 
+            jointClone = joint.RecreateJoint();
+            jointClone.m_arrPlates = joint.m_arrPlates;
+            
+            jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
+            
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(Colors.Black);
             _trackport.Width = 570;
             _trackport.Height = 430;            
             _trackport.ViewPort.RenderSize = new Size(570, 430);
-            Drawing3D.DrawToTrackPort(_trackport, jointModel, sDisplayOptions, null);
+            Drawing3D.DrawJointToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;            
         }
 

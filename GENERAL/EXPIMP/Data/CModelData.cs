@@ -78,6 +78,7 @@ namespace EXPIMP
         private bool MUseCRSCGeometricalAxes;
 
         private CProjectInfo projectInfo;
+        private DisplayOptions sDisplayOptions;
 
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -838,6 +839,19 @@ namespace EXPIMP
             set
             {
                 projectInfo = value;
+            }
+        }
+
+        public DisplayOptions DisplayOptions
+        {
+            get
+            {
+                return sDisplayOptions;
+            }
+
+            set
+            {
+                sDisplayOptions = value;
             }
         }
 

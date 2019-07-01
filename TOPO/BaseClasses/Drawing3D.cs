@@ -179,7 +179,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup jointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions, new SolidColorBrush(Colors.Blue));
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                 if (jointsModel3DGroup != null)
                 {
                     gr.Children.Add(jointsModel3DGroup);

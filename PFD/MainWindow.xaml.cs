@@ -922,6 +922,8 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
             {
                 if (Datagrid_DoorsAndGates.Items.Count > 0 && Datagrid_DoorsAndGates.SelectedIndex == -1) { Datagrid_DoorsAndGates.SelectedIndex = 0; Datagrid_DoorsAndGates_SelectionChanged(null, null); }
+                else RedrawDoorOrWindowPreview();
+
                 FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
                 LabelDoors.Focus();
             }
@@ -1719,6 +1721,12 @@ namespace PFD
         }
 
         int actualPreview = 0;
+        private void RedrawDoorOrWindowPreview()
+        {
+            if (actualPreview == 2) RedrawWidowPreview();
+            else RedrawDoorPreview();
+        }
+
         private void Datagrid_DoorsAndGates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //if (!Datagrid_DoorsAndGates.IsLoaded) return;
@@ -1728,7 +1736,10 @@ namespace PFD
                 if (!dg.IsLoaded) return;
                 if (!dg.IsMouseOver) return;
             }
-
+            RedrawDoorPreview();
+        }
+        private void RedrawDoorPreview()
+        {
             CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
 
             if (modelPFD.DoorsModels == null) return;
@@ -1740,15 +1751,9 @@ namespace PFD
             if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
             if (doorModel == null) return;
 
-            DisplayOptions displayOptions = new DisplayOptions();
-            displayOptions.bUseDiffuseMaterial = true;
-            displayOptions.bUseEmissiveMaterial = true;
-            displayOptions.bUseLightAmbient = true;
-            displayOptions.bDisplaySolidModel = true;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplayJoints = true;
-
-            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
+            DisplayOptions displayOptions = vm.GetDisplayOptions();
+            //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
+            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions);
 
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
@@ -1764,6 +1769,11 @@ namespace PFD
                 if (!dg.IsLoaded) return;
                 if (!dg.IsMouseOver) return;
             }
+            RedrawWidowPreview();
+        }
+
+        private void RedrawWidowPreview()
+        {
             //Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
             // TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
             // ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
@@ -1804,15 +1814,9 @@ namespace PFD
 
             CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
-            DisplayOptions displayOptions = new DisplayOptions();
-            displayOptions.bUseDiffuseMaterial = true;
-            displayOptions.bUseEmissiveMaterial = true;
-            displayOptions.bUseLightAmbient = true;
-            displayOptions.bDisplaySolidModel = true;
-            displayOptions.bDisplayMembers = true;
-            displayOptions.bDisplayJoints = true;
-
-            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
+            DisplayOptions displayOptions = vm.GetDisplayOptions();
+            //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
+            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions);
 
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
