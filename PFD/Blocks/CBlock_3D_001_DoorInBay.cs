@@ -36,6 +36,10 @@ namespace PFD
 
             EMemberType_FS eTypeColumn;
             EMemberType_FS eTypeLintel;
+
+            EMemberType_FS_Position eTypePositionColumn;
+            EMemberType_FS_Position eTypePositionLintel;
+
             CCrSc crscColumn;
             CCrSc crscLintel;
 
@@ -64,6 +68,9 @@ namespace PFD
                 eTypeColumn = EMemberType_FS.eDF;
                 eTypeLintel = EMemberType_FS.eDF;
 
+                eTypePositionColumn = EMemberType_FS_Position.DoorFrame;
+                eTypePositionLintel = EMemberType_FS_Position.DoorFrame;
+
                 crscColumn = m_arrCrSc[1];
                 crscLintel = m_arrCrSc[1];
             }
@@ -85,6 +92,7 @@ namespace PFD
                 m_arrCrSc[1].ID = (int)EMemberType_FS_Position.DoorTrimmer;
 
                 eTypeColumn = EMemberType_FS.eDT;
+                eTypePositionColumn = EMemberType_FS_Position.DoorTrimmer;
                 crscColumn = m_arrCrSc[1];
 
                 // Lintel
@@ -94,6 +102,7 @@ namespace PFD
                 m_arrCrSc[2].ID = (int)EMemberType_FS_Position.DoorLintel;
 
                 eTypeLintel = EMemberType_FS.eDL;
+                eTypePositionLintel = EMemberType_FS_Position.DoorLintel;
                 crscLintel = m_arrCrSc[2];
             }
 
@@ -231,6 +240,9 @@ namespace PFD
                     }
 
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], EMemberType_FS.eG, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
+
+                    // Set position type (same as reference girt)
+                    m_arrMembers[i * INumberOfGirtsToDeactivate + j].EMemberTypePosition = ReferenceGirt.EMemberTypePosition;
                 }
             }
 
@@ -262,6 +274,10 @@ namespace PFD
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], crscColumn, eTypeColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
             m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], crscColumn, eTypeColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
 
+            // Set position type
+            m_arrMembers[iMembersGirts].EMemberTypePosition = eTypePositionColumn;
+            m_arrMembers[iMembersGirts + 1].EMemberTypePosition = eTypePositionColumn;
+
             // Door lintel (header)
             // TODO - add to block parameters
             float fDoorLintelStart = -0.5f * (float)crscColumn.b - fCutOffOneSide;
@@ -282,6 +298,9 @@ namespace PFD
             if (iNumberOfLintels > 0)
             {
                 m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], crscLintel, eTypeLintel, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
+
+                // Set position type
+                m_arrMembers[iMembersGirts + iNumberOfColumns].EMemberTypePosition = eTypePositionLintel;
             }
 
             // Connection Joints

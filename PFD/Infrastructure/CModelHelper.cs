@@ -409,7 +409,7 @@ namespace PFD
             {
                 foreach(CComponentInfo cInfo in componentList)
                 {
-                    //toto odstranime ked bude m.EMemberTypePosition stale dobre nastavene
+                    //toto odstranime ked bude m.EMemberTypePosition stale dobre n astavene
                     if (m.EMemberType == EMemberType_FS.eDF && cInfo.MemberTypePosition == EMemberType_FS_Position.DoorFrame)
                     {
                         m.CrScStart.ID = (int)cInfo.MemberTypePosition;

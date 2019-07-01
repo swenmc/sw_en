@@ -120,6 +120,34 @@ namespace PFD
                 }
             }
 
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Validation
+            // TODO - Ondrej - mozeme to presunut niekam inam a validovat to skor
+            // Ucel validacie - Skontrolovat ci maju vsetky pruty v spojoch priradeny EMemberTypePosition
+
+            foreach (CConnectionJointTypes joint in _pfdVM.Model.m_arrConnectionJoints)
+            {
+                if (joint.m_MainMember == null)
+                {
+                    new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
+                }
+
+                if(joint.m_MainMember.EMemberTypePosition <= 0)
+                {
+                    new ArgumentNullException("Undefined main member type of joint ID: " + joint.ID + ", member ID: " + joint.m_MainMember.ID);
+                }
+
+                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
+                {
+                    for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                    {
+                        if (joint.m_SecondaryMembers[i].EMemberTypePosition <= 0)
+                            new ArgumentNullException("Undefined secondary member type of joint ID: " + joint.ID + ", member ID: " + joint.m_SecondaryMembers[i].ID);
+                    }
+                }
+            }
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
