@@ -326,11 +326,13 @@ namespace PFD
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer && joint.m_SecondaryMembers == null)
                             resItems.Add(joint);
                         break;
-                    //24  Door trimmer to girt
+                    //24  Girt to door trimmer
+                    // TODO Dorobit door trimmer to girt
+                    // TODO Dorobit front a back girt to door trimmer a opacne
                     case 24:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
                             )
                             resItems.Add(joint);
                         break;
@@ -363,7 +365,19 @@ namespace PFD
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame && joint.m_SecondaryMembers == null)
                             resItems.Add(joint);
                         break;
+                    //29  Girt to door frame
+                    /*
+                    case 29:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    */
                     //29  Door frame to girt
+                    // TODO Dorobit girt to door frame
+                    // dorobit front a back girt to door frame a opacne
                     case 29:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
                             joint.m_SecondaryMembers != null &&
@@ -396,6 +410,7 @@ namespace PFD
                             resItems.Add(joint);
                         break;
                     //33  Window frame to girt
+                    // TODO dorobit window frame to front a back girt
                     case 33:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
                             joint.m_SecondaryMembers != null &&
@@ -420,6 +435,7 @@ namespace PFD
                             resItems.Add(joint);
                         break;
                     //36  Window frame lintel to trimmer // ???? rozlisenie co je trimmer a co je lintel
+                    // TODO - dorobit spoje pre window header a sills
                     case 36:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindowFrame &&
                             joint.m_SecondaryMembers != null &&
