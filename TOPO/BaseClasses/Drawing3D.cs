@@ -163,11 +163,14 @@ namespace BaseClasses
                 //TODO pokial Mato bude chciet
                 //tu by sa to teoreticky dalo rozsirit tak,ze sa model zarotuje este podla typu Joint
                 //metoda by mala parametre rotateX, rotateY, rotateZ
+
+                // TODO 321 - Zapracovat rozne natocenie spoja v preview podla polohy/ typu spoja.
+
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 
                 // Global coordinate system - axis
-                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);                                
+                if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
 
                 Model3DGroup gr = new Model3DGroup();                
@@ -183,8 +186,7 @@ namespace BaseClasses
                 if (jointsModel3DGroup != null)
                 {
                     gr.Children.Add(jointsModel3DGroup);
-
-                } 
+                }
                 //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 bool displayOtherObjects3D = true;
@@ -192,7 +194,7 @@ namespace BaseClasses
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
-                
+
                 Model3DGroup nodes3DGroup = null;
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
