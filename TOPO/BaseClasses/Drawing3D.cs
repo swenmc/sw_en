@@ -1983,6 +1983,10 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        //tu sa mi nepaci,ze to uvazuje iba s Node-mi
+        //ak by to malo byt pekne, tak sa musi uvazovat aj s Crsc a vhodne priratat polku zo sirky Crsc, potom by to bolo lepsie centrovane
+        // pre velky model je to asi zanedbatelne, ale pre male preview je to uz rozhodujuce
+
         public static void CalculateModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
@@ -2016,6 +2020,45 @@ namespace BaseClasses
                 throw new Exception("Exception - no definition nodes or points");
             }
         }
+
+        //to Mato potrebujeme taku nejaku metodu, kt. bude uvazovat aj sirku Crsc pokial chceme to mat pekne zoomovane, to je podla mna hlavny problem preco je to raz zazoomovane viac a raz menej
+        //cele je to postavene na tom,ze sa kamera umiestni do vzdialenosti 2x max rozmer modelu, ale rozmer modelu sa pocita iba na zaklade m_arrrNodes
+        public static void CalculateModelLimitsCountWithCrsc(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        {
+            fMax_X = float.MinValue;
+            fMin_X = float.MaxValue;
+            fMax_Y = float.MinValue;
+            fMin_Y = float.MaxValue;
+            fMax_Z = float.MinValue;
+            fMin_Z = float.MaxValue;
+
+            //get crsc width / 2 and add to minX,minY,or minZ
+
+            if (cmodel.m_arrNodes != null) // Some nodes exist
+            {
+                fMax_X = cmodel.m_arrNodes.Max(p => p.X);
+                fMin_X = cmodel.m_arrNodes.Min(p => p.X);
+                fMax_Y = cmodel.m_arrNodes.Max(p => p.Y);
+                fMin_Y = cmodel.m_arrNodes.Min(p => p.Y);
+                fMax_Z = cmodel.m_arrNodes.Max(p => p.Z);
+                fMin_Z = cmodel.m_arrNodes.Min(p => p.Z);
+            }
+            else if (cmodel.m_arrGOPoints != null) // Some points exist
+            {
+                fMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
+                fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
+                fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
+                fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
+                fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
+                fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+            }
+            else
+            {
+                // Exception - no definition nodes or points
+                throw new Exception("Exception - no definition nodes or points");
+            }
+        }
+
         public static void CalculateModelSizes(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
