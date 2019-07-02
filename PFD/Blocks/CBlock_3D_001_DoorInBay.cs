@@ -346,9 +346,14 @@ namespace PFD
 
                 // Bottom - columns is connected to the concrete foundation (use different type of plate ???)
 
-                // TODO - spoj nemoze mat MainMember = null, je potrebne pre alternativu T001 zapracovat aj tuto moznost
+                // TODO - spoj nemoze mat MainMember = null, je potrebne pre alternativu podobnu ako je T001 zapracovat aj tuto moznost, takze stlp ramu bude main member a plechy atd budu analogicke ako su spoje prvkov ramu T001
                 //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
+
+                if (prop.sDoorType == "Personnel Door")
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TD01(current_member.NodeStart, current_member, true)); // Personnel door frame base joint
+                else
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TC01(current_member.NodeStart, current_member, true)); // Roller door trimmer base joint
+
                 // Top
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }

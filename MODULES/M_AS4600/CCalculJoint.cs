@@ -181,7 +181,7 @@ namespace M_AS4600
                     throw new Exception("Joint type design is not implemented!");
                 }
             }
-            else if (joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01)
+            else if (joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01 || joint_temp is CConnectionJoint_TC01 || joint_temp is CConnectionJoint_TD01)
             {
                 CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back column connection to the foundation)
             }

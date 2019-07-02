@@ -108,6 +108,8 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Circular.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX_2.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TD01.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TC01.cs" />
     <Compile Include="Model\CSegment_LTB.cs" />
     <Compile Include="Model\DoorProperties.cs" />
     <Compile Include="Model\SpecificModelTypes\CBeam_Simple.cs" />

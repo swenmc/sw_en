@@ -1211,7 +1211,7 @@ namespace M_AS4600
                     throw new Exception("Joint type design is not implemented!");
                 }
             }
-            else if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01)
+            else if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01 || calc.joint is CConnectionJoint_TC01 || calc.joint is CConnectionJoint_TD01)
             {
                 CJointDesignDetails_BaseJoint det = (CJointDesignDetails_BaseJoint)calc.joint.DesignDetails;
 

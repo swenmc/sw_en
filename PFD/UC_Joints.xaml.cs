@@ -546,6 +546,8 @@ namespace PFD
                 case "T003": return typeof(CConnectionJoint_T003);
                 case "TA01": return typeof(CConnectionJoint_TA01);
                 case "TB01": return typeof(CConnectionJoint_TB01);
+                case "TC01": return typeof(CConnectionJoint_TC01);
+                case "TD01": return typeof(CConnectionJoint_TD01);
                 default:
 
                     //temp it should throw exceoton if there is not recognized joint type
@@ -556,7 +558,7 @@ namespace PFD
         private void SetDynamicTabs(CJointsVM vm)
         {
             if (jointsDict == null) ArrangeConnectionJoints();
-            List<TabItem> tabItems = new List<TabItem>();            
+            List<TabItem> tabItems = new List<TabItem>();
             CConnectionJointTypes joint = GetSelectedJoint();
 
             if (joint == null)
