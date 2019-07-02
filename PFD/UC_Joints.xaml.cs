@@ -1040,22 +1040,12 @@ namespace PFD
         {
             CConnectionJointTypes jointClone = joint.Clone();
             sDisplayOptions = _pfdVM.GetDisplayOptions();
-            //sDisplayOptions = new DisplayOptions();
-            //sDisplayOptions.bUseDiffuseMaterial = true;
-            //sDisplayOptions.bUseEmissiveMaterial = false;
-            //sDisplayOptions.bColorsAccordingToMembers = true;
-            //sDisplayOptions.bDisplayMembers = true;
-            //sDisplayOptions.bDisplaySolidModel = true;
-            //sDisplayOptions.bDisplayPlates = true;
-            //sDisplayOptions.bDisplayConnectors = true;
-            //sDisplayOptions.bDisplayJoints = true;
-            //sDisplayOptions.bUseLightAmbient = true;
-            //sDisplayOptions.bDisplayGlobalAxis = false;
-            //sDisplayOptions.bDisplayNodes = true;
-            //sDisplayOptions.bDisplayNodesDescription = true;
-            //sDisplayOptions.bColorsAccordingToMembers = true;
-            //sDisplayOptions.bColorsAccordingToSections = false;
-
+            //Here is the place to overwrite displayOptions from Main Model
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;
 
             // TO Ondrej - tuto funkciu treba trosku ucesat, refaktorovat casti kodu pre Main Member a cast pre Secondary Members
 

@@ -1752,6 +1752,8 @@ namespace PFD
             if (doorModel == null) return;
 
             DisplayOptions displayOptions = vm.GetDisplayOptions();
+            //Here is the place to overwrite displayOptions from Main Model
+            displayOptions.bDisplayGlobalAxis = false;
             //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions);
 
@@ -1815,6 +1817,8 @@ namespace PFD
             CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
             DisplayOptions displayOptions = vm.GetDisplayOptions();
+            //Here is the place to overwrite displayOptions from Main Model
+            displayOptions.bDisplayGlobalAxis = false;
             //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(model, displayOptions);
 
