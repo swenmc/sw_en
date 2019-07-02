@@ -11,7 +11,8 @@ namespace DATABASE.DTO
         private int m_ID;
         private string m_Name;
         private string m_JoinType;
-        
+        private string m_Note;
+
         public int ID
         {
             get
@@ -48,6 +49,19 @@ namespace DATABASE.DTO
             set
             {
                 m_JoinType = value;
+            }
+        }
+
+        public string Note
+        {
+            get
+            {
+                return m_Note;
+            }
+
+            set
+            {
+                m_Note = value;
             }
         }
 

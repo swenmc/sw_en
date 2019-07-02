@@ -27,6 +27,7 @@ namespace DATABASE
                         item.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         item.Name = reader["name"].ToString();
                         item.JoinType = reader["jointType"].ToString();
+                        item.Note = reader["note"].ToString();
                         items.Add(item);
                     }
                 }

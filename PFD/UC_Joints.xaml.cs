@@ -326,82 +326,71 @@ namespace PFD
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer && joint.m_SecondaryMembers == null)
                             resItems.Add(joint);
                         break;
-                    //24  Girt to door trimmer
-                    // TODO Dorobit door trimmer to girt
-                    // TODO Dorobit front a back girt to door trimmer a opacne
+                    //24  Door trimmer to girt
                     case 24:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                             )
                             resItems.Add(joint);
                         break;
-                    //25  Door trimmer to edge pulin
+                    //25  Door trimmer to girt - front
                     case 25:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                             )
                             resItems.Add(joint);
                         break;
-                    //26  Door trimmer to edge rafter
+                    //26  Door trimmer to girt - back
                     case 26:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtBackSide &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                             )
                             resItems.Add(joint);
                         break;
-                    //27  Door lintel to trimmer
+                    //27  Girt to door trimmer
                     case 27:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorLintel)
-                            )
-                            resItems.Add(joint);
-                        break;
-                    //28  Base - door frame
-                    case 28:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame && joint.m_SecondaryMembers == null)
-                            resItems.Add(joint);
-                        break;
-                    //29  Girt to door frame
-                    /*
-                    case 29:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
-                            joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
                             )
                             resItems.Add(joint);
                         break;
-                    */
-                    //29  Door frame to girt
-                    // TODO Dorobit girt to door frame
-                    // dorobit front a back girt to door frame a opacne
-                    case 29:
-                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                    //28  Girt to door trimmer - front
+                    case 28:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
                             )
                             resItems.Add(joint);
                         break;
-                    //30  Door frame to edge pulin
+                    //29  Girt to door trimmer - back
+                    case 29:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //30  Door trimmer to edge pulin
                     case 30:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                             )
                             resItems.Add(joint);
                         break;
-                    //31  Door frame to edge rafter
+                    //31  Door trimmer to edge rafter
                     case 31:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
-                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
                             )
                             resItems.Add(joint);
                         break;
-                    //32  Door frame lintel to trimmer
+                    //32  Door lintel to trimmer
                     case 32:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer &&
                             joint.m_SecondaryMembers != null &&
@@ -409,34 +398,125 @@ namespace PFD
                             )
                             resItems.Add(joint);
                         break;
-                    //33  Window frame to girt
-                    // TODO dorobit window frame to front a back girt
+                    //33  Base - door frame
                     case 33:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame && joint.m_SecondaryMembers == null)
+                            resItems.Add(joint);
+                        break;
+                    //34  Door frame to girt
+                    case 34:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //35  Door frame to girt - front
+                    case 35:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //36  Door frame to girt - back
+                    case 36:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtBackSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //37  Girt to door frame
+                    case 37:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.Girt)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //38  Girt to door frame - front
+                    case 38:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //39  Girt to door frame - back
+                    case 39:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //40  Door frame to edge pulin
+                    case 40:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //41  Door frame to edge rafter
+                    case 41:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //42  Door frame
+                    case 42:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.DoorFrame &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //43  Window frame to girt
+                    case 43:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.Girt &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
                             )
                             resItems.Add(joint);
                         break;
-                    //34  Window frame to edge pulin
-                    case 34:
+                    //44  Window frame to girt - front
+                    case 44:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //45  Window frame to girt - back
+                    case 45:
+                        if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.GirtBackSide &&
+                            joint.m_SecondaryMembers != null &&
+                                (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
+                            )
+                            resItems.Add(joint);
+                        break;
+                    //46  Window frame to edge pulin
+                    case 46:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgePurlin &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
                             )
                             resItems.Add(joint);
                         break;
-                    //35  Window frame to edge rafter
-                    case 35:
+                    //47  Window frame to edge rafter
+                    case 47:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
                             )
                             resItems.Add(joint);
                         break;
-                    //36  Window frame lintel to trimmer // ???? rozlisenie co je trimmer a co je lintel
-                    // TODO - dorobit spoje pre window header a sills
-                    case 36:
+                    //48  Window frame (header / sill to window frame column)
+                    case 48:
                         if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.WindowFrame &&
                             joint.m_SecondaryMembers != null &&
                                 (joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.WindowFrame)
