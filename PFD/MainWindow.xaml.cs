@@ -155,7 +155,12 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
-                if (e.PropertyName == "ModelCalculatedResultsValid") return;                
+                if (e.PropertyName == "ModelCalculatedResultsValid") return;
+
+                //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
+                //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
+                //if (e.PropertyName == "WindowBlocksProperties_Add") { vm.RecreateJoints = true; }
+                //if (e.PropertyName == "WindowBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
             }
             else if (sender is CComponentListVM)
             {
@@ -178,12 +183,12 @@ namespace PFD
             else if (sender is DoorProperties)
             {
                 Datagrid_DoorsAndGates_SelectionChanged(null, null);
-                vm.RecreateJoints = false;
+                vm.RecreateJoints = true;
             }
             else if (sender is WindowProperties)
             {
                 Datagrid_Windows_SelectionChanged(null, null);
-                vm.RecreateJoints = false;
+                vm.RecreateJoints = true;
             }
             else if (sender is CComponentInfo)
             {   
@@ -1743,13 +1748,13 @@ namespace PFD
             CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
 
             if (modelPFD.DoorsModels == null) return;
-            if (modelPFD.DoorsModels.Count == 0) return;
+            //if (modelPFD.DoorsModels.Count == 0) return;
 
             int index = Datagrid_DoorsAndGates.SelectedIndex;
             if (index < 0) index = 0;
             CModel doorModel = modelPFD.DoorsModels.ElementAtOrDefault(index);
             if (doorModel == null) doorModel = modelPFD.DoorsModels.FirstOrDefault();
-            if (doorModel == null) return;
+            if (doorModel == null) doorModel = new CModel();
 
             DisplayOptions displayOptions = vm.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
@@ -1803,7 +1808,6 @@ namespace PFD
             WindowProperties props = null;
             if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
             if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
-            if (props == null) return;
 
             // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
             // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
@@ -1814,7 +1818,9 @@ namespace PFD
             // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
             // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
 
-            CModel model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+            CModel model;
+            if (props == null) model = new CModel();
+            else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
             DisplayOptions displayOptions = vm.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model

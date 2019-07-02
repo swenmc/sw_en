@@ -1332,15 +1332,17 @@ namespace PFD
                 if (d != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                    
                     NotifyPropertyChanged("DoorBlocksProperties_Add");
-                    SetResultsAreNotValid();
+                    SetResultsAreNotValid();                    
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
+                RecreateJoints = true;
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
-                SetResultsAreNotValid();
+                RecreateJoints = false;
+                SetResultsAreNotValid();                
             }
             SetComponentListAccordingToDoors();
         }
@@ -1374,14 +1376,16 @@ namespace PFD
                 if (w != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
-                    NotifyPropertyChanged("WindowBlocksProperties_Add");
-                    SetResultsAreNotValid();
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
+                    NotifyPropertyChanged("WindowBlocksProperties_Add");                    
+                    SetResultsAreNotValid();                    
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
+                RecreateJoints = true;
                 NotifyPropertyChanged("WindowBlocksProperties_CollectionChanged");
+                RecreateJoints = false;
                 SetResultsAreNotValid();
             }
             SetComponentListAccordingToWindows();
