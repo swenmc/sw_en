@@ -1070,7 +1070,7 @@ namespace PFD
             }
 
             float fMainMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
-            float fSecondaryMemberLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fSecondaryMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru  // Musi byt rovnake ako main member kvoli plechu Apex - jeden rafter je main, jeden je secondary
 
             fMainMemberLength *= fMainMemberLengthFactor;
             fSecondaryMemberLength *= fSecondaryMemberLengthFactor;
