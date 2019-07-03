@@ -6,6 +6,8 @@ namespace BaseClasses
 {
     public class CConnectionJointTypes : CEntity3D
     {
+        private EJointType m_JointType;
+
         public CPlate[] m_arrPlates;
         public CConnector[] m_arrConnectors;
         public CWeld[] m_arrWelds;
@@ -24,6 +26,19 @@ namespace BaseClasses
         {
             get { return m_DesignDetails; }
             set { m_DesignDetails = value; }
+        }
+
+        public EJointType JointType
+        {
+            get
+            {
+                return m_JointType;
+            }
+
+            set
+            {
+                m_JointType = value;
+            }
         }
 
         public CConnectionJointTypes() { }

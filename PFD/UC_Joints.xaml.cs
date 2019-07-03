@@ -151,7 +151,7 @@ namespace PFD
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
-
+                joint.JointType = (EJointType)con.ID;
                 //To Mato - tu potrebudem cely tento switch skontrolovat/opravit/doplnit lebo ty tomu viac rozumies ako ja
                 // Predbezne skontrolovane, ale este to budeme musiet poladit a podoplnat.
                 // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
@@ -720,6 +720,7 @@ namespace PFD
             //all joints in list sholud be the same!
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
             //CConnectionJointTypes joint = list_joints.LastOrDefault();
+            //joint.JointType = (EJointType)(con.ID);
             return joint;
         }
         private List<CConnectionJointTypes> GetSelectedJoints()
@@ -1094,15 +1095,7 @@ namespace PFD
             if (jointClone.m_MainMember != null)
             {
                 CMember m = jointClone.m_MainMember;
-
-                if (!jointClone.m_Node.Equals(m.NodeStart) && !jointClone.m_Node.Equals(m.NodeEnd))
-                {
-                    //throw new Exception(m.ID + " " + m.Name);
-
-
-
-                } 
-
+                
                 CNode nodeJoint = jointClone.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
                 float fX;
@@ -1203,14 +1196,7 @@ namespace PFD
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                     m.FAlignment_End = 0;   // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                 }
-
-                //float fX = (nodeOtherEnd.X - nodeJoint.X) / m.FLength;
-                //float fY = (nodeOtherEnd.Y - nodeJoint.Y) / m.FLength;
-                //float fZ = (nodeOtherEnd.Z - nodeJoint.Z) / m.FLength;
-                //nodeOtherEnd.X = nodeJoint.X + fX * fMainMemberLength;
-                //nodeOtherEnd.Y = nodeJoint.Y + fY * fMainMemberLength;
-                //nodeOtherEnd.Z = nodeJoint.Z + fZ * fMainMemberLength;
-
+                
                 m.Fill_Basic();
 
                 jointModel.m_arrMembers[0] = m; // Set new member (member array)
@@ -1274,18 +1260,118 @@ namespace PFD
 
             jointClone = joint.RecreateJoint();
             jointClone.m_arrPlates = joint.m_arrPlates;
-            //for (int i = 0; jointClone.m_arrPlates != null && i < jointClone.m_arrPlates.Length; i++)
-            //{
-                
-
-            //}
+            
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
 
+            SetJoinModelRotationDisplayOptions(joint, sDisplayOptions);
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
 
             // Display model in 3D preview frame
             FrameJointPreview3D.Content = page1;
             FrameJointPreview3D.UpdateLayout();
+        }
+
+        private void SetJoinModelRotationDisplayOptions(CConnectionJointTypes joint, DisplayOptions opt)
+        {
+            switch (joint.JointType)
+            {
+                case EJointType.eBase_MainColumn:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eKnee_MainRafter_Column:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eApex_MainRafters:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eBase_EdgeColumn:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eKnee_EgdeRafter_Column:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eApex_Edge_Rafters:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.ePurlin_MainRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.ePurlin_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.ePurlin_MainRafter_FlyBracing:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.ePurlin_EdgeRafter_FlyBracing:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eEdgePurlin_MainRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eEdgePurlin_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_MainColumn:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_EdgeColumn:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eBase_WindPost_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eBase_WindPost_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindPost_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindPost_EdgeRafter_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;                    
+                case EJointType.eGirt_EdgeColumn_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_EdgeColumn_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_WindPost_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_WindPost_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eBase_DoorTrimmer:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorTrimmer_Girt:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorTrimmer_GirtFront:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorTrimmer_Girt_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorTrimmer:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorTrimmer_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorTrimmer_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorTrimmer_EdgePulin:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorTrimmer_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorLintel_Trimmer:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eBase_DoorFrame:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame_Girt:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame_Girt_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame_Girt_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorFrame:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorFrame_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eGirt_DoorFrame_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame_EdgePulin:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eDoorFrame:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_Girt:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_Girt_Front:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_Girt_Back:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_EdgePulin:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_EdgeRafter:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+                case EJointType.eWindowFrame_Header_Sill_WindowFrameColumn:
+                    opt.RotateModelX = 20; opt.RotateModelY = 0; opt.RotateModelZ = -90; break;
+            }
         }
         
         private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)

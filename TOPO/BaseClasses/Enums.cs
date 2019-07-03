@@ -584,7 +584,61 @@
         eType7 = 6  // Inside sheet of double shear connection using short slotted holes perpendicular to the applied load with or without washers(alpha = 0.90)
     }
 
-    // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
+    public enum EJointType
+    {
+        eBase_MainColumn = 1,
+        eKnee_MainRafter_Column = 2,
+        eApex_MainRafters = 3,
+        eBase_EdgeColumn = 4,
+        eKnee_EgdeRafter_Column = 5,
+        eApex_Edge_Rafters = 6,
+        ePurlin_MainRafter = 7,
+        ePurlin_EdgeRafter = 8,
+        ePurlin_MainRafter_FlyBracing = 9,
+        ePurlin_EdgeRafter_FlyBracing = 10,
+        eEdgePurlin_MainRafter = 11,
+        eEdgePurlin_EdgeRafter = 12,
+        eGirt_MainColumn = 13,
+        eGirt_EdgeColumn = 14,
+        eBase_WindPost_Front = 15,
+        eBase_WindPost_Back = 16,
+        eWindPost_EdgeRafter = 17,
+        eWindPost_EdgeRafter_Back = 18,
+        eGirt_EdgeColumn_Front = 19,
+        eGirt_EdgeColumn_Back = 20,
+        eGirt_WindPost_Front = 21,
+        eGirt_WindPost_Back = 22,
+        eBase_DoorTrimmer = 23,
+        eDoorTrimmer_Girt = 24,
+        eDoorTrimmer_GirtFront = 25,
+        eDoorTrimmer_Girt_Back = 26,
+        eGirt_DoorTrimmer = 27,
+        eGirt_DoorTrimmer_Front = 28,
+        eGirt_DoorTrimmer_Back = 29,
+        eDoorTrimmer_EdgePulin = 30,
+        eDoorTrimmer_EdgeRafter = 31,
+        eDoorLintel_Trimmer = 32,
+        eBase_DoorFrame = 33,
+        eDoorFrame_Girt = 34,
+        eDoorFrame_Girt_Front = 35,
+        eDoorFrame_Girt_Back = 36,
+        eGirt_DoorFrame = 37,
+        eGirt_DoorFrame_Front = 38,
+        eGirt_DoorFrame_Back = 39,
+        eDoorFrame_EdgePulin = 40,
+        eDoorFrame_EdgeRafter = 41,
+        eDoorFrame = 42,
+        eWindowFrame_Girt = 43,
+        eWindowFrame_Girt_Front = 44,
+        eWindowFrame_Girt_Back = 45,
+        eWindowFrame_EdgePulin = 46,
+        eWindowFrame_EdgeRafter = 47,
+        eWindowFrame_Header_Sill_WindowFrameColumn = 48
+    }
+
+
+
+        // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions
     {
@@ -639,6 +693,11 @@
 
         public bool bColorsAccordingToMembers;
         public bool bColorsAccordingToSections;
+
+        public int RotateModelX;
+        public int RotateModelY;
+        public int RotateModelZ;
+
     }
 
     public struct BuildingDataInput
