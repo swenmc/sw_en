@@ -2032,16 +2032,36 @@ namespace BaseClasses
             fMax_Z = float.MinValue;
             fMin_Z = float.MaxValue;
 
+            // Each member in model
+            Point3DCollection allMembersPoints = new Point3DCollection();
+
+            foreach (CMember m in cmodel.m_arrMembers)
+            {
+                Point3DCollection memberPoints = null;
+
+                // Get transformed external outline points of real member
+                memberPoints = m.GetRealExternalOutlinePointsTransformedToGCS();
+
+                // Add member points to the main collection of all members
+                if (memberPoints != null)
+                {
+                    foreach (Point3D p in memberPoints)
+                    {
+                        allMembersPoints.Add(p);
+                    }
+                }
+            }
+
             //get crsc width / 2 and add to minX,minY,or minZ
 
-            if (cmodel.m_arrNodes != null) // Some nodes exist
+            if (allMembersPoints != null) // Some member outline points exist (transformed external outline points of real member)
             {
-                fMax_X = cmodel.m_arrNodes.Max(p => p.X);
-                fMin_X = cmodel.m_arrNodes.Min(p => p.X);
-                fMax_Y = cmodel.m_arrNodes.Max(p => p.Y);
-                fMin_Y = cmodel.m_arrNodes.Min(p => p.Y);
-                fMax_Z = cmodel.m_arrNodes.Max(p => p.Z);
-                fMin_Z = cmodel.m_arrNodes.Min(p => p.Z);
+                fMax_X = (float)allMembersPoints.Max(p => p.X);
+                fMin_X = (float)allMembersPoints.Min(p => p.X);
+                fMax_Y = (float)allMembersPoints.Max(p => p.Y);
+                fMin_Y = (float)allMembersPoints.Min(p => p.Y);
+                fMax_Z = (float)allMembersPoints.Max(p => p.Z);
+                fMin_Z = (float)allMembersPoints.Min(p => p.Z);
             }
             else if (cmodel.m_arrGOPoints != null) // Some points exist
             {
