@@ -1739,6 +1739,93 @@ namespace BaseClasses
             return wireFrame;
         }
 
+        public Point3DCollection GetRealExternalOutlinePointsTransformedToGCS(EGCS eGCS = EGCS.eGCSLeftHanded)
+        {
+            // Lateral Points
+            Point3DCollection points = new Point3DCollection();
+
+            // TODO - refaktoring - skopirovane z funkcie getMeshMemberGeometry3DFromCrSc_Three a upravene parametre
+            // Zmazane vnutorne body a rozlisenie medzi solid a closed cross-section
+
+            double fy, fz;
+
+            // Fill Mesh Positions for Start and End Section of Element - Defines Edge Points of Element
+
+            if (CrScStart.CrScPointsOut != null) // Check that data are available
+            {
+                // Rotate local y and z coordinates
+
+                for (int j = 0; j < CrScStart.INoPointsOut; j++)
+                {
+                    // X - start, Y, Z
+
+                    // Set original value to the temporary variable
+                    fy = CrScStart.CrScPointsOut[j].X;
+                    fz = CrScStart.CrScPointsOut[j].Y;
+
+                    // Set Member Eccentricity
+                    if (EccentricityStart != null)
+                    {
+                        fy += EccentricityStart.MFy_local;
+                        fz += EccentricityStart.MFz_local;
+                    }
+
+                    // Rotate about local x-axis
+                    Geom2D.TransformPositions_CCW_rad(0f, 0f, DTheta_x, ref fy, ref fz);
+
+                    points.Add(new Point3D(-FAlignment_Start, fy, fz));
+                }
+
+                for (int j = 0; j < CrScStart.INoPointsOut; j++)
+                {
+                    // X - end, Y, Z
+                    if (CrScEnd == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
+                    {
+                        // Set original value to the temporary variable
+                        fy = CrScStart.CrScPointsOut[j].X;
+                        fz = CrScStart.CrScPointsOut[j].Y;
+
+                        // Set Member Eccentricity
+                        if (EccentricityEnd != null)
+                        {
+                            fy += EccentricityEnd.MFy_local;
+                            fz += EccentricityEnd.MFz_local;
+                        }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, DTheta_x, ref fy, ref fz);
+
+                        points.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                    }
+                    else
+                    {
+                        // Set original value to the temporary variable
+                        fy = CrScEnd.CrScPointsOut[j].X;
+                        fz = CrScEnd.CrScPointsOut[j].Y;
+
+                        // Set Member Eccentricity
+                        if (EccentricityEnd != null)
+                        {
+                            fy += EccentricityEnd.MFy_local;
+                            fz += EccentricityEnd.MFz_local;
+                        }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, DTheta_x, ref fy, ref fz);
+
+                        points.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                    }
+                }
+            }
+            else
+            {
+                // Exception
+            }
+
+            // Transform coordinates from LCS to GCS
+            return TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), Delta_X, Delta_Y, Delta_Z, m_dTheta_x, points);
+        }
+
         public void CalculateMemberLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y, out double fTempMax_Z, out double fTempMin_Z)
         {
             fTempMax_X = float.MinValue;
