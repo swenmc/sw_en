@@ -150,8 +150,8 @@ namespace BaseClasses
             if (model != null)
             {
                 float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z = 0f;
-                CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-                
+                CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
@@ -173,7 +173,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
 
-                Model3DGroup gr = new Model3DGroup();                
+                Model3DGroup gr = new Model3DGroup();
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
@@ -241,7 +241,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
-                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);                    
+                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
                 {
