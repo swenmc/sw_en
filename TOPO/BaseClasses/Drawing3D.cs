@@ -165,10 +165,23 @@ namespace BaseClasses
                 //metoda by mala parametre rotateX, rotateY, rotateZ
 
                 // TODO 321 - Zapracovat rozne natocenie spoja v preview podla polohy/ typu spoja.
+                if (sDisplayOptions.RotateModelX != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                }
+                if (sDisplayOptions.RotateModelY != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+                }
+                if (sDisplayOptions.RotateModelZ != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+                }
 
-                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
-                centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
-                
+
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
