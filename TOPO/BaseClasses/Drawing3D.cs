@@ -149,8 +149,10 @@ namespace BaseClasses
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
-                float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z = 0f;
-                CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
+
+                if(model.m_arrMembers!= null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
+                  CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
@@ -305,9 +307,10 @@ namespace BaseClasses
         }
         public static Point3D GetModelCentreCountWithCrsc(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
-            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+            float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
-            CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+            if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
+              CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             fModel_Length_X = fTempMax_X - fTempMin_X;
             fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -2046,8 +2049,6 @@ namespace BaseClasses
             }
         }
 
-        //to Mato potrebujeme taku nejaku metodu, kt. bude uvazovat aj sirku Crsc pokial chceme to mat pekne zoomovane, to je podla mna hlavny problem preco je to raz zazoomovane viac a raz menej
-        //cele je to postavene na tom,ze sa kamera umiestni do vzdialenosti 2x max rozmer modelu, ale rozmer modelu sa pocita iba na zaklade m_arrrNodes
         public static void CalculateModelLimitsCountWithCrsc(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
@@ -2060,24 +2061,25 @@ namespace BaseClasses
             // Each member in model
             Point3DCollection allMembersPoints = new Point3DCollection();
 
-            foreach (CMember m in cmodel.m_arrMembers)
+            if (cmodel.m_arrMembers != null) // Some members must exist
             {
-                Point3DCollection memberPoints = null;
-
-                // Get transformed external outline points of real member
-                memberPoints = m.GetRealExternalOutlinePointsTransformedToGCS();
-
-                // Add member points to the main collection of all members
-                if (memberPoints != null)
+                foreach (CMember m in cmodel.m_arrMembers)
                 {
-                    foreach (Point3D p in memberPoints)
+                    Point3DCollection memberPoints = null;
+
+                    // Get transformed external outline points of real member
+                    memberPoints = m.GetRealExternalOutlinePointsTransformedToGCS();
+
+                    // Add member points to the main collection of all members
+                    if (memberPoints != null)
                     {
-                        allMembersPoints.Add(p);
+                        foreach (Point3D p in memberPoints)
+                        {
+                            allMembersPoints.Add(p);
+                        }
                     }
                 }
             }
-
-            //get crsc width / 2 and add to minX,minY,or minZ
 
             if (allMembersPoints != null) // Some member outline points exist (transformed external outline points of real member)
             {
