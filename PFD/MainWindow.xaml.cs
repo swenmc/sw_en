@@ -1759,6 +1759,8 @@ namespace PFD
             DisplayOptions displayOptions = vm.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             displayOptions.bDisplayGlobalAxis = false;
+            displayOptions.RotateModelX = -90;
+            displayOptions.RotateModelY = 20;
             //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions);
 
@@ -1825,6 +1827,8 @@ namespace PFD
             DisplayOptions displayOptions = vm.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             displayOptions.bDisplayGlobalAxis = false;
+            displayOptions.RotateModelX = -90;
+            displayOptions.RotateModelY = 20;
             //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
             Page3Dmodel page3D = new Page3Dmodel(model, displayOptions);
 
