@@ -1783,46 +1783,57 @@ namespace PFD
 
         private void RedrawWidowPreview()
         {
-            //Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
-            // TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
-            // ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
-            // Mali by sa tiez dat urcit z parametrov globalneho modelu
-            // Tieto parametre sa totiz nastavuju pri vytvarani objektu bloku v CModel_01_PFD
-            // vid metoda DeterminateBasicPropertiesToInsertBlock
+            ////Mato??? - tieto komenty dole su aktualne? Lebo task 266 je uzavrety.
+            //// TO Ondrej - no mne sa zda ze preberame z bloku WindowProperties props
+            //// ale dalsie parametre samotneho bay, objekty stlpov, girts, odstup od stlpov atd tu nastavujem natvrdo,
+            //// Mali by sa tiez dat urcit z parametrov globalneho modelu
+            //// Tieto parametre sa totiz nastavuju pri vytvarani objektu bloku v CModel_01_PFD
+            //// vid metoda DeterminateBasicPropertiesToInsertBlock
 
-            //------------------------------------------------
-            // TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
-            //
-            // Tento kod by mal byt zmazany
-            // Girt
-            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
-            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
-            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
-            refgirt.EccentricityStart = eccentricity;
-            refgirt.EccentricityEnd = eccentricity;
-            refgirt.DTheta_x = Math.PI / 2;
+            ////------------------------------------------------
+            //// TODO 266 - prevziat parametre girt a columns zo skutocneho modelu, resp. zvoleneho bloku
+            ////
+            //// Tento kod by mal byt zmazany
+            //// Girt
+            //CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            //CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            //CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            //refgirt.EccentricityStart = eccentricity;
+            //refgirt.EccentricityEnd = eccentricity;
+            //refgirt.DTheta_x = Math.PI / 2;
 
-            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
-            CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
-            CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
-            //------------------------------------------------
+            //CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0, Colors.Green);
+            //CMember mColumnLeft = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+            //CMember mColumnRight = new CMember(0, new CNode(0, 1, 0, 0, 0), new CNode(1, 1, 0, 5, 0), crscColumn, 0);
+            ////------------------------------------------------
 
-            WindowProperties props = null;
-            if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
-            if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
+            //WindowProperties props = null;
+            //if (Datagrid_Windows.SelectedIndex != -1) props = vm.WindowBlocksProperties.ElementAtOrDefault(Datagrid_Windows.SelectedIndex);
+            //if (props == null) props = vm.WindowBlocksProperties.FirstOrDefault();
 
-            // TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
-            // V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
-            // Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
+            //// TODO 266 - vsetky vstupne parametre konstruktora CBlock_3D_002_WindowInBay by sa mali prevziat z existujuceho bloku podla toho ktory riadok datagridu je selektovany
+            //// V podstate by sme nemali tento blok vytvarat nanovo, ale len prevziat parametre bloku z hlavneho modelu (to asi teraz nie je dostupne)
+            //// Prva moznost je ze si budeme bloky ukladat niekam do CModel_PFD_01_GR a potom ich tu len zobrazime podla vybraneho riadku v datagride.
 
-            // Druha moznost je vytvorit konrektny zobrazovany blok znova.
-            // V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
-            // 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
-            // 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
+            //// Druha moznost je vytvorit konrektny zobrazovany blok znova.
+            //// V tom pripade by sme potrebovali zavolat cast metody CModel_PFD_01_GR, AddWindowBlock, tj. 
+            //// 1. Nastavia sa vstupne parametre podla polohy bloku DeterminateBasicPropertiesToInsertBlock
+            //// 2. Vyrobi sa blok window = new CBlock_3D_001_WindowInBay(....)
 
-            CModel model;
-            if (props == null) model = new CModel();
-            else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+            //CModel model;
+            //if (props == null) model = new CModel();
+            //else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
+
+            
+            CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
+            if (modelPFD.WindowsModels == null) return;
+
+            int index = Datagrid_Windows.SelectedIndex;
+            if (index < 0) index = 0;
+            CModel model = modelPFD.WindowsModels.ElementAtOrDefault(index);
+            if (model == null) model = modelPFD.WindowsModels.FirstOrDefault();
+            if (model == null) model = new CModel();
+
 
             DisplayOptions displayOptions = vm.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
