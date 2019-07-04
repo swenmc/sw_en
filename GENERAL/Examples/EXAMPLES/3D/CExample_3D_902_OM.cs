@@ -37,7 +37,8 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C_NESTED(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f);
             //m_arrCrSc[0] = new CCrSc_3_Z(0, 0.5f, 0.2f, 0.05f, 0.02f, Colors.DarkCyan);
 
             // Pokusy
@@ -111,7 +112,9 @@ namespace Examples
             // Joints
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[0], false, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eOneLeftPlate, true, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eOneLeftPlate, true, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
 
             m_arrMLoads = new CMLoad[1];
             //m_arrMLoads[0] = new CMLoad_21(1, -250, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
