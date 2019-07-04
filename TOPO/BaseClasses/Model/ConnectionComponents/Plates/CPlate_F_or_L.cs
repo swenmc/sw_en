@@ -157,9 +157,6 @@ namespace BaseClasses
             CScrewArrangement_F screwArrangement_temp,
             bool bIsDisplayed)
         {
-            //skareda oprava...proste som urobil clone obejktu
-            screwArrangement_temp = screwArrangement_temp.Clone();
-
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_F;
