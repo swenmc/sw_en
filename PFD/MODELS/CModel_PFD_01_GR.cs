@@ -1452,6 +1452,7 @@ namespace PFD
             CMember mReferenceGirt;
             CMember mColumnLeft;
             CMember mColumnRight;
+            CMember mEavesPurlin;
             CBlock_3D_001_DoorInBay door;
             CPoint pControlPointBlock;
             float fBayWidth;
@@ -1461,7 +1462,7 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide;
             bool bIsLastBayInFrontorBackSide;
 
-            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
             door = new CBlock_3D_001_DoorInBay(
                 prop,
@@ -1471,6 +1472,7 @@ namespace PFD
                 mReferenceGirt,
                 mColumnLeft,
                 mColumnRight,
+                mEavesPurlin,
                 fBayWidth,
                 fBayHeight,
                 fUpperGirtLimit,
@@ -1488,6 +1490,7 @@ namespace PFD
             CMember mReferenceGirt;
             CMember mColumnLeft;
             CMember mColumnRight;
+            CMember mEavesPurlin;
             CBlock_3D_002_WindowInBay window;
             CPoint pControlPointBlock;
             float fBayWidth;
@@ -1498,7 +1501,7 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide;
             bool bIsLastBayInFrontorBackSide;
 
-            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+            DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
             window = new CBlock_3D_002_WindowInBay(
                 prop,
@@ -1508,6 +1511,7 @@ namespace PFD
                 mReferenceGirt,
                 mColumnLeft,
                 mColumnRight,
+                mEavesPurlin,
                 fBayWidth,
                 fBayHeight,
                 fUpperGirtLimit,
@@ -1528,6 +1532,7 @@ namespace PFD
             out CMember mReferenceGirt,               // Reference girt - first girts that needs to be deactivated and replaced by new member (some parameters are same for deactivated and new member)
             out CMember mColumnLeft,                  // Left column of bay
             out CMember mColumnRight,                 // Right column of bay
+            out CMember mEavesPurlin,                  // Eave purlin for left and right side
             out CPoint pControlPointBlock,            // Conctrol point to insert block - defined as left column base point
             out float fBayWidth,                      // Width of bay (distance between bay columns)
             out int iFirstMemberToDeactivate,         // Index of first girt in the bay which is in collision with the block and must be deactivated
@@ -1555,6 +1560,11 @@ namespace PFD
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumnLeft = m_arrMembers[iBayColumnLeft];
                 mColumnRight = m_arrMembers[iBayColumnRight];
+
+                if (sBuildingSide == "Left")
+                mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + 4];
+                else
+                mEavesPurlin = m_arrMembers[(iBlockFrame * iEavesPurlinNoInOneFrame) + iBlockFrame * (iFrameNodesNo - 1) + 5];
             }
             else // Front or Back Side
             {
@@ -1647,6 +1657,7 @@ namespace PFD
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumnLeft = m_arrMembers[iColumnNumberLeft];
                 mColumnRight = m_arrMembers[iColumnNumberRight];
+                mEavesPurlin = null; // Not defined for the front and back side
             }
 
             pControlPointBlock = new CPoint(0, mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z, 0);

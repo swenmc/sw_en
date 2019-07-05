@@ -17,6 +17,7 @@ namespace PFD
             CMember referenceGirt_temp,           // Reference girt object in bay
             CMember ColumnLeft,                   // Left column of bay
             CMember ColumnRight,                  // Right column of bay
+            CMember referenceEavePurlin,          // Reference Eave Purlin
             float fBayWidth,
             float fBayHeight,
             float fUpperGirtLimit,                // Vertical limit to generate last girt (cant' be too close or in colision with eave purlin or rafter)
@@ -108,6 +109,7 @@ namespace PFD
 
             INumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
+            bool bDoorColumnIsConnectedtoEavePurlin = false;
             bool bDoorToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
             bool bDoorToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
 
@@ -180,7 +182,10 @@ namespace PFD
                 // TODO - zatial to plati len pre lavu a pravu stranu, pretoze nemam spocitanu maximalnu volnu vysku pre jednotlive bays na prednej a zadnej strane
                 // Ak bude spravne urcena fBayHeight, tak (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right") zmazat
                 if ((fBayHeight - fz < fUpperGirtLimit) && (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right"))
+                {
                     fz = fBayHeight;
+                    bDoorColumnIsConnectedtoEavePurlin = true;
+                }
 
                 m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, fz, 0);
             }
@@ -251,6 +256,12 @@ namespace PFD
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
+
+            if(bDoorColumnIsConnectedtoEavePurlin)
+            {
+                fDoorColumnEnd = (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
+            }
+
             float fDistanceBetweenGirtAndColumn_LCS_z_axis = 0.5f * (float)ReferenceGirt.CrScStart.h - 0.5f * (float)crscColumn.h;
 
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis : -eccentricityGirtStart.MFz_local + fDistanceBetweenGirtAndColumn_LCS_z_axis);
@@ -355,7 +366,16 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TC01(current_member.NodeStart, current_member, true)); // Roller door trimmer base joint
 
                 // Top
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                CMember mainMemberForColumnJoint = ReferenceGirt;
+                bool bIsAlignmentMainMemberWidth = true;
+
+                if (bDoorColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side
+                {
+                    mainMemberForColumnJoint = referenceEavePurlin;
+                    bIsAlignmentMainMemberWidth = false;
+                }
+
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bIsAlignmentMainMemberWidth, true));
             }
 
             // Lintel (header) Joint

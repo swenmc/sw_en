@@ -19,6 +19,7 @@ namespace PFD
             CMember referenceGirt_temp,           // Reference girt object in bay
             CMember ColumnLeft,                   // Left column of bay
             CMember ColumnRight,                  // Right column of bay
+            CMember referenceEavePurlin,          // Reference Eave Purlin
             float fBayWidth,
             float fBayHeight,
             float fUpperGirtLimit,                // Vertical limit to generate last girt (cant' be too close or in colision with eave purlin or rafter)
@@ -73,6 +74,7 @@ namespace PFD
 
             INumberOfGirtsToDeactivate = (int)((prop.fWindowsHeight + prop.fWindowCoordinateZinBay - fCoordinateZOfGirtUnderWindow) / fDist_Girt); // Number of intermediate girts to deactivate
 
+            bool bWindowColumnIsConnectedtoEavePurlin = false;
             bool bWindowToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of window
             bool bWindowToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of window
 
@@ -155,7 +157,10 @@ namespace PFD
                 // TODO - zatial to plati len pre lavu a pravu stranu, pretoze nemam spocitanu maximalnu volnu vysku pre jednotlive bays na prednej a zadnej strane
                 // Ak bude spravne urcena fBayHeight, tak (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right") zmazat
                 if ((fBayHeight - fz < fUpperGirtLimit) && (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right"))
+                {
                     fz = fBayHeight;
+                    bWindowColumnIsConnectedtoEavePurlin = true;
+                }
 
                 m_arrNodes[iNodesForGirts + i * 2 + 1] = new CNode(iNodesForGirts + i * 2 + 1 + 1, prop.fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fz, 0);
             }
@@ -237,6 +242,12 @@ namespace PFD
                 fWindowColumnStart = -(float)ReferenceGirt.CrScStart.y_max - fCutOffOneSide;
 
             float fWindowColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
+
+            if (bWindowColumnIsConnectedtoEavePurlin)
+            {
+                fWindowColumnEnd = (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
+            }
+
             CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
             float fWindowColumnRotation = (float)Math.PI / 2;
@@ -358,7 +369,16 @@ namespace PFD
                 // Bottom - columns is connected to the concrete foundation of girt (use different type of plate ???)
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
                 // Top
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                CMember mainMemberForColumnJoint = ReferenceGirt;
+                bool bIsAlignmentMainMemberWidth = true;
+
+                if (bWindowColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side
+                {
+                    mainMemberForColumnJoint = referenceEavePurlin;
+                    bIsAlignmentMainMemberWidth = false;
+                }
+
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bIsAlignmentMainMemberWidth, true));
             }
 
             // Window Header Joint
