@@ -162,7 +162,7 @@ namespace BaseClasses
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-
+                
                 if (sDisplayOptions.RotateModelX != 0)
                 {
                     AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
@@ -170,6 +170,8 @@ namespace BaseClasses
                 }
                 if (sDisplayOptions.RotateModelY != 0)
                 {
+                    if(!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+                    
                     AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
                 }
@@ -260,6 +262,16 @@ namespace BaseClasses
             }
 
             _trackport.SetupScene();
+        }
+
+        private static bool IsJointSecondaryMemberTowardsCamera(CModel model)
+        {
+            if (model.m_arrConnectionJoints == null) return true;
+            if (model.m_arrConnectionJoints.Count != 1) return true;
+
+            if (model.m_arrConnectionJoints[0].m_SecondaryMembers == null) return true;
+            if (model.m_arrConnectionJoints[0].m_SecondaryMembers[0].NodeStart.Z < model.m_arrConnectionJoints[0].m_SecondaryMembers[0].NodeEnd.Z) return true;
+            else return false;
         }
 
         //-------------------------------------------------------------------------------------------------------------
