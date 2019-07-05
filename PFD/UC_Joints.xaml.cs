@@ -174,15 +174,7 @@ namespace PFD
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
-
-
-                //----------------------------------------------------------------------------------------------------------------------------
-                // TO - Ondrej - pozri prosim na toto
-                //joint.JointType = (EJointType)con.ID;  // TO Ondrej - toto je podla mna zle, najdes napriklad 8 objektov typu TA001, 4 patria k main column, 4 patria k edge column, ale tu sa pre vsetky ktore si nasiel nastavi rovnaky typ, to znamena ze vsetky sa prepisu na edge column
-                // preto potom nesedeli index v joint preview a nevedel som nastavit spravne uhly, oprava je na konci tejto funkcie
-                //----------------------------------------------------------------------------------------------------------------------------
-
-
+                
                 //To Mato - tu potrebudem cely tento switch skontrolovat/opravit/doplnit lebo ty tomu viac rozumies ako ja
                 // Predbezne skontrolovane, ale este to budeme musiet poladit a podoplnat.
                 // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
@@ -569,6 +561,8 @@ namespace PFD
             // Ak sme nasli vsetky spoje daneho typu objektu a vyselektovali z nich tie, ktore maju ocakavane typy prutov
             // Nastavime tymto spojom spravny typ spoja podla typov a polohy prutov, ktore su k nim pripojene
             // Do buducna bude istejsie nastavovat typ spoja uz priamo pri vytvoreni objektu spoja, potom bude cely tento switch zbytocny, alebo aspon vyrazne kratsi
+
+            // Ano jasne. Jedine naozaj dobre riesenie je nastavit enum EJointType priamo pri vytvarani konkretneho objektu Joint
             foreach (CConnectionJointTypes joint in resItems)
             {
                 joint.JointType = (EJointType)con.ID;
