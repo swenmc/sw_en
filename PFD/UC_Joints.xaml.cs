@@ -1115,8 +1115,8 @@ namespace PFD
                 fSecondaryMemberLength = fMainMemberLength;
             }
 
-            float fMainMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
-            float fSecondaryMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru  // Bug 320 - Musi byt rovnake ako main member kvoli plechu Apex - jeden rafter je main, jeden je secondary
+            float fMainMemberLengthFactor = 1.1f;      // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fSecondaryMemberLengthFactor = 1.1f; // Upravi dlzku urcenu z maximalneho rozmeru plechu // Bug 320 - Musi byt rovnake ako main member kvoli plechu Apex - jeden rafter je main, jeden je secondary
 
             fMainMemberLength *= fMainMemberLengthFactor;
             fSecondaryMemberLength *= fSecondaryMemberLengthFactor;
@@ -1303,15 +1303,12 @@ namespace PFD
             }
             jointModel.m_arrNodes = nodeList.ToArray();
 
-            // Bug - TODO - TO Ondrej - skusal som nastavovat uhly a zistil som ze je nejaky problem s joint a jointClone, nemaju rovnaky typ
-            // Skusil som to opravit, tak sa na to pozri a zmaz tento komentar.
-
             jointClone = joint.RecreateJoint();
             jointClone.m_arrPlates = joint.m_arrPlates;
 
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
 
-            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions); // TODO Ondrej - posiela sa sem joint, ale ten nema ocakavany typ !!! Skusil som to opravit, tak sa na to pozri a zmaz tento komentar.
+            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
 
             // Display model in 3D preview frame
