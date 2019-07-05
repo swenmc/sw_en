@@ -178,7 +178,8 @@ namespace PFD
 
                 //----------------------------------------------------------------------------------------------------------------------------
                 // TO - Ondrej - pozri prosim na toto
-                //joint.JointType = (EJointType)con.ID;  // TO Ondrej - toto je podla mna zle, najdes napriklad 8 objektov typu TA001, 4 patria k main column, 4 patria k edge column, ale tu sa pre vsetky ktore si nasiel nastavit rovnaky typ, to znamena ze vsetky sa prepisu na edge column
+                //joint.JointType = (EJointType)con.ID;  // TO Ondrej - toto je podla mna zle, najdes napriklad 8 objektov typu TA001, 4 patria k main column, 4 patria k edge column, ale tu sa pre vsetky ktore si nasiel nastavi rovnaky typ, to znamena ze vsetky sa prepisu na edge column
+                // preto potom nesedeli index v joint preview a nevedel som nastavit spravne uhly, oprava je na konci tejto funkcie
                 //----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -186,6 +187,13 @@ namespace PFD
                 // Predbezne skontrolovane, ale este to budeme musiet poladit a podoplnat.
                 // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
                 // B) Je potrebne doplnit nejake typy spojov hlavne pre front a back girts (napriklad ak su v prednej alebo zadnej stene vlozene otvory)
+
+                // To Ondrej Bug 328, door trimmer to girt, main member - girt ma EMemberPositionType = 0, takze spoj sa nedetekuje spravne
+                // Musime si byt isti ze vsetky pruty maju nastaveny MemberPositionType, inak je nieco zle
+                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
+                {
+                    throw new Exception("Main Member Type: " + joint.m_MainMember.EMemberType + ", Main Member Position Type: " + joint.m_MainMember.EMemberTypePosition);
+                }
 
                 switch (con.ID)
                 {
@@ -558,8 +566,9 @@ namespace PFD
 
             //----------------------------------------------------------------------------------------------------------------------------
             // TO - Ondrej - pozri prosim na toto
-            // Ak sme nasli vsetky spoje daneho typu objektu a vysektovali z nich tie ktore maju ocakavane typy prutov
-            // Nastavime tymto spojom spravny typ spoja podla typov a polohy prutov ktore su pripojene
+            // Ak sme nasli vsetky spoje daneho typu objektu a vyselektovali z nich tie, ktore maju ocakavane typy prutov
+            // Nastavime tymto spojom spravny typ spoja podla typov a polohy prutov, ktore su k nim pripojene
+            // Do buducna bude istejsie nastavovat typ spoja uz priamo pri vytvoreni objektu spoja, potom bude cely tento switch zbytocny, alebo aspon vyrazne kratsi
             foreach (CConnectionJointTypes joint in resItems)
             {
                 joint.JointType = (EJointType)con.ID;
