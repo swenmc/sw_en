@@ -40,6 +40,7 @@ namespace CRSC
             CalcCrSc_Coord();
 
             FillCrScPropertiesByTableData();
+            ChangeCoordToCentroid();
 
             // SOLID MODEL
             // Fill list of indices for drawing of surface - triangles edges
@@ -54,6 +55,30 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
+        }
+
+        public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        {
+            y_min = -b / 2;
+            y_max = b / 2;
+            z_min = -h / 2;
+            z_max = h / 2;
+
+            for (int i = 0; i < INoPointsOut; i++)
+            {
+                Point p = CrScPointsOut[i];
+                p.X += 0;
+                p.Y += 0;
+                CrScPointsOut[i] = p;
+            }
+
+            for (int i = 0; i < INoPointsIn; i++)
+            {
+                Point p = CrScPointsIn[i];
+                p.X += 0;
+                p.Y += 0;
+                CrScPointsIn[i] = p;
+            }
         }
     }
 }

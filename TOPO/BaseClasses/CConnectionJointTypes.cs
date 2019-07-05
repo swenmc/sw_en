@@ -88,12 +88,14 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
         protected void SetPlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew, float fh_plate, out string platePrefix, out CScrewArrangement screwArrangement)
         {
             // TODO - Urobit nastavovanie rozmerov dynamicky podla velkosti prierezu / vyztuh a plechu
             // Nacitat velkosti vyztuh z parametrov prierezu, medzery a polohu skrutiek urcovat dynamicky
+            // BX1 - 2 rectangular sequencies
+            // BX2 - 3 rectangular sequencies
+
             CScrewArrangement_BX_2 screwArrangement1_10075 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
                     2, 1, 0.02f, 0.015f, 0.03f, 0.03f,
                     2, 1, 0.02f, 0.050f, 0.03f, 0.03f,
