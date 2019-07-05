@@ -35,6 +35,9 @@ namespace CRSC
         }
 
         public CCrSc_3_I_LIPS() { }
+
+        public CCrSc_3_I_LIPS(float fh, float fb, float fc_lip, float ft) : this(0, fh, fb, fc_lip, ft, Colors.Red) { }
+
         public CCrSc_3_I_LIPS(int iID_temp, float fh, float fb, float fc_lip, float ft, Color color_temp)
         {
             ID = iID_temp;

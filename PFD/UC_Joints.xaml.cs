@@ -101,6 +101,28 @@ namespace PFD
             foreach (CConnectionDescription c in vm.JointTypes)
             {
                 jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
+
+                //----------------------------------------------------------------------------------------------------------------------------
+                // TO - Ondrej - pozri prosim na toto
+                // Skusal som nastavovat uhly ale zistil som ze vobec nesedia indexy typov s tym co je v comboboxe
+                // Ocakava sa ze typy v jointsDict a vm.JointTypes si koresponduju
+                // Tu to vyzera tak ze sa zoznam zacne naplnat spravne, ale pri vystupe je to uz inak
+                // prepisuju sa typy, napriklad TA001 je typ ktory ma edge column aj main colum,
+                // Najprv sa pre index 1 zapise main column ale pre index 4 sa nastavi edge column a prepise sa aj typ s indexom 1
+                // nesedia potom indexy typov v joint.Helper
+
+                // Validation - pokus odchytit zmenu v uz zapisanych zaznamoch
+                EJointType type = EJointType.eBase_MainColumn; // Hladany typ spoja, ktoreho zmenu sledujeme
+
+                List<CConnectionJointTypes> list = new List<CConnectionJointTypes>();
+                list = jointsDict[(int)type];
+
+                if (list[0].JointType != type) // Porovname typ prveho spoja ktory je zapisany v zozname dictionary so sledovanym typom
+                {
+                    throw new Exception("Original type: " + type + ", index No. " + (int)type + "\n"+
+                                        "New type: " + vm.JointTypes[c.ID-1].Name + " description ID: " + c.ID + ", object type: " + vm.JointTypes[c.ID - 1].JoinType);
+                }
+                //----------------------------------------------------------------------------------------------------------------------------
             }
         }
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
@@ -152,7 +174,14 @@ namespace PFD
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
-                joint.JointType = (EJointType)con.ID;
+
+
+                //----------------------------------------------------------------------------------------------------------------------------
+                // TO - Ondrej - pozri prosim na toto
+                //joint.JointType = (EJointType)con.ID;  // TO Ondrej - toto je podla mna zle, najdes napriklad 8 objektov typu TA001, 4 patria k main column, 4 patria k edge column, ale tu sa pre vsetky ktore si nasiel nastavit rovnaky typ, to znamena ze vsetky sa prepisu na edge column
+                //----------------------------------------------------------------------------------------------------------------------------
+
+
                 //To Mato - tu potrebudem cely tento switch skontrolovat/opravit/doplnit lebo ty tomu viac rozumies ako ja
                 // Predbezne skontrolovane, ale este to budeme musiet poladit a podoplnat.
                 // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
@@ -527,6 +556,16 @@ namespace PFD
                 } //end switch
             } //end foreach
 
+            //----------------------------------------------------------------------------------------------------------------------------
+            // TO - Ondrej - pozri prosim na toto
+            // Ak sme nasli vsetky spoje daneho typu objektu a vysektovali z nich tie ktore maju ocakavane typy prutov
+            // Nastavime tymto spojom spravny typ spoja podla typov a polohy prutov ktore su pripojene
+            foreach (CConnectionJointTypes joint in resItems)
+            {
+                joint.JointType = (EJointType)con.ID;
+            }
+            //----------------------------------------------------------------------------------------------------------------------------
+
             return resItems;
         }
         private Type GetTypeFor(string strType)
@@ -535,15 +574,15 @@ namespace PFD
             {
                 case "A001": return typeof(CConnectionJoint_A001);
                 case "B001": return typeof(CConnectionJoint_B001);
-                case "C001": return typeof(CConnectionJoint_C001);
-                case "CT01": return typeof(CConnectionJoint_CT01);
-                case "D001": return typeof(CConnectionJoint_D001);
-                case "E001": return typeof(CConnectionJoint_E001);
-                case "J001": return typeof(CConnectionJoint_J001);
-                case "L001": return typeof(CConnectionJoint_L001);
+                //case "C001": return typeof(CConnectionJoint_C001); // Tieto spoje budu zmazane
+                //case "CT01": return typeof(CConnectionJoint_CT01);
+                //case "D001": return typeof(CConnectionJoint_D001);
+                //case "E001": return typeof(CConnectionJoint_E001);
+                //case "J001": return typeof(CConnectionJoint_J001);
+                //case "L001": return typeof(CConnectionJoint_L001);
                 case "S001": return typeof(CConnectionJoint_S001);
                 case "T001": return typeof(CConnectionJoint_T001);
-                case "T002": return typeof(CConnectionJoint_T002);
+                //case "T002": return typeof(CConnectionJoint_T002); (TODO Marin - rozpracovat podrobne)
                 case "T003": return typeof(CConnectionJoint_T003);
                 case "TA01": return typeof(CConnectionJoint_TA01);
                 case "TB01": return typeof(CConnectionJoint_TB01);
@@ -1043,7 +1082,7 @@ namespace PFD
             CConnectionJointTypes jointClone = joint.Clone();
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
-            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
@@ -1259,20 +1298,22 @@ namespace PFD
             }
             jointModel.m_arrNodes = nodeList.ToArray();
 
+            // Bug - TODO - TO Ondrej - skusal som nastavovat uhly a zistil som ze je nejaky problem s joint a jointClone, nemaju rovnaky typ
+            // Skusil som to opravit, tak sa na to pozri a zmaz tento komentar.
+
             jointClone = joint.RecreateJoint();
             jointClone.m_arrPlates = joint.m_arrPlates;
-            
+
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
 
-            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
+            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions); // TODO Ondrej - posiela sa sem joint, ale ten nema ocakavany typ !!! Skusil som to opravit, tak sa na to pozri a zmaz tento komentar.
             Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
 
             // Display model in 3D preview frame
             FrameJointPreview3D.Content = page1;
             FrameJointPreview3D.UpdateLayout();
         }
-        
-        
+
         private void FrameJointPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             e.Handled = true;

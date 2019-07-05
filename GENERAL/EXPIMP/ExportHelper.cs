@@ -1169,13 +1169,12 @@ namespace EXPIMP
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(Colors.Black);
             _trackport.Width = 570;
-            _trackport.Height = 430;            
+            _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);
 
             CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
             Drawing3D.DrawJointToTrackPort(_trackport, jointModel, sDisplayOptions);
-            return _trackport.ViewPort;            
+            return _trackport.ViewPort;
         }
-
     }
 }

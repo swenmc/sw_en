@@ -7,8 +7,11 @@ namespace CRSC
     public class CCrSc_3_270XX_C_BACK_TO_BACK : CCrSc_3_I_LIPS
     {
         // Thin-walled -back to back template // TODO - zapracovat system vykreslovania zlozenych prierezov (napr. 2 x C - prierez))
-        
+
+        public CCrSc_3_270XX_C_BACK_TO_BACK() { }
+
         public CCrSc_3_270XX_C_BACK_TO_BACK(float fh, float fb, float fc_lip, float ft) : this(0, fh, fb, fc_lip, ft, Colors.Red) { }
+
         public CCrSc_3_270XX_C_BACK_TO_BACK(int iID_temp, float fh, float fb, float fc_lip, float ft, Color color_temp) : base(iID_temp, fh, fb, fc_lip, ft, color_temp)
         {
             ID = iID_temp;

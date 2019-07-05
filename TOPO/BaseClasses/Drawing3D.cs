@@ -162,11 +162,7 @@ namespace BaseClasses
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-                //TODO pokial Mato bude chciet
-                //tu by sa to teoreticky dalo rozsirit tak,ze sa model zarotuje este podla typu Joint
-                //metoda by mala parametre rotateX, rotateY, rotateZ
 
-                // TODO 321 - Zapracovat rozne natocenie spoja v preview podla polohy/ typu spoja.
                 if (sDisplayOptions.RotateModelX != 0)
                 {
                     AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
@@ -182,7 +178,6 @@ namespace BaseClasses
                     AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
-
 
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
