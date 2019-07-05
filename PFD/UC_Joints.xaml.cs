@@ -1079,6 +1079,8 @@ namespace PFD
         }
         private void displayJoint(CConnectionJointTypes joint)
         {
+            if (joint == null) return; // Error - nothing to display
+
             CConnectionJointTypes jointClone = joint.Clone();
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
