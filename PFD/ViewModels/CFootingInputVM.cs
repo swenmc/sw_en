@@ -3,6 +3,7 @@ using DATABASE.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace PFD
@@ -19,25 +20,29 @@ namespace PFD
         private Dictionary<string, CMatPropertiesRF> m_ReinforcementGrades;
         private Dictionary<int, CReinforcementBarProperties> m_ReinforcementBars;
 
+        private List<string> m_ConcreteGradesList;
+        private List<string> m_ReinforcementGradesList;
+        private List<string> m_ReinforcementBarsList;
+
         private int m_FootingPadMemberTypeIndex;
         private string m_ConcreteGrade;
         private float m_ConcreteDensity;
         private string m_ReinforcementGrade;
 
-        private int m_LongReinTop_x_No;
-        private float m_LongReinTop_x_Phi;
+        private string m_LongReinTop_x_No;
+        private string m_LongReinTop_x_Phi;
         private float m_LongReinTop_x_distance_s_y;
 
-        private int m_LongReinTop_y_No;
-        private float m_LongReinTop_y_Phi;
+        private string m_LongReinTop_y_No;
+        private string m_LongReinTop_y_Phi;
         private float m_LongReinTop_y_distance_s_x;
 
-        private int m_LongReinBottom_x_No;
-        private float m_LongReinBottom_x_Phi;
+        private string m_LongReinBottom_x_No;
+        private string m_LongReinBottom_x_Phi;
         private float m_LongReinBottom_x_distance_s_y;
 
-        private int m_LongReinBottom_y_No;
-        private float m_LongReinBottom_y_Phi;
+        private string m_LongReinBottom_y_No;
+        private string m_LongReinBottom_y_Phi;
         private float m_LongReinBottom_y_distance_s_x;
 
         private float m_FootingPadSize_x_Or_a;
@@ -95,6 +100,51 @@ namespace PFD
             {
                 m_ReinforcementBars = value;
                 NotifyPropertyChanged("ReinforcementBars");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<string> ConcreteGradesList
+        {
+            get
+            {
+                return m_ConcreteGradesList;
+            }
+
+            set
+            {
+                m_ConcreteGradesList = value;
+                NotifyPropertyChanged("ConcreteGradesList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<string> ReinforcementGradesList
+        {
+            get
+            {
+                return m_ReinforcementGradesList;
+            }
+
+            set
+            {
+                m_ReinforcementGradesList = value;
+                NotifyPropertyChanged("ReinforcementGradesList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<string> ReinforcementBarsList
+        {
+            get
+            {
+                return m_ReinforcementBarsList;
+            }
+
+            set
+            {
+                m_ReinforcementBarsList = value;
+                NotifyPropertyChanged("ReinforcementBarsList");
             }
         }
 
@@ -162,7 +212,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LongReinTop_x_No
+        public string LongReinTop_x_No
         {
             get
             {
@@ -177,7 +227,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float LongReinTop_x_Phi
+        public string LongReinTop_x_Phi
         {
             get
             {
@@ -207,7 +257,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LongReinTop_y_No
+        public string LongReinTop_y_No
         {
             get
             {
@@ -222,7 +272,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float LongReinTop_y_Phi
+        public string LongReinTop_y_Phi
         {
             get
             {
@@ -252,7 +302,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LongReinBottom_x_No
+        public string LongReinBottom_x_No
         {
             get
             {
@@ -267,7 +317,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float LongReinBottom_x_Phi
+        public string LongReinBottom_x_Phi
         {
             get
             {
@@ -297,7 +347,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LongReinBottom_y_No
+        public string LongReinBottom_y_No
         {
             get
             {
@@ -312,7 +362,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float LongReinBottom_y_Phi
+        public string LongReinBottom_y_Phi
         {
             get
             {
@@ -490,9 +540,19 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CFootingInputVM()
         {
+            // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
             ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
             ReinforcementBars = CReinforcementBarManager.LoadReiforcementBarProperties();
+
+            // To Ondrej - asi by som mal urobit zoznamy objektov vlastnosti/properties priamo v Database Manager
+            // v Database Manager mame niekde dictionary, niekde list of properties, neviem ci nam to fakt vsetko treba a ci by to nemalo byt jednotne vsade jedno alebo druhe
+            // Convert dictionary keys to list of strings - used for combobox items
+            ConcreteGradesList = ConcreteGrades.Keys.ToList();
+            ReinforcementGradesList = ReinforcementGrades.Keys.ToList();
+            List<int> rcBarsDiameters = ReinforcementBars.Keys.ToList();
+            ReinforcementBarsList = rcBarsDiameters.ConvertAll<string>(x => x.ToString());
+
             IsSetFromCode = false;
         }
 
