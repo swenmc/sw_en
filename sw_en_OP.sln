@@ -18,9 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MATERIAL", "MATERIAL", "{2C886785-68C0-4518-A61D-BE002F0EF494}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DATABASE", "DATABASE", "{AE4032E0-1F69-423B-89B7-8AC14D6ED859}"
-	ProjectSection(SolutionItems) = preProject
-		DATABASE\CMaterialManager.cs = DATABASE\CMaterialManager.cs
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW_EN", "sw_en\SW_EN.csproj", "{8D8A9215-1A12-4970-9CAB-09762D182642}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -1120,8 +1117,8 @@ Global
 		{8D3860C1-AD01-43B5-8AA9-14E32E1D2B30} = {E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

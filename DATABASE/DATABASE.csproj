@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="CComponentManager.cs" />
     <Compile Include="CJointsManager.cs" />
+    <Compile Include="CReinforcementBarManager.cs" />
     <Compile Include="CQuantityLibrary.cs" />
     <Compile Include="CStringsManager.cs" />
     <Compile Include="CTEKScrewsManager.cs" />
