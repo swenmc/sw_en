@@ -91,13 +91,16 @@
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
+    <Compile Include="DTO\CReinforcementBarProperties.cs" />
+    <Compile Include="DTO\CMatPropertiesRF.cs" />
+    <Compile Include="DTO\CMatPropertiesRC.cs" />
     <Compile Include="DTO\QuantityLibraryItem.cs" />
     <Compile Include="DTO\DataExportTables.cs" />
     <Compile Include="DTO\CAnnualProbability.cs" />
     <Compile Include="DTO\CMatProperties.cs" />
     <Compile Include="DTO\CMaterialProperties.cs" />
     <Compile Include="DTO\CrScProperties.cs" />
-    <Compile Include="DTO\CMaterialPropertiesTex.cs" />
+    <Compile Include="DTO\CMaterialPropertiesText.cs" />
     <Compile Include="DTO\CTEKScrewProperties.cs" />
     <Compile Include="DTO\CSectionPropertiesText.cs" />
     <Compile Include="CTrapezoidalSheetingManager.cs" />

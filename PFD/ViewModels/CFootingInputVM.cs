@@ -89,8 +89,8 @@ namespace PFD
 
             set
             {
-                if (value < 1500 || value > 3000)
-                    throw new ArgumentException("Concrete density must be between 1500 and 3000 [kg/m³]");
+                if (value < 1800 || value > 2800)
+                    throw new ArgumentException("Concrete density must be between 1800 and 2800 [kg/m³]");
 
                 m_ConcreteDensity = value;
                 NotifyPropertyChanged("ConcreteDensity");

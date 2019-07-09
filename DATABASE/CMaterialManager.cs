@@ -10,6 +10,7 @@ namespace DATABASE
 {
     public static class CMaterialManager
     {
+        // STEEL
         public static Dictionary<string, CMatProperties> LoadMaterialProperties()
         {
             CMatProperties mat = null;
@@ -378,6 +379,134 @@ namespace DATABASE
             list.Add(properties.Note);
 
             return list;
+        }
+
+        // CONCRETE
+        private static CMatPropertiesRC GetMaterialProperties_RC(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CMatPropertiesRC mat = new CMatPropertiesRC();
+            mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            mat.Standard = reader["Standard"].ToString();
+            mat.Grade = reader["Grade"].ToString();
+            //mat.E = reader["E"].ToString() == "" ? double.NaN : double.Parse(reader["E"].ToString(), nfi);
+            //mat.G = reader["G"].ToString() == "" ? double.NaN : double.Parse(reader["G"].ToString(), nfi);
+            mat.Nu = reader["poisson_ratio_nu"].ToString() == "" ? double.NaN : double.Parse(reader["Nu"].ToString(), nfi);
+            mat.Fc = reader["fc_cylinder_Pa"].ToString() == "" ? double.NaN : double.Parse(reader["fc_cylinder_Pa"].ToString(), nfi);
+            mat.Rho = reader["density_rho"].ToString() == "" ? double.NaN : double.Parse(reader["density_rho"].ToString(), nfi);
+            mat.Alpha = reader["alpha"].ToString() == "" ? double.NaN : double.Parse(reader["alpha"].ToString(), nfi);
+
+            return mat;
+        }
+
+        public static Dictionary<string, CMatPropertiesRC> LoadMaterialPropertiesRC()
+        {
+            CMatPropertiesRC mat = null;
+            Dictionary<string, CMatPropertiesRC> items = new Dictionary<string, CMatPropertiesRC>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Concrete_NZS3101", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        mat = GetMaterialProperties_RC(reader);
+                        items.Add(mat.Grade, mat);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CMatPropertiesRC LoadMaterialPropertiesRC(string name)
+        {
+            CMatPropertiesRC properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Concrete_NZS3101 WHERE Grade = @Grade", conn);
+                command.Parameters.AddWithValue("@Grade", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetMaterialProperties_RC(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        // REINFORCEMENT
+        private static CMatPropertiesRF GetMaterialProperties_RF(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CMatPropertiesRF mat = new CMatPropertiesRF();
+            mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            mat.Standard = reader["Standard"].ToString();
+            mat.Grade = reader["Grade"].ToString();
+            //mat.E = reader["E"].ToString() == "" ? double.NaN : double.Parse(reader["E"].ToString(), nfi);
+            //mat.G = reader["G"].ToString() == "" ? double.NaN : double.Parse(reader["G"].ToString(), nfi);
+            //mat.Nu = reader["poisson_ratio_nu"].ToString() == "" ? double.NaN : double.Parse(reader["Nu"].ToString(), nfi);
+            mat.Ry = reader["Ry_Pa"].ToString() == "" ? double.NaN : double.Parse(reader["Ry_Pa"].ToString(), nfi);
+            mat.Rho = reader["density_rho"].ToString() == "" ? double.NaN : double.Parse(reader["density_rho"].ToString(), nfi);
+            //mat.Alpha = reader["alpha"].ToString() == "" ? double.NaN : double.Parse(reader["alpha"].ToString(), nfi);
+
+            // TODO - skontrolovat
+            mat.E = 200e+9;
+            mat.G = 80e+9;
+            mat.Nu = 0.25;
+            mat.Alpha = 1.2e-6;
+
+            return mat;
+        }
+
+        public static Dictionary<string, CMatPropertiesRF> LoadMaterialPropertiesRF()
+        {
+            CMatPropertiesRF mat = null;
+            Dictionary<string, CMatPropertiesRF> items = new Dictionary<string, CMatPropertiesRF>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Reinforcement_NZS4671", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        mat = GetMaterialProperties_RF(reader);
+                        items.Add(mat.Grade, mat);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CMatPropertiesRF LoadMaterialPropertiesRF(string name)
+        {
+            CMatPropertiesRF properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Reinforcement_NZS4671 WHERE Grade = @Grade", conn);
+                command.Parameters.AddWithValue("@Grade", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetMaterialProperties_RF(reader);
+                    }
+                }
+            }
+            return properties;
         }
     }
 }
