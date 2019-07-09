@@ -932,9 +932,13 @@ namespace PFD
                 FrameDoorWindowPreview3D.Focus(); //asi nefunguje :-( stve ma ten focus na prvom riadku v prvom gride
                 LabelDoors.Focus();
             }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
+            {
+                //if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm);
+            }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
             {
-                if (Footing_Input.Content == null) Footing_Input.Content = new UC_FootingInput();
+                if (Footing_Input.Content == null) Footing_Input.Content = new UC_FootingInput(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
@@ -1009,12 +1013,8 @@ namespace PFD
                     //uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
 
                     //CPFDJointsDesign jointsDesignVM = uc_jointDesign.DataContext as CPFDJointsDesign;
-                    //jointsDesignVM.SetComponentList(compListVM.ComponentList);                    
+                    //jointsDesignVM.SetComponentList(compListVM.ComponentList);
                 }
-            }
-            else if (MainTabControl.SelectedIndex == (int)ETabNames.eJoint_Input)
-            {
-                //if (Joint_Input.Content == null) Joint_Input.Content = new UC_Joints(vm);
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {

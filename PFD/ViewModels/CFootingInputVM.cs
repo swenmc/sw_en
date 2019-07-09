@@ -23,6 +23,7 @@ namespace PFD
         private List<string> m_ConcreteGradesList;
         private List<string> m_ReinforcementGradesList;
         private List<string> m_ReinforcementBarsList;
+        private List<string> m_ReinforcementBarsCountList;
 
         private int m_FootingPadMemberTypeIndex;
         private string m_ConcreteGrade;
@@ -145,6 +146,21 @@ namespace PFD
             {
                 m_ReinforcementBarsList = value;
                 NotifyPropertyChanged("ReinforcementBarsList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<string> ReinforcementBarsCountList
+        {
+            get
+            {
+                return m_ReinforcementBarsCountList;
+            }
+
+            set
+            {
+                m_ReinforcementBarsCountList = value;
+                NotifyPropertyChanged("ReinforcementBarsCountList");
             }
         }
 
@@ -546,12 +562,21 @@ namespace PFD
             ReinforcementBars = CReinforcementBarManager.LoadReiforcementBarProperties();
 
             // To Ondrej - asi by som mal urobit zoznamy objektov vlastnosti/properties priamo v Database Manager
-            // v Database Manager mame niekde dictionary, niekde list of properties, neviem ci nam to fakt vsetko treba a ci by to nemalo byt jednotne vsade jedno alebo druhe
+            // v Database Manager mame niekde dictionary, niekde list of properties, neviem ci nam to fakt oboje treba a ci by to nemalo byt jednotne vsade jedno alebo druhe (dictionary alebo list of properties objects)
             // Convert dictionary keys to list of strings - used for combobox items
             ConcreteGradesList = ConcreteGrades.Keys.ToList();
             ReinforcementGradesList = ReinforcementGrades.Keys.ToList();
             List<int> rcBarsDiameters = ReinforcementBars.Keys.ToList();
             ReinforcementBarsList = rcBarsDiameters.ConvertAll<string>(x => x.ToString());
+
+            // Zoznam poctov vyztuznych tyci pre jeden smer (None alebo 2 - 30)
+            ReinforcementBarsCountList = GetReinforcementBarsCountList();
+
+
+
+
+
+
 
             IsSetFromCode = false;
         }
@@ -561,6 +586,31 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private List<string> GetReinforcementBarsCountList()
+        {
+            List<string> list = new List<string>();
+
+            list.Add("None"); // count of bars = 0, unused reinforcement
+
+            int iMinimumNumberOfBars = 2;
+            int iMaximumNumberOfBars = 30;
+
+            for (int i = iMinimumNumberOfBars; i <= iMaximumNumberOfBars; i++)
+                list.Add(i.ToString());
+
+            return list;
+        }
+
+        // TO Ondrej - neviem ci ma byt toho vo viewmodeli alebo UC_FootingInputxaml.cs
+        // Jedna sa o prepocitanie hodnot a zobrazv GUI pri zmene niektorej hodnoty v GUI
+        private void UpdateValuesInGUI()
+        {
+
+
+
+
         }
     }
 }
