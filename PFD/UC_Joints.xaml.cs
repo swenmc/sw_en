@@ -19,7 +19,7 @@ using System.Xml;
 namespace PFD
 {
     /// <summary>
-    /// Interaction logic for UC_MemberDesign.xaml
+    /// Interaction logic for UC_Joints.xaml
     /// </summary>
     public partial class UC_Joints : UserControl
     {
@@ -82,9 +82,9 @@ namespace PFD
             {   
                 CConnectionJointTypes joint = GetSelectedJoint();
                 displayJoint(joint);
-            } 
-            
+            }
         }
+
         private void DebugJoints()
         {
             int count = 0;

@@ -180,7 +180,7 @@
                             <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=MaterialList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>                
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

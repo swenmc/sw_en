@@ -132,6 +132,7 @@
     <Compile Include="CComponentParamsView.cs" />
     <Compile Include="CDatabaseModels.cs" />
     <Compile Include="CPFDJointsDesign.cs" />
+    <Compile Include="ViewModels\CFootingInputVM.cs" />
     <Compile Include="ViewModels\CJointsVM.cs" />
     <Compile Include="CPFDMemberInternalForces.cs" />
     <Compile Include="CPFDMemberDesign.cs" />
