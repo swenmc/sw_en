@@ -393,7 +393,7 @@ namespace DATABASE
             mat.Grade = reader["Grade"].ToString();
             //mat.E = reader["E"].ToString() == "" ? double.NaN : double.Parse(reader["E"].ToString(), nfi);
             //mat.G = reader["G"].ToString() == "" ? double.NaN : double.Parse(reader["G"].ToString(), nfi);
-            mat.Nu = reader["poisson_ratio_nu"].ToString() == "" ? double.NaN : double.Parse(reader["Nu"].ToString(), nfi);
+            mat.Nu = reader["poisson_ratio_nu"].ToString() == "" ? double.NaN : double.Parse(reader["poisson_ratio_nu"].ToString(), nfi);
             mat.Fc = reader["fc_cylinder_Pa"].ToString() == "" ? double.NaN : double.Parse(reader["fc_cylinder_Pa"].ToString(), nfi);
             mat.Rho = reader["density_rho"].ToString() == "" ? double.NaN : double.Parse(reader["density_rho"].ToString(), nfi);
             mat.Alpha = reader["alpha"].ToString() == "" ? double.NaN : double.Parse(reader["alpha"].ToString(), nfi);

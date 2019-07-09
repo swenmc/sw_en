@@ -50,7 +50,8 @@
             <ComboBoxItem Content="Wind Post - Front"/>
             <ComboBoxItem Content="Wind Post - Back"/>
         </ComboBox>
-        
+
+        <!--ItemsSource="{Binding Path=ConcreteGrades}"-->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Concrete Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ConcreteGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource theTextBoxWidth}"
                   SelectedValue="{Binding Path=ConcreteGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
@@ -69,9 +70,10 @@
                  Text="{Binding Path=ConcreteDensity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row ="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[kg/m³]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
+        <!--ItemsSource="{Binding Path=ReinforcementGrades}"-->
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Reinforcement Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ReinforcementGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource theTextBoxWidth}"
-                  SelectedValue="{Binding Path=ReinforcementGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                 SelectedValue="{Binding Path=ReinforcementGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
             <ComboBoxItem Content="250"/>
             <ComboBoxItem Content="500B"/>
             <ComboBoxItem Content="500C"/>
@@ -119,7 +121,7 @@
 
         <TextBlock Grid.Row ="4" Grid.Column="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="/" VerticalAlignment="Top" Width="10"/>
         <TextBox Grid.Row ="4" Grid.Column="5" Name="TextBoxLongReinTop_x_distance_s_y" HorizontalAlignment="Left" Height="20"  TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
-         Text="{Binding Path=LongReinTop_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=LongReinTop_x_distance_s_y, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row ="4" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
         <TextBlock Grid.Row ="5" Grid.Column="0" HorizontalAlignment="Left" Height="20"  TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Top y-direction"/>
@@ -148,8 +150,9 @@
         </ComboBox>
         <TextBlock Grid.Row ="5" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="x Ø" VerticalAlignment="Top" Width="20"/>
 
+        <!--ItemsSource="{Binding Path=ReinforcementBars}"-->
         <ComboBox Grid.Row ="5" Grid.Column="3" Name ="ComboBox_LongReinTop_y_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="20"
-            SelectedValue="{Binding Path=LongReinTop_y_Phi, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+             SelectedValue="{Binding Path=LongReinTop_y_Phi, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
             <ComboBoxItem Content="5"/>
             <ComboBoxItem Content="5.5"/>
             <ComboBoxItem Content="6"/>

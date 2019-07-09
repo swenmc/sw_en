@@ -47,7 +47,7 @@ namespace DATABASE
             return items;
         }
 
-        public static CReinforcementBarProperties LoadMaterialPropertiesRF(int diameter_mm)
+        public static CReinforcementBarProperties LoadReinforcementBarProperties(int diameter_mm)
         {
             CReinforcementBarProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))

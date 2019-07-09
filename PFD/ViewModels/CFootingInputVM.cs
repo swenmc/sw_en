@@ -15,6 +15,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
 
+        private Dictionary<string, CMatPropertiesRC> m_ConcreteGrades;
+        private Dictionary<string, CMatPropertiesRF> m_ReinforcementGrades;
+        private Dictionary<int, CReinforcementBarProperties> m_ReinforcementBars;
+
         private int m_FootingPadMemberTypeIndex;
         private string m_ConcreteGrade;
         private float m_ConcreteDensity;
@@ -48,6 +52,51 @@ namespace PFD
         private float m_FloorSlabThickness;
 
         public bool IsSetFromCode = false;
+
+        //-------------------------------------------------------------------------------------------------------------
+        public Dictionary<string, CMatPropertiesRC> ConcreteGrades
+        {
+            get
+            {
+                return m_ConcreteGrades;
+            }
+
+            set
+            {
+                m_ConcreteGrades = value;
+                NotifyPropertyChanged("ConcreteGrades");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public Dictionary<string, CMatPropertiesRF> ReinforcementGrades
+        {
+            get
+            {
+                return m_ReinforcementGrades;
+            }
+
+            set
+            {
+                m_ReinforcementGrades = value;
+                NotifyPropertyChanged("ReinforcementGrades");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public Dictionary<int, CReinforcementBarProperties> ReinforcementBars
+        {
+            get
+            {
+                return m_ReinforcementBars;
+            }
+
+            set
+            {
+                m_ReinforcementBars = value;
+                NotifyPropertyChanged("ReinforcementBars");
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         public int FootingPadMemberTypeIndex
@@ -441,9 +490,12 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CFootingInputVM()
         {
+            ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
+            ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
+            ReinforcementBars = CReinforcementBarManager.LoadReiforcementBarProperties();
             IsSetFromCode = false;
         }
-        
+
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {
