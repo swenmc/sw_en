@@ -148,6 +148,9 @@ namespace PFD
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
         private bool MRecreateJoints;
+        private bool MRecreateFoundations;
+        private bool MRecreateFloorSlab;
+
         // Popis pre Ondreja - doors and windows
         // GUI
 
@@ -259,8 +262,10 @@ namespace PFD
                 WallCladdingColorIndex = 22;
                 ModelCalculatedResultsValid = false;
 
-                
                 RecreateJoints = true;
+                RecreateFoundations = true;
+                RecreateFloorSlab = true;
+
                 RecreateModel = true;
                 IsSetFromCode = false;
                 NotifyPropertyChanged("ModelIndex");
@@ -1799,6 +1804,32 @@ namespace PFD
             set
             {
                 MRecreateJoints = value;
+            }
+        }
+
+        public bool RecreateFoundations
+        {
+            get
+            {
+                return MRecreateFoundations;
+            }
+
+            set
+            {
+                MRecreateFoundations = value;
+            }
+        }
+
+        public bool RecreateFloorSlab
+        {
+            get
+            {
+                return MRecreateFloorSlab;
+            }
+
+            set
+            {
+                MRecreateFloorSlab = value;
             }
         }
 

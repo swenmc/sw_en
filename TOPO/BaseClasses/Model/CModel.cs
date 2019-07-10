@@ -50,7 +50,7 @@ namespace BaseClasses
         // Connections
         public List<CConnectionJointTypes> m_arrConnectionJoints;
         // Foundations
-        public CFoundation[] m_arrFoundations;
+        public List<CFoundation> m_arrFoundations;
 
         // Loading
         // Nodal Loads

@@ -61,14 +61,13 @@ namespace PFD
         private int iOneRafterFrontColumnNo = 0;
         private int iRafterFlyBracing_EveryXXPurlin;
 
-
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
         public CModel_PFD_01_GR
         (
-                BuildingGeometryDataInput sGeometryInputData,                
-                int iFrameNo_temp,                
+                BuildingGeometryDataInput sGeometryInputData,
+                int iFrameNo_temp,
                 float fDist_Girt_temp,
                 float fDist_Purlin_temp,
                 float fDist_FrontColumns_temp,
@@ -78,7 +77,9 @@ namespace PFD
                 ObservableCollection<DoorProperties> doorBlocksProperties,
                 ObservableCollection<WindowProperties> windowBlocksProperties,
                 CComponentListVM componentListVM,
-                List<CConnectionJointTypes> joints
+                List<CConnectionJointTypes> joints,
+                List<CFoundation> foundations,
+                CVolume floorSlab
             )
         {
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
@@ -90,7 +91,7 @@ namespace PFD
             fFrontFrameRakeAngle_deg = fFrontFrameRakeAngle_temp_deg;
             fBackFrameRakeAngle_deg = fBackFrameRakeAngle_temp_deg;
 
-            iFrameNo = iFrameNo_temp;                        
+            iFrameNo = iFrameNo_temp;
             fL1_frame = fL_tot / (iFrameNo - 1);
 
             fDist_Girt = fDist_Girt_temp;
@@ -702,9 +703,6 @@ namespace PFD
             else m_arrConnectionJoints = joints;
             #endregion
 
-
-
-
             #region Blocks
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -791,7 +789,6 @@ namespace PFD
             // Set members Generate, Display, Calculate, Design, MaterialList properties
             CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
 
-
             #region Supports
 
             //m_arrNSupports = new CNSupport[2 * iFrameNo];
@@ -841,126 +838,24 @@ namespace PFD
             #endregion
 
             #region Foundations
-            bool bGenerateFoundations = true;
-
-            if (bGenerateFoundations)
+            if(m_arrFoundations == null)
             {
-                // Foundations
-                // Footings
-                m_arrFoundations = new CFoundation[iMainColumnNo + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame];
-
-                // Main Column - Footings
-                // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
-                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
-                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
-                float fMainColumnFooting_h = 0.4f;
-
-                EMemberType_FS_Position columnTypePosition;
-
-                // TODO - zapracovat excentricku poziciu zakladov
-
-                for (int i = 0; i < iFrameNo; i++)
-                {
-                    columnTypePosition = EMemberType_FS_Position.MainColumn;
-
-                    if (i == 0 || i == (iFrameNo - 1)) // First or last frame
-                        columnTypePosition = EMemberType_FS_Position.EdgeColumn;
-
-                    // Left
-                    CNode node_left = m_arrNodes[i * iFrameNodesNo + 0];
-                    CPoint controlPoint_left = new CPoint(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
-                    m_arrFoundations[i * 2] = new CFoundation(i * 2 + 1, EFoundationType.ePad, node_left, columnTypePosition, controlPoint_left, fMainColumnFooting_aX, fMainColumnFooting_bY, fMainColumnFooting_h, Colors.Beige, 0.5f, true, 0);
-
-                    // Right
-                    CNode node_right = m_arrNodes[i * iFrameNodesNo + 4];
-                    CPoint controlPoint_right = new CPoint(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
-                    m_arrFoundations[i * 2 + 1] = new CFoundation(i * 2 + 2, EFoundationType.ePad, node_right, columnTypePosition, controlPoint_right, fMainColumnFooting_aX, fMainColumnFooting_bY, fMainColumnFooting_h, Colors.Beige, 0.5f, true, 0);
-                }
-
-                int iLastFoundationIndex = iMainColumnNo;
-
-                // Front and Back Wall Columns - Footings
-                if (bGenerateFrontColumns)
-                {
-                    float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
-                    float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
-                    float fFrontColumnFooting_h = 0.4f;
-
-                    columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
-
-                    // Search footings control points
-                    List<CNode> listOfControlPoints = new List<CNode>();
-                    for (int i = 0; i < m_arrMembers.Length; i++)
-                    {
-                        // Find foundation definition nodes
-                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontColumn].CrossSection))
-                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
-                    }
-
-                    for (int i = 0; i < listOfControlPoints.Count; i++)
-                    {
-                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
-                        m_arrFoundations[iLastFoundationIndex + i] = new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, listOfControlPoints[i], columnTypePosition, controlPoint, fFrontColumnFooting_aX, fFrontColumnFooting_bY, fFrontColumnFooting_h, Colors.LightSeaGreen, 0.5f, true, 0);
-                    }
-
-                    iLastFoundationIndex += listOfControlPoints.Count;
-                }
-
-                if (bGenerateBackColumns)
-                {
-                    float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
-                    float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
-                    float fBackColumnFooting_h = 0.4f;
-
-                    columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
-
-                    // Search footings control points
-                    List<CNode> listOfControlPoints = new List<CNode>();
-                    for (int i = 0; i < m_arrMembers.Length; i++)
-                    {
-                        // Find foundation definition nodes
-                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
-                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackColumn].CrossSection))
-                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
-                    }
-
-                    for (int i = 0; i < listOfControlPoints.Count; i++)
-                    {
-                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
-                        m_arrFoundations[iLastFoundationIndex + i] = new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, listOfControlPoints[i], columnTypePosition, controlPoint, fBackColumnFooting_aX, fBackColumnFooting_bY, fBackColumnFooting_h, Colors.Coral, 0.5f, true, 0);
-                    }
-
-                    iLastFoundationIndex += listOfControlPoints.Count;
-                }
-
-                // Validation - skontroluje ci je velkost pola zhodna s poctom vygenerovanych prvkov
-                if (m_arrFoundations.Length != iLastFoundationIndex)
-                    throw new Exception("Incorrect number of generated foundations");
-
-                // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.1f;
-                float fFloorSlab_AdditionalOffset_Y = 0.1f;
-                float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
-                float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
-                float fTolerance = 0.001f; // Tolerance - 3D graphics collision
-                float fFloorSlab_h = 0.125f;
-                float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
-                float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
-
-                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
-                m_arrGOVolumes = new CVolume[1];
-                //m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, Colors.Gray, 0.5f, true, 0);
-                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush(Colors.DarkGray)), true, 0);
+                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns);
             }
+            else
+                m_arrFoundations = foundations;
+
+            if(m_arrGOVolumes == null)
+            {
+                CreateFloorSlab();
+            }
+            else
+                m_arrGOVolumes[0] = floorSlab;
+
             #endregion
 
-            
             SetJointDefaultParameters();
         }
-        
 
         public override void CalculateLoadValuesAndGenerateLoads(
                 CCalcul_1170_1 generalLoad,
@@ -1169,9 +1064,8 @@ namespace PFD
             m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength", ELSType.eLS_ULS);
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State", ELSType.eLS_SLS);
             #endregion
-            
-            
         }
+
         private void FillIntermediateNodesForMembers()
         {
             foreach (CMember m in this.m_arrMembers)
@@ -1187,8 +1081,6 @@ namespace PFD
                 if(m.IntermediateNodes.Count > 0) System.Diagnostics.Trace.WriteLine($"ID:{m.ID} Name:{m.Name} IntNodesCount: {m.IntermediateNodes.Count}");
             }
         }
-
-
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
         {
@@ -2013,8 +1905,6 @@ namespace PFD
             }
         }
 
-
-
         private void CreateJoints(bool bGenerateGirts, bool bUseMainColumnFlyBracingPlates, bool bGeneratePurlins, bool bUseRafterFlyBracingPlates, 
             bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts)
         {
@@ -2284,6 +2174,134 @@ namespace PFD
                     if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
                         throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
                 }
+            }
+        }
+
+        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns)
+        {
+            bool bGenerateFoundations = true;
+
+            if (bGenerateFoundations)
+            {
+                // Foundations
+                // Footings
+                m_arrFoundations = new List<CFoundation>(iMainColumnNo + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame);
+
+                // Main Column - Footings
+                // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
+                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
+                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
+                float fMainColumnFooting_h = 0.4f;
+
+                EMemberType_FS_Position columnTypePosition;
+
+                // TODO - zapracovat excentricku poziciu zakladov
+
+                for (int i = 0; i < iFrameNo; i++)
+                {
+                    columnTypePosition = EMemberType_FS_Position.MainColumn;
+
+                    if (i == 0 || i == (iFrameNo - 1)) // First or last frame
+                        columnTypePosition = EMemberType_FS_Position.EdgeColumn;
+
+                    // Left
+                    CNode node_left = m_arrNodes[i * iFrameNodesNo + 0];
+                    CPoint controlPoint_left = new CPoint(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
+                    m_arrFoundations.Add(new CFoundation(i * 2 + 1, EFoundationType.ePad, node_left, columnTypePosition, controlPoint_left, fMainColumnFooting_aX, fMainColumnFooting_bY, fMainColumnFooting_h, Colors.Beige, 0.5f, true, 0));
+
+                    // Right
+                    CNode node_right = m_arrNodes[i * iFrameNodesNo + 4];
+                    CPoint controlPoint_right = new CPoint(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
+                    m_arrFoundations.Add(new CFoundation(i * 2 + 2, EFoundationType.ePad, node_right, columnTypePosition, controlPoint_right, fMainColumnFooting_aX, fMainColumnFooting_bY, fMainColumnFooting_h, Colors.Beige, 0.5f, true, 0));
+                }
+
+                int iLastFoundationIndex = iMainColumnNo;
+
+                // Front and Back Wall Columns - Footings
+                if (bGenerateFrontColumns)
+                {
+                    float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
+                    float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
+                    float fFrontColumnFooting_h = 0.4f;
+
+                    columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
+
+                    // Search footings control points
+                    List<CNode> listOfControlPoints = new List<CNode>();
+                    for (int i = 0; i < m_arrMembers.Length; i++)
+                    {
+                        // Find foundation definition nodes
+                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
+                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontColumn].CrossSection))
+                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
+                    }
+
+                    for (int i = 0; i < listOfControlPoints.Count; i++)
+                    {
+                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
+                        m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, listOfControlPoints[i], columnTypePosition, controlPoint, fFrontColumnFooting_aX, fFrontColumnFooting_bY, fFrontColumnFooting_h, Colors.LightSeaGreen, 0.5f, true, 0));
+                    }
+
+                    iLastFoundationIndex += listOfControlPoints.Count;
+                }
+
+                if (bGenerateBackColumns)
+                {
+                    float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
+                    float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
+                    float fBackColumnFooting_h = 0.4f;
+
+                    columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
+
+                    // Search footings control points
+                    List<CNode> listOfControlPoints = new List<CNode>();
+                    for (int i = 0; i < m_arrMembers.Length; i++)
+                    {
+                        // Find foundation definition nodes
+                        if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
+                            m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackColumn].CrossSection))
+                            listOfControlPoints.Add(m_arrMembers[i].NodeStart);
+                    }
+
+                    for (int i = 0; i < listOfControlPoints.Count; i++)
+                    {
+                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
+                        m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, listOfControlPoints[i], columnTypePosition, controlPoint, fBackColumnFooting_aX, fBackColumnFooting_bY, fBackColumnFooting_h, Colors.Coral, 0.5f, true, 0));
+                    }
+
+                    iLastFoundationIndex += listOfControlPoints.Count;
+                }
+
+                // Validation - skontroluje ci je velkost pola zhodna s poctom vygenerovanych prvkov
+                if (m_arrFoundations.Count != iLastFoundationIndex)
+                    throw new Exception("Incorrect number of generated foundations");
+            }
+        }
+
+        private void CreateFloorSlab()
+        {
+            bool bGenerateFoundations = true;
+
+            if (bGenerateFoundations)
+            {
+                // Ground Floor Slab
+                float fFloorSlab_AdditionalOffset_X = 0.1f;
+                float fFloorSlab_AdditionalOffset_Y = 0.1f;
+                float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
+                float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
+                float fTolerance = 0.001f; // Tolerance - 3D graphics collision
+                float fFloorSlab_h = 0.125f;
+                float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
+                float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
+
+                int iLastFoundationIndex = m_arrFoundations.Count;
+
+                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
+                m_arrGOVolumes = new CVolume[1];
+                //m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, Colors.Gray, 0.5f, true, 0);
+                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush(Colors.DarkGray)), true, 0);
             }
         }
     }

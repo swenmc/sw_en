@@ -22,6 +22,8 @@ using System.Threading;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using BaseClasses.Helpers;
+using BaseClasses.GraphObj;
 using DATABASE;
 using MATH;
 using MATERIAL;
@@ -38,7 +40,6 @@ using BriefFiniteElementNet.Controls;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using System.IO;
-using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -725,6 +726,14 @@ namespace PFD
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
             else if(vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
 
+            List<CFoundation> foundations = null;
+            if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
+            else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
+
+            CVolume floorSlab = null;
+            if (!vm.RecreateFloorSlab) floorSlab = vm.Model.m_arrGOVolumes[0];
+            else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
+
             if (vm.RecreateModel)
             {
                 // Create Model
@@ -742,10 +751,12 @@ namespace PFD
                     DoorBlocksProperties,
                     WindowBlocksProperties,
                     compList,
-                    joints);
+                    joints,
+                    foundations,
+                    floorSlab);
 
                 UpdateUC_Joints();
-            }            
+            }
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||

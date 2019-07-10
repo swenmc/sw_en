@@ -771,7 +771,7 @@ namespace BaseClasses
                 SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
 
                 // Model Groups of Volumes
-                for (int i = 0; i < cmodel.m_arrFoundations.Length; i++)
+                for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
                 {
                     if (cmodel.m_arrFoundations[i] != null &&
                         cmodel.m_arrFoundations[i].m_pControlPoint != null &&
