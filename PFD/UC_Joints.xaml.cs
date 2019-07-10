@@ -103,13 +103,15 @@ namespace PFD
                 jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
 
                 //----------------------------------------------------------------------------------------------------------------------------
-                // TO - Ondrej - pozri prosim na toto
+                // TO Ondrej - pozri prosim na toto
                 // Skusal som nastavovat uhly ale zistil som ze vobec nesedia indexy typov s tym co je v comboboxe
                 // Ocakava sa ze typy v jointsDict a vm.JointTypes si koresponduju
                 // Tu to vyzera tak ze sa zoznam zacne naplnat spravne, ale pri vystupe je to uz inak
                 // prepisuju sa typy, napriklad TA001 je typ ktory ma edge column aj main colum,
                 // Najprv sa pre index 1 zapise main column ale pre index 4 sa nastavi edge column a prepise sa aj typ s indexom 1
                 // nesedia potom indexy typov v joint.Helper
+
+                // TO Ondrej - kedze sme to vyriesili tak neviem ci chces tuto validaciu nechat aktivnu alebo si ju niekde presunut / "odlozit" pokial by sa to este v buducnosti hodilo
 
                 // Validation - pokus odchytit zmenu v uz zapisanych zaznamoch
                 EJointType type = EJointType.eBase_MainColumn; // Hladany typ spoja, ktoreho zmenu sledujeme
@@ -629,7 +631,7 @@ namespace PFD
                         tabItems.Add(ti);
                     }
                 }
-                
+
                 displayJoint(joint);
             }
 
@@ -690,7 +692,7 @@ namespace PFD
             if (plate.ScrewArrangement != null)
             {
                 List<CComponentParamsView> screwArrangementParams = CPlateHelper.GetScrewArrangementProperties(plate.ScrewArrangement);
-                //lSA.SetValue(Grid.RowProperty, 0);                            
+                //lSA.SetValue(Grid.RowProperty, 0);
                 sp.Children.Add(GetDatagridForScrewArrangement(screwArrangementParams));
             }
 
@@ -711,7 +713,6 @@ namespace PFD
 
             ti.Content = sp;
             ti.IsEnabled = true;
-           
         }
 
         private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -726,7 +727,7 @@ namespace PFD
             ChangeAllSameJointsPlateScrewArrangement(cbSA.SelectedIndex);
             //CPlateHelper.ScrewArrangementChanged(joint, plate, cbSA.SelectedIndex);
             //CPlateHelper.UpdatePlateScrewArrangementData(plate);
-            
+
             TabItem ti = vm.TabItems[vm.SelectedTabIndex];
             SetTabContent(ti, plate);
 
@@ -739,13 +740,11 @@ namespace PFD
         {
             List<CConnectionJointTypes> joints = GetSelectedJoints();
             foreach (CConnectionJointTypes joint in joints)
-            {                
+            {
                 CPlateHelper.ScrewArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], screwArrangementIndex);
                 CPlateHelper.UpdatePlateScrewArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
-            }            
+            }
         }
-
-        
 
         private CPlate GetSelectedPlate()
         {
@@ -760,7 +759,7 @@ namespace PFD
         {
             CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
             list_joints = jointsDict[con.ID];
-            //all joints in list sholud be the same!
+            //all joints in list should be the same!
             CConnectionJointTypes joint = list_joints.FirstOrDefault();
             //CConnectionJointTypes joint = list_joints.LastOrDefault();
             //joint.JointType = (EJointType)(con.ID);
@@ -1140,7 +1139,7 @@ namespace PFD
             if (jointClone.m_MainMember != null)
             {
                 CMember m = jointClone.m_MainMember;
-                
+
                 CNode nodeJoint = jointClone.m_Node; // Joint Node
                 CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
                 float fX;
@@ -1241,11 +1240,11 @@ namespace PFD
                     m.FAlignment_Start = 0; // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                     m.FAlignment_End = 0;   // Nastavime nulove odsadenie, aby nebol volny koniec pruta orezany
                 }
-                
+
                 m.Fill_Basic();
 
                 jointModel.m_arrMembers[0] = m; // Set new member (member array)
-                jointClone.m_MainMember = m; // Set new member (joint)                
+                jointClone.m_MainMember = m; // Set new member (joint)
             }
 
             // Secondary members

@@ -153,5 +153,9 @@
         <TextBox Grid.Row ="17" Grid.Column="5" Name="TextBoxLongReinBottom_y_distance_s_x" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
             Text="{Binding Path=LongReinBottom_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row ="17" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
+
+        <Frame Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="7" Content="FrameFootingPadPreview" Name="FrameFootingPadPreview3D"
+               HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Height="430" Width="570"
+               MouseWheel="FrameFootingPadPreview3D_MouseWheel"/>
     </Grid>
 </UserControl>

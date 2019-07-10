@@ -13,12 +13,20 @@ namespace BaseClasses
     public class CFoundation : CVolume
     {
         public EFoundationType eFoundationType;
+        public CNode m_Node;
+        public EMemberType_FS_Position m_ColumnMemberTypePosition;
+
+        public CFoundation()
+        {
+        }
 
         // Rectangular prism
-        public CFoundation(int iFoundation_ID, EFoundationType eType, CPoint pControlEdgePoint, float fX, float fY, float fZ, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CFoundation(int iFoundation_ID, EFoundationType eType, CNode node, EMemberType_FS_Position memberTypePosition, CPoint pControlEdgePoint, float fX, float fY, float fZ, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iFoundation_ID;
             eFoundationType = eType;
+            m_Node = node; // Note that is assigned to the foundation / footing pad
+            m_ColumnMemberTypePosition = memberTypePosition;
             m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;

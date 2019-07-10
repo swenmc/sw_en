@@ -60,8 +60,10 @@ namespace PFD
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CPFDViewModel)) return;
+            CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
             //CConnectionJointTypes joint = GetSelectedJoint();
-            //displayJoint(joint);
+            CConnectionJointTypes joint = null;
+            displayFootingPad(pad, joint, true);
         }
 
         protected void HandleFootingPadPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -69,10 +71,32 @@ namespace PFD
             if (sender == null) return;
             CFootingInputVM vm = sender as CFootingInputVM;
             if (vm != null && vm.IsSetFromCode) return;
+
+            // TODO - dopracovat dalsie parametre, ktore ovplyvnia preview
+            if (e.PropertyName == "FootingPadSize_x_Or_a" ||
+                e.PropertyName == "FootingPadSize_y_Or_b" ||
+                e.PropertyName == "FootingPadSize_z_Or_h"
+                )
+            {
+                CFoundation pad = GetSelectedFootingPad();
+                CConnectionJointTypes joint = null;
+                displayFootingPad(pad, joint);
+            }
+        }
+
+        private CFoundation GetSelectedFootingPad()
+        {
+            //CFoundation con = vm.JointTypes[vm.JointTypeIndex];
+            //list_pads = jointsDict[con.ID];
+            //all pads in list should be the same!
+            //CFoundation pad = list_pads.FirstOrDefault();
+
+            CFoundation pad = new CFoundation(); // zmazat
+            return pad;
         }
 
         // TO Ondrej - neviem ci ma byt toho vo viewmodeli alebo UC_FootingInputxaml.cs
-        // Jedna sa o prepocitanie hodnot a zobrazv GUI pri zmene niektorej hodnoty v GUI
+        // Jedna sa o prepocitanie hodnot a zobrazenie/update hodnot v GUI pri zmene niektorej hodnoty v GUI
         private void UpdateValuesInGUI()
         {
             // Dimensions of footing pad in meters
@@ -156,6 +180,41 @@ namespace PFD
 
             // Number of spacings + 1
             return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
+        }
+
+        private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
+        {
+            // TO Ondrej - tu potrebujeme refaktorovat cast funkcie display Joint
+            // Mala by sa vykreslit patka (betonovy kvader prisluchajuci k uzlu) a v pripade ze je bool bDisplayJointComponents == true tak aj plech a cast pruta ktore su v danom uzle k zakladu pripojene
+            // Joint je samozrejme potrebne naklonovat
+            // Asi aj patku je potrebne naklonovat, nech to funguje rovnako
+            // Vykreslenie vyztuze podla projektu AAC
+
+            if (pad == null) return; // Error - nothing to display
+
+            sDisplayOptions = _pfdVM.GetDisplayOptions();
+            //Here is the place to overwrite displayOptions from Main Model
+            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
+            sDisplayOptions.bDisplayReinforcement = true;
+
+            CModel padModel = new CModel(); // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
+
+            Page3Dmodel page1 = new Page3Dmodel(padModel, sDisplayOptions);
+
+            // Display model in 3D preview frame
+            FrameFootingPadPreview3D.Content = page1;
+            FrameFootingPadPreview3D.UpdateLayout();
         }
     }
 }

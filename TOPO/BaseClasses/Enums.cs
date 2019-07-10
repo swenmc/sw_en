@@ -656,6 +656,7 @@
         public bool bDisplayConnectors;
         public bool bDisplayNodes;
         public bool bDisplayFoundations;
+        public bool bDisplayReinforcement;
         public bool bDisplayFloorSlab;
         public bool bDisplayNodalSupports;
 
