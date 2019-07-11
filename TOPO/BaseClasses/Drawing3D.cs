@@ -2018,9 +2018,12 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        //tu sa mi nepaci,ze to uvazuje iba s Node-mi
+        // tu sa mi nepaci,ze to uvazuje iba s Node-mi
         //ak by to malo byt pekne, tak sa musi uvazovat aj s Crsc a vhodne priratat polku zo sirky Crsc, potom by to bolo lepsie centrovane
         // pre velky model je to asi zanedbatelne, ale pre male preview je to uz rozhodujuce
+
+        // TODO - upravit funkcie tak aby uvazovali maximum z node, members, GOpoints, GOvolumes, pripadne inych objektov
+        // TODO - upravit tak, aby sa do vysledneho rozmeru ratal cely box opisany vsetkymi objektami rozneho typu
 
         public static void CalculateModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
@@ -2031,7 +2034,7 @@ namespace BaseClasses
             fMax_Z = float.MinValue;
             fMin_Z = float.MaxValue;
 
-            if (cmodel.m_arrNodes != null) // Some nodes exist
+            if (cmodel.m_arrNodes != null && cmodel.m_arrNodes.Length > 1) // Some nodes exist - pre urcenie rozmeru minimalne 2 uzly
             {
                 fMax_X = cmodel.m_arrNodes.Max(p => p.X);
                 fMin_X = cmodel.m_arrNodes.Min(p => p.X);
@@ -2048,6 +2051,43 @@ namespace BaseClasses
                 fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
                 fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
                 fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+            }
+            else if (cmodel.m_arrFoundations != null) // Some volumes / foundations exist
+            {
+                // Each foundation in model
+                Point3DCollection allFoundationPoints = new Point3DCollection();
+
+                if (cmodel.m_arrFoundations != null) // Some members must exist
+                {
+                    foreach (CFoundation f in cmodel.m_arrFoundations)
+                    {
+                        Point3DCollection foundationPoints = new Point3DCollection();
+
+                        GeometryModel3D model3D = f.CreateGeomModel3D(); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
+
+                        foreach (Point3D point3D in mesh3D.Positions)
+                        {
+                            foundationPoints.Add(point3D);
+                        }
+
+                        // Add member points to the main collection of all members
+                        if (foundationPoints != null)
+                        {
+                            foreach (Point3D p in foundationPoints)
+                            {
+                                allFoundationPoints.Add(p);
+                            }
+                        }
+                    }
+                }
+
+                fMax_X = (float)allFoundationPoints.Max(p => p.X);
+                fMin_X = (float)allFoundationPoints.Min(p => p.X);
+                fMax_Y = (float)allFoundationPoints.Max(p => p.Y);
+                fMin_Y = (float)allFoundationPoints.Min(p => p.Y);
+                fMax_Z = (float)allFoundationPoints.Max(p => p.Z);
+                fMin_Z = (float)allFoundationPoints.Min(p => p.Z);
             }
             else
             {

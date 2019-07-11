@@ -101,5 +101,8 @@ namespace BaseClasses
 
             RadiusAngle = 360; // Circle total angle to generate holes
         }
+
+        public virtual void SetEdgeDistances(CConCom_Plate_BB_BG plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
+        { }
     }
 }

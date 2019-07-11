@@ -33,7 +33,7 @@ namespace PFD
             InitializeComponent();
 
             _pfdVM = pfdVM;
-            //_pfdVM.PropertyChanged += _pfdVM_PropertyChanged;
+            _pfdVM.PropertyChanged += _pfdVM_PropertyChanged;
 
             vm = new CFootingInputVM();
             vm.PropertyChanged += HandleFootingPadPropertyChangedEvent;
@@ -61,8 +61,32 @@ namespace PFD
         {
             if (!(sender is CPFDViewModel)) return;
             CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
-            //CConnectionJointTypes joint = GetSelectedJoint();
+            //CConnectionJointTypes joint = GetSelectedJoint(); // Napojit objekt joint ktory prislucha k danemu typu patky
             CConnectionJointTypes joint = null;
+
+            // Joint with base plate and anchors
+            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_BB_BG)
+            {
+                CConCom_Plate_BB_BG basePlate = (CConCom_Plate_BB_BG)joint.m_arrPlates[0];
+                float feccentricity_x = 0;
+                float feccentricity_y = 0;
+                float fpad_x = pad.m_fDim1;
+                float fpad_y = pad.m_fDim2;
+
+                float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
+                float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
+
+                float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
+                float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
+                float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
+                float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
+
+                float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
+                float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
+
+                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
+            }
+
             displayFootingPad(pad, joint, true);
         }
 
@@ -79,19 +103,38 @@ namespace PFD
                 )
             {
                 CFoundation pad = GetSelectedFootingPad();
-                CConnectionJointTypes joint = null;
+                CConnectionJointTypes joint = null; // TODO - napojit objekt spoja
                 displayFootingPad(pad, joint);
             }
         }
 
         private CFoundation GetSelectedFootingPad()
         {
-            //CFoundation con = vm.JointTypes[vm.JointTypeIndex];
-            //list_pads = jointsDict[con.ID];
-            //all pads in list should be the same!
-            //CFoundation pad = list_pads.FirstOrDefault();
+            // Select type of footing pads that match with selected footing pad of member type in GUI
+            List<CFoundation> listOfSelectedTypePads = new List<CFoundation>(); //all pads in list should be the same!
+            EMemberType_FS_Position memberType;
+            if (vm.FootingPadMemberTypeIndex == 0) // TODO - porovnavam s indexom v comboboxe 0-3, asi by bolo istejsie zobrazovat v comboboxe items naviazane na EMemberType_FS_Position, aby sa to neznicilo ked co comboboxu pridam nejaky dalsi typ alebo zmenim poradie
+                memberType = EMemberType_FS_Position.MainColumn;
+            else if (vm.FootingPadMemberTypeIndex == 1)
+                memberType = EMemberType_FS_Position.EdgeColumn;
+            else if (vm.FootingPadMemberTypeIndex == 2)
+                memberType = EMemberType_FS_Position.ColumnFrontSide;
+            else if (vm.FootingPadMemberTypeIndex == 3)
+                memberType = EMemberType_FS_Position.ColumnBackSide;
+            else
+            {
+                throw new Exception("Not defined member type!");
+            }
 
-            CFoundation pad = new CFoundation(); // zmazat
+            for (int i = 0; i < _pfdVM.Model.m_arrFoundations.Count; i++)
+            {
+                if (memberType == _pfdVM.Model.m_arrFoundations[i].m_ColumnMemberTypePosition)
+                    listOfSelectedTypePads.Add(_pfdVM.Model.m_arrFoundations[i]);
+            }
+
+            // All pads in list should be the same!
+            CFoundation pad = listOfSelectedTypePads.FirstOrDefault();
+
             return pad;
         }
 
@@ -209,8 +252,13 @@ namespace PFD
             sDisplayOptions.bDisplayReinforcement = true;
 
             CModel padModel = new CModel(); // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
+            // Refaktorovat funkciu displayJoint(CConnectionJointTypes joint) aby bolo mozne vykreslit joint v Table UC_Joints aj UC_FootingInput
+            // TODO - Pridat do modelu spoj (uzol spoja, uzly prutov, pruty, plechy, skrutky)
 
-            Page3Dmodel page1 = new Page3Dmodel(padModel, sDisplayOptions);
+            padModel.m_arrFoundations = new List<CFoundation>();
+            padModel.m_arrFoundations.Add(pad);
+
+            Page3Dmodel page1 = new Page3Dmodel(padModel, sDisplayOptions, null);
 
             // Display model in 3D preview frame
             FrameFootingPadPreview3D.Content = page1;

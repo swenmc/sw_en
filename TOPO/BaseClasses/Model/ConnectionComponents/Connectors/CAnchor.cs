@@ -8,6 +8,252 @@ namespace BaseClasses
 {
     public class CAnchor : CConnector
     {
+        // Anchor to plate edge distances
+        private float m_fx_pe_minus;
+        private float m_fx_pe_plus;
+        private float m_fy_pe_minus;
+        private float m_fy_pe_plus;
+
+        private float m_fx_pe_min;
+        private float m_fy_pe_min;
+        private float m_fx_pe_max;
+        private float m_fy_pe_max;
+
+        // Anchor to foundation edge distances
+        private float m_fx_fe_minus;
+        private float m_fx_fe_plus;
+        private float m_fy_fe_minus;
+        private float m_fy_fe_plus;
+
+        private float m_fx_fe_min;
+        private float m_fy_fe_min;
+        private float m_fx_fe_max;
+        private float m_fy_fe_max;
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_pe_minus
+        {
+            get
+            {
+                return m_fx_pe_minus;
+            }
+
+            set
+            {
+                m_fx_pe_minus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_pe_plus
+        {
+            get
+            {
+                return m_fx_pe_plus;
+            }
+
+            set
+            {
+                m_fx_pe_plus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_pe_minus
+        {
+            get
+            {
+                return m_fy_pe_minus;
+            }
+
+            set
+            {
+                m_fy_pe_minus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_pe_plus
+        {
+            get
+            {
+                return m_fy_pe_plus;
+            }
+
+            set
+            {
+                m_fy_pe_plus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_pe_min
+        {
+            get
+            {
+                return m_fx_pe_min;
+            }
+
+            set
+            {
+                m_fx_pe_min = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_pe_max
+        {
+            get
+            {
+                return m_fx_pe_max;
+            }
+
+            set
+            {
+                m_fx_pe_max = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_pe_min
+        {
+            get
+            {
+                return m_fy_pe_min;
+            }
+
+            set
+            {
+                m_fy_pe_min = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_pe_max
+        {
+            get
+            {
+                return m_fy_pe_max;
+            }
+
+            set
+            {
+                m_fy_pe_max = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_fe_minus
+        {
+            get
+            {
+                return m_fx_fe_minus;
+            }
+
+            set
+            {
+                m_fx_fe_minus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_fe_plus
+        {
+            get
+            {
+                return m_fx_fe_plus;
+            }
+
+            set
+            {
+                m_fx_fe_plus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_fe_minus
+        {
+            get
+            {
+                return m_fy_fe_minus;
+            }
+
+            set
+            {
+                m_fy_fe_minus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_fe_plus
+        {
+            get
+            {
+                return m_fy_fe_plus;
+            }
+
+            set
+            {
+                m_fy_pe_plus = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_fe_min
+        {
+            get
+            {
+                return m_fx_fe_min;
+            }
+
+            set
+            {
+                m_fx_fe_min = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_fe_max
+        {
+            get
+            {
+                return m_fx_fe_max;
+            }
+
+            set
+            {
+                m_fx_fe_max = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_fe_min
+        {
+            get
+            {
+                return m_fy_fe_min;
+            }
+
+            set
+            {
+                m_fy_fe_min = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_fe_max
+        {
+            get
+            {
+                return m_fy_fe_max;
+            }
+
+            set
+            {
+                m_fy_fe_max = value;
+            }
+        }
+
         public CAnchor() : base()
         {
         }

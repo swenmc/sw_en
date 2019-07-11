@@ -57,5 +57,39 @@ namespace BaseClasses
 
             RadiusAngle = 360; // Circle total angle to generate holes
         }
+
+        public override void SetEdgeDistances(CConCom_Plate_BB_BG plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
+        {
+            float fpadX = pad.m_fDim1; // X
+            float fpadY = pad.m_fDim2; // Y
+
+            for (int i = 0; i < Anchors.Length; i++) // For each anchor
+            {
+                float fAnchorPositionOnPlate_x = (float)holesCentersPointsfor3D[i].X;
+                float fAnchorPositionOnPlate_y = (float)holesCentersPointsfor3D[i].Y;
+
+                // Anchor to plate edge distances
+                Anchors[i].x_pe_minus = fAnchorPositionOnPlate_x;
+                Anchors[i].x_pe_plus = plate.Fb_X - fAnchorPositionOnPlate_x;
+                Anchors[i].y_pe_minus = fAnchorPositionOnPlate_y;
+                Anchors[i].y_pe_plus = plate.Fh_Y - fAnchorPositionOnPlate_y;
+
+                Anchors[i].x_pe_min = Math.Min(Anchors[i].x_pe_minus, Anchors[i].x_pe_plus);
+                Anchors[i].y_pe_min = Math.Min(Anchors[i].y_pe_minus, Anchors[i].y_pe_plus);
+                Anchors[i].x_pe_max = Math.Max(Anchors[i].x_pe_minus, Anchors[i].x_pe_plus);
+                Anchors[i].y_pe_max = Math.Max(Anchors[i].y_pe_minus, Anchors[i].y_pe_plus);
+
+                // Anchor to foundation edge distances
+                Anchors[i].x_fe_minus = fx_plateEdge_to_pad + Anchors[i].x_pe_minus;
+                Anchors[i].x_fe_plus = fpadX - Anchors[i].x_fe_minus;
+                Anchors[i].y_fe_minus = fy_plateEdge_to_pad + Anchors[i].y_pe_minus;
+                Anchors[i].y_fe_plus = fpadY - Anchors[i].y_fe_minus;
+
+                Anchors[i].x_fe_min = Math.Min(Anchors[i].x_fe_minus, Anchors[i].x_fe_plus);
+                Anchors[i].y_fe_min = Math.Min(Anchors[i].y_fe_minus, Anchors[i].y_fe_plus);
+                Anchors[i].x_fe_max = Math.Max(Anchors[i].x_fe_minus, Anchors[i].x_fe_plus);
+                Anchors[i].y_fe_max = Math.Max(Anchors[i].y_fe_minus, Anchors[i].y_fe_plus);
+            }
+        }
     }
 }
