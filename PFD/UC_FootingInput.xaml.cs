@@ -61,8 +61,7 @@ namespace PFD
         {
             if (!(sender is CPFDViewModel)) return;
             CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
-            //CConnectionJointTypes joint = GetSelectedJoint(); // Napojit objekt joint ktory prislucha k danemu typu patky
-            CConnectionJointTypes joint = null;
+            CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
 
             // Joint with base plate and anchors
             if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_BB_BG)
@@ -87,7 +86,7 @@ namespace PFD
                 basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
             }
 
-            displayFootingPad(pad, joint, true);
+            displayFootingPad(pad, joint);
         }
 
         protected void HandleFootingPadPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -103,7 +102,7 @@ namespace PFD
                 )
             {
                 CFoundation pad = GetSelectedFootingPad();
-                CConnectionJointTypes joint = null; // TODO - napojit objekt spoja
+                CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
                 displayFootingPad(pad, joint);
             }
         }
@@ -136,6 +135,21 @@ namespace PFD
             CFoundation pad = listOfSelectedTypePads.FirstOrDefault();
 
             return pad;
+        }
+
+        private CConnectionJointTypes GetBaseJointForSelectedNode(CNode node)
+        {
+            // Vrati spoj typu base plate pre uzol selektovanej patky
+
+            for (int i = 0; i < _pfdVM.Model.m_arrConnectionJoints.Count; i++)
+            {
+                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_BB_BG)
+                {
+                    return _pfdVM.Model.m_arrConnectionJoints[i];
+                }
+            }
+
+            return null; // Error - joint wasn't found
         }
 
         // TO Ondrej - neviem ci ma byt toho vo viewmodeli alebo UC_FootingInputxaml.cs

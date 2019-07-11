@@ -2578,10 +2578,10 @@ namespace BaseClasses
                     if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
                 }
                 jointModel.m_arrNodes = nodeList.ToArray();
-                //jointClone = jointClone.RecreateJoint();
 
                 jointClone = joint.RecreateJoint();
                 jointClone.m_arrPlates = joint.m_arrPlates;
+
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
 
@@ -2589,7 +2589,7 @@ namespace BaseClasses
             if (pad != null)
             {
                 sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
-                sDisplayOptions.bDisplayReinforcement = true;
+                sDisplayOptions.bDisplayReinforcement = true; // Display always reinforcement bars
 
                 if (jointModel == null)
                     jointModel = new CModel();
