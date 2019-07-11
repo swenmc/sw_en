@@ -248,15 +248,11 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
 
-            sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
-            sDisplayOptions.bDisplayReinforcement = true;
-
-            CModel padModel = new CModel(); // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
+            // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
             // Refaktorovat funkciu displayJoint(CConnectionJointTypes joint) aby bolo mozne vykreslit joint v Table UC_Joints aj UC_FootingInput
             // TODO - Pridat do modelu spoj (uzol spoja, uzly prutov, pruty, plechy, skrutky)
 
-            padModel.m_arrFoundations = new List<CFoundation>();
-            padModel.m_arrFoundations.Add(pad);
+            CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 
             Page3Dmodel page1 = new Page3Dmodel(padModel, sDisplayOptions, null);
 
