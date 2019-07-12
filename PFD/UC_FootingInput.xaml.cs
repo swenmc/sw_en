@@ -64,9 +64,9 @@ namespace PFD
             CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
 
             // Joint with base plate and anchors
-            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_BB_BG)
+            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
             {
-                CConCom_Plate_BB_BG basePlate = (CConCom_Plate_BB_BG)joint.m_arrPlates[0];
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
                 float feccentricity_x = 0;
                 float feccentricity_y = 0;
                 float fpad_x = pad.m_fDim1;
@@ -143,7 +143,7 @@ namespace PFD
 
             for (int i = 0; i < _pfdVM.Model.m_arrConnectionJoints.Count; i++)
             {
-                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_BB_BG)
+                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_B_basic)
                 {
                     return _pfdVM.Model.m_arrConnectionJoints[i];
                 }

@@ -153,22 +153,22 @@ namespace BaseClasses
             }
             else if (sSectionNameDatabase == "50020n")
             {
-                platePrefix = "BE";
+                platePrefix = "BE-3 holes";
                 screwArrangement = screwArrangement1_50020;
             }
             else if (sSectionNameDatabase == "63020")
             {
-                platePrefix = "BF";
+                platePrefix = "BF-4 holes";
                 screwArrangement = screwArrangement1_63020;
             }
             else if (sSectionNameDatabase == "63020s1")
             {
-                platePrefix = "BF";
+                platePrefix = "BF-6 holes";
                 screwArrangement = screwArrangement1_63020;
             }
             else if (sSectionNameDatabase == "63020s2")
             {
-                platePrefix = "BF";
+                platePrefix = "BF-6 holes";
                 screwArrangement = screwArrangement1_63020;
             }
             else

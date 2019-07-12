@@ -110,6 +110,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX_2.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorRectSequence.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_B_basic.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TD01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TC01.cs" />
     <Compile Include="Model\CSegment_LTB.cs" />

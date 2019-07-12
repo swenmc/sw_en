@@ -40,9 +40,9 @@ namespace BaseClasses
             }
         }
 
-        private float m_fDistanceOfPointsX;
+        private float [] m_fDistanceOfPointsX;
 
-        public float DistanceOfPointsX
+        public float [] DistanceOfPointsX
         {
             get
             {
@@ -55,9 +55,9 @@ namespace BaseClasses
             }
         }
 
-        private float m_fDistanceOfPointsY;
+        private float [] m_fDistanceOfPointsY;
 
-        public float DistanceOfPointsY
+        public float [] DistanceOfPointsY
         {
             get
             {

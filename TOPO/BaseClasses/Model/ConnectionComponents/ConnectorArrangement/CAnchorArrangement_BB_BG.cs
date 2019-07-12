@@ -8,54 +8,59 @@ using System.Windows.Media.Media3D;
 using System.Globalization;
 using MATH;
 using BaseClasses.GraphObj;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
     [Serializable]
     public class CAnchorArrangement_BB_BG : CAnchorArrangement_Rectangular
     {
-        private float m_fDistanceBetweenHoles;
-
-        public float DistanceBetweenHoles
-        {
-            get
-            {
-                return m_fDistanceBetweenHoles;
-            }
-
-            set
-            {
-                m_fDistanceBetweenHoles = value;
-            }
-        }
-
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
         public int iNumberOfScrewsInRow_xDirection_SQ1;
         public int iNumberOfScrewsInColumn_yDirection_SQ1;
         public float fx_c_SQ1;
         public float fy_c_SQ1;
-        public float fDistanceOfPointsX_SQ1;
-        public float fDistanceOfPointsY_SQ1;
+        public float[] fDistanceOfPointsX_SQ1;
+        public float[] fDistanceOfPointsY_SQ1;
 
         public CAnchorArrangement_BB_BG() { }
 
-        public CAnchorArrangement_BB_BG(float fDistanceBetweenHoles_temp, CAnchor referenceAnchor_temp)
+        public CAnchorArrangement_BB_BG(string plateName_temp, CAnchor referenceAnchor_temp)
         {
-            IHolesNumber = 2; // 2 Otvory
-            NumberOfAnchorsInYDirection = 1;
-            NumberOfAnchorsInZDirection = 2;
-            DistanceBetweenHoles = fDistanceBetweenHoles_temp;
+            CPlate_B_Properties prop = CJointsManager.GetSPlate_B_Properties(plateName_temp);
+
+            // TODO - nacitat z databazy parametre
+
+            // Anchor arrangement parameters
+            IHolesNumber = prop.iNumberHolesAnchors;
+            NumberOfAnchorsInYDirection = prop.iNoOfAnchorsInRow;
+            NumberOfAnchorsInZDirection = prop.iNoOfAnchorsInColumn;
+
+            // Parametre sekvencie
+            iNumberOfScrewsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
+            iNumberOfScrewsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
+            fx_c_SQ1 = (float)prop.a1_pos_cp_x / 1000f;
+            fy_c_SQ1 = (float)prop.a1_pos_cp_y / 1000f;
+            float dist_x1 = (float)prop.dist_x1 / 1000f;
+            float dist_y1 = (float)prop.dist_y1 / 1000f;
+            float dist_x2 = (float)prop.dist_x2 / 1000f;
+            float dist_y2 = (float)prop.dist_y2 / 1000f;
+
+            if (float.IsNaN(dist_x2) || float.IsNaN(dist_y2))
+            {
+                fDistanceOfPointsX_SQ1 = new float[1] { dist_x1 };
+                fDistanceOfPointsY_SQ1 = new float[1] { dist_y1 };
+            }
+            else
+            {
+                fDistanceOfPointsX_SQ1 = new float[2] { dist_x1, dist_x2 };
+                fDistanceOfPointsY_SQ1 = new float[2] { dist_y1, dist_y2 };
+            }
+
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
             RadiusAngle = 360; // Circle total angle to generate holes
-
-            // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-            iNumberOfScrewsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
-            iNumberOfScrewsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
-            fx_c_SQ1 = 0; //???
-            fy_c_SQ1 = 0; //???
-            fDistanceOfPointsX_SQ1 = 0;
-            fDistanceOfPointsY_SQ1 = DistanceBetweenHoles;
 
             ListOfSequenceGroups = new List<CAnchorSequenceGroup>(1); // One group
 
@@ -106,24 +111,13 @@ namespace BaseClasses
 
         public override void Calc_HolesCentersCoord2D(float fbX, float fhY, float flZ)
         {
-            if(DistanceBetweenHoles<=0) // Ak uz nebola definovana, nastavit vzdialenost - vylepsit
-                fDistanceOfPointsY_SQ1 = DistanceBetweenHoles = 0.5f * fhY; // Default
-
-            //HolesCentersPoints2D = new Point[IHolesNumber];
-            //HolesCentersPoints2D[0] = new Point(flZ + 0.5f * fbX, 0.5f * fhY - 0.5f * DistanceBetweenHoles);
-            //HolesCentersPoints2D[1] = new Point(HolesCentersPoints2D[0].X, 0.5f * fhY + 0.5f * DistanceBetweenHoles);
-
-            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
-            float fx_c = flZ + 0.5f * fbX;
-            float fy_c = 0.5f * fhY - 0.5f * DistanceBetweenHoles;
-
             ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_AnchorSequencePointCoordinates((CAnchorRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
 
             // Set radii of connectors / screws in the group
             ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Translate from [0,0] on plate to the final position
-            TranslateSequence(fx_c, fy_c, (CAnchorRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            TranslateSequence(flZ + 0,  0, (CAnchorRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -147,11 +141,6 @@ namespace BaseClasses
 
                 iLastItemIndex += ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints.Length;
             }
-
-            // Test - plate BA
-            //float fhY = 0.27f;
-            //arrConnectorControlPoints3D[0] = new Point3D(0.5f * fbX, 0.5f * fhY - 0.5f * DistanceBetweenHoles, fPortionOtAnchorAbovePlate_abs);
-            //arrConnectorControlPoints3D[1] = new Point3D(0.5f * fbX, 0.5f * fhY + 0.5f * DistanceBetweenHoles, fPortionOtAnchorAbovePlate_abs);
         }
 
         public override void Calc_BasePlateData(
@@ -169,8 +158,13 @@ namespace BaseClasses
         public void Calc_HolesCentersCoord3D(float fbX, float fhY, float flZ)
         {
             holesCentersPointsfor3D = new Point[IHolesNumber];
-            holesCentersPointsfor3D[0] = new Point(0.5f * fbX, 0.5f * fhY - 0.5f * DistanceBetweenHoles);
-            holesCentersPointsfor3D[1] = new Point(0.5f * fbX, 0.5f * fhY + 0.5f * DistanceBetweenHoles);
+
+            // Skopirovat polozky a odratat flZ
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                holesCentersPointsfor3D[i].X = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[i].X - flZ;
+                holesCentersPointsfor3D[i].Y = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[i].Y;
+            }
         }
 
         void GenerateAnchors_BasePlate()

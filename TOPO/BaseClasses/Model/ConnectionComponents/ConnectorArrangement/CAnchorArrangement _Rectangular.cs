@@ -58,7 +58,7 @@ namespace BaseClasses
             RadiusAngle = 360; // Circle total angle to generate holes
         }
 
-        public override void SetEdgeDistances(CConCom_Plate_BB_BG plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
+        public override void SetEdgeDistances(CConCom_Plate_B_basic plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
         {
             float fpadX = pad.m_fDim1; // X
             float fpadY = pad.m_fDim2; // Y

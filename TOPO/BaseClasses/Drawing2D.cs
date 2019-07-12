@@ -179,8 +179,12 @@ namespace BaseClasses
             Point[] pHolesCentersPointsAnchors2D = null;
 
             // Check that object of screw arrangement is not null and set array items to the temporary array
-            if (plate.AnchorArrangement != null && plate.AnchorArrangement.HolesCentersPoints2D != null)
-                pHolesCentersPointsAnchors2D = plate.AnchorArrangement.HolesCentersPoints2D;
+            if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.HolesCentersPoints2D != null)
+                    pHolesCentersPointsAnchors2D = basePlate.AnchorArrangement.HolesCentersPoints2D;
+            }
 
             float fDiameter_screw = 0;
             float fDiameter_anchor = 0;
@@ -189,10 +193,11 @@ namespace BaseClasses
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
-            if (plate is CConCom_Plate_BB_BG) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
+            if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
-                if (plate.AnchorArrangement != null && plate.AnchorArrangement.referenceAnchor != null)
-                    fDiameter_anchor = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
+                    fDiameter_anchor = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
             }
 
             canvasForImage.Children.Clear();

@@ -76,7 +76,6 @@ namespace BaseClasses
         [NonSerialized]
         public GeometryModel3D Visual_Plate;
         //[NonSerialized]
-        public CAnchorArrangement AnchorArrangement;
         public CScrewArrangement ScrewArrangement;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
@@ -942,7 +941,7 @@ namespace BaseClasses
                 if (this is CConCom_Plate_KA) return true;
                 if (this is CConCom_Plate_KE) return true;
 
-                return false;                
+                return false;
             }
             return true;
         }
@@ -975,11 +974,6 @@ namespace BaseClasses
         public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             //to override
-        }
-
-        public virtual void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement screwArrangement)
-        {
-            //to overiride
         }
     }
 }

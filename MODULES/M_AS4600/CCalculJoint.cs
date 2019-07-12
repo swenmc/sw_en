@@ -703,6 +703,15 @@ namespace M_AS4600
 
         public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)
         {
+            CConCom_Plate_B_basic basePlate;
+
+            if (plate is CConCom_Plate_B_basic)
+                basePlate = (CConCom_Plate_B_basic)plate;
+            else
+            {
+                throw new Exception("Invalid objekt of base plate.");
+            }
+
             CJointDesignDetails_BaseJoint designDetails = new CJointDesignDetails_BaseJoint();
             // Okopirovane z CalculateDesignRatioApexOrKneeJoint
             // TODO - refaktorovat
@@ -870,14 +879,14 @@ namespace M_AS4600
                 designDetails.fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(designDetails.fV_asterix_x_joint) + MathF.Pow2(designDetails.fV_asterix_y_joint));
 
             //int iNumberAnchors = plate.AnchorArrangement.Anchors.Length;
-            designDetails.iNumberAnchors = plate.AnchorArrangement.IHolesNumber;
+            designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
             designDetails.iNumberAnchors_t = designDetails.iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
             designDetails.iNumberAnchors_v = designDetails.iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
 
             CAnchorArrangement_BB_BG anchorArrangement;
 
-            if (plate.AnchorArrangement is CAnchorArrangement_BB_BG)
-                anchorArrangement = (CAnchorArrangement_BB_BG)plate.AnchorArrangement;
+            if (basePlate.AnchorArrangement is CAnchorArrangement_BB_BG)
+                anchorArrangement = (CAnchorArrangement_BB_BG)basePlate.AnchorArrangement;
             else
             {
                 throw new Exception("Not implemented arrangmement of anchors.");
@@ -909,14 +918,14 @@ namespace M_AS4600
             designDetails.fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
 
             // Anchors (bolts)
-            designDetails.fd_s = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
-            designDetails.fd_f = plate.AnchorArrangement.referenceAnchor.Diameter_shank;
+            designDetails.fd_s = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
+            designDetails.fd_f = basePlate.AnchorArrangement.referenceAnchor.Diameter_shank;
 
-            designDetails.fA_c = plate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
-            designDetails.fA_o = plate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
+            designDetails.fA_c = basePlate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
+            designDetails.fA_o = basePlate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            designDetails.ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(designDetails.fd_f);
-            designDetails.ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(designDetails.fd_f);
+            designDetails.ff_y_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(designDetails.fd_f);
+            designDetails.ff_u_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(designDetails.fd_f);
 
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design

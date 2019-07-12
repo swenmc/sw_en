@@ -264,9 +264,6 @@ namespace PFD
                             case 2: // BC
                             case 6: // BG
                                 {
-                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
-                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
-
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
                                     else
@@ -279,9 +276,6 @@ namespace PFD
                             case 5: // BF
                             case 9: // BJ
                                 {
-                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
-                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
-
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
                                     else
@@ -291,9 +285,6 @@ namespace PFD
                                 }
                             default:
                                 {
-                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.3f, referenceAnchor);
-                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
-
                                     // TODO - doplnit vsetky typy base plates a arrangements
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
@@ -674,23 +665,12 @@ namespace PFD
                         {
                             CPlate_B_Properties prop = CJointsManager.GetSPlate_B_Properties(vm.ComponentIndex + 1);
 
-                            // Plate geometry parameters
                             fb = (float)prop.dim1 / 1000f;
                             fb2 = fb;
                             fh = (float)prop.dim2 / 1000f;
                             fl = (float)prop.dim3 / 1000f;
                             ft = (float)prop.t / 1000f;
-
-                            // Anchor arrangement parameters
-                            iNumberofHoles = prop.iNumberHolesAnchors;
-                            int iNoOfAnchorsInRow = prop.iNoOfAnchorsInRow;
-                            int iNoOfAnchorsInColumn = prop.iNoOfAnchorsInColumn;
-                            float a1_pos_cp_x = (float)prop.a1_pos_cp_x / 1000f;
-                            float a1_pos_cp_y = (float)prop.a1_pos_cp_y / 1000f;
-                            float dist_x1 = (float)prop.dist_x1 / 1000f;
-                            float dist_y1 = (float)prop.dist_y1 / 1000f;
-                            float dist_x2 = (float)prop.dist_x2 / 1000f;
-                            float dist_y2 = (float)prop.dist_y2 / 1000f;
+                            iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
                             break;
                         }
@@ -817,12 +797,13 @@ namespace PFD
                 if (plate.ScrewArrangement != null)
                     plate.ScrewArrangement.UpdateArrangmentData();
 
-                if (plate is CConCom_Plate_BB_BG) // Base plates
+                if (plate is CConCom_Plate_B_basic) // Base plates
                 {
-                    if (plate.AnchorArrangement != null)
-                        plate.AnchorArrangement.UpdateArrangmentData();
+                    CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                    if (basePlate.AnchorArrangement != null)
+                        basePlate.AnchorArrangement.UpdateArrangmentData();
 
-                    plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
+                    basePlate.UpdatePlateData(plate.ScrewArrangement);
                 }
                 else // other plates (without anchors)
                     plate.UpdatePlateData(plate.ScrewArrangement);
@@ -1089,7 +1070,6 @@ namespace PFD
                 CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.33f, 0.5f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
-
                 CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
                     3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
                     3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
@@ -1131,8 +1111,8 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, anchorArrangement_BB_BG, screwArrangement_BX_01, true); // B
+                            CPlate_B_Properties prop = CJointsManager.GetSPlate_B_Properties(vm.ComponentIndex + 1);
+                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, screwArrangement_BX_01, true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -1756,9 +1736,9 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Set current basic geometry of plate
-                if (plate is CConCom_Plate_BB_BG)
+                if (plate is CConCom_Plate_B_basic)
                 {
-                    CConCom_Plate_BB_BG plateTemp = (CConCom_Plate_BB_BG)plate;
+                    CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
 
                     if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText) / fLengthUnitFactor;

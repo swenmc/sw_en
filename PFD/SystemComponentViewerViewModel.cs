@@ -978,9 +978,9 @@ namespace PFD
             geometry.Add(new CComponentParamsViewString(CParamsResources.PlateNameS.Name, "", plate.Name, ""));
             geometry.Add(new CComponentParamsViewString(CParamsResources.PlateThicknessS.Name, CParamsResources.PlateThicknessS.Symbol, (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateThicknessS.Unit));
 
-            if (plate is CConCom_Plate_BB_BG)
+            if (plate is CConCom_Plate_B_basic)
             {
-                CConCom_Plate_BB_BG plateTemp = (CConCom_Plate_BB_BG)plate;
+                CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
@@ -1355,7 +1355,7 @@ namespace PFD
         //        iNumberofHoles = (int)databaseComponents.arr_Serie_B_Dimension[i, 4];
 
         //        CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(iNumberofHoles, referenceScrew, referenceAnchor);
-        //        platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BX_01, true)); // B
+        //        platesInSerie1.Add(new CConCom_Plate_B_basic(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BX_01, true)); // B
         //    }
         //    plates.Add("Serie B", platesInSerie1);
 

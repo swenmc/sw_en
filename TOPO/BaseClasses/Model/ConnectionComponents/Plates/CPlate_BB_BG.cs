@@ -8,8 +8,9 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_BB_BG : CPlate
+    public class CConCom_Plate_BB_BG : CConCom_Plate_B_basic
     {
+        /*
         private float m_fbX;
 
         public float Fb_X
@@ -53,9 +54,26 @@ namespace BaseClasses
             {
                 m_flZ = value;
             }
-        }
+        }*/
 
         int iNoPoints2Dfor3D; // Pomocny bod
+
+        /*
+        private CAnchorArrangement_BB_BG m_anchorArrangement;
+
+        public CAnchorArrangement_BB_BG AnchorArrangement
+        {
+            get
+            {
+                return m_anchorArrangement;
+            }
+
+            set
+            {
+                m_anchorArrangement = value;
+            }
+        }
+        */
 
         public CConCom_Plate_BB_BG()
         {
@@ -73,7 +91,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CAnchorArrangement_BB_BG anchorArrangement_temp,
+            CAnchor referenceAnchor_temp,
             CScrewArrangement screwArrangement_temp,
             bool bIsDisplayed)
         {
@@ -91,17 +109,19 @@ namespace BaseClasses
 
             ITotNoPointsin2D = 8;
 
-            iNoPoints2Dfor3D = ITotNoPointsin2D + anchorArrangement_temp.IHolesNumber * 4 + anchorArrangement_temp.IHolesNumber * INumberOfPointsOfHole;
+            AnchorArrangement = new CAnchorArrangement_BB_BG(Name, referenceAnchor_temp);
+
+            iNoPoints2Dfor3D = ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + AnchorArrangement.IHolesNumber * INumberOfPointsOfHole;
             ITotNoPointsin3D = 2 * iNoPoints2Dfor3D;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            UpdatePlateData(anchorArrangement_temp, screwArrangement_temp);
+            UpdatePlateData(screwArrangement_temp);
         }
 
-        public override void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement screwArrangement)
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -116,37 +136,35 @@ namespace BaseClasses
             Calc_Coord2D();
 
             // Calculate parameters of arrangement depending on plate geometry
-            if (anchorArrangement != null)
+            if (AnchorArrangement != null)
             {
-                anchorArrangement.Calc_BasePlateData(m_fbX, m_flZ, m_fhY, Ft);
+                AnchorArrangement.Calc_BasePlateData(Fb_X, Fl_Z, Fh_Y, Ft);
             }
-
-            AnchorArrangement = anchorArrangement;
 
             Calc_Coord3D(); // Tato funckia potrebuje aby boli inicializovany objekt AnchorArrangement - vykresluju sa podla toho otvory v plechu (vypocet suradnic dier)
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_BasePlateData(m_fbX, m_flZ, m_fhY, Ft);
+                screwArrangement.Calc_BasePlateData(Fb_X, Fl_Z, Fh_Y, Ft);
             }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            UpdatePlateData_Basic(anchorArrangement, screwArrangement);
+            UpdatePlateData_Basic(screwArrangement);
         }
 
-        public void UpdatePlateData_Basic(CAnchorArrangement anchorArrangement, CScrewArrangement screwArrangement)
+        public void UpdatePlateData_Basic( CScrewArrangement screwArrangement)
         {
-            Width_bx = m_fbX + 2 * m_flZ; // Total width
-            Height_hy = m_fhY;
+            Width_bx = Fb_X + 2 * Fl_Z; // Total width
+            Height_hy = Fh_Y;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
-            fA_g = Get_A_rect(2 * Ft, m_fhY);
+            fA_g = Get_A_rect(2 * Ft, Fh_Y);
             int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 
             fA_n = fA_g;
@@ -156,7 +174,7 @@ namespace BaseClasses
                 fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
-            fA_v_zv = Get_A_rect(2 * Ft, m_fhY);
+            fA_v_zv = Get_A_rect(2 * Ft, Fh_Y);
 
             fA_vn_zv = fA_v_zv;
 
@@ -165,8 +183,8 @@ namespace BaseClasses
                 fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
-            fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY); // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
+            fI_yu = 2 * Get_I_yu_rect(Ft, Fh_Y); // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, Fh_Y); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;
 
@@ -179,26 +197,26 @@ namespace BaseClasses
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1].X = m_flZ;
+            PointsOut2D[1].X = Fl_Z;
             PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2].X = PointsOut2D[1].X + m_fbX;
+            PointsOut2D[2].X = PointsOut2D[1].X + Fb_X;
             PointsOut2D[2].Y = 0;
 
-            PointsOut2D[3].X = PointsOut2D[2].X + m_flZ;
+            PointsOut2D[3].X = PointsOut2D[2].X + Fl_Z;
             PointsOut2D[3].Y = 0;
 
             PointsOut2D[4].X = PointsOut2D[3].X;
-            PointsOut2D[4].Y = m_fhY;
+            PointsOut2D[4].Y = Fh_Y;
 
             PointsOut2D[5].X = PointsOut2D[2].X;
-            PointsOut2D[5].Y = m_fhY;
+            PointsOut2D[5].Y = Fh_Y;
 
             PointsOut2D[6].X = PointsOut2D[1].X;
-            PointsOut2D[6].Y = m_fhY;
+            PointsOut2D[6].Y = Fh_Y;
 
             PointsOut2D[7].X = PointsOut2D[0].X;
-            PointsOut2D[7].Y = m_fhY;
+            PointsOut2D[7].Y = Fh_Y;
         }
 
         public override void Calc_Coord3D()
@@ -207,13 +225,13 @@ namespace BaseClasses
 
             arrPoints3D[0].X = 0;
             arrPoints3D[0].Y = 0;
-            arrPoints3D[0].Z = m_flZ;
+            arrPoints3D[0].Z = Fl_Z;
 
             arrPoints3D[1].X = arrPoints3D[0].X;
             arrPoints3D[1].Y = arrPoints3D[0].Y;
             arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = m_fbX;
+            arrPoints3D[2].X = Fb_X;
             arrPoints3D[2].Y = arrPoints3D[0].Y;
             arrPoints3D[2].Z = arrPoints3D[1].Z;
 
@@ -222,7 +240,7 @@ namespace BaseClasses
             arrPoints3D[3].Z = arrPoints3D[0].Z;
 
             arrPoints3D[4].X = arrPoints3D[3].X;
-            arrPoints3D[4].Y = m_fhY;
+            arrPoints3D[4].Y = Fh_Y;
             arrPoints3D[4].Z = arrPoints3D[3].Z;
 
             arrPoints3D[5].X = arrPoints3D[2].X;
@@ -291,13 +309,13 @@ namespace BaseClasses
 
             arrPoints3D[iNoPoints2Dfor3D + 0].X = Ft;
             arrPoints3D[iNoPoints2Dfor3D + 0].Y = 0;
-            arrPoints3D[iNoPoints2Dfor3D + 0].Z = m_flZ;
+            arrPoints3D[iNoPoints2Dfor3D + 0].Z = Fl_Z;
 
             arrPoints3D[iNoPoints2Dfor3D + 1].X = arrPoints3D[iNoPoints2Dfor3D + 0].X;
             arrPoints3D[iNoPoints2Dfor3D + 1].Y = arrPoints3D[0].Y;
             arrPoints3D[iNoPoints2Dfor3D + 1].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 2].X = m_fbX - Ft;
+            arrPoints3D[iNoPoints2Dfor3D + 2].X = Fb_X - Ft;
             arrPoints3D[iNoPoints2Dfor3D + 2].Y = arrPoints3D[iNoPoints2Dfor3D + 0].Y;
             arrPoints3D[iNoPoints2Dfor3D + 2].Z = arrPoints3D[iNoPoints2Dfor3D + 1].Z;
 
@@ -306,7 +324,7 @@ namespace BaseClasses
             arrPoints3D[iNoPoints2Dfor3D + 3].Z = arrPoints3D[iNoPoints2Dfor3D + 0].Z;
 
             arrPoints3D[iNoPoints2Dfor3D + 4].X = arrPoints3D[iNoPoints2Dfor3D + 3].X;
-            arrPoints3D[iNoPoints2Dfor3D + 4].Y = m_fhY;
+            arrPoints3D[iNoPoints2Dfor3D + 4].Y = Fh_Y;
             arrPoints3D[iNoPoints2Dfor3D + 4].Z = arrPoints3D[iNoPoints2Dfor3D + 3].Z;
 
             arrPoints3D[iNoPoints2Dfor3D + 5].X = arrPoints3D[iNoPoints2Dfor3D + 2].X;

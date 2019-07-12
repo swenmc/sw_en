@@ -126,6 +126,26 @@ namespace DATABASE
             return properties;
         }
 
+        public static CPlate_B_Properties GetSPlate_B_Properties(string name)
+        {
+            CPlate_B_Properties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieB WHERE plateName = @name", conn);
+                command.Parameters.AddWithValue("@name", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetPlate_B_Properties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
         private static CPlate_B_Properties GetPlate_B_Properties(SQLiteDataReader reader)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();

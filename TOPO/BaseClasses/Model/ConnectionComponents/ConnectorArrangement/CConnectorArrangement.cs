@@ -51,15 +51,42 @@ namespace BaseClasses
 
         public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
         {
+            float[] farr_DistancesOfPointsX = new float[1] { fDistanceOfPointsX };
+            float[] farr_DistancesOfPointsY = new float[1] { fDistanceOfPointsY };
+
+            return GetRegularArrayOfPointsInCartesianCoordinates(refPoint, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, farr_DistancesOfPointsX, farr_DistancesOfPointsY);
+        }
+
+        public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float [] farr_DistancesOfPointsX, float [] farr_DistancesOfPointsY)
+        {
             Point[] array = new Point[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection];
+
+            double lastY = refPoint.Y;
 
             for (int i = 0; i < iNumberOfPointsInYDirection; i++) // Rows
             {
+                double lastX = refPoint.X;
+
                 for (int j = 0; j < iNumberOfPointsInXDirection; j++) // Columns
                 {
-                    array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * fDistanceOfPointsX; // Fill items in row [i], column [j]
-                    array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * fDistanceOfPointsY; // Fill items in row [i], column [j]
+                    // Regular distances between rows / columns
+                    if (farr_DistancesOfPointsX.Length == 1 && farr_DistancesOfPointsY.Length == 1)
+                    {
+                        array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * farr_DistancesOfPointsX[0]; // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * farr_DistancesOfPointsY[0]; // Fill items in row [i], column [j]
+                    }
+                    else
+                    {
+                        // Pre prvy index v rade alebo stplci pripocitavame nulu pretoze uvazujeme priamo hodnoty refPoint.X a refPoint.Y
+                        array[i * iNumberOfPointsInXDirection + j].X = lastX + (j > 0 ? farr_DistancesOfPointsX[j-1] : 0); // Fill items in row [i], column [j]
+                        array[i * iNumberOfPointsInXDirection + j].Y = lastY + (i > 0 ? farr_DistancesOfPointsY[i-1] : 0); // Fill items in row [i], column [j]
+
+                        lastX += j > 0 ? farr_DistancesOfPointsX[j-1] : 0;
+                    }
                 }
+
+                if(i < farr_DistancesOfPointsY.Length)
+                  lastY += i > 0 ? farr_DistancesOfPointsY[i-1] : 0; // Pripocitat len ak je index v poli validny, pre rovnake vzdialenosti medzi bodmi by to nefungovalo
             }
 
             return array;

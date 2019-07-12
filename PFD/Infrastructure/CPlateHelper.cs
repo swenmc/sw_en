@@ -479,16 +479,16 @@ namespace PFD
             if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
 
             // Set current basic geometry of plate
-            if (plate is CConCom_Plate_BB_BG)
+            if (plate is CConCom_Plate_B_basic)
             {
-                CConCom_Plate_BB_BG plateTemp = (CConCom_Plate_BB_BG)plate;
+                CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
 
                 if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.PlateHeightS.Name)) plateTemp.Fh_Y = item_val / fLengthUnitFactor;
 
                 // Update plate data
-                plateTemp.UpdatePlateData(plateTemp.AnchorArrangement as CAnchorArrangement_BB_BG, plateTemp.ScrewArrangement);
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                 plate = plateTemp;
             }
             else if (plate is CConCom_Plate_JA)
@@ -693,9 +693,9 @@ namespace PFD
             geometry.Add(new CComponentParamsViewString(CParamsResources.PlateNameS.Name, "", plate.Name, ""));
             geometry.Add(new CComponentParamsViewString(CParamsResources.PlateThicknessS.Name, CParamsResources.PlateThicknessS.Symbol, (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateThicknessS.Unit));
 
-            if (plate is CConCom_Plate_BB_BG)
+            if (plate is CConCom_Plate_B_basic)
             {
-                CConCom_Plate_BB_BG plateTemp = (CConCom_Plate_BB_BG)plate;
+                CConCom_Plate_B_basic plateTemp = (CConCom_Plate_B_basic)plate;
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeightS.Name, CParamsResources.PlateHeightS.Symbol, (Math.Round(plateTemp.Fh_Y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeightS.Unit));
@@ -894,8 +894,6 @@ namespace PFD
             float fConnectorRadiusInCircleSequence = 0.25f;
             float fAdditionalConnectorDistance = 0.03f;
 
-            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(0.5f * fColumnDepth, referenceAnchor);
-
             // V pripade ze plate je priradena spoju, mozeme ako default pouzit parametre urcene podla members definovanych v spoji
             if (joint != null)
             {
@@ -954,7 +952,7 @@ namespace PFD
             {
                 case ESerieTypePlate.eSerie_B:
                     {
-                        if (plate is CConCom_Plate_BB_BG)
+                        if (plate is CConCom_Plate_B_basic)
                         {
                             if (screwArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;
@@ -1211,8 +1209,8 @@ namespace PFD
         {
             if (plate.ScrewArrangement != null) plate.ScrewArrangement.UpdateArrangmentData();
 
-            if (plate is CConCom_Plate_BB_BG) // Base plates
-                plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
+            if (plate is CConCom_Plate_B_basic) // Base plates
+                plate.UpdatePlateData(plate.ScrewArrangement);
             else // other plates (without anchors)
                 plate.UpdatePlateData(plate.ScrewArrangement);
         }

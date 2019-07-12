@@ -535,21 +535,26 @@ namespace BaseClasses
                                     }
 
                                     // Add plate anchors - only base plates
-                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement != null &&
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors != null &&
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors.Length > 0)
+                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] is CConCom_Plate_B_basic)
                                     {
-                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors.Length; m++)
+                                        CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)cmodel.m_arrConnectionJoints[i].m_arrPlates[l];
+
+                                        if (plate.AnchorArrangement != null &&
+                                            plate.AnchorArrangement.Anchors != null &&
+                                            plate.AnchorArrangement.Anchors.Length > 0)
                                         {
-                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
-                                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
-                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
-                                        }
-                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
-                                        if (sDisplayOptions.bDisplayConnectors)
-                                        {
-                                            JointModelGroup.Children.Add(plateConnectorsModelGroup);
+                                            Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                                            for (int m = 0; m < plate.AnchorArrangement.Anchors.Length; m++)
+                                            {
+                                                GeometryModel3D plateConnectorgeom = plate.AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
+                                                plate.AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
+                                                plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                                            }
+                                            plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                            if (sDisplayOptions.bDisplayConnectors)
+                                            {
+                                                JointModelGroup.Children.Add(plateConnectorsModelGroup);
+                                            }
                                         }
                                     }
 
