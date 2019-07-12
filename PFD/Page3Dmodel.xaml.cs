@@ -29,13 +29,19 @@ namespace PFD
 
             Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase);
         }
-        public Page3Dmodel(CModel joint_model, DisplayOptions sDisplayOptions_temp)
+        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
             sDisplayOptions = sDisplayOptions_temp;
 
             InitializeComponent();
 
-            Drawing3D.DrawJointToTrackPort(_trackport, joint_model, sDisplayOptions);
+            if(modelType == EModelType.eJoint)
+                Drawing3D.DrawJointToTrackPort(_trackport, model, sDisplayOptions);
+            else if(modelType == EModelType.eFooting)
+                Drawing3D.DrawFootingToTrackPort(_trackport, model, sDisplayOptions);
+            else
+                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+
         }
 
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)

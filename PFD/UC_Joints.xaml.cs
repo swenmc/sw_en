@@ -1094,7 +1094,7 @@ namespace PFD
             CModel jointModel = Drawing3D.GetJointPreviewModel(joint, null, ref sDisplayOptions);
 
             CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
-            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions);
+            Page3Dmodel page1 = new Page3Dmodel(jointModel, sDisplayOptions, EModelType.eJoint);
 
             // Display model in 3D preview frame
             FrameJointPreview3D.Content = page1;

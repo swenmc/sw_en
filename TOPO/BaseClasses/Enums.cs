@@ -548,6 +548,13 @@
         eTwoPlates           // 2 plates in joint (one on the left and one on the right side of cross-section)
     }
 
+    public enum EModelType
+    {
+        eJoint = 0,
+        eFooting = 1
+        
+    }
+
     public enum ESnowElevationRegions
     {
         eNoSignificantSnow,  // No significant snowfall.

@@ -1,5 +1,6 @@
 ﻿using DATABASE;
 using DATABASE.DTO;
+using MATH;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -238,6 +239,7 @@ namespace PFD
             set
             {
                 m_LongReinTop_x_No = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("LongReinTop_x_No");
             }
         }
@@ -283,6 +285,7 @@ namespace PFD
             set
             {
                 m_LongReinTop_y_No = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("LongReinTop_y_No");
             }
         }
@@ -328,6 +331,7 @@ namespace PFD
             set
             {
                 m_LongReinBottom_x_No = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("LongReinBottom_x_No");
             }
         }
@@ -373,6 +377,7 @@ namespace PFD
             set
             {
                 m_LongReinBottom_y_No = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("LongReinBottom_y_No");
             }
         }
@@ -421,6 +426,7 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.4 and 5 [m]");
 
                 m_FootingPadSize_x_Or_a = value;
+                if(IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_x_Or_a");
             }
         }
@@ -437,8 +443,9 @@ namespace PFD
             {
                 if (value < 0.4f || value > 5f)
                     throw new ArgumentException("Footing pad size must be between 0.4 and 5 [m]");
-
+                
                 m_FootingPadSize_y_Or_b = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_y_Or_b");
             }
         }
@@ -457,6 +464,7 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.1 and 2 [m]");
 
                 m_FootingPadSize_z_Or_h = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_z_Or_h");
             }
         }
@@ -551,11 +559,13 @@ namespace PFD
             }
         }
 
+        CPFDViewModel _pfdVM;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CFootingInputVM()
+        public CFootingInputVM(CPFDViewModel pfdVM)
         {
+            _pfdVM = pfdVM;
             // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
             ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
@@ -572,11 +582,24 @@ namespace PFD
             // Zoznam poctov vyztuznych tyci pre jeden smer (None alebo 2 - 30)
             ReinforcementBarsCountList = GetReinforcementBarsCountList();
 
+            // Set default GUI
+            FootingPadMemberTypeIndex = 1;
+            ConcreteGrade = "30";
+            ConcreteDensity = 2300f; // kg / m^3
+            ReinforcementGrade = "500E";
+
+            SoilReductionFactor_Phi = 0.5f;
+            SoilReductionFactorEQ_Phi = 0.8f;
+
+            SoilBearingCapacity = 200f; // kPa (konverovat kPa na Pa)
+
+            // To Ondrej - doriesit zadavacie a vypoctove jednotky mm a m
+            ConcreteCover = 75; // mm  0.075f; m
+            FloorSlabThickness = 125; // mm 0.125f; m
 
 
 
-
-
+            UpdateValuesInGUI();
 
             IsSetFromCode = false;
         }
@@ -603,14 +626,95 @@ namespace PFD
             return list;
         }
 
+       
+
         // TO Ondrej - neviem ci ma byt toho vo viewmodeli alebo UC_FootingInputxaml.cs
-        // Jedna sa o prepocitanie hodnot a zobrazv GUI pri zmene niektorej hodnoty v GUI
+        // Jedna sa o prepocitanie hodnot a zobrazenie/update hodnot v GUI pri zmene niektorej hodnoty v GUI
         private void UpdateValuesInGUI()
         {
+            IsSetFromCode = true;
+            // Dimensions of footing pad in meters
+            //FootingPadSize_x_Or_a = 1.0f;
+            //FootingPadSize_y_Or_b = 1.0f;
+            //FootingPadSize_z_Or_h = 0.4f;
 
+            // Default size of footing pad
+            float faX, fbY, fhZ;
+            GetDefaultFootingPadSize(out faX, out fbY, out fhZ);
 
+            FootingPadSize_x_Or_a = faX;
+            FootingPadSize_y_Or_b = fbY;
+            FootingPadSize_z_Or_h = fhZ;
 
+            // Default reinforcement
 
+            //LongReinTop_x_No = "5";
+            LongReinTop_x_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinTop_x_Phi = "12";
+            //LongReinTop_x_Phi = 0.012f; // bar diameter mm to m
+            //LongReinTop_x_distance_s_y = 0.2035f; // m
+            LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinTop_x_No), (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+
+            //LongReinTop_y_No = "5";
+            LongReinTop_y_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinTop_y_Phi = "12";
+            //LongReinTop_y_Phi = 0.012f; // bar diameter mm to m
+            //LongReinTop_y_distance_s_x = 0.2035f; // m
+            LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, Convert.ToInt32(LongReinTop_y_No), (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+
+            //LongReinBottom_x_No = "5";
+            LongReinBottom_x_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinBottom_x_Phi = "12";
+            //LongReinBottom_x_Phi = 0.012f; // bar diameter mm to m
+            //LongReinBottom_x_distance_s_y = 0.2035f; // m
+            LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinBottom_x_No), (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+
+            //LongReinBottom_y_No = "5";
+            LongReinBottom_y_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinBottom_y_Phi = "12";
+            //LongReinBottom_y_Phi = 0.012f; // bar diameter mm to m
+            //LongReinBottom_y_distance_s_x = 0.2035f; // m
+            LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, Convert.ToInt32(LongReinBottom_y_No), (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            IsSetFromCode = false;
+        }
+
+        private float GetDistanceBetweenReinforcementBars(float footingPadWidth, int iNumberOfBarsPerSection, float fBarDiameter, float fConcreteCover)
+        {
+            return (footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / (iNumberOfBarsPerSection - 1);
+        }
+
+        private void GetDefaultFootingPadSize(out float faX, out float fbY, out float fhZ)
+        {
+            if (FootingPadMemberTypeIndex <= 1)
+            {
+                // Main or edge frame column (0 and 1)
+                faX = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.08f, _pfdVM.fL1 * 0.40f)), 1);
+                fbY = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.07f, _pfdVM.fL1 * 0.35f)), 1);
+                fhZ = 0.4f;
+            }
+            else // Front a back side wind posts (2 and 3)
+            {
+                float fDist_Column;
+
+                // Pripravene pre rozne rozostupy wind post na prednej a zadnej strane budovy
+                if (FootingPadMemberTypeIndex == 2) // Front Side
+                    fDist_Column = _pfdVM.ColumnDistance;
+                else // Back Side
+                    fDist_Column = _pfdVM.ColumnDistance;
+
+                // Front or back side - wind posts
+                faX = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
+                fbY = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
+                fhZ = 0.4f;
+            }
+        }
+
+        private int GetDefaultNumberOfReiforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
+        {
+            float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
+
+            // Number of spacings + 1
+            return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
         }
     }
 }

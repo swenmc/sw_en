@@ -1773,7 +1773,7 @@ namespace PFD
             displayOptions.RotateModelX = -90;
             displayOptions.RotateModelY = 20;
             //Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, null);
-            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions);
+            Page3Dmodel page3D = new Page3Dmodel(doorModel, displayOptions, EModelType.eJoint);
 
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
@@ -1852,7 +1852,7 @@ namespace PFD
             displayOptions.RotateModelX = -90;
             displayOptions.RotateModelY = 20;
             //Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, null);
-            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions);
+            Page3Dmodel page3D = new Page3Dmodel(model, displayOptions, EModelType.eJoint);
 
             // Display model in 3D preview frame
             FrameDoorWindowPreview3D.Content = page3D;
