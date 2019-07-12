@@ -46,34 +46,36 @@ namespace PFD
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (!(sender is CPFDViewModel)) return;
-            CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
-            CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
+            //ja neviem co sa to tu robi...
 
-            // Joint with base plate and anchors
-            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
-            {
-                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
-                float feccentricity_x = 0;
-                float feccentricity_y = 0;
-                float fpad_x = pad.m_fDim1;
-                float fpad_y = pad.m_fDim2;
+            //if (!(sender is CPFDViewModel)) return;
+            //CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
+            //CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
 
-                float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
-                float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
+            //// Joint with base plate and anchors
+            //if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
+            //{
+            //    CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
+            //    float feccentricity_x = 0;
+            //    float feccentricity_y = 0;
+            //    float fpad_x = pad.m_fDim1;
+            //    float fpad_y = pad.m_fDim2;
 
-                float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
-                float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
-                float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
-                float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
+            //    float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
+            //    float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
 
-                float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
-                float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
+            //    float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
+            //    float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
+            //    float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
+            //    float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
 
-                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
-            }
+            //    float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
+            //    float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
 
-            displayFootingPad(pad, joint);
+            //    basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
+            //}
+
+            //displayFootingPad(pad, joint);
         }
 
         protected void HandleFootingPadPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -161,6 +163,7 @@ namespace PFD
 
             if (pad == null) return; // Error - nothing to display
 
+
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             sDisplayOptions.bDisplayGlobalAxis = true;
@@ -169,6 +172,7 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.RotateModelX = -90;
+            sDisplayOptions.RotateModelY = 45;
 
             // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
             // Refaktorovat funkciu displayJoint(CConnectionJointTypes joint) aby bolo mozne vykreslit joint v Table UC_Joints aj UC_FootingInput

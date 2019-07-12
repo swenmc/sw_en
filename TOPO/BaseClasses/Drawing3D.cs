@@ -287,12 +287,12 @@ namespace BaseClasses
                 float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
                 if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                    CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                    CalculateFootingModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreCountWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D pModelGeomCentre = Drawing3D.GetFootingModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
@@ -442,6 +442,18 @@ namespace BaseClasses
 
             if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
               CalculateModelLimitsCountWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+            fModel_Length_X = fTempMax_X - fTempMin_X;
+            fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+            return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+        }
+        public static Point3D GetFootingModelCentre(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
+        {
+            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+
+            CalculateFootingModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             fModel_Length_X = fTempMax_X - fTempMin_X;
             fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -2301,6 +2313,86 @@ namespace BaseClasses
                 throw new Exception("Exception - no definition nodes or points");
             }
         }
+
+        public static void CalculateFootingModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        {
+            fMax_X = float.MinValue;
+            fMin_X = float.MaxValue;
+            fMax_Y = float.MinValue;
+            fMin_Y = float.MaxValue;
+            fMax_Z = float.MinValue;
+            fMin_Z = float.MaxValue;
+
+            if (cmodel.m_arrNodes != null && cmodel.m_arrNodes.Length > 1) // Some nodes exist - pre urcenie rozmeru minimalne 2 uzly
+            {
+                fMax_X = cmodel.m_arrNodes.Max(p => p.X);
+                fMin_X = cmodel.m_arrNodes.Min(p => p.X);
+                fMax_Y = cmodel.m_arrNodes.Max(p => p.Y);
+                fMin_Y = cmodel.m_arrNodes.Min(p => p.Y);
+                fMax_Z = cmodel.m_arrNodes.Max(p => p.Z);
+                fMin_Z = cmodel.m_arrNodes.Min(p => p.Z);
+            }
+            else if (cmodel.m_arrGOPoints != null) // Some points exist
+            {
+                fMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
+                fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
+                fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
+                fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
+                fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
+                fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+            }
+
+            if (cmodel.m_arrFoundations != null) // Some volumes / foundations exist
+            {
+                // Each foundation in model
+                Point3DCollection allFoundationPoints = new Point3DCollection();
+
+                if (cmodel.m_arrFoundations != null) // Some members must exist
+                {
+                    foreach (CFoundation f in cmodel.m_arrFoundations)
+                    {
+                        Point3DCollection foundationPoints = new Point3DCollection();
+
+                        GeometryModel3D model3D = f.CreateGeomModel3D(); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
+
+                        foreach (Point3D point3D in mesh3D.Positions)
+                        {
+                            foundationPoints.Add(point3D);
+                        }
+
+                        // Add member points to the main collection of all members
+                        if (foundationPoints != null)
+                        {
+                            foreach (Point3D p in foundationPoints)
+                            {
+                                allFoundationPoints.Add(p);
+                            }
+                        }
+                    }
+                }
+
+                float max_X = (float)allFoundationPoints.Max(p => p.X);
+                float min_X = (float)allFoundationPoints.Min(p => p.X);
+                float max_Y = (float)allFoundationPoints.Max(p => p.Y);
+                float min_Y = (float)allFoundationPoints.Min(p => p.Y);
+                float max_Z = (float)allFoundationPoints.Max(p => p.Z);
+                float min_Z = (float)allFoundationPoints.Min(p => p.Z);
+                fMax_X = Math.Max(fMax_X, max_X);
+                fMin_X = Math.Min(fMin_X, min_X);
+                fMax_Y = Math.Max(fMax_Y, max_Y);
+                fMin_Y = Math.Min(fMin_Y, min_Y);
+                fMax_Z = Math.Max(fMax_Z, max_Z);
+                fMin_Z = Math.Min(fMin_Z, min_Z);
+            }
+            else
+            {
+                // Exception - no definition nodes or points
+                throw new Exception("Exception - no definition nodes or points");
+            }
+        }
+
+
 
         public static void CalculateModelSizes(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {

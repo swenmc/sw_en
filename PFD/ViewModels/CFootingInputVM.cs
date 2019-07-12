@@ -565,6 +565,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CFootingInputVM(CPFDViewModel pfdVM)
         {
+            IsSetFromCode = true;
             _pfdVM = pfdVM;
             // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
@@ -598,8 +599,7 @@ namespace PFD
             FloorSlabThickness = 125; // mm 0.125f; m
 
 
-
-            UpdateValuesInGUI();
+            SetDefaultFootingPadSize();
 
             IsSetFromCode = false;
         }
@@ -626,13 +626,9 @@ namespace PFD
             return list;
         }
 
-       
 
-        // TO Ondrej - neviem ci ma byt toho vo viewmodeli alebo UC_FootingInputxaml.cs
-        // Jedna sa o prepocitanie hodnot a zobrazenie/update hodnot v GUI pri zmene niektorej hodnoty v GUI
-        private void UpdateValuesInGUI()
+        private void SetDefaultFootingPadSize()
         {
-            IsSetFromCode = true;
             // Dimensions of footing pad in meters
             //FootingPadSize_x_Or_a = 1.0f;
             //FootingPadSize_y_Or_b = 1.0f;
@@ -645,6 +641,14 @@ namespace PFD
             FootingPadSize_x_Or_a = faX;
             FootingPadSize_y_Or_b = fbY;
             FootingPadSize_z_Or_h = fhZ;
+
+            UpdateValuesInGUI();
+        }
+
+        
+        private void UpdateValuesInGUI()
+        {
+            IsSetFromCode = true;
 
             // Default reinforcement
 

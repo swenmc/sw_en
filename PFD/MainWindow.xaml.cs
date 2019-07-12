@@ -728,11 +728,11 @@ namespace PFD
 
             List<CFoundation> foundations = null;
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
-            else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
+            //else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
 
             CVolume floorSlab = null;
             if (!vm.RecreateFloorSlab) floorSlab = vm.Model.m_arrGOVolumes[0];
-            else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
+            //else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
 
             if (vm.RecreateModel)
             {
@@ -756,6 +756,7 @@ namespace PFD
                     floorSlab);
 
                 UpdateUC_Joints();
+                UpdateUC_Footings();
             }
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
@@ -807,6 +808,20 @@ namespace PFD
                 UC_Joints uc_joints = Joint_Input.Content as UC_Joints;
                 uc_joints.ArrangeConnectionJoints();
                 vm.JointsVM.JointTypeIndex = vm.JointsVM.JointTypeIndex; //redraw same selected joint
+            }
+        }
+
+        private void UpdateUC_Footings()
+        {
+            if (Footing_Input.Content == null)
+            {
+                UC_FootingInput uc_footing = new UC_FootingInput(vm);
+                Footing_Input.Content = uc_footing;
+                vm.FootingVM = uc_footing.DataContext as CFootingInputVM;
+            }
+            if (vm.RecreateJoints)
+            {
+                vm.FootingVM.FootingPadMemberTypeIndex = vm.FootingVM.FootingPadMemberTypeIndex; //redraw same selected footing
             }
         }
 

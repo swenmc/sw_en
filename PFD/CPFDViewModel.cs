@@ -1794,6 +1794,25 @@ namespace PFD
             }
         }
 
+        public CFootingInputVM FootingVM
+        {
+            get
+            {
+                return _footingVM;
+            }
+
+            set
+            {
+                _footingVM = value;
+                _footingVM.PropertyChanged += _footingVM_PropertyChanged;
+            }
+        }
+
+        private void _footingVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
         public bool RecreateJoints
         {
             get
@@ -2040,6 +2059,7 @@ namespace PFD
         private CComponentListVM _componentVM;
         private CProjectInfoVM _projectInfoVM;
         private CJointsVM _jointsVM;
+        private CFootingInputVM _footingVM;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
