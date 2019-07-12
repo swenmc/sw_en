@@ -34,5 +34,24 @@ namespace DATABASE
             }
             return items;
         }
+
+        public static List<string> GetPlateSeries()
+        {
+            List<string> items = new List<string>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSeries", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        items.Add(reader["serieName"].ToString());
+                    }
+                }
+            }
+            return items;
+        }
     }
 }

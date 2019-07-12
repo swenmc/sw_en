@@ -7,6 +7,8 @@ using System.Windows.Media;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using MATH;
+using DATABASE;
+using DATABASE.DTO;
 using CRSC;
 using EXPIMP;
 using System.Windows.Media.Media3D;
@@ -787,7 +789,8 @@ namespace PFD
             }
             else //  Screw
             {
-                sGauge_Screw = (dcomponents.arr_Screws_TEK_Dimensions[vm.ComponentIndex, 0]).ToString();
+                CTEKScrewProperties prop = CTEKScrewsManager.GetScrewProperties(vm.ComponentIndex + 1);
+                sGauge_Screw = prop.gauge;
             }
         }
 

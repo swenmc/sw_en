@@ -1131,7 +1131,7 @@ namespace PFD
                         else if (plate.ScrewArrangement is CScrewArrangement_BX_1) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangement_BX_2) return 2;
                         else return 0;
-                        
+
                         //??? mato
                         //dc.arr_Serie_B_ScrewArrangement_Names;
                         //nenasiel som odpovedajuce triedy k arr_Serie_B_ScrewArrangement_Names
@@ -1158,7 +1158,6 @@ namespace PFD
                 case ESerieTypePlate.eSerie_Q:
                     {
                         return 0;
-                        
                     }
                 case ESerieTypePlate.eSerie_S:
                     {
@@ -1181,7 +1180,7 @@ namespace PFD
                         if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
-                        else return 0;                        
+                        else return 0;
                     }
                 case ESerieTypePlate.eSerie_K:
                     {
@@ -1197,14 +1196,13 @@ namespace PFD
                 case ESerieTypePlate.eSerie_O:
                     {
                         if (plate.ScrewArrangement == null) return 0;
-                        else if (plate.ScrewArrangement is CScrewArrangement_O) return 1; 
+                        else if (plate.ScrewArrangement is CScrewArrangement_O) return 1;
                         else return 0;
                     }
                 default:
                     {
                         // Not implemented
                         return 0;
-                        
                     }
             }
         }

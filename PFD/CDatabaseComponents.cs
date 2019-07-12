@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using BaseClasses;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -19,134 +21,123 @@ namespace PFD
         public float flZ2_mm;
         public float ft_mm; // Not used in 2D model
         public int iHolesNumber;
+        /*
+                public CDatabaseComponents()
+                { }
+        */
+        /*
+                public CDatabaseComponents(int iSerieIndex, int iComponentIndex)
+                {
+                    ESerieTypePlate eSerieIndex = (ESerieTypePlate)iSerieIndex;
 
-        public CDatabaseComponents()
-        { }
-
-        public CDatabaseComponents(int iSerieIndex, int iComponentIndex)
-        {
-            ESerieTypePlate eSerieIndex = (ESerieTypePlate)iSerieIndex;
-
-            switch (eSerieIndex)
-            {
-                case ESerieTypePlate.eSerie_B:
+                    switch (eSerieIndex)
                     {
-                        fbX_mm = arr_Serie_B_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
-                        flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
-                        ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
-                        iHolesNumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
+                        case ESerieTypePlate.eSerie_B:
+                            {
+                                fbX_mm = arr_Serie_B_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
+                                flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
+                                ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
+                                iHolesNumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_F:
-                    {
-                        fbX_mm = arr_Serie_F_Dimension[iComponentIndex, 0];
-                        fbX2_mm = arr_Serie_F_Dimension[iComponentIndex, 1];
-                        fhY_mm = arr_Serie_F_Dimension[iComponentIndex, 2];
-                        flZ_mm = arr_Serie_F_Dimension[iComponentIndex, 3];
-                        ft_mm = arr_Serie_F_Dimension[iComponentIndex, 4];
-                        iHolesNumber = (int)arr_Serie_F_Dimension[iComponentIndex, 5];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_F:
+                            {
+                                fbX_mm = arr_Serie_F_Dimension[iComponentIndex, 0];
+                                fbX2_mm = arr_Serie_F_Dimension[iComponentIndex, 1];
+                                fhY_mm = arr_Serie_F_Dimension[iComponentIndex, 2];
+                                flZ_mm = arr_Serie_F_Dimension[iComponentIndex, 3];
+                                ft_mm = arr_Serie_F_Dimension[iComponentIndex, 4];
+                                iHolesNumber = (int)arr_Serie_F_Dimension[iComponentIndex, 5];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_L:
-                    {
-                        fbX_mm = arr_Serie_L_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
-                        flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
-                        ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
-                        iHolesNumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_L:
+                            {
+                                fbX_mm = arr_Serie_L_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
+                                flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
+                                ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
+                                iHolesNumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_Q:
-                    {
-                        fbX_mm = arr_Serie_Q_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_Q_Dimension[iComponentIndex, 1];
-                        flZ_mm = arr_Serie_Q_Dimension[iComponentIndex, 2];
-                        ft_mm = arr_Serie_Q_Dimension[iComponentIndex, 3];
-                        iHolesNumber = (int)arr_Serie_Q_Dimension[iComponentIndex, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Q:
+                            {
+                                fbX_mm = arr_Serie_Q_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_Q_Dimension[iComponentIndex, 1];
+                                flZ_mm = arr_Serie_Q_Dimension[iComponentIndex, 2];
+                                ft_mm = arr_Serie_Q_Dimension[iComponentIndex, 3];
+                                iHolesNumber = (int)arr_Serie_Q_Dimension[iComponentIndex, 4];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_T:
-                    {
-                        fbX_mm = arr_Serie_T_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_T_Dimension[iComponentIndex, 1];
-                        flZ_mm = arr_Serie_T_Dimension[iComponentIndex, 2];
-                        ft_mm = arr_Serie_T_Dimension[iComponentIndex, 3];
-                        iHolesNumber = (int)arr_Serie_T_Dimension[iComponentIndex, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_T:
+                            {
+                                fbX_mm = arr_Serie_T_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_T_Dimension[iComponentIndex, 1];
+                                flZ_mm = arr_Serie_T_Dimension[iComponentIndex, 2];
+                                ft_mm = arr_Serie_T_Dimension[iComponentIndex, 3];
+                                iHolesNumber = (int)arr_Serie_T_Dimension[iComponentIndex, 4];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_Y:
-                    {
-                        fbX_mm = arr_Serie_Y_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_Y_Dimension[iComponentIndex, 1];
-                        flZ_mm = arr_Serie_Y_Dimension[iComponentIndex, 2];
-                        flZ2_mm = arr_Serie_Y_Dimension[iComponentIndex, 3];
-                        ft_mm = arr_Serie_Y_Dimension[iComponentIndex, 4];
-                        iHolesNumber = (int)arr_Serie_Y_Dimension[iComponentIndex, 5];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Y:
+                            {
+                                fbX_mm = arr_Serie_Y_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_Y_Dimension[iComponentIndex, 1];
+                                flZ_mm = arr_Serie_Y_Dimension[iComponentIndex, 2];
+                                flZ2_mm = arr_Serie_Y_Dimension[iComponentIndex, 3];
+                                ft_mm = arr_Serie_Y_Dimension[iComponentIndex, 4];
+                                iHolesNumber = (int)arr_Serie_Y_Dimension[iComponentIndex, 5];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_J:
-                    {
-                        fbX_mm = arr_Serie_J_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_J_Dimension[iComponentIndex, 1];
-                        fhY2_mm = arr_Serie_J_Dimension[iComponentIndex, 2];
-                        flZ_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
-                        ft_mm = arr_Serie_J_Dimension[iComponentIndex, 4];
-                        iHolesNumber = (int)arr_Serie_J_Dimension[iComponentIndex, 5];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_J:
+                            {
+                                fbX_mm = arr_Serie_J_Dimension[iComponentIndex, 0];
+                                fhY_mm = arr_Serie_J_Dimension[iComponentIndex, 1];
+                                fhY2_mm = arr_Serie_J_Dimension[iComponentIndex, 2];
+                                flZ_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
+                                ft_mm = arr_Serie_J_Dimension[iComponentIndex, 4];
+                                iHolesNumber = (int)arr_Serie_J_Dimension[iComponentIndex, 5];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_K:
-                    {
-                        fbXR_mm = arr_Serie_K_Dimension[iComponentIndex, 0];
-                        fbX_mm = arr_Serie_K_Dimension[iComponentIndex, 1];
-                        fhY_mm = arr_Serie_K_Dimension[iComponentIndex, 2];
-                        fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
-                        fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
-                        ft_mm = arr_Serie_K_Dimension[iComponentIndex, 5];
-                        iHolesNumber = (int)arr_Serie_K_Dimension[iComponentIndex, 6];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_K:
+                            {
+                                fbXR_mm = arr_Serie_K_Dimension[iComponentIndex, 0];
+                                fbX_mm = arr_Serie_K_Dimension[iComponentIndex, 1];
+                                fhY_mm = arr_Serie_K_Dimension[iComponentIndex, 2];
+                                fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
+                                fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
+                                ft_mm = arr_Serie_K_Dimension[iComponentIndex, 5];
+                                iHolesNumber = (int)arr_Serie_K_Dimension[iComponentIndex, 6];
 
-                        break;
-                    }
-                case ESerieTypePlate.eSerie_O:
-                    {
-                        fbX_mm = arr_Serie_O_Dimension[iComponentIndex, 0];
-                        fbX2_mm = arr_Serie_O_Dimension[iComponentIndex, 1];
-                        fhY_mm = arr_Serie_O_Dimension[iComponentIndex, 2];
-                        fhY2_mm = arr_Serie_O_Dimension[iComponentIndex, 3];
-                        ft_mm = arr_Serie_O_Dimension[iComponentIndex, 4];
-                        iHolesNumber = (int)arr_Serie_O_Dimension[iComponentIndex, 5];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_O:
+                            {
+                                fbX_mm = arr_Serie_O_Dimension[iComponentIndex, 0];
+                                fbX2_mm = arr_Serie_O_Dimension[iComponentIndex, 1];
+                                fhY_mm = arr_Serie_O_Dimension[iComponentIndex, 2];
+                                fhY2_mm = arr_Serie_O_Dimension[iComponentIndex, 3];
+                                ft_mm = arr_Serie_O_Dimension[iComponentIndex, 4];
+                                iHolesNumber = (int)arr_Serie_O_Dimension[iComponentIndex, 5];
 
-                        break;
+                                break;
+                            }
+                        default:
+                            {
+                                // Not implemented
+                                break;
+                            }
                     }
-                default:
-                    {
-                        // Not implemented
-                        break;
-                    }
-            }
-        }
+                }
+        */
 
-        public string[] arr_SeriesNames = new string[13]
-            {"Serie B",
-             "Serie L",
-             "Serie LL",
-             "Serie F",
-             "Serie Q",
-             "Serie S",
-             "Serie T",
-             "Serie X",
-             "Serie Y",
-             "Serie J",
-             "Serie K",
-             "Serie N",
-             "Serie O"};
+        public List<string> arr_SeriesNames = CJointsManager.GetPlateSeries();
 
         public string[] arr_Serie_B_Names = new string[10]
             {"BA",
@@ -358,7 +349,7 @@ namespace PFD
         };
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
-        public string[] arr_Serie_CrSc_FS_Names = new string[8]
+        public List<string> arr_Serie_CrSc_FS_Names = new List<string>
         {
                 "Box-10075",
                 "Z",
@@ -479,55 +470,9 @@ namespace PFD
                 {180, 630, 1.95f, 7.90f, 2}  // 3.00 mm
         };
 
-        // TODO nahradit vstupmi z databazy
-
-        public string[,] arr_Member_Types_Prefix = new string[16, 2]
-        {
-            {"G", "Girt"},             // 00
-            {"C", "Column"},           // 01
-            {"ER", "End Rafter"},      // 02
-            {"WP", "Wind Post"},       // 03
-            {"EC", "End Column"},      // 04
-            {"EP", "Edge Purlin"},     // 05
-            {"P", "Purlin"},           // 06
-            {"DT","Door Trimmer"},     // 07
-            {"DL","Door Lintel"},      // 08
-            {"PB","Purlin Block"},     // 09
-            {"GB","Girt Block"},       // 10
-            {"DF","Door Frame"},       // 11
-            {"WF","Window Frame"},       // 12            
-            {"BG","Base Girt"},        // 13
-            {"MR","Main Rafter"},      // 14
-            {"MC","Main Column"}       // 15
-        };
-
-        public string[] arr_Serie_Screws_Names = new string[1]
+        public List<string> arr_Serie_Screws_Names = new List<string>
         {
             "Hex Head Tek"
-        };
-
-        public string[] arr_Serie_TEK_Names = new string[8]
-        {
-            "Gauge 4",
-            "Gauge 6",
-            "Gauge 8",
-            "Gauge 10",
-            "Gauge 12",
-            "Gauge 13",
-            "Gauge 14",
-            "Gauge 15"
-        };
-
-        public float[,] arr_Screws_TEK_Dimensions = new float[8, 2]
-        {
-            {4f,   2.9f },
-            {6f,   3.5f },
-            {8f,   4.2f },
-            {10f,  4.8f },
-            {12f,  5.0f },
-            {13f,  6.1f },
-            {14f,  6.3f },
-            {15f,  6.5f },
         };
     }
 }

@@ -34,7 +34,7 @@ namespace PFD
         private int MScrewArrangementIndex;
 
         private List<string> MComponentTypes;
-        private string[] MComponentSeries;
+        private List<string> MComponentSeries;
         private string[] MComponents;
         private string[] MScrewArrangements;
 
@@ -162,7 +162,7 @@ namespace PFD
             }
         }
 
-        public string[] ComponentSeries
+        public List<string> ComponentSeries
         {
             get
             {
@@ -618,7 +618,13 @@ namespace PFD
             else // Screws
             {
                 ComponentSeries = databaseComponents.arr_Serie_Screws_Names; // Screws
-                Components = databaseComponents.arr_Serie_TEK_Names;
+
+                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
+                string [] arr_Serie_TEK_Names = new string[dict.Count];
+
+                arr_Serie_TEK_Names =  dict.Keys.ToArray();
+
+                Components = arr_Serie_TEK_Names;
             }
         }
 
@@ -767,12 +773,15 @@ namespace PFD
                             break;
                         }
                 }
-                
-                
             }
             else // Screws
             {
-                Components = databaseComponents.arr_Serie_TEK_Names;
+                Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
+                string[] arr_Serie_TEK_Names = new string[dict.Count];
+
+                arr_Serie_TEK_Names = dict.Keys.ToArray();
+
+                Components = arr_Serie_TEK_Names;
             }
         }
 

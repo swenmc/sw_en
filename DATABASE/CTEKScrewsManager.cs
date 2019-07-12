@@ -63,25 +63,25 @@ namespace DATABASE
             return prop;
         }
 
-        //public static CTEKScrewProperties LoadScrewPropertiesFromDB(string gauge)
-        //{
-        //    CTEKScrewProperties properties = null;
-        //    using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TEKScrewsSQLiteDB"].ConnectionString))
-        //    {
-        //        conn.Open();
-        //        SQLiteCommand command = new SQLiteCommand("Select * from TEKScrews WHERE gauge = @gauge", conn);
-        //        command.Parameters.AddWithValue("@gauge", gauge);
+        public static CTEKScrewProperties GetScrewProperties(int id)
+        {
+            CTEKScrewProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TEKScrewsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from TEKScrews WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
 
-        //        using (SQLiteDataReader reader = command.ExecuteReader())
-        //        {
-        //            if (reader.Read())
-        //            {
-        //                properties = GetScrewProperties(reader);
-        //            }
-        //        }
-        //    }
-        //    return properties;
-        //}
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetScrewProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
 
         private static CTEKScrewProperties GetScrewProperties(SQLiteDataReader reader)
         {
