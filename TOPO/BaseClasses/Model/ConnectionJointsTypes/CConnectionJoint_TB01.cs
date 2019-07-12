@@ -30,6 +30,9 @@ namespace BaseClasses
             m_ft = 0.003f;
             m_flip = 0.18f;
 
+            m_MainMember.FAlignment_Start = -m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate
+            m_MainMember.Fill_Basic();
+
             float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
             float fb_plate = (float)(Column_temp.CrScStart.b + 2 * fTolerance + 2 * m_ft);
             float fh_plate = (float)(Column_temp.CrScStart.h);
