@@ -79,8 +79,32 @@ namespace BaseClasses
 
         public float[] Get_RadiiOfConnectorsInGroup()
         {
-            // TODO najprv spocitat polohu taziska skrutiek a potom pocitat polomery od tohoto taziska
+            // Najprv spocitat polohu taziska skrutiek a potom pocitat polomery od tohoto taziska
             Point pCentroid = new Point(0, 0);
+
+            //Cx = ∑Cix Aix / ∑Aix
+            //Cy = ∑Ciy Aiy / ∑Aiy
+            double fSumXPositions = 0;
+            double fSumYPositions = 0;
+
+            int iLastItemIndex = 0;
+
+            foreach (CConnectorSequence seq in ListSequence)
+            {
+                // Set centroid position
+
+                for (int i = 0; i < seq.INumberOfConnectors; i++)
+                {
+                    fSumXPositions += seq.HolesCentersPoints[i].X - pCentroid.X; // Origin used as centroid [0,0]
+                    fSumYPositions += seq.HolesCentersPoints[i].Y - pCentroid.Y; // Origin used as centroid [0,0]
+                }
+
+                iLastItemIndex += seq.INumberOfConnectors;
+            }
+
+            // Set new centroid coordinates
+            pCentroid.X = fSumXPositions / iLastItemIndex;
+            pCentroid.Y = fSumYPositions / iLastItemIndex;
 
             // Count total number of screws in group and allocate size of array
             int iTotalNumberOfConnectorsInGroup = 0;
@@ -92,16 +116,16 @@ namespace BaseClasses
 
             float[] fArrayOfRadii = new float[iTotalNumberOfConnectorsInGroup];
 
-            int iLastItemIdex = 0;
+            iLastItemIndex = 0;
 
-            foreach (CScrewSequence seq in ListSequence)
+            foreach (CConnectorSequence seq in ListSequence)
             {
                 // Set radii of connectors / screws in the connection
 
                 for (int i = 0; i < seq.INumberOfConnectors; i++)
-                    fArrayOfRadii[iLastItemIdex + i] = (float)Math.Sqrt(MathF.Pow2(seq.HolesCentersPoints[i].X - pCentroid.X) + MathF.Pow2(seq.HolesCentersPoints[i].Y - pCentroid.Y));
+                    fArrayOfRadii[iLastItemIndex + i] = (float)Math.Sqrt(MathF.Pow2(seq.HolesCentersPoints[i].X - pCentroid.X) + MathF.Pow2(seq.HolesCentersPoints[i].Y - pCentroid.Y));
 
-                iLastItemIdex += seq.INumberOfConnectors;
+                iLastItemIndex += seq.INumberOfConnectors;
             }
 
             return fArrayOfRadii;

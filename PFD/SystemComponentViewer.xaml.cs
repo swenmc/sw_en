@@ -75,7 +75,7 @@ namespace PFD
 
             SystemComponentViewerViewModel vm = new SystemComponentViewerViewModel(dcomponents);
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
-            this.DataContext = vm;            
+            this.DataContext = vm;
             vm.ComponentIndex = 1;
         }
 
@@ -200,10 +200,9 @@ namespace PFD
 
         private void ScrewArrangementChanged()
         {
-            CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.18f, 0.5f, true);
+            CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.33f, 0.5f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
-            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
             CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
                 3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
                 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
@@ -263,6 +262,9 @@ namespace PFD
                             case 2: // BC
                             case 6: // BG
                                 {
+                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
+                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
+
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
                                     else
@@ -275,6 +277,9 @@ namespace PFD
                             case 5: // BF
                             case 9: // BJ
                                 {
+                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
+                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
+
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
                                     else
@@ -284,6 +289,9 @@ namespace PFD
                                 }
                             default:
                                 {
+                                    CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.3f, referenceAnchor);
+                                    plate.AnchorArrangement = anchorArrangement; // TODO - rozlisit podla tvaru plechu
+
                                     // TODO - doplnit vsetky typy base plates a arrangements
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
@@ -793,7 +801,12 @@ namespace PFD
                     plate.ScrewArrangement.UpdateArrangmentData();
 
                 if (plate is CConCom_Plate_BB_BG) // Base plates
+                {
+                    if (plate.AnchorArrangement != null)
+                        plate.AnchorArrangement.UpdateArrangmentData();
+
                     plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
+                }
                 else // other plates (without anchors)
                     plate.UpdatePlateData(plate.ScrewArrangement);
 
@@ -1056,10 +1069,10 @@ namespace PFD
             {
                 bool bUseSimpleShapeOfPlates = true; // Zjednoduseny alebo presny tvar plechu
 
-                CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.18f, 0.5f, true);
+                CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.33f, 0.5f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
-                CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
+
                 CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
                     3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
                     3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
@@ -1101,7 +1114,7 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
+                            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(0.2f, referenceAnchor);
                             plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, anchorArrangement_BB_BG, screwArrangement_BX_01, true); // B
                             break;
                         }

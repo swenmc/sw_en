@@ -194,7 +194,7 @@ namespace BaseClasses
 
             set
             {
-                m_fy_pe_plus = value;
+                m_fy_fe_plus = value;
             }
         }
 
@@ -260,8 +260,8 @@ namespace BaseClasses
 
         public CAnchor(float fDiameter_shank_temp, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
         {
+            Name = "Anchor";
             m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
-            BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_shank = fDiameter_shank_temp;
             Diameter_thread = fDiameter_thread_temp;
@@ -283,15 +283,21 @@ namespace BaseClasses
             = 400 MPa (for AS 4291.1 (ISO 898-1), Grade 4.6 bolts)
             = 830 MPa (for AS 4291.1 (ISO 898-1), Grade 8.8 bolts)
             */
+
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = 0;
+            m_fRotationY_deg = 90;
+            m_fRotationZ_deg = 0;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
-        public CAnchor(CPoint controlpoint, float fDiameter_shank_temp, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
+        public CAnchor(string name, CPoint controlpoint, float fDiameter_shank_temp, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
+            Name = name;
             m_pControlPoint = controlpoint;
-            BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_shank = fDiameter_shank_temp;
             Diameter_thread = fDiameter_thread_temp;
@@ -313,6 +319,12 @@ namespace BaseClasses
             = 400 MPa (for AS 4291.1 (ISO 898-1), Grade 4.6 bolts)
             = 830 MPa (for AS 4291.1 (ISO 898-1), Grade 8.8 bolts)
             */
+
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);

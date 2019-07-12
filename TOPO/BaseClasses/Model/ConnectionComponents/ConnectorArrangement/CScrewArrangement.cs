@@ -43,6 +43,12 @@ namespace BaseClasses
             }
         }
 
+        // TO Ondrej - mam tu pole m_arrPlateScrews ale aj zoznam List<CScrewSequenceGroup> m_listOfSequenceGroups
+        // To je v istom zmysle duplicita, v tom zozname su jednotlive skupiny skrutiek, v nich sekvencie a v tych sekvenciach by mali byt skrutky
+        // V tom poli su objeky skrutiek zo vsetkych skupin a vsetkych sekvencii
+
+        // TODO - chcelo by to refaktorovat hierarchiu tych objektov a dat tomu hlavu a patu :)
+
         private CScrew[] m_arrPlateScrews;
 
         public CScrew[] Screws
@@ -69,22 +75,6 @@ namespace BaseClasses
             referenceScrew = referenceScrew_temp;
         }
 
-        public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
-        {
-            Point[] array = new Point[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection];
-
-            for (int i = 0; i < iNumberOfPointsInYDirection; i++) // Rows
-            {
-                for (int j = 0; j < iNumberOfPointsInXDirection; j++) // Columns
-                {
-                    array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * fDistanceOfPointsX; // Fill items in row [i], column [j]
-                    array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * fDistanceOfPointsY; // Fill items in row [i], column [j]
-                }
-            }
-
-            return array;
-        }
-
         //public List<Point> GetHolesCentersPoints2D()
         //{
         //    List<Point> points = null;
@@ -98,27 +88,6 @@ namespace BaseClasses
         //    }
         //    return points;
         //}
-
-        public void FillArrayOfHolesCentersInWholeArrangement()
-        {
-            // Fill array of holes centers - whole arrangement
-            int iPointIndex = 0;
-            for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
-            {
-                for (int j = 0; j < ListOfSequenceGroups[i].ListSequence.Count; j++) // Add each sequence in group
-                {
-                    if (ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints == null) continue;
-
-                    for (int k = 0; k < ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
-                    {
-                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].X;
-                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].Y;
-                    }
-
-                    iPointIndex += ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length;
-                }
-            }
-        }
 
         public virtual void Calc_KneePlateData(
             float fbX1,
@@ -216,6 +185,27 @@ namespace BaseClasses
             // Validation
             if (IHolesNumber < 0)
                 IHolesNumber = 0;
+        }
+
+        public override void FillArrayOfHolesCentersInWholeArrangement()
+        {
+            // Fill array of holes centers - whole arrangement
+            int iPointIndex = 0;
+            for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
+            {
+                for (int j = 0; j < ListOfSequenceGroups[i].ListSequence.Count; j++) // Add each sequence in group
+                {
+                    if (ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints == null) continue;
+
+                    for (int k = 0; k < ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
+                    {
+                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].X;
+                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].Y;
+                    }
+
+                    iPointIndex += ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length;
+                }
+            }
         }
     }
 }

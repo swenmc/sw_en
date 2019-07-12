@@ -872,10 +872,8 @@ namespace PFD
         {
             int iNumberofHoles = 0;
 
-            CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.18f, 0.5f, true);
+            CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.33f, 0.5f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
-
-            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
 
             // Default values
             // Member cross-section parameters
@@ -895,6 +893,8 @@ namespace PFD
             int iConnectorNumberInCircleSequence = 20;
             float fConnectorRadiusInCircleSequence = 0.25f;
             float fAdditionalConnectorDistance = 0.03f;
+
+            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(0.5f * fColumnDepth, referenceAnchor);
 
             // V pripade ze plate je priradena spoju, mozeme ako default pouzit parametre urcene podla members definovanych v spoji
             if (joint != null)

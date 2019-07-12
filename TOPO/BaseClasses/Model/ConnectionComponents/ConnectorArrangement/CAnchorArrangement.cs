@@ -102,7 +102,61 @@ namespace BaseClasses
             RadiusAngle = 360; // Circle total angle to generate holes
         }
 
+        // BASE PLATE
+        public virtual void Calc_BasePlateData(
+            float fbX,
+            float flZ,
+            float fhY,
+            float ft)
+        { }
+
+        public virtual void Calc_HolesCentersCoord2D(
+            float fbX,
+            float flZ,
+            float fhY)
+        { }
+
+        public virtual void UpdateArrangmentData() { }
+
+        public virtual void RecalculateTotalNumberOfAnchors()
+        {
+            // TODO - Malo by sa refaktorovat pre skrutky a kotvy a preniest priamo do connectors
+            // Celkovy pocet kotiev, pocet moze byt v kazdej sekvencii rozny
+            IHolesNumber = 0;
+
+            foreach (CAnchorSequenceGroup group in ListOfSequenceGroups)
+            {
+                foreach (CAnchorSequence seq in group.ListSequence)
+                    IHolesNumber += seq.INumberOfConnectors;
+            }
+
+            // Validation
+            if (IHolesNumber < 0)
+                IHolesNumber = 0;
+        }
+
         public virtual void SetEdgeDistances(CConCom_Plate_BB_BG plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
         { }
+
+        public override void FillArrayOfHolesCentersInWholeArrangement()
+        {
+            // Fill array of holes centers - whole arrangement
+            int iPointIndex = 0;
+            for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
+            {
+                for (int j = 0; j < ListOfSequenceGroups[i].ListSequence.Count; j++) // Add each sequence in group
+                {
+                    if (ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints == null) continue;
+
+                    for (int k = 0; k < ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
+                    {
+                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].X;
+                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].Y;
+                    }
+
+                    iPointIndex += ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length;
+                }
+            }
+        }
     }
 }

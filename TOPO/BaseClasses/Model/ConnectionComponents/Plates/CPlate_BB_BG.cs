@@ -118,12 +118,12 @@ namespace BaseClasses
             // Calculate parameters of arrangement depending on plate geometry
             if (anchorArrangement != null)
             {
-                anchorArrangement.Calc_HolesCentersCoord2D(Fb_X, Fh_Y, Fl_Z);
-                anchorArrangement.Calc_HolesCentersCoord3D(Fb_X, Fh_Y, Fl_Z);
+                anchorArrangement.Calc_BasePlateData(m_fbX, m_flZ, m_fhY, Ft);
             }
 
             AnchorArrangement = anchorArrangement;
-            Calc_Coord3D();
+
+            Calc_Coord3D(); // Tato funckia potrebuje aby boli inicializovany objekt AnchorArrangement - vykresluju sa podla toho otvory v plechu (vypocet suradnic dier)
 
             if (screwArrangement != null)
             {
@@ -133,10 +133,10 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            UpdatePlateData_Basic(screwArrangement);
+            UpdatePlateData_Basic(anchorArrangement, screwArrangement);
         }
 
-        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        public void UpdatePlateData_Basic(CAnchorArrangement anchorArrangement, CScrewArrangement screwArrangement)
         {
             Width_bx = m_fbX + 2 * m_flZ; // Total width
             Height_hy = m_fhY;

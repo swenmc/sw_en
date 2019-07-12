@@ -43,7 +43,7 @@ namespace BaseClasses
             CAnchor referenceAnchor = new CAnchor(0.016f, 0.0141f, 0.18f, 0.5f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
-            CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);
+            CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(0.5f * fh_plate, referenceAnchor);
             CScrewArrangement screwArrangement;
             string sPlatePrefix;
 

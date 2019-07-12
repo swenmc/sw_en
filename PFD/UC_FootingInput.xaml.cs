@@ -246,7 +246,7 @@ namespace PFD
 
         private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
         {
-            // TO Ondrej - tu potrebujeme refaktorovat cast funkcie display Joint
+            // TO Ondrej - tu potrebujeme refaktorovat cast funkcie displayJoint a Drawing3D.GetJointPreviewModel
             // Mala by sa vykreslit patka (betonovy kvader prisluchajuci k uzlu) a v pripade ze je bool bDisplayJointComponents == true tak aj plech a cast pruta ktore su v danom uzle k zakladu pripojene
             // Joint je samozrejme potrebne naklonovat
             // Asi aj patku je potrebne naklonovat, nech to funguje rovnako

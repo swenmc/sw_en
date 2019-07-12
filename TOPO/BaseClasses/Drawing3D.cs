@@ -492,10 +492,11 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
-        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushPlates = null, SolidColorBrush brushConnectors = null, SolidColorBrush brushWelds = null)
+        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushPlates = null, SolidColorBrush brushScrews = null, SolidColorBrush brushAnchors = null, SolidColorBrush brushWelds = null)
         {
             if (brushPlates == null) brushPlates = new SolidColorBrush(Colors.Gray);
-            if (brushConnectors == null) brushConnectors = new SolidColorBrush(Colors.Red);
+            if (brushScrews == null) brushScrews = new SolidColorBrush(Colors.Red);
+            if (brushAnchors == null) brushAnchors = new SolidColorBrush(Colors.Plum);
             if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange);
 
             Model3DGroup JointsModel3DGroup = null;
@@ -533,7 +534,26 @@ namespace BaseClasses
                                         JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                     }
 
-                                    // Add plate connectors
+                                    // Add plate anchors - only base plates
+                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors.Length > 0)
+                                    {
+                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors.Length; m++)
+                                        {
+                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
+                                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
+                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                                        }
+                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                        if (sDisplayOptions.bDisplayConnectors)
+                                        {
+                                            JointModelGroup.Children.Add(plateConnectorsModelGroup);
+                                        }
+                                    }
+
+                                    // Add plate screws
                                     if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement != null &&
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws != null &&
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length > 0)
@@ -541,7 +561,7 @@ namespace BaseClasses
                                         Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
                                         for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws.Length; m++)
                                         {
-                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushConnectors);
+                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].CreateGeomModel3D(brushScrews);
                                             cmodel.m_arrConnectionJoints[i].m_arrPlates[l].ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
                                             plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
                                         }
@@ -559,7 +579,7 @@ namespace BaseClasses
                         brushPlates = new SolidColorBrush(Colors.Gray);
 
                         // Connectors
-                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj pomocou screws priamo medzi nosnikmi bez plechu (tiahla - bracing)
 
                         if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
                         {
@@ -569,7 +589,7 @@ namespace BaseClasses
                                 cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
                                 cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
                                 {
-                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushConnectors)); // Add bolt 3D model to the model group
+                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushScrews)); // Add bolt 3D model to the model group
                                 }
                             }
                         }

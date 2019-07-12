@@ -344,12 +344,5 @@ namespace BaseClasses
 
             return OutputSequence;
         }
-
-        public void TranslateSequence(float fPoint_x, float fPoint_y, CScrewRectSequence sequence)
-        {
-            Point[] seqPoints = sequence.HolesCentersPoints;
-            Geom2D.TransformPositions_CCW_rad(fPoint_x, fPoint_y, 0, ref seqPoints);
-            sequence.HolesCentersPoints = seqPoints; // je to potrebne takto nastavovat lebo nie je mozne volat [ref sequence.HolesCentersPoints]
-        }
     }
 }

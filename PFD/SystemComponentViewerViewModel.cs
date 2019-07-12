@@ -518,7 +518,7 @@ namespace PFD
                 if (value <= Amount)
                 {
                     MAmountRH = value;
-                    MAmountLH = Amount - AmountRH;                    
+                    MAmountLH = Amount - AmountRH;
                 }
                 NotifyPropertyChanged("AmountRH");
                 NotifyPropertyChanged("AmountLH");
