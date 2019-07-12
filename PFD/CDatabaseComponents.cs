@@ -139,17 +139,7 @@ namespace PFD
 
         public List<string> arr_SeriesNames = CJointsManager.GetPlateSeries();
 
-        public string[] arr_Serie_B_Names = new string[10]
-            {"BA",
-             "BB",
-             "BC",
-             "BD",
-             "BE",
-             "BF",
-             "BG",
-             "BH",
-             "BI",
-             "BJ"};
+        public string[] arr_Serie_B_Names = CJointsManager.GetArrayPlateB_Names();
 
         public string[] arr_Serie_B_ScrewArrangement_Names = new string[8]
             {"Undefined",
@@ -244,20 +234,6 @@ namespace PFD
         public string[] arr_Serie_O_ScrewArrangement_Names = new string[2]
         {"Undefined",
          "Rectangular"};
-
-        public float[,] arr_Serie_B_Dimension = new float[10, 5]
-            {
-                {140, 270, 180, 3, 4},
-                {072, 290, 180, 3, 2},
-                {145, 290, 180, 3, 4},
-                {100, 490, 154, 3, 3},
-                {102, 540, 154, 3, 4},
-                {185, 580, 400, 3, 6},
-                {072, 270, 180, 3, 2},
-                {092, 092, 075, 3, 2},
-                {092, 092, 075, 3, 1},
-                {185, 580, 180, 3, 3}
-            };
 
         public float[,] arr_Serie_L_Dimension = new float[11, 5]
             {

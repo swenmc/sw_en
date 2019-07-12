@@ -672,12 +672,26 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            fb = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            CPlate_B_Properties prop = CJointsManager.GetSPlate_B_Properties(vm.ComponentIndex + 1);
+
+                            // Plate geometry parameters
+                            fb = (float)prop.dim1 / 1000f;
                             fb2 = fb;
-                            fh = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fl = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            ft = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            iNumberofHoles = (int)dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 4];
+                            fh = (float)prop.dim2 / 1000f;
+                            fl = (float)prop.dim3 / 1000f;
+                            ft = (float)prop.t / 1000f;
+
+                            // Anchor arrangement parameters
+                            iNumberofHoles = prop.iNumberHolesAnchors;
+                            int iNoOfAnchorsInRow = prop.iNoOfAnchorsInRow;
+                            int iNoOfAnchorsInColumn = prop.iNoOfAnchorsInColumn;
+                            float a1_pos_cp_x = (float)prop.a1_pos_cp_x / 1000f;
+                            float a1_pos_cp_y = (float)prop.a1_pos_cp_y / 1000f;
+                            float dist_x1 = (float)prop.dist_x1 / 1000f;
+                            float dist_y1 = (float)prop.dist_y1 / 1000f;
+                            float dist_x2 = (float)prop.dist_x2 / 1000f;
+                            float dist_y2 = (float)prop.dist_y2 / 1000f;
+
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
