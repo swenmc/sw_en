@@ -29,6 +29,7 @@ namespace BaseClasses
             // Todo - set correct dimensions of plate acc. to column cross-section size
             m_ft = 0.003f;
             m_flip = 0.075f;
+            float fAnchorLength = 0.2f; // Dlzka kotvy
 
             m_MainMember.FAlignment_Start = -m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate
             m_MainMember.Fill_Basic();
@@ -43,7 +44,7 @@ namespace BaseClasses
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
             CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft - fTolerance, -0.5f * fh_plate + flocaleccentricity_z, 0);
-            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, true);
+            CAnchor referenceAnchor = new CAnchor("M16", "8.8", fAnchorLength, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CScrewArrangement screwArrangement;

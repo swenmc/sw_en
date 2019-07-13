@@ -48,6 +48,22 @@ namespace PFD
         {
             //ja neviem co sa to tu robi...
 
+            // TO Ondrej
+            // Neviem ci to co je tu suvisi s viewmodelom tabu General alebo to ma byt inde
+
+            // A) Ked sa zmeni hlavny viewModel Tabu General, tak sa pre zvoleny typ componenty hladaju vsetky objekty zakladov a z toho zoznamu sa 
+            // vyberie prva GetSelectedFootingPad();
+
+            // B) Pre tuto vybranu patku sa najde spoj ktory prislucha k uzlu na ktorom je patka GetBaseJointForSelectedNode(pad.m_Node);
+
+            // C) Prepocitaju sa nejake vzdialenosti ktore budem potrebovat pre vypocet
+            // blok kodu if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
+
+            // D) Prekresli sa preview
+
+            // Ak to tu nema byt tak to potrebujem dat niekam inam, aby sa to updatovalo pri zmenach v GUI viewmodelu, resp. zmene dat (foundation) hlavneho modelu
+            // CModel_PFD_01_GR.cs
+
             //if (!(sender is CPFDViewModel)) return;
             //CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
             //CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
@@ -143,10 +159,6 @@ namespace PFD
 
             return null; // Error - joint wasn't found
         }
-
-        
-
-        
 
         private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
