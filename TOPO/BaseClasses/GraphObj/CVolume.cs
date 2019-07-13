@@ -18,7 +18,9 @@ namespace BaseClasses.GraphObj
         public Color m_volColor_1 = new Color(); // Default
         public Color m_volColor_2 = new Color();
 
+        [NonSerialized]
         public DiffuseMaterial m_Material_1 = new DiffuseMaterial();
+        [NonSerialized]
         public DiffuseMaterial m_Material_2 = new DiffuseMaterial();
 
         public float m_fDim1;

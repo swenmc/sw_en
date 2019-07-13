@@ -2605,6 +2605,7 @@ namespace BaseClasses
         public static CModel GetJointPreviewModel(CConnectionJointTypes joint, CFoundation pad, ref DisplayOptions sDisplayOptions)
         {
             CConnectionJointTypes jointClone = joint.Clone();
+            CFoundation padClone = pad.Clone();
 
             CModel jointModel = null;
 
@@ -2827,7 +2828,7 @@ namespace BaseClasses
             }
 
             // Footing Pad
-            if (pad != null)
+            if (padClone != null)
             {
                 sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
                 sDisplayOptions.bDisplayReinforcement = true; // Display always reinforcement bars
@@ -2836,7 +2837,7 @@ namespace BaseClasses
                     jointModel = new CModel();
 
                 jointModel.m_arrFoundations = new List<CFoundation>();
-                jointModel.m_arrFoundations.Add(pad);
+                jointModel.m_arrFoundations.Add(padClone);
             }
 
             return jointModel;
