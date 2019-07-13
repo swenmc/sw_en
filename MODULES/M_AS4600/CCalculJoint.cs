@@ -924,8 +924,8 @@ namespace M_AS4600
             designDetails.fA_c = basePlate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
             designDetails.fA_o = basePlate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            designDetails.ff_y_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(designDetails.fd_f);
-            designDetails.ff_u_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(designDetails.fd_f);
+            designDetails.ff_y_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_yk[0];
+            designDetails.ff_u_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_u[0];
 
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design

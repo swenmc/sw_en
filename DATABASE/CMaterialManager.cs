@@ -508,5 +508,75 @@ namespace DATABASE
             }
             return properties;
         }
+
+        // BOLTS / ANCHORS / THREATENED RODS
+
+        private static CMatPropertiesBOLT GetMaterialProperties_BOLT(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CMatPropertiesBOLT mat = new CMatPropertiesBOLT();
+            mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            mat.Standard = reader["Standard"].ToString();
+            mat.Grade = reader["Grade"].ToString();
+            //mat.E = reader["E"].ToString() == "" ? double.NaN : double.Parse(reader["E"].ToString(), nfi);
+            //mat.G = reader["G"].ToString() == "" ? double.NaN : double.Parse(reader["G"].ToString(), nfi);
+            //mat.Nu = reader["poisson_ratio_nu"].ToString() == "" ? double.NaN : double.Parse(reader["Nu"].ToString(), nfi);
+            mat.Fy = reader["fy"].ToString() == "" ? double.NaN : double.Parse(reader["fy"].ToString(), nfi);
+            mat.Fu = reader["fu"].ToString() == "" ? double.NaN : double.Parse(reader["fu"].ToString(), nfi);
+            //mat.Rho = reader["density_rho"].ToString() == "" ? double.NaN : double.Parse(reader["density_rho"].ToString(), nfi);
+            //mat.Alpha = reader["alpha"].ToString() == "" ? double.NaN : double.Parse(reader["alpha"].ToString(), nfi);
+
+            // TODO - skontrolovat
+            mat.E = 200e+9;
+            mat.G = 80e+9;
+            mat.Nu = 0.25;
+            mat.Rho = 7850;
+            mat.Alpha = 1.2e-6;
+
+            return mat;
+        }
+
+        public static Dictionary<string, CMatPropertiesBOLT> LoadMaterialPropertiesBOLT()
+        {
+            CMatPropertiesBOLT mat = null;
+            Dictionary<string, CMatPropertiesBOLT> items = new Dictionary<string, CMatPropertiesBOLT>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Material", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        mat = GetMaterialProperties_BOLT(reader);
+                        items.Add(mat.Grade, mat);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CMatPropertiesBOLT LoadMaterialPropertiesBOLT(string name)
+        {
+            CMatPropertiesBOLT properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Material WHERE Grade = @Grade", conn);
+                command.Parameters.AddWithValue("@Grade", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetMaterialProperties_BOLT(reader);
+                    }
+                }
+            }
+            return properties;
+        }
     }
 }

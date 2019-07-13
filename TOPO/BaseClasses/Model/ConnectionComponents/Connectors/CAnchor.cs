@@ -3,6 +3,8 @@ using BaseClasses.GraphObj.Objects_3D;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -254,35 +256,64 @@ namespace BaseClasses
             }
         }
 
+        private float m_fDiameter_pitch;
+        public float Diameter_pitch
+        {
+            get
+            {
+                return m_fDiameter_pitch;
+            }
+
+            set
+            {
+                m_fDiameter_pitch = value;
+            }
+        }
+
+        private float m_Area_p_pitch;
+        public float Area_p_pitch
+        {
+            get
+            {
+                return m_Area_p_pitch;
+            }
+
+            set
+            {
+                m_Area_p_pitch = value;
+            }
+        }
+
         public CAnchor() : base()
         {
         }
 
-        public CAnchor(float fDiameter_shank_temp, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
+        public CAnchor(string name_temp, float fLength_temp, bool bIsDisplayed)
         {
-            Name = "Anchor";
+            Prefix = "Anchor";
+            Name = name_temp;
             m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
             Length = fLength_temp;
-            Diameter_shank = fDiameter_shank_temp;
-            Diameter_thread = fDiameter_thread_temp;
-            Mass = fMass_temp;
 
-            Area_c_thread = MathF.fPI * MathF.Pow2(fDiameter_thread_temp) / 4f; // Core / thread area
-            Area_o_shank = MathF.fPI * MathF.Pow2(fDiameter_shank_temp) / 4f; // Shank area
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
 
-            // TODO - implementovat materialy skrutiek a kotiev a nastavit im parameter
-            m_Mat = new MATERIAL.CMat_03_00();
+            Diameter_shank = (float)properties.ShankDiameter;
+            Diameter_thread = (float)properties.ThreadDiameter;
+            Diameter_pitch = (float)properties.PitchDiameter;
+
+            Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
+            Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
+            Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
             m_Mat.Name = "8.8";
             m_Mat.m_ft_interval = new float[1] { 0.100f };
-            m_Mat.m_ff_yk = new float[1] { 660e+6f };
-            m_Mat.m_ff_u = new float[1] { 830e+6f };
 
-            // TODO - zapracovat do databazy
-            /*
-            fuf = minimum tensile strength of a bolt
-            = 400 MPa (for AS 4291.1 (ISO 898-1), Grade 4.6 bolts)
-            = 830 MPa (for AS 4291.1 (ISO 898-1), Grade 8.8 bolts)
-            */
+            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
+
+            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+
+            Mass = GetMass();
 
             BIsDisplayed = bIsDisplayed;
 
@@ -291,34 +322,74 @@ namespace BaseClasses
             m_fRotationZ_deg = 0;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
+            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name, CPoint controlpoint, float fDiameter_shank_temp, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, bool bIsDisplayed)
         {
-            Name = name;
+            Prefix = "Anchor";
+            Name = name_temp;
+            m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
+            Length = fLength_temp;
+
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
+
+            Diameter_shank = (float)properties.ShankDiameter;
+            Diameter_thread = (float)properties.ThreadDiameter;
+            Diameter_pitch = (float)properties.PitchDiameter;
+
+            Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
+            Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
+            Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
+            m_Mat.Name = nameMaterial_temp;
+            m_Mat.m_ft_interval = new float[1] { 0.100f };
+
+            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
+
+            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+
+            Mass = GetMass();
+
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = 0;
+            m_fRotationY_deg = 90;
+            m_fRotationZ_deg = 0;
+
+            m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
+            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+        }
+
+        public CAnchor(string name_temp, string nameMaterial_temp, CPoint controlpoint, float fLength_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        {
+            Prefix = "Anchor";
+            Name = name_temp;
             m_pControlPoint = controlpoint;
             Length = fLength_temp;
-            Diameter_shank = fDiameter_shank_temp;
-            Diameter_thread = fDiameter_thread_temp;
-            Mass = fMass_temp;
 
-            Area_c_thread = MathF.fPI * MathF.Pow2(fDiameter_thread_temp) / 4f; // Core / thread area
-            Area_o_shank = MathF.fPI * MathF.Pow2(fDiameter_shank_temp) / 4f; // Shank area
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
 
-            // TODO - implementovat materialy skrutiek a kotiev a nastavit im parameter
-            m_Mat = new MATERIAL.CMat_03_00();
-            m_Mat.Name = "8.8";
+            Diameter_shank = (float)properties.ShankDiameter;
+            Diameter_thread = (float)properties.ThreadDiameter;
+            Diameter_pitch = (float)properties.PitchDiameter;
+
+            Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
+            Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
+            Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
+            m_Mat.Name = nameMaterial_temp;
             m_Mat.m_ft_interval = new float[1] { 0.100f };
-            m_Mat.m_ff_yk = new float[1] { 660e+6f };
-            m_Mat.m_ff_u = new float[1] { 830e+6f };
 
-            // TODO - zapracovat do databazy
-            /*
-            fuf = minimum tensile strength of a bolt
-            = 400 MPa (for AS 4291.1 (ISO 898-1), Grade 4.6 bolts)
-            = 830 MPa (for AS 4291.1 (ISO 898-1), Grade 8.8 bolts)
-            */
+            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
+
+            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+
+            Mass = GetMass();
+
+            BIsDisplayed = bIsDisplayed;
 
             BIsDisplayed = bIsDisplayed;
 
@@ -327,7 +398,12 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
+            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+        }
+
+        public float GetMass()
+        {
+            return Area_p_pitch * Length * m_Mat.m_fRho;
         }
 
         /*

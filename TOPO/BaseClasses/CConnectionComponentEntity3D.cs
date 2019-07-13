@@ -12,7 +12,7 @@ namespace BaseClasses
     {
         [NonSerialized]
         private Int32Collection m_TriangleIndices;
-                
+
         public Int32Collection TriangleIndices
         {
             get { return m_TriangleIndices; }
@@ -36,11 +36,16 @@ namespace BaseClasses
             set { m_arrPoints3D = value; }
         }
 
-        public new CMat_03_00 m_Mat;
         [NonSerialized]
         public EConnectionComponentType eConnComponentType;
 
-        public CConnectionComponentEntity3D() { }
+        [NonSerialized]
+        public new CMat_03_00 m_Mat; // Pre Connection Component predefinovat material z obecneho na STEEL 03_00
+
+        public CConnectionComponentEntity3D()
+        {
+            m_Mat = new CMat_03_00();
+        }
         protected abstract void loadIndices();
         public abstract void loadWireFrameIndices();
 

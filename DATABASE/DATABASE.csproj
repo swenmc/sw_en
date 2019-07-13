@@ -87,11 +87,14 @@
     <Compile Include="CReinforcementBarManager.cs" />
     <Compile Include="CQuantityLibrary.cs" />
     <Compile Include="CStringsManager.cs" />
+    <Compile Include="CBoltsManager.cs" />
     <Compile Include="CTEKScrewsManager.cs" />
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
+    <Compile Include="DTO\CBoltProperties.cs" />
+    <Compile Include="DTO\CMatPropertiesBOLT.cs" />
     <Compile Include="DTO\CPlate_B_Properties.cs" />
     <Compile Include="DTO\CReinforcementBarProperties.cs" />
     <Compile Include="DTO\CMatPropertiesRF.cs" />
@@ -135,6 +138,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Content Include="Resources\MDB.db3" />
+    <Content Include="Resources\MDBBolts.db3" />
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBSections.db3" />
     <None Include="Resources\MDBJoints.db3" />

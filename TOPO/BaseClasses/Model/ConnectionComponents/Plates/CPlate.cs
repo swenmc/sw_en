@@ -3,11 +3,13 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Collections.ObjectModel;
 using _3DTools;
 using MATH;
 using MATERIAL;
 using BaseClasses.GraphObj;
-using System.Collections.ObjectModel;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -206,14 +208,16 @@ namespace BaseClasses
 
         public CPlate()
         {
+            // Set Default Material
+            CMaterialManager.LoadMaterialProperties(m_Mat, "G450");
             BIsDisplayed = true;
-            m_Mat = new CMat_03_00();
         }
 
         public CPlate(bool bIsDisplayed)
         {
+            // Set Default Material
+            CMaterialManager.LoadMaterialProperties(m_Mat, "G450");
             BIsDisplayed = bIsDisplayed;
-            m_Mat = new CMat_03_00();
         }
 
         protected override void loadIndices()

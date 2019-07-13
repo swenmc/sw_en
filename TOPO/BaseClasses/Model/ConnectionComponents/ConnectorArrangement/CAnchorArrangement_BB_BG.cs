@@ -175,7 +175,7 @@ namespace BaseClasses
             {
                 CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
 
-                Anchors[i] = new CAnchor(referenceAnchor.Name, controlpoint, referenceAnchor.Diameter_shank, referenceAnchor.Diameter_thread, referenceAnchor.Length, referenceAnchor.Mass, 0, 90 , 0, true);
+                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, 0, 90 , 0, true);
             }
         }
     }
