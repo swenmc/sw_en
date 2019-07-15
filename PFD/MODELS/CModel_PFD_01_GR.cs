@@ -2193,26 +2193,29 @@ namespace PFD
                 float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
                 float fMainColumnFooting_h = 0.4f;
 
-                float fDiameterTop_Bar_x = 0.012f;
-                float fDiameterTop_Bar_y = 0.012f;
-                float fDiameterBottom_Bar_x = 0.012f;
-                float fDiameterBottom_Bar_y = 0.012f;
-                float fConcreteCover = 0.075f; // m
+                CReinforcementBar MainColumnFootingReference_Top_Bar_x;
+                CReinforcementBar MainColumnFootingReference_Top_Bar_y;
+                CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
+                CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
 
-                float fLengthTop_Bar_x = fMainColumnFooting_bY - 2 * fConcreteCover;
-                float fLengthTop_Bar_y = fMainColumnFooting_aX - 2 * fConcreteCover;
-                float fLengthBottom_Bar_x = fLengthTop_Bar_x;
-                float fLengthBottom_Bar_y = fLengthTop_Bar_y;
+                int iMainColumnFootingNumberOfBarsTop_x;
+                int iMainColumnFootingNumberOfBarsTop_y;
+                int iMainColumnFootingNumberOfBarsBottom_x;
+                int iMainColumnFootingNumberOfBarsBottom_y;
 
-                int iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fMainColumnFooting_bY, fDiameterTop_Bar_x, fConcreteCover);
-                int iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(fMainColumnFooting_aX, fDiameterTop_Bar_y, fConcreteCover);
-                int iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fMainColumnFooting_bY, fDiameterBottom_Bar_x, fConcreteCover);
-                int iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(fMainColumnFooting_aX, fDiameterBottom_Bar_y, fConcreteCover);
-
-                CReinforcementBar reference_Top_Bar_x = new CReinforcementBar(1, true, new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fMainColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_x,0), fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
-                CReinforcementBar reference_Top_Bar_y = new CReinforcementBar(2, false, new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fMainColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0), fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);
-                CReinforcementBar reference_Bottom_Bar_x = new CReinforcementBar(3, true, new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, 0), fLengthBottom_Bar_x, fDiameterBottom_Bar_x, Colors.YellowGreen, 0.5f, true, 0);
-                CReinforcementBar reference_Bottom_Bar_y = new CReinforcementBar(4, false, new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0), fLengthBottom_Bar_y, fDiameterBottom_Bar_y, Colors.Purple, 0.5f, true, 0);
+                CreateReferenceReinforcementBars(
+                    fMainColumnFooting_aX,
+                    fMainColumnFooting_bY,
+                    fMainColumnFooting_h,
+                    out MainColumnFootingReference_Top_Bar_x,
+                    out MainColumnFootingReference_Top_Bar_y,
+                    out MainColumnFootingReference_Bottom_Bar_x,
+                    out MainColumnFootingReference_Bottom_Bar_y,
+                    out iMainColumnFootingNumberOfBarsTop_x,
+                    out iMainColumnFootingNumberOfBarsTop_y,
+                    out iMainColumnFootingNumberOfBarsBottom_x,
+                    out iMainColumnFootingNumberOfBarsBottom_y
+                    );
 
                 EMemberType_FS_Position columnTypePosition;
 
@@ -2236,14 +2239,14 @@ namespace PFD
                         fMainColumnFooting_aX, 
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
-                        reference_Top_Bar_x,
-                        reference_Top_Bar_y,
-                        reference_Bottom_Bar_x,
-                        reference_Bottom_Bar_y,
-                        iNumberOfBarsTop_x,
-                        iNumberOfBarsTop_y,
-                        iNumberOfBarsBottom_x,
-                        iNumberOfBarsBottom_y,
+                        MainColumnFootingReference_Top_Bar_x,
+                        MainColumnFootingReference_Top_Bar_y,
+                        MainColumnFootingReference_Bottom_Bar_x,
+                        MainColumnFootingReference_Bottom_Bar_y,
+                        iMainColumnFootingNumberOfBarsTop_x,
+                        iMainColumnFootingNumberOfBarsTop_y,
+                        iMainColumnFootingNumberOfBarsBottom_x,
+                        iMainColumnFootingNumberOfBarsBottom_y,
                         Colors.Beige,
                         0.5f,
                         true,
@@ -2260,14 +2263,14 @@ namespace PFD
                         fMainColumnFooting_aX,
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
-                        reference_Top_Bar_x,
-                        reference_Top_Bar_y,
-                        reference_Bottom_Bar_x,
-                        reference_Bottom_Bar_y,
-                        iNumberOfBarsTop_x,
-                        iNumberOfBarsTop_y,
-                        iNumberOfBarsBottom_x,
-                        iNumberOfBarsBottom_y,
+                        MainColumnFootingReference_Top_Bar_x,
+                        MainColumnFootingReference_Top_Bar_y,
+                        MainColumnFootingReference_Bottom_Bar_x,
+                        MainColumnFootingReference_Bottom_Bar_y,
+                        iMainColumnFootingNumberOfBarsTop_x,
+                        iMainColumnFootingNumberOfBarsTop_y,
+                        iMainColumnFootingNumberOfBarsBottom_x,
+                        iMainColumnFootingNumberOfBarsBottom_y,
                         Colors.Beige,
                         0.5f,
                         true,
@@ -2283,26 +2286,29 @@ namespace PFD
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
                     float fFrontColumnFooting_h = 0.4f;
 
-                    fDiameterTop_Bar_x = 0.012f;
-                    fDiameterTop_Bar_y = 0.012f;
-                    fDiameterBottom_Bar_x = 0.012f;
-                    fDiameterBottom_Bar_y = 0.012f;
-                    fConcreteCover = 0.075f; // m
+                    CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
+                    CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
+                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_y;
 
-                    fLengthTop_Bar_x = fFrontColumnFooting_bY - 2 * fConcreteCover;
-                    fLengthTop_Bar_y = fFrontColumnFooting_aX - 2 * fConcreteCover;
-                    fLengthBottom_Bar_x = fLengthTop_Bar_x;
-                    fLengthBottom_Bar_y = fLengthTop_Bar_y;
+                    int iFrontColumnFootingNumberOfBarsTop_x;
+                    int iFrontColumnFootingNumberOfBarsTop_y;
+                    int iFrontColumnFootingNumberOfBarsBottom_x;
+                    int iFrontColumnFootingNumberOfBarsBottom_y;
 
-                    iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fFrontColumnFooting_bY, fDiameterTop_Bar_x, fConcreteCover);
-                    iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(fFrontColumnFooting_aX, fDiameterTop_Bar_y, fConcreteCover);
-                    iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fFrontColumnFooting_bY, fDiameterBottom_Bar_x, fConcreteCover);
-                    iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(fFrontColumnFooting_aX, fDiameterBottom_Bar_y, fConcreteCover);
-
-                    reference_Top_Bar_x = new CReinforcementBar(1, true, new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fFrontColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_x, 0), fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
-                    reference_Top_Bar_y = new CReinforcementBar(2, false, new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fFrontColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0), fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);
-                    reference_Bottom_Bar_x = new CReinforcementBar(3, true, new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, 0), fLengthBottom_Bar_x, fDiameterBottom_Bar_x, Colors.YellowGreen, 0.5f, true, 0);
-                    reference_Bottom_Bar_y = new CReinforcementBar(4, false, new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0), fLengthBottom_Bar_y, fDiameterBottom_Bar_y, Colors.Purple, 0.5f, true, 0);
+                    CreateReferenceReinforcementBars(
+                        fFrontColumnFooting_aX,
+                        fFrontColumnFooting_bY,
+                        fFrontColumnFooting_h,
+                        out FrontColumnFootingReference_Top_Bar_x,
+                        out FrontColumnFootingReference_Top_Bar_y,
+                        out FrontColumnFootingReference_Bottom_Bar_x,
+                        out FrontColumnFootingReference_Bottom_Bar_y,
+                        out iFrontColumnFootingNumberOfBarsTop_x,
+                        out iFrontColumnFootingNumberOfBarsTop_y,
+                        out iFrontColumnFootingNumberOfBarsBottom_x,
+                        out iFrontColumnFootingNumberOfBarsBottom_y
+                        );
 
                     columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
 
@@ -2328,14 +2334,14 @@ namespace PFD
                             fFrontColumnFooting_aX,
                             fFrontColumnFooting_bY,
                             fFrontColumnFooting_h,
-                            reference_Top_Bar_x,
-                            reference_Top_Bar_y,
-                            reference_Bottom_Bar_x,
-                            reference_Bottom_Bar_y,
-                            iNumberOfBarsTop_x,
-                            iNumberOfBarsTop_y,
-                            iNumberOfBarsBottom_x,
-                            iNumberOfBarsBottom_y,
+                            FrontColumnFootingReference_Top_Bar_x,
+                            FrontColumnFootingReference_Top_Bar_y,
+                            FrontColumnFootingReference_Bottom_Bar_x,
+                            FrontColumnFootingReference_Bottom_Bar_y,
+                            iFrontColumnFootingNumberOfBarsTop_x,
+                            iFrontColumnFootingNumberOfBarsTop_y,
+                            iFrontColumnFootingNumberOfBarsBottom_x,
+                            iFrontColumnFootingNumberOfBarsBottom_y,
                             Colors.LightSeaGreen,
                             0.5f,
                             true,
@@ -2351,26 +2357,29 @@ namespace PFD
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
                     float fBackColumnFooting_h = 0.4f;
 
-                    fDiameterTop_Bar_x = 0.012f;
-                    fDiameterTop_Bar_y = 0.012f;
-                    fDiameterBottom_Bar_x = 0.012f;
-                    fDiameterBottom_Bar_y = 0.012f;
-                    fConcreteCover = 0.075f; // m
+                    CReinforcementBar BackColumnFootingReference_Top_Bar_x;
+                    CReinforcementBar BackColumnFootingReference_Top_Bar_y;
+                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_y;
 
-                    fLengthTop_Bar_x = fBackColumnFooting_bY - 2 * fConcreteCover;
-                    fLengthTop_Bar_y = fBackColumnFooting_aX - 2 * fConcreteCover;
-                    fLengthBottom_Bar_x = fLengthTop_Bar_x;
-                    fLengthBottom_Bar_y = fLengthTop_Bar_y;
+                    int iBackColumnFootingNumberOfBarsTop_x;
+                    int iBackColumnFootingNumberOfBarsTop_y;
+                    int iBackColumnFootingNumberOfBarsBottom_x;
+                    int iBackColumnFootingNumberOfBarsBottom_y;
 
-                    iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fBackColumnFooting_bY, fDiameterTop_Bar_x, fConcreteCover);
-                    iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(fBackColumnFooting_aX, fDiameterTop_Bar_y, fConcreteCover);
-                    iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fBackColumnFooting_bY, fDiameterBottom_Bar_x, fConcreteCover);
-                    iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(fBackColumnFooting_aX, fDiameterBottom_Bar_y, fConcreteCover);
-
-                    reference_Top_Bar_x = new CReinforcementBar(1, true, new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fBackColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_x, 0), fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
-                    reference_Top_Bar_y = new CReinforcementBar(2, false, new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fBackColumnFooting_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0), fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);
-                    reference_Bottom_Bar_x = new CReinforcementBar(3, true, new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, 0), fLengthBottom_Bar_x, fDiameterBottom_Bar_x, Colors.YellowGreen, 0.5f, true, 0);
-                    reference_Bottom_Bar_y = new CReinforcementBar(4, false, new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0), fLengthBottom_Bar_y, fDiameterBottom_Bar_y, Colors.Purple, 0.5f, true, 0);
+                    CreateReferenceReinforcementBars(
+                        fBackColumnFooting_aX,
+                        fBackColumnFooting_bY,
+                        fBackColumnFooting_h,
+                        out BackColumnFootingReference_Top_Bar_x,
+                        out BackColumnFootingReference_Top_Bar_y,
+                        out BackColumnFootingReference_Bottom_Bar_x,
+                        out BackColumnFootingReference_Bottom_Bar_y,
+                        out iBackColumnFootingNumberOfBarsTop_x,
+                        out iBackColumnFootingNumberOfBarsTop_y,
+                        out iBackColumnFootingNumberOfBarsBottom_x,
+                        out iBackColumnFootingNumberOfBarsBottom_y
+                        );
 
                     columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
 
@@ -2396,14 +2405,14 @@ namespace PFD
                             fBackColumnFooting_aX,
                             fBackColumnFooting_bY,
                             fBackColumnFooting_h,
-                            reference_Top_Bar_x,
-                            reference_Top_Bar_y,
-                            reference_Bottom_Bar_x,
-                            reference_Bottom_Bar_y,
-                            iNumberOfBarsTop_x,
-                            iNumberOfBarsTop_y,
-                            iNumberOfBarsBottom_x,
-                            iNumberOfBarsBottom_y,
+                            BackColumnFootingReference_Top_Bar_x,
+                            BackColumnFootingReference_Top_Bar_y,
+                            BackColumnFootingReference_Bottom_Bar_x,
+                            BackColumnFootingReference_Bottom_Bar_y,
+                            iBackColumnFootingNumberOfBarsTop_x,
+                            iBackColumnFootingNumberOfBarsTop_y,
+                            iBackColumnFootingNumberOfBarsBottom_x,
+                            iBackColumnFootingNumberOfBarsBottom_y,
                             Colors.Coral,
                             0.5f,
                             true,
@@ -2450,6 +2459,46 @@ namespace PFD
 
             // Number of spacings + 1
             return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
+        }
+
+        private void CreateReferenceReinforcementBars(
+            float faX,
+            float fbY,
+            float fhZ,
+            out CReinforcementBar reference_Top_Bar_x,
+            out CReinforcementBar reference_Top_Bar_y,
+            out CReinforcementBar reference_Bottom_Bar_x,
+            out CReinforcementBar reference_Bottom_Bar_y,
+            out int iNumberOfBarsTop_x,
+            out int iNumberOfBarsTop_y,
+            out int iNumberOfBarsBottom_x,
+            out int iNumberOfBarsBottom_y,
+            float fDiameterTop_Bar_x = 0.012f,
+            float fDiameterTop_Bar_y = 0.012f,
+            float fDiameterBottom_Bar_x = 0.012f,
+            float fDiameterBottom_Bar_y = 0.012f,
+            float fConcreteCover = 0.075f
+            )
+        {
+            float fLengthTop_Bar_x = faX - 2 * fConcreteCover;
+            float fLengthTop_Bar_y = fbY - 2 * fConcreteCover;
+            float fLengthBottom_Bar_x = fLengthTop_Bar_x;
+            float fLengthBottom_Bar_y = fLengthTop_Bar_y;
+
+            iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterTop_Bar_x, fConcreteCover);
+            iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterTop_Bar_y, fConcreteCover);
+            iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterBottom_Bar_x, fConcreteCover);
+            iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterBottom_Bar_y, fConcreteCover);
+
+            CPoint cp_Top_x = new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x, 0);
+            CPoint cp_Top_y = new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0);
+            CPoint cp_Bottom_x = new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x, 0);
+            CPoint cp_Bottom_y = new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0);
+
+            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
+            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);
+            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, Colors.YellowGreen, 0.5f, true, 0);
+            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, Colors.Purple, 0.5f, true, 0);
         }
     }
 }

@@ -19,7 +19,5 @@ namespace AAC
             Cross_Section = new CCrSc_3_09(fd_temp);
             fL = fL_temp;
         }
-
-
     }
 }

@@ -252,25 +252,40 @@ namespace BaseClasses
             CreateReinforcementBars();
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D()
+        //public /*override*/ GeometryModel3D CreateGeomModel3D()
+        //{
+        //    return CreateGeomModel3D(new SolidColorBrush(m_volColor_2));
+        //}
+
+        //public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush)
+        //{
+        //    return CreateGeomModel3D(new SolidColorBrush(colorBrush));
+        //}
+
+        public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity)
         {
-            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2));
+
+            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2), fOpacity);
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, float fOpacity)
         {
-            return CreateGeomModel3D(new SolidColorBrush(colorBrush));
-        }
+            brush.Opacity = fOpacity; // Set brush opacity // TODO - mozeme nejako vypesit a prepojit s GUI, aby to bol piamo parameter zadavany spolu s farbou zakladu
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
-        {
             GeometryModel3D model = new GeometryModel3D();
 
-            DiffuseMaterial mat = new DiffuseMaterial(brush);
+            DiffuseMaterial qDiffTrans = new DiffuseMaterial(brush);
+            SpecularMaterial qSpecTrans = new SpecularMaterial(new SolidColorBrush(Color.FromArgb(210, 210, 210, 210)), 90.0);
+
+            MaterialGroup qOuterMaterial = new MaterialGroup();
+            qOuterMaterial.Children.Add(qDiffTrans);
+            qOuterMaterial.Children.Add(qSpecTrans);
+
             if (eFoundationType == EFoundationType.ePad)
             {
-                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, new DiffuseMaterial(brush), true, 0);
-                model = volume.CreateGM_3D_Volume_8Edges(volume);
+                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
+                //model = volume.CreateGM_3D_Volume_8Edges(volume);
+                model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
             }
             else
             {
@@ -291,13 +306,13 @@ namespace BaseClasses
             float fDistanceOfBars_Top_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
             m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, fDistanceOfBars_Top_x);
 
-            float fDistanceOfBars_Top_y = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
+            float fDistanceOfBars_Top_y = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
             m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, fDistanceOfBars_Top_y);
 
             float fDistanceOfBars_Bottom_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
             m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, fDistanceOfBars_Bottom_x);
 
-            float fDistanceOfBars_Bottom_y = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
+            float fDistanceOfBars_Bottom_y = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
             m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, fDistanceOfBars_Bottom_y);
         }
 
@@ -308,11 +323,36 @@ namespace BaseClasses
             {
                 List<CReinforcementBar> list = new List<CReinforcementBar>();
 
-                double cp_X_coordinate = referenceBar.m_pControlPoint.X;
+                double cp_X_coordinate = referenceBar.m_pControlPoint.X; // Set first bar control point
                 double cp_Y_coordinate = referenceBar.m_pControlPoint.Y;
 
                 for (int i = 0; i < iCount_Bars_x; i++)
                 {
+                    // Nastavit control point pre reinforcement bar - zohladnit posun voci [0,0,0]
+                    // TODO - zohladnit pootocenie celeho zakladu
+
+                    //m_pControlPoint bod kam je vlozene [0,0,0] celeho zakladu v GCS
+                    // referenceBar.m_pControlPoint bod kam je vlozena prva tyc do zakladu v LCS zakladu
+
+                    CPoint controlPoint = new CPoint(i + 1,
+                        m_pControlPoint.X + cp_X_coordinate,
+                        m_pControlPoint.Y + cp_Y_coordinate,
+                        m_pControlPoint.Z + referenceBar.m_pControlPoint.Z,
+                        0);
+
+                    list.Add(new CReinforcementBar(i + 1,
+                        "500E",
+                        referenceBar.Name,
+                        bBarIsInXDirection,
+                        controlPoint,
+                        referenceBar.m_fDim2, // Length
+                        2 * referenceBar.m_fDim1, // Diameter
+                        referenceBar.m_volColor_2,
+                        referenceBar.m_fvolOpacity,
+                        referenceBar.BIsDisplayed,
+                        referenceBar.FTime));
+
+                    // Set next bar control point coordinates
                     if (bBarIsInXDirection) // Change control Point Coordinate Y
                     {
                         cp_Y_coordinate += fDistanceOfBars;
@@ -321,16 +361,6 @@ namespace BaseClasses
                     {
                         cp_X_coordinate += fDistanceOfBars;
                     }
-
-                    list.Add(new CReinforcementBar(i + 1,
-                        bBarIsInXDirection,
-                        new CPoint(i+1, cp_X_coordinate, cp_Y_coordinate, referenceBar.m_pControlPoint.Z, 0),
-                        referenceBar.m_fDim2, // Length
-                        2 * referenceBar.m_fDim1, // Diameter
-                        referenceBar.m_volColor_2,
-                        referenceBar.m_fvolOpacity,
-                        referenceBar.BIsDisplayed,
-                        referenceBar.FTime));
                 }
 
                 return list;

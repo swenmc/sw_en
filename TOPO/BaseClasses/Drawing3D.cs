@@ -929,7 +929,8 @@ namespace BaseClasses
 
             if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
             {
-                SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
+                //SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
+                float fbrushOpacity = 0.2f;
 
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
@@ -999,7 +1000,7 @@ namespace BaseClasses
 
                             //!!!!!!! POZOR PRIEHLADNOST ZAVISI NA PORADI VYKRESLOVANIA OBJEKTOV!!!!!!!!!
                             // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt zakladu
-                            GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
+                            GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
                             model3D_group.Children.Add(model); // Add foundation to the model group
                         }
                     }
@@ -2286,7 +2287,7 @@ namespace BaseClasses
                     {
                         Point3DCollection foundationPoints = new Point3DCollection();
 
-                        GeometryModel3D model3D = f.CreateGeomModel3D(); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation // TODO zaviest opacity ako parameter
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
 
                         foreach (Point3D point3D in mesh3D.Positions)
@@ -2415,7 +2416,7 @@ namespace BaseClasses
                     {
                         Point3DCollection foundationPoints = new Point3DCollection();
 
-                        GeometryModel3D model3D = f.CreateGeomModel3D(); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
 
                         foreach (Point3D point3D in mesh3D.Positions)
