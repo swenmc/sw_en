@@ -133,7 +133,7 @@ namespace AAC
             fx_tr_rein_arr_2 = TRA_dist_x_2;
             fx_tr_rein_arr_3 = TRA_dist_x_3;
 
-        Long_Bottom_Bars_Array = new ReinforcementBar[iLB_No];
+            Long_Bottom_Bars_Array = new ReinforcementBar[iLB_No];
             Long_Upper_Bars_Array = new ReinforcementBar[iLU_No];
             Trans_Bottom_Bars_Array = new ReinforcementBar[iTB_No];
             Trans_Upper_Bars_Array = new ReinforcementBar[iTU_No];

@@ -626,7 +626,6 @@ namespace PFD
             return list;
         }
 
-
         private void SetDefaultFootingPadSize()
         {
             // Dimensions of footing pad in meters
@@ -645,7 +644,6 @@ namespace PFD
             UpdateValuesInGUI();
         }
 
-        
         private void UpdateValuesInGUI()
         {
             IsSetFromCode = true;
@@ -653,28 +651,28 @@ namespace PFD
             // Default reinforcement
 
             //LongReinTop_x_No = "5";
-            LongReinTop_x_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinTop_x_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
             LongReinTop_x_Phi = "12";
             //LongReinTop_x_Phi = 0.012f; // bar diameter mm to m
             //LongReinTop_x_distance_s_y = 0.2035f; // m
             LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinTop_x_No), (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
 
             //LongReinTop_y_No = "5";
-            LongReinTop_y_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinTop_y_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
             LongReinTop_y_Phi = "12";
             //LongReinTop_y_Phi = 0.012f; // bar diameter mm to m
             //LongReinTop_y_distance_s_x = 0.2035f; // m
             LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, Convert.ToInt32(LongReinTop_y_No), (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
 
             //LongReinBottom_x_No = "5";
-            LongReinBottom_x_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinBottom_x_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
             LongReinBottom_x_Phi = "12";
             //LongReinBottom_x_Phi = 0.012f; // bar diameter mm to m
             //LongReinBottom_x_distance_s_y = 0.2035f; // m
             LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinBottom_x_No), (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
 
             //LongReinBottom_y_No = "5";
-            LongReinBottom_y_No = GetDefaultNumberOfReiforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
+            LongReinBottom_y_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
             LongReinBottom_y_Phi = "12";
             //LongReinBottom_y_Phi = 0.012f; // bar diameter mm to m
             //LongReinBottom_y_distance_s_x = 0.2035f; // m
@@ -713,7 +711,7 @@ namespace PFD
             }
         }
 
-        private int GetDefaultNumberOfReiforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
+        private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
         {
             float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
 

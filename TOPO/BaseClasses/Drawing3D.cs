@@ -938,8 +938,70 @@ namespace BaseClasses
                         cmodel.m_arrFoundations[i].m_pControlPoint != null &&
                         cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
-                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
-                        model3D_group.Children.Add(model); // Add foundation to the model group
+                        if(sDisplayOptions.bDisplayReinforcementBars)
+                        {
+                            // TODO - Ondrej - vykreslujeme vystuz hore a dole v smere x a y, takze su to 4 zoznamy, asi by sa do dalo refaktorovat
+                            // Top layer - x
+                            if(cmodel.m_arrFoundations[i].Top_Bars_x != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrFoundations[i].Top_Bars_x.Count; j++) // Each bar in the list
+                                {
+                                    if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
+                                        cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
+                                    {
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                    }
+                                }
+                            }
+
+                            // Top layer - y
+                            if (cmodel.m_arrFoundations[i].Top_Bars_y != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrFoundations[i].Top_Bars_y.Count; j++) // Each bar in the list
+                                {
+                                    if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
+                                        cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
+                                    {
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                    }
+                                }
+                            }
+
+                            // Bottom layer - x
+                            if (cmodel.m_arrFoundations[i].Bottom_Bars_x != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrFoundations[i].Bottom_Bars_x.Count; j++) // Each bar in the list
+                                {
+                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
+                                        cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
+                                    {
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                    }
+                                }
+                            }
+
+                            // Bottom layer - y
+                            if (cmodel.m_arrFoundations[i].Bottom_Bars_y != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrFoundations[i].Bottom_Bars_y.Count; j++) // Each bar in the list
+                                {
+                                    if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
+                                        cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
+                                    {
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                    }
+                                }
+                            }
+
+                            //!!!!!!! POZOR PRIEHLADNOST ZAVISI NA PORADI VYKRESLOVANIA OBJEKTOV!!!!!!!!!
+                            // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt zakladu
+                            GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
+                            model3D_group.Children.Add(model); // Add foundation to the model group
+                        }
                     }
                 }
             }
@@ -2831,7 +2893,7 @@ namespace BaseClasses
             if (padClone != null)
             {
                 sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
-                sDisplayOptions.bDisplayReinforcement = true; // Display always reinforcement bars
+                sDisplayOptions.bDisplayReinforcementBars = true; // Display always reinforcement bars
 
                 if (jointModel == null)
                     jointModel = new CModel();

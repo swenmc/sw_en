@@ -82,6 +82,7 @@ namespace PFD
         private bool m_DisplayConnectors;
         private bool m_DisplayNodes;
         private bool m_DisplayFoundations;
+        private bool m_DisplayReinforcementBars;
         private bool m_DisplayFloorSlab;
         private bool m_DisplayNodalSupports;
         private bool m_DisplayMembersCenterLines;
@@ -1640,6 +1641,21 @@ namespace PFD
             }
         }
 
+        public bool DisplayReinforcementBars
+        {
+            get
+            {
+                return m_DisplayReinforcementBars;
+            }
+
+            set
+            {
+                m_DisplayReinforcementBars = value;
+                RecreateModel = false;
+                NotifyPropertyChanged("DisplayReinforcementBars");
+            }
+        }
+
         public bool DisplayFloorSlab
         {
             get
@@ -2094,6 +2110,7 @@ namespace PFD
             DisplayConnectors = true;
             DisplayNodes = false;
             DisplayFoundations = false;
+            DisplayReinforcementBars = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
@@ -2644,6 +2661,7 @@ namespace PFD
             sDisplayOptions.bDisplayNodes = DisplayNodes;
 
             sDisplayOptions.bDisplayFoundations = DisplayFoundations;
+            sDisplayOptions.bDisplayReinforcementBars = DisplayReinforcementBars;
             sDisplayOptions.bDisplayFloorSlab = DisplayFloorSlab;
             sDisplayOptions.bDisplayNodalSupports = DisplayNodalSupports;
 

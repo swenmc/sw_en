@@ -16,12 +16,217 @@ namespace BaseClasses
         public CNode m_Node;
         public EMemberType_FS_Position m_ColumnMemberTypePosition;
 
+        private CReinforcementBar m_Reference_Top_Bar_x;
+        private CReinforcementBar m_Reference_Top_Bar_y;
+        private CReinforcementBar m_Reference_Bottom_Bar_x;
+        private CReinforcementBar m_Reference_Bottom_Bar_y;
+
+        private List<CReinforcementBar> m_Top_Bars_x;
+        private List<CReinforcementBar> m_Top_Bars_y;
+        private List<CReinforcementBar> m_Bottom_Bars_x;
+        private List<CReinforcementBar> m_Bottom_Bars_y;
+
+        private int m_Count_Top_Bars_x;
+        private int m_Count_Top_Bars_y;
+        private int m_Count_Bottom_Bars_x;
+        private int m_Count_Bottom_Bars_y;
+
+        private float m_fConcreteCover;
+
+        public CReinforcementBar Reference_Top_Bar_x
+        {
+            get
+            {
+                return m_Reference_Top_Bar_x;
+            }
+
+            set
+            {
+                m_Reference_Top_Bar_x = value;
+            }
+        }
+
+        public CReinforcementBar Reference_Top_Bar_y
+        {
+            get
+            {
+                return m_Reference_Top_Bar_y;
+            }
+
+            set
+            {
+                m_Reference_Top_Bar_y = value;
+            }
+        }
+
+        public CReinforcementBar Reference_Bottom_Bar_x
+        {
+            get
+            {
+                return m_Reference_Bottom_Bar_x;
+            }
+
+            set
+            {
+                m_Reference_Bottom_Bar_x = value;
+            }
+        }
+
+        public CReinforcementBar Reference_Bottom_Bar_y
+        {
+            get
+            {
+                return m_Reference_Bottom_Bar_y;
+            }
+
+            set
+            {
+                m_Reference_Bottom_Bar_y = value;
+            }
+        }
+
+        public List<CReinforcementBar> Top_Bars_x
+        {
+            get
+            {
+                return m_Top_Bars_x;
+            }
+
+            set
+            {
+                m_Top_Bars_x = value;
+            }
+        }
+
+        public List<CReinforcementBar> Top_Bars_y
+        {
+            get
+            {
+                return m_Top_Bars_y;
+            }
+
+            set
+            {
+                m_Top_Bars_y = value;
+            }
+        }
+
+        public List<CReinforcementBar> Bottom_Bars_x
+        {
+            get
+            {
+                return m_Bottom_Bars_x;
+            }
+
+            set
+            {
+                m_Bottom_Bars_x = value;
+            }
+        }
+
+        public List<CReinforcementBar> Bottom_Bars_y
+        {
+            get
+            {
+                return m_Bottom_Bars_y;
+            }
+
+            set
+            {
+                m_Bottom_Bars_y = value;
+            }
+        }
+
+        public int Count_Top_Bars_x
+        {
+            get
+            {
+                return m_Count_Top_Bars_x;
+            }
+
+            set
+            {
+                m_Count_Top_Bars_x = value;
+            }
+        }
+
+        public int Count_Top_Bars_y
+        {
+            get
+            {
+                return m_Count_Top_Bars_y;
+            }
+
+            set
+            {
+                m_Count_Top_Bars_y = value;
+            }
+        }
+
+        public int Count_Bottom_Bars_x
+        {
+            get
+            {
+                return m_Count_Bottom_Bars_x;
+            }
+
+            set
+            {
+                m_Count_Bottom_Bars_x = value;
+            }
+        }
+
+        public int Count_Bottom_Bars_y
+        {
+            get
+            {
+                return m_Count_Bottom_Bars_y;
+            }
+
+            set
+            {
+                m_Count_Bottom_Bars_y = value;
+            }
+        }
+
+        public float ConcreteCover
+        {
+            get
+            {
+                return m_fConcreteCover;
+            }
+
+            set
+            {
+                m_fConcreteCover = value;
+            }
+        }
+
         public CFoundation()
         {
         }
 
         // Rectangular prism
-        public CFoundation(int iFoundation_ID, EFoundationType eType, CNode node, EMemberType_FS_Position memberTypePosition, CPoint pControlEdgePoint, float fX, float fY, float fZ, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CFoundation(int iFoundation_ID,
+            EFoundationType eType,
+            CNode node,
+            EMemberType_FS_Position memberTypePosition,
+            CPoint pControlEdgePoint,
+            float fX,
+            float fY,
+            float fZ,
+            CReinforcementBar refTopBar_x,
+            CReinforcementBar refTopBar_y,
+            CReinforcementBar refBottomBar_x,
+            CReinforcementBar refBottomBar_y,
+            int iNumberOfBarsTop_x,
+            int iNumberOfBarsTop_y,
+            int iNumberOfBarsBottom_x,
+            int iNumberOfBarsBottom_y,
+            Color volColor,
+            float fvolOpacity,
+            bool bIsDisplayed,
+            float fTime)
         {
             ID = iFoundation_ID;
             eFoundationType = eType;
@@ -31,10 +236,20 @@ namespace BaseClasses
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_Reference_Top_Bar_x = refTopBar_x;
+            m_Reference_Top_Bar_y = refTopBar_y;
+            m_Reference_Bottom_Bar_x = refBottomBar_x;
+            m_Reference_Bottom_Bar_y = refBottomBar_y;
+            m_Count_Top_Bars_x = iNumberOfBarsTop_x;
+            m_Count_Top_Bars_y = iNumberOfBarsTop_y;
+            m_Count_Bottom_Bars_x = iNumberOfBarsBottom_x;
+            m_Count_Bottom_Bars_y = iNumberOfBarsBottom_y;
             m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            CreateReinforcementBars();
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D()
@@ -63,6 +278,65 @@ namespace BaseClasses
             }
 
             return model;
+        }
+
+        private float GetDistanceBetweenReinforcementBars(float footingPadWidth, int iNumberOfBarsPerSection, float fBarDiameter, float fConcreteCover)
+        {
+            return (footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / (iNumberOfBarsPerSection - 1);
+        }
+
+        public void CreateReinforcementBars()
+        {
+            // Fill 4 list of reinforcement bars
+            float fDistanceOfBars_Top_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
+            m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, fDistanceOfBars_Top_x);
+
+            float fDistanceOfBars_Top_y = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
+            m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, fDistanceOfBars_Top_y);
+
+            float fDistanceOfBars_Bottom_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
+            m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, fDistanceOfBars_Bottom_x);
+
+            float fDistanceOfBars_Bottom_y = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
+            m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, fDistanceOfBars_Bottom_y);
+        }
+
+        public List<CReinforcementBar> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBar referenceBar, float fDistanceOfBars)
+        {
+            // Create liest of one layer of bar objects
+            if (iCount_Bars_x > 1)
+            {
+                List<CReinforcementBar> list = new List<CReinforcementBar>();
+
+                double cp_X_coordinate = referenceBar.m_pControlPoint.X;
+                double cp_Y_coordinate = referenceBar.m_pControlPoint.Y;
+
+                for (int i = 0; i < iCount_Bars_x; i++)
+                {
+                    if (bBarIsInXDirection) // Change control Point Coordinate Y
+                    {
+                        cp_Y_coordinate += fDistanceOfBars;
+                    }
+                    else // Change control Point Coordinate X
+                    {
+                        cp_X_coordinate += fDistanceOfBars;
+                    }
+
+                    list.Add(new CReinforcementBar(i + 1,
+                        bBarIsInXDirection,
+                        new CPoint(i+1, cp_X_coordinate, cp_Y_coordinate, referenceBar.m_pControlPoint.Z, 0),
+                        referenceBar.m_fDim2, // Length
+                        2 * referenceBar.m_fDim1, // Diameter
+                        referenceBar.m_volColor_2,
+                        referenceBar.m_fvolOpacity,
+                        referenceBar.BIsDisplayed,
+                        referenceBar.FTime));
+                }
+
+                return list;
+            }
+            else
+            { return null; }
         }
     }
 }
