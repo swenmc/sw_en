@@ -215,6 +215,7 @@ namespace BaseClasses
             float fX,
             float fY,
             float fZ,
+            float fConcreteCover,
             CReinforcementBar refTopBar_x,
             CReinforcementBar refTopBar_y,
             CReinforcementBar refBottomBar_x,
@@ -236,6 +237,7 @@ namespace BaseClasses
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_fConcreteCover = fConcreteCover;
             m_Reference_Top_Bar_x = refTopBar_x;
             m_Reference_Top_Bar_y = refTopBar_y;
             m_Reference_Bottom_Bar_x = refBottomBar_x;
@@ -297,7 +299,8 @@ namespace BaseClasses
 
         private float GetDistanceBetweenReinforcementBars(float footingPadWidth, int iNumberOfBarsPerSection, float fBarDiameter, float fConcreteCover)
         {
-            return (footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / (iNumberOfBarsPerSection - 1);
+            // Odpocitavam 3 priemery, kedze sa ocakavaju aj zvisle casti prutov, ak je vystuz len horizontalna ma sa odpocitat len jeden priemer
+            return (footingPadWidth - 2 * fConcreteCover - /*3 **/ fBarDiameter) / (iNumberOfBarsPerSection - 1);
         }
 
         public void CreateReinforcementBars()

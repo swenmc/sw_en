@@ -2189,9 +2189,11 @@ namespace PFD
 
                 // Main Column - Footings
                 // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
+                // UC - Footings
                 float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
                 float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
                 float fMainColumnFooting_h = 0.4f;
+                float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
                 CReinforcementBar MainColumnFootingReference_Top_Bar_x;
                 CReinforcementBar MainColumnFootingReference_Top_Bar_y;
@@ -2239,6 +2241,7 @@ namespace PFD
                         fMainColumnFooting_aX, 
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
+                        fConcreteCover,
                         MainColumnFootingReference_Top_Bar_x,
                         MainColumnFootingReference_Top_Bar_y,
                         MainColumnFootingReference_Bottom_Bar_x,
@@ -2263,6 +2266,7 @@ namespace PFD
                         fMainColumnFooting_aX,
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
+                        fConcreteCover,
                         MainColumnFootingReference_Top_Bar_x,
                         MainColumnFootingReference_Top_Bar_y,
                         MainColumnFootingReference_Bottom_Bar_x,
@@ -2334,6 +2338,7 @@ namespace PFD
                             fFrontColumnFooting_aX,
                             fFrontColumnFooting_bY,
                             fFrontColumnFooting_h,
+                            fConcreteCover,
                             FrontColumnFootingReference_Top_Bar_x,
                             FrontColumnFootingReference_Top_Bar_y,
                             FrontColumnFootingReference_Bottom_Bar_x,
@@ -2405,6 +2410,7 @@ namespace PFD
                             fBackColumnFooting_aX,
                             fBackColumnFooting_bY,
                             fBackColumnFooting_h,
+                            fConcreteCover,
                             BackColumnFootingReference_Top_Bar_x,
                             BackColumnFootingReference_Top_Bar_y,
                             BackColumnFootingReference_Bottom_Bar_x,
