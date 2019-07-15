@@ -276,8 +276,9 @@ namespace BaseClasses
 
             GeometryModel3D model = new GeometryModel3D();
 
+            // TODO - pohrat sa s nastavenim farieb
             DiffuseMaterial qDiffTrans = new DiffuseMaterial(brush);
-            SpecularMaterial qSpecTrans = new SpecularMaterial(new SolidColorBrush(Color.FromArgb(210, 210, 210, 210)), 90.0);
+            SpecularMaterial qSpecTrans = new SpecularMaterial(brush/*new SolidColorBrush(Color.FromArgb(210, 210, 210, 210))*/, 90.0);
 
             MaterialGroup qOuterMaterial = new MaterialGroup();
             qOuterMaterial.Children.Add(qDiffTrans);
