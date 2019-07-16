@@ -4,14 +4,10 @@ using MATH;
 using MATERIAL;
 using System.Collections.Generic;
 using System.Windows;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
-using System.Runtime.Serialization;
 
 namespace CRSC
 {
-    
-    [Serializable]    
+    [Serializable]
     public abstract class CCrSc
     {
         // Collection of indices for generation of member surface

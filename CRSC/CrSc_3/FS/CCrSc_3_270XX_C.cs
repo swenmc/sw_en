@@ -1,10 +1,6 @@
-﻿using MATH;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows;
-using DATABASE;
-using DATABASE.DTO;
-using Newtonsoft.Json;
 
 namespace CRSC
 {
