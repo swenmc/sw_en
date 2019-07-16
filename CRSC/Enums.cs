@@ -4,7 +4,6 @@
     {
         public enum ECrScShType0
         {
-
             //General
             eCrSc_0_00,
             eCrSc_0_01,
@@ -48,7 +47,6 @@
             eCrSc_9_04
         }
 
-
         public enum ECrScShType1
         {
             eCrScType_I,   // I and H - section
@@ -79,10 +77,5 @@
             eC,  // closed cross-section
             eS   // Solid cross-section
         }
-
-
-
-
-
     }
 }
