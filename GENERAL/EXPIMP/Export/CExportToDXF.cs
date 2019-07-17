@@ -36,11 +36,24 @@ namespace EXPIMP
         }
         public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy)
         {
+            //---------------------------------------------------------------------------------------
+            // TODO 305
+            // TO Ondrej - pokus nascalovat canvas tak, aby pri exporte sedeli jednotky, canvas sa scaluje, ale realne ostanu hodnoty rovnake, takze tade cesta nevedie :)
+            // POtrebujeme funckie upravit tak aby sme boli schopni vyrobit Canvas nastavit mu velkost nasobenu faktorom ktorym bol realny plech zmenseny, vsetko co sa bude vykreslovat bude potom 1:1, do tohoto canvas vykreslime plech
+            Canvas cloneCanvas = new Canvas();
+            cloneCanvas = canvas;
+
+            float ScaleRate = 10f;
+            ScaleTransform scale = new ScaleTransform(cloneCanvas.LayoutTransform.Value.M11 * ScaleRate, cloneCanvas.LayoutTransform.Value.M22 * ScaleRate);
+            cloneCanvas.LayoutTransform = scale;
+            cloneCanvas.UpdateLayout();
+            //---------------------------------------------------------------------------------------
+
             DxfDocument doc = new DxfDocument();
             double Z = 0; //is is 2D so Z axis is always 0
             double fontSize = 10;
 
-            foreach (object o in canvas.Children)
+            foreach (object o in cloneCanvas.Children)
             {
                 System.Diagnostics.Trace.WriteLine(o.GetType());
 
@@ -66,7 +79,7 @@ namespace EXPIMP
                         pTR = winRect.RenderTransform.Transform(pTR);
                         pBL = winRect.RenderTransform.Transform(pBL);
                         pBR = winRect.RenderTransform.Transform(pBR);
-                    }                    
+                    }
 
                     Solid solid = new Solid();
                     solid.Color = new AciColor(drawingcolor);
@@ -83,7 +96,6 @@ namespace EXPIMP
                 {
                     WindowsShapes.Polyline winPol = o as WindowsShapes.Polyline;
                     Polyline poly = new Polyline();
-
 
                     //vznika tam posun...ani srnka netusi preco
                     //double x = Canvas.GetLeft(winPol);
