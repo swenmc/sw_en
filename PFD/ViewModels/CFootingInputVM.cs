@@ -51,6 +51,9 @@ namespace PFD
         private float m_FootingPadSize_y_Or_b;
         private float m_FootingPadSize_z_Or_h;
 
+        private float m_Eccentricity_x;
+        private float m_Eccentricity_y;
+
         private float m_SoilReductionFactor_Phi;
         private float m_SoilReductionFactorEQ_Phi;
 
@@ -470,6 +473,44 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float Eccentricity_x
+        {
+            get
+            {
+                return m_Eccentricity_x;
+            }
+
+            set
+            {
+                if (value < 0.0f || value > 0.5 * FootingPadSize_x_Or_a)
+                    throw new ArgumentException("Eccentricity must be between 0.0 and x/2 [m]");
+
+                m_Eccentricity_x = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("Eccentricity_x");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Eccentricity_y
+        {
+            get
+            {
+                return m_Eccentricity_y;
+            }
+
+            set
+            {
+                if (value < 0.0f || value > 0.5 * FootingPadSize_y_Or_b)
+                    throw new ArgumentException("Eccentricity must be between 0.0 and y/2 [m]");
+
+                m_Eccentricity_y = value;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("Eccentricity_y");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float SoilReductionFactor_Phi
         {
             get
@@ -598,8 +639,10 @@ namespace PFD
             ConcreteCover = 75; // mm  0.075f; m
             FloorSlabThickness = 125; // mm 0.125f; m
 
-
             SetDefaultFootingPadSize();
+
+            Eccentricity_x = 0; // m
+            Eccentricity_y = 0; // m
 
             IsSetFromCode = false;
         }

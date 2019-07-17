@@ -61,6 +61,9 @@ namespace PFD
         private int iOneRafterFrontColumnNo = 0;
         private int iRafterFlyBracing_EveryXXPurlin;
 
+        CMemberEccentricity eccentricityColumnFront_Z;
+        CMemberEccentricity eccentricityColumnBack_Z;
+
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
@@ -215,8 +218,8 @@ namespace PFD
 
             CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), 0);
 
-            CMemberEccentricity eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h));
-            CMemberEccentricity eccentricityColumnBack_Z = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h));
+            eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h));
+            eccentricityColumnBack_Z = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h));
 
             CMemberEccentricity eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
             CMemberEccentricity eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
@@ -2190,8 +2193,8 @@ namespace PFD
                 // Main Column - Footings
                 // TODO - Predbezne doporucene hodnoty velkosti zakladov vypocitane z rozmerov budovy
                 // UC - Footings
-                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
-                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
+                float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
+                float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
                 float fMainColumnFooting_h = 0.4f;
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
@@ -2219,28 +2222,37 @@ namespace PFD
                     out iMainColumnFootingNumberOfBarsBottom_y
                     );
 
-                EMemberType_FS_Position columnTypePosition;
-
-                // TODO - zapracovat excentricku poziciu zakladov
-
                 for (int i = 0; i < iFrameNo; i++)
                 {
-                    columnTypePosition = EMemberType_FS_Position.MainColumn;
+                    float fMainColumnFooting_Eccentricity_x = 0f;
+                    float fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h;
+
+                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
 
                     if (i == 0 || i == (iFrameNo - 1)) // First or last frame
+                    {
                         columnTypePosition = EMemberType_FS_Position.EdgeColumn;
+                        fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h;
+
+                        // Front side edge frame columns
+                        fMainColumnFooting_Eccentricity_x = 0.5f * fMainColumnFooting_aX - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b;
+
+                        if (i == (iFrameNo - 1)) // Back side edge frame columns
+                            fMainColumnFooting_Eccentricity_x *= -1;
+                    }
 
                     // Left
                     CNode node_left = m_arrNodes[i * iFrameNodesNo + 0];
-                    CPoint controlPoint_left = new CPoint(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
+                    //CPoint controlPoint_left = new CPoint(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
                     m_arrFoundations.Add(new CFoundation(i * 2 + 1,
                         EFoundationType.ePad,
                         node_left,
                         columnTypePosition,
-                        controlPoint_left,
+                        //controlPoint_left,
                         fMainColumnFooting_aX, 
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
+                        fMainColumnFooting_Eccentricity_x, -fMainColumnFooting_Eccentricity_y, 90,
                         fConcreteCover,
                         MainColumnFootingReference_Top_Bar_x,
                         MainColumnFootingReference_Top_Bar_y,
@@ -2257,15 +2269,16 @@ namespace PFD
 
                     // Right
                     CNode node_right = m_arrNodes[i * iFrameNodesNo + 4];
-                    CPoint controlPoint_right = new CPoint(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
+                    //CPoint controlPoint_right = new CPoint(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
                     m_arrFoundations.Add(new CFoundation(i * 2 + 2,
                         EFoundationType.ePad,
                         node_right,
                         columnTypePosition,
-                        controlPoint_right,
+                        //controlPoint_right,
                         fMainColumnFooting_aX,
                         fMainColumnFooting_bY,
                         fMainColumnFooting_h,
+                        -fMainColumnFooting_Eccentricity_x, -fMainColumnFooting_Eccentricity_y, 270,
                         fConcreteCover,
                         MainColumnFootingReference_Top_Bar_x,
                         MainColumnFootingReference_Top_Bar_y,
@@ -2289,6 +2302,8 @@ namespace PFD
                     float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
                     float fFrontColumnFooting_h = 0.4f;
+
+                    float fFrontColumnFooting_Eccentricity_y = 0.5f * fFrontColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h;
 
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
@@ -2314,7 +2329,7 @@ namespace PFD
                         out iFrontColumnFootingNumberOfBarsBottom_y
                         );
 
-                    columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
+                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
 
                     // Search footings control points
                     List<CNode> listOfControlPoints = new List<CNode>();
@@ -2329,15 +2344,16 @@ namespace PFD
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
-                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
+                        //CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
                             columnTypePosition,
-                            controlPoint,
+                            //controlPoint,
                             fFrontColumnFooting_aX,
                             fFrontColumnFooting_bY,
                             fFrontColumnFooting_h,
+                            0, -fFrontColumnFooting_Eccentricity_y + eccentricityColumnFront_Z.MFz_local, 180,
                             fConcreteCover,
                             FrontColumnFootingReference_Top_Bar_x,
                             FrontColumnFootingReference_Top_Bar_y,
@@ -2361,6 +2377,8 @@ namespace PFD
                     float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
                     float fBackColumnFooting_h = 0.4f;
+
+                    float fBackColumnFooting_Eccentricity_y = 0.5f * fBackColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h;
 
                     CReinforcementBar BackColumnFootingReference_Top_Bar_x;
                     CReinforcementBar BackColumnFootingReference_Top_Bar_y;
@@ -2386,7 +2404,7 @@ namespace PFD
                         out iBackColumnFootingNumberOfBarsBottom_y
                         );
 
-                    columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
+                    EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
 
                     // Search footings control points
                     List<CNode> listOfControlPoints = new List<CNode>();
@@ -2401,15 +2419,16 @@ namespace PFD
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
-                        CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
+                        //CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
                             columnTypePosition,
-                            controlPoint,
+                            //controlPoint,
                             fBackColumnFooting_aX,
                             fBackColumnFooting_bY,
                             fBackColumnFooting_h,
+                             0, fBackColumnFooting_Eccentricity_y + eccentricityColumnBack_Z.MFz_local, 180,
                             fConcreteCover,
                             BackColumnFootingReference_Top_Bar_x,
                             BackColumnFootingReference_Top_Bar_y,

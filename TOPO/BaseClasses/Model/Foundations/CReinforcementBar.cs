@@ -108,7 +108,7 @@ namespace BaseClasses
         {
             m_Mat = new MATERIAL.CMat_03_00();
             m_Mat.Name = matName;
-            CMatPropertiesRF prop = DATABASE.CMaterialManager.LoadMaterialPropertiesRF(matName);
+            CMatPropertiesRF prop = CMaterialManager.LoadMaterialPropertiesRF(matName);
             m_Mat.m_fE = (float)prop.E;
             m_Mat.m_fG = (float)prop.G;
             m_Mat.m_fNu = (float)prop.Nu;
@@ -118,17 +118,17 @@ namespace BaseClasses
             m_Mat.m_ff_yk = new float[1] { (float)prop.Ry };
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D()
+        public /*override*/ GeometryModel3D CreateGeomModel3D(Transform3DGroup temp)
         {
-            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2));
+            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2), temp);
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush, Transform3DGroup temp)
         {
-            return CreateGeomModel3D(new SolidColorBrush(colorBrush));
+            return CreateGeomModel3D(new SolidColorBrush(colorBrush), temp);
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, Transform3DGroup temp)
         {
             GeometryModel3D model = new GeometryModel3D();
 
@@ -169,7 +169,19 @@ namespace BaseClasses
 
             // Set the Transform property of the GeometryModel to the Transform3DGroup which includes 
             // both transformations. The 3D object now has two Transformations applied to it.
+            //model.Transform = myTransform3DGroup;
+
+            //---------------------------------------------------------------------------
+            // TO Ondrej - toto je tu docasne, transformujem kazdy prut samostatne do GCS tak ako je umiestneny zaklad
+            // Treba to prerobit tak ze sa budu transformovat vsetky objekty vyztuze v hornej aj dolnej vrstve spolu, asi na konci metody
+            // CreateReinforcementBars() v CFoundation
+            // Je tu podobna vec ako bola pri plechoch a spojoch, musime si zapamatat body po trasnformaciach line 152-168 a na tie body potom urobit tuto transformaciu
+            myTransform3DGroup.Children.Add(temp);
+
+            // Set the Transform property of the GeometryModel to the Transform3DGroup which includes 
+            // both transformations. The 3D object now has two Transformations applied to it.
             model.Transform = myTransform3DGroup;
+            //---------------------------------------------------------------------------
 
             return model;
         }

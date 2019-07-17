@@ -16,6 +16,10 @@ namespace BaseClasses
         public CNode m_Node;
         public EMemberType_FS_Position m_ColumnMemberTypePosition;
 
+        private float m_Eccentricity_x;
+        private float m_Eccentricity_y;
+        private float m_RotationAboutZ_deg;
+
         private CReinforcementBar m_Reference_Top_Bar_x;
         private CReinforcementBar m_Reference_Top_Bar_y;
         private CReinforcementBar m_Reference_Bottom_Bar_x;
@@ -32,6 +36,45 @@ namespace BaseClasses
         private int m_Count_Bottom_Bars_y;
 
         private float m_fConcreteCover;
+
+        public float Eccentricity_x
+        {
+            get
+            {
+                return m_Eccentricity_x;
+            }
+
+            set
+            {
+                m_Eccentricity_x = value;
+            }
+        }
+
+        public float Eccentricity_y
+        {
+            get
+            {
+                return m_Eccentricity_y;
+            }
+
+            set
+            {
+                m_Eccentricity_y = value;
+            }
+        }
+
+        public float RotationAboutZ_deg
+        {
+            get
+            {
+                return m_RotationAboutZ_deg;
+            }
+
+            set
+            {
+                m_RotationAboutZ_deg = value;
+            }
+        }
 
         public CReinforcementBar Reference_Top_Bar_x
         {
@@ -211,10 +254,13 @@ namespace BaseClasses
             EFoundationType eType,
             CNode node,
             EMemberType_FS_Position memberTypePosition,
-            CPoint pControlEdgePoint,
+            //CPoint pControlEdgePoint,
             float fX,
             float fY,
             float fZ,
+            float ex,
+            float ey,
+            float rotationAboiutZInDeg,
             float fConcreteCover,
             CReinforcementBar refTopBar_x,
             CReinforcementBar refTopBar_y,
@@ -233,10 +279,13 @@ namespace BaseClasses
             eFoundationType = eType;
             m_Node = node; // Note that is assigned to the foundation / footing pad
             m_ColumnMemberTypePosition = memberTypePosition;
-            m_pControlPoint = pControlEdgePoint;
+            //m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_Eccentricity_x = ex;
+            m_Eccentricity_y = ey;
+            m_RotationAboutZ_deg = rotationAboiutZInDeg;
             m_fConcreteCover = fConcreteCover;
             m_Reference_Top_Bar_x = refTopBar_x;
             m_Reference_Top_Bar_y = refTopBar_y;
@@ -251,6 +300,11 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
+            // Set control point coordinates - joint node [0,0,0]
+            m_pControlPoint.X = -0.5 * fX + ex;
+            m_pControlPoint.Y = -0.5 * fY + ey;
+            m_pControlPoint.Z = -fZ;
+            
             CreateReinforcementBars();
         }
 
@@ -286,9 +340,28 @@ namespace BaseClasses
 
             if (eFoundationType == EFoundationType.ePad)
             {
-                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
+                // Create foundation block - origin [0,0,0]
+                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, new CPoint(1,0,0,0,0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
                 //model = volume.CreateGM_3D_Volume_8Edges(volume);
-                model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
+                model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
+
+                // Tato cast prva translate zlozka transformacie sa na reinforcement bars nepouzije, lebo pri vytvarani vyztuze sa uz uvazuje upraveny m_pControlPoint
+                // Model Transformation
+                // Apply multiple transformations to the object.
+                // Presun v ramci LCS (tak ze [0,0,0] bude v mieste, kde je joinNode
+                // Create and apply translation
+                TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+
+                Transform3DGroup myTransform3DGroup = new Transform3DGroup();
+                // Add the translation transform to the Transform3DGroup.
+                myTransform3DGroup.Children.Add(myTranslateTransform3D);
+
+                // Pridam transformaciu zakladu do GCS
+                myTransform3DGroup.Children.Add(GetFoundationTrasnformGroup());
+
+                // Set the Transform property of the GeometryModel to the Transform3DGroup
+                // Nastavim vyslednu transformaciu
+                model.Transform = myTransform3DGroup;
             }
             else
             {
@@ -371,6 +444,31 @@ namespace BaseClasses
             }
             else
             { return null; }
+        }
+
+        public Transform3DGroup GetFoundationTrasnformGroup()
+        {
+            Transform3DGroup myTransform3DGroup = new Transform3DGroup();
+
+            // Rotate about Z axis - otocime patku okolo [0,0,0]
+            // Create and apply a transformation that rotates the object.
+            RotateTransform3D myRotateTransform3D = new RotateTransform3D();
+            AxisAngleRotation3D myAxisAngleRotation3d = new AxisAngleRotation3D();
+            myAxisAngleRotation3d.Axis = new Vector3D(0, 0, 1);
+            myAxisAngleRotation3d.Angle = RotationAboutZ_deg;
+            myRotateTransform3D.Rotation = myAxisAngleRotation3d;
+
+            // Add the rotation transform to a Transform3DGroup
+            myTransform3DGroup.Children.Add(myRotateTransform3D);
+
+            // Presun celehho zakladu do GCS
+            // Create and apply translation
+            TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(m_Node.X, m_Node.Y, m_Node.Z);
+
+            // Add the translation transform to the Transform3DGroup.
+            myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);
+
+            return myTransform3DGroup;
         }
     }
 }

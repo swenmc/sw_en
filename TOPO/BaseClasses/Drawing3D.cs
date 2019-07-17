@@ -950,7 +950,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -964,7 +964,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -978,7 +978,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -992,7 +992,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/);
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
