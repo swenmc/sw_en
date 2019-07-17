@@ -399,7 +399,5 @@ namespace BaseClasses
 
             return wireFrame;
         }
-
-        
     }
 }

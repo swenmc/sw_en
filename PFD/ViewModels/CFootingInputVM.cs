@@ -51,8 +51,8 @@ namespace PFD
         private float m_FootingPadSize_y_Or_b;
         private float m_FootingPadSize_z_Or_h;
 
-        private float m_Eccentricity_x;
-        private float m_Eccentricity_y;
+        private float m_Eccentricity_ex;
+        private float m_Eccentricity_ey;
 
         private float m_SoilReductionFactor_Phi;
         private float m_SoilReductionFactorEQ_Phi;
@@ -473,40 +473,40 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float Eccentricity_x
+        public float Eccentricity_ex
         {
             get
             {
-                return m_Eccentricity_x;
+                return m_Eccentricity_ex;
             }
 
             set
             {
-                if (value < 0.0f || value > 0.5 * FootingPadSize_x_Or_a)
-                    throw new ArgumentException("Eccentricity must be between 0.0 and x/2 [m]");
+                if (value < 0.0f || value > 0.5f * FootingPadSize_x_Or_a)
+                    throw new ArgumentException("Eccentricity must be between 0.0 and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
 
-                m_Eccentricity_x = value;
+                m_Eccentricity_ex = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
-                NotifyPropertyChanged("Eccentricity_x");
+                NotifyPropertyChanged("Eccentricity_ex");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float Eccentricity_y
+        public float Eccentricity_ey
         {
             get
             {
-                return m_Eccentricity_y;
+                return m_Eccentricity_ey;
             }
 
             set
             {
-                if (value < 0.0f || value > 0.5 * FootingPadSize_y_Or_b)
-                    throw new ArgumentException("Eccentricity must be between 0.0 and y/2 [m]");
+                if (value < 0.0f || value > 0.5f * FootingPadSize_y_Or_b)
+                    throw new ArgumentException("Eccentricity must be between 0.0 and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
 
-                m_Eccentricity_y = value;
+                m_Eccentricity_ey = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
-                NotifyPropertyChanged("Eccentricity_y");
+                NotifyPropertyChanged("Eccentricity_ey");
             }
         }
 
@@ -641,8 +641,8 @@ namespace PFD
 
             SetDefaultFootingPadSize();
 
-            Eccentricity_x = 0; // m
-            Eccentricity_y = 0; // m
+            Eccentricity_ex = 0; // m
+            Eccentricity_ey = 0; // m
 
             IsSetFromCode = false;
         }

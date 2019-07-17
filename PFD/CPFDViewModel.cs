@@ -53,18 +53,9 @@ namespace PFD
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
-        
+
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
-        //private int MMainColumnFlyBracingPositionIndex;
-        //private int MRafterFlyBracingPositionIndex;
-        //private int MEdgePurlin_ILS_Number;
-        //private int MGirt_ILS_Number;
-        //private int MPurlin_ILS_Number;
-        //private int MFrontColumnFlyBracingPositionIndex;
-        //private int MBackColumnFlyBracingPositionIndex;
-        //private int MGirtFrontSide_ILS_Number;
-        //private int MGirtBackSide_ILS_Number;
 
         private int MLoadCaseIndex;
 
@@ -417,8 +408,6 @@ namespace PFD
             }
         }
 
-
-
         //-------------------------------------------------------------------------------------------------------------
         public float GirtDistance
         {
@@ -672,152 +661,6 @@ namespace PFD
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
         }
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //// 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
-        //public int MainColumnFlyBracingPositionIndex
-        //{
-        //    get
-        //    {
-        //        return MMainColumnFlyBracingPositionIndex;
-        //    }
-
-        //    set
-        //    {
-        //        MMainColumnFlyBracingPositionIndex = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("MainColumnFlyBracingPositionIndex");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //// 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
-        //public int RafterFlyBracingPositionIndex
-        //{
-        //    get
-        //    {
-        //        return MRafterFlyBracingPositionIndex;
-        //    }
-
-        //    set
-        //    {
-        //        MRafterFlyBracingPositionIndex = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("RafterFlyBracingPositionIndex"); // RafterFlyBracingEveryXXPurlin
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int EdgePurlin_ILS_Number
-        //{
-        //    get
-        //    {
-        //        return MEdgePurlin_ILS_Number;
-        //    }
-
-        //    set
-        //    {
-        //        MEdgePurlin_ILS_Number = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("EdgePurlin_ILS_Number");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int Girt_ILS_Number
-        //{
-        //    get
-        //    {
-        //        return MGirt_ILS_Number;
-        //    }
-
-        //    set
-        //    {
-        //        MGirt_ILS_Number = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("Girt_ILS_Number");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int Purlin_ILS_Number
-        //{
-        //    get
-        //    {
-        //        return MPurlin_ILS_Number;
-        //    }
-
-        //    set
-        //    {
-        //        MPurlin_ILS_Number = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("Purlin_ILS_Number");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int FrontColumnFlyBracingPositionIndex
-        //{
-        //    get
-        //    {
-        //        return MFrontColumnFlyBracingPositionIndex;
-        //    }
-
-        //    set
-        //    {
-        //        MFrontColumnFlyBracingPositionIndex = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("FrontColumnFlyBracingPositionIndex");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int BackColumnFlyBracingPositionIndex
-        //{
-        //    get
-        //    {
-        //        return MBackColumnFlyBracingPositionIndex;
-        //    }
-
-        //    set
-        //    {
-        //        MBackColumnFlyBracingPositionIndex = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("BackColumnFlyBracingPositionIndex");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int GirtFrontSide_ILS_Number
-        //{
-        //    get
-        //    {
-        //        return MGirtFrontSide_ILS_Number;
-        //    }
-
-        //    set
-        //    {
-        //        MGirtFrontSide_ILS_Number = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("GirtFrontSide_ILS_Number");
-        //    }
-        //}
-
-        ////-------------------------------------------------------------------------------------------------------------
-        //public int GirtBackSide_ILS_Number
-        //{
-        //    get
-        //    {
-        //        return MGirtBackSide_ILS_Number;
-        //    }
-
-        //    set
-        //    {
-        //        MGirtBackSide_ILS_Number = value;
-        //        SetResultsAreNotValid();
-        //        NotifyPropertyChanged("GirtBackSide_ILS_Number");
-        //    }
-        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int LoadCaseIndex
@@ -1161,12 +1004,12 @@ namespace PFD
             }
         }
 
-
         public bool ShowGlobalAxis
         {
             get { return MShowGlobalAxis; }
             set { MShowGlobalAxis = value; RecreateModel = false; NotifyPropertyChanged("ShowGlobalAxis"); }
         }
+
         public bool ShowLocalMembersAxis
         {
             get
@@ -1181,6 +1024,7 @@ namespace PFD
                 NotifyPropertyChanged("ShowLocalMembersAxis");
             }
         }
+
         public bool IsEnabledLocalMembersAxis
         {
             get
@@ -1195,6 +1039,7 @@ namespace PFD
                 NotifyPropertyChanged("IsEnabledLocalMembersAxis");
             }
         }
+
         public bool ShowSurfaceLoadsAxis
         {
             get
@@ -1209,6 +1054,7 @@ namespace PFD
                 NotifyPropertyChanged("ShowSurfaceLoadsAxis");
             }
         }
+
         public bool IsEnabledSurfaceLoadsAxis
         {
             get
@@ -1338,9 +1184,9 @@ namespace PFD
                 if (d != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;                    
+                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                     NotifyPropertyChanged("DoorBlocksProperties_Add");
-                    SetResultsAreNotValid();                    
+                    SetResultsAreNotValid();
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
@@ -1348,7 +1194,7 @@ namespace PFD
                 RecreateJoints = true;
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
                 RecreateJoints = false;
-                SetResultsAreNotValid();                
+                SetResultsAreNotValid();
             }
             SetComponentListAccordingToDoors();
         }
@@ -1382,9 +1228,9 @@ namespace PFD
                 if (w != null)
                 {
                     CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;                    
-                    NotifyPropertyChanged("WindowBlocksProperties_Add");                    
-                    SetResultsAreNotValid();                    
+                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
+                    NotifyPropertyChanged("WindowBlocksProperties_Add");
+                    SetResultsAreNotValid();
                 }
             }
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
@@ -1404,6 +1250,7 @@ namespace PFD
                 return MBuildingSides;
             }
         }
+
         public List<string> DoorsTypes
         {
             get
@@ -1412,6 +1259,7 @@ namespace PFD
                 return MDoorsTypes;
             }
         }
+
         public List<int> WindowColumns
         {
             get
@@ -1611,6 +1459,7 @@ namespace PFD
                 NotifyPropertyChanged("DisplayConnectors");
             }
         }
+
         public bool DisplayNodes
         {
             get
@@ -1913,6 +1762,7 @@ namespace PFD
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
+
         private void SetModelBays()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
@@ -1953,6 +1803,7 @@ namespace PFD
             }
             CheckDoorsBays();
         }
+
         private void SetDoorsBays(DoorProperties d)
         {
             if (d.sBuildingSide == "Front" && !d.Bays.SequenceEqual(frontBays)) d.Bays = frontBays;
@@ -1962,6 +1813,7 @@ namespace PFD
 
             CheckDoorsBays(d);
         }
+
         private void CheckDoorsBays()
         {
             foreach (DoorProperties d in MDoorBlocksProperties)
@@ -1969,13 +1821,14 @@ namespace PFD
                 if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
                 if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
                 {
-                    //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri                    
+                    //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
                     int bayNum = GetFreeBayFor(d);
                     if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
                     else d.iBayNumber = bayNum;
                 }
             }
         }
+
         private void CheckDoorsBays(DoorProperties d)
         {
             if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
@@ -1999,6 +1852,7 @@ namespace PFD
             }
             CheckWindowsBays();
         }
+
         private void SetWindowsBays(WindowProperties w)
         {
             if (w.sBuildingSide == "Front" && !w.Bays.SequenceEqual(frontBays)) w.Bays = frontBays;
@@ -2008,6 +1862,7 @@ namespace PFD
 
             CheckWindowsBays(w);
         }
+
         private void CheckWindowsBays()
         {
             foreach (WindowProperties w in MWindowBlocksProperties)
@@ -2022,6 +1877,7 @@ namespace PFD
                 }
             }
         }
+
         private void CheckWindowsBays(WindowProperties w)
         {
             if (w.iBayNumber > w.Bays.Count) w.iBayNumber = 1;
@@ -2033,6 +1889,7 @@ namespace PFD
                 else w.iBayNumber = bayNum;
             }
         }
+
         private int GetFreeBayFor(WindowProperties win)
         {
             foreach (int bayNum in win.Bays)
@@ -2041,6 +1898,7 @@ namespace PFD
             }
             return -1;
         }
+
         private int GetFreeBayFor(DoorProperties d)
         {
             foreach (int bayNum in d.Bays)
@@ -2055,6 +1913,7 @@ namespace PFD
             SetDoorsValidationProperties();
             SetWindowsValidationProperties();
         }
+
         private void SetDoorsValidationProperties()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
@@ -2063,6 +1922,7 @@ namespace PFD
                 d.SetValidationValues(MWallHeight, model.fL1_frame, model.fDist_FrontColumns, model.fDist_BackColumns);
             }
         }
+
         private void SetWindowsValidationProperties()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)this.Model;
@@ -2084,7 +1944,7 @@ namespace PFD
         public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
-            IsSetFromCode = true;            
+            IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
 
