@@ -637,12 +637,18 @@ namespace PFD
 
             // To Ondrej - doriesit zadavacie a vypoctove jednotky mm a m
             ConcreteCover = 75; // mm  0.075f; m
+
+            // ---------------------------------------------------------------------------------------------------
+            // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
+            // Alebo sa tu nastavia a podla toho sa vyrobi model
+            
             FloorSlabThickness = 125; // mm 0.125f; m
 
             SetDefaultFootingPadSize();
 
             Eccentricity_ex = 0; // m
             Eccentricity_ey = 0; // m
+            //----------------------------------------------------------------------------------------------------
 
             IsSetFromCode = false;
         }
@@ -757,6 +763,7 @@ namespace PFD
 
         private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
         {
+            // Pre priblizne urcenie poctu vyztuznych prutov pouzijeme ich defaultnu vzdialenost 150 mm medzi stredmi tyci
             float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
 
             // Number of spacings + 1

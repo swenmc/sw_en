@@ -131,7 +131,7 @@ namespace PFD
 
             set
             {
-                MComponentList = value;                
+                MComponentList = value;
                 NotifyPropertyChanged("ComponentList");
             }
         }
@@ -142,9 +142,8 @@ namespace PFD
         public CPFDJointsDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             SetLimitStates(limitStates);
-            SetComponentList(componentList);            
+            SetComponentList(componentList);
             m_allLoadCombinations = allLoadCombinations;
-
 
             // Set default
             LimitStateIndex = 0;
@@ -168,7 +167,7 @@ namespace PFD
                 MLimitStates.Add(ls);
             }
         }
-                
+ 
         private void SetLoadCombinations()
         {
             CLimitState limitState = LimitStates[LimitStateIndex];
