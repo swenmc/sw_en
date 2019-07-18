@@ -123,6 +123,9 @@
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="Infrastructure\CPlateHelper.cs" />
+    <Compile Include="UC_FootingDesign.xaml.cs">
+      <DependentUpon>UC_FootingDesign.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CComponentListVM.cs" />
     <Compile Include="CComboBoxHelper.cs" />
     <Compile Include="CComponentParamsViewList.cs" />
@@ -288,6 +291,10 @@
     <Page Include="UC_FootingInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC_FootingDesign.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_Joints.xaml">
       <Generator>MSBuild:Compile</Generator>
