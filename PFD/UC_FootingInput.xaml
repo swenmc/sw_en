@@ -62,9 +62,9 @@
                 ItemsSource="{Binding Path=ConcreteGradesList}" SelectedValue="{Binding Path=ConcreteGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Concrete Density:" VerticalAlignment="Top" Width="120"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxConcreteDensity" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+        <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxConcreteDensity" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=ConcreteDensity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[kg/m³]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[kg/m³]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Reinforcement Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_ReinforcementGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
@@ -79,17 +79,17 @@
         <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Bearing Capacity c s:" VerticalAlignment="Top" Width="120"/>
         <TextBox Grid.Row="8" Grid.Column="1" Name="TextBoxSoilBearingCapacity" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
             Text="{Binding Path=SoilBearingCapacity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[kPa]" VerticalAlignment="Top" Width="30"/>
+        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[kPa]" VerticalAlignment="Top" Width="30"/>
 
         <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Cover c:" VerticalAlignment="Top" Width="120"/>
         <TextBox Grid.Row="9" Grid.Column="1" Name="TextBoxConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
             Text="{Binding Path=ConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
+        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
         <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Thickness t:" VerticalAlignment="Top" Width="120"/>
         <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxFloorSlabThickness" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
             Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
+        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
         <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="100"/>
         <TextBlock Grid.Row="12" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Size x:" VerticalAlignment="Top" Width="100"/>
@@ -126,7 +126,7 @@
                   ItemsSource="{Binding Path=ReinforcementBarsCountList}" SelectedValue="{Binding Path=LongReinTop_x_No, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="16" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="x Ø" VerticalAlignment="Top" Width="20"/>
 
-        <ComboBox Grid.Row="16" Grid.Column="3" Name ="ComboBox_LongReinTop_x_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="20"
+        <ComboBox Grid.Row="16" Grid.Column="3" Name ="ComboBox_LongReinTop_x_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
             ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=LongReinTop_x_Phi, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="16" Grid.Column="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="/" VerticalAlignment="Top" Width="10"/>
@@ -141,13 +141,13 @@
 
         <TextBlock Grid.Row="17" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="x Ø" VerticalAlignment="Top" Width="20"/>
 
-        <ComboBox Grid.Row="17" Grid.Column="3" Name ="ComboBox_LongReinTop_y_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="20"
+        <ComboBox Grid.Row="17" Grid.Column="3" Name ="ComboBox_LongReinTop_y_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
              ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=LongReinTop_y_Phi, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="17" Grid.Column="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="/" VerticalAlignment="Top" Width="10"/>
-        <TextBox Grid.Row="17" Grid.Column="5" Name="TextBoxLongReinTop_y_distance_s_x" HorizontalAlignment="Left" Height="20"  TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
+        <TextBox Grid.Row="17" Grid.Column="5" Name="TextBoxLongReinTop_y_distance_s_x" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True" IsEnabled="False"
              Text="{Binding Path=LongReinTop_y_distance_s_x, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="17" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" Height="20" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
+        <TextBlock Grid.Row="17" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
 
         <!-- Bottom x -->
         <TextBlock Grid.Row="18" Grid.Column="0" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Bottom x-direction"/>
@@ -155,7 +155,7 @@
              ItemsSource="{Binding Path=ReinforcementBarsCountList}" SelectedValue="{Binding Path=LongReinBottom_x_No, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="18" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="x Ø" VerticalAlignment="Top" Width="20"/>
 
-        <ComboBox Grid.Row="18" Grid.Column="3" Name ="ComboBox_LongReinBottom_x_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="20"
+        <ComboBox Grid.Row="18" Grid.Column="3" Name ="ComboBox_LongReinBottom_x_Phi" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
             ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=LongReinBottom_x_Phi, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="18" Grid.Column="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="/" VerticalAlignment="Top" Width="10"/>
