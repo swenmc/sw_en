@@ -230,6 +230,7 @@ namespace DATABASE
             mat.m_fE = float.Parse(reader["E"].ToString(), nfi) * fFactorUnit_Stress;
             mat.m_fG = float.Parse(reader["G"].ToString(), nfi) * fFactorUnit_Stress;
             mat.m_fNu = float.Parse(reader["Nu"].ToString(), nfi);
+            mat.m_fRho = 7850; // TODO - zapracovat do databazy pripadne do GUI
 
             // Load number intervals of thickness depending values
             int intervals = int.Parse(reader["iNumberOfIntervals"].ToString());
@@ -298,6 +299,7 @@ namespace DATABASE
             mat.m_fE = (float)properties.E;
             mat.m_fG = (float)properties.G;
             mat.m_fNu = (float)properties.Nu;
+            mat.m_fRho = 7850; // TODO - zapracovat do databazy pripadne do GUI
 
             // Load number intervals of thickness depending values
             int intervals = properties.iNumberOfIntervals;

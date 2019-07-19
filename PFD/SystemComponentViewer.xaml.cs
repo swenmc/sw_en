@@ -2195,14 +2195,15 @@ namespace PFD
 
         private int GetPlateIndex(CPlate plate)
         {
-            // TODO Ondrej - nastavit index pre novy plech JCS
+            // TODO Ondrej - da sa na tieto indexy vymysliet nieco krajsie :)
 
-            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
-            else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
+            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
+                plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
+            else if (plate is CConCom_Plate_JCS ||
+                plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
-            //else if (plate is CConCom_Plate_O) return 5; // Plate O - pozor nie 5 ale 0
-            else return 0;
+            else return 0; // JA, KA, O
         }
 
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
