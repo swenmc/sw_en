@@ -209,8 +209,8 @@ namespace PFD
         public string[] arr_Serie_Y_Names = new string[1]
             {"Y"};
 
-        public string[] arr_Serie_J_Names = new string[2]
-        {"JA", "JB"};
+        public string[] arr_Serie_J_Names = new string[3]
+        {"JA", "JB", "JC"};
 
         public string[] arr_Serie_J_ScrewArrangement_Names = new string[3]
         {"Undefined",
@@ -295,11 +295,12 @@ namespace PFD
                 {140, 600, 270, 40, 3, 0}
         };
 
-        public float[,] arr_Serie_J_Dimension = new float[2, 7]
+        public float[,] arr_Serie_J_Dimension = new float[3, 7]
         {
                 // b, h1, h2, t, L, iHoles
-                {1400, 650, 800, 0, 3, 20, 4},
-                {1400, 650, 800, 50, 3, 20, 4}
+                {1400, 650, 800, 0, 3, 20, 4},  // JA
+                {1400, 650, 800, 50, 3, 20, 4}, // JB
+                {361, 260, 289, 50, 3, 20, 4}   // JC
         };
 
         public float[,] arr_Serie_K_Dimension = new float[5, 9]

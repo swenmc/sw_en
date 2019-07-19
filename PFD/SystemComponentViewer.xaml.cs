@@ -241,6 +241,27 @@ namespace PFD
             //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
             CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
 
+            // 270xx default
+            int iConnectorNumberInCircleSequence_270xx = 10;
+            float fConnectorRadiusInCircleSequence_270xx = 0.12f;
+
+            List<CScrewSequenceGroup> screwSeqGroups_270xx = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr1_270xx = new CScrewSequenceGroup();
+            gr1_270xx.NumberOfHalfCircleSequences = 2;
+            gr1_270xx.NumberOfRectangularSequences = 4;
+            gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+            gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+            screwSeqGroups.Add(gr1_270xx);
+            CScrewSequenceGroup gr2_270xx = new CScrewSequenceGroup();
+            gr2_270xx.NumberOfHalfCircleSequences = 2;
+            gr2_270xx.NumberOfRectangularSequences = 4;
+            gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+            gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+            screwSeqGroups.Add(gr2_270xx);
+
+            CScrewArrangementCircleApexOrKnee screwArrangementCircle_270 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 1, screwSeqGroups_270xx, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence_270xx, fConnectorRadiusInCircleSequence_270xx, iNumberOfAdditionalConnectorsInCorner, 0.025f, 0.025f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex_270 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.03f, 0.03f, 0.04f, 0.05f, 5, 2, 0.4f, 0.225f, 0.03f, 0.03f);
+
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             switch ((ESerieTypePlate)vm.ComponentSerieIndex)
             {
@@ -308,7 +329,7 @@ namespace PFD
                             else//(vm.ScrewArrangementIndex == 2) // Circle
                                 plate.ScrewArrangement = screwArrangementCircle;
                         }
-                        else //if (vm.ComponentIndex == 1) // JB
+                        else if (vm.ComponentIndex == 1) // JB
                         {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;
@@ -316,6 +337,15 @@ namespace PFD
                                 plate.ScrewArrangement = screwArrangementRectangleApex;
                             else//(vm.ScrewArrangementIndex == 2) // Circle
                                 plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else //if (vm.ComponentIndex == 2) // JC
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleApex_270;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle_270;
                         }
 
                         break;
@@ -1102,10 +1132,32 @@ namespace PFD
                 gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
                 screwSeqGroups.Add(gr2);
 
+                // 63020 default
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 8, 2, 0.15f, 0.55f, 0.075f, 0.05f);
                 //CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 12, 2, 0.040f, 0.047f, 0.050f, 0.158f, 12, 2, 0.040f, 0.425f, 0.050f, 0.158f, 12, 2, 0.05f, 0.047f, 0.05f, 0.158f, 14, 2, 0.05f, 0.425f, 0.05f, 0.158f);
+
+                // 270xx default
+                int iConnectorNumberInCircleSequence_270xx = 10;
+                float fConnectorRadiusInCircleSequence_270xx = 0.12f;
+
+                List<CScrewSequenceGroup> screwSeqGroups_270xx = new List<CScrewSequenceGroup>();
+                CScrewSequenceGroup gr1_270xx = new CScrewSequenceGroup();
+                gr1_270xx.NumberOfHalfCircleSequences = 2;
+                gr1_270xx.NumberOfRectangularSequences = 4;
+                gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+                gr1_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+                screwSeqGroups.Add(gr1_270xx);
+                CScrewSequenceGroup gr2_270xx = new CScrewSequenceGroup();
+                gr2_270xx.NumberOfHalfCircleSequences = 2;
+                gr2_270xx.NumberOfRectangularSequences = 4;
+                gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+                gr2_270xx.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence_270xx, iConnectorNumberInCircleSequence_270xx));
+                screwSeqGroups.Add(gr2_270xx);
+
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle_270 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 1, screwSeqGroups_270xx, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence_270xx, fConnectorRadiusInCircleSequence_270xx, iNumberOfAdditionalConnectorsInCorner, 0.025f, 0.025f);
+                CScrewArrangementRectApexOrKnee screwArrangementRectangleApex_270 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.27f, 0.27f - 2 * 0.007f - 2 * 0.00115f, 0.18f, 5, 2, 0.03f, 0.03f, 0.04f, 0.05f, 5, 2, 0.4f, 0.225f, 0.03f, 0.03f);
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
@@ -1156,7 +1208,7 @@ namespace PFD
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
-                            else //if (vm.ComponentIndex == 1) // JB
+                            else if (vm.ComponentIndex == 1) // JB
                             {
                                 if (bUseSimpleShapeOfPlates)
                                 {
@@ -1176,6 +1228,19 @@ namespace PFD
                                     else//(vm.ScrewArrangementIndex == 2) // Circle
                                         plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                                 }
+                            }
+                            else //(vm.ComponentIndex == 2) // JC
+                            {
+                                float fw = 0.205f; // TODO - dopracovat vypocet tak aby sa konvertovali hodnoty z databazy
+                                float fd = 0.27f;
+                                float fSlope_rad = 3f * MathF.fPI / 180f; // Default 3 stupne
+
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                    plate = new CConCom_Plate_JCS(dcomponents.arr_Serie_J_Names[2], controlpoint, fd, fw, fl, fSlope_rad, ft, 0, 0, 0, null, true);
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_JCS(dcomponents.arr_Serie_J_Names[2], controlpoint, fd, fw, fl, fSlope_rad, ft, 0, 0, 0, screwArrangementRectangleApex_270, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_JCS(dcomponents.arr_Serie_J_Names[2], controlpoint, fd, fw, fl, fSlope_rad, ft, 0, 0, 0, screwArrangementCircle_270, true);
                             }
 
                             break;
@@ -1792,6 +1857,30 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
+                else if (plate is CConCom_Plate_JCS)
+                {
+                    CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fw_apexHalfLength = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.Fd_crsc = float.Parse(changedText) / fLengthUnitFactor;
+
+                    if (bUseRoofSlope)
+                    {
+                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                    }
+                    else
+                    {
+                        // Not implemented !!!
+                        //if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                    }
+
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
                 else if (plate is CConCom_Plate_KA)
                 {
                     CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
@@ -2096,6 +2185,8 @@ namespace PFD
 
         private int GetPlateIndex(CPlate plate)
         {
+            // TODO Ondrej - nastavit index pre novy plech JCS
+
             if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;

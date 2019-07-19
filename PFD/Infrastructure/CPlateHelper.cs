@@ -535,6 +535,30 @@ namespace PFD
                 plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                 plate = plateTemp;
             }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
+
+                if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
+                if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fw_apexHalfLength = item_val / fLengthUnitFactor; // Half of apex length
+                if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) plateTemp.Fd_crsc = item_val / fLengthUnitFactor;
+
+                if (bUseRoofSlope)
+                {
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = item_val / fDegToRadianFactor;
+                }
+                else
+                {
+                    // Not implemented !!!
+                    //if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = item_val / fLengthUnitFactor;
+                }
+
+                if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = item_val / fLengthUnitFactor;
+
+                // Update plate data
+                plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                plate = plateTemp;
+            }
             else if (plate is CConCom_Plate_KA)
             {
                 CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
@@ -730,6 +754,25 @@ namespace PFD
                 else
                 {
                     geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
+                }
+
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit));
+            }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
+
+                geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidthS.Name, CParamsResources.PlateWidthS.Symbol, (Math.Round(plateTemp.Fw_apexHalfLength * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidthS.Unit));
+                geometry.Add(new CComponentParamsViewString(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(plateTemp.Fd_crsc * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
+
+                if (bUseRoofSlope)
+                {
+                    geometry.Add(new CComponentParamsViewString(CParamsResources.RoofSlopeS.Name, CParamsResources.RoofSlopeS.Symbol, (Math.Round(plateTemp.FSlope_rad * fUnitFactor_Rotation, iNumberOfDecimalPlaces_Rotation)).ToString(nfi), CParamsResources.RoofSlopeS.Unit, false));
+                }
+                else
+                {
+                    // Not implemented
+                    //geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
                 }
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit));
@@ -972,7 +1015,16 @@ namespace PFD
                             else // Circle
                                 plate.ScrewArrangement = screwArrangementCircle;
                         }
-                        else // JB
+                        else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)// JB
+                        {
+                            if (screwArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (screwArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleApex;
+                            else // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else // JC
                         {
                             if (screwArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;

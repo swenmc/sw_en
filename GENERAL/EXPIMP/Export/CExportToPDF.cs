@@ -329,6 +329,10 @@ namespace EXPIMP
             {
                 sFileName = "JB";
             }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                sFileName = "JC";
+            }
             else if (plate is CConCom_Plate_KB)
             {
                 CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
@@ -508,6 +512,12 @@ namespace EXPIMP
             else if (plate is CConCom_Plate_JBS)
             {
                 CConCom_Plate_JBS plateTemp = (CConCom_Plate_JBS)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_JCS)
+            {
+                CConCom_Plate_JCS plateTemp = (CConCom_Plate_JCS)plate;
                 plateName = "Apex Plate";
                 platePitch_rad = plateTemp.FSlope_rad;
             }
