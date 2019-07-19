@@ -271,19 +271,22 @@ namespace PFD
                         // "BB" - 1
                         // "BC" - 2
                         // "BD" - 3
-                        // "BE" - 4
-                        // "BF" - 5
-                        // "BG" - 6
-                        // "BH" - 7
-                        // "BI" - 8
-                        // "BJ" - 9
+                        // "BE-2 holes" - 4
+                        // "BE-3 holes" - 5
+                        // "BF-4 holes" - 6
+                        // "BF-6 holes" - 7
+                        // "BG" - 8
+                        // "BH" - 9
+                        // "BI" - 10
+                        // "BJ- 2 holes" - 11
+                        // "BJ- 3 holes" - 12
 
                         switch (vm.ComponentIndex)
                         {
                             case 0: // BA
                             case 1: // BB
                             case 2: // BC
-                            case 6: // BG
+                            case 8: // BG
                                 {
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
@@ -294,8 +297,11 @@ namespace PFD
                                 }
                             case 3: // BD
                             case 4: // BE
-                            case 5: // BF
-                            case 9: // BJ
+                            case 5: // BE
+                            case 6: // BF
+                            case 7: // BF
+                            case 11: // BJ
+                            case 12: // BJ
                                 {
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
