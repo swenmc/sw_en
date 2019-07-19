@@ -347,13 +347,14 @@ namespace BaseClasses
         }
 
         public override void Calc_HolesCentersCoord2DApexPlate(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
             float fSlope_rad)
         {
             // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
-            float fx_c = 0.00f;
+            float fx_c = fOffset_x + 0.00f;
             float fy_c = flZ + 0.00f;
 
             // Left side
@@ -449,14 +450,15 @@ namespace BaseClasses
         }
 
         public override void Calc_ApexPlateData(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
             float ft,
             float fSlope_rad)
         {
-            Calc_HolesCentersCoord2DApexPlate(fbX, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(0, flZ, ft);
+            Calc_HolesCentersCoord2DApexPlate(fOffset_x, fbX, flZ, fhY_1, fSlope_rad);
+            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft);
             GenerateConnectors_FlatPlate();
         }
 

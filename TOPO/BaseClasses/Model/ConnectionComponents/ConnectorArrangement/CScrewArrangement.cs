@@ -107,6 +107,7 @@ namespace BaseClasses
         { }
 
         public virtual void Calc_ApexPlateData(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
@@ -114,6 +115,7 @@ namespace BaseClasses
             float fSlope_rad)
         { }
         public virtual void Calc_HolesCentersCoord2DApexPlate(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
@@ -126,7 +128,7 @@ namespace BaseClasses
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
-                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate)
+                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate alebo apex JC)
                 arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (apex plate)
                 arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
             }

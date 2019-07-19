@@ -150,7 +150,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(m_fbX, m_flZ, m_fhY1, Ft, m_fSlope_rad);
+                screwArrangement.Calc_ApexPlateData(0, m_fbX, m_flZ, m_fhY1, Ft, m_fSlope_rad);
             }
 
             // Fill list of indices for drawing of surface

@@ -248,7 +248,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(m_fbX1, 0/*m_flZ*/, m_fhY1, Ft, m_fSlope_rad);
+                screwArrangement.Calc_ApexPlateData(m_fLipBase_dim_x, m_fbX1_AndLips, 0, m_fhY1, Ft, m_fSlope_rad);
             }
 
             // Fill list of indices for drawing of surface
@@ -389,7 +389,7 @@ namespace BaseClasses
 
             arrPoints3D[7].X = m_fbX1 + fx_temp5;
             arrPoints3D[7].Y = arrPoints3D[0].Y;
-            arrPoints3D[7].Z = 0;
+            arrPoints3D[7].Z = arrPoints3D[0].Z;
 
             arrPoints3D[8].X = m_fbX1 + fx_temp7;
             arrPoints3D[8].Y = fy_temp7;
@@ -418,6 +418,14 @@ namespace BaseClasses
             arrPoints3D[14].X = arrPoints3D[13].X - fx_temp2;
             arrPoints3D[14].Y = arrPoints3D[10].Y;
             arrPoints3D[14].Z = arrPoints3D[10].Z;
+
+            arrPoints3D[15].X = arrPoints3D[14].X;
+            arrPoints3D[15].Y = arrPoints3D[14].Y;
+            arrPoints3D[15].Z = arrPoints3D[9].Z;
+
+            arrPoints3D[16].X = arrPoints3D[15].X;
+            arrPoints3D[16].Y = arrPoints3D[15].Y;
+            arrPoints3D[16].Z = arrPoints3D[8].Z;
 
             int i_temp = 17;  // Number of point in first layer
 
@@ -546,20 +554,19 @@ namespace BaseClasses
             // Front Side
             AddPenthagonIndices_CW_12345(TriangleIndices, 18, 24, 23, 22, 19);
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 16, 25, 17);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 20, 21, 8, 7);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 17, 25, 16);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 7,8,21, 20);
 
             // Shell Surface
-            AddPenthagonIndices_CCW_12345(TriangleIndices, 0, 1, 2, 14, 16);
+            AddPenthagonIndices_CCW_12345(TriangleIndices, 0, 16,14,2,1);
             AddRectangleIndices_CCW_1234(TriangleIndices, 17, 18, 24, 25);
 
-            AddPenthagonIndices_CCW_12345(TriangleIndices, 5, 6, 7, 8, 10);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 4, 22, 21, 20);
+            AddPenthagonIndices_CCW_12345(TriangleIndices, 5, 10, 8,7,6);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 19, 20, 21, 22);
 
             // Bottom
-
-            AddRectangleIndices_CCW_1234(TriangleIndices, 0,1,18,17);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 1,2,3,18);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 1, 18, 17);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 2, 3, 18);
 
             AddRectangleIndices_CCW_1234(TriangleIndices, 3, 4, 19, 18);
 
@@ -567,104 +574,85 @@ namespace BaseClasses
             AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 20, 19);
 
             // Top
-            AddRectangleIndices_CCW_1234(TriangleIndices, 16, 15, 24, 25);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 15, 14, 13, 24);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 13, 12, 23, 24);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 15, 16, 25, 24);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 13, 14, 15, 24);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 13, 24, 23, 12);
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 12, 11, 22, 23);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 11, 10, 9, 22);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 9, 8, 21, 22);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 12, 23, 22, 11);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 9, 10, 11, 22);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 8, 9, 22, 21);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 
-            /*
-Point3D pi = new Point3D();
-Point3D pj = new Point3D();
+            Point3D pi = new Point3D();
+            Point3D pj = new Point3D();
 
-for (int i = 0; i < 15; i++)
-{
-    if (i < (15) - 1)
-    {
-        pi = arrPoints3D[i];
-        pj = arrPoints3D[i + 1];
-    }
-    else // Last line
-    {
-        pi = arrPoints3D[i];
-        pj = arrPoints3D[0];
-    }
+            for (int i = 0; i < 17; i++)
+            {
+                if (i < (17) - 1)
+                {
+                    pi = arrPoints3D[i];
+                    pj = arrPoints3D[i + 1];
+                }
+                else // Last line
+                {
+                    pi = arrPoints3D[i];
+                    pj = arrPoints3D[0];
+                }
 
-    // Add points
-    wireFrame.Points.Add(pi);
-    wireFrame.Points.Add(pj);
-}
+                // Add points
+                wireFrame.Points.Add(pi);
+                wireFrame.Points.Add(pj);
+            }
 
-for (int i = 0; i < 12; i++)
-{
-    if (i < (12) - 1)
-    {
-        pi = arrPoints3D[15 + i];
-        pj = arrPoints3D[15 + i + 1];
-    }
-    else // Last line
-    {
-        pi = arrPoints3D[15 + i];
-        pj = arrPoints3D[15];
-    }
+            for (int i = 0; i < 9; i++)
+            {
+                if (i < (9) - 1)
+                {
+                    pi = arrPoints3D[17 + i];
+                    pj = arrPoints3D[17 + i + 1];
+                }
+                else // Last line
+                {
+                    pi = arrPoints3D[17 + i];
+                    pj = arrPoints3D[17];
+                }
 
-    // Add points
-    wireFrame.Points.Add(pi);
-    wireFrame.Points.Add(pj);
-}
+                // Add points
+                wireFrame.Points.Add(pi);
+                wireFrame.Points.Add(pj);
+            }
 
-// Front
-wireFrame.Points.Add(arrPoints3D[17]);
-wireFrame.Points.Add(arrPoints3D[26]);
+            // Front
+            wireFrame.Points.Add(arrPoints3D[18]);
+            wireFrame.Points.Add(arrPoints3D[24]);
 
-wireFrame.Points.Add(arrPoints3D[18]);
-wireFrame.Points.Add(arrPoints3D[21]);
+            wireFrame.Points.Add(arrPoints3D[19]);
+            wireFrame.Points.Add(arrPoints3D[22]);
 
-wireFrame.Points.Add(arrPoints3D[22]);
-wireFrame.Points.Add(arrPoints3D[25]);
+            // Back
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[14]);
 
-// Back
-wireFrame.Points.Add(arrPoints3D[2]);
-wireFrame.Points.Add(arrPoints3D[14]);
+            wireFrame.Points.Add(arrPoints3D[5]);
+            wireFrame.Points.Add(arrPoints3D[10]);
 
-wireFrame.Points.Add(arrPoints3D[3]);
-wireFrame.Points.Add(arrPoints3D[7]);
+            // Lateral
+            wireFrame.Points.Add(arrPoints3D[0]);
+            wireFrame.Points.Add(arrPoints3D[17]);
 
-wireFrame.Points.Add(arrPoints3D[9]);
-wireFrame.Points.Add(arrPoints3D[13]);
+            wireFrame.Points.Add(arrPoints3D[16]);
+            wireFrame.Points.Add(arrPoints3D[25]);
 
-// Lateral
-wireFrame.Points.Add(arrPoints3D[0]);
-wireFrame.Points.Add(arrPoints3D[15]);
+             wireFrame.Points.Add(arrPoints3D[8]);
+            wireFrame.Points.Add(arrPoints3D[21]);
 
-wireFrame.Points.Add(arrPoints3D[1]);
-wireFrame.Points.Add(arrPoints3D[16]);
+            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[20]);
 
-wireFrame.Points.Add(arrPoints3D[4]);
-wireFrame.Points.Add(arrPoints3D[18]);
-
-wireFrame.Points.Add(arrPoints3D[5]);
-wireFrame.Points.Add(arrPoints3D[19]);
-
-wireFrame.Points.Add(arrPoints3D[6]);
-wireFrame.Points.Add(arrPoints3D[20]);
-
-wireFrame.Points.Add(arrPoints3D[10]);
-wireFrame.Points.Add(arrPoints3D[23]);
-
-wireFrame.Points.Add(arrPoints3D[11]);
-wireFrame.Points.Add(arrPoints3D[24]);
-
-wireFrame.Points.Add(arrPoints3D[12]);
-wireFrame.Points.Add(arrPoints3D[25]);
-*/
             return wireFrame;
         }
     }

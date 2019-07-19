@@ -544,6 +544,7 @@ namespace BaseClasses
         }
 
         public override void Calc_HolesCentersCoord2DApexPlate(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
@@ -555,7 +556,7 @@ namespace BaseClasses
             float fCenterPosition_original_unrotated_x = ((fbX / 2f) / (float)Math.Cos(fSlope_rad)) - fcut - 0.5f * FCrscRafterDepth;
             float fCenterPosition_original_unrotated_y = 0.5f * FCrscRafterDepth;
 
-            float fx_c1 = Geom2D.GetRotatedPosition_x_CCW_rad(fCenterPosition_original_unrotated_x, fCenterPosition_original_unrotated_y, fSlope_rad);
+            float fx_c1 = fOffset_x + Geom2D.GetRotatedPosition_x_CCW_rad(fCenterPosition_original_unrotated_x, fCenterPosition_original_unrotated_y, fSlope_rad);
             float fy_c1 = flZ + Geom2D.GetRotatedPosition_y_CCW_rad(fCenterPosition_original_unrotated_x, fCenterPosition_original_unrotated_y, fSlope_rad);
 
             float fx_c2 = fbX - fx_c1; // Symmetrical
@@ -617,14 +618,15 @@ namespace BaseClasses
         }
 
         public override void Calc_ApexPlateData(
+            float fOffset_x,
             float fbX,
             float flZ,
             float fhY_1,
             float ft,
             float fSlope_rad)
         {
-            Calc_HolesCentersCoord2DApexPlate(fbX, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(0, flZ, ft);
+            Calc_HolesCentersCoord2DApexPlate(fOffset_x, fbX, flZ, fhY_1, fSlope_rad);
+            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft);
             GenerateConnectors_FlatPlate();
         }
 
