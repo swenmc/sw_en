@@ -2235,7 +2235,7 @@ namespace PFD
             else if (plate is CConCom_Plate_JCS ||
                 plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
-            else if (plate is CConCom_Plate_KES) return 4;
+            else if (plate is CConCom_Plate_KES) return 4; // TO Ondrej ak KES dedi od KC, tak sa to sem asi nedostane ???
             else if (plate is CConCom_Plate_KK) return 5;
             else return 0; // JA, KA, O
         }
