@@ -1329,14 +1329,23 @@ namespace PFD
                                         plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                                 }
                             }
+                            else if (vm.ComponentIndex == 4) // KES
+                            {
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                    plate = new CConCom_Plate_KES(dcomponents.arr_Serie_K_Names[4], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_KES(dcomponents.arr_Serie_K_Names[4], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_KES(dcomponents.arr_Serie_K_Names[4], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                            }
                             else // KK - TODO - screws are not implemented !!!
                             {
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[5], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[5], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                    plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[5], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
                             break;
                         }
@@ -1985,6 +1994,30 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
+                else if (plate is CConCom_Plate_KES)
+                {
+                    CConCom_Plate_KES plateTemp = (CConCom_Plate_KES)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+
+                    if (bUseRoofSlope)
+                    {
+                        if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+                    }
+                    else
+                    {
+                        if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+                    }
+
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
                 else if (plate is CConCom_Plate_KK) // Nepouzivat, kym nebude zobecnene screw arrangement
                 {
                     CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
@@ -2202,7 +2235,8 @@ namespace PFD
             else if (plate is CConCom_Plate_JCS ||
                 plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
-            else if (plate is CConCom_Plate_KK) return 4;
+            else if (plate is CConCom_Plate_KES) return 4;
+            else if (plate is CConCom_Plate_KK) return 5;
             else return 0; // JA, KA, O
         }
 

@@ -217,8 +217,13 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
-        public string[] arr_Serie_K_Names = new string[5]
-        {"KA", "KB", "KC", "KD", "KK"};
+        public string[] arr_Serie_K_Names = new string[6]
+        {"KA",
+         "KB",
+         "KC",
+         "KD",
+         "KE",
+         "KK"};
 
         public string[] arr_Serie_K_ScrewArrangement_Names = new string[3]
         {"Undefined",
@@ -297,20 +302,21 @@ namespace PFD
 
         public float[,] arr_Serie_J_Dimension = new float[3, 7]
         {
-                // b, h1, h2, t, L, iHoles
+                // b, h1, h2, l, t, radius holes, corner holes
                 {1400, 650, 800, 0, 3, 20, 4},  // JA
                 {1400, 650, 800, 50, 3, 20, 4}, // JB
                 {361, 260, 289, 50, 3, 20, 4}   // JC
         };
 
-        public float[,] arr_Serie_K_Dimension = new float[5, 9]
+        public float[,] arr_Serie_K_Dimension = new float[6, 9]
         {
-                // bR, b, h, b2, h2, l, t, iHoles
-                {0, 630, 1250, 800, 1400, 0, 3, 20, 4},
+                // bR, b, h, b2, h2, l, t, radius holes, corner holes
+                {0, 630, 1250, 800, 1400, 0, 3, 20, 4},   // KA
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KB
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KC
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KD
-                {200, 630, 1250, 800, 1400, 50, 3, 20, 4}
+                {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KE
+                {200, 630, 1250, 800, 1400, 50, 3, 20, 4} // KK
         };
 
         public float[,] arr_Serie_N_Dimension = new float[1, 6]
@@ -379,10 +385,10 @@ namespace PFD
 
         public Color[] arr_Serie_C_FS_Colors = new Color[4]
         {
-            Colors.Yellow,
-            Colors.Violet,
-            Color.FromRgb(254,153,0), // Orange Peel
-            Colors.Green
+                Colors.Yellow,
+                Colors.Violet,
+                Color.FromRgb(254,153,0), // Orange Peel
+                Colors.Green
         };
 
         public float[,] arr_Serie_C_FS_Dimension = new float[4, 3]
@@ -400,7 +406,7 @@ namespace PFD
 
         public Color[] arr_Serie_C_BtoB_FS_Colors = new Color[1]
         {
-            Color.FromRgb(204,204,204)
+               Color.FromRgb(204,204,204)
         };
 
         public float[,] arr_Serie_C_BtoB_FS_Dimension = new float[1, 4]
@@ -416,8 +422,8 @@ namespace PFD
 
         public Color[] arr_Serie_C_Nested_FS_Colors = new Color[2]
         {
-            Color.FromRgb(122,40,204),
-            Color.FromRgb(10,40,200)
+               Color.FromRgb(122,40,204),
+               Color.FromRgb(10,40,200)
         };
 
         public float[,] arr_Serie_C_Nested_FS_Dimension = new float[2, 3]
@@ -435,9 +441,9 @@ namespace PFD
 
         public Color[] arr_Serie_Box63020_FS_Colors = new Color[3]
         {
-            Color.FromRgb(0,38,255),  // Blue
-            Color.FromRgb(0,148,255), // Blue
-            Color.FromRgb(0,255,255)  // Blue
+               Color.FromRgb(0,38,255),  // Blue
+               Color.FromRgb(0,148,255), // Blue
+               Color.FromRgb(0,255,255)  // Blue
         };
 
         public float[,] arr_Serie_Box63020_FS_Dimension = new float[3, 5]
@@ -449,7 +455,7 @@ namespace PFD
 
         public List<string> arr_Serie_Screws_Names = new List<string>
         {
-            "Hex Head Tek"
+               "Hex Head Tek"
         };
     }
 }

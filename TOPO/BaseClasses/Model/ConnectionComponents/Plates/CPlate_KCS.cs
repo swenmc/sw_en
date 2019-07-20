@@ -140,7 +140,7 @@ namespace BaseClasses
             arrPoints3D[7].Z = arrPoints3D[1].Z;
 
             arrPoints3D[8].X = arrPoints3D[1].X;
-            arrPoints3D[8].Y = arrPoints3D[7].Y - (FSlope_rad > 0 ? fy_temp4 : 0); ;
+            arrPoints3D[8].Y = arrPoints3D[7].Y - (FSlope_rad > 0 ? fy_temp4 : 0);
             arrPoints3D[8].Z = arrPoints3D[0].Z;
 
             // Second layer

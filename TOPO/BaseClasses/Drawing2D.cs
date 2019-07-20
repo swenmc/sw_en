@@ -240,7 +240,7 @@ namespace BaseClasses
         private static CNote2D GetNoteForPlate(CPlate plate)
         {
             CNote2D note2D = null;
-            if (plate is CConCom_Plate_KB)
+            if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
             {
                 CConCom_Plate_KB kb = (CConCom_Plate_KB)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kb.PointsOut2D);
@@ -251,8 +251,9 @@ namespace BaseClasses
                     note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
                 }
             }
-            else if (plate is CConCom_Plate_KC)
+            else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
             {
+                // TODO - Ondrej, kedze plech KES dedi of KC tak pre plech KE to padne sem, potreboval by som odchytit ze je to KES a zobrazit Trim Off len ak je sklon FSlope zaporny vid riadok 277-287
                 CConCom_Plate_KC kc = (CConCom_Plate_KC)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kc.PointsOut2D);
                 if (kc.pTip != null)
@@ -262,7 +263,7 @@ namespace BaseClasses
                     note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", 0, 0, true, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
                 }
             }
-            else if (plate is CConCom_Plate_KD)
+            else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
             {
                 CConCom_Plate_KD kd = (CConCom_Plate_KD)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kd.PointsOut2D);
@@ -271,6 +272,17 @@ namespace BaseClasses
                     double moveX = Math.Abs(kd.pTip.X) < 1 ? kd.pTip.X / 10 : kd.pTip.X / 18;
                     double moveY = Math.Abs(kd.pTip.Y) < 1 ? kd.pTip.Y / 10 : kd.pTip.Y / 25;
                     note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", 0, 0, true, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+                }
+            }
+            else if (plate is CConCom_Plate_KES)
+            {
+                CConCom_Plate_KES ke = (CConCom_Plate_KES)plate;
+                Point plateCenter = Drawing2D.CalculateModelCenter(ke.PointsOut2D);
+                if (ke.pTip != null && ke.FSlope_rad < 0) // Display note only for falling knee
+                {
+                    double moveX = Math.Abs(ke.pTip.X) < 1 ? ke.pTip.X / 10 : ke.pTip.X / 18;
+                    double moveY = Math.Abs(ke.pTip.Y) < 1 ? ke.pTip.Y / 10 : ke.pTip.Y / 25;
+                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", 0, 0, true, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
                 }
             }
             return note2D;
