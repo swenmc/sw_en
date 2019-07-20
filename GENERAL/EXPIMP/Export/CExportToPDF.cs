@@ -430,7 +430,7 @@ namespace EXPIMP
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
             {
                 if (plate is CConCom_Plate_KA) return;
-                if (plate is CConCom_Plate_KE) return;
+                if (plate is CConCom_Plate_KK) return;
                 //gfx.DrawString("RH: ", font, XBrushes.Black, 460, 20);
                 gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 486, 75);
                 //gfx.DrawString("LH: ", font, XBrushes.Black, 480, 20);
@@ -591,9 +591,9 @@ namespace EXPIMP
                 else
                     plateName = "Knee Plate - falling";
             }
-            else if (plate is CConCom_Plate_KE)
+            else if (plate is CConCom_Plate_KK)
             {
-                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
                 platePitch_rad = plateTemp.FSlope_rad;
 
                 if (plateTemp.FSlope_rad > 0)

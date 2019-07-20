@@ -187,7 +187,7 @@
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TA01.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JB.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JA.cs" />
-    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KE.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KK.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KB.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KA.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_BB_BG.cs" />

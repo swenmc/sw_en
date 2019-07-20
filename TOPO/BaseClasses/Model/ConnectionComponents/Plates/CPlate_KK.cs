@@ -9,7 +9,7 @@ using BaseClasses.GraphObj;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KE : CPlate
+    public class CConCom_Plate_KK : CPlate
     {
         private float m_fbXR; // Rafter Width
 
@@ -115,14 +115,14 @@ namespace BaseClasses
             }
         }
 
-        public CConCom_Plate_KE()
+        public CConCom_Plate_KK()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             m_ePlateSerieType_FS = ESerieTypePlate.eSerie_K;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_KE(string sName_temp,
+        public CConCom_Plate_KK(string sName_temp,
             GraphObj.CPoint controlpoint,
             float fb_R_temp,
             float fb_1_temp,

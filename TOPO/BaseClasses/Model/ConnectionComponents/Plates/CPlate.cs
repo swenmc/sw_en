@@ -943,7 +943,7 @@ namespace BaseClasses
             if (this.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
             {
                 if (this is CConCom_Plate_KA) return true;
-                if (this is CConCom_Plate_KE) return true;
+                if (this is CConCom_Plate_KK) return true;
 
                 return false;
             }

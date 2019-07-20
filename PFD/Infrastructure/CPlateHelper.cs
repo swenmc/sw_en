@@ -653,9 +653,9 @@ namespace PFD
                 plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                 plate = plateTemp;
             }
-            else if (plate is CConCom_Plate_KE) // Nepouzivat, kym nebude zobecnene screw arrangement
+            else if (plate is CConCom_Plate_KK) // Nepouzivat, kym nebude zobecnene screw arrangement
             {
-                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
 
                 if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = item_val / fLengthUnitFactor;
                 if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = item_val / fLengthUnitFactor;
@@ -851,9 +851,9 @@ namespace PFD
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit));
             }
-            else if (plate is CConCom_Plate_KE)
+            else if (plate is CConCom_Plate_KK)
             {
-                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth1S.Name, CParamsResources.PlateWidth1S.Symbol, (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth1S.Unit));
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateWidth2S.Name, CParamsResources.PlateWidth2S.Symbol, (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateWidth2S.Unit));

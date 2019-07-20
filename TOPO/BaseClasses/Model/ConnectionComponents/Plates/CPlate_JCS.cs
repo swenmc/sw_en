@@ -363,12 +363,12 @@ namespace BaseClasses
             arrPoints3D[0].Y = fy_temp5;
             arrPoints3D[0].Z = Fl_Z;
 
-            arrPoints3D[1].X = 0;
-            arrPoints3D[1].Y = 0;
+            arrPoints3D[1].X = 0; // Mala by byt ina
+            arrPoints3D[1].Y = 0; // Mala by byt ina
             arrPoints3D[1].Z = Ft;
 
-            arrPoints3D[2].X = 0;
-            arrPoints3D[2].Y = 0;
+            arrPoints3D[2].X = 0; // Mala by byt ina
+            arrPoints3D[2].Y = 0; // Mala by byt ina
             arrPoints3D[2].Z = 0;
 
             arrPoints3D[3].X = fx_temp2;

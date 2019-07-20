@@ -130,7 +130,7 @@ namespace BaseClasses
             {
                 arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate alebo apex JC)
                 arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (apex plate)
-                arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
+                arrConnectorControlPoints3D[i].Z = -0.8*ft; // TODO Position depends on screw length // Zaciatok skrutky vycnieva 80% z hrubky plechu (dopracovat tak ze budeme poznat dlzku skrutky a pozicia zaciatku bude urcena podla hrubky plechu a dlzky skrutky
             }
         }
 

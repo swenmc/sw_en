@@ -218,7 +218,7 @@ namespace PFD
          "Circle"};
 
         public string[] arr_Serie_K_Names = new string[5]
-        {"KA", "KB", "KC", "KD", "KE"};
+        {"KA", "KB", "KC", "KD", "KK"};
 
         public string[] arr_Serie_K_ScrewArrangement_Names = new string[3]
         {"Undefined",
