@@ -115,6 +115,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorRectSequence.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_B_basic.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JCS.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KFS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KES.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TD01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TC01.cs" />

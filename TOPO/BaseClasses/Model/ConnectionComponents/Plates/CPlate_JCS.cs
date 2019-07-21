@@ -482,7 +482,7 @@ namespace BaseClasses
             Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[4].X, PointsOut2D[3].Y), false, true);
 
             // Left side
-            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[7], true, true, 80);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[7], false, true, 80);
 
             // Right side
             Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
@@ -500,7 +500,7 @@ namespace BaseClasses
             Dimensions[12] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), new Point(PointsOut2D[4].X, PointsOut2D[6].Y), true, true, 50);
 
             // Slope
-            Dimensions[13] = new CDimensionArc(plateCenter, new Point(0.5f * PointsOut2D[6].X, PointsOut2D[7].Y), PointsOut2D[6], PointsOut2D[7]);
+            Dimensions[13] = new CDimensionArc(plateCenter, new Point(PointsOut2D[6].X, PointsOut2D[7].Y), PointsOut2D[6], PointsOut2D[7]);
         }
 
         public override void Set_MemberOutlinePoints2D()

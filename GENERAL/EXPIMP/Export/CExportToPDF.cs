@@ -403,6 +403,16 @@ namespace EXPIMP
                 else
                     sFileName = "KE_FK";
             }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS plateTemp = (CConCom_Plate_KFS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KF_RK";
+                else
+                    sFileName = "KF_FK";
+            }
             else if (plate is CConCom_Plate_O)
             {
                 CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
@@ -604,6 +614,16 @@ namespace EXPIMP
             else if (plate is CConCom_Plate_KES)
             {
                 CConCom_Plate_KES plateTemp = (CConCom_Plate_KES)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS plateTemp = (CConCom_Plate_KFS)plate;
                 platePitch_rad = plateTemp.FSlope_rad;
 
                 if (plateTemp.FSlope_rad > 0)

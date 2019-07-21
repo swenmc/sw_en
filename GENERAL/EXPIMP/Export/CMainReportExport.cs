@@ -391,6 +391,16 @@ namespace EXPIMP
                 else
                     plateName = "Knee Plate - falling";
             }
+            else if (plate is CConCom_Plate_KFS)
+            {
+                CConCom_Plate_KFS plateTemp = (CConCom_Plate_KFS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
             else if (plate is CConCom_Plate_KK)
             {
                 CConCom_Plate_KK plateTemp = (CConCom_Plate_KK)plate;
