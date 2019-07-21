@@ -535,7 +535,9 @@ namespace PFD
                 BtnLoadPlate.Visibility = Visibility.Visible;
 
                 //mozno by sa to dalo naviazat na plate.IsSymmetric() metodu
-                if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K && (vm.ComponentIndex != 0 && vm.ComponentIndex != 4))
+                if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K &&
+                    (vm.ComponentIndex != 0 && // Plate KA
+                     vm.ComponentIndex != 5))  // Plate KK
                 {
                     LabelAmountRH.Visibility = Visibility.Visible;
                     TextBoxAmountRH.Visibility = Visibility.Visible;
@@ -2229,14 +2231,14 @@ namespace PFD
         private int GetPlateIndex(CPlate plate)
         {
             // TODO Ondrej - da sa na tieto indexy vymysliet nieco krajsie :)
-            Type plateObjectClassType = plate.GetType(); // pre porovnanie plate KES , akurat neviem co s tym
+            //Type plateObjectClassType = plate.GetType(); // pre porovnanie plate ak plate A dedi od plate B , akurat neviem co s tym
 
             if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
                 plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
             else if (plate is CConCom_Plate_JCS ||
                 plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
-            else if (plate is CConCom_Plate_KES) return 4; // TO Ondrej ak KES dedi od KC, tak sa to sem asi nedostane ???
+            else if (plate is CConCom_Plate_KES) return 4;
             else if (plate is CConCom_Plate_KK) return 5;
             else return 0; // JA, KA, O
         }

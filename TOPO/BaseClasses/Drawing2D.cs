@@ -253,7 +253,6 @@ namespace BaseClasses
             }
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
             {
-                // TODO - Ondrej, kedze plech KES dedi of KC tak pre plech KE to padne sem, potreboval by som odchytit ze je to KES a zobrazit Trim Off len ak je sklon FSlope zaporny vid riadok 277-287
                 CConCom_Plate_KC kc = (CConCom_Plate_KC)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kc.PointsOut2D);
                 if (kc.pTip != null)

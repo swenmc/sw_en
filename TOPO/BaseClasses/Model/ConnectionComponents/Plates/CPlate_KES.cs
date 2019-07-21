@@ -9,8 +9,99 @@ using MATH;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KES : CConCom_Plate_KC
+    public class CConCom_Plate_KES : CPlate
     {
+        private float m_fbX1;
+
+        public float Fb_X1
+        {
+            get
+            {
+                return m_fbX1;
+            }
+
+            set
+            {
+                m_fbX1 = value;
+            }
+        }
+
+        private float m_fhY1;
+
+        public float Fh_Y1
+        {
+            get
+            {
+                return m_fhY1;
+            }
+
+            set
+            {
+                m_fhY1 = value;
+            }
+        }
+        private float m_fbX2;
+
+        public float Fb_X2
+        {
+            get
+            {
+                return m_fbX2;
+            }
+
+            set
+            {
+                m_fbX2 = value;
+            }
+        }
+
+        private float m_fhY2;
+
+        public float Fh_Y2
+        {
+            get
+            {
+                return m_fhY2;
+            }
+
+            set
+            {
+                m_fhY2 = value;
+            }
+        }
+
+        private float m_flZ;
+
+        public float Fl_Z
+        {
+            get
+            {
+                return m_flZ;
+            }
+
+            set
+            {
+                m_flZ = value;
+            }
+        }
+
+        float m_fSlope_rad;
+
+        public float FSlope_rad
+        {
+            get
+            {
+                return m_fSlope_rad;
+            }
+
+            set
+            {
+                m_fSlope_rad = value;
+            }
+        }
+
+        public Point pTip;
+
         public CConCom_Plate_KES()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -112,6 +203,43 @@ namespace BaseClasses
             Set_BendLinesPoints2D();
         }
 
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
+            Width_bx = Math.Max(m_fbX1, m_fbX2);
+            Height_hy = Math.Max(m_fhY1, m_fhY2);
+            fArea = PolygonArea();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fMass = GetMassIgnoringHoles();
+
+            fA_g = Get_A_rect(Ft, m_fbX1);
+            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+
+            fA_n = fA_g;
+
+            if (screwArrangement != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
+            fA_v_zv = Get_A_rect(Ft, m_fbX1);
+
+            fA_vn_zv = fA_v_zv;
+
+            if (screwArrangement != null)
+            {
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
+            fI_yu = Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
+
+            ScrewArrangement = screwArrangement;
+
+            DrillingRoutePoints = null;
+        }
+
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
@@ -208,7 +336,7 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 11;
+            int iNumberOfDimensions = 12;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
@@ -216,47 +344,141 @@ namespace BaseClasses
             Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
             Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], new Point(PointsOut2D[3].X, PointsOut2D[2].Y), false, true);
- 
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[2], false, true, 53);
+
             // Top
-            Dimensions[3] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, pTip.Y), new Point(PointsOut2D[5].X, pTip.Y), true, true, 53);
+            Dimensions[4] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, pTip.Y), new Point(PointsOut2D[5].X, pTip.Y), true, true, 53);
 
             if (FSlope_rad > 0)
             {
-                Dimensions[4] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), new Point(PointsOut2D[4].X, pTip.Y));
-                Dimensions[5] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, pTip.Y), new Point(PointsOut2D[3].X, pTip.Y));
+                Dimensions[5] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), new Point(PointsOut2D[4].X, pTip.Y));
+                Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, pTip.Y), new Point(PointsOut2D[3].X, pTip.Y));
             }
             else
             {
-                Dimensions[4] = new CDimensionLinear(plateCenter, pTip, new Point(PointsOut2D[4].X, pTip.Y));
-                Dimensions[5] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, pTip.Y), new Point(PointsOut2D[3].X, pTip.Y));
+                Dimensions[5] = new CDimensionLinear(plateCenter, pTip, new Point(PointsOut2D[4].X, pTip.Y));
+                Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, pTip.Y), new Point(PointsOut2D[3].X, pTip.Y));
             }
 
             // Vertical
             if (FSlope_rad > 0)
             {
-                Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
-                Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[5], new Point(PointsOut2D[5].X, PointsOut2D[3].Y), true, true);
+                Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[5], new Point(PointsOut2D[5].X, PointsOut2D[3].Y), true, true);
 
-                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
-                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[4], true, true, 95); // hY1
+                Dimensions[9] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
+                Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[4], true, true, 95); // hY1
 
-                Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[4], true, true, 95); // hY1 // Kopia kvoli rovnakemu poctu kot, prerobit na iny pocet kot pre falling and rising knee
+                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[4], true, true, 95); // hY1 // Kopia kvoli rovnakemu poctu kot, prerobit na iny pocet kot pre falling and rising knee
             }
             else
             {
-                Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
-                Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, pTip.Y), false, true);
+                Dimensions[7] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, pTip.Y), false, true);
 
-                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
-                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[5], pTip, false, true);
-                Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 55);
+                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
+                Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[5], pTip, false, true);
+                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 55);
             }
 
-            Dimensions[11] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[4].Y), PointsOut2D[3], PointsOut2D[4]);
+            Dimensions[12] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[4].Y), PointsOut2D[3], PointsOut2D[4]);
         }
 
         public override void Set_MemberOutlinePoints2D()
         {
+            int iNumberOfLines = 4 + 2;
+            MemberOutlines = new CLine2D[iNumberOfLines];
+
+            // Skratenie pruta v smere pruta (5 mm)
+            float fcut = 0.005f;
+
+            float fdepth = Fb_X1; // ???
+
+            float fx1 = Fl_Z + fdepth;
+            float fy1 = fdepth - fcut;
+
+            float fx2 = Fl_Z;
+            float fy2 = fy1;
+
+            float fb1_y = (float)PointsOut2D[4].Y - fdepth * (float)Math.Cos(FSlope_rad); // Teoreticky bod, kde sa stretne rafter a column ak neuvazujeme skratenie prutov
+            float fb1_x = Fl_Z + fdepth * (float)Math.Sin(FSlope_rad);
+
+            float faux_x = fcut * (float)Math.Cos(FSlope_rad);
+            float faux_y = fcut * (float)Math.Sin(FSlope_rad);
+
+            float fx3 = (float)PointsOut2D[4].X + faux_x; // Vlavo hore
+            float fy3 = (float)PointsOut2D[4].Y + faux_y;
+
+            float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
+            float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
+
+            // Theoretical tip point - 2 lines
+            float fx6 = (float)PointsOut2D[3].X;
+            float fy6 = (float)PointsOut2D[3].Y;
+
+            float fx7 = (float)PointsOut2D[5].X;
+            float fy7 = (float)PointsOut2D[5].Y;
+
+            if (FSlope_rad < 0) // Falling knee
+            {
+                float fxb3_temp = fdepth * (float)Math.Sin(-FSlope_rad);
+                float fyb3_temp = fxb3_temp * (float)Math.Tan(-FSlope_rad);
+
+                float faux = fxb3_temp / (float)Math.Cos(-FSlope_rad); // Dlzka odrezanej hrany vlavo hore
+
+                faux_x = fcut * (float)Math.Cos(-FSlope_rad);
+                faux_y = fcut * (float)Math.Sin(-FSlope_rad);
+
+                fx3 = (float)PointsOut2D[4].X + fxb3_temp + faux_x; // Hore
+                fy3 = (float)PointsOut2D[4].Y - fyb3_temp - faux_y;
+
+                fx4 = fx3 - fdepth * (float)Math.Sin(-FSlope_rad); // Vlavo
+                fy4 = fy3 - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                float fb4_x = (float)PointsOut2D[4].X;
+                float fb4_y = (float)PointsOut2D[4].Y - fyb3_temp - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                fb1_x = (float)PointsOut2D[4].X + fdepth;
+                fb1_y = fb4_y - fdepth * (float)Math.Tan(-FSlope_rad);
+
+                fx1 = (float)PointsOut2D[4].X + fdepth;
+                fy1 = fb1_y - fcut;
+
+                fx2 = (float)PointsOut2D[4].X;
+                fy2 = fy1;
+
+                // Theoretical tip point - 2 lines
+                fx6 = (float)PointsOut2D[4].X;
+                fy6 = (float)PointsOut2D[4].Y;
+
+                fx7 = (float)PointsOut2D[5].X;
+                fy7 = (float)PointsOut2D[5].Y;
+            }
+
+            bool considerCollinearOverlapAsIntersect = true;
+
+            Vector2D intersection;
+
+            Geom2D.LineSegementsIntersect(
+                  new Vector2D(fb1_x, fb1_y),
+                  new Vector2D(10, fb1_y + 10 * Math.Tan(FSlope_rad)),
+                  new Vector2D(PointsOut2D[2].X, PointsOut2D[2].Y),
+                  new Vector2D(PointsOut2D[3].X, PointsOut2D[3].Y),
+                  out intersection,
+                  considerCollinearOverlapAsIntersect);
+
+            float fx5 = (float)intersection.X;
+            float fy5 = (float)intersection.Y;
+
+            // Body su nezavisle na bodoch outline aj ked maju rovnake suradnice
+            MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[2].X, PointsOut2D[2].Y), new Point(fx1, fy1));
+            MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
+            MemberOutlines[2] = new CLine2D(new Point(fx3, fy3), new Point(fx4, fy4));
+            MemberOutlines[3] = new CLine2D(new Point(fx4, fy4), new Point(fx5, fy5));
+
+            // Theoretical tip point - 2 lines
+            MemberOutlines[4] = new CLine2D(new Point(fx6, fy6), new Point(pTip.X, pTip.Y));
+            MemberOutlines[5] = new CLine2D(new Point(fx7, fy7), new Point(pTip.X, pTip.Y));
         }
 
         public override void Set_BendLinesPoints2D()
