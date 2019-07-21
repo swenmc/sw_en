@@ -2229,6 +2229,7 @@ namespace PFD
         private int GetPlateIndex(CPlate plate)
         {
             // TODO Ondrej - da sa na tieto indexy vymysliet nieco krajsie :)
+            Type plateObjectClassType = plate.GetType(); // pre porovnanie plate KES , akurat neviem co s tym
 
             if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS ||
                 plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
