@@ -83,6 +83,20 @@ namespace BaseClasses
             }
         }
 
+        private float m_fd_predrillholediameter;
+        public float D_holediameter
+        {
+            get
+            {
+                return m_fd_predrillholediameter;
+            }
+
+            set
+            {
+                m_fd_predrillholediameter = value;
+            }
+        }
+
         private float m_fShearStrength_nominal;
         public float ShearStrength_nominal
         {
@@ -228,6 +242,15 @@ namespace BaseClasses
             catch
             {
                 T_w_washerthickness = 0;
+            }
+
+            try
+            {
+                D_holediameter = float.Parse(properties.preDrillHoleDiametermm_3mmthickness, nfi) / 1000f; // mm to m
+            }
+            catch
+            {
+                D_holediameter = 0;
             }
 
             try

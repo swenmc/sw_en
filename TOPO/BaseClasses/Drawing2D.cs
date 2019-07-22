@@ -188,18 +188,19 @@ namespace BaseClasses
                     pHolesCentersPointsAnchors2D = basePlate.AnchorArrangement.HolesCentersPoints2D;
             }
 
-            float fDiameter_screw = 0;
-            float fDiameter_anchor = 0;
+            float fDiameter_screwPreDrilledHole = 0;
+            float fDiameter_anchorPreDrilledHole = 0;
 
             // Holes diameters
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
+                fDiameter_screwPreDrilledHole = plate.ScrewArrangement.referenceScrew.D_holediameter;
 
             if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
-                    fDiameter_anchor = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
+                    fDiameter_anchorPreDrilledHole = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread; // TODO - Doplnit do databazy velkost otvorov pre bolts a anchors
+
             }
 
             canvasForImage.Children.Clear();
@@ -226,8 +227,8 @@ namespace BaseClasses
                     plate.MemberOutlines,
                     plate.BendLines,
                     note2D,
-                    fDiameter_screw * scale_unit,
-                    fDiameter_anchor * scale_unit,
+                    fDiameter_screwPreDrilledHole * scale_unit,
+                    fDiameter_anchorPreDrilledHole * scale_unit,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     dReal_Model_Zoom_Factor,
@@ -239,7 +240,7 @@ namespace BaseClasses
             }
         }
 
-        public static Canvas DrawRealPlateToCanvas(CPlate plate,            
+        public static Canvas DrawRealPlateToCanvas(CPlate plate,
             bool bDrawPoints,
             bool bDrawOutLine,
             bool bDrawPointNumbers,
@@ -262,8 +263,6 @@ namespace BaseClasses
 
             double dModel_Length_x_real = (fTempMax_X - fTempMin_X) * scale_unit;
             double dModel_Length_y_real = (fTempMax_Y - fTempMin_Y) * scale_unit;
-            
-
 
             // Holes center points
             Point[] pHolesCentersPointsScrews2D = null;
@@ -282,18 +281,18 @@ namespace BaseClasses
                     pHolesCentersPointsAnchors2D = basePlate.AnchorArrangement.HolesCentersPoints2D;
             }
 
-            float fDiameter_screw = 0;
-            float fDiameter_anchor = 0;
+            float fDiameter_screwPreDrilledHoles = 0;
+            float fDiameter_anchorPreDrilledHoles = 0;
 
             // Holes diameters
             if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
+                fDiameter_screwPreDrilledHoles = plate.ScrewArrangement.referenceScrew.D_holediameter;
 
             if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
                 if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
-                    fDiameter_anchor = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
+                    fDiameter_anchorPreDrilledHoles = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread; // TODO - doplnit do databazy priemer otvorov pre bolts a anchors
             }
 
             Canvas canvasForImage = new Canvas();
@@ -302,7 +301,6 @@ namespace BaseClasses
             if (plate != null)
             {
                 CNote2D note2D = GetNoteForPlate(plate);
-
 
                 List<Point> canvasPointsOut = null;
                 List<Point> canvasPointsOut_Mirror = null;
@@ -371,13 +369,13 @@ namespace BaseClasses
                 // Holes
                 if (pHolesCentersPointsScrews2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, fDiameter_screw * scale_unit, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, fDiameter_screwPreDrilledHoles * scale_unit, canvasForImage);
                     DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
                 }
 
                 if (pHolesCentersPointsAnchors2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, fDiameter_anchor * scale_unit, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, fDiameter_anchorPreDrilledHoles * scale_unit, canvasForImage);
                 }
 
                 // Dimensions

@@ -22,6 +22,7 @@ namespace DATABASE.DTO
         public string headSizemm;
         public string washerSizemm;
         public string washerThicknessmm;
+        public string preDrillHoleDiametermm_3mmthickness;
         public string shearStrength_N;
         public string axialTensileStrength_N;
         public string torsionalStrength_Nm;
