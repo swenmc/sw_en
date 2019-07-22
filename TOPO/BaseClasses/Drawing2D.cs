@@ -10,6 +10,8 @@ using CRSC;
 using System.Globalization;
 using BaseClasses.GraphObj;
 using BaseClasses.Helpers;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace BaseClasses
 {
@@ -235,6 +237,142 @@ namespace BaseClasses
                     true,
                     canvasForImage);
             }
+        }
+
+        public static Canvas DrawRealPlateToCanvas(CPlate plate,            
+            bool bDrawPoints,
+            bool bDrawOutLine,
+            bool bDrawPointNumbers,
+            bool bDrawHoles,
+            bool bDrawHoleCentreSymbols,
+            bool bDrawDrillingRoute,
+            bool bDrawDimensions,
+            bool bDrawMemberOutline,
+            bool bDrawBendLines)
+        {
+            double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+
+            // Fill arrays of points
+            if (plate.PointsOut2D != null && plate.PointsOut2D.Length > 1)
+            {
+                CalculateModelLimits(plate.PointsOut2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            }
+
+            int scale_unit = 1000; // mm
+
+            double dModel_Length_x_real = (fTempMax_X - fTempMin_X) * scale_unit;
+            double dModel_Length_y_real = (fTempMax_Y - fTempMin_Y) * scale_unit;
+            
+
+
+            // Holes center points
+            Point[] pHolesCentersPointsScrews2D = null;
+
+            // Check that object of screw arrangement is not null and set array items to the temporary array
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.HolesCentersPoints2D != null)
+                pHolesCentersPointsScrews2D = plate.ScrewArrangement.HolesCentersPoints2D;
+
+            Point[] pHolesCentersPointsAnchors2D = null;
+
+            // Check that object of screw arrangement is not null and set array items to the temporary array
+            if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.HolesCentersPoints2D != null)
+                    pHolesCentersPointsAnchors2D = basePlate.AnchorArrangement.HolesCentersPoints2D;
+            }
+
+            float fDiameter_screw = 0;
+            float fDiameter_anchor = 0;
+
+            // Holes diameters
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
+                fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
+
+            if (plate is CConCom_Plate_B_basic) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                if (basePlate.AnchorArrangement != null && basePlate.AnchorArrangement.referenceAnchor != null)
+                    fDiameter_anchor = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
+            }
+
+            Canvas canvasForImage = new Canvas();
+            canvasForImage.RenderSize = new Size(dModel_Length_x_real, dModel_Length_y_real);
+
+            if (plate != null)
+            {
+                CNote2D note2D = GetNoteForPlate(plate);
+
+                DrawComponent(
+                    bDrawPoints,
+                    bDrawOutLine,
+                    bDrawPointNumbers,
+                    bDrawHoles,
+                    bDrawHoleCentreSymbols,
+                    bDrawDrillingRoute,
+                    bDrawDimensions,
+                    bDrawMemberOutline,
+                    bDrawBendLines,
+                    Geom2D.TransformArrayToList(plate.PointsOut2D),
+                    null,
+                    pHolesCentersPointsScrews2D,
+                    pHolesCentersPointsAnchors2D,
+                    plate.DrillingRoutePoints,
+                    plate.Dimensions,
+                    plate.MemberOutlines,
+                    plate.BendLines,
+                    note2D,
+                    fDiameter_screw * scale_unit,
+                    fDiameter_anchor * scale_unit,
+                    0,
+                    0,
+                    1,
+                    dModel_Length_y_real,                    
+                    0,
+                    0,
+                    true,
+                    canvasForImage);
+            }
+
+            canvasForImage.UpdateLayout();
+
+            using (Stream stream = GetCanvasStream(canvasForImage))
+            {
+                //using (var fileStream = File.Create("D:\\canvas.png"))
+                using (var fileStream = File.Create("canvas.png"))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(fileStream);
+                }
+            }
+
+            return canvasForImage;
+        }
+
+        public static Stream GetCanvasStream(Canvas canvas)
+        {
+            RenderTargetBitmap bmp = RenderVisual(canvas);
+            PngBitmapEncoder png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bmp));
+
+            MemoryStream stm = new MemoryStream();
+            png.Save(stm);
+            stm.Position = 0;
+
+            return stm;
+        }
+        private static RenderTargetBitmap RenderVisual(UIElement elt)
+        {
+            Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
+            elt.Measure(size);
+            elt.Arrange(new Rect(size));
+            elt.UpdateLayout();
+
+            var bitmap = new RenderTargetBitmap(
+                (int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+
+            bitmap.Render(elt);
+            return bitmap;
         }
 
         private static CNote2D GetNoteForPlate(CPlate plate)
@@ -1596,7 +1734,7 @@ namespace BaseClasses
             figure.Segments.Add(arc);
 
             pathGeometry.Figures.Add(figure);
-            Path path = new Path();
+            System.Windows.Shapes.Path path = new System.Windows.Shapes.Path();
             path.Data = pathGeometry;
             //path.Fill = Brushes.Gray;
             path.Stroke = Brushes.Black;

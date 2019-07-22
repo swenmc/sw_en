@@ -34,6 +34,149 @@ namespace EXPIMP
 
             doc.Save(fileName);
         }
+        //public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy)
+        //{
+        //    //---------------------------------------------------------------------------------------
+        //    // TODO 305
+        //    // TO Ondrej - pokus nascalovat canvas tak, aby pri exporte sedeli jednotky, canvas sa scaluje, ale realne ostanu hodnoty rovnake, takze tade cesta nevedie :)
+        //    // POtrebujeme funckie upravit tak aby sme boli schopni vyrobit Canvas nastavit mu velkost nasobenu faktorom ktorym bol realny plech zmenseny, vsetko co sa bude vykreslovat bude potom 1:1, do tohoto canvas vykreslime plech
+        //    Canvas cloneCanvas = new Canvas();
+        //    cloneCanvas = canvas;
+
+        //    float ScaleRate = 10f;
+        //    ScaleTransform scale = new ScaleTransform(cloneCanvas.LayoutTransform.Value.M11 * ScaleRate, cloneCanvas.LayoutTransform.Value.M22 * ScaleRate);
+        //    cloneCanvas.LayoutTransform = scale;
+        //    cloneCanvas.UpdateLayout();
+        //    //---------------------------------------------------------------------------------------
+
+        //    DxfDocument doc = new DxfDocument();
+        //    double Z = 0; //is is 2D so Z axis is always 0
+        //    double fontSize = 10;
+
+        //    foreach (object o in cloneCanvas.Children)
+        //    {
+        //        System.Diagnostics.Trace.WriteLine(o.GetType());
+
+        //        if (o is WindowsShapes.Rectangle)
+        //        {
+        //            WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
+        //            double x = Canvas.GetLeft(winRect);
+        //            double y = Canvas.GetTop(winRect);
+        //            //double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
+
+        //            System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
+        //            System.Drawing.Color drawingcolor = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
+
+        //            System.Windows.Point pTL = winRect.RenderedGeometry.Bounds.TopLeft;
+        //            System.Windows.Point pTR = winRect.RenderedGeometry.Bounds.TopRight;
+        //            System.Windows.Point pBL = winRect.RenderedGeometry.Bounds.BottomLeft;
+        //            System.Windows.Point pBR = winRect.RenderedGeometry.Bounds.BottomRight;
+        //            //Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
+
+        //            if(winRect.RenderTransform != null)
+        //            {
+        //                pTL = winRect.RenderTransform.Transform(pTL);
+        //                pTR = winRect.RenderTransform.Transform(pTR);
+        //                pBL = winRect.RenderTransform.Transform(pBL);
+        //                pBR = winRect.RenderTransform.Transform(pBR);
+        //            }
+
+        //            Solid solid = new Solid();
+        //            solid.Color = new AciColor(drawingcolor);
+        //            solid.Transparency = new Transparency(60); // from 0 - 90
+
+        //            solid.FirstVertex = new Vector2(pTL.X + x, -(pTL.Y + y));
+        //            solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
+        //            solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
+        //            solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
+
+        //            doc.AddEntity(solid);
+        //        }
+        //        else if (o is WindowsShapes.Polyline)
+        //        {
+        //            WindowsShapes.Polyline winPol = o as WindowsShapes.Polyline;
+        //            Polyline poly = new Polyline();
+
+        //            //vznika tam posun...ani srnka netusi preco
+        //            //double x = Canvas.GetLeft(winPol);
+        //            //double y = Canvas.GetTop(winPol);
+
+        //            foreach (System.Windows.Point p in winPol.Points)
+        //            {
+        //                poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
+        //            }
+
+        //            doc.AddEntity(poly);
+        //        }
+        //        else if (o is WindowsShapes.Ellipse)
+        //        {
+        //            WindowsShapes.Ellipse winElipse = o as WindowsShapes.Ellipse;
+        //            double majorAxis = winElipse.Width;
+        //            double minorAxis = winElipse.Height;
+
+        //            System.Windows.Point p1 = winElipse.RenderedGeometry.Bounds.TopLeft;
+        //            System.Windows.Point p2 = winElipse.RenderedGeometry.Bounds.BottomRight;
+        //            System.Windows.Point pCenter = new System.Windows.Point((p2.X - p1.X) / 2, (p2.Y - p1.Y) / 2);
+
+        //            double x = Canvas.GetLeft(winElipse);
+        //            double y = Canvas.GetTop(winElipse);
+        //            Ellipse elipse = new Ellipse(new Vector2(pCenter.X + x, pCenter.Y + y), majorAxis, minorAxis);
+
+        //            doc.AddEntity(elipse);
+        //        }
+        //        else if (o is WindowsShapes.Line)
+        //        {
+        //            WindowsShapes.Line winLine = o as WindowsShapes.Line;
+
+        //            Vector2 startPoint = new Vector2(winLine.X1, winLine.Y1);
+        //            Vector2 endPoint = new Vector2(winLine.X2, winLine.Y2);
+        //            Line line = new Line(startPoint, endPoint);
+
+        //            doc.AddEntity(line);
+        //        }
+        //        else if (o is System.Windows.Controls.TextBlock)
+        //        {
+        //            System.Windows.Controls.TextBlock winText = o as System.Windows.Controls.TextBlock;
+
+        //            double x = Canvas.GetLeft(winText);
+        //            x += winText.ActualWidth / 2;
+        //            double y = Canvas.GetTop(winText);
+        //            y -= winText.BaselineOffset;
+        //            y += fontSize / 2;
+
+        //            Text txt = new Text(winText.Text, new Vector2(x, y), fontSize);
+        //            //Text txt = new Text(winText.Text, new Vector2(x, -y), fontSize);  //pretocenim podla osi y dostanem body tak ako v canvase
+        //            txt.Color = AciColor.Yellow;
+        //            doc.AddEntity(txt);
+
+        //            //Takto sa da spravit zlozitejsi text, napr. Bold atd..
+        //            /*TextStyle style = new TextStyle("Times.ttf");
+        //            //TextStyle style = TextStyle.Default;
+        //            MText mText = new MText(new Vector2(x, y), fontSize, 100.0f, style);
+        //            mText.Layer = new Layer("Multiline Text");
+        //            //mText.Layer.Color.Index = 8;
+        //            mText.Rotation = 0;
+        //            //mText.LineSpacingFactor = 1.0;
+        //            //mText.ParagraphHeightFactor = 1.0;
+        //            //mText.AttachmentPoint = MTextAttachmentPoint.TopCenter;
+
+        //            MTextFormattingOptions options = new MTextFormattingOptions(mText.Style);
+        //            options.Bold = true;
+        //            options.Color = AciColor.Yellow;
+        //            mText.Write(winText.Text, options);
+        //            mText.EndParagraph();
+        //            doc.AddEntity(mText);    */
+        //        }
+        //    }
+
+        //    DateTime d = DateTime.Now;
+        //    string fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
+        //        d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+
+        //    doc.Save(fileName);
+        //}
+
+        
         public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy)
         {
             //---------------------------------------------------------------------------------------
@@ -66,14 +209,14 @@ namespace EXPIMP
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
                     System.Drawing.Color drawingcolor = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
-                    
+
                     System.Windows.Point pTL = winRect.RenderedGeometry.Bounds.TopLeft;
                     System.Windows.Point pTR = winRect.RenderedGeometry.Bounds.TopRight;
                     System.Windows.Point pBL = winRect.RenderedGeometry.Bounds.BottomLeft;
                     System.Windows.Point pBR = winRect.RenderedGeometry.Bounds.BottomRight;
                     //Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
 
-                    if(winRect.RenderTransform != null)
+                    if (winRect.RenderTransform != null)
                     {
                         pTL = winRect.RenderTransform.Transform(pTL);
                         pTR = winRect.RenderTransform.Transform(pTR);
@@ -100,7 +243,7 @@ namespace EXPIMP
                     //vznika tam posun...ani srnka netusi preco
                     //double x = Canvas.GetLeft(winPol);
                     //double y = Canvas.GetTop(winPol);
-                    
+
                     foreach (System.Windows.Point p in winPol.Points)
                     {
                         poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
