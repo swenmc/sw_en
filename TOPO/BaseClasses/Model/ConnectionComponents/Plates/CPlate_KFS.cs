@@ -128,8 +128,8 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 14;
-            INoPoints2Dfor3D = 8;
-            ITotNoPointsin3D = 19;
+            INoPoints2Dfor3D = 12;
+            ITotNoPointsin3D = 30;
 
             m_pControlPoint = controlpoint;
             Fb_X1 = fb_1_temp;
@@ -299,7 +299,6 @@ namespace BaseClasses
 
         public override void Calc_Coord3D()
         {
-            /*
             float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
             float fx_temp2 = Ft * (float)Math.Cos(fBeta);
             float fy_temp2 = Ft * (float)Math.Sin(fBeta);
@@ -308,45 +307,86 @@ namespace BaseClasses
 
             float fy_temp4 = Fl_Z * (float)Math.Tan(FSlope_rad);
 
+            float fy_temp5 = Fl_Z * (float)Math.Tan(fBeta);
+
+            float fx_temp8 = fy_temp4 * (float)Math.Sin(fBeta);
+            float fy_temp8 = fy_temp4 * (float)Math.Cos(fBeta);
+
+            // Falling knee
+            float fx_temp42 = Fl_Z * (float)Math.Cos(-FSlope_rad);
+            float fy_temp42 = Fl_Z * (float)Math.Sin(-FSlope_rad);
+
+            float fc1_temp = Fb_X1 / (float)Math.Cos(FSlope_rad + fBeta);
+            float fc3_temp = Fh_Y2 / (float)Math.Cos(fBeta);
+            float fc2_temp = fc3_temp - fc1_temp;
+
             // First layer
             arrPoints3D[0].X = 0;
             arrPoints3D[0].Y = 0;
-            arrPoints3D[0].Z = -Fl_Z;
+            arrPoints3D[0].Z = -m_flZ;
 
             arrPoints3D[1].X = 0;
             arrPoints3D[1].Y = 0;
             arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = Fb_X1 + fx_temp3;
+            arrPoints3D[2].X = m_fbX1;
             arrPoints3D[2].Y = 0;
             arrPoints3D[2].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = arrPoints3D[2].Y;
-            arrPoints3D[3].Z = Fl_Z;
+            arrPoints3D[3].X = arrPoints3D[2].X + fx_temp8;
+            arrPoints3D[3].Y = arrPoints3D[2].Y + fy_temp8;
+            arrPoints3D[3].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[4].X = Fb_X2 + fx_temp2;
-            arrPoints3D[4].Y = Fh_Y2 - fy_temp2; // TODO tato suradnica by mala byt mensia v pripade, ze sa jedna o falling knee, ale chyba tam definicia jedneho bodu na hrane, je nutne pridat bod a cele to prerobit :)
-            arrPoints3D[4].Z = arrPoints3D[3].Z;
+            arrPoints3D[5].X = (Fl_Z + Fb_X2) - fc1_temp * (float)Math.Sin(fBeta);
+            arrPoints3D[5].Y = Fh_Y2 - fc1_temp * (float)Math.Cos(fBeta);
+            arrPoints3D[5].Z = 0;
 
-            arrPoints3D[5].X = arrPoints3D[4].X;
-            arrPoints3D[5].Y = arrPoints3D[4].Y;
-            arrPoints3D[5].Z = arrPoints3D[1].Z;
+            arrPoints3D[4].X = arrPoints3D[5].X;
+            arrPoints3D[4].Y = arrPoints3D[5].Y;
+            arrPoints3D[4].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[6].X = Fb_X2;
-            arrPoints3D[6].Y = Fh_Y2;
+            float fc5_temp = Fl_Z * (float)Math.Tan(FSlope_rad + fBeta);
+
+            float fx_temp52 = fc5_temp * (float)Math.Sin(fBeta);
+            float fy_temp52 = fc5_temp * (float)Math.Cos(fBeta);
+
+            arrPoints3D[6].X = PointsOut2D[4].X + (FSlope_rad > 0 ? fx_temp52 : 0);
+            arrPoints3D[6].Y = PointsOut2D[4].Y + (FSlope_rad > 0 ? fy_temp52 : 0);
             arrPoints3D[6].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[7].X = arrPoints3D[1].X;
-            arrPoints3D[7].Y = Fh_Y1;
+            float fc6_temp = Fl_Z / (float)Math.Cos(FSlope_rad + fBeta);
+
+            float fx_temp6 = fc6_temp * (float)Math.Cos(FSlope_rad);
+            float fy_temp6 = fc6_temp * (float)Math.Sin(FSlope_rad);
+
+            arrPoints3D[7].X = Fb_X2 + (FSlope_rad > 0 ? fx_temp6 : fx_temp42);
+            arrPoints3D[7].Y = Fh_Y2 + (FSlope_rad > 0 ? fy_temp6 : -fy_temp42);
             arrPoints3D[7].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[8].X = arrPoints3D[1].X;
-            arrPoints3D[8].Y = arrPoints3D[7].Y - (FSlope_rad > 0 ? fy_temp4 : 0);
-            arrPoints3D[8].Z = arrPoints3D[0].Z;
+            arrPoints3D[8].X = -Fl_Z;
+            arrPoints3D[8].Y = Fh_Y1 - (FSlope_rad > 0 ? fy_temp4 : - fy_temp42);
+            arrPoints3D[8].Z = arrPoints3D[1].Z;
+
+            float fy_temp7 = Fb_X1 / (float)Math.Cos(FSlope_rad);
+
+            arrPoints3D[11].X = 0;
+            arrPoints3D[11].Y = Fh_Y1 - fy_temp7;
+            arrPoints3D[11].Z = arrPoints3D[1].Z;
+
+            arrPoints3D[10].X = -Ft;
+            arrPoints3D[10].Y = arrPoints3D[11].Y;
+            arrPoints3D[10].Z = arrPoints3D[1].Z;
+
+            arrPoints3D[9].X = arrPoints3D[8].X;
+            arrPoints3D[9].Y = PointsOut2D[11].Y + (FSlope_rad > 0 ? 0 : fy_temp42);
+            arrPoints3D[9].Z = arrPoints3D[1].Z;
+
+            arrPoints3D[12].X = 0;
+            arrPoints3D[12].Y = arrPoints3D[10].Y;
+            arrPoints3D[12].Z = arrPoints3D[0].Z;
 
             // Second layer
-            // INoPoints2Dfor3D = 8
+            // INoPoints2Dfor3D = 12
             arrPoints3D[INoPoints2Dfor3D + 1].X = -Ft;
             arrPoints3D[INoPoints2Dfor3D + 1].Y = arrPoints3D[0].Y;
             arrPoints3D[INoPoints2Dfor3D + 1].Z = arrPoints3D[0].Z;
@@ -355,38 +395,65 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 2].Y = 0;
             arrPoints3D[INoPoints2Dfor3D + 2].Z = Ft;
 
-            arrPoints3D[INoPoints2Dfor3D + 3].X = arrPoints3D[2].X - fx_temp3;
+            arrPoints3D[INoPoints2Dfor3D + 3].X = arrPoints3D[2].X;
             arrPoints3D[INoPoints2Dfor3D + 3].Y = arrPoints3D[2].Y;
             arrPoints3D[INoPoints2Dfor3D + 3].Z = Ft;
 
-            arrPoints3D[INoPoints2Dfor3D + 4].X = arrPoints3D[11].X;
-            arrPoints3D[INoPoints2Dfor3D + 4].Y = arrPoints3D[11].Y;
-            arrPoints3D[INoPoints2Dfor3D + 4].Z = Fl_Z;
+            arrPoints3D[INoPoints2Dfor3D + 4].X = arrPoints3D[INoPoints2Dfor3D + 3].X + fx_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 4].Y = arrPoints3D[INoPoints2Dfor3D + 3].Y - fy_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 4].Z = arrPoints3D[INoPoints2Dfor3D + 3].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 5].X = arrPoints3D[6].X;
-            arrPoints3D[INoPoints2Dfor3D + 5].Y = arrPoints3D[6].Y;
-            arrPoints3D[INoPoints2Dfor3D + 5].Z = arrPoints3D[12].Z;
+            arrPoints3D[INoPoints2Dfor3D + 5].X = arrPoints3D[2].X + fx_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 5].Y = arrPoints3D[2].Y - fy_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 5].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 6].X = arrPoints3D[6].X;
-            arrPoints3D[INoPoints2Dfor3D + 6].Y = arrPoints3D[6].Y;
-            arrPoints3D[INoPoints2Dfor3D + 6].Z = Ft;
+            arrPoints3D[INoPoints2Dfor3D + 6].X = arrPoints3D[3].X + fx_temp2; // Opravit
+            arrPoints3D[INoPoints2Dfor3D + 6].Y = arrPoints3D[3].Y - fy_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 6].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 7].X = arrPoints3D[7].X;
-            arrPoints3D[INoPoints2Dfor3D + 7].Y = arrPoints3D[7].Y;
-            arrPoints3D[INoPoints2Dfor3D + 7].Z = Ft;
+            arrPoints3D[INoPoints2Dfor3D + 7].X = arrPoints3D[4].X + fx_temp2; // Opravit
+            arrPoints3D[INoPoints2Dfor3D + 7].Y = arrPoints3D[4].Y - fy_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 7].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 8].X = arrPoints3D[10].X;
-            arrPoints3D[INoPoints2Dfor3D + 8].Y = arrPoints3D[7].Y;
-            arrPoints3D[INoPoints2Dfor3D + 8].Z = arrPoints3D[10].Z;
+            arrPoints3D[INoPoints2Dfor3D + 8].X = arrPoints3D[5].X + fx_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 8].Y = arrPoints3D[5].Y - fy_temp2;
+            arrPoints3D[INoPoints2Dfor3D + 8].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 9].X = arrPoints3D[10].X;
-            arrPoints3D[INoPoints2Dfor3D + 9].Y = arrPoints3D[7].Y;
-            arrPoints3D[INoPoints2Dfor3D + 9].Z = arrPoints3D[7].Z;
+            arrPoints3D[INoPoints2Dfor3D + 9].X = arrPoints3D[INoPoints2Dfor3D + 8].X;
+            arrPoints3D[INoPoints2Dfor3D + 9].Y = arrPoints3D[INoPoints2Dfor3D + 8].Y;
+            arrPoints3D[INoPoints2Dfor3D + 9].Z = arrPoints3D[INoPoints2Dfor3D + 4].Z;
 
-            arrPoints3D[INoPoints2Dfor3D + 10].X = arrPoints3D[10].X;
-            arrPoints3D[INoPoints2Dfor3D + 10].Y = arrPoints3D[8].Y;
-            arrPoints3D[INoPoints2Dfor3D + 10].Z = arrPoints3D[8].Z;
-            */
+            arrPoints3D[INoPoints2Dfor3D + 10].X = arrPoints3D[5].X;
+            arrPoints3D[INoPoints2Dfor3D + 10].Y = arrPoints3D[5].Y;
+            arrPoints3D[INoPoints2Dfor3D + 10].Z = arrPoints3D[INoPoints2Dfor3D + 3].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 11].X = arrPoints3D[6].X;
+            arrPoints3D[INoPoints2Dfor3D + 11].Y = arrPoints3D[6].Y;
+            arrPoints3D[INoPoints2Dfor3D + 11].Z = arrPoints3D[INoPoints2Dfor3D + 2].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 12].X = arrPoints3D[7].X;
+            arrPoints3D[INoPoints2Dfor3D + 12].Y = arrPoints3D[7].Y;
+            arrPoints3D[INoPoints2Dfor3D + 12].Z = arrPoints3D[INoPoints2Dfor3D + 2].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 13].X = arrPoints3D[8].X;
+            arrPoints3D[INoPoints2Dfor3D + 13].Y = arrPoints3D[8].Y;
+            arrPoints3D[INoPoints2Dfor3D + 13].Z = arrPoints3D[INoPoints2Dfor3D + 2].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 14].X = arrPoints3D[9].X;
+            arrPoints3D[INoPoints2Dfor3D + 14].Y = arrPoints3D[9].Y;
+            arrPoints3D[INoPoints2Dfor3D + 14].Z = arrPoints3D[INoPoints2Dfor3D + 2].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 15].X = arrPoints3D[10].X;
+            arrPoints3D[INoPoints2Dfor3D + 15].Y = arrPoints3D[10].Y;
+            arrPoints3D[INoPoints2Dfor3D + 15].Z = arrPoints3D[INoPoints2Dfor3D + 2].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 16].X = arrPoints3D[10].X;
+            arrPoints3D[INoPoints2Dfor3D + 16].Y = arrPoints3D[10].Y;
+            arrPoints3D[INoPoints2Dfor3D + 16].Z = arrPoints3D[10].Z;
+
+            arrPoints3D[INoPoints2Dfor3D + 17].X = arrPoints3D[13].X;
+            arrPoints3D[INoPoints2Dfor3D + 17].Y = arrPoints3D[12].Y;
+            arrPoints3D[INoPoints2Dfor3D + 17].Z = arrPoints3D[13].Z;
         }
 
         public override void Set_DimensionPoints2D()
@@ -475,48 +542,56 @@ namespace BaseClasses
 
         protected override void loadIndices()
         {
-            /*
             TriangleIndices = new Int32Collection();
 
             // Front Side / Forehead
-            AddPenthagonIndices_CCW_12345(TriangleIndices, 11, 14, 15, 16, 10);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 3, 4, 13, 12);
+            AddRectangleIndices_CW_1234(TriangleIndices, 14, 27, 22, 15);
+            AddRectangleIndices_CW_1234(TriangleIndices, 15, 22, 21, 16);
+            AddHexagonIndices_CCW_123456(TriangleIndices, 22, 23, 24, 25, 26, 27);
 
             // Back Side
-            AddPenthagonIndices_CW_12345(TriangleIndices, 1, 2, 5,6,7);
-            AddRectangleIndices_CW_1234(TriangleIndices, 9, 0, 8, 18);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 2, 5, 11);
+            AddHexagonIndices_CW_123456(TriangleIndices, 5, 6, 7, 8, 9, 11);
 
             // Top Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 18, 8, 7, 17);
-            AddRectangleIndices_CW_1234(TriangleIndices, 17, 7, 15, 16);
-            AddRectangleIndices_CW_1234(TriangleIndices, 15, 7, 6, 14);
-            AddRectangleIndices_CW_1234(TriangleIndices, 6, 5, 4, 13);
+            AddRectangleIndices_CW_1234(TriangleIndices, 7, 24, 25, 8);
+            AddRectangleIndices_CW_1234(TriangleIndices, 11, 28, 29, 12);
+            AddRectangleIndices_CW_1234(TriangleIndices, 5, 20, 21, 22);
+            AddRectangleIndices_CW_1234(TriangleIndices, 4, 19, 20, 5);
 
             // Bottom Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 9, 10, 1);
-            AddRectangleIndices_CW_1234(TriangleIndices, 1, 10, 11, 2);
-            AddRectangleIndices_CW_1234(TriangleIndices, 2, 11, 12, 3);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 13, 14, 1);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 14, 15, 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 15, 16, 17);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 17, 18, 3);
+
+            AddRectangleIndices_CW_1234(TriangleIndices, 9, 26, 27, 10);
+            AddRectangleIndices_CW_1234(TriangleIndices, 5, 22, 23, 6);
 
             // Side Surface
-            AddPenthagonIndices_CW_12345(TriangleIndices, 9, 18, 17, 16, 10);
-            AddRectangleIndices_CW_1234(TriangleIndices, 11, 14, 13, 12);
+            AddHexagonIndices_CW_123456(TriangleIndices, 16, 21, 20, 19, 18, 17);
+            AddRectangleIndices_CW_1234(TriangleIndices, 3, 18, 19, 4);
             AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 5);
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 7, 8);
-            */
+            AddRectangleIndices_CW_1234(TriangleIndices, 6, 23, 24, 7);
+
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 11, 12);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 12, 29, 13);
+            AddRectangleIndices_CW_1234(TriangleIndices, 13, 29, 27, 14);
+            AddRectangleIndices_CW_1234(TriangleIndices, 8, 25, 26, 9);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
  
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
-            /*
+
             Point3D pi = new Point3D();
             Point3D pj = new Point3D();
 
             // BackSide
             for (int i = 0; i < INoPoints2Dfor3D + 1; i++)
             {
-                if (i < 8)
+                if (i < INoPoints2Dfor3D)
                 {
                     pi = arrPoints3D[i];
                     pj = arrPoints3D[i + 1];
@@ -533,9 +608,9 @@ namespace BaseClasses
             }
 
             // FrontSide
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 17; i++)
             {
-                if (i < 10 - 1)
+                if (i < 17 - 1)
                 {
                     pi = arrPoints3D[INoPoints2Dfor3D + 1 + i];
                     pj = arrPoints3D[INoPoints2Dfor3D + 1 + i + 1];
@@ -553,47 +628,50 @@ namespace BaseClasses
 
             // Lateral
             wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[9]);
-
-            wireFrame.Points.Add(arrPoints3D[7]);
-            wireFrame.Points.Add(arrPoints3D[15]);
-
-            if (FSlope_rad > 0)
-            {
-                wireFrame.Points.Add(arrPoints3D[7]);
-                wireFrame.Points.Add(arrPoints3D[17]);
-            }
-
-            wireFrame.Points.Add(arrPoints3D[3]);
-            wireFrame.Points.Add(arrPoints3D[12]);
-
-            wireFrame.Points.Add(arrPoints3D[4]);
             wireFrame.Points.Add(arrPoints3D[13]);
 
-            wireFrame.Points.Add(arrPoints3D[6]);
-            wireFrame.Points.Add(arrPoints3D[14]);
-
-            wireFrame.Points.Add(arrPoints3D[8]);
-            wireFrame.Points.Add(arrPoints3D[18]);
-
-            wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[8]);
-
-            wireFrame.Points.Add(arrPoints3D[1]);
-            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[15]);
 
             wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[17]);
+ 
+            wireFrame.Points.Add(arrPoints3D[3]);
+            wireFrame.Points.Add(arrPoints3D[18]);
+
+            wireFrame.Points.Add(arrPoints3D[4]);
+            wireFrame.Points.Add(arrPoints3D[19]);
+
             wireFrame.Points.Add(arrPoints3D[5]);
+            wireFrame.Points.Add(arrPoints3D[20]);
 
-            wireFrame.Points.Add(arrPoints3D[11]);
-            wireFrame.Points.Add(arrPoints3D[14]);
+            wireFrame.Points.Add(arrPoints3D[5]);
+            wireFrame.Points.Add(arrPoints3D[22]);
 
-            wireFrame.Points.Add(arrPoints3D[10]);
-            wireFrame.Points.Add(arrPoints3D[16]);
+            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[23]);
+
+            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[24]);
+
+            wireFrame.Points.Add(arrPoints3D[8]);
+            wireFrame.Points.Add(arrPoints3D[25]);
 
             wireFrame.Points.Add(arrPoints3D[9]);
-            wireFrame.Points.Add(arrPoints3D[18]);
-            */
+            wireFrame.Points.Add(arrPoints3D[26]);
+
+            wireFrame.Points.Add(arrPoints3D[10]);
+            wireFrame.Points.Add(arrPoints3D[27]);
+
+            wireFrame.Points.Add(arrPoints3D[11]);
+            wireFrame.Points.Add(arrPoints3D[28]);
+
+            wireFrame.Points.Add(arrPoints3D[12]);
+            wireFrame.Points.Add(arrPoints3D[29]);
+
+            wireFrame.Points.Add(arrPoints3D[1]);
+            wireFrame.Points.Add(arrPoints3D[11]);
+
             return wireFrame;
         }
     }
