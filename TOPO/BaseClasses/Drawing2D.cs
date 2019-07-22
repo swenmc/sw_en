@@ -303,35 +303,120 @@ namespace BaseClasses
             {
                 CNote2D note2D = GetNoteForPlate(plate);
 
-                DrawComponent(
-                    bDrawPoints,
-                    bDrawOutLine,
-                    bDrawPointNumbers,
-                    bDrawHoles,
-                    bDrawHoleCentreSymbols,
-                    bDrawDrillingRoute,
-                    bDrawDimensions,
-                    bDrawMemberOutline,
-                    bDrawBendLines,
-                    Geom2D.TransformArrayToList(plate.PointsOut2D),
-                    null,
-                    pHolesCentersPointsScrews2D,
-                    pHolesCentersPointsAnchors2D,
-                    plate.DrillingRoutePoints,
-                    plate.Dimensions,
-                    plate.MemberOutlines,
-                    plate.BendLines,
-                    note2D,
-                    fDiameter_screw * scale_unit,
-                    fDiameter_anchor * scale_unit,
-                    0,
-                    0,
-                    1,
-                    dModel_Length_y_real,                    
-                    0,
-                    0,
-                    true,
-                    canvasForImage);
+
+                List<Point> canvasPointsOut = null;
+                List<Point> canvasPointsIn = null;
+                List<Point> canvasPointsHolesScrews = null;
+                List<Point> canvasPointsHolesAnchors = null;
+                List<Point> canvasPointsDrillingRoute = null;
+                List<CDimension> canvasDimensions = null;
+                List<CLine2D> canvasMemberOutline = null;
+                List<CLine2D> canvasBendLines = null;
+                CNote2D canvasNote2D = null;
+
+                bool bPointsHaveYinUpDirection = true;
+                if (bPointsHaveYinUpDirection)
+                {
+                    canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
+                    //canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(null);
+                    canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D);
+                    canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D);
+                    canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints);
+                    canvasDimensions = MirrorYCoordinates(plate.Dimensions);
+                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
+                    canvasBendLines = MirrorYCoordinates(plate.BendLines);
+                    if (note2D != null) note2D.MirrorYCoordinates();
+                }
+                else
+                {
+                    canvasPointsOut = new List<Point>(plate.PointsOut2D);
+                    //canvasPointsIn = new List<Point>(PointsIn);
+                    canvasPointsHolesScrews = new List<Point>(pHolesCentersPointsScrews2D);
+                    canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
+                    canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
+                    canvasDimensions = new List<CDimension>(plate.Dimensions);
+                    canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
+                    canvasBendLines = new List<CLine2D>(plate.BendLines);
+                }
+
+                double minX = canvasPointsOut.Min(p => p.X);
+                double minY = canvasPointsOut.Min(p => p.Y);
+
+                float fmodelMarginLeft_x = 0;
+                float fmodelMarginTop_y = 0;
+                float dReal_Model_Zoom_Factor = 1 * scale_unit;
+                canvasPointsOut = ConvertRealPointsToCanvasDrawingPoints(canvasPointsOut, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasPointsIn = ConvertRealPointsToCanvasDrawingPoints(canvasPointsIn, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                // Definition Points
+                DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
+
+                // Outlines
+                DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage);
+
+                // Definition Point Numbers
+                DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
+
+                // Holes
+                if (pHolesCentersPointsScrews2D != null)
+                {
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, fDiameter_screw * scale_unit, canvasForImage);
+                    DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
+                }
+
+                if (pHolesCentersPointsAnchors2D != null)
+                {
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, fDiameter_anchor * scale_unit, canvasForImage);
+                }
+
+                // Dimensions
+                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+
+                // Member Outline
+                DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
+                // Bend Lines
+                DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
+                //Notes
+                if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
+
+                //DrawComponent(
+                //    bDrawPoints,
+                //    bDrawOutLine,
+                //    bDrawPointNumbers,
+                //    bDrawHoles,
+                //    bDrawHoleCentreSymbols,
+                //    bDrawDrillingRoute,
+                //    bDrawDimensions,
+                //    bDrawMemberOutline,
+                //    bDrawBendLines,
+                //    Geom2D.TransformArrayToList(plate.PointsOut2D),
+                //    null,
+                //    pHolesCentersPointsScrews2D,
+                //    pHolesCentersPointsAnchors2D,
+                //    plate.DrillingRoutePoints,
+                //    plate.Dimensions,
+                //    plate.MemberOutlines,
+                //    plate.BendLines,
+                //    note2D,
+                //    fDiameter_screw * scale_unit,
+                //    fDiameter_anchor * scale_unit,
+                //    0,
+                //    0,
+                //    1,
+                //    dModel_Length_y_real,                    
+                //    0,
+                //    0,
+                //    true,
+                //    canvasForImage);
             }
 
             canvasForImage.UpdateLayout();
@@ -589,7 +674,7 @@ namespace BaseClasses
             //Notes
             if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
         }
-
+        
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
         {
             if (Dimensions == null) return new List<CDimension>();
