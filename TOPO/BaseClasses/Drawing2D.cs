@@ -305,6 +305,7 @@ namespace BaseClasses
 
 
                 List<Point> canvasPointsOut = null;
+                List<Point> canvasPointsOut_Mirror = null;
                 List<Point> canvasPointsIn = null;
                 List<Point> canvasPointsHolesScrews = null;
                 List<Point> canvasPointsHolesAnchors = null;
@@ -314,7 +315,7 @@ namespace BaseClasses
                 List<CLine2D> canvasBendLines = null;
                 CNote2D canvasNote2D = null;
 
-                bool bPointsHaveYinUpDirection = true;
+                bool bPointsHaveYinUpDirection = false;
                 if (bPointsHaveYinUpDirection)
                 {
                     canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
@@ -329,14 +330,15 @@ namespace BaseClasses
                 }
                 else
                 {
-                    canvasPointsOut = new List<Point>(plate.PointsOut2D);
+                    if(plate.PointsOut2D != null) canvasPointsOut = new List<Point>(plate.PointsOut2D);
+                    canvasPointsOut_Mirror = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
                     //canvasPointsIn = new List<Point>(PointsIn);
-                    canvasPointsHolesScrews = new List<Point>(pHolesCentersPointsScrews2D);
-                    canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
-                    canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
-                    canvasDimensions = new List<CDimension>(plate.Dimensions);
-                    canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
-                    canvasBendLines = new List<CLine2D>(plate.BendLines);
+                    if (pHolesCentersPointsScrews2D != null) canvasPointsHolesScrews = new List<Point>(pHolesCentersPointsScrews2D);
+                    if (pHolesCentersPointsAnchors2D != null) canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
+                    if (plate.DrillingRoutePoints != null) canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
+                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
+                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
+                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
                 }
 
                 double minX = canvasPointsOut.Min(p => p.X);
@@ -346,6 +348,7 @@ namespace BaseClasses
                 float fmodelMarginTop_y = 0;
                 float dReal_Model_Zoom_Factor = 1 * scale_unit;
                 canvasPointsOut = ConvertRealPointsToCanvasDrawingPoints(canvasPointsOut, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasPointsOut_Mirror = ConvertRealPointsToCanvasDrawingPoints(canvasPointsOut_Mirror, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                 canvasPointsIn = ConvertRealPointsToCanvasDrawingPoints(canvasPointsIn, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                 canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                 canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
@@ -356,7 +359,8 @@ namespace BaseClasses
                 canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 // Definition Points
-                DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
+                //vobec nechapem preco treba spravit mirror pre samotne body, ale body ktore sa pouziju pre nakreslenie ciar uz mirorovane netreba
+                DrawComponentPoints(bDrawPoints, canvasPointsOut_Mirror, canvasPointsIn, canvasForImage);
 
                 // Outlines
                 DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage);
