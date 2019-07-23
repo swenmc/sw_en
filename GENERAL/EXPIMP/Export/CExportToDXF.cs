@@ -193,9 +193,13 @@ namespace EXPIMP
             //---------------------------------------------------------------------------------------
 
             DxfDocument doc = new DxfDocument();
+            
             double Z = 0; //is is 2D so Z axis is always 0
             double fontSize = 10;
 
+            double maxX = 0;
+            double maxY = 0;
+            
             foreach (object o in canvas.Children)
             {
                 System.Diagnostics.Trace.WriteLine(o.GetType());
@@ -243,6 +247,9 @@ namespace EXPIMP
                     //vznika tam posun...ani srnka netusi preco
                     //double x = Canvas.GetLeft(winPol);
                     //double y = Canvas.GetTop(winPol);
+
+                    maxX = winPol.Points.Max(p => p.X);
+                    maxY = winPol.Points.Max(p => p.Y);
 
                     foreach (System.Windows.Point p in winPol.Points)
                     {
@@ -313,6 +320,9 @@ namespace EXPIMP
                 }
             }
 
+            doc.Viewport.ViewCenter = new Vector2(maxX / 2,maxY / 2);            
+            doc.Viewport.ViewHeight = Math.Max(maxX, maxY);
+            
             DateTime d = DateTime.Now;
             string fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
                 d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));

@@ -300,7 +300,7 @@ namespace BaseClasses
 
             if (plate != null)
             {
-                CNote2D note2D = GetNoteForPlate(plate);
+                //CNote2D note2D = GetNoteForPlate(plate);
 
                 List<Point> canvasPointsOut = null;
                 List<Point> canvasPointsOut_Mirror = null;
@@ -311,7 +311,7 @@ namespace BaseClasses
                 List<CDimension> canvasDimensions = null;
                 List<CLine2D> canvasMemberOutline = null;
                 List<CLine2D> canvasBendLines = null;
-                CNote2D canvasNote2D = null;
+                //CNote2D canvasNote2D = null;
 
                 bool bPointsHaveYinUpDirection = false;
                 if (bPointsHaveYinUpDirection)
@@ -324,7 +324,7 @@ namespace BaseClasses
                     canvasDimensions = MirrorYCoordinates(plate.Dimensions);
                     canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
                     canvasBendLines = MirrorYCoordinates(plate.BendLines);
-                    if (note2D != null) note2D.MirrorYCoordinates();
+                    //if (note2D != null) note2D.MirrorYCoordinates();
                 }
                 else
                 {
@@ -355,7 +355,7 @@ namespace BaseClasses
                 canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                 canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                 canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                //canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 // Definition Points
                 //vobec nechapem preco treba spravit mirror pre samotne body, ale body ktore sa pouziju pre nakreslenie ciar uz mirorovane netreba
@@ -387,52 +387,19 @@ namespace BaseClasses
 
                 // Bend Lines
                 DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
-
-                //Notes
-                if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
-
-                //DrawComponent(
-                //    bDrawPoints,
-                //    bDrawOutLine,
-                //    bDrawPointNumbers,
-                //    bDrawHoles,
-                //    bDrawHoleCentreSymbols,
-                //    bDrawDrillingRoute,
-                //    bDrawDimensions,
-                //    bDrawMemberOutline,
-                //    bDrawBendLines,
-                //    Geom2D.TransformArrayToList(plate.PointsOut2D),
-                //    null,
-                //    pHolesCentersPointsScrews2D,
-                //    pHolesCentersPointsAnchors2D,
-                //    plate.DrillingRoutePoints,
-                //    plate.Dimensions,
-                //    plate.MemberOutlines,
-                //    plate.BendLines,
-                //    note2D,
-                //    fDiameter_screw * scale_unit,
-                //    fDiameter_anchor * scale_unit,
-                //    0,
-                //    0,
-                //    1,
-                //    dModel_Length_y_real,                    
-                //    0,
-                //    0,
-                //    true,
-                //    canvasForImage);
             }
 
             canvasForImage.UpdateLayout();
+            RenderVisual(canvasForImage);
 
-            using (Stream stream = GetCanvasStream(canvasForImage))
-            {
-                //using (var fileStream = File.Create("D:\\canvas.png"))
-                using (var fileStream = File.Create("canvas.png"))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    stream.CopyTo(fileStream);
-                }
-            }
+            //using (Stream stream = GetCanvasStream(canvasForImage))
+            //{                
+            //    using (var fileStream = File.Create("canvas.png"))
+            //    {
+            //        stream.Seek(0, SeekOrigin.Begin);
+            //        stream.CopyTo(fileStream);
+            //    }
+            //}
 
             return canvasForImage;
         }
