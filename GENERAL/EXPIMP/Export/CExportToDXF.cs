@@ -232,7 +232,7 @@ namespace EXPIMP
                     solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
                     solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
                     solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
-                    solid.Layer = new netDxf.Tables.Layer("Rectangle");
+                    solid.Layer = new netDxf.Tables.Layer("Points");
                     doc.AddEntity(solid);
                 }
                 else if (o is WindowsShapes.Polyline)
@@ -248,7 +248,7 @@ namespace EXPIMP
                     {
                         poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
                     }
-                    poly.Layer = new netDxf.Tables.Layer("PolyLine");
+                    poly.Layer = new netDxf.Tables.Layer("Outline");
                     doc.AddEntity(poly);
                 }
                 else if (o is WindowsShapes.Ellipse)
@@ -264,7 +264,7 @@ namespace EXPIMP
                     double x = Canvas.GetLeft(winElipse);
                     double y = Canvas.GetTop(winElipse);
                     Ellipse elipse = new Ellipse(new Vector2(pCenter.X + x, pCenter.Y + y), majorAxis, minorAxis);
-                    elipse.Layer = new netDxf.Tables.Layer("Elipse");
+                    elipse.Layer = new netDxf.Tables.Layer("Outline");
                     doc.AddEntity(elipse);
                 }
                 else if (o is WindowsShapes.Line)
@@ -274,7 +274,7 @@ namespace EXPIMP
                     Vector2 startPoint = new Vector2(winLine.X1, winLine.Y1);
                     Vector2 endPoint = new Vector2(winLine.X2, winLine.Y2);
                     Line line = new Line(startPoint, endPoint);
-                    line.Layer = new netDxf.Tables.Layer("Line");
+                    line.Layer = new netDxf.Tables.Layer("Holes center points");
                     doc.AddEntity(line);
                 }
                 else if (o is System.Windows.Controls.TextBlock)
