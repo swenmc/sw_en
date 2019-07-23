@@ -183,20 +183,20 @@ namespace EXPIMP
             // TODO 305
             // TO Ondrej - pokus nascalovat canvas tak, aby pri exporte sedeli jednotky, canvas sa scaluje, ale realne ostanu hodnoty rovnake, takze tade cesta nevedie :)
             // POtrebujeme funckie upravit tak aby sme boli schopni vyrobit Canvas nastavit mu velkost nasobenu faktorom ktorym bol realny plech zmenseny, vsetko co sa bude vykreslovat bude potom 1:1, do tohoto canvas vykreslime plech
-            Canvas cloneCanvas = new Canvas();
-            cloneCanvas = canvas;
+            //Canvas cloneCanvas = new Canvas();
+            //cloneCanvas = canvas;
 
-            float ScaleRate = 10f;
-            ScaleTransform scale = new ScaleTransform(cloneCanvas.LayoutTransform.Value.M11 * ScaleRate, cloneCanvas.LayoutTransform.Value.M22 * ScaleRate);
-            cloneCanvas.LayoutTransform = scale;
-            cloneCanvas.UpdateLayout();
+            //float ScaleRate = 10f;
+            //ScaleTransform scale = new ScaleTransform(cloneCanvas.LayoutTransform.Value.M11 * ScaleRate, cloneCanvas.LayoutTransform.Value.M22 * ScaleRate);
+            //cloneCanvas.LayoutTransform = scale;
+            //cloneCanvas.UpdateLayout();
             //---------------------------------------------------------------------------------------
 
             DxfDocument doc = new DxfDocument();
             double Z = 0; //is is 2D so Z axis is always 0
             double fontSize = 10;
 
-            foreach (object o in cloneCanvas.Children)
+            foreach (object o in canvas.Children)
             {
                 System.Diagnostics.Trace.WriteLine(o.GetType());
 
@@ -232,7 +232,7 @@ namespace EXPIMP
                     solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
                     solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
                     solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
-
+                    solid.Layer = new netDxf.Tables.Layer("Rectangle");
                     doc.AddEntity(solid);
                 }
                 else if (o is WindowsShapes.Polyline)
@@ -248,7 +248,7 @@ namespace EXPIMP
                     {
                         poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
                     }
-
+                    poly.Layer = new netDxf.Tables.Layer("PolyLine");
                     doc.AddEntity(poly);
                 }
                 else if (o is WindowsShapes.Ellipse)
@@ -264,7 +264,7 @@ namespace EXPIMP
                     double x = Canvas.GetLeft(winElipse);
                     double y = Canvas.GetTop(winElipse);
                     Ellipse elipse = new Ellipse(new Vector2(pCenter.X + x, pCenter.Y + y), majorAxis, minorAxis);
-
+                    elipse.Layer = new netDxf.Tables.Layer("Elipse");
                     doc.AddEntity(elipse);
                 }
                 else if (o is WindowsShapes.Line)
@@ -274,7 +274,7 @@ namespace EXPIMP
                     Vector2 startPoint = new Vector2(winLine.X1, winLine.Y1);
                     Vector2 endPoint = new Vector2(winLine.X2, winLine.Y2);
                     Line line = new Line(startPoint, endPoint);
-
+                    line.Layer = new netDxf.Tables.Layer("Line");
                     doc.AddEntity(line);
                 }
                 else if (o is System.Windows.Controls.TextBlock)
@@ -290,6 +290,7 @@ namespace EXPIMP
                     Text txt = new Text(winText.Text, new Vector2(x, y), fontSize);
                     //Text txt = new Text(winText.Text, new Vector2(x, -y), fontSize);  //pretocenim podla osi y dostanem body tak ako v canvase
                     txt.Color = AciColor.Yellow;
+                    txt.Layer = new netDxf.Tables.Layer("Text");
                     doc.AddEntity(txt);
 
                     //Takto sa da spravit zlozitejsi text, napr. Bold atd..

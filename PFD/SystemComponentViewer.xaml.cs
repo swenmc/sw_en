@@ -1412,7 +1412,7 @@ namespace PFD
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, false, false, false, false, false);
+            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true);
             CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);
 
             //CExportToDXF.ExportCanvas_DXF(page2D, 0, 0);
