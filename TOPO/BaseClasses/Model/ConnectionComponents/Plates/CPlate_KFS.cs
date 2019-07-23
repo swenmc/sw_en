@@ -300,6 +300,10 @@ namespace BaseClasses
         public override void Calc_Coord3D()
         {
             float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
+
+            float fx_temp = Fl_Z * (float)Math.Cos(fBeta);
+            float fy_temp = Fl_Z * (float)Math.Sin(fBeta);
+
             float fx_temp2 = Ft * (float)Math.Cos(fBeta);
             float fy_temp2 = Ft * (float)Math.Sin(fBeta);
 
@@ -311,6 +315,9 @@ namespace BaseClasses
 
             float fx_temp8 = fy_temp4 * (float)Math.Sin(fBeta);
             float fy_temp8 = fy_temp4 * (float)Math.Cos(fBeta);
+
+            float fx_temp9 = fy_temp5 * (float)Math.Sin(fBeta);
+            float fy_temp9 = fy_temp5 * (float)Math.Cos(fBeta);
 
             // Falling knee
             float fx_temp42 = Fl_Z * (float)Math.Cos(-FSlope_rad);
@@ -333,11 +340,11 @@ namespace BaseClasses
             arrPoints3D[2].Y = 0;
             arrPoints3D[2].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[3].X = arrPoints3D[2].X + fx_temp8;
-            arrPoints3D[3].Y = arrPoints3D[2].Y + fy_temp8;
+            arrPoints3D[3].X = arrPoints3D[2].X + fx_temp9;
+            arrPoints3D[3].Y = arrPoints3D[2].Y + fy_temp9;
             arrPoints3D[3].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[5].X = (Fl_Z + Fb_X2) - fc1_temp * (float)Math.Sin(fBeta);
+            arrPoints3D[5].X = (Fb_X2) - fc1_temp * (float)Math.Sin(fBeta);
             arrPoints3D[5].Y = Fh_Y2 - fc1_temp * (float)Math.Cos(fBeta);
             arrPoints3D[5].Z = 0;
 
@@ -345,13 +352,17 @@ namespace BaseClasses
             arrPoints3D[4].Y = arrPoints3D[5].Y;
             arrPoints3D[4].Z = arrPoints3D[0].Z;
 
+            // Point [4] in 2D
+            float fx4_2D = (float)arrPoints3D[5].X + fx_temp;
+            float fy4_2D = (float)arrPoints3D[5].Y - fy_temp;
+
             float fc5_temp = Fl_Z * (float)Math.Tan(FSlope_rad + fBeta);
 
             float fx_temp52 = fc5_temp * (float)Math.Sin(fBeta);
             float fy_temp52 = fc5_temp * (float)Math.Cos(fBeta);
 
-            arrPoints3D[6].X = PointsOut2D[4].X + (FSlope_rad > 0 ? fx_temp52 : 0);
-            arrPoints3D[6].Y = PointsOut2D[4].Y + (FSlope_rad > 0 ? fy_temp52 : 0);
+            arrPoints3D[6].X = fx4_2D + (FSlope_rad > 0 ? fx_temp52 : 0);
+            arrPoints3D[6].Y = fy4_2D + (FSlope_rad > 0 ? fy_temp52 : 0);
             arrPoints3D[6].Z = arrPoints3D[1].Z;
 
             float fc6_temp = Fl_Z / (float)Math.Cos(FSlope_rad + fBeta);
@@ -398,6 +409,7 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 3].X = arrPoints3D[2].X;
             arrPoints3D[INoPoints2Dfor3D + 3].Y = arrPoints3D[2].Y;
             arrPoints3D[INoPoints2Dfor3D + 3].Z = Ft;
+
 
             arrPoints3D[INoPoints2Dfor3D + 4].X = arrPoints3D[INoPoints2Dfor3D + 3].X + fx_temp2;
             arrPoints3D[INoPoints2Dfor3D + 4].Y = arrPoints3D[INoPoints2Dfor3D + 3].Y - fy_temp2;
@@ -642,8 +654,8 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[4]);
             wireFrame.Points.Add(arrPoints3D[19]);
 
-            wireFrame.Points.Add(arrPoints3D[5]);
-            wireFrame.Points.Add(arrPoints3D[20]);
+            //wireFrame.Points.Add(arrPoints3D[5]); // Nie je tam zlom, kedze je ohyb v pravom uhle
+            //wireFrame.Points.Add(arrPoints3D[20]);
 
             wireFrame.Points.Add(arrPoints3D[5]);
             wireFrame.Points.Add(arrPoints3D[22]);
@@ -671,6 +683,12 @@ namespace BaseClasses
 
             wireFrame.Points.Add(arrPoints3D[1]);
             wireFrame.Points.Add(arrPoints3D[11]);
+
+            wireFrame.Points.Add(arrPoints3D[14]);
+            wireFrame.Points.Add(arrPoints3D[27]);
+
+            wireFrame.Points.Add(arrPoints3D[16]);
+            wireFrame.Points.Add(arrPoints3D[21]);
 
             return wireFrame;
         }
