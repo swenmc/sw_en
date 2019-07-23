@@ -397,7 +397,25 @@ namespace PFD
                             else//(vm.ScrewArrangementIndex == 2) // Circle
                                 plate.ScrewArrangement = screwArrangementCircle;
                         }
-                        else // KE - TODO - screws are not implemented !!!
+                        else if (vm.ComponentIndex == 4) // KE
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else if (vm.ComponentIndex == 5) // KF
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else // KK - TODO - screws are not implemented !!!
                         {
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                                 plate.ScrewArrangement = null;
@@ -933,7 +951,7 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             // Create 2D page
             page2D = new Canvas();
-                        
+
             SetFrame2DSize();
 
             //page2D.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);
@@ -2326,6 +2344,11 @@ namespace PFD
                         SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
                         CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
+                        // TO Ondrej, neviem ci je to chyba alebo zamer ale mam pocit ze pre plate neukladame vsetky property z production info
+                        // pInfo.JobNumber
+                        // Info.Customer
+                        // v Open File to nacitavame ak to nie je null, ale vyzera to tak ze tu nikde tieto parametre neukladame
+
                         //page2D.RenderSize = new System.Windows.Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
                         //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
                         if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
@@ -2386,7 +2409,6 @@ namespace PFD
 
                     CExportToPDF.AddPlatesParamsTableToDocumentOnNewPage(tableParams);
 
-                    
                     string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");
                     string fileNameXLSX = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.xlsx");
                     ExportToExcelDocument.ExportToExcel(fileNameXLSX, tableParams, "plates");
