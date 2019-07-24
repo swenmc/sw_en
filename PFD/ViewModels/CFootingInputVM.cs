@@ -1,4 +1,5 @@
-﻿using DATABASE;
+﻿using BaseClasses;
+using DATABASE;
 using DATABASE.DTO;
 using MATH;
 using System;
@@ -61,6 +62,7 @@ namespace PFD
         private float m_ConcreteCover;
         private float m_FloorSlabThickness;
 
+        private List<CFoundation> listOfSelectedTypePads;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -429,7 +431,11 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.4 and 5 [m]");
 
                 m_FootingPadSize_x_Or_a = value;
-                if(IsSetFromCode == false) UpdateValuesInGUI();
+
+                foreach (CFoundation pad in listOfSelectedTypePads)                
+                    pad.m_fDim1 = FootingPadSize_x_Or_a;
+                
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_x_Or_a");
             }
         }
@@ -448,6 +454,10 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.4 and 5 [m]");
                 
                 m_FootingPadSize_y_Or_b = value;
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {
+                    pad.m_fDim2 = FootingPadSize_y_Or_b;
+                }                
                 if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_y_Or_b");
             }
@@ -467,6 +477,10 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.1 and 2 [m]");
 
                 m_FootingPadSize_z_Or_h = value;
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {   
+                    pad.m_fDim3 = FootingPadSize_z_Or_h;
+                }                
                 if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FootingPadSize_z_Or_h");
             }
@@ -596,11 +610,13 @@ namespace PFD
                     throw new ArgumentException("Floor slab thickness must be between 50 and 500 [mm]");
 
                 m_FloorSlabThickness = value;
+                _model.m_arrGOVolumes.First().m_fDim3 = m_FloorSlabThickness / 1000;
                 NotifyPropertyChanged("FloorSlabThickness");
             }
         }
 
         CPFDViewModel _pfdVM;
+        CModel_PFD_01_GR _model;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -608,6 +624,7 @@ namespace PFD
         {
             IsSetFromCode = true;
             _pfdVM = pfdVM;
+            _model = pfdVM.Model as CModel_PFD_01_GR;
             // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
             ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
@@ -644,10 +661,16 @@ namespace PFD
             // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
             // Alebo sa tu nastavia a podla toho sa vyrobi model
             
-            FloorSlabThickness = 125; // mm 0.125f; m
+            //FloorSlabThickness = 125; // mm 0.125f; m
+            FloorSlabThickness = _model.m_arrGOVolumes.First().m_fDim3 * 1000;
 
-            SetDefaultFootingPadSize();
+            CFoundation pad = GetSelectedFootingPad();
+            FootingPadSize_x_Or_a = pad.m_fDim1;
+            FootingPadSize_y_Or_b = pad.m_fDim2;
+            FootingPadSize_z_Or_h = pad.m_fDim3;
 
+            //Eccentricity_ex = pad.Eccentricity_x;  //toto nenastavujem lebo bolo zaporne a hned sa to zrube na validacii
+            //Eccentricity_ey = pad.Eccentricity_y;
             Eccentricity_ex = 0; // m
             Eccentricity_ey = 0; // m
             //----------------------------------------------------------------------------------------------------
@@ -660,6 +683,43 @@ namespace PFD
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public CFoundation GetSelectedFootingPad()
+        {
+            // Select type of footing pads that match with selected footing pad of member type in GUI
+            listOfSelectedTypePads = new List<CFoundation>(); //all pads in list should be the same!
+
+            EMemberType_FS_Position memberType = GetSelectedFootingPadMemberType();
+
+            for (int i = 0; i < _pfdVM.Model.m_arrFoundations.Count; i++)
+            {
+                if (memberType == _pfdVM.Model.m_arrFoundations[i].m_ColumnMemberTypePosition)
+                    listOfSelectedTypePads.Add(_pfdVM.Model.m_arrFoundations[i]);
+            }
+
+            // All pads in list should be the same!
+            CFoundation pad = listOfSelectedTypePads.FirstOrDefault();
+
+            return pad;
+        }
+
+        private EMemberType_FS_Position GetSelectedFootingPadMemberType()
+        {
+            EMemberType_FS_Position memberType;
+            if (FootingPadMemberTypeIndex == 0) // TODO - porovnavam s indexom v comboboxe 0-3, asi by bolo istejsie zobrazovat v comboboxe items naviazane na EMemberType_FS_Position, aby sa to neznicilo ked co comboboxu pridam nejaky dalsi typ alebo zmenim poradie
+                memberType = EMemberType_FS_Position.MainColumn;
+            else if (FootingPadMemberTypeIndex == 1)
+                memberType = EMemberType_FS_Position.EdgeColumn;
+            else if (FootingPadMemberTypeIndex == 2)
+                memberType = EMemberType_FS_Position.ColumnFrontSide;
+            else if (FootingPadMemberTypeIndex == 3)
+                memberType = EMemberType_FS_Position.ColumnBackSide;
+            else
+            {
+                throw new Exception("Not defined member type!");
+            }
+            return memberType;
         }
 
         private List<string> GetReinforcementBarsCountList()
@@ -677,22 +737,32 @@ namespace PFD
             return list;
         }
 
-        private void SetDefaultFootingPadSize()
+        //private void SetDefaultFootingPadSize()
+        //{
+        //    // Dimensions of footing pad in meters
+        //    //FootingPadSize_x_Or_a = 1.0f;
+        //    //FootingPadSize_y_Or_b = 1.0f;
+        //    //FootingPadSize_z_Or_h = 0.4f;
+
+        //    // Default size of footing pad
+        //    float faX, fbY, fhZ;
+        //    GetDefaultFootingPadSize(out faX, out fbY, out fhZ);
+
+        //    FootingPadSize_x_Or_a = faX;
+        //    FootingPadSize_y_Or_b = fbY;
+        //    FootingPadSize_z_Or_h = fhZ;
+
+        //    UpdateValuesInGUI();
+        //}
+
+        private void UpdateModelFootingPads()
         {
-            // Dimensions of footing pad in meters
-            //FootingPadSize_x_Or_a = 1.0f;
-            //FootingPadSize_y_Or_b = 1.0f;
-            //FootingPadSize_z_Or_h = 0.4f;
-
-            // Default size of footing pad
-            float faX, fbY, fhZ;
-            GetDefaultFootingPadSize(out faX, out fbY, out fhZ);
-
-            FootingPadSize_x_Or_a = faX;
-            FootingPadSize_y_Or_b = fbY;
-            FootingPadSize_z_Or_h = fhZ;
-
-            UpdateValuesInGUI();
+            foreach (CFoundation pad in listOfSelectedTypePads)
+            {
+                pad.m_fDim1 = FootingPadSize_x_Or_a;
+                pad.m_fDim2 = FootingPadSize_y_Or_b;
+                pad.m_fDim3 = FootingPadSize_z_Or_h;
+            }
         }
 
         private void UpdateValuesInGUI()

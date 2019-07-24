@@ -27,7 +27,7 @@ namespace PFD
         DisplayOptions sDisplayOptions;
         CPFDViewModel _pfdVM;
         CFootingInputVM vm;
-        List<CFoundation> listOfSelectedTypePads;
+        
 
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
@@ -41,8 +41,7 @@ namespace PFD
             this.DataContext = vm;
             vm.FootingPadMemberTypeIndex = 0;
 
-            CFoundation pad = GetSelectedFootingPad();
-            UpdateViewModel(pad);
+            CFoundation pad = vm.GetSelectedFootingPad();            
             CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
@@ -106,71 +105,15 @@ namespace PFD
             //// TODO - dopracovat dalsie parametre, ktore ovplyvnia preview
             if (e.PropertyName == "FootingPadSize_x_Or_a" ||
                 e.PropertyName == "FootingPadSize_y_Or_b" ||
-                e.PropertyName == "FootingPadSize_z_Or_h"
+                e.PropertyName == "FootingPadSize_z_Or_h" ||
+                e.PropertyName == "FloorSlabThickness"                
                 )
             {
-                UpdateModelPadsProperties();
+                _pfdVM.FootingChanged = true;                
             }
-            CFoundation pad = GetSelectedFootingPad();
+            CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
-        }
-
-        private void UpdateModelPadsProperties()
-        {
-            GetSelectedFootingPad();
-            foreach (CFoundation pad in listOfSelectedTypePads)
-            {
-                //pad.FootingPadSize_x_Or_a = vm.FootingPadSize_x_Or_a;
-                //pad.FootingPadSize_y_Or_b = vm.FootingPadSize_y_Or_b;
-                //pad.FootingPadSize_z_Or_h = vm.FootingPadSize_z_Or_h;
-            }
-        }
-
-        private void UpdateViewModel(CFoundation pad)
-        {
-            vm.IsSetFromCode = true;
-            //vm.FootingPadSize_x_Or_a = pad.FootingPadSize_x_Or_a;
-            //vm.FootingPadSize_y_Or_b = pad.FootingPadSize_y_Or_b;
-            //vm.FootingPadSize_z_Or_h = pad.FootingPadSize_z_Or_h;
-            vm.IsSetFromCode = false;
-        }
-
-        private CFoundation GetSelectedFootingPad()
-        {
-            // Select type of footing pads that match with selected footing pad of member type in GUI
-            listOfSelectedTypePads = new List<CFoundation>(); //all pads in list should be the same!
-
-            EMemberType_FS_Position memberType = GetSelectedFootingPadMemberType();
-
-            for (int i = 0; i < _pfdVM.Model.m_arrFoundations.Count; i++)
-            {
-                if (memberType == _pfdVM.Model.m_arrFoundations[i].m_ColumnMemberTypePosition)
-                    listOfSelectedTypePads.Add(_pfdVM.Model.m_arrFoundations[i]);
-            }
-            
-            // All pads in list should be the same!
-            CFoundation pad = listOfSelectedTypePads.FirstOrDefault();
-
-            return pad;
-        }
-
-        private EMemberType_FS_Position GetSelectedFootingPadMemberType()
-        {
-            EMemberType_FS_Position memberType;
-            if (vm.FootingPadMemberTypeIndex == 0) // TODO - porovnavam s indexom v comboboxe 0-3, asi by bolo istejsie zobrazovat v comboboxe items naviazane na EMemberType_FS_Position, aby sa to neznicilo ked co comboboxu pridam nejaky dalsi typ alebo zmenim poradie
-                memberType = EMemberType_FS_Position.MainColumn;
-            else if (vm.FootingPadMemberTypeIndex == 1)
-                memberType = EMemberType_FS_Position.EdgeColumn;
-            else if (vm.FootingPadMemberTypeIndex == 2)
-                memberType = EMemberType_FS_Position.ColumnFrontSide;
-            else if (vm.FootingPadMemberTypeIndex == 3)
-                memberType = EMemberType_FS_Position.ColumnBackSide;
-            else
-            {
-                throw new Exception("Not defined member type!");
-            }
-            return memberType;
         }
         
         private CConnectionJointTypes GetBaseJointForSelectedNode(CNode node)

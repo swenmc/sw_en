@@ -88,7 +88,7 @@
 
         <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Thickness t:" VerticalAlignment="Top" Width="120"/>
         <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxFloorSlabThickness" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
         <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="100"/>

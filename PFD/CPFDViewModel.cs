@@ -143,6 +143,8 @@ namespace PFD
         private bool MRecreateFoundations;
         private bool MRecreateFloorSlab;
 
+        private bool MFootingChanged;
+
         // Popis pre Ondreja - doors and windows
         // GUI
 
@@ -1756,6 +1758,20 @@ namespace PFD
             set
             {
                 MRecreateModel = value;
+            }
+        }
+
+        public bool FootingChanged
+        {
+            get
+            {
+                return MFootingChanged;
+            }
+
+            set
+            {
+                MFootingChanged = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("FootingChanged");
             }
         }
 
