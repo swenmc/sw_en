@@ -119,6 +119,8 @@ namespace PFD
             this.DataContext = vm;
             vm.PFDMainWindow = this;
 
+            SetUIElementsVisibility();
+
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
