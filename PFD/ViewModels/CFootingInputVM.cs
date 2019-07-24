@@ -626,6 +626,8 @@ namespace PFD
 
             // Set default GUI
             FootingPadMemberTypeIndex = 1;
+
+
             ConcreteGrade = "30";
             ConcreteDensity = 2300f; // kg / m^3
             ReinforcementGrade = "500E";

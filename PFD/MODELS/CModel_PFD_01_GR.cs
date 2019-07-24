@@ -1084,9 +1084,13 @@ namespace PFD
                 }
             }
 
-            foreach (CMember m in this.m_arrMembers)
+            bool debugging = false;
+            if (debugging)
             {
-                if(m.IntermediateNodes.Count > 0) System.Diagnostics.Trace.WriteLine($"ID:{m.ID} Name:{m.Name} IntNodesCount: {m.IntermediateNodes.Count}");
+                foreach (CMember m in this.m_arrMembers)
+                {
+                    if (m.IntermediateNodes.Count > 0) System.Diagnostics.Trace.WriteLine($"ID:{m.ID} Name:{m.Name} IntNodesCount: {m.IntermediateNodes.Count}");
+                }
             }
         }
 
