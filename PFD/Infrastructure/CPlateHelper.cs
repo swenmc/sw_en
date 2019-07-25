@@ -463,7 +463,6 @@ namespace PFD
             else return false;
         }
 
-
         public static void DataGridGeometryParams_ValueChanged(CComponentParamsView item, CPlate plate)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();

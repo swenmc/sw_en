@@ -41,7 +41,7 @@ namespace PFD
             this.DataContext = vm;
             vm.FootingPadMemberTypeIndex = 0;
 
-            CFoundation pad = vm.GetSelectedFootingPad();            
+            CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
@@ -106,10 +106,31 @@ namespace PFD
             if (e.PropertyName == "FootingPadSize_x_Or_a" ||
                 e.PropertyName == "FootingPadSize_y_Or_b" ||
                 e.PropertyName == "FootingPadSize_z_Or_h" ||
-                e.PropertyName == "FloorSlabThickness"                
+
+                e.PropertyName == "LongReinTop_x_No" ||
+                e.PropertyName == "LongReinTop_x_Phi" ||
+                e.PropertyName == "LongReinTop_x_distance_s_y" ||
+
+                e.PropertyName == " LongReinTop_y_No" ||
+                e.PropertyName == " LongReinTop_y_Phi" ||
+                e.PropertyName == "LongReinTop_y_distance_s_x" ||
+
+                e.PropertyName == "LongReinBottom_x_No" ||
+                e.PropertyName == "LongReinBottom_x_Phi" ||
+                e.PropertyName == "LongReinBottom_x_distance_s_y" ||
+
+                e.PropertyName == "LongReinBottom_y_No" ||
+                e.PropertyName == "LongReinBottom_y_Phi" ||
+                e.PropertyName == "LongReinBottom_y_distance_s_x" ||
+
+                e.PropertyName == "Eccentricity_ex" ||
+                e.PropertyName == "Eccentricity_ey" ||
+
+                e.PropertyName == "ConcreteCover" ||
+                e.PropertyName == "FloorSlabThickness"
                 )
             {
-                _pfdVM.FootingChanged = true;                
+                _pfdVM.FootingChanged = true;
             }
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
@@ -146,7 +167,6 @@ namespace PFD
 
             if (pad == null) return; // Error - nothing to display
 
-
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             sDisplayOptions.bDisplayGlobalAxis = true;
@@ -156,10 +176,6 @@ namespace PFD
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.RotateModelX = -90;
             sDisplayOptions.RotateModelY = 45;
-
-            // TODO - Vyrobit model patky + vyztuz + plech spoja a cast pruta spoja
-            // Refaktorovat funkciu displayJoint(CConnectionJointTypes joint) aby bolo mozne vykreslit joint v Table UC_Joints aj UC_FootingInput
-            // TODO - Pridat do modelu spoj (uzol spoja, uzly prutov, pruty, plechy, skrutky)
 
             CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 
