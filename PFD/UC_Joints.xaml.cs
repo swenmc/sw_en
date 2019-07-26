@@ -113,20 +113,67 @@ namespace PFD
 
                 // TO Ondrej - kedze sme to vyriesili tak neviem ci chces tuto validaciu nechat aktivnu alebo si ju niekde presunut / "odlozit" pokial by sa to este v buducnosti hodilo
 
-                // Validation - pokus odchytit zmenu v uz zapisanych zaznamoch
-                EJointType type = EJointType.eBase_MainColumn; // Hladany typ spoja, ktoreho zmenu sledujeme
+                //To Mato - ja tuto validaciu nepotrebujem - zakomentuvavam
+                //// Validation - pokus odchytit zmenu v uz zapisanych zaznamoch
+                //EJointType type = EJointType.eBase_MainColumn; // Hladany typ spoja, ktoreho zmenu sledujeme
 
-                List<CConnectionJointTypes> list = new List<CConnectionJointTypes>();
-                list = jointsDict[(int)type];
+                //List<CConnectionJointTypes> list = new List<CConnectionJointTypes>();
+                //list = jointsDict[(int)type];
 
-                if (list[0].JointType != type) // Porovname typ prveho spoja ktory je zapisany v zozname dictionary so sledovanym typom
-                {
-                    throw new Exception("Original type: " + type + ", index No. " + (int)type + "\n"+
-                                        "New type: " + vm.JointTypes[c.ID-1].Name + " description ID: " + c.ID + ", object type: " + vm.JointTypes[c.ID - 1].JoinType);
-                }
+                //if (list[0].JointType != type) // Porovname typ prveho spoja ktory je zapisany v zozname dictionary so sledovanym typom
+                //{
+                //    throw new Exception("Original type: " + type + ", index No. " + (int)type + "\n"+
+                //                        "New type: " + vm.JointTypes[c.ID-1].Name + " description ID: " + c.ID + ", object type: " + vm.JointTypes[c.ID - 1].JoinType);
+                //}
                 //----------------------------------------------------------------------------------------------------------------------------
             }
+
+            //validacia podla tasku 323
+            ValidateModelJointsCounts();
         }
+
+        private void ValidateModelConnectionJoints()
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Validation
+            // Ucel validacie - Skontrolovat ci maju vsetky pruty v spojoch priradeny EMemberTypePosition
+            foreach (CConnectionJointTypes joint in _pfdVM.Model.m_arrConnectionJoints)
+            {
+                if (joint.m_MainMember == null)
+                {
+                    new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
+                }
+
+                if (joint.m_MainMember.EMemberTypePosition <= 0)
+                {
+                    new ArgumentNullException("Undefined main member type of joint ID: " + joint.ID + ", member ID: " + joint.m_MainMember.ID);
+                }
+
+                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
+                {
+                    for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
+                    {
+                        if (joint.m_SecondaryMembers[i].EMemberTypePosition <= 0)
+                            new ArgumentNullException("Undefined secondary member type of joint ID: " + joint.ID + ", member ID: " + joint.m_SecondaryMembers[i].ID);
+                    }
+                }
+            }
+
+        }
+        private void ValidateModelJointsCounts()
+        {
+            int modelJointsCount = _pfdVM.Model.m_arrConnectionJoints.Count;
+
+            int jointsIdentified = 0;
+            foreach (List<CConnectionJointTypes> list_joints in jointsDict.Values)
+            {
+                if (list_joints == null) continue;
+                jointsIdentified += list_joints.Count;
+            }
+
+            if (modelJointsCount != jointsIdentified) throw new Exception($"Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
+        }
+
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
         {
             List<CConnectionJointTypes> items = _pfdVM.Model.m_arrConnectionJoints.FindAll(c => c.GetType() == GetTypeFor(con.JoinType));
@@ -145,32 +192,7 @@ namespace PFD
                 }
             }
 
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Validation
-            // TODO - Ondrej - mozeme to presunut niekam inam a validovat to skor
-            // Ucel validacie - Skontrolovat ci maju vsetky pruty v spojoch priradeny EMemberTypePosition
-
-            foreach (CConnectionJointTypes joint in _pfdVM.Model.m_arrConnectionJoints)
-            {
-                if (joint.m_MainMember == null)
-                {
-                    new ArgumentNullException("Undefined main member of joint ID:" + joint.ID);
-                }
-
-                if(joint.m_MainMember.EMemberTypePosition <= 0)
-                {
-                    new ArgumentNullException("Undefined main member type of joint ID: " + joint.ID + ", member ID: " + joint.m_MainMember.ID);
-                }
-
-                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
-                {
-                    for (int i = 0; i < joint.m_SecondaryMembers.Length; i++)
-                    {
-                        if (joint.m_SecondaryMembers[i].EMemberTypePosition <= 0)
-                            new ArgumentNullException("Undefined secondary member type of joint ID: " + joint.ID + ", member ID: " + joint.m_SecondaryMembers[i].ID);
-                    }
-                }
-            }
+            ValidateModelConnectionJoints();
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             foreach (CConnectionJointTypes joint in items)
