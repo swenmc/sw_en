@@ -17,6 +17,7 @@ namespace PFD
 
         private int m_JointTypeIndex;
         private List<CConnectionDescription> m_JointTypes;
+        private List<CConnectionDescription> m_AllJointTypes;
 
         private List<TabItem> m_TabItems;
         
@@ -57,6 +58,19 @@ namespace PFD
             {
                 m_JointTypes = value;
                 NotifyPropertyChanged("JointTypes");
+            }
+        }
+        public List<CConnectionDescription> AllJointTypes
+        {
+            get
+            {
+                return m_AllJointTypes;
+            }
+
+            set
+            {
+                m_AllJointTypes = value;
+                NotifyPropertyChanged("AllJointTypes");
             }
         }
 
@@ -116,6 +130,8 @@ namespace PFD
             }
         }
 
+        
+
         //public List<CComponentParamsView> ScrewArrangementParameters
         //{
         //    get
@@ -160,7 +176,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CJointsVM()
         {
-            JointTypes = CJointsManager.LoadJointsConnectionDescriptions();
+            AllJointTypes = CJointsManager.LoadJointsConnectionDescriptions();
             JointTypeIndex = 0;
             SelectedTabIndex = 0;
 

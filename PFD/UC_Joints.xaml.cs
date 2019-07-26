@@ -98,9 +98,12 @@ namespace PFD
         public void ArrangeConnectionJoints()
         {
             jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
-            foreach (CConnectionDescription c in vm.JointTypes)
+            List<CConnectionDescription> listJointTypes = new List<CConnectionDescription>();
+            foreach (CConnectionDescription c in vm.AllJointTypes)
             {
-                jointsDict.Add(c.ID, GetConnectionJointTypesFor(c));
+                List<CConnectionJointTypes> listFoundJointTyes = GetConnectionJointTypesFor(c);
+                jointsDict.Add(c.ID, listFoundJointTyes);
+                if (listFoundJointTyes.Count > 0) listJointTypes.Add(c);
 
                 //----------------------------------------------------------------------------------------------------------------------------
                 // TO Ondrej - pozri prosim na toto
@@ -130,6 +133,11 @@ namespace PFD
 
             //validacia podla tasku 323
             ValidateModelJointsCounts();
+
+            int selectedIndex = vm.JointTypeIndex;
+            vm.JointTypes = listJointTypes; //task 324
+            if (vm.JointTypes.Count > selectedIndex) vm.JointTypeIndex = selectedIndex;
+            else vm.JointTypeIndex = 0;
         }
 
         private void ValidateModelConnectionJoints()
@@ -171,7 +179,12 @@ namespace PFD
                 jointsIdentified += list_joints.Count;
             }
 
-            if (modelJointsCount != jointsIdentified) throw new Exception($"Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
+            if (modelJointsCount != jointsIdentified)
+            {
+                System.Diagnostics.Trace.WriteLine($"JOINTS VALIDATION ERROR: Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
+                
+                //throw new Exception($"Not all joints were identified. Identified joints count: [{jointsIdentified}]. Model joints count: [{modelJointsCount}]");
+            }
         }
 
         private List<CConnectionJointTypes> GetConnectionJointTypesFor(CConnectionDescription con)
@@ -1081,7 +1094,7 @@ namespace PFD
             dg.HeadersVisibility = DataGridHeadersVisibility.None;
             dg.MinWidth = 500;
             List<Tuple<int, string, string, int>> results = new List<Tuple<int, string, string, int>>();
-            foreach (CConnectionDescription cd in vm.JointTypes)
+            foreach (CConnectionDescription cd in vm.AllJointTypes)
             {
                 Tuple<int, string, string, int> t = Tuple.Create(cd.ID, cd.Name, cd.JoinType, jointsDict[cd.ID].Count);
                 results.Add(t);
