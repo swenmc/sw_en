@@ -82,7 +82,8 @@ namespace PFD
                 CComponentListVM componentListVM,
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
-                CVolume floorSlab
+                CVolume floorSlab,
+                CPFDViewModel vm
             )
         {
             ObservableCollection<CComponentInfo> componentList = componentListVM?.ComponentList;
@@ -719,7 +720,7 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
-
+            
             if (doorBlocksProperties != null)
             {
                 for (int i = 0; i < doorBlocksProperties.Count; i++)
@@ -794,9 +795,12 @@ namespace PFD
 
             AddMembersToMemberGroupsLists();
 
+
+            vm.SetComponentListAccordingToDoorsAndWindows();
+
             // Set members Generate, Display, Calculate, Design, MaterialList properties
             CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
-
+            
             #region Supports
 
             //m_arrNSupports = new CNSupport[2 * iFrameNo];
@@ -864,7 +868,7 @@ namespace PFD
 
             SetJointDefaultParameters();
         }
-
+        
         public override void CalculateLoadValuesAndGenerateLoads(
                 CCalcul_1170_1 generalLoad,
                 CCalcul_1170_2 wind,

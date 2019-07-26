@@ -251,11 +251,11 @@ namespace PFD
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
             
             //kvoli Doors Models,  najprv musi byt update
-            if (sender is DoorProperties)
+            if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
             {
                 Datagrid_DoorsAndGates_SelectionChanged(null, null);
             }
-            else if (sender is WindowProperties)
+            else if (sender is WindowProperties || e.PropertyName == "WindowBlocksProperties_Add")
             {
                 Datagrid_Windows_SelectionChanged(null, null);
             }
@@ -755,8 +755,9 @@ namespace PFD
                     compList,
                     joints,
                     foundations,
-                    floorSlab);
+                    floorSlab, vm);
 
+                
                 UpdateUC_Joints();
                 UpdateUC_Footings();
             }

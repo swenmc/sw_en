@@ -462,6 +462,8 @@ namespace PFD
                     }
                 }
             }
+
+            
             if (debugging) System.Diagnostics.Trace.WriteLine("SetMembersAccordingTo count: " + count);
         }
 

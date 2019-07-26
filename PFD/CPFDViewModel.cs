@@ -2220,7 +2220,7 @@ namespace PFD
             sDesignResults_SLS = mdc.sDesignResults_SLS;
         }
 
-        private void SetComponentListAccordingToDoorsAndWindows()
+        public void SetComponentListAccordingToDoorsAndWindows()
         {
             SetComponentListAccordingToDoors();
             SetComponentListAccordingToWindows();
