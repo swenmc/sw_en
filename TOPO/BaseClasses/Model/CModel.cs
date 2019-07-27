@@ -248,5 +248,14 @@ namespace BaseClasses
             CConnectionJointTypes jStart_temp;
             GetModelMemberStartEndConnectionJoints(m, out jStart_temp, out jEnd);
         }
+
+        public CFoundation GetFoundationForJointFromModel(CConnectionJointTypes joint)
+        {
+            foreach (CFoundation f in m_arrFoundations)
+            {
+                if (joint.m_Node.ID == f.m_Node.ID) return f;
+            }
+            return null;
+        }
     }
 }

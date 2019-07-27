@@ -1045,6 +1045,17 @@ namespace PFD
                     //jointsDesignVM.SetComponentList(compListVM.ComponentList);
                 }
             }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
+            {
+                
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
+                if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.JointDesignResults_ULS);
+                else
+                {
+                    ////setuje sa v public void UpdateResults()
+                    
+                }
+            }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {
                 Part_List.Content = new UC_MaterialList(vm.Model);
@@ -1114,6 +1125,18 @@ namespace PFD
                     vmJD.SetComponentList(componentsList);
                     vmJD.IsSetFromCode = false;
                     vmJD.ComponentTypeIndex = 0;
+                }
+
+                if (Footing_Design.Content != null)
+                {
+                    UC_FootingDesign uc_footingDesign = Footing_Design.Content as UC_FootingDesign;
+                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                    CPFDFootingDesign vmFD = uc_footingDesign.DataContext as CPFDFootingDesign;
+                    vmFD.IsSetFromCode = true;
+                    vmFD.LimitStateIndex = 0;
+                    vmFD.SetComponentList(componentsList);
+                    vmFD.IsSetFromCode = false;
+                    vmFD.ComponentTypeIndex = 0;
                 }
             });
         }

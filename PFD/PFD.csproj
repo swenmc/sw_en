@@ -134,12 +134,13 @@
     <Compile Include="CParamsResources.cs" />
     <Compile Include="CComponentParamsView.cs" />
     <Compile Include="CDatabaseModels.cs" />
-    <Compile Include="CPFDJointsDesign.cs" />
+    <Compile Include="ViewModels\CPFDFootingDesign.cs" />
+    <Compile Include="ViewModels\CPFDJointsDesign.cs" />
     <Compile Include="ViewModels\CFootingInputVM.cs" />
     <Compile Include="ViewModels\CJointsVM.cs" />
-    <Compile Include="CPFDMemberInternalForces.cs" />
-    <Compile Include="CPFDMemberDesign.cs" />
-    <Compile Include="CPFDLoadInput.cs" />
+    <Compile Include="ViewModels\CPFDMemberInternalForces.cs" />
+    <Compile Include="ViewModels\CPFDMemberDesign.cs" />
+    <Compile Include="ViewModels\CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="CDatabaseComponents.cs" />
     <Compile Include="DeflectionLimit.xaml.cs">

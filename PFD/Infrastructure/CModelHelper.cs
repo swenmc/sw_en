@@ -362,6 +362,15 @@ namespace PFD
             return null;
         }
 
+        //public static CFoundation GetFoundationForJointFromModel(this CModel model, CConnectionJointTypes joint)
+        //{
+        //    foreach (CFoundation f in model.m_arrFoundations)
+        //    {
+        //        if (joint.m_Node.ID == f.m_Node.ID) return f;
+        //    }
+        //    return null;
+        //}
+
         /// <summary>
         /// Method for model validation. Tries to find IDs duplicates...
         /// </summary>

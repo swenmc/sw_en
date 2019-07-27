@@ -37,6 +37,14 @@ namespace BaseClasses
 
         private float m_fConcreteCover;
 
+        private CJointDesignDetails m_DesignDetails;
+        public CJointDesignDetails DesignDetails
+        {
+            get { return m_DesignDetails; }
+            set { m_DesignDetails = value; }
+        }
+
+
         public float Eccentricity_x
         {
             get

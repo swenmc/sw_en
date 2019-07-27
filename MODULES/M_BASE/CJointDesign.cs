@@ -14,6 +14,7 @@ namespace M_BASE
         bool bDebugging;
         public float fDesignRatio_Start = 0;
         public float fDesignRatio_End = 0;
+        public float fDesignRatio_Footing = 0;
         public bool BUseCRSCGeometricalAxes;
 
         public CJointDesign(bool bDebugging_temp = false)
@@ -43,7 +44,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointStartDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, sjointStartDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, model, sjointStartDIF_x);
                         fDesignRatio_Start = obj_CalcDesign.fEta_max;
                     }
                     else // End Joint Design
@@ -52,7 +53,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointEndDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, sjointEndDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, model, sjointEndDIF_x);
                         fDesignRatio_End = obj_CalcDesign.fEta_max;
                     }
                 }
