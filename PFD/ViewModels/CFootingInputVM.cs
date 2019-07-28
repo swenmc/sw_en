@@ -987,5 +987,15 @@ namespace PFD
             // Number of spacings + 1
             return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
         }
+
+        public CalculationSettingsFoundation GetCalcSettings()
+        {
+            //To Mato dopln si property ktore potrebujes
+            CalculationSettingsFoundation calc = new CalculationSettingsFoundation();
+            calc.ConcreteDensity = ConcreteDensity;
+            calc.ConcreteGrade = ConcreteGrade;
+            calc.ReinforcementGrade = ReinforcementGrade;
+            return calc;
+        }
     }
 }

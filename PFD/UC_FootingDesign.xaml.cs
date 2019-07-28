@@ -15,18 +15,21 @@ namespace PFD
     {
         bool UseCRSCGeometricalAxes;
         CModel_PFD Model;
+        CPFDFootingDesign vm;
+        CFootingInputVM FootingVM;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_FootingDesign(bool bUseCRSCGeometricalAxes_temp, CModel_PFD model, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
+        public UC_FootingDesign(bool bUseCRSCGeometricalAxes_temp, CModel_PFD model, CComponentListVM compList, CFootingInputVM footingVM, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
         {
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             DesignResults_ULS = designResults_ULS;
             Model = model;
+            FootingVM = footingVM;
 
             // Footing Design
-            CPFDFootingDesign vm = new CPFDFootingDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
+            vm = new CPFDFootingDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleFootingDesignPropertyChangedEvent;
             this.DataContext = vm;
 
@@ -53,6 +56,8 @@ namespace PFD
         {
             cGoverningMemberFootingResults = null;
 
+            CalculationSettingsFoundation footingCalcSettings = FootingVM.GetCalcSettings();
+
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = float.MinValue;
@@ -70,13 +75,13 @@ namespace PFD
                     CJointLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == joint.m_Node.ID);
                     if (res == null) continue;
 
-                    CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, joint, Model, res.DesignInternalForces);
+                    CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, joint, Model, footingCalcSettings, res.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJoint.fEta_max_Footing > fMaximumDesignRatio)
                     {
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, res.DesignInternalForces, true);
+                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, footingCalcSettings, res.DesignInternalForces, true);
                         cGoverningMemberFootingResults = cJoint;
                     }
                 }

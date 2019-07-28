@@ -19,6 +19,8 @@ namespace M_AS4600
         public designInternalForces_AS4600 sDIF_AS4600;
         bool bIsDebugging;
 
+        public CalculationSettingsFoundation foundationCalcSettings;
+
         CScrew screw;
         CPlate plate;
         CCrSc_TW crsc_mainMember;
@@ -40,7 +42,7 @@ namespace M_AS4600
         public float fEta_max = 0;
         public float fEta_max_Footing = 0;
 
-        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, CConnectionJointTypes joint_temp, CModel model, designInternalForces sDIF_temp, bool bSaveDetails = false)
+        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
         { 
             if (joint_temp == null)
             {
@@ -49,6 +51,7 @@ namespace M_AS4600
 
             bIsDebugging = bIsDebugging_temp;
             joint = joint_temp;
+            foundationCalcSettings = calcSettingsFoundation;
             sDIF = sDIF_temp;
 
             // Set design internal forces according AS 4600 symbols of axes
@@ -1456,6 +1459,11 @@ namespace M_AS4600
 
         public void CalculateDesignRatioBaseJointFooting(CFoundation foundation, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)
         {
+            //To Mato tu by mal byt dostupny objekt nastaveni vypoctu pre CFoundation
+            //foundationCalcSettings.ConcreteDensity
+            //foundationCalcSettings.ConcreteGrade
+            //foundationCalcSettings.ReinforcementGrade
+
             CConCom_Plate_B_basic basePlate;
 
             if (plate is CConCom_Plate_B_basic)

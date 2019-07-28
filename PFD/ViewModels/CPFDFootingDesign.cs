@@ -139,7 +139,7 @@ namespace PFD
         public void SetComponentList(ObservableCollection<CComponentInfo> componentList)
         {
             //Task 335: Pre Component Type staci Main Column, Edge Column, Wind Post (alebo Column) -front side, Wind Post (alebo Column) -back side.
-            ComponentList = componentList.Where(s => s.MemberTypePosition == EMemberType_FS_Position.MainColumn || s.MemberTypePosition == EMemberType_FS_Position.EdgeRafter ||
+            ComponentList = componentList.Where(s => s.MemberTypePosition == EMemberType_FS_Position.MainColumn || s.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
                                             s.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || s.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide
                                             ).Select(s => s.ComponentName).ToList();
         }
@@ -173,5 +173,7 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        
     }
 }

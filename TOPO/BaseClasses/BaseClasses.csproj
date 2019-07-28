@@ -86,6 +86,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculations\CalculationSettingsFoundation.cs" />
     <Compile Include="CCNCPathFinder.cs" />
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="CLine2D.cs" />
