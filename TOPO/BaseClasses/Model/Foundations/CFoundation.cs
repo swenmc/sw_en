@@ -261,6 +261,7 @@ namespace BaseClasses
         public CFoundation(int iFoundation_ID,
             EFoundationType eType,
             CNode node,
+            MATERIAL.CMat_02_00 materialConcrete,
             EMemberType_FS_Position memberTypePosition,
             //CPoint pControlEdgePoint,
             float fX,
@@ -286,6 +287,7 @@ namespace BaseClasses
             ID = iFoundation_ID;
             eFoundationType = eType;
             m_Node = node; // Note that is assigned to the foundation / footing pad
+            m_Mat = materialConcrete;
             m_ColumnMemberTypePosition = memberTypePosition;
             //m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;

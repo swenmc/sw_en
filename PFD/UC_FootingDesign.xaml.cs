@@ -52,7 +52,6 @@ namespace PFD
         public void CalculateGoverningMemberDesignDetails(List<CJointLoadCombinationRatio_ULS> DesignResults, int loadCombinationID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculJoint cGoverningMemberFootingResults)
         {
             cGoverningMemberFootingResults = null;
-            
 
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
@@ -83,7 +82,6 @@ namespace PFD
                 }
 
                 // Display calculation results - details
-                // Start Joint
                 if (cGoverningMemberFootingResults != null)
                     cGoverningMemberFootingResults.DisplayFootingDesignResultsInGridView(Results_FootingPad_GridView);
                 else

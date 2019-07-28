@@ -23,7 +23,7 @@ namespace PFD
         ObservableCollection<CComponentInfo> MComponentList;
         private int MSelectedComponentIndex;
 
-        private List<string> MSections;        
+        private List<string> MSections;
         private List<string> MColors;
         private List<string> MSectionsForColumnsOrRafters;
         private List<string> MSectionsForGirtsOrPurlins;
@@ -81,7 +81,7 @@ namespace PFD
 
                 if (e.PropertyName == "ILS")
                 {
-                    SetSameILS(cInfo);              
+                    SetSameILS(cInfo);
                 }
             }
 

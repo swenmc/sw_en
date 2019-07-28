@@ -2181,7 +2181,7 @@ namespace M_AS4600
         }
 
 
-        //Footing Design
+        // Footing Design
         private static void SetFootingResultsDetailsFor_ULS(CCalculJoint calc)
         {
             float fUnitFactor_LinearLoad = 0.001f; // from N/m to kN/m
@@ -2222,11 +2222,12 @@ namespace M_AS4600
             string sUnit_DesignRatio = "[-]";
 
             // Display results in datagrid
-            
             if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01 || calc.joint is CConnectionJoint_TC01 || calc.joint is CConnectionJoint_TD01)
             {
-                CJointDesignDetails_BaseJoint det = (CJointDesignDetails_BaseJoint)calc.joint.DesignDetails;
-                
+                // TO ONDREJ - KOMENTAR
+                // TU MI TO PADNE LEBO MAM V JOINT TYP CJointDesignDetails_BaseJoint a NIE CJointDesignDetails_BaseJointFooting
+                CJointDesignDetails_BaseJointFooting det = (CJointDesignDetails_BaseJointFooting)calc.joint.DesignDetails;
+
                 // Anchors
                 listPhysicalQuantity_Symbols.Add("N*joint.up");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_joint_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -3021,7 +3022,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_punching_12731_yDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
-            
+ 
             // Maximum design ratio
             listPhysicalQuantity_Symbols.Add("η max");
             listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString());

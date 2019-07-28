@@ -2199,6 +2199,12 @@ namespace PFD
 
             if (bGenerateFoundations)
             {
+                // Docasne
+                CMat_02_00 materialConcrete = new CMat_02_00();
+                materialConcrete.Fck = 25e+6f;
+                materialConcrete.m_fRho = 2300f;
+                materialConcrete.m_fE = 30e+9f;
+
                 // Foundations
                 // Footings
                 m_arrFoundations = new List<CFoundation>(iMainColumnNo + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame);
@@ -2260,6 +2266,7 @@ namespace PFD
                     m_arrFoundations.Add(new CFoundation(i * 2 + 1,
                         EFoundationType.ePad,
                         node_left,
+                        materialConcrete,
                         columnTypePosition,
                         //controlPoint_left,
                         fMainColumnFooting_aX, 
@@ -2286,6 +2293,7 @@ namespace PFD
                     m_arrFoundations.Add(new CFoundation(i * 2 + 2,
                         EFoundationType.ePad,
                         node_right,
+                        materialConcrete,
                         columnTypePosition,
                         //controlPoint_right,
                         fMainColumnFooting_aX,
@@ -2361,6 +2369,7 @@ namespace PFD
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
+                            materialConcrete,
                             columnTypePosition,
                             //controlPoint,
                             fFrontColumnFooting_aX,
@@ -2436,6 +2445,7 @@ namespace PFD
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
+                            materialConcrete,
                             columnTypePosition,
                             //controlPoint,
                             fBackColumnFooting_aX,

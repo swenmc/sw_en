@@ -16,8 +16,36 @@ namespace BaseClasses
     {
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
+        private float m_diameter;
+        private float m_totalLength;
 
         private bool m_BarIsInXDirection; // TODO - toto urobit nejako krajsie (pouzit napriklad nejaky enum X,Y,Z)
+
+        public float Diameter
+        {
+            get
+            {
+                return m_diameter;
+            }
+
+            set
+            {
+                m_diameter = value;
+            }
+        }
+
+        public float TotalLength
+        {
+            get
+            {
+                return m_totalLength;
+            }
+
+            set
+            {
+                m_totalLength = value;
+            }
+        }
 
         public Point3D StartPoint
         {
@@ -98,6 +126,9 @@ namespace BaseClasses
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            m_diameter = fDiameter;
+            m_totalLength = fLength;
 
             m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
 

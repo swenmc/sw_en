@@ -71,12 +71,9 @@ namespace M_AS4600
                 sDIF_AS4600.fM_yv_yy = sDIF_temp.fM_zv;
             }
 
-            
             CFoundation foundation = model.GetFoundationForJointFromModel(joint);
             CalculateDesignRatio(bIsDebugging, joint, foundation, sDIF_AS4600, bSaveDetails);
         }
-
-        
 
         public void CalculateDesignRatio(bool bIsDebugging, CConnectionJointTypes joint_temp, CFoundation foundation, designInternalForces_AS4600 sDIF_AS400, bool bSaveDetails = false)
         {
@@ -190,7 +187,6 @@ namespace M_AS4600
             {
                 CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back column connection to the foundation)
                 CalculateDesignRatioBaseJointFooting(foundation, sDIF_AS4600, bSaveDetails); // Base plates (main column or front/back column connection to the foundation)
-                
             }
             else
             {
@@ -716,7 +712,7 @@ namespace M_AS4600
                 basePlate = (CConCom_Plate_B_basic)plate;
             else
             {
-                throw new Exception("Invalid objekt of base plate.");
+                throw new Exception("Invalid object of base plate.");
             }
 
             CJointDesignDetails_BaseJoint designDetails = new CJointDesignDetails_BaseJoint();
@@ -873,7 +869,7 @@ namespace M_AS4600
 
 
 
-
+            /*
             // Anchors
             designDetails.fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
             designDetails.fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
@@ -1060,8 +1056,8 @@ namespace M_AS4600
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
 
-            designDetails.fm_x = 0.06f;
-            designDetails.fm_y = 0.06f;
+            designDetails.fm_x = 0.06f; // Input
+            designDetails.fm_y = 0.06f; // Input
             designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
             designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 
@@ -1402,6 +1398,7 @@ namespace M_AS4600
             designDetails.fV_n_12731_yDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_yDirection, designDetails.fV_c_12731);
             designDetails.fEta_punching_12731_yDirection = eq_concrete.Eq_12_5____(designDetails.fN_asterix_joint_bearing, designDetails.fPhi_v_foundations, designDetails.fV_n_12731_yDirection);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_punching_12731_yDirection);
+            */
 
             // Validation - negative design ratio
             if (designDetails.fEta_N_t_5423_plate < 0 ||
@@ -1413,33 +1410,34 @@ namespace M_AS4600
                 designDetails.fEta_V_fv_5425_MainMember < 0 ||
                 designDetails.fEta_V_fv_5425_Plate < 0 ||
                 designDetails.fEta_V_w_5426 < 0 ||
-                designDetails.fEta_N_t_5423_MainMember < 0 ||
-                designDetails.fEta_532_1 < 0 ||
-                designDetails.fEta_5342 < 0 ||
-                designDetails.fEta_5343 < 0 ||
-                designDetails.fEta_5351_2 < 0 ||
-                designDetails.fEta_5352_1 < 0 ||
-                designDetails.fEta_5353 < 0 ||
-                designDetails.fEta_17571_group < 0 ||
-                designDetails.fEta_17572_group < 0 ||
-                designDetails.fEta_17572_single < 0 ||
-                designDetails.fEta_17573_group < 0 ||
-                designDetails.fEta_17574_single < 0 ||
-                designDetails.fEta_17581_group < 0 ||
-                designDetails.fEta_17582_group < 0 ||
-                designDetails.fEta_17582_single < 0 ||
-                designDetails.fEta_17583_group < 0 ||
-                designDetails.fEta_17583_single < 0 ||
-                designDetails.fEta_17584_group < 0 ||
-                designDetails.fEta_17566_group < 0 ||
-                fEta_C17566_group < 0 ||
-                designDetails.fEta_footing_uplift < 0 ||
-                designDetails.fEta_footing_bearing < 0 ||
-                designDetails.fEta_bending_M_footing < 0 ||
-                designDetails.fEta_MinimumReinforcement_xDirection < 0 ||
-                designDetails.fEta_shear_V_footing < 0 ||
-                designDetails.fEta_punching_12731_xDirection < 0 ||
-                designDetails.fEta_punching_12731_yDirection < 0)
+                designDetails.fEta_N_t_5423_MainMember < 0// ||
+                //designDetails.fEta_532_1 < 0 ||
+                //designDetails.fEta_5342 < 0 ||
+                //designDetails.fEta_5343 < 0 ||
+                //designDetails.fEta_5351_2 < 0 ||
+                //designDetails.fEta_5352_1 < 0 ||
+                //designDetails.fEta_5353 < 0 ||
+                //designDetails.fEta_17571_group < 0 ||
+                //designDetails.fEta_17572_group < 0 ||
+                //designDetails.fEta_17572_single < 0 ||
+                //designDetails.fEta_17573_group < 0 ||
+                //designDetails.fEta_17574_single < 0 ||
+                //designDetails.fEta_17581_group < 0 ||
+                //designDetails.fEta_17582_group < 0 ||
+                //designDetails.fEta_17582_single < 0 ||
+                //designDetails.fEta_17583_group < 0 ||
+                //designDetails.fEta_17583_single < 0 ||
+                //designDetails.fEta_17584_group < 0 ||
+                //designDetails.fEta_17566_group < 0 ||
+                //fEta_C17566_group < 0 ||
+                //designDetails.fEta_footing_uplift < 0 ||
+                //designDetails.fEta_footing_bearing < 0 ||
+                //designDetails.fEta_bending_M_footing < 0 ||
+                //designDetails.fEta_MinimumReinforcement_xDirection < 0 ||
+                //designDetails.fEta_shear_V_footing < 0 ||
+                //designDetails.fEta_punching_12731_xDirection < 0 ||
+                //designDetails.fEta_punching_12731_yDirection < 0
+                )
             {
                 throw new Exception("Design ratio is invalid!");
             }
@@ -1463,10 +1461,10 @@ namespace M_AS4600
                 basePlate = (CConCom_Plate_B_basic)plate;
             else
             {
-                throw new Exception("Invalid objekt of base plate.");
+                throw new Exception("Invalid object of base plate.");
             }
 
-            CJointDesignDetails_BaseJoint designDetails = new CJointDesignDetails_BaseJoint();
+            CJointDesignDetails_BaseJointFooting designDetails = new CJointDesignDetails_BaseJointFooting();
 
             // Anchors
             designDetails.fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
@@ -1479,7 +1477,7 @@ namespace M_AS4600
             if (!MathF.d_equal(designDetails.fV_asterix_x_joint, 0) || !MathF.d_equal(designDetails.fV_asterix_y_joint, 0))
                 designDetails.fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(designDetails.fV_asterix_x_joint) + MathF.Pow2(designDetails.fV_asterix_y_joint));
 
-            //int iNumberAnchors = plate.AnchorArrangement.Anchors.Length;
+            int iNumberAnchors = basePlate.AnchorArrangement.Anchors.Length;
             designDetails.iNumberAnchors = basePlate.AnchorArrangement.IHolesNumber;
             designDetails.iNumberAnchors_t = designDetails.iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
             designDetails.iNumberAnchors_v = designDetails.iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
@@ -1502,9 +1500,9 @@ namespace M_AS4600
             designDetails.fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
             designDetails.fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
 
-            designDetails.fFootingDimension_x = 1.1f; //foundation.m_fDim1 // TODO - napojit na velkost zakladu
-            designDetails.fFootingDimension_y = 1.1f; //foundation.m_fDim2 // TODO - napojit na velkost zakladu
-            designDetails.fFootingHeight = 0.4f; // TODO - napojit na velkost zakladu
+            designDetails.fFootingDimension_x = foundation.m_fDim1; // Input
+            designDetails.fFootingDimension_y = foundation.m_fDim2; // Input
+            designDetails.fFootingHeight = foundation.m_fDim3; // Input
 
             designDetails.fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
             designDetails.fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
@@ -1512,11 +1510,14 @@ namespace M_AS4600
             designDetails.fe_x_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_x - designDetails.fplateWidth_x); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
             designDetails.fe_y_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_y - designDetails.fplateWidth_y); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
 
-            designDetails.fu_x_Washer = 0.08f;
-            designDetails.fu_y_Washer = 0.08f;
+            designDetails.fu_x_Washer = 0.08f; // Input
+            designDetails.fu_y_Washer = 0.08f; // Input
 
-            designDetails.ff_apostrophe_c = 25e+6f; // Characteristic compressive (cylinder) concrete strength
-            designDetails.fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
+            CMat_02_00 materialConcrete = new CMat_02_00();
+            materialConcrete = (CMat_02_00)foundation.m_Mat;
+
+            designDetails.ff_apostrophe_c = (float)materialConcrete.Fck; // Characteristic compressive (cylinder) concrete strength
+            designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete - TODO - nacitat z materialu zakladov
 
             // Anchors (bolts)
             designDetails.fd_s = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
@@ -1592,7 +1593,7 @@ namespace M_AS4600
 
             // Figure C17.4 – Definition of dimension e´n for group anchors
             designDetails.fe_apostrophe_n = 0f;                           // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
-            designDetails.fConcreteCover = 0.07f;
+            designDetails.fConcreteCover = 0.07f; // Input
             designDetails.fh_ef = designDetails.fFootingHeight - designDetails.fConcreteCover;        // effective anchor embedment depth
             designDetails.fs_2_x = 0f;                                    // centre-to-centre spacing of the anchors
             designDetails.fs_1_y = 0.23f;                                 // centre-to-centre spacing of the anchors
@@ -1654,8 +1655,8 @@ namespace M_AS4600
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
 
-            designDetails.fm_x = 0.06f;
-            designDetails.fm_y = 0.06f;
+            designDetails.fm_x = 0.06f; // Input
+            designDetails.fm_y = 0.06f; // Input
             designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
             designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 
@@ -1840,7 +1841,7 @@ namespace M_AS4600
             // Footing pad
             designDetails.fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
             designDetails.fV_footing = designDetails.fA_footing * designDetails.fFootingHeight;  // Volume of footing pad
-            float fRho_c_footing = 2300f; // Density of dry concrete - foundations
+            float fRho_c_footing = materialConcrete.m_fRho; // Density of dry concrete - foundations
             designDetails.fG_footing = designDetails.fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
 
             // Tributary floor volume
@@ -1854,7 +1855,7 @@ namespace M_AS4600
             designDetails.fG_tributary_floor = fV_tributary_floor * fRho_c_floor; // Self-weight [N] - tributary concrete floor
 
             // Additional material above the footing
-            float ft_additional_material = 0.3f; // User-defined
+            float ft_additional_material = 0.0f; // User-defined
             float fRho_additional_material = 2200f; // Can be concrete or soil
             float fVolume_additional_material = designDetails.fA_footing * ft_additional_material;
             designDetails.fG_additional_material = fVolume_additional_material * fRho_additional_material; // Self-weight [N]
@@ -1885,27 +1886,27 @@ namespace M_AS4600
             designDetails.fq_linear_xDirection = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fFootingDimension_x;
             designDetails.fM_asterix_footingdesign_xDirection = designDetails.fq_linear_xDirection * MathF.Pow2(designDetails.fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
 
-            designDetails.fd_reinforcement_xDirection = 0.016f; //foundation.rein // TODO - user defined
-            float fd_reinforcement_yDirection = 0.016f; //foundation.yDI// TODO - user defined (default above the reinforcement in x-direction)
+            designDetails.fd_reinforcement_xDirection = foundation.Reference_Bottom_Bar_x.Diameter; // TODO - user defined
+            float fd_reinforcement_yDirection = foundation.Reference_Bottom_Bar_y.Diameter; // TODO - user defined (default above the reinforcement in x-direction)
             designDetails.fA_s1_Xdirection = MathF.fPI * MathF.Pow2(designDetails.fd_reinforcement_xDirection) / 4f; // Reinforcement bar cross-sectional area
             float fA_s1_Ydirection = MathF.fPI * MathF.Pow2(fd_reinforcement_yDirection) / 4f; // Reinforcement bar cross-sectional area
-            designDetails.iNumberOfBarsInXDirection = 11; // TODO - user defined
-            int iNumberOfBarsInYDirection = 11; //foundation.Count_Bottom_Bars_y // TODO - user defined
+            designDetails.iNumberOfBarsInXDirection = foundation.Count_Bottom_Bars_x; // TODO - user defined
+            int iNumberOfBarsInYDirection = foundation.Count_Bottom_Bars_y; // TODO - user defined
 
             designDetails.fA_s_tot_Xdirection = designDetails.iNumberOfBarsInXDirection * designDetails.fA_s1_Xdirection;
             float fA_s_tot_Ydirection = iNumberOfBarsInYDirection * fA_s1_Ydirection;
 
-            float fConcreteCover_reinforcement_side = foundation.ConcreteCover;  //TO Mato: napojit ostatne 0.075f; 
+            float fConcreteCover_reinforcement_side = foundation.ConcreteCover;
             float fSpacing_xDirection = (designDetails.fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
             designDetails.fSpacing_yDirection = (designDetails.fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - designDetails.fd_reinforcement_xDirection) / (designDetails.iNumberOfBarsInXDirection - 1);
 
-            string sReinforcingSteelGrade_Name = "500E";
+            string sReinforcingSteelGrade_Name = "500E"; // Input
             float fReinforcementStrength_fy = 500e+6f; //foundation.Streng // TODO - user defined
 
             designDetails.fAlpha_c = 0.85f;
             designDetails.fPhi_b_foundations = 0.85f;
 
-            designDetails.fConcreteCover_reinforcement_xDirection = 0.075f;
+            designDetails.fConcreteCover_reinforcement_xDirection = foundation.ConcreteCover + 0.5f * fd_reinforcement_yDirection;
 
             designDetails.fd_effective_xDirection = designDetails.fFootingHeight - designDetails.fConcreteCover_reinforcement_xDirection - 0.5f * designDetails.fd_reinforcement_xDirection;
             float fd_effective_yDirection = designDetails.fFootingHeight - designDetails.fConcreteCover_reinforcement_xDirection - designDetails.fd_reinforcement_xDirection - 0.5f * fd_reinforcement_yDirection;
@@ -1998,16 +1999,16 @@ namespace M_AS4600
             fEta_max_Footing = MathF.Max(fEta_max_Footing, designDetails.fEta_punching_12731_yDirection);
 
             // Validation - negative design ratio
-            if (designDetails.fEta_N_t_5423_plate < 0 ||
-                designDetails.fEta_V_yv_3341_plate < 0 ||
-                designDetails.fEta_Mb_plate < 0 ||
-                designDetails.fEta_MainMember < 0 ||
-                designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
-                designDetails.fEta_Vb_5424_MainMember < 0 ||
-                designDetails.fEta_V_fv_5425_MainMember < 0 ||
-                designDetails.fEta_V_fv_5425_Plate < 0 ||
-                designDetails.fEta_V_w_5426 < 0 ||
-                designDetails.fEta_N_t_5423_MainMember < 0 ||
+            if (//designDetails.fEta_N_t_5423_plate < 0 ||
+                //designDetails.fEta_V_yv_3341_plate < 0 ||
+                //designDetails.fEta_Mb_plate < 0 ||
+                //designDetails.fEta_MainMember < 0 ||
+                //designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
+                //designDetails.fEta_Vb_5424_MainMember < 0 ||
+                //designDetails.fEta_V_fv_5425_MainMember < 0 ||
+                //designDetails.fEta_V_fv_5425_Plate < 0 ||
+                //designDetails.fEta_V_w_5426 < 0 ||
+                //designDetails.fEta_N_t_5423_MainMember < 0 ||
                 designDetails.fEta_532_1 < 0 ||
                 designDetails.fEta_5342 < 0 ||
                 designDetails.fEta_5343 < 0 ||
