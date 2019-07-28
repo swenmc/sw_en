@@ -14,6 +14,7 @@ namespace M_AS4600
         NZS_3101 eq_concrete = new NZS_3101(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
         
         public CConnectionJointTypes joint;
+        public CFoundation footing;
         public designInternalForces sDIF;
         public designInternalForces_AS4600 sDIF_AS4600;
         bool bIsDebugging;
@@ -71,8 +72,8 @@ namespace M_AS4600
                 sDIF_AS4600.fM_yv_yy = sDIF_temp.fM_zv;
             }
 
-            CFoundation foundation = model.GetFoundationForJointFromModel(joint);
-            CalculateDesignRatio(bIsDebugging, joint, foundation, sDIF_AS4600, bSaveDetails);
+            footing = model.GetFoundationForJointFromModel(joint);
+            CalculateDesignRatio(bIsDebugging, joint, footing, sDIF_AS4600, bSaveDetails);
         }
 
         public void CalculateDesignRatio(bool bIsDebugging, CConnectionJointTypes joint_temp, CFoundation foundation, designInternalForces_AS4600 sDIF_AS400, bool bSaveDetails = false)

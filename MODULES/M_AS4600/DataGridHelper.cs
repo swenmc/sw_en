@@ -2224,9 +2224,7 @@ namespace M_AS4600
             // Display results in datagrid
             if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01 || calc.joint is CConnectionJoint_TC01 || calc.joint is CConnectionJoint_TD01)
             {
-                // TO ONDREJ - KOMENTAR
-                // TU MI TO PADNE LEBO MAM V JOINT TYP CJointDesignDetails_BaseJoint a NIE CJointDesignDetails_BaseJointFooting
-                CJointDesignDetails_BaseJointFooting det = (CJointDesignDetails_BaseJointFooting)calc.joint.DesignDetails;
+                CJointDesignDetails_BaseJointFooting det = (CJointDesignDetails_BaseJointFooting)calc.footing.DesignDetails;
 
                 // Anchors
                 listPhysicalQuantity_Symbols.Add("N*joint.up");
