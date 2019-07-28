@@ -1046,11 +1046,9 @@ namespace PFD
                 }
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
-            {
-                
-                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
-                CFootingInputVM footingInputVM = Footing_Input.DataContext as CFootingInputVM;
-                if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, footingInputVM, vm.JointDesignResults_ULS);
+            {                
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;                
+                if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.FootingVM, vm.JointDesignResults_ULS);
                 else
                 {
                     ////setuje sa v public void UpdateResults()
@@ -1119,7 +1117,7 @@ namespace PFD
                 if (Joint_Design.Content != null)
                 {
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
-                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
                     CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
                     vmJD.IsSetFromCode = true;
                     vmJD.LimitStateIndex = 0;
@@ -1131,7 +1129,8 @@ namespace PFD
                 if (Footing_Design.Content != null)
                 {
                     UC_FootingDesign uc_footingDesign = Footing_Design.Content as UC_FootingDesign;
-                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    uc_footingDesign.FootingVM = Footing_Input.DataContext as CFootingInputVM;
                     CPFDFootingDesign vmFD = uc_footingDesign.DataContext as CPFDFootingDesign;
                     vmFD.IsSetFromCode = true;
                     vmFD.LimitStateIndex = 0;

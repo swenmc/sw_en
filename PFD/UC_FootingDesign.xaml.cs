@@ -16,7 +16,7 @@ namespace PFD
         bool UseCRSCGeometricalAxes;
         CModel_PFD Model;
         CPFDFootingDesign vm;
-        CFootingInputVM FootingVM;
+        public CFootingInputVM FootingVM;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
         public UC_FootingDesign(bool bUseCRSCGeometricalAxes_temp, CModel_PFD model, CComponentListVM compList, CFootingInputVM footingVM, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
