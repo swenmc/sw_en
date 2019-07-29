@@ -1469,11 +1469,12 @@ namespace M_AS4600
             {
                 throw new Exception("Invalid object of base plate.");
             }
-            
+
+            /*
             if (foundationCalcSettings == null)
             {
                 throw new Exception("Invalid foundation design settings.");
-            }
+            }*/
 
             CJointDesignDetails_BaseJointFooting designDetails = new CJointDesignDetails_BaseJointFooting();
 

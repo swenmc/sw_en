@@ -77,11 +77,11 @@ namespace PFD
 
                     CCalculJoint cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, joint, Model, footingCalcSettings, res.DesignInternalForces);
 
-                    // Find member in the group of members with maximum start or end joint design ratio
+                    // Find member in the group of members with maximum joint design ratio
                     if (cJoint.fEta_max_Footing > fMaximumDesignRatio)
                     {
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, footingCalcSettings, res.DesignInternalForces, true);
+                        cJoint = new CCalculJoint(false, UseCRSCGeometricalAxes, joint, Model, footingCalcSettings, res.DesignInternalForces, true);
                         cGoverningMemberFootingResults = cJoint;
                     }
                 }
