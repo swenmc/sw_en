@@ -399,6 +399,7 @@ namespace BaseClasses
             CNode iNode2,
             CCrSc objCrSc1,
             EMemberType_FS eMemberType,
+            EMemberType_FS_Position eMemberType_Position,
             CMemberEccentricity objEccentricityStart,
             CMemberEccentricity objEccentricityEnd,
             float fAligment1,

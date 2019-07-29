@@ -61,10 +61,10 @@ namespace Examples
             listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 0));
 
             // Members
-            m_arrMembers[000] = new CMember(001, m_arrNodes[01], m_arrNodes[00], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0); // Opacny smer ako x plochy
-            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
-            m_arrMembers[002] = new CMember(003, m_arrNodes[04], m_arrNodes[05], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
-            m_arrMembers[003] = new CMember(004, m_arrNodes[06], m_arrNodes[07], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[01], m_arrNodes[00], m_arrCrSc[0], EMemberType_FS.eP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0); // Opacny smer ako x plochy
+            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[0], EMemberType_FS.eP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[002] = new CMember(003, m_arrNodes[04], m_arrNodes[05], m_arrCrSc[0], EMemberType_FS.eP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[003] = new CMember(004, m_arrNodes[06], m_arrNodes[07], m_arrCrSc[0], EMemberType_FS.eP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
 
             //List<CMember> listOfAllMembers = new List<CMember>() { m_arrMembers[000], m_arrMembers[001], m_arrMembers[002], m_arrMembers[003] };
 

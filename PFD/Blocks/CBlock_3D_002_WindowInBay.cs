@@ -224,7 +224,7 @@ namespace PFD
                         eccentricityGirtEnd_temp = eccentricityGirtStart; // TODO - we need probably to change signs of values
                     }
 
-                    m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], ReferenceGirt.EMemberType, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
+                    m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], ReferenceGirt.EMemberType, ReferenceGirt.EMemberTypePosition, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
 
                     // Set position type (same as reference girt)
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j].EMemberTypePosition = ReferenceGirt.EMemberTypePosition;
@@ -268,10 +268,10 @@ namespace PFD
             // Window columns
             for (int i = 0; i < prop.iNumberOfWindowColumns; i++)
             {
-                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
+                m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
 
                 // Set position type
-                m_arrMembers[iMembersGirts + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
+                //m_arrMembers[iMembersGirts + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
                 //m_arrMembers[iMembersGirts + i].BIsDisplayed = true;
             }
 
@@ -292,10 +292,10 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfHeaders; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
 
                 // Set position type
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
+                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
 
                 //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].BIsDisplayed = true;
             }
@@ -317,10 +317,10 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfSills; i++)
             {
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eWF, EMemberType_FS_Position.WindowFrame, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
 
                 // Set position type
-                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
+                //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].EMemberTypePosition = EMemberType_FS_Position.WindowFrame;
 
                 //m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].BIsDisplayed = true;
             }
