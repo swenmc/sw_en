@@ -16,6 +16,7 @@ namespace M_BASE
         public float fDesignRatio_End = 0;
         public float fDesignRatio_Footing = 0;
         public bool BUseCRSCGeometricalAxes;
+        CalculationSettingsFoundation FootingCalcSettings;
 
         public CJointDesign(bool bDebugging_temp = false)
         {
@@ -23,28 +24,31 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, bool bUseCRSCGeometricalAxes, CModel model, CMember member, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces sjointStartDIF_x, out designInternalForces sjointEndDIF_x)
+        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, bool bUseCRSCGeometricalAxes, CModel model, CMember member, CalculationSettingsFoundation footingCalcSettings, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces sjointStartDIF_x, out designInternalForces sjointEndDIF_x)
         {
             BUseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             model.GetModelMemberStartEndConnectionJoints(member, out jointStart, out jointEnd);
 
+            FootingCalcSettings = footingCalcSettings;
             // Design
             sjointStartDIF_x = new designInternalForces();
             sjointEndDIF_x = new designInternalForces();
 
-            //-------------------------------------------------------------------------------------------------------------
-            // TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
-            // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-            CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
-            FootingCalcSettings.ConcreteGrade = "30";
-            FootingCalcSettings.AggregateSize = 0.02f;
-            FootingCalcSettings.ConcreteDensity = 2300f;
-            FootingCalcSettings.ReinforcementGrade = "500E";
-            FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-            FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-            FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-            FootingCalcSettings.FloorSlabThickness = 0.125f;
-            //-------------------------------------------------------------------------------------------------------------
+            ////-------------------------------------------------------------------------------------------------------------
+            //// TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
+            //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+            //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
+            //FootingCalcSettings.ConcreteGrade = "30";
+            //FootingCalcSettings.AggregateSize = 0.02f;
+            //FootingCalcSettings.ConcreteDensity = 2300f;
+            //FootingCalcSettings.ReinforcementGrade = "500E";
+            //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+            //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+            //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+            //FootingCalcSettings.FloorSlabThickness = 0.125f;
+            ////-------------------------------------------------------------------------------------------------------------
+            
+
 
             for (int j = 0; j < iNumberOfDesignSections; j++)
             {
@@ -58,7 +62,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointStartDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, model, /*FootingCalcSettings*/ null, sjointStartDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, model, FootingCalcSettings, sjointStartDIF_x);
                         fDesignRatio_Start = obj_CalcDesign.fEta_max;
                     }
                     else // End Joint Design
@@ -67,7 +71,7 @@ namespace M_BASE
                         SetDesignInternalForces(bUseCRSCGeometricalAxes, sBIF_x[j], ref sjointEndDIF_x);
 
                         // Design joint
-                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, model, /*FootingCalcSettings*/ null, sjointEndDIF_x);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, model, FootingCalcSettings, sjointEndDIF_x);
                         fDesignRatio_End = obj_CalcDesign.fEta_max;
                     }
                 }

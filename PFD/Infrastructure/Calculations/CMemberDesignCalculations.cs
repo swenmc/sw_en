@@ -52,7 +52,7 @@ namespace PFD.Infrastructure
             bool determinateCombinationResultsByFEMSolver,
             bool bUseFEMSolverCalculationForSimpleBeam,
             bool determinateMemberLocalDisplacementsForULS,
-            //CalculationSettingsFoundation footingCalcSettings,
+            CalculationSettingsFoundation footingCalcSettings,
             List<CFrame> FrameModels,
             List<CBeam_Simple> BeamSimpleModels)
         {
@@ -63,19 +63,20 @@ namespace PFD.Infrastructure
             UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
 
-            //-------------------------------------------------------------------------------------------------------------
-            // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-            FootingCalcSettings = new CalculationSettingsFoundation();
-            FootingCalcSettings.ConcreteGrade = "30";
-            FootingCalcSettings.AggregateSize = 0.02f;
-            FootingCalcSettings.ConcreteDensity = 2300f;
-            FootingCalcSettings.ReinforcementGrade = "500E";
-            FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-            FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-            FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-            FootingCalcSettings.FloorSlabThickness = 0.125f;
-            //-------------------------------------------------------------------------------------------------------------
+            ////-------------------------------------------------------------------------------------------------------------
+            //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+            //FootingCalcSettings = new CalculationSettingsFoundation();
+            //FootingCalcSettings.ConcreteGrade = "30";
+            //FootingCalcSettings.AggregateSize = 0.02f;
+            //FootingCalcSettings.ConcreteDensity = 2300f;
+            //FootingCalcSettings.ReinforcementGrade = "500E";
+            //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+            //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+            //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+            //FootingCalcSettings.FloorSlabThickness = 0.125f;
+            ////-------------------------------------------------------------------------------------------------------------
 
+            FootingCalcSettings = footingCalcSettings;
             beamSimpleModels = BeamSimpleModels;
             frameModels = FrameModels;
 
@@ -445,7 +446,7 @@ namespace PFD.Infrastructure
                         CConnectionJointTypes jointStart;
                         CConnectionJointTypes jointEnd;
 
-                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, Model, m, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
+                        jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, MUseCRSCGeometricalAxes, Model, m, FootingCalcSettings, mInternal_forces_and_design_parameters.InternalForces, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                         // Validation - Main member of joint must be defined
                         if (jointStart.m_MainMember == null)

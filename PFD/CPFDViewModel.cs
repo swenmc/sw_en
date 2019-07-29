@@ -2192,7 +2192,8 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, frameModels, beamSimpleModels);
+            CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
 
@@ -2510,22 +2511,23 @@ namespace PFD
                 if (resStart == null) continue;
                 if (resEnd == null) continue;
 
+                ////-------------------------------------------------------------------------------------------------------------
+                //// TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
+                //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+                //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
+                //FootingCalcSettings.ConcreteGrade = "30";
+                //FootingCalcSettings.AggregateSize = 0.02f;
+                //FootingCalcSettings.ConcreteDensity = 2300f;
+                //FootingCalcSettings.ReinforcementGrade = "500E";
+                //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+                //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+                //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+                //FootingCalcSettings.FloorSlabThickness = 0.125f;
                 //-------------------------------------------------------------------------------------------------------------
-                // TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
-                // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-                CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
-                FootingCalcSettings.ConcreteGrade = "30";
-                FootingCalcSettings.AggregateSize = 0.02f;
-                FootingCalcSettings.ConcreteDensity = 2300f;
-                FootingCalcSettings.ReinforcementGrade = "500E";
-                FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-                FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-                FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-                FootingCalcSettings.FloorSlabThickness = 0.125f;
-                //-------------------------------------------------------------------------------------------------------------
+                CalculationSettingsFoundation FootingCalcSettings = FootingVM.GetCalcSettings();
 
-                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, /*FootingCalcSettings*/ null, resStart.DesignInternalForces, true);
-                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, /*FootingCalcSettings*/ null, resEnd.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
 
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);

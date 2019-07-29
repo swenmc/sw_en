@@ -15,18 +15,22 @@ namespace PFD
     {
         bool UseCRSCGeometricalAxes;
         CModel_PFD Model;
+        CPFDViewModel _pfdVM;
+        CalculationSettingsFoundation FootingCalcSettings;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CModel_PFD model, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
+        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CPFDViewModel pfdVM, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
         {
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             DesignResults_ULS = designResults_ULS;
-            Model = model;
+            _pfdVM = pfdVM;
+            Model = pfdVM.Model;
+            FootingCalcSettings = pfdVM.FootingVM.GetCalcSettings();
 
             // Joint Design
-            CPFDJointsDesign vm = new CPFDJointsDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
+            CPFDJointsDesign vm = new CPFDJointsDesign(Model.m_arrLimitStates, Model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = vm;
 
@@ -78,6 +82,8 @@ namespace PFD
             cGoverningMemberStartJointResults = null;
             cGoverningMemberEndJointResults = null;
 
+            FootingCalcSettings = _pfdVM.FootingVM.GetCalcSettings();
+
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = float.MinValue;
@@ -92,21 +98,21 @@ namespace PFD
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
 
-                    //-------------------------------------------------------------------------------------------------------------
-                    // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-                    CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
-                    FootingCalcSettings.ConcreteGrade = "30";
-                    FootingCalcSettings.AggregateSize = 0.02f;
-                    FootingCalcSettings.ConcreteDensity = 2300f;
-                    FootingCalcSettings.ReinforcementGrade = "500E";
-                    FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-                    FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-                    FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-                    FootingCalcSettings.FloorSlabThickness = 0.125f;
-                    //-------------------------------------------------------------------------------------------------------------
+                    ////-------------------------------------------------------------------------------------------------------------
+                    //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+                    //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
+                    //FootingCalcSettings.ConcreteGrade = "30";
+                    //FootingCalcSettings.AggregateSize = 0.02f;
+                    //FootingCalcSettings.ConcreteDensity = 2300f;
+                    //FootingCalcSettings.ReinforcementGrade = "500E";
+                    //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+                    //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+                    //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+                    //FootingCalcSettings.FloorSlabThickness = 0.125f;
+                    ////-------------------------------------------------------------------------------------------------------------
 
-                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, /*FootingCalcSettings*/null, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, /*FootingCalcSettings*/null, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJointStart.fEta_max > fMaximumDesignRatio || cJointEnd.fEta_max > fMaximumDesignRatio)
