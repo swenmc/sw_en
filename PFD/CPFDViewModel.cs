@@ -2524,8 +2524,8 @@ namespace PFD
                 FootingCalcSettings.FloorSlabThickness = 0.125f;
                 //-------------------------------------------------------------------------------------------------------------
 
-                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings /*null*/, resStart.DesignInternalForces, true);
-                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings /*null*/, resEnd.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, /*FootingCalcSettings*/ null, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, /*FootingCalcSettings*/ null, resEnd.DesignInternalForces, true);
 
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);
