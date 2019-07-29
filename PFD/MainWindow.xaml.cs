@@ -1046,13 +1046,12 @@ namespace PFD
                 }
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
-            {                
-                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;                
+            {
+                CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
                 if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.FootingVM, vm.JointDesignResults_ULS);
                 else
                 {
                     ////setuje sa v public void UpdateResults()
-                    
                 }
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
