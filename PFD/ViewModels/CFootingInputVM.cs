@@ -24,12 +24,14 @@ namespace PFD
         private Dictionary<int, CReinforcementBarProperties> m_ReinforcementBars;
 
         private List<string> m_ConcreteGradesList;
+        private List<string> m_AggregateSizesList;
         private List<string> m_ReinforcementGradesList;
         private List<string> m_ReinforcementBarsList;
         private List<string> m_ReinforcementBarsCountList;
 
         private int m_FootingPadMemberTypeIndex;
         private string m_ConcreteGrade;
+        private string m_AggregateSize;
         private float m_ConcreteDensity;
         private string m_ReinforcementGrade;
 
@@ -127,6 +129,21 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public List<string> AggregateSizesList
+        {
+            get
+            {
+                return m_AggregateSizesList;
+            }
+
+            set
+            {
+                m_AggregateSizesList = value;
+                NotifyPropertyChanged("AggregateSizesList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public List<string> ReinforcementGradesList
         {
             get
@@ -198,6 +215,21 @@ namespace PFD
             {
                 m_ConcreteGrade = value;
                 NotifyPropertyChanged("ConcreteGrade");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string AggregateSize
+        {
+            get
+            {
+                return m_AggregateSize;
+            }
+
+            set
+            {
+                m_AggregateSize = value;
+                NotifyPropertyChanged("AggregateSize");
             }
         }
 
@@ -731,12 +763,17 @@ namespace PFD
             // Zoznam poctov vyztuznych tyci pre jeden smer (None alebo 2 - 30)
             ReinforcementBarsCountList = GetReinforcementBarsCountList();
 
+            // Zoznam priemerov kameniva
+            AggregateSizesList = new List<string>() {"2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "24", "28", "32", "64", "128", "256" };
+
             // Set default GUI
             FootingPadMemberTypeIndex = 1;
 
-            ConcreteGrade = "30";
+            ConcreteGrade = "30"; // MPa
+            AggregateSize = "20"; // mm
+
             ConcreteDensity = 2300f; // kg / m^3
-            ReinforcementGrade = "500E";
+            ReinforcementGrade = "500E"; // 500 MPa
 
             SoilReductionFactor_Phi = 0.5f;
             SoilReductionFactorEQ_Phi = 0.8f;
@@ -999,6 +1036,8 @@ namespace PFD
             calc.SoilReductionFactorEQ_Phi = SoilReductionFactorEQ_Phi;
             calc.SoilBearingCapacity = SoilBearingCapacity;
             calc.FloorSlabThickness = FloorSlabThickness;
+
+            calc.AggregateSize = float.Parse(AggregateSize) / 1000f; // Float value in meters
 
             return calc;
         }

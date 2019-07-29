@@ -61,6 +61,11 @@
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ConcreteGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
                 ItemsSource="{Binding Path=ConcreteGradesList}" SelectedValue="{Binding Path=ConcreteGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Max. Aggregate Size:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="115" />
+        <ComboBox Grid.Row="2" Grid.Column="5" Name ="Combobox_AggregateSize" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"
+                ItemsSource="{Binding Path=AggregateSizesList}" SelectedValue="{Binding Path=AggregateSize, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="2" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
         <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Concrete Density:" VerticalAlignment="Top" Width="120"/>
         <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxConcreteDensity" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=ConcreteDensity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>

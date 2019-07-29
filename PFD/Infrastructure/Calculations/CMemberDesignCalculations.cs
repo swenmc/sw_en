@@ -67,6 +67,7 @@ namespace PFD.Infrastructure
             // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
             FootingCalcSettings = new CalculationSettingsFoundation();
             FootingCalcSettings.ConcreteGrade = "30";
+            FootingCalcSettings.AggregateSize = 0.02f;
             FootingCalcSettings.ConcreteDensity = 2300f;
             FootingCalcSettings.ReinforcementGrade = "500E";
             FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;

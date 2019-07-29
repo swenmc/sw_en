@@ -32,6 +32,15 @@ namespace BaseClasses
         private float m_fx_fe_max;
         private float m_fy_fe_max;
 
+        // Washer size
+        // Plate washer
+        private float m_fx_washer_plate;
+        private float m_fy_washer_plate;
+
+        // Bearing washer
+        private float m_fx_washer_bearing;
+        private float m_fy_washer_bearing;
+
         //-------------------------------------------------------------------------------------------------------------
         public float x_pe_minus
         {
@@ -256,6 +265,62 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_washer_plate
+        {
+            get
+            {
+                return m_fx_washer_plate;
+            }
+
+            set
+            {
+                m_fx_washer_plate = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_washer_plate
+        {
+            get
+            {
+                return m_fy_washer_plate;
+            }
+
+            set
+            {
+                m_fy_washer_plate = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float x_washer_bearing
+        {
+            get
+            {
+                return m_fx_washer_bearing;
+            }
+
+            set
+            {
+                m_fx_washer_bearing = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float y_washer_bearing
+        {
+            get
+            {
+                return m_fy_washer_bearing;
+            }
+
+            set
+            {
+                m_fy_washer_bearing = value;
+            }
+        }
+
         private float m_fDiameter_pitch;
         public float Diameter_pitch
         {
@@ -305,6 +370,16 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
+            // Washer size
+            // Plate washer
+            // TODO - zavisi od rozmerov plechu
+            x_washer_plate = 0.08f; // 80 mm
+            y_washer_plate = 0.08f; // 80 mm
+
+            // Bearing washer
+            x_washer_bearing = 0.06f; // 60 mm
+            y_washer_bearing = 0.06f; // 60 mm
+
             m_Mat.Name = "8.8";
             m_Mat.m_ft_interval = new float[1] { 0.100f };
 
@@ -342,6 +417,16 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
+            // Washer size
+            // Plate washer
+            // TODO - zavisi od rozmerov plechu
+            x_washer_plate = 0.08f; // 80 mm
+            y_washer_plate = 0.08f; // 80 mm
+
+            // Bearing washer
+            x_washer_bearing = 0.06f; // 60 mm
+            y_washer_bearing = 0.06f; // 60 mm
+
             m_Mat.Name = nameMaterial_temp;
             m_Mat.m_ft_interval = new float[1] { 0.100f };
 
@@ -378,6 +463,16 @@ namespace BaseClasses
             Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
+            // Washer size
+            // Plate washer
+            // TODO - zavisi od rozmerov plechu
+            x_washer_plate = 0.08f; // 80 mm
+            y_washer_plate = 0.08f; // 80 mm
+
+            // Bearing washer
+            x_washer_bearing = 0.06f; // 60 mm
+            y_washer_bearing = 0.06f; // 60 mm
 
             m_Mat.Name = nameMaterial_temp;
             m_Mat.m_ft_interval = new float[1] { 0.100f };

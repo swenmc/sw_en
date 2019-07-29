@@ -12,6 +12,7 @@ namespace BaseClasses
     public class CalculationSettingsFoundation
     {
         private string m_ConcreteGrade;
+        private float m_AggregateSize;
         private float m_ConcreteDensity;
         private string m_ReinforcementGrade;
         private float m_SoilReductionFactor_Phi;
@@ -31,6 +32,19 @@ namespace BaseClasses
             set
             {
                 m_ConcreteGrade = value;
+            }
+        }
+
+        public float AggregateSize
+        {
+            get
+            {
+                return m_AggregateSize;
+            }
+
+            set
+            {
+                m_AggregateSize = value;
             }
         }
 

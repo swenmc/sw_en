@@ -236,11 +236,29 @@ namespace BaseClasses
         public float fq_linear_xDirection;
         public float fM_asterix_footingdesign_xDirection;
 
-        public float fd_reinforcement_xDirection;
-        public float fA_s1_Xdirection;
-        public int iNumberOfBarsInXDirection;
-        public float fA_s_tot_Xdirection;
-        public float fSpacing_yDirection;
+        public float fd_reinforcement_xDirection_top;
+        public float fA_s1_Xdirection_top;
+        public int iNumberOfBarsInXDirection_top;
+        public float fA_s_tot_Xdirection_top;
+        public float fSpacing_yDirection_top;
+
+        public float fd_reinforcement_yDirection_top;
+        public float fA_s1_Ydirection_top;
+        public int iNumberOfBarsInYDirection_top;
+        public float fA_s_tot_Ydirection_top;
+        public float fSpacing_xDirection_top;
+
+        public float fd_reinforcement_xDirection_bottom;
+        public float fA_s1_Xdirection_bottom;
+        public int iNumberOfBarsInXDirection_bottom;
+        public float fA_s_tot_Xdirection_bottom;
+        public float fSpacing_yDirection_bottom;
+
+        public float fd_reinforcement_yDirection_bottom;
+        public float fA_s1_Ydirection_bottom;
+        public int iNumberOfBarsInYDirection_bottom;
+        public float fA_s_tot_Ydirection_bottom;
+        public float fSpacing_xDirection_bottom;
 
         public float fAlpha_c;
         public float fPhi_b_foundations;

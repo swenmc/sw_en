@@ -2850,23 +2850,23 @@ namespace M_AS4600
                 listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("d x");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fd_reinforcement_xDirection * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fd_reinforcement_xDirection_bottom * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
                 listPhysicalQuantity_Symbols.Add("A s1.x");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_s1_Xdirection * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_s1_Xdirection_bottom * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("n bars"); // Number of bars
-                listPhysicalQuantity_Values.Add(det.iNumberOfBarsInXDirection.ToString());
+                listPhysicalQuantity_Values.Add(det.iNumberOfBarsInXDirection_bottom.ToString());
                 listPhysicalQuantity_Units.Add("");
 
                 listPhysicalQuantity_Symbols.Add("A s.x");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_s_tot_Xdirection * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_s_tot_Xdirection_bottom * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("s y");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fSpacing_yDirection * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fSpacing_yDirection_bottom * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
                 listPhysicalQuantity_Symbols.Add("α c");
