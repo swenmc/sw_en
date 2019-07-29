@@ -35,6 +35,11 @@ namespace BaseClasses
         private int m_Count_Bottom_Bars_x;
         private int m_Count_Bottom_Bars_y;
 
+        private float m_fDistanceOfBars_Top_x_SpacingInyDirection;
+        private float m_fDistanceOfBars_Top_y_SpacingInxDirection;
+        private float m_fDistanceOfBars_Bottom_x_SpacingInyDirection;
+        private float m_fDistanceOfBars_Bottom_y_SpacingInxDirection;
+
         private float m_fConcreteCover;
 
         private CJointDesignDetails m_DesignDetails;
@@ -240,6 +245,58 @@ namespace BaseClasses
             }
         }
 
+        public float DistanceOfBars_Top_x_SpacingInyDirection
+        {
+            get
+            {
+                return m_fDistanceOfBars_Top_x_SpacingInyDirection;
+            }
+
+            set
+            {
+                m_fDistanceOfBars_Top_x_SpacingInyDirection = value;
+            }
+        }
+
+        public float DistanceOfBars_Top_y_SpacingInxDirection
+        {
+            get
+            {
+                return m_fDistanceOfBars_Top_y_SpacingInxDirection;
+            }
+
+            set
+            {
+                m_fDistanceOfBars_Top_y_SpacingInxDirection = value;
+            }
+        }
+
+        public float DistanceOfBars_Bottom_x_SpacingInyDirection
+        {
+            get
+            {
+                return m_fDistanceOfBars_Bottom_x_SpacingInyDirection;
+            }
+
+            set
+            {
+                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = value;
+            }
+        }
+
+        public float DistanceOfBars_Bottom_y_SpacingInxDirection
+        {
+            get
+            {
+                return m_fDistanceOfBars_Bottom_y_SpacingInxDirection;
+            }
+
+            set
+            {
+                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = value;
+            }
+        }
+
         public float ConcreteCover
         {
             get
@@ -314,7 +371,7 @@ namespace BaseClasses
             m_pControlPoint.X = -0.5 * fX + ex;
             m_pControlPoint.Y = -0.5 * fY + ey;
             m_pControlPoint.Z = -fZ;
-            
+
             CreateReinforcementBars();
         }
 
@@ -390,17 +447,17 @@ namespace BaseClasses
         public void CreateReinforcementBars()
         {
             // Fill 4 list of reinforcement bars
-            float fDistanceOfBars_Top_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
-            m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, fDistanceOfBars_Top_x);
+            m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
+            m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
 
-            float fDistanceOfBars_Top_y = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
-            m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, fDistanceOfBars_Top_y);
+            m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
+            m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
 
-            float fDistanceOfBars_Bottom_x = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
-            m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, fDistanceOfBars_Bottom_x);
+            m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
+            m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
 
-            float fDistanceOfBars_Bottom_y = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
-            m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, fDistanceOfBars_Bottom_y);
+            m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
+            m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
         }
 
         public List<CReinforcementBar> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBar referenceBar, float fDistanceOfBars)
@@ -418,7 +475,7 @@ namespace BaseClasses
                     // Nastavit control point pre reinforcement bar - zohladnit posun voci [0,0,0]
                     // TODO - zohladnit pootocenie celeho zakladu
 
-                    //m_pControlPoint bod kam je vlozene [0,0,0] celeho zakladu v GCS
+                    // m_pControlPoint bod kam je vlozene [0,0,0] celeho zakladu v GCS
                     // referenceBar.m_pControlPoint bod kam je vlozena prva tyc do zakladu v LCS zakladu
 
                     CPoint controlPoint = new CPoint(i + 1,

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
+using MATH;
 using DATABASE;
 using DATABASE.DTO;
 
@@ -17,6 +18,7 @@ namespace BaseClasses
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
         private float m_diameter;
+        private float m_fArea_As_1;
         private float m_totalLength;
 
         private bool m_BarIsInXDirection; // TODO - toto urobit nejako krajsie (pouzit napriklad nejaky enum X,Y,Z)
@@ -31,6 +33,19 @@ namespace BaseClasses
             set
             {
                 m_diameter = value;
+            }
+        }
+
+        public float Area_As_1
+        {
+            get
+            {
+                return m_fArea_As_1;
+            }
+
+            set
+            {
+                m_fArea_As_1 = value;
             }
         }
 
@@ -131,6 +146,8 @@ namespace BaseClasses
             m_totalLength = fLength;
 
             m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
+
+            m_fArea_As_1 = MathF.fPI * MathF.Pow2(m_diameter) / 4f; // Reinforcement bar cross-sectional area
 
             SetMaterialPropertiesFromDatabase(materialName);
         }

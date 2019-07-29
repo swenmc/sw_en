@@ -1000,7 +1000,7 @@ namespace PFD
         {
             int iNumberofHoles = 0;
 
-            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, true);
+            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             // Default values

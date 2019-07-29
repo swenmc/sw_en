@@ -1034,8 +1034,8 @@ namespace PFD
 
             calc.SoilReductionFactor_Phi = SoilReductionFactor_Phi;
             calc.SoilReductionFactorEQ_Phi = SoilReductionFactorEQ_Phi;
-            calc.SoilBearingCapacity = SoilBearingCapacity;
-            calc.FloorSlabThickness = FloorSlabThickness;
+            calc.SoilBearingCapacity = SoilBearingCapacity * 1000;  // kPa to Pa
+            calc.FloorSlabThickness = FloorSlabThickness / 1000f; // mm to meters
 
             calc.AggregateSize = float.Parse(AggregateSize) / 1000f; // Float value in meters
 

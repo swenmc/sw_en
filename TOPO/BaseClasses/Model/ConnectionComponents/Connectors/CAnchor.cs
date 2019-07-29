@@ -41,6 +41,8 @@ namespace BaseClasses
         private float m_fx_washer_bearing;
         private float m_fy_washer_bearing;
 
+        private float m_fh_effective; // Effective Depth
+
         //-------------------------------------------------------------------------------------------------------------
         public float x_pe_minus
         {
@@ -321,6 +323,21 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float h_effective
+        {
+            get
+            {
+                return m_fh_effective;
+            }
+
+            set
+            {
+                m_fh_effective = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         private float m_fDiameter_pitch;
         public float Diameter_pitch
         {
@@ -335,6 +352,7 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
         private float m_Area_p_pitch;
         public float Area_p_pitch
         {
@@ -380,6 +398,8 @@ namespace BaseClasses
             x_washer_bearing = 0.06f; // 60 mm
             y_washer_bearing = 0.06f; // 60 mm
 
+            h_effective = 0.330f; // 330 mm (efektivna dlzka tyce zabetonovana v zaklade)
+
             m_Mat.Name = "8.8";
             m_Mat.m_ft_interval = new float[1] { 0.100f };
 
@@ -400,7 +420,7 @@ namespace BaseClasses
             m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, float fh_eff_temp, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -427,6 +447,8 @@ namespace BaseClasses
             x_washer_bearing = 0.06f; // 60 mm
             y_washer_bearing = 0.06f; // 60 mm
 
+            h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
+
             m_Mat.Name = nameMaterial_temp;
             m_Mat.m_ft_interval = new float[1] { 0.100f };
 
@@ -447,7 +469,7 @@ namespace BaseClasses
             m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, CPoint controlpoint, float fLength_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, CPoint controlpoint, float fLength_temp, float fh_eff_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -473,6 +495,8 @@ namespace BaseClasses
             // Bearing washer
             x_washer_bearing = 0.06f; // 60 mm
             y_washer_bearing = 0.06f; // 60 mm
+
+            h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
             m_Mat.Name = nameMaterial_temp;
             m_Mat.m_ft_interval = new float[1] { 0.100f };
