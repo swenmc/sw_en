@@ -447,17 +447,38 @@ namespace BaseClasses
         public void CreateReinforcementBars()
         {
             // Fill 4 list of reinforcement bars
-            m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
-            m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
+            m_fDistanceOfBars_Top_x_SpacingInyDirection = 0;
+            m_Top_Bars_x = null;
+            m_fDistanceOfBars_Top_y_SpacingInxDirection = 0;
+            m_Top_Bars_y = null;
+            m_fDistanceOfBars_Bottom_x_SpacingInyDirection = 0;
+            m_Bottom_Bars_x = null;
+            m_fDistanceOfBars_Bottom_y_SpacingInxDirection = 0;
+            m_Bottom_Bars_y = null;
 
-            m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
-            m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
+            if (Count_Top_Bars_x > 0)
+            {
+                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
+                m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
+            }
 
-            m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
-            m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
+            if (Count_Top_Bars_y > 0)
+            {
+                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
+                m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
+            }
 
-            m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
-            m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
+            if (Count_Bottom_Bars_x > 0)
+            {
+                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
+                m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
+            }
+
+            if (Count_Bottom_Bars_y > 0)
+            {
+                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
+                m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
+            }
         }
 
         public List<CReinforcementBar> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBar referenceBar, float fDistanceOfBars)

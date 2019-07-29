@@ -1380,6 +1380,13 @@ namespace M_AS4600
             designDetails.fA_s_tot_Xdirection_top = designDetails.iNumberOfBarsInXDirection_top * designDetails.fA_s1_Xdirection_top;
             designDetails.fA_s_tot_Ydirection_top = designDetails.iNumberOfBarsInYDirection_top * designDetails.fA_s1_Ydirection_top;
 
+            // Validation - nemozeme posudzovat vyztuz ak nie je zadana
+            // Zatial posudzujeme len spodnu vystuz v smere x
+            if(designDetails.fA_s_tot_Xdirection_bottom <= 1e-9)
+            {
+                throw new ArgumentException("Design Error. Bottom reinforcement area in x-direction is too small As,tot = " + String.Format("{0:0.##}", designDetails.fA_s_tot_Xdirection_bottom * 1e+6) + " mm²");
+            }
+
             float fConcreteCover_reinforcement_side = designDetails.fConcreteCover; // Zakladna hodnota
             string sReinforcingSteelGrade_Name = foundationCalcSettings.ReinforcementGrade; // Input
 

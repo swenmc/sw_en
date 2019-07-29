@@ -802,23 +802,36 @@ namespace PFD
             Eccentricity_ey = 0; // m
 
             // To Ondrej - doriesit zadavacie a vypoctove jednotky mm a m
-            ConcreteCover = pad.ConcreteCover * 1000; // mm  0.075f; m
+            ConcreteCover = pad.ConcreteCover * 1000; // mm
 
-            LongReinTop_x_No = pad.Count_Top_Bars_x.ToString();
+            LongReinTop_x_distance_s_y = 0;
+            LongReinTop_y_distance_s_x = 0;
+            LongReinBottom_x_distance_s_y = 0;
+            LongReinBottom_y_distance_s_x = 0;
+
+            LongReinTop_x_No = pad.Count_Top_Bars_x == 0 ? "None" : pad.Count_Top_Bars_x.ToString();
             LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fDim1 * 2f * 1000f).ToString();
-            LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi), ConcreteCover);
 
-            LongReinTop_y_No = pad.Count_Top_Bars_y.ToString();
+            if(LongReinTop_x_No != "None")
+               LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinTop_y_No = pad.Count_Top_Bars_y == 0 ? "None" : pad.Count_Top_Bars_y.ToString();
             LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fDim1 * 2f * 1000f).ToString();
-            LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi), ConcreteCover);
 
-            LongReinBottom_x_No = pad.Count_Bottom_Bars_x.ToString();
+            if (LongReinTop_y_No != "None")
+                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinBottom_x_No = pad.Count_Bottom_Bars_x == 0 ? "None" : pad.Count_Bottom_Bars_x.ToString();
             LongReinBottom_x_Phi=(pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
-            LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi), ConcreteCover);
 
-            LongReinBottom_y_No = pad.Count_Bottom_Bars_y.ToString();
+            if (LongReinBottom_x_No != "None")
+                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinBottom_y_No = pad.Count_Bottom_Bars_y == 0 ? "None" : pad.Count_Bottom_Bars_y.ToString();
             LongReinBottom_y_Phi=(pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
-            LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi), ConcreteCover);
+
+            if (LongReinBottom_y_No != "None")
+                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f);
             //----------------------------------------------------------------------------------------------------
 
             IsSetFromCode = false;
@@ -916,39 +929,30 @@ namespace PFD
             IsSetFromCode = true;
 
             // Default reinforcement
+            int iLongReinTop_x_No = LongReinTop_x_No == "None" ? 0 : Convert.ToInt32(LongReinTop_x_No);
+            int iLongReinTop_y_No = LongReinTop_y_No == "None" ? 0 : Convert.ToInt32(LongReinTop_y_No);
+            int iLongReinBottom_x_No = LongReinBottom_x_No == "None" ? 0 : Convert.ToInt32(LongReinBottom_x_No);
+            int iLongReinBottom_y_No = LongReinBottom_y_No == "None" ? 0 : Convert.ToInt32(LongReinBottom_y_No);
 
-            //LongReinTop_x_No = "5";
-            //LongReinTop_x_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
-            //LongReinTop_x_Phi = "12";
-            //LongReinTop_x_Phi = 0.012f; // bar diameter mm to m
-            //LongReinTop_x_distance_s_y = 0.2035f; // m
-            LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinTop_x_No), (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            LongReinTop_x_distance_s_y = 0;
+            LongReinTop_y_distance_s_x = 0;
+            LongReinBottom_x_distance_s_y = 0;
+            LongReinBottom_y_distance_s_x = 0;
 
-            //LongReinTop_y_No = "5";
-            //LongReinTop_y_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
-            //LongReinTop_y_Phi = "12";
-            //LongReinTop_y_Phi = 0.012f; // bar diameter mm to m
-            //LongReinTop_y_distance_s_x = 0.2035f; // m
-            LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, Convert.ToInt32(LongReinTop_y_No), (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            float fConcreteCover = ConcreteCover / 1000f; // Hodnota v metroch
 
-            //LongReinBottom_x_No = "5";
-            //LongReinBottom_x_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_y_Or_b, (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
-            //LongReinBottom_x_Phi = "12";
-            //LongReinBottom_x_Phi = 0.012f; // bar diameter mm to m
-            //LongReinBottom_x_distance_s_y = 0.2035f; // m
-            LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, Convert.ToInt32(LongReinBottom_x_No), (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
-
-            //LongReinBottom_y_No = "5";
-            //LongReinBottom_y_No = GetDefaultNumberOfReinforcingBars(FootingPadSize_x_Or_a, (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f).ToString();
-            //LongReinBottom_y_Phi = "12";
-            //LongReinBottom_y_Phi = 0.012f; // bar diameter mm to m
-            //LongReinBottom_y_distance_s_x = 0.2035f; // m
-            LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, Convert.ToInt32(LongReinBottom_y_No), (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            if (iLongReinTop_x_No > 0)
+              LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, iLongReinTop_x_No, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            if (iLongReinTop_y_No > 0)
+                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, iLongReinTop_y_No, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            if (iLongReinBottom_x_No > 0)
+                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, iLongReinBottom_x_No, (float)Convert.ToDouble(LongReinBottom_x_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+            if (iLongReinBottom_y_No > 0)
+                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, iLongReinBottom_y_No, (float)Convert.ToDouble(LongReinBottom_y_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
 
             // Update reference bars control points
             // Meni sa vtedy ak sa zmeni cover alebo priemer tyce
             // Prevezmeme hodnoty z GUI a previeme zo stringu na cislo v metroch
-            float fConcreteCover = ConcreteCover / 1000f;
             float fDiameterTop_Bar_x = float.Parse(LongReinTop_x_Phi) / 1000f;
             float fDiameterTop_Bar_y = float.Parse(LongReinTop_y_Phi) / 1000f;
             float fDiameterBottom_Bar_x = float.Parse(LongReinBottom_x_Phi) / 1000f;
@@ -963,11 +967,11 @@ namespace PFD
             foreach (CFoundation pad in listOfSelectedTypePads)
             {
                 // For each pad recalculate lengths of reference bars
-                float fLength_Bar_x = m_FootingPadSize_x_Or_a - 2 * ConcreteCover / 1000f;
+                float fLength_Bar_x = m_FootingPadSize_x_Or_a - 2 * fConcreteCover;
                 pad.Reference_Top_Bar_x.m_fDim2 = fLength_Bar_x;
                 pad.Reference_Bottom_Bar_x.m_fDim2 = fLength_Bar_x;
 
-                float fLength_Bar_y = m_FootingPadSize_y_Or_b - 2 * ConcreteCover / 1000f;
+                float fLength_Bar_y = m_FootingPadSize_y_Or_b - 2 * fConcreteCover;
                 pad.Reference_Top_Bar_y.m_fDim2 = fLength_Bar_y;
                 pad.Reference_Bottom_Bar_y.m_fDim2 = fLength_Bar_y;
 
