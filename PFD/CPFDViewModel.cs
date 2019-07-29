@@ -2510,8 +2510,21 @@ namespace PFD
                 if (resStart == null) continue;
                 if (resEnd == null) continue;
 
-                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, null, resStart.DesignInternalForces, true);
-                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, null, resEnd.DesignInternalForces, true);
+                //-------------------------------------------------------------------------------------------------------------
+                // TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
+                // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+                CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
+                FootingCalcSettings.ConcreteGrade = "30";
+                FootingCalcSettings.ConcreteDensity = 2300f;
+                FootingCalcSettings.ReinforcementGrade = "500E";
+                FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+                FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+                FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+                FootingCalcSettings.FloorSlabThickness = 0.125f;
+                //-------------------------------------------------------------------------------------------------------------
+
+                CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings /*null*/, resStart.DesignInternalForces, true);
+                CCalculJoint cGoverningMemberEndJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings /*null*/, resEnd.DesignInternalForces, true);
 
                 dictStartJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberStartJointResults);
                 dictEndJointResults.Add(mGr.MemberType_FS_Position, cGoverningMemberEndJointResults);

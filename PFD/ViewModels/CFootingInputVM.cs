@@ -990,11 +990,16 @@ namespace PFD
 
         public CalculationSettingsFoundation GetCalcSettings()
         {
-            //To Mato dopln si property ktore potrebujes
             CalculationSettingsFoundation calc = new CalculationSettingsFoundation();
             calc.ConcreteDensity = ConcreteDensity;
             calc.ConcreteGrade = ConcreteGrade;
             calc.ReinforcementGrade = ReinforcementGrade;
+
+            calc.SoilReductionFactor_Phi = SoilReductionFactor_Phi;
+            calc.SoilReductionFactorEQ_Phi = SoilReductionFactorEQ_Phi;
+            calc.SoilBearingCapacity = SoilBearingCapacity;
+            calc.FloorSlabThickness = FloorSlabThickness;
+
             return calc;
         }
     }

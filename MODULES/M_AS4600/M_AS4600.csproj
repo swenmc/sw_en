@@ -86,6 +86,10 @@
       <Project>{ffb65036-8dd2-4633-b25a-d5a65d7213bd}</Project>
       <Name>CRSC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DATABASE\DATABASE.csproj">
+      <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>

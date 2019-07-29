@@ -1047,14 +1047,15 @@ namespace PFD
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eFootingDesign)
             {
-                
                 CComponentListVM compListVM = (CComponentListVM)uc_ComponentList.DataContext;
                 CFootingInputVM footingInputVM = Footing_Input.DataContext as CFootingInputVM;
+
+                // TODO Ondrej - sem lezie DataContext CPFDViewModel, takze footingInputVM sa nenastavi a ostane null, potom to spadne
+
                 if (Footing_Design.Content == null) Footing_Design.Content = new UC_FootingDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, footingInputVM, vm.JointDesignResults_ULS);
                 else
                 {
                     ////setuje sa v public void UpdateResults()
-                    
                 }
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)

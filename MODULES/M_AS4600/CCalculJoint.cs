@@ -5,6 +5,8 @@ using MATH;
 using MATERIAL;
 using CRSC;
 using M_NZS3101;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace M_AS4600
 {
@@ -1459,11 +1461,6 @@ namespace M_AS4600
 
         public void CalculateDesignRatioBaseJointFooting(CFoundation foundation, designInternalForces_AS4600 sDIF_temp, bool bSaveDetails = false)
         {
-            //To Mato tu by mal byt dostupny objekt nastaveni vypoctu pre CFoundation
-            //foundationCalcSettings.ConcreteDensity
-            //foundationCalcSettings.ConcreteGrade
-            //foundationCalcSettings.ReinforcementGrade
-
             CConCom_Plate_B_basic basePlate;
 
             if (plate is CConCom_Plate_B_basic)
@@ -1471,6 +1468,11 @@ namespace M_AS4600
             else
             {
                 throw new Exception("Invalid object of base plate.");
+            }
+            
+            if (foundationCalcSettings == null)
+            {
+                throw new Exception("Invalid foundation design settings.");
             }
 
             CJointDesignDetails_BaseJointFooting designDetails = new CJointDesignDetails_BaseJointFooting();
@@ -1602,7 +1604,7 @@ namespace M_AS4600
 
             // Figure C17.4 – Definition of dimension e´n for group anchors
             designDetails.fe_apostrophe_n = 0f;                           // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
-            designDetails.fConcreteCover = 0.07f; // Input
+            designDetails.fConcreteCover = footing.ConcreteCover; // Input
             designDetails.fh_ef = designDetails.fFootingHeight - designDetails.fConcreteCover;        // effective anchor embedment depth
             designDetails.fs_2_x = 0f;                                    // centre-to-centre spacing of the anchors
             designDetails.fs_1_y = 0.23f;                                 // centre-to-centre spacing of the anchors
@@ -1845,7 +1847,7 @@ namespace M_AS4600
             //float fN_asterix_joint_uplif =
             //float fN_asterix_joint_bearing 
 
-            designDetails.fc_nominal_soil_bearing_capacity = 58000f; // Pa - soil bearing capacity - TODO - user defined
+            designDetails.fc_nominal_soil_bearing_capacity = foundationCalcSettings.SoilBearingCapacity; // Pa - soil bearing capacity - TODO - user defined
 
             // Footing pad
             designDetails.fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
@@ -1854,13 +1856,14 @@ namespace M_AS4600
             designDetails.fG_footing = designDetails.fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
 
             // Tributary floor volume
-            float ft_floor = 0.125f; // TODO - user-defined
+            float ft_floor = foundationCalcSettings.FloorSlabThickness; // TODO - user-defined
             float fa_tributary_floor = 0.6f; // TODO - tributary dimension;
             float fLength_x_tributary_floor = designDetails.fFootingDimension_x + 2 * fa_tributary_floor; // TODO - zistit ci je stlp v rohu, ak ano uvazovat len jednu stranu
             float fLength_y_tributary_floor = designDetails.fFootingDimension_y + fa_tributary_floor; // Okraj - uvazujem sa len jedna strana patky
             float fA_tributary_floor = fLength_x_tributary_floor * fLength_y_tributary_floor - designDetails.fA_footing;
             float fV_tributary_floor = fA_tributary_floor * ft_floor;
-            float fRho_c_floor = 2200f; // Density of dry concrete - concrete floor
+            // TODO - chceme mat hustotu betonu zakladu a dosky rovnaku alebo rozdielnu? Pre dosku je potrebne zaviest samostanu polozku
+            float fRho_c_floor = foundationCalcSettings.ConcreteDensity; // Density of dry concrete - concrete floor
             designDetails.fG_tributary_floor = fV_tributary_floor * fRho_c_floor; // Self-weight [N] - tributary concrete floor
 
             // Additional material above the footing
@@ -1886,7 +1889,14 @@ namespace M_AS4600
 
             designDetails.fN_design_bearing_total = Math.Abs(designDetails.fN_asterix_joint_bearing) + designDetails.fG_design_bearing;
             designDetails.fPressure_bearing = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fA_footing;
-            designDetails.fSafetyFactor = 0.5f; // TODO - zistit aky je faktor
+
+            // Podla typu kombinacie
+
+            //if() - TODO ONDREJ - tu potrebujem vediet typ kombinacie, aky pocitam, ak je to EQ, tak musim pouzit iny faktor pre kapacitu podlozia
+            designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactor_Phi; // TODO - zistit aky je faktor
+            // else
+            //designDetails.fSafetyFactor = foundationCalcSettings.SoilReductionFactorEQ_Phi;
+
             designDetails.fEta_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
             fEta_max_Footing = MathF.Max(fEta_max_Footing, designDetails.fEta_footing_bearing);
 
@@ -1909,8 +1919,10 @@ namespace M_AS4600
             float fSpacing_xDirection = (designDetails.fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
             designDetails.fSpacing_yDirection = (designDetails.fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - designDetails.fd_reinforcement_xDirection) / (designDetails.iNumberOfBarsInXDirection - 1);
 
-            string sReinforcingSteelGrade_Name = "500E"; // Input
-            float fReinforcementStrength_fy = 500e+6f; //foundation.Streng // TODO - user defined
+            string sReinforcingSteelGrade_Name = foundationCalcSettings.ReinforcementGrade; // Input
+
+            CMatPropertiesRF reinfocementMaterial = CMaterialManager.LoadMaterialPropertiesRF(sReinforcingSteelGrade_Name);
+            float fReinforcementStrength_fy = (float)reinfocementMaterial.Ry; // User defined
 
             designDetails.fAlpha_c = 0.85f;
             designDetails.fPhi_b_foundations = 0.85f;
@@ -1971,7 +1983,16 @@ namespace M_AS4600
 
             // Ratio of the long side to the short side of the concentrated load
             designDetails.fBeta_c = Math.Max(fReactionArea_dimension_x, fReactionArea_dimension_y) / Math.Min(fReactionArea_dimension_x, fReactionArea_dimension_y); // 12.7
-            designDetails.fAlpha_s = 15; // 20 for interior columns, 15 for edge columns, 10 for corner columns TODO - zapracovat identifikaciu stlpa
+
+            // TODO - Ondrej, tu potrebujem vediet na akom som spoji, stlpe, ci je na hrane budovy - faktor 15, alebo v rohu budovy - faktor 10
+            // To ci je v rohu vieme zistit podla toho aky je typ objektu v comboboxe Component Type, resp objekt nastaveny prutu
+            // 20 for interior columns, 15 for edge columns, 10 for corner columns
+
+            if (joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
+                designDetails.fAlpha_s = 10;
+            else
+                designDetails.fAlpha_s = 15;
+
             designDetails.fd_average = (designDetails.fd_effective_xDirection + fd_effective_yDirection) / 2f;
             designDetails.fk_ds = eq_concrete.Get_k_ds_12732(designDetails.fd_average);
 

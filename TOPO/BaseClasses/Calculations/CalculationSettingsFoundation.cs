@@ -11,11 +11,13 @@ namespace BaseClasses
     [Serializable]
     public class CalculationSettingsFoundation
     {
-        //To Mato dopln si property ktore potrebujes
-        //-------------------------------------------------------------------------------------------------------------
         private string m_ConcreteGrade;
         private float m_ConcreteDensity;
         private string m_ReinforcementGrade;
+        private float m_SoilReductionFactor_Phi;
+        private float m_SoilReductionFactorEQ_Phi;
+        private float m_SoilBearingCapacity;
+        private float m_FloorSlabThickness;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -55,6 +57,58 @@ namespace BaseClasses
             set
             {
                 m_ReinforcementGrade = value;
+            }
+        }
+
+        public float SoilReductionFactor_Phi
+        {
+            get
+            {
+                return m_SoilReductionFactor_Phi;
+            }
+
+            set
+            {
+                m_SoilReductionFactor_Phi = value;
+            }
+        }
+
+        public float SoilReductionFactorEQ_Phi
+        {
+            get
+            {
+                return m_SoilReductionFactorEQ_Phi;
+            }
+
+            set
+            {
+                m_SoilReductionFactorEQ_Phi = value;
+            }
+        }
+
+        public float SoilBearingCapacity
+        {
+            get
+            {
+                return m_SoilBearingCapacity;
+            }
+
+            set
+            {
+                m_SoilBearingCapacity = value;
+            }
+        }
+
+        public float FloorSlabThickness
+        {
+            get
+            {
+                return m_FloorSlabThickness;
+            }
+
+            set
+            {
+                m_FloorSlabThickness = value;
             }
         }
 

@@ -23,6 +23,7 @@ namespace PFD.Infrastructure
         private bool DeterminateCombinationResultsByFEMSolver;
         private bool UseFEMSolverCalculationForSimpleBeam;
         private bool DeterminateMemberLocalDisplacementsForULS;
+        CalculationSettingsFoundation FootingCalcSettings;
 
         private int membersIFCalcCount;
         private int membersDesignCalcCount;
@@ -51,7 +52,9 @@ namespace PFD.Infrastructure
             bool determinateCombinationResultsByFEMSolver,
             bool bUseFEMSolverCalculationForSimpleBeam,
             bool determinateMemberLocalDisplacementsForULS,
-            List<CFrame> FrameModels, List<CBeam_Simple> BeamSimpleModels)
+            //CalculationSettingsFoundation footingCalcSettings,
+            List<CFrame> FrameModels,
+            List<CBeam_Simple> BeamSimpleModels)
         {
             SolverWindow = solverWindow;
             Model = model;
@@ -59,6 +62,19 @@ namespace PFD.Infrastructure
             DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
             UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
+
+            //-------------------------------------------------------------------------------------------------------------
+            // TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
+            FootingCalcSettings = new CalculationSettingsFoundation();
+            FootingCalcSettings.ConcreteGrade = "30";
+            FootingCalcSettings.ConcreteDensity = 2300f;
+            FootingCalcSettings.ReinforcementGrade = "500E";
+            FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
+            FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
+            FootingCalcSettings.SoilBearingCapacity = 100e+3f;
+            FootingCalcSettings.FloorSlabThickness = 0.125f;
+            //-------------------------------------------------------------------------------------------------------------
+
             beamSimpleModels = BeamSimpleModels;
             frameModels = FrameModels;
 
@@ -423,7 +439,6 @@ namespace PFD.Infrastructure
 
                         // Joint Design
                         CJointDesign jointDesignModel = new CJointDesign();
-
                         designInternalForces sjointStartDIF_x;
                         designInternalForces sjointEndDIF_x;
                         CConnectionJointTypes jointStart;
