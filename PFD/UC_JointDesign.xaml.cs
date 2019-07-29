@@ -27,18 +27,18 @@ namespace PFD
             DesignResults_ULS = designResults_ULS;
             _pfdVM = pfdVM;
             Model = pfdVM.Model;
-            FootingCalcSettings = pfdVM.FootingVM.GetCalcSettings();
+            //FootingCalcSettings = pfdVM.FootingVM.GetCalcSettings();
 
             // Joint Design
             CPFDJointsDesign vm = new CPFDJointsDesign(Model.m_arrLimitStates, Model.m_arrLoadCombs, compList.ComponentList);
-            vm.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            vm.PropertyChanged += HandleJointDesignPropertyChangedEvent;
             this.DataContext = vm;
 
             vm.LimitStateIndex = 0;
         }
         
 
-        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        protected void HandleJointDesignPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
             CPFDJointsDesign vm = sender as CPFDJointsDesign;
@@ -127,11 +127,11 @@ namespace PFD
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, /*FootingCalcSettings*/null, resStart.DesignInternalForces, true);
+                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, /*FootingCalcSettings*/null, resEnd.DesignInternalForces, true);
+                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, Model, FootingCalcSettings, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }
