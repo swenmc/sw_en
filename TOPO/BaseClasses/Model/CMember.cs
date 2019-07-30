@@ -415,7 +415,7 @@ namespace BaseClasses
             m_cnRelease2 = null;
             m_CrScStart = objCrSc1;
             eMemberType_FS = eMemberType;
-
+            eMemberType_DB = eMemberType_Position;
             EccentricityStart = objEccentricityStart;
             EccentricityEnd = objEccentricityEnd;
             FAlignment_Start = fAligment1;
