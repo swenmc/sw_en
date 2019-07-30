@@ -127,7 +127,7 @@ namespace PFD
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             
-            UpdateAll();
+            UpdateAll(true);
 
             vm.Model.GroupModelMembers();
             vm.RecreateJoints = false;
@@ -718,7 +718,7 @@ namespace PFD
         //    sDisplayOptions.bColorsAccordingToSections = vm.ColorsAccordingToSections;
         //}
 
-        private void UpdateAll()
+        private void UpdateAll(bool programStart = false)
         {
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
 
@@ -782,7 +782,7 @@ namespace PFD
                 vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads);
 
-            if (vm.SynchronizeGUI)
+            if (vm.SynchronizeGUI || programStart)
             {
                 // Create 3D window
                 //UpdateDisplayOptions();
@@ -1754,11 +1754,37 @@ namespace PFD
 
             try
             {
-                //vmPFD._loadInput = loadInput;
                 CModelData modelData = vmPFD.GetModelData();
 
-                //UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
+                //Robil som tu pokusy ako by sa to dalo updatovat,resp. vykreslit pred exportom, ale volajako nic z toho nefungovalo :-)
+                //Viewport3D viewPort = null;
+                //if (!(Frame1.Content is Page3Dmodel))
+                //{
+                //    Dispatcher.Invoke(() =>
+                //    {
+                //        sDisplayOptions = vm.GetDisplayOptions();
+                //        Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+                //        // Display model in 3D preview frame
+                //        Frame1.Content = page1;
+                //        Frame1.UpdateLayout();
+                //    });
+                //}
+                //else
+                //{
+                //    //sDisplayOptions = vm.GetDisplayOptions();
+                //    //Page3Dmodel Model_3D = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+                //    //Model_3D.RenderSize = new Size(Frame1.ActualWidth, Frame1.ActualHeight);
+                //    //Model_3D.UpdateLayout();
+                //    //viewPort = Model_3D._trackport.ViewPort;
+                //    //viewPort.RenderSize = new Size(Frame1.ActualWidth, Frame1.ActualHeight);
+                //    //viewPort.UpdateLayout();
+
+                //    //Frame1.Content = page1;
+                //    //Frame1.UpdateLayout();
+                //}
+
                 Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
+
                 ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
             }
             catch (Exception ex)
