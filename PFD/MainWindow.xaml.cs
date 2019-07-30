@@ -1128,8 +1128,9 @@ namespace PFD
                 if (Footing_Design.Content != null)
                 {
                     UC_FootingDesign uc_footingDesign = Footing_Design.Content as UC_FootingDesign;
-                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
-                    uc_footingDesign.FootingVM = Footing_Input.DataContext as CFootingInputVM;
+                    uc_footingDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                    UC_FootingInput uc_footingInput = Footing_Input.Content as UC_FootingInput;
+                    uc_footingDesign.FootingVM = uc_footingInput.DataContext as CFootingInputVM;
                     CPFDFootingDesign vmFD = uc_footingDesign.DataContext as CPFDFootingDesign;
                     vmFD.IsSetFromCode = true;
                     vmFD.LimitStateIndex = 0;
