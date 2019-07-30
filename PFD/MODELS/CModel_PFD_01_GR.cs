@@ -766,10 +766,16 @@ namespace PFD
             }
 
             // Opakovana kontrola po odstraneni spojov s MainMember = null
+            int iCountOfJoints_NotGenerated = 0; // Number of joints on deactivated members (girts where dorr and window blocks are inserted) // Mozno sa to na nieco pouzije :)
             for (int i = 0; i < m_arrConnectionJoints.Count; i++)
             {
                 if (m_arrConnectionJoints[i].m_MainMember == null)
                     throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+
+                if(m_arrConnectionJoints[i].BIsGenerated == false)
+                {
+                    iCountOfJoints_NotGenerated++;
+                }
             }
 
             // Validation - duplicity of node ID
