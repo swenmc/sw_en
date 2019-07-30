@@ -217,13 +217,6 @@ namespace PFD
                 // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
                 // B) Je potrebne doplnit nejake typy spojov hlavne pre front a back girts (napriklad ak su v prednej alebo zadnej stene vlozene otvory)
 
-                // To Ondrej Bug 328, door trimmer to girt, main member - girt ma EMemberPositionType = 0, takze spoj sa nedetekuje spravne
-                // Musime si byt isti ze vsetky pruty maju nastaveny MemberPositionType, inak je nieco zle
-                if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers[0].EMemberTypePosition == EMemberType_FS_Position.DoorTrimmer)
-                {
-                    throw new Exception("Main Member Type: " + joint.m_MainMember.EMemberType + ", Main Member Position Type: " + joint.m_MainMember.EMemberTypePosition);
-                }
-
                 switch (con.ID)
                 {
                     //1   Base - main column
