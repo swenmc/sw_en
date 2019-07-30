@@ -211,11 +211,6 @@ namespace PFD
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
-                
-                //To Mato - tu potrebudem cely tento switch skontrolovat/opravit/doplnit lebo ty tomu viac rozumies ako ja
-                // Predbezne skontrolovane, ale este to budeme musiet poladit a podoplnat.
-                // A) ak nie su v modeli okna alebo dvere tak niektore z tychto spojov by nemali byt v comboboxe
-                // B) Je potrebne doplnit nejake typy spojov hlavne pre front a back girts (napriklad ak su v prednej alebo zadnej stene vlozene otvory)
 
                 switch (con.ID)
                 {
