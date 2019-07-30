@@ -47,8 +47,9 @@ namespace EXPIMP
                 DrawLoad(document, modelData);
                 DrawMemberDesign(document, modelData);
                 DrawJointDesign(document, modelData);
+                DrawFootingDesign(document, modelData);
 
-                
+
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -1008,6 +1009,57 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("");
                     AddSimpleTableAfterParagraph(t, par);
                 }
+            }
+        }
+
+        private static void DrawFootingDesign(DocX document, CModelData data)
+        {
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
+            par.RemoveText(0);
+
+            foreach (CComponentInfo cInfo in data.ComponentList)
+            {
+                if(cInfo.MemberTypePosition != EMemberType_FS_Position.MainColumn &&
+                    cInfo.MemberTypePosition != EMemberType_FS_Position.EdgeColumn &&
+                    cInfo.MemberTypePosition != EMemberType_FS_Position.ColumnFrontSide &&
+                    cInfo.MemberTypePosition != EMemberType_FS_Position.ColumnBackSide) continue;
+                if (!cInfo.Design) continue;
+                
+                // Start Joint
+                CCalculJoint calcul = null;
+                data.dictStartJointResults.TryGetValue(cInfo.MemberTypePosition, out calcul);
+
+                // End Joint
+                CCalculJoint calculEnd = null;
+                data.dictEndJointResults.TryGetValue(cInfo.MemberTypePosition, out calculEnd);
+
+                if (calculEnd != null && calculEnd.footing != null)
+                {
+                    if (calcul == null) calcul = calculEnd;
+                    else if (calcul.fEta_max_Footing < calculEnd.fEta_max_Footing) calcul = calculEnd;
+                }
+                
+                if (calcul != null)
+                {   
+                    // Display Member type heading
+                    par = par.InsertParagraphAfterSelf("Member type: " + cInfo.ComponentName);
+                    par.StyleName = "Heading2";
+
+                    par = par.InsertParagraphAfterSelf("Design Details");
+                    par.StyleName = "Heading3";
+
+                    par = par.InsertParagraphAfterSelf("");
+                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, data.DisplayOptions);
+                    viewPort.UpdateLayout();
+                    AppendImageFromViewPort(document, viewPort, par);
+
+                    DataTable dt = DataGridHelper.GetFootingDesignResultsInDataTable(calcul);
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
+
+                
             }
         }
 

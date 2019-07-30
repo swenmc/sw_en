@@ -68,6 +68,15 @@ namespace M_AS4600
             return GetDataTable();
         }
 
+        public static DataTable GetFootingDesignResultsInDataTable(this CCalculJoint calcul)
+        {
+            DeleteLists();
+
+            SetFootingResultsDetailsFor_ULS(calcul);
+
+            return GetDataTable();
+        }
+
         private static void DeleteLists()
         {
             // Deleting lists for updating actual values

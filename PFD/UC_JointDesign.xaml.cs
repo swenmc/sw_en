@@ -96,8 +96,7 @@ namespace PFD
                     CJointLoadCombinationRatio_ULS resStart = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjStart.m_Node.ID);
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint.m_Node.ID == cjEnd.m_Node.ID);
                     if (resStart == null) continue;
-                    if (resEnd == null) continue;
-
+                    if (resEnd == null) continue;                    
                     ////-------------------------------------------------------------------------------------------------------------
                     //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
                     //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
