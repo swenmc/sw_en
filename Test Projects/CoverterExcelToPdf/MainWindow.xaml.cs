@@ -144,10 +144,14 @@ namespace CoverterExcelToPdf
                     if (files.Length == 0) { ww.Close(); MessageBox.Show("No .xlsx files in the directory."); return; }
 
                     SpreadsheetInfo.SetLicense("FREE - LIMITED - KEY");
-                    
+
+                    FileInfo databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
+                    if (databaseFile != null) Process.Start(databaseFile.FullName);
+
                     foreach (FileInfo fi in files)
                     {
                         if (!fi.Extension.Equals(".xlsx")) continue;
+                        if (fi.Name.Equals(databaseFile.Name)) continue;
 
                         //1
                         //ExcelFile excel = ExcelFile.Load(fi.FullName);
@@ -160,9 +164,20 @@ namespace CoverterExcelToPdf
 
 
                         //3
-                        Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                        Workbook wkb = app.Workbooks.Open(fi.FullName);
-                        wkb.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) +".pdf");
+                        try
+                        {
+                            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                            Workbook wkb = app.Workbooks.Open(fi.FullName);
+                            var firstSheeet = wkb.Sheets[1];
+
+                            for (int i = 2; i < wkb.Sheets.Count; i++)
+                            {
+                                wkb.Sheets[i].Delete();
+                            }
+                            wkb.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
+                        }
+                        catch (Exception ex) { }
+                        
                     }
 
                     MergePDFDocuments(folder);
