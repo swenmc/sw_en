@@ -1,4 +1,5 @@
 ﻿using GemBox.Spreadsheet;
+using Microsoft.Office.Interop.Excel;
 using OfficeOpenXml;
 using PdfRpt.Core.Contracts;
 using PdfSharp.Drawing;
@@ -19,7 +20,7 @@ namespace CoverterExcelToPdf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         public MainWindow()
         {
@@ -148,12 +149,20 @@ namespace CoverterExcelToPdf
                     {
                         if (!fi.Extension.Equals(".xlsx")) continue;
 
-                        ExcelFile excel = ExcelFile.Load(fi.FullName);
-                        excel.Save(fi.FullName.Substring(0, fi.FullName.Length - 5) +".pdf");
+                        //1
+                        //ExcelFile excel = ExcelFile.Load(fi.FullName);
+                        //excel.Save(fi.FullName.Substring(0, fi.FullName.Length - 5) +".pdf");
 
+                        //2
                         //tato kniznica vie zase exportovat len tabulky, pokial je tam prvy riadok prazdny,tak ma problem
                         //ExcelToPdfReport r = new ExcelToPdfReport();
                         //r.CreateExcelToPdfReport(fi.FullName, null);
+
+
+                        //3
+                        Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+                        Workbook wkb = app.Workbooks.Open(fi.FullName);
+                        wkb.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) +".pdf");
                     }
 
                     MergePDFDocuments(folder);
