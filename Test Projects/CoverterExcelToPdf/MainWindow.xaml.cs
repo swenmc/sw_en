@@ -145,7 +145,7 @@ namespace CoverterExcelToPdf
         {
             Dispatcher.Invoke(() =>
             {
-                LabelProgress.Content = text;
+               LabelProgress.Content = text;
             });
         }
 
