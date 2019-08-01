@@ -7,19 +7,28 @@
         mc:Ignorable="d"
         Title="XLS multi-file to PDF file exporter" Height="287" Width="400">
 
-    <Grid>
+    
         <StackPanel Margin="0,0,0,0">
             <Image Height="117" Width="373" Source="Resources/XLStoPDFfileExport.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             <ProgressBar x:Name="myProgressBar" Height="20" Margin="10,10,10.333,10" IsIndeterminate="False" Value="0" Minimum="0" Maximum="100" />
-        </StackPanel>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Timer" VerticalAlignment="Top" Margin="10,150,0,0"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Exporting ..." VerticalAlignment="Top" Margin="10,178,0,0"/>
-    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="File" VerticalAlignment="Top" Margin="298,178,0,0" RenderTransformOrigin="-1.759,-1.563"/>
-    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="5/33" VerticalAlignment="Top" Margin="359,178,0,0"/>
-    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="xxx File Name xxx.xls" VerticalAlignment="Top" Margin="93,178,0,0" Width="200"/>
+            <TextBlock x:Name="LabelTimer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Timer" VerticalAlignment="Top" Margin="10,0,0,0"/>
+            <StackPanel Orientation="Horizontal">
+            <TextBlock x:Name="LabelExporting" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Exporting ..." VerticalAlignment="Top" Margin="10,5,0,0" Width="120"/>
+            <TextBlock x:Name="LabelFileName" HorizontalAlignment="Left" TextWrapping="Wrap" Text="xxx File Name xxx.xls" VerticalAlignment="Top" Margin="0,5,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="File" VerticalAlignment="Top" Margin="10,5,0,0" Width="120"/>
+            <TextBlock x:Name="LabelFileCount" HorizontalAlignment="Left" TextWrapping="Wrap" Text="5/33" VerticalAlignment="Top" Margin="0,5,0,0"/>
+            </StackPanel>
 
-     <Label Name="LabelProgress" Margin=" 10,200,0,0">Click button to start exporting the PDF file from directory</Label>
-    <Button Name="BtnExportToPDFFromDirectory" Content="Select directory" Margin="10,227,0,0"
+            <!--<TextBlock Name="LabelProgress" Margin="10,0,0,0">Click button to start exporting the PDF file from directory</TextBlock>-->
+            <Button Name="BtnExportToPDFFromDirectory" Content="Select directory" Margin="10,10,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDFFromDirectory_Click"/>
-        </Grid>
+        </StackPanel>
+        
+        
+        
+
+        
+        
 </Window>
