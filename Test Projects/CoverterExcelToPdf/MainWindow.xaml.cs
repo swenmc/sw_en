@@ -146,7 +146,15 @@ namespace CoverterExcelToPdf
                     SpreadsheetInfo.SetLicense("FREE - LIMITED - KEY");
 
                     FileInfo databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
-                    if (databaseFile != null) Process.Start(databaseFile.FullName);
+                    //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Satabase file ako workbook v Exceli, preto som toto zakomentoval
+
+                    // Open Excel
+                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+
+                    // Open database file
+                    Workbook wkbDatabase = null;
+                    if (databaseFile != null)
+                        wkbDatabase = app.Workbooks.Open(databaseFile.FullName);
 
                     foreach (FileInfo fi in files)
                     {
@@ -162,23 +170,30 @@ namespace CoverterExcelToPdf
                         //ExcelToPdfReport r = new ExcelToPdfReport();
                         //r.CreateExcelToPdfReport(fi.FullName, null);
 
-
                         //3
                         try
                         {
-                            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
                             Workbook wkb = app.Workbooks.Open(fi.FullName);
                             var firstSheeet = wkb.Sheets[1];
 
-                            for (int i = 2; i < wkb.Sheets.Count; i++)
-                            {
-                                wkb.Sheets[i].Delete();
-                            }
-                            wkb.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
+                            //for (int i = 2; i < wkb.Sheets.Count; i++) // To Ondrej - podla mna nemozes zmazat ostatne zalozky, zmazes si tak data, na ktorych je zavisly obsah prvej, upravil som to tak ze sa exportuje len prvy zosit
+                            //{
+                            //    wkb.Sheets[i].Delete();
+                            //}
+
+                            // Export only first worrksheet, not whole workbook
+                            firstSheeet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
                         }
-                        catch (Exception ex) { }
-                        
+                        catch (Exception ex) {}
                     }
+
+                    // To Ondrej - tu by som subor DATABASE.xlsx zavrel
+                    // Close database file
+                    if(wkbDatabase != null)
+                    wkbDatabase.Close(false); // Neukladat zmeny
+
+                    // Close Excel
+                    app.Quit();
 
                     MergePDFDocuments(folder);
 
