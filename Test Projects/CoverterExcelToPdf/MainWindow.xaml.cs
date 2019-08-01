@@ -190,7 +190,7 @@ namespace CoverterExcelToPdf
                     // To Ondrej - tu by som subor DATABASE.xlsx zavrel
                     // Close database file
                     if(wkbDatabase != null)
-                    wkbDatabase.Close(false); // Neukladat zmeny
+                    wkbDatabase.Close(false); // Neukladat zmeny - TO Ondrej - toto false akosi nefunguje a subor sa nezavrie
 
                     // Close Excel
                     app.Quit();
