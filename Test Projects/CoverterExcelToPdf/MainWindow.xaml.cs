@@ -36,6 +36,9 @@ namespace CoverterExcelToPdf
         Stopwatch stopWatch = new Stopwatch();
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
 
+        string sDatabaseFileName = "DATABASE";
+        string sReportFileName = "Report";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -71,7 +74,7 @@ namespace CoverterExcelToPdf
                     // Show progress time
                     DisplayCalculationTime();
 
-                    databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
+                    databaseFile = files.FirstOrDefault(f => f.Name.Contains(sDatabaseFileName+".xlsx"));
                     //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Database file ako workbook v Exceli, preto som toto zakomentoval
 
                     int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
@@ -144,11 +147,11 @@ namespace CoverterExcelToPdf
             app.Quit();
 
             UpdateText("Merging pdf files into one.");
-            MergePDFDocuments(folder);
+            MergePDFDocuments(folder, sReportFileName);
 
             // Delete temporary pdf files
             UpdateText("Deleting temporary pdf files.");
-            DeleteTemporaryPDFDocuments(folder, new List<string> { "Result" });
+            DeleteTemporaryPDFDocuments(folder, new List<string> { sReportFileName });
 
             Progress = 100;
             UpdateProgress();
@@ -207,7 +210,7 @@ namespace CoverterExcelToPdf
             return totalFilesToExportCount;
         }
 
-        static void MergePDFDocuments(string directory)
+        static void MergePDFDocuments(string directory, string outputFileName)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(directory);
             FileInfo[] files = dirInfo.GetFiles("*.pdf", SearchOption.TopDirectoryOnly);
@@ -250,7 +253,7 @@ namespace CoverterExcelToPdf
             }
             
             // Save the document...
-            string filename = directory + "\\Result.pdf";
+            string filename = directory + "\\"+ outputFileName + ".pdf";
             outputDocument.Save(filename);
             
             // ...and start a viewer.
