@@ -11,8 +11,10 @@
 
     <StackPanel Margin="0,0,0,0">
         <Image Height="117" Width="373" Source="Resources/XLStoPDFfileExport.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-        <ProgressBar x:Name="myProgressBar" Height="20" Margin="10,10,10.333,10" IsIndeterminate="False" Value="0" Minimum="0" Maximum="100" />
-        <TextBlock x:Name="LabelTimer" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Timer" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <ProgressBar x:Name="myProgressBar" Height="20" Margin="10,10,10,10" IsIndeterminate="False" Value="0" Minimum="0" Maximum="100" />
+        <!--<TextBlock Text="Time: " HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Gray"/>-->
+        <TextBlock Name="LabelTimer" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Gray" Margin="100,0,0,0"/>
+
         <StackPanel Orientation="Horizontal">
             <TextBlock x:Name="LabelExporting" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Exporting ..." VerticalAlignment="Top" Margin="10,5,0,0" Width="120"/>
             <TextBlock x:Name="LabelFileName" HorizontalAlignment="Left" TextWrapping="Wrap" Text="xxx File Name xxx.xls" VerticalAlignment="Top" Margin="0,5,0,0" />

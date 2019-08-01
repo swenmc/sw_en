@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
+
 namespace CoverterExcelToPdf
 {
     /// <summary>
@@ -31,10 +33,12 @@ namespace CoverterExcelToPdf
         double step;
         string folder;
 
+        Stopwatch stopWatch = new Stopwatch();
+        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
         public MainWindow()
         {
             InitializeComponent();
-
             _worker.DoWork += Export;
         }
 
@@ -51,6 +55,8 @@ namespace CoverterExcelToPdf
             step = 0;
             UpdateText("Export is starting...");
 
+            // Show progress time
+            DisplayCalculationTime();
 
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
@@ -69,7 +75,7 @@ namespace CoverterExcelToPdf
                     
                     int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
                     step = 100 / totalFilesToExportCount;
-                    
+
                     Run();
 
                     ww.Close();
@@ -77,7 +83,6 @@ namespace CoverterExcelToPdf
             }
         }
 
-        
         private void Export(object sender, DoWorkEventArgs e)
         {
             ExportToPDFFromDirectory();
@@ -127,10 +132,16 @@ namespace CoverterExcelToPdf
             UpdateText("Merging documents into one PDF");
             MergePDFDocuments(folder);
 
-            
             Progress = 100;
             UpdateProgress();
             UpdateText("Done.");
+
+            // Stop timer
+            if (stopWatch.IsRunning)
+            {
+                stopWatch.Stop();
+                stopWatch.Reset(); // Set to 0:0:0
+            }
         }
 
 
@@ -160,7 +171,6 @@ namespace CoverterExcelToPdf
             }
             return totalFilesToExportCount;
         }
-
 
         static void MergePDFDocuments(string directory)
         {
@@ -212,7 +222,25 @@ namespace CoverterExcelToPdf
             Process.Start(filename);
         }
 
+        public void DisplayCalculationTime()
+        {
+            dispatcherTimer.Tick += new EventHandler(dt_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
 
+            stopWatch.Start();
+            dispatcherTimer.Start();
+        }
+
+        void dt_Tick(object sender, EventArgs e)
+        {
+            if (stopWatch.IsRunning)
+            {
+                TimeSpan ts = stopWatch.Elapsed;
+                string currentTime = String.Format("{0:00}:{1:00}:{2:00}",
+                ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                LabelTimer.Text = currentTime;
+            }
+        }
 
 
 
