@@ -7,6 +7,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,15 +23,33 @@ namespace CoverterExcelToPdf
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        double Progress;
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
+
+        FileInfo databaseFile;
+        FileInfo[] files;
+        double step;
+        string folder;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _worker.DoWork += Export;
         }
-        
+
+        public void Run()
+        {
+            if (!_worker.IsBusy) _worker.RunWorkerAsync();
+        }
+
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
         {
-            ExcelPackage resultPackage = new ExcelPackage();
             
+            Progress = 0;
+            UpdateProgress();
+            step = 0;
+            UpdateText("Export is starting...");
 
 
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
@@ -40,56 +59,108 @@ namespace CoverterExcelToPdf
                     WaitWindow ww = new WaitWindow("PDF");
                     ww.Show();
 
-                    string folder = dialog.SelectedPath;
+                    folder = dialog.SelectedPath;
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
-                    FileInfo[] files = dirInfo.GetFiles("*.xlsx", SearchOption.TopDirectoryOnly);
+                    files = dirInfo.GetFiles("*.xlsx", SearchOption.TopDirectoryOnly);
                     if (files.Length == 0) { ww.Close(); MessageBox.Show("No .xlsx files in the directory."); return; }
-
-                    //SpreadsheetInfo.SetLicense("FREE - LIMITED - KEY");
-
-                    FileInfo databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
-                    //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Satabase file ako workbook v Exceli, preto som toto zakomentoval
-
-                    // Open Excel
-                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-
-                    // Open database file
-                    Workbook wkbDatabase = null;
-                    if (databaseFile != null)
-                        wkbDatabase = app.Workbooks.Open(databaseFile.FullName);
-
-                    foreach (FileInfo fi in files)
-                    {
-                        if (!fi.Extension.Equals(".xlsx")) continue;
-                        if (fi.Name.Equals(databaseFile.Name)) continue;
-                        
-                        try
-                        {
-                            Workbook wkb = app.Workbooks.Open(fi.FullName);
-                            var firstSheeet = wkb.Sheets[1];
-
-                            // Export only first worrksheet, not whole workbook
-                            firstSheeet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
-
-                            wkb.Close(false);
-                        }
-                        catch (Exception ex) {}
-                    }
-
-                    // To Ondrej - tu by som subor DATABASE.xlsx zavrel
-                    // Close database file
-                    if(wkbDatabase != null)
-                    wkbDatabase.Close(false); // Neukladat zmeny - TO Ondrej - toto false akosi nefunguje a subor sa nezavrie
-
-                    // Close Excel
-                    app.Quit();
                     
-                    MergePDFDocuments(folder);
+                    databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
+                    //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Satabase file ako workbook v Exceli, preto som toto zakomentoval
+                    
+                    int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
+                    step = 100 / totalFilesToExportCount;
+                    
+                    Run();
 
                     ww.Close();
                 }
             }
         }
+
+        
+        private void Export(object sender, DoWorkEventArgs e)
+        {
+            ExportToPDFFromDirectory();
+        }
+
+        [STAThread]
+        private void ExportToPDFFromDirectory()
+        {
+            // Open Excel
+            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+
+            // Open database file
+            Workbook wkbDatabase = null;
+            if (databaseFile != null)
+                wkbDatabase = app.Workbooks.Open(databaseFile.FullName);
+            
+            foreach (FileInfo fi in files)
+            {
+                if (!fi.Extension.Equals(".xlsx")) continue;
+                if (fi.Name.Equals(databaseFile.Name)) continue;
+
+                try
+                {
+                    Progress += step;
+                    UpdateProgress();
+                    UpdateText($"Converting {fi.Name} to PDF");
+
+                    Workbook wkb = app.Workbooks.Open(fi.FullName);
+                    var firstSheeet = wkb.Sheets[1];
+
+                    // Export only first worrksheet, not whole workbook
+                    firstSheeet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
+
+                    wkb.Close(false);
+                }
+                catch (Exception ex) { }
+            }
+
+            // To Ondrej - tu by som subor DATABASE.xlsx zavrel
+            // Close database file
+            if (wkbDatabase != null)
+                wkbDatabase.Close(false); // Neukladat zmeny - TO Ondrej - toto false akosi nefunguje a subor sa nezavrie
+
+            // Close Excel
+            app.Quit();
+
+            UpdateText("Merging documents into one PDF");
+            MergePDFDocuments(folder);
+
+            
+            Progress = 100;
+            UpdateProgress();
+            UpdateText("Done.");
+        }
+
+
+        public void UpdateProgress()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                myProgressBar.Value = Progress;
+            });
+        }
+        public void UpdateText(string text)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                LabelProgress.Content = text;
+            });
+        }
+
+        private static int GetFilesToExportCount(FileInfo[] files, FileInfo databaseFile)
+        {
+            int totalFilesToExportCount = 0;
+            foreach (FileInfo fi in files)
+            {
+                if (!fi.Extension.Equals(".xlsx")) continue;
+                if (fi.Name.Equals(databaseFile.Name)) continue;
+                totalFilesToExportCount++;
+            }
+            return totalFilesToExportCount;
+        }
+
 
         static void MergePDFDocuments(string directory)
         {
@@ -147,11 +218,89 @@ namespace CoverterExcelToPdf
 
 
 
+        //private void Export(object sender, DoWorkEventArgs e)
+        //{
+        //    ExportToPDFFromDirectory();
+
+
+        //    Progress = 0;
+        //    UpdateProgress();
+        //    int step = 0;
+        //    UpdateText("Export is starting...");
+
+
+        //    using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+        //    {
+        //        if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        //        {
+        //            WaitWindow ww = new WaitWindow("PDF");
+        //            ww.Show();
+
+        //            string folder = dialog.SelectedPath;
+        //            DirectoryInfo dirInfo = new DirectoryInfo(folder);
+        //            FileInfo[] files = dirInfo.GetFiles("*.xlsx", SearchOption.TopDirectoryOnly);
+        //            if (files.Length == 0) { ww.Close(); MessageBox.Show("No .xlsx files in the directory."); return; }
+
+        //            //SpreadsheetInfo.SetLicense("FREE - LIMITED - KEY");
+
+        //            FileInfo databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
+        //            //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Satabase file ako workbook v Exceli, preto som toto zakomentoval
+
+        //            // Open Excel
+        //            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
+
+        //            // Open database file
+        //            Workbook wkbDatabase = null;
+        //            if (databaseFile != null)
+        //                wkbDatabase = app.Workbooks.Open(databaseFile.FullName);
+
+        //            int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
+        //            step = 100 / totalFilesToExportCount;
+
+        //            foreach (FileInfo fi in files)
+        //            {
+        //                if (!fi.Extension.Equals(".xlsx")) continue;
+        //                if (fi.Name.Equals(databaseFile.Name)) continue;
+
+        //                try
+        //                {
+        //                    Progress += step;
+        //                    UpdateProgress();
+        //                    UpdateText($"Converting {fi.Name} to PDF");
+
+        //                    Workbook wkb = app.Workbooks.Open(fi.FullName);
+        //                    var firstSheeet = wkb.Sheets[1];
+
+        //                    // Export only first worrksheet, not whole workbook
+        //                    firstSheeet.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, fi.FullName.Substring(0, fi.FullName.Length - 5) + ".pdf");
+
+        //                    wkb.Close(false);
+        //                }
+        //                catch (Exception ex) { }
+        //            }
+
+        //            // To Ondrej - tu by som subor DATABASE.xlsx zavrel
+        //            // Close database file
+        //            if (wkbDatabase != null)
+        //                wkbDatabase.Close(false); // Neukladat zmeny - TO Ondrej - toto false akosi nefunguje a subor sa nezavrie
+
+        //            // Close Excel
+        //            app.Quit();
+
+        //            UpdateText("Merging documents into one PDF");
+        //            MergePDFDocuments(folder);
+
+        //            ww.Close();
+        //            Progress = 100;
+        //            UpdateProgress();
+        //            UpdateText("Done.");
+        //        }
+        //    }
+        //}
 
 
 
 
-        
 
-        }
+    }
 }

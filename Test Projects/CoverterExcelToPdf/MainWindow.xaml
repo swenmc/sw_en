@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CoverterExcelToPdf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="400">
-    <Grid>        
-        <Button Name="BtnExportToPDFFromDirectory" Content="Export to PDF from directory" Margin="20 20 0 0"
+        Title="Tool for merging XLSX files to one PDF" Height="250" Width="400">
+    
+
+        
+    <StackPanel>
+        <Button Name="BtnExportToPDFFromDirectory" Content="Export to PDF from directory" Margin="10 20 0 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDFFromDirectory_Click"/>
-    </Grid>
+        
+        <ProgressBar Name="myProgressBar" Height="20" Margin="10" IsIndeterminate="False" Value="0" Minimum="0" Maximum="100" />
+        <Label Name="LabelProgress" Margin="10 0 0 0" >Click button to start exporting the PDF file from directory</Label>
+    </StackPanel>
 </Window>
