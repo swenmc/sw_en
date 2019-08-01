@@ -49,19 +49,18 @@ namespace CoverterExcelToPdf
 
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
         {
-            
             Progress = 0;
             UpdateProgress();
             step = 0;
             UpdateText("Export is starting...");
 
-            // Show progress time
-            DisplayCalculationTime();
-
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    // Show progress time
+                    DisplayCalculationTime();
+
                     WaitWindow ww = new WaitWindow("PDF");
                     ww.Show();
 
@@ -71,8 +70,8 @@ namespace CoverterExcelToPdf
                     if (files.Length == 0) { ww.Close(); MessageBox.Show("No .xlsx files in the directory."); return; }
                     
                     databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
-                    //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Satabase file ako workbook v Exceli, preto som toto zakomentoval
-                    
+                    //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Database file ako workbook v Exceli, preto som toto zakomentoval
+
                     int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
                     step = 100 / totalFilesToExportCount;
 
@@ -98,7 +97,12 @@ namespace CoverterExcelToPdf
             Workbook wkbDatabase = null;
             if (databaseFile != null)
                 wkbDatabase = app.Workbooks.Open(databaseFile.FullName);
-            
+
+            // Number of current file
+            int iNumberOfCurrentFile = 1;
+            // Count number of files to convert
+            int totalFilesToExportCount = GetFilesToExportCount(files, databaseFile);
+
             foreach (FileInfo fi in files)
             {
                 if (!fi.Extension.Equals(".xlsx")) continue;
@@ -108,7 +112,15 @@ namespace CoverterExcelToPdf
                 {
                     Progress += step;
                     UpdateProgress();
-                    UpdateText($"Converting {fi.Name} to PDF");
+                    //UpdateText($"Converting {fi.Name} to PDF"); // Nazov a poradie suboru vypisujeme samostatne
+                    UpdateText("Converting xls files to pdf format.");
+
+                    if (!fi.Name.Equals(databaseFile.Name) && fi.Name[0] != '~' && fi.Name[1] != '$') // Update text only for converted files, not a database file or temporary file
+                    {
+                        UpdateTextFileName($"Converting {fi.Name}");
+                        UpdateTextFileNumber($"File No {iNumberOfCurrentFile} / {totalFilesToExportCount}");
+                        iNumberOfCurrentFile++;
+                    }
 
                     Workbook wkb = app.Workbooks.Open(fi.FullName);
                     var firstSheeet = wkb.Sheets[1];
@@ -129,7 +141,7 @@ namespace CoverterExcelToPdf
             // Close Excel
             app.Quit();
 
-            UpdateText("Merging documents into one PDF");
+            UpdateText("Merging pdf files into one.");
             MergePDFDocuments(folder);
 
             Progress = 100;
@@ -144,7 +156,6 @@ namespace CoverterExcelToPdf
             }
         }
 
-
         public void UpdateProgress()
         {
             Dispatcher.Invoke(() =>
@@ -156,7 +167,23 @@ namespace CoverterExcelToPdf
         {
             Dispatcher.Invoke(() =>
             {
-               //LabelProgress.Content = text;
+               LabelProgress.Text = text;
+            });
+        }
+
+        public void UpdateTextFileName(string text)
+        {
+            Dispatcher.Invoke(() =>
+            {
+               LabelFileName.Text = text;
+            });
+        }
+
+        public void UpdateTextFileNumber(string text)
+        {
+            Dispatcher.Invoke(() =>
+            {
+               LabelFileCount.Text = text;
             });
         }
 
@@ -167,6 +194,8 @@ namespace CoverterExcelToPdf
             {
                 if (!fi.Extension.Equals(".xlsx")) continue;
                 if (fi.Name.Equals(databaseFile.Name)) continue;
+                // TO Ondrej - do tohoto poctu za zapocivaju aj docasne subory, chcelo by to nejako odchytit len tie ktore su standardne, nieco som skusal vid nizsie ale tipujem ze sa to da urobit lepsie
+                if (fi.Name[0] == '~' || fi.Name[1] == '$') continue; // Odchytit prvy , pripadne aj druhy znak v nazve stringu
                 totalFilesToExportCount++;
             }
             return totalFilesToExportCount;
