@@ -52,15 +52,11 @@ namespace CoverterExcelToPdf
             Progress = 0;
             UpdateProgress();
             step = 0;
-            UpdateText("Export is starting...");
 
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    // Show progress time
-                    DisplayCalculationTime();
-
                     WaitWindow ww = new WaitWindow("PDF");
                     ww.Show();
 
@@ -68,7 +64,13 @@ namespace CoverterExcelToPdf
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
                     files = dirInfo.GetFiles("*.xlsx", SearchOption.TopDirectoryOnly);
                     if (files.Length == 0) { ww.Close(); MessageBox.Show("No .xlsx files in the directory."); return; }
-                    
+
+                    // Update text and start timer if we find some xlsx files to convert
+                    UpdateText("Export is starting...");
+
+                    // Show progress time
+                    DisplayCalculationTime();
+
                     databaseFile = files.FirstOrDefault(f => f.Name.Contains("DATABASE.xlsx"));
                     //if (databaseFile != null) Process.Start(databaseFile.FullName); // Otvaram Database file ako workbook v Exceli, preto som toto zakomentoval
 
@@ -106,7 +108,7 @@ namespace CoverterExcelToPdf
             foreach (FileInfo fi in files)
             {
                 if (!fi.Extension.Equals(".xlsx")) continue;
-                if (fi.Name.Equals(databaseFile.Name)) continue;
+                if (databaseFile != null && fi.Name.Equals(databaseFile.Name)) continue;
 
                 try
                 {
@@ -115,7 +117,7 @@ namespace CoverterExcelToPdf
                     //UpdateText($"Converting {fi.Name} to PDF"); // Nazov a poradie suboru vypisujeme samostatne
                     UpdateText("Converting xls files to pdf format.");
 
-                    if (!fi.Name.Equals(databaseFile.Name) && fi.Name[0] != '~' && fi.Name[1] != '$') // Update text only for converted files, not a database file or temporary file
+                    if (databaseFile != null && !fi.Name.Equals(databaseFile.Name) && fi.Name[0] != '~' && fi.Name[1] != '$') // Update text only for converted files, not a database file or temporary file
                     {
                         UpdateTextFileName($"Converting {fi.Name}");
                         UpdateTextFileNumber($"File No {iNumberOfCurrentFile} / {totalFilesToExportCount}");
@@ -143,6 +145,10 @@ namespace CoverterExcelToPdf
 
             UpdateText("Merging pdf files into one.");
             MergePDFDocuments(folder);
+
+            // Delete temporary pdf files
+            UpdateText("Deleting temporary pdf files.");
+            DeleteTemporaryPDFDocuments(folder, new List<string> { "Result" });
 
             Progress = 100;
             UpdateProgress();
@@ -193,7 +199,7 @@ namespace CoverterExcelToPdf
             foreach (FileInfo fi in files)
             {
                 if (!fi.Extension.Equals(".xlsx")) continue;
-                if (fi.Name.Equals(databaseFile.Name)) continue;
+                if (databaseFile != null && fi.Name.Equals(databaseFile.Name)) continue;
                 // TO Ondrej - do tohoto poctu za zapocivaju aj docasne subory, chcelo by to nejako odchytit len tie ktore su standardne, nieco som skusal vid nizsie ale tipujem ze sa to da urobit lepsie
                 if (fi.Name[0] == '~' || fi.Name[1] == '$') continue; // Odchytit prvy , pripadne aj druhy znak v nazve stringu
                 totalFilesToExportCount++;
@@ -249,6 +255,25 @@ namespace CoverterExcelToPdf
             
             // ...and start a viewer.
             Process.Start(filename);
+        }
+
+        static void DeleteTemporaryPDFDocuments(string directory, List<string> fileNamesNotToDelete)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(directory);
+            FileInfo[] files = dirInfo.GetFiles("*.pdf", SearchOption.TopDirectoryOnly);
+            if (files.Length == 0) { MessageBox.Show("No .pdf files in the directory."); return; }
+
+            foreach (FileInfo fi in files)
+            {
+                if (!fi.Extension.Equals(".pdf")) continue;
+
+                foreach (string name in fileNamesNotToDelete)
+                {
+                    if (fi.Name.Equals(name + ".pdf")) continue; // Not to delete
+
+                    fi.Delete();
+                }
+            }
         }
 
         public void DisplayCalculationTime()
