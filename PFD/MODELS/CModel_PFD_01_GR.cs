@@ -763,6 +763,19 @@ namespace PFD
                     // Toto je docasne riesenie - vymazeme spoj zo zoznamu
                     m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
                 }
+                //BUG 327
+                if (m_arrConnectionJoints[i].m_SecondaryMembers != null)
+                {
+                    foreach (CMember secMem in m_arrConnectionJoints[i].m_SecondaryMembers)
+                    {
+                        if (secMem.BIsGenerated == false)
+                        {
+                            m_arrConnectionJoints[i].BIsGenerated = false;
+                            m_arrConnectionJoints[i].BIsDisplayed = false;
+                        }
+                    }
+                }
+
             }
 
             // Opakovana kontrola po odstraneni spojov s MainMember = null
