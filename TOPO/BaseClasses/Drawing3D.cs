@@ -2447,6 +2447,7 @@ namespace BaseClasses
                             {
                                 //allFoundationPoints.Add(p);
                                 allFoundationPoints.Add(new Point3D(p.X + pC.X, p.Y + pC.Y, p.Z + pC.Z));
+                            
                             }
                         }
                     }
