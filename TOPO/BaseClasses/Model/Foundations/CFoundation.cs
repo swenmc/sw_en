@@ -387,8 +387,8 @@ namespace BaseClasses
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity)
         {
-
-            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2), fOpacity);
+            Visual_Object = CreateGeomModel3D(new SolidColorBrush(m_volColor_2), fOpacity);
+            return Visual_Object;
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, float fOpacity)
@@ -434,7 +434,7 @@ namespace BaseClasses
             {
                 throw new NotImplementedException();
             }
-
+            Visual_Object = model;
             return model;
         }
 

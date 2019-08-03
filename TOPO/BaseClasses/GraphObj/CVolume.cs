@@ -22,6 +22,9 @@ namespace BaseClasses.GraphObj
         public DiffuseMaterial m_Material_1 = new DiffuseMaterial();
         [NonSerialized]
         public DiffuseMaterial m_Material_2 = new DiffuseMaterial();
+        [NonSerialized]
+        public GeometryModel3D Visual_Object;
+
 
         public float m_fDim1;
         public float m_fDim2;

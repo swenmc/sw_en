@@ -1,4 +1,5 @@
 ﻿using _3DTools;
+using BaseClasses.GraphObj;
 using MATH;
 using Petzold.Media3D;
 using System;
@@ -284,37 +285,7 @@ namespace BaseClasses
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
-                float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
-
-                if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                    CalculateFootingModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-
-                fModel_Length_X = 0;
-                fModel_Length_Y = 0;
-                fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetFootingModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-
-                centerModelTransGr = new Transform3DGroup();
-                centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
-                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-
-                if (sDisplayOptions.RotateModelX != 0)
-                {
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
-                }
-                if (sDisplayOptions.RotateModelY != 0)
-                {
-                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
-
-                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
-                }
-                if (sDisplayOptions.RotateModelZ != 0)
-                {
-                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
-                }
+                
 
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
@@ -347,6 +318,50 @@ namespace BaseClasses
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
+
+
+
+
+
+
+                float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
+
+                if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
+                    CalculateFootingModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+                fModel_Length_X = 0;
+                fModel_Length_Y = 0;
+                fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetFootingModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
+                centerModelTransGr = new Transform3DGroup();
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
+
+                if (sDisplayOptions.RotateModelX != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                }
+                if (sDisplayOptions.RotateModelY != 0)
+                {
+                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+
+                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+                }
+                if (sDisplayOptions.RotateModelZ != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+                }
+
+
+
+
+
+
+
 
                 if (centerModel)
                 {
@@ -2415,10 +2430,11 @@ namespace BaseClasses
                     foreach (CFoundation f in cmodel.m_arrFoundations)
                     {
                         Point3DCollection foundationPoints = new Point3DCollection();
-
-                        GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        
+                        //GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
+                        GeometryModel3D model3D = f.Visual_Object;
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
-
+                        CPoint pC = f.m_pControlPoint;
                         foreach (Point3D point3D in mesh3D.Positions)
                         {
                             foundationPoints.Add(point3D);
@@ -2429,7 +2445,8 @@ namespace BaseClasses
                         {
                             foreach (Point3D p in foundationPoints)
                             {
-                                allFoundationPoints.Add(p);
+                                //allFoundationPoints.Add(p);
+                                allFoundationPoints.Add(new Point3D(p.X + pC.X, p.Y + pC.Y, p.Z + pC.Z));
                             }
                         }
                     }
@@ -2441,12 +2458,18 @@ namespace BaseClasses
                 float min_Y = (float)allFoundationPoints.Min(p => p.Y);
                 float max_Z = (float)allFoundationPoints.Max(p => p.Z);
                 float min_Z = (float)allFoundationPoints.Min(p => p.Z);
-                fMax_X = Math.Max(fMax_X, max_X);
-                fMin_X = Math.Min(fMin_X, min_X);
-                fMax_Y = Math.Max(fMax_Y, max_Y);
-                fMin_Y = Math.Min(fMin_Y, min_Y);
-                fMax_Z = Math.Max(fMax_Z, max_Z);
-                fMin_Z = Math.Min(fMin_Z, min_Z);
+                fMax_X += max_X;
+                fMin_X += min_X;
+                fMax_Y += max_Y;
+                fMin_Y += min_Y;
+                fMax_Z += max_Z;
+                fMin_Z += min_Z;
+                //fMax_X = Math.Max(fMax_X, max_X);
+                //fMin_X = Math.Min(fMin_X, min_X);
+                //fMax_Y = Math.Max(fMax_Y, max_Y);
+                //fMin_Y = Math.Min(fMin_Y, min_Y);
+                //fMax_Z = Math.Max(fMax_Z, max_Z);
+                //fMin_Z = Math.Min(fMin_Z, min_Z);
             }
             else
             {
@@ -2669,6 +2692,7 @@ namespace BaseClasses
         {
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
+            if(pad != null) padClone.Visual_Object = pad.Visual_Object;
 
             CModel jointModel = null;
 
