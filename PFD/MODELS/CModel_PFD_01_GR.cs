@@ -1608,7 +1608,6 @@ namespace PFD
             pControlPointBlock = new CPoint(0, mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z, 0);
         }
 
-
         //Tuto funkciu mam pozriet - Mato chce:
         //rozsirujem tam velkosti poli a take veci CModel_PFD_01_GR - riadok 1751
         //vlastne tie objekty z objektu CBlock pridavam do celkoveho zoznamu, ale napriklad prerez pre girts som ignoroval aby tam nebol 2x
