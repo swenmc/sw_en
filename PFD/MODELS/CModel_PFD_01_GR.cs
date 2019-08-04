@@ -2270,6 +2270,8 @@ namespace PFD
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
 
+                    Color color = Colors.LightSkyBlue;
+
                     if (i == 0 || i == (iFrameNo - 1)) // First or last frame
                     {
                         columnTypePosition = EMemberType_FS_Position.EdgeColumn;
@@ -2280,6 +2282,8 @@ namespace PFD
 
                         if (i == (iFrameNo - 1)) // Back side edge frame columns
                             fMainColumnFooting_Eccentricity_x *= -1;
+
+                        color = Colors.LightSteelBlue;
                     }
 
                     // Left
@@ -2304,7 +2308,7 @@ namespace PFD
                         iMainColumnFootingNumberOfBarsTop_y,
                         iMainColumnFootingNumberOfBarsBottom_x,
                         iMainColumnFootingNumberOfBarsBottom_y,
-                        Colors.Beige,
+                        color,
                         0.5f,
                         true,
                         0));
@@ -2331,7 +2335,7 @@ namespace PFD
                         iMainColumnFootingNumberOfBarsTop_y,
                         iMainColumnFootingNumberOfBarsBottom_x,
                         iMainColumnFootingNumberOfBarsBottom_y,
-                        Colors.Beige,
+                        color,
                         0.5f,
                         true,
                         0));

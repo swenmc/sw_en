@@ -945,7 +945,7 @@ namespace BaseClasses
             if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
             {
                 //SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
-                float fbrushOpacity = 0.2f;
+                float fbrushOpacity = 0.4f;
 
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
