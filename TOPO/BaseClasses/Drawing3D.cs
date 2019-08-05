@@ -318,11 +318,7 @@ namespace BaseClasses
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-
-
-
-
-
+                
 
                 float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
@@ -355,13 +351,7 @@ namespace BaseClasses
                     AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
-
-
-
-
-
-
-
+                
 
                 if (centerModel)
                 {
@@ -2394,31 +2384,7 @@ namespace BaseClasses
 
         public static void CalculateFootingModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
-            fMax_X = float.MinValue;
-            fMin_X = float.MaxValue;
-            fMax_Y = float.MinValue;
-            fMin_Y = float.MaxValue;
-            fMax_Z = float.MinValue;
-            fMin_Z = float.MaxValue;
-
-            if (cmodel.m_arrNodes != null && cmodel.m_arrNodes.Length > 1) // Some nodes exist - pre urcenie rozmeru minimalne 2 uzly
-            {
-                fMax_X = cmodel.m_arrNodes.Max(p => p.X);
-                fMin_X = cmodel.m_arrNodes.Min(p => p.X);
-                fMax_Y = cmodel.m_arrNodes.Max(p => p.Y);
-                fMin_Y = cmodel.m_arrNodes.Min(p => p.Y);
-                fMax_Z = cmodel.m_arrNodes.Max(p => p.Z);
-                fMin_Z = cmodel.m_arrNodes.Min(p => p.Z);
-            }
-            else if (cmodel.m_arrGOPoints != null) // Some points exist
-            {
-                fMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
-                fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
-                fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
-                fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
-                fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
-                fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
-            }
+            CalculateModelLimitsCountWithCrsc(cmodel, out fMax_X, out fMin_X, out fMax_Y, out fMin_Y, out fMax_Z, out fMin_Z);
 
             if (cmodel.m_arrFoundations != null) // Some volumes / foundations exist
             {
@@ -2445,32 +2411,17 @@ namespace BaseClasses
                         {
                             foreach (Point3D p in foundationPoints)
                             {
-                                //allFoundationPoints.Add(p);
-                                allFoundationPoints.Add(new Point3D(p.X + pC.X, p.Y + pC.Y, p.Z + pC.Z));
-                            
+                                allFoundationPoints.Add(new Point3D(p.X, p.Y , p.Z - fMax_Z));
                             }
                         }
                     }
                 }
 
-                float max_X = (float)allFoundationPoints.Max(p => p.X);
-                float min_X = (float)allFoundationPoints.Min(p => p.X);
-                float max_Y = (float)allFoundationPoints.Max(p => p.Y);
-                float min_Y = (float)allFoundationPoints.Min(p => p.Y);
                 float max_Z = (float)allFoundationPoints.Max(p => p.Z);
                 float min_Z = (float)allFoundationPoints.Min(p => p.Z);
-                fMax_X += max_X;
-                fMin_X += min_X;
-                fMax_Y += max_Y;
-                fMin_Y += min_Y;
-                fMax_Z += max_Z;
-                fMin_Z += min_Z;
-                //fMax_X = Math.Max(fMax_X, max_X);
-                //fMin_X = Math.Min(fMin_X, min_X);
-                //fMax_Y = Math.Max(fMax_Y, max_Y);
-                //fMin_Y = Math.Min(fMin_Y, min_Y);
-                //fMax_Z = Math.Max(fMax_Z, max_Z);
-                //fMin_Z = Math.Min(fMin_Z, min_Z);
+                
+                fMax_Z = Math.Max(fMax_Z, max_Z);
+                fMin_Z = Math.Min(fMin_Z, min_Z);
             }
             else
             {

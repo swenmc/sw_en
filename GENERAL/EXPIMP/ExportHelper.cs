@@ -1433,7 +1433,8 @@ namespace EXPIMP
             _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);
 
-            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);            
+            //CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
+            sDisplayOptions.RotateModelX = -90; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = -5;
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }
