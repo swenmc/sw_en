@@ -1426,7 +1426,6 @@ namespace EXPIMP
                 jointModel.m_arrFoundations.Add(padClone);
             }
 
-            
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(Colors.Black);
             _trackport.Width = 570;
@@ -1434,7 +1433,9 @@ namespace EXPIMP
             _trackport.ViewPort.RenderSize = new Size(570, 430);
 
             //CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
-            sDisplayOptions.RotateModelX = -90; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = -5;
+
+            sDisplayOptions.RotateModelX = -80; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = 5;
+
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }

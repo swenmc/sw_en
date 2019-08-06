@@ -285,8 +285,6 @@ namespace BaseClasses
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
-                
-
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
@@ -351,7 +349,6 @@ namespace BaseClasses
                     AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
                 }
-                
 
                 if (centerModel)
                 {
@@ -955,7 +952,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -969,7 +966,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -983,7 +980,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -997,7 +994,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTrasnformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -2286,18 +2283,30 @@ namespace BaseClasses
                 // Each foundation in model
                 Point3DCollection allFoundationPoints = new Point3DCollection();
 
+                // TO Ondrej - refaktorovat s riadkom 2400
+
                 if (cmodel.m_arrFoundations != null) // Some members must exist
                 {
                     foreach (CFoundation f in cmodel.m_arrFoundations)
                     {
                         Point3DCollection foundationPoints = new Point3DCollection();
 
-                        GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation // TODO zaviest opacity ako parameter
-                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
+                        //GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation // TODO zaviest opacity ako parameter
+                        GeometryModel3D model3D = f.Visual_Object;
+                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
 
                         foreach (Point3D point3D in mesh3D.Positions)
                         {
-                            foundationPoints.Add(point3D);
+                            // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
+                            // 1
+                            Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
+
+                            // 2
+                            //Transform3DGroup trans = new Transform3DGroup();
+                            //trans.Children.Add(model3D.Transform);
+
+                            Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
+                            foundationPoints.Add(p);
                         }
 
                         // Add member points to the main collection of all members
@@ -2391,6 +2400,8 @@ namespace BaseClasses
                 // Each foundation in model
                 Point3DCollection allFoundationPoints = new Point3DCollection();
 
+                // TO Ondrej - refaktorovat s riadkom 2288
+
                 if (cmodel.m_arrFoundations != null) // Some members must exist
                 {
                     foreach (CFoundation f in cmodel.m_arrFoundations)
@@ -2399,11 +2410,21 @@ namespace BaseClasses
                         
                         //GeometryModel3D model3D = f.CreateGeomModel3D(0.2f); // TODO - tu vyrabame znova model, bolo by lepsie ak by bol model sucastou objektu CFoundation
                         GeometryModel3D model3D = f.Visual_Object;
-                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry;
+                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
+
                         CPoint pC = f.m_pControlPoint;
                         foreach (Point3D point3D in mesh3D.Positions)
                         {
-                            foundationPoints.Add(point3D);
+                            // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
+                            // 1
+                            Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
+
+                            // 2
+                            //Transform3DGroup trans = new Transform3DGroup();
+                            //trans.Children.Add(model3D.Transform);
+
+                            Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
+                            foundationPoints.Add(p);
                         }
 
                         // Add member points to the main collection of all members

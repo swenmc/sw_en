@@ -412,23 +412,9 @@ namespace BaseClasses
                 //model = volume.CreateGM_3D_Volume_8Edges(volume);
                 model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
 
-                // Tato cast prva translate zlozka transformacie sa na reinforcement bars nepouzije, lebo pri vytvarani vyztuze sa uz uvazuje upraveny m_pControlPoint
-                // Model Transformation
-                // Apply multiple transformations to the object.
-                // Presun v ramci LCS (tak ze [0,0,0] bude v mieste, kde je joinNode
-                // Create and apply translation
-                TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
-
-                Transform3DGroup myTransform3DGroup = new Transform3DGroup();
-                // Add the translation transform to the Transform3DGroup.
-                myTransform3DGroup.Children.Add(myTranslateTransform3D);
-
-                // Pridam transformaciu zakladu do GCS
-                myTransform3DGroup.Children.Add(GetFoundationTrasnformGroup());
-
                 // Set the Transform property of the GeometryModel to the Transform3DGroup
                 // Nastavim vyslednu transformaciu
-                model.Transform = myTransform3DGroup;
+                model.Transform = GetFoundationTransformGroup_Complete();
             }
             else
             {
@@ -534,7 +520,7 @@ namespace BaseClasses
             { return null; }
         }
 
-        public Transform3DGroup GetFoundationTrasnformGroup()
+        public Transform3DGroup GetFoundationTransformGroup()
         {
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
 
@@ -555,6 +541,25 @@ namespace BaseClasses
 
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);
+
+            return myTransform3DGroup;
+        }
+
+        public Transform3DGroup GetFoundationTransformGroup_Complete()
+        {
+            // Tato cast prva translate zlozka transformacie sa na reinforcement bars nepouzije, lebo pri vytvarani vyztuze sa uz uvazuje upraveny m_pControlPoint
+            // Model Transformation
+            // Apply multiple transformations to the object.
+            // Presun v ramci LCS (tak ze [0,0,0] bude v mieste, kde je joinNode
+            // Create and apply translation
+            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+
+            Transform3DGroup myTransform3DGroup = new Transform3DGroup();
+            // Add the translation transform to the Transform3DGroup.
+            myTransform3DGroup.Children.Add(myTranslateTransform3D);
+
+            // Pridam transformaciu zakladu do GCS
+            myTransform3DGroup.Children.Add(GetFoundationTransformGroup());
 
             return myTransform3DGroup;
         }
