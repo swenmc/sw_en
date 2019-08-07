@@ -74,9 +74,13 @@
       <HintPath>..\packages\Combinatorics.1.1.0.19\lib\netstandard1.2\Combinatorics.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HelixToolkit.Wpf, Version=2014.2.37.1, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+    <Reference Include="HelixToolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.2.8.0\lib\netstandard1.1\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2.8.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HelixToolkit.Wpf.dll</HintPath>
+      <HintPath>..\packages\HelixToolkit.Wpf.2.8.0\lib\net45\HelixToolkit.Wpf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.0.1\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>

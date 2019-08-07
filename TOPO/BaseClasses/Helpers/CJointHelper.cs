@@ -22,7 +22,7 @@ namespace BaseClasses.Helpers
                 case EJointType.ePurlin_MainRafter:
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlin_EdgeRafter:
-                    opt.RotateModelX =  90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlin_MainRafter_FlyBracing:
                     opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
                 case EJointType.ePurlin_EdgeRafter_FlyBracing:
