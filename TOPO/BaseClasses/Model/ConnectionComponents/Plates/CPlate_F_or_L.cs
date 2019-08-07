@@ -70,6 +70,8 @@ namespace BaseClasses
             }
         }
 
+        private int iLeftRightIndex; // F - plate 0 - left, 1 - right 
+
         public CConCom_Plate_F_or_L()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -145,7 +147,7 @@ namespace BaseClasses
         // F - with or without holes
         public CConCom_Plate_F_or_L(string sName_temp,
             CPoint controlpoint,
-            int iLeftRightIndex, // 0 - left (original), 1 - right
+            int iLeftRightIndex_temp, // 0 - left (original), 1 - right
             float fbX1_temp,
             float fbX2_temp,
             float fhY_temp,
@@ -166,6 +168,7 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
+            iLeftRightIndex = iLeftRightIndex_temp;
             m_fbX1 = fbX1_temp;
             m_fbX2 = fbX2_temp;
             m_fhY = fhY_temp;
@@ -191,7 +194,7 @@ namespace BaseClasses
 
             bool bChangeRotationAngle_MirroredPlate = false;
 
-            if (iLeftRightIndex % 2 != 0) // Change y-coordinates for odd index (RH)
+            if (iLeftRightIndex % 2 != 0) // Change x-coordinates for odd index (RH)
             {
                 bChangeRotationAngle_MirroredPlate = true; // Change rotation angle (about vertical axis Y) of screws in the left leg
 
@@ -212,15 +215,6 @@ namespace BaseClasses
                 for (int i = 0; i < ITotNoPointsin3D; i++)
                 {
                     arrPoints3D[i].X *= -1;
-                }
-
-                // TODO - je potrebne zmenit aj smery normal, vsetky teraz pre odzrkadleny plech smeruju dovnutra, nizsie uvedeny kod sa akosi neujal :)
-                for (int i = 0; i < TriangleIndices.Count / 3; i++)
-                {
-                    // Switch 2nd and 3rd point index
-                    int i3 = TriangleIndices[i*3 + 2];
-                    TriangleIndices[i * 3 + 2 ] = TriangleIndices[i * 3 + 1];
-                    TriangleIndices[i * 3 + 1] = i3;
                 }
             }
 
@@ -562,13 +556,26 @@ namespace BaseClasses
             int secNum = 6;
             TriangleIndices = new Int32Collection();
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 5, 4, 1);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 4, 3, 2);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 10, 11);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 7, 8, 9, 10);
+            if (iLeftRightIndex == 0) // Left
+            {
+                AddRectangleIndices_CCW_1234(TriangleIndices, 0, 5, 4, 1);
+                AddRectangleIndices_CCW_1234(TriangleIndices, 1, 4, 3, 2);
+                AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 10, 11);
+                AddRectangleIndices_CCW_1234(TriangleIndices, 7, 8, 9, 10);
 
-            // Shell Surface
-            DrawCaraLaterals_CW(secNum, TriangleIndices);
+                // Shell Surface
+                DrawCaraLaterals_CW(secNum, TriangleIndices);
+            }
+            else if(iLeftRightIndex == 1) // Right
+            {
+                AddRectangleIndices_CW_1234(TriangleIndices, 0, 5, 4, 1);
+                AddRectangleIndices_CW_1234(TriangleIndices, 1, 4, 3, 2);
+                AddRectangleIndices_CW_1234(TriangleIndices, 6, 7, 10, 11);
+                AddRectangleIndices_CW_1234(TriangleIndices, 7, 8, 9, 10);
+
+                // Shell Surface
+                DrawCaraLaterals_CCW(secNum, TriangleIndices);
+            }
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
