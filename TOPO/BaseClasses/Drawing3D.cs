@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using HelixToolkit.Wpf;
 using MATH;
 using Petzold.Media3D;
 using System;
@@ -214,6 +215,8 @@ namespace BaseClasses
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
+                
+
                 if (centerModel)
                 {
                     //translate transform to model center
@@ -264,6 +267,20 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
             }
+
+            ////test viem zobrazit ViewCube - problemov je ale kopec od toho,ze nie je klikatelny az po to,ze je sucastou modelu, co nie je vhodne            
+            //ViewCubeVisual3D viewCube = new ViewCubeVisual3D();
+            //viewCube.BackText = "Back";
+            //viewCube.FrontText = "Front";            
+            //AxisAngleRotation3D Rot_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+            
+            //Transform3DGroup tr_gr = new Transform3DGroup();
+            //tr_gr.Children.Add(new ScaleTransform3D(0.01,0.01,0.01));
+            //tr_gr.Children.Add(new RotateTransform3D(Rot_x));
+            //tr_gr.Children.Add(new TranslateTransform3D(fModel_Length_X * 2, 0, 0));
+            //viewCube.Transform = tr_gr;            
+            //_trackport.ViewPort.Children.Add(viewCube);
+
 
             _trackport.SetupScene();
         }

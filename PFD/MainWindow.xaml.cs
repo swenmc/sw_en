@@ -40,6 +40,7 @@ using BriefFiniteElementNet.Controls;
 using PFD.Infrastructure;
 using System.Collections.ObjectModel;
 using System.IO;
+using HelixToolkit.Wpf;
 
 namespace PFD
 {
