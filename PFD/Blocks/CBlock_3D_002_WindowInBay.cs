@@ -17,6 +17,8 @@ namespace PFD
             float fBottomGirtPosition,            // Vertical position of first girt
             float fDist_Girt,                     // Vertical regular distance between girts
             CMember referenceGirt_temp,           // Reference girt object in bay
+            CMember GirtToConnectWindowColumns_Bottom, // Bottom window column to girt connection
+            CMember GirtToConnectWindowColumns_Top,    // Top window column to girt connection (just in case that it is not connected to the eave purlin or edge rafter)
             CMember ColumnLeft,                   // Left column of bay
             CMember ColumnRight,                  // Right column of bay
             CMember referenceEavePurlin,          // Reference Eave Purlin
@@ -366,19 +368,21 @@ namespace PFD
                 CMember current_member = m_arrMembers[iMembersGirts + i];
                 // TODO - dopracovat moznosti kedy je stlpik okna pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
 
-                // Bottom - columns is connected to the concrete foundation of girt (use different type of plate ???)
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
+                // Bottom - columns is connected to the concrete foundation or girt (use different type of plate ???)
+                CMember mainMemberForColumnJoint_Bottom = GirtToConnectWindowColumns_Bottom;
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, mainMemberForColumnJoint_Bottom, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
+                
                 // Top
-                CMember mainMemberForColumnJoint = ReferenceGirt;
+                CMember mainMemberForColumnJoint_Top = GirtToConnectWindowColumns_Top;
                 bool bIsAlignmentMainMemberWidth = true;
 
                 if (bWindowColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side
                 {
-                    mainMemberForColumnJoint = referenceEavePurlin;
+                    mainMemberForColumnJoint_Top = referenceEavePurlin;
                     bIsAlignmentMainMemberWidth = false;
                 }
 
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bIsAlignmentMainMemberWidth, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint_Top, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bIsAlignmentMainMemberWidth, true));
             }
 
             // Window Header Joint

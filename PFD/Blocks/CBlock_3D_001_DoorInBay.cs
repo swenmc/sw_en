@@ -15,6 +15,7 @@ namespace PFD
             float fBottomGirtPosition,            // Vertical position of first girt
             float fDist_Girt,                     // Vertical regular distance between girts
             CMember referenceGirt_temp,           // Reference girt object in bay
+            CMember GirtToConnectDoorTrimmers,    // Girt to connect door trimmers on the top (not used in case that door trimmers are connected to the eave purlin or edge rafter)
             CMember ColumnLeft,                   // Left column of bay
             CMember ColumnRight,                  // Right column of bay
             CMember referenceEavePurlin,          // Reference Eave Purlin
@@ -366,7 +367,7 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TC01(current_member.NodeStart, current_member, true)); // Roller door trimmer base joint
 
                 // Top
-                CMember mainMemberForColumnJoint = ReferenceGirt;
+                CMember mainMemberForColumnJoint = GirtToConnectDoorTrimmers;
                 bool bIsAlignmentMainMemberWidth = true;
 
                 if (bDoorColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side

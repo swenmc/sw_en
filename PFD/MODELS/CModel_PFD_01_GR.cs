@@ -1404,12 +1404,17 @@ namespace PFD
 
             DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
+            // Set girt to connect columns / trimmers
+            int iNumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt (prevzate z CBlock_3D_001_DoorInBay)
+            CMember mGirtToConnectDoorTrimmers = m_arrMembers[(mReferenceGirt.ID - 1) + iNumberOfGirtsToDeactivate]; // Toto je girt, ku ktoremu sa pripoja stlpy dveri (len v pripade ze sa nepripoja k eave purlin alebo edge rafter) - 1 -index reference girt
+
             door = new CBlock_3D_001_DoorInBay(
                 prop,
                 fLimitDistanceFromColumn,
                 fBottomGirtPosition,
                 fDist_Girt,
                 mReferenceGirt,
+                mGirtToConnectDoorTrimmers,
                 mColumnLeft,
                 mColumnRight,
                 mEavesPurlin,
@@ -1443,12 +1448,33 @@ namespace PFD
 
             DeterminateBasicPropertiesToInsertBlock(prop.sBuildingSide, prop.iBayNumber, out mReferenceGirt, out mColumnLeft, out mColumnRight, out mEavesPurlin, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
 
+            // Prevzate z CBlock_3D_002_WindowInBay
+            int iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
+            float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;
+
+            if (prop.fWindowCoordinateZinBay <= fBottomGirtPosition)
+            {
+                iNumberOfGirtsUnderWindow = 0;
+                fCoordinateZOfGirtUnderWindow = 0f;
+            }
+
+            int iNumberOfGirtsToDeactivate = (int)((prop.fWindowsHeight + prop.fWindowCoordinateZinBay - fCoordinateZOfGirtUnderWindow) / fDist_Girt); // Number of intermediate girts to deactivate
+
+            CMember mGirtToConnectWindowColumns_Bottom = null;
+
+            if(iNumberOfGirtsUnderWindow > 0)
+               mGirtToConnectWindowColumns_Bottom = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1)]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v dolnej casti
+
+            CMember mGirtToConnectWindowColumns_Top = m_arrMembers[(mReferenceGirt.ID - 1) + (iNumberOfGirtsUnderWindow - 1) + iNumberOfGirtsToDeactivate + 1]; // Toto je girt, ku ktoremu sa pripoja stlpiky okna v hornej casti (len v pripade ze sa nepripoja k eave purlin alebo edge rafter)
+
             window = new CBlock_3D_002_WindowInBay(
                 prop,
                 fLimitDistanceFromColumn,
                 fBottomGirtPosition,
                 fDist_Girt,
                 mReferenceGirt,
+                mGirtToConnectWindowColumns_Bottom,
+                mGirtToConnectWindowColumns_Top,
                 mColumnLeft,
                 mColumnRight,
                 mEavesPurlin,

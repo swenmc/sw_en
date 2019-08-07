@@ -988,8 +988,8 @@ namespace EXPIMP
                 fSecondaryMemberLength = fMainMemberLength;
             }
 
-            float fMainMemberLengthFactor = 0.9f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
-            float fSecondaryMemberLengthFactor = 0.7f; // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fMainMemberLengthFactor = 1.1f;      // Upravi dlzku urcenu z maximalneho rozmeru plechu
+            float fSecondaryMemberLengthFactor = 1.1f; // Upravi dlzku urcenu z maximalneho rozmeru plechu // Bug 320 - Musi byt rovnake ako main member kvoli plechu Apex - jeden rafter je main, jeden je secondary
 
             fMainMemberLength *= fMainMemberLengthFactor;
             fSecondaryMemberLength *= fSecondaryMemberLengthFactor;

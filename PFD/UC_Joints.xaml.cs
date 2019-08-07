@@ -857,7 +857,7 @@ namespace PFD
                 {
                     //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
                     //StackPanel sp = sw.Content as StackPanel;
-                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;                    
+                    StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
                     DataGrid dgSA = sp.Children[1] as DataGrid;
                     dgSA.ItemsSource = screwArrangementParams;
                     foreach (CComponentParamsView cpw in screwArrangementParams)
