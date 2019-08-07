@@ -70,7 +70,7 @@ namespace BaseClasses.Helpers
                 case EJointType.eDoorTrimmer_EdgeRafter:
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eDoorLintel_Trimmer:
-                    opt.RotateModelX = -90; opt.RotateModelY = 225; opt.RotateModelZ = 0; break;
+                    opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eBase_DoorFrame:
                     opt.RotateModelX = -90; opt.RotateModelY = 45; opt.RotateModelZ = 0; break;
                 case EJointType.eDoorFrame_Girt:
