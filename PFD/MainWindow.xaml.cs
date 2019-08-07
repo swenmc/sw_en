@@ -1669,51 +1669,15 @@ namespace PFD
             // Cladding (type and colors)
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
+
             CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
             CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
-
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
-            //// TODO - pocet poloziek by mohol byt zavisly na tom kolko purlins sa vygenerovalo, aby nebolo mozne nastavit vaznicu s vyssim poradim nez existuju na jednej priecli (rafter)
-            //string[] sColumnFlyBracingPosition_Items = new string[10] {
-            //"None",
-            //"Every girt",
-            //"Every 2nd girt",
-            //"Every 3rd girt",
-            //"Every 4th girt",
-            //"Every 5th girt",
-            //"Every 6th girt",
-            //"Every 7th girt",
-            //"Every 8th girt",
-            //"Every 9th girt"};
-
-            //Combobox_MainColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            //Combobox_FrontColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-            //Combobox_BackColumnFlyBracingPosition.ItemsSource = sColumnFlyBracingPosition_Items;
-
-            //Combobox_RafterFlyBracingPosition.ItemsSource = new string[10] {
-            //"None",
-            //"Every purlin",
-            //"Every 2nd purlin",
-            //"Every 3rd purlin",
-            //"Every 4th purlin",
-            //"Every 5th purlin",
-            //"Every 6th purlin",
-            //"Every 7th purlin",
-            //"Every 8th purlin",
-            //"Every 9th purlin"};
-
-            //string[] sILS_Items = new string[]
-            //{
-            //    "None", "1", "2", "3", "4", "5"
-            //};
-
-            //Combobox_EdgePurlin_ILS_Number.ItemsSource = sILS_Items;
-            //Combobox_Girt_ILS_Number.ItemsSource = sILS_Items;
-            //Combobox_Purlin_ILS_Number.ItemsSource = sILS_Items;
-            //Combobox_GirtFrontSide_ILS_Number.ItemsSource = sILS_Items;
-            //Combobox_GirtBackSide_ILS_Number.ItemsSource = sILS_Items;
+            Combobox_SupportType.Items.Add("Fixed");
+            Combobox_SupportType.Items.Add("Pinned");
+            Combobox_SupportType.SelectedIndex = 1;
         }
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)

@@ -67,6 +67,9 @@ namespace PFD
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
+        private List<CNode> listOfSupportedNodes_S1;
+        private List<CNode> listOfSupportedNodes_S2;
+
         public CModel_PFD_01_GR
         (
                 BuildingGeometryDataInput sGeometryInputData,
@@ -454,6 +457,8 @@ namespace PFD
             float fColumnsRotation = MathF.fPI / 2.0f;
             float fGirtsRotation = MathF.fPI / 2.0f;
 
+            listOfSupportedNodes_S1 = new List<CNode>();
+            listOfSupportedNodes_S2 = new List<CNode>();
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
 
@@ -462,6 +467,7 @@ namespace PFD
             {
                 m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, i * fL1_frame, 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 0].Name = "Main Column Base Node - left";
+                listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 0]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
                 m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * fL1_frame, fH1_frame, 0);
@@ -478,6 +484,7 @@ namespace PFD
 
                 m_arrNodes[i * iFrameNodesNo + 4] = new CNode(i * iFrameNodesNo + 5, fW_frame, i * fL1_frame, 00000, 0);
                 m_arrNodes[i * iFrameNodesNo + 4].Name = "Main Column Base Node - right";
+                listOfSupportedNodes_S1.Add(m_arrNodes[i * iFrameNodesNo + 4]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 4]);
             }
 
@@ -823,7 +830,7 @@ namespace PFD
 
             // Set members Generate, Display, Calculate, Design, MaterialList properties
             CModelHelper.SetMembersAccordingTo(m_arrMembers, componentList);
-            
+
             #region Supports
 
             //m_arrNSupports = new CNSupport[2 * iFrameNo];
@@ -831,31 +838,17 @@ namespace PFD
             // Nodal Supports - fill values
 
             // Set values
-            bool[] bSupport1 = { true, true, true, false, false, false };
-            bool[] bSupport2 = { true, true, true, false, false, false };
+            bool[] bSupport1 = { true, true, true, false, vm.SupportTypeIndex == 0 ? true : false, false }; // Main and Edge Column (fixed / released rotation about Y axis)
+            bool[] bSupport2 = { true, true, true, false, false, false }; // Wind Post
 
-            // Create Support Objects
-            /*
-            for (int i = 0; i < iFrameNo; i++)
+            m_arrNSupports = new CNSupport[listOfSupportedNodes_S1.Count + listOfSupportedNodes_S2.Count];
+
+            for (int i = 0; i < m_arrNSupports.Length; i++)
             {
-                m_arrNSupports[i * 2 + 0] = new CNSupport(6, i * 2 + 1, m_arrNodes[i * iFrameNodesNo], bSupport1, 0);
-                m_arrNSupports[i * 2 + 1] = new CNSupport(6, i * 2 + 2, m_arrNodes[i * iFrameNodesNo + (iFrameNodesNo - 1)], bSupport2, 0);
-            }
-            */
-
-            m_arrNSupports = new CNSupport[0];
-            for (int i = 0; i < m_arrNodes.Length; i++)
-            {
-                int arraysizeoriginal = m_arrNSupports.Length;
-
-                // Create support at each node with global Z = 0
-                if (MathF.d_equal(m_arrNodes[i].Z, 0))
-                {
-                    // Resize array
-                    Array.Resize(ref m_arrNSupports, m_arrNSupports.Length + 1);
-
-                    m_arrNSupports[m_arrNSupports.Length - 1] = new CNSupport(6, i + 1, m_arrNodes[i], bSupport1, 0);
-                }
+                if(i < listOfSupportedNodes_S1.Count)
+                    m_arrNSupports[i] = new CNSupport(6, i + 1, listOfSupportedNodes_S1[i], bSupport1, 0);
+                else
+                    m_arrNSupports[i] = new CNSupport(6, i + 1, listOfSupportedNodes_S2[i - listOfSupportedNodes_S1.Count], bSupport2, 0);
             }
 
             // Setridit pole podle ID
@@ -1178,6 +1171,7 @@ namespace PFD
             {
                 CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
                 m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, 0, 0);
+                listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + i]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + i]);
             }
 
@@ -1186,6 +1180,7 @@ namespace PFD
             {
                 CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
                 m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
+                listOfSupportedNodes_S2.Add(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i]);
             }
 

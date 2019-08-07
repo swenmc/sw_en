@@ -142,6 +142,8 @@ namespace PFD
 
             // Vyrobime podporu v 2D (rovina XY, rotacia okolo Z) z podpory v 3D (rovina XZ,rotacia okolo Y)
 
+            // Pre ramy pouzijeme prvu existujucu podporu is indexom [0] // Docasne riesenie
+
             bool [] bRestrain = new bool[3];
             bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux];
             bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz];

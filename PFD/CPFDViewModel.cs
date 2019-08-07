@@ -53,6 +53,7 @@ namespace PFD
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
+        private int MSupportTypeIndex;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -232,16 +233,6 @@ namespace PFD
                 _componentVM.SetModelComponentListProperties(dmodel.MembersSectionsDict); //set default components sections
 
                 _componentVM.SetILSProperties(dmodel);
-                //// Set default position of fly bracing point and numbers of lateral intermediate supports
-                //MainColumnFlyBracingPositionIndex = dmodel.iMainColumnFlyBracingEveryXXGirt; // 0 - no fly bracing, 1 - every girt, 2 - every second girt, 3 - every third girt
-                //RafterFlyBracingPositionIndex = dmodel.iRafterFlyBracingEveryXXPurlin; // 0 - no fly bracing, 1 - every purlin, 2 - every second purlin, 3 - every third purlin
-                //EdgePurlin_ILS_Number = dmodel.iEdgePurlin_ILS_Number;
-                //Girt_ILS_Number = dmodel.iGirt_ILS_Number;
-                //Purlin_ILS_Number = dmodel.iPurlin_ILS_Number;
-                //FrontColumnFlyBracingPositionIndex = dmodel.iFrontColumnFlyBracingEveryXXGirt;
-                //BackColumnFlyBracingPositionIndex = dmodel.iBackColumnFlyBracingEveryXXGirt;
-                //GirtFrontSide_ILS_Number = dmodel.iGirtFrontSide_ILS_Number;
-                //GirtBackSide_ILS_Number = dmodel.iGirtBackSide_ILS_Number;
 
                 SetResultsAreNotValid();
 
@@ -254,6 +245,7 @@ namespace PFD
                 RoofCladdingColorIndex = 22;
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
+                SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
                 ModelCalculatedResultsValid = false;
 
                 RecreateJoints = true;
@@ -661,6 +653,23 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateModel = false;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int SupportTypeIndex
+        {
+            get
+            {
+                return MSupportTypeIndex;
+            }
+
+            set
+            {
+                MSupportTypeIndex = value;
+                SetResultsAreNotValid();
+                RecreateModel = true;
+                NotifyPropertyChanged("SupportTypeIndex");
             }
         }
 
@@ -1850,7 +1859,7 @@ namespace PFD
             if (d.iBayNumber > d.Bays.Count) d.iBayNumber = 1;
             if (MDoorBlocksProperties.Where(x => x.iBayNumber == d.iBayNumber && x.sBuildingSide == d.sBuildingSide).Count() > 1)
             {
-                //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri                    
+                //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
                 int bayNum = GetFreeBayFor(d);
                 if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
                 else d.iBayNumber = bayNum;
@@ -2032,6 +2041,8 @@ namespace PFD
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
+
+            //SupportTypeIndex = 1; // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
@@ -2364,6 +2375,7 @@ namespace PFD
             data.WallCladdingIndex = MWallCladdingIndex;
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
+            data.SupportTypeIndex = MSupportTypeIndex;
             data.LoadCaseIndex = MLoadCaseIndex;
             data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
             data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;
@@ -2511,19 +2523,6 @@ namespace PFD
                 if (resStart == null) continue;
                 if (resEnd == null) continue;
 
-                ////-------------------------------------------------------------------------------------------------------------
-                //// TODO Ondrej, tu asi musime posielat do vypoctu nastavenia z UC_Footings a nie objekt ako null
-                //// TODO Ondrej - potrebujem sem dostat nastavenia vypoctu z UC_FootingInput a nahradit tieto konstanty
-                //CalculationSettingsFoundation FootingCalcSettings = new CalculationSettingsFoundation();
-                //FootingCalcSettings.ConcreteGrade = "30";
-                //FootingCalcSettings.AggregateSize = 0.02f;
-                //FootingCalcSettings.ConcreteDensity = 2300f;
-                //FootingCalcSettings.ReinforcementGrade = "500E";
-                //FootingCalcSettings.SoilReductionFactor_Phi = 0.5f;
-                //FootingCalcSettings.SoilReductionFactorEQ_Phi = 0.8f;
-                //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
-                //FootingCalcSettings.FloorSlabThickness = 0.125f;
-                //-------------------------------------------------------------------------------------------------------------
                 CalculationSettingsFoundation FootingCalcSettings = FootingVM.GetCalcSettings();
 
                 CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, Model, FootingCalcSettings, resStart.DesignInternalForces, true);

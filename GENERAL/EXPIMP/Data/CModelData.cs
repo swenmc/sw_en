@@ -35,6 +35,7 @@ namespace EXPIMP
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
+        private int MSupportTypeIndex;
         private int MLoadCaseIndex;
         private int iFrontColumnNoInOneFrame;
         
@@ -349,6 +350,19 @@ namespace EXPIMP
             set
             {
                 MWallCladdingThicknessIndex = value;
+            }
+        }
+
+        public int SupportTypeIndex
+        {
+            get
+            {
+                return MSupportTypeIndex;
+            }
+
+            set
+            {
+                MSupportTypeIndex = value;
             }
         }
 
