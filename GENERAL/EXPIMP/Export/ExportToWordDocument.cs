@@ -974,7 +974,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions, data.Model);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 
@@ -1000,7 +1000,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions, data.Model);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 

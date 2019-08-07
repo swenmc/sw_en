@@ -956,16 +956,28 @@ namespace EXPIMP
             else return (value * qlItem.ReportUnitFactor).ToString($"F{qlItem.ReportDecimalPlaces}", nfi);
         }
 
-        
-        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions)
+
+        private static CConnectionJointTypes GetFirstSameJointFromModel(CConnectionJointTypes joint, CModel model)
         {
+            foreach (CConnectionJointTypes j in model.m_arrConnectionJoints)
+            {
+                if (joint.JointType == j.JointType) return j;
+            }
+            return joint;
+        }
+        
+
+        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model)
+        {
+            CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
+
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;            
 
-            CConnectionJointTypes jointClone = joint.Clone();
+            CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
             float fMainMemberLength = 0;
             float fSecondaryMemberLength = 0;
@@ -1161,8 +1173,8 @@ namespace EXPIMP
             }
             jointModel.m_arrNodes = nodeList.ToArray();
 
-            jointClone = joint.RecreateJoint();
-            jointClone.m_arrPlates = joint.m_arrPlates;
+            jointClone = firstSameJoint.RecreateJoint();
+            jointClone.m_arrPlates = firstSameJoint.m_arrPlates;
             
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             
@@ -1172,7 +1184,7 @@ namespace EXPIMP
             _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);
 
-            CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
+            CJointHelper.SetJoinModelRotationDisplayOptions(firstSameJoint, ref sDisplayOptions);
             Drawing3D.DrawJointToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }
