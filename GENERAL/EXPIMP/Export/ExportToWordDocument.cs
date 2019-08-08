@@ -42,14 +42,13 @@ namespace EXPIMP
                 DrawCrossSections(document, modelData);
                 DrawComponentList(document, modelData);
 
+                DrawLoad(document, modelData);
                 DrawLoadCases(document, modelData);
                 DrawLoadCombinations(document, modelData);
-                DrawLoad(document, modelData);
+
                 DrawMemberDesign(document, modelData);
                 DrawJointDesign(document, modelData);
                 DrawFootingDesign(document, modelData);
-
-
 
                 //DrawLogoAndProjectInfoTable(document);
                 //DrawLogo(document);
@@ -295,7 +294,7 @@ namespace EXPIMP
 
             var t = document.AddTable(1, 7);
             t.Design = TableDesign.TableGrid;
-            t.Alignment = Alignment.left;            
+            t.Alignment = Alignment.left; 
 
             t.Rows[0].Cells[0].Paragraphs[0].InsertText("Prefix");
             t.Rows[0].Cells[1].Paragraphs[0].InsertText("Color");
@@ -353,11 +352,14 @@ namespace EXPIMP
             Dictionary<string, QuantityLibraryItem> quantityLibrary = CQuantityLibrary.GetQuantityLibrary();
             ValueDisplayHelper vdh = new ValueDisplayHelper(allItems, quantityLibrary, nfi);
 
+            // TO Ondrej - tu mi nie je jasne preco nieco vytvarame cez ValueDisplayHelper vdh.GetStringReport(data.R_SLS, "R_SLS")); a nieco priamo konvertujeme z cisla ToString data.AnnualProbabilitySLS.ToString(nfi));
+            // Pre AnnualProbabilitySLS to cez vdh nefungovalo, tak som to zmenil
+
             // Basic parameters
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
             document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
-            document.ReplaceText("[AnnualProbabilitySLS]", vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS"));
+            document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(nfi)); // vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS")); ??? Toto nefungovalo ???
             document.ReplaceText("[R_SLS]", vdh.GetStringReport(data.R_SLS, "R_SLS"));
             document.ReplaceText("[SiteElevation]", vdh.GetStringReport(data.SiteElevation, "SiteElevation"));
 
