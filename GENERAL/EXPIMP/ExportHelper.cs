@@ -1179,7 +1179,7 @@ namespace EXPIMP
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             
             Trackport3D _trackport = new Trackport3D();
-            _trackport.Background = new SolidColorBrush(Colors.Black);
+            _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             _trackport.Width = 570;
             _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);
@@ -1439,7 +1439,7 @@ namespace EXPIMP
             }
 
             Trackport3D _trackport = new Trackport3D();
-            _trackport.Background = new SolidColorBrush(Colors.Black);
+            _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             _trackport.Width = 570;
             _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);

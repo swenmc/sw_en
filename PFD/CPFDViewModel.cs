@@ -54,6 +54,10 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
+        private int MWireframeColorIndex;
+        public System.Windows.Media.Color WireframeColor; // ????? To Ondrej - ako spravne pracovat s comboboxom ked su tam items Colors a ako vystup pouzivam int
+        private int MBackgroundColorIndex;
+        public System.Windows.Media.Color BackgroundColor; // ????? To Ondrej - ako spravne pracovat s comboboxom ked su tam items Colors a ako vystup pouzivam int
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -246,6 +250,8 @@ namespace PFD
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
+                WireframeColorIndex = 13; //   WireframeColor = System.Windows.Media.Colors.Chartreuse;
+                BackgroundColorIndex = 7; // BackgroundColor = System.Windows.Media.Colors.Black;
                 ModelCalculatedResultsValid = false;
 
                 RecreateJoints = true;
@@ -670,6 +676,50 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateModel = true;
                 NotifyPropertyChanged("SupportTypeIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WireframeColorIndex
+        {
+            get
+            {
+                return MWireframeColorIndex;
+            }
+
+            set
+            {
+                MWireframeColorIndex = value;
+
+                // TO Ondrej, toto by chcelo nejako skulturnit, amater nevie ako prevazat index z comboboxu na objekt farby
+                List<System.Windows.Media.Color> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                WireframeColor = listOfMediaColours[MWireframeColorIndex];
+
+                RecreateModel = true;
+                NotifyPropertyChanged("WireframeColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int BackgroundColorIndex
+        {
+            get
+            {
+                return MBackgroundColorIndex;
+            }
+
+            set
+            {
+                MBackgroundColorIndex = value;
+
+                // TO Ondrej, toto by chcelo nejako skulturnit, amater nevie ako prevazat index z comboboxu na objekt farby
+                List<System.Windows.Media.Color> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                BackgroundColor = listOfMediaColours[MBackgroundColorIndex];
+
+                RecreateModel = true;
+                NotifyPropertyChanged("BackgroundColorIndex");
             }
         }
 
@@ -2589,6 +2639,9 @@ namespace PFD
             sDisplayOptions.DisplayIn3DRatio = DisplayIn3DRatio;
             sDisplayOptions.bColorsAccordingToMembers = ColorsAccordingToMembers;
             sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
+
+            sDisplayOptions.wireFrameColor = WireframeColor;
+            sDisplayOptions.backgroundColor = BackgroundColor;
 
             return sDisplayOptions;
         }

@@ -27,7 +27,7 @@ namespace BaseClasses
             //DateTime start = DateTime.Now;
 
             // Color of Trackport
-            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
             
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
@@ -116,14 +116,14 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -146,7 +146,7 @@ namespace BaseClasses
             //DateTime start = DateTime.Now;
 
             // Color of Trackport
-            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
             centerModel = true;
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
@@ -246,14 +246,14 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -300,7 +300,7 @@ namespace BaseClasses
             //DateTime start = DateTime.Now;
 
             // Color of Trackport
-            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
             centerModel = true;
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
@@ -395,14 +395,14 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -1273,12 +1273,12 @@ namespace BaseClasses
             }
         }
         // Draw Members Wire Frame - test for better performance
-        public static void DrawModelMembersWireFrame_test(CModel model, Viewport3D viewPort)
+        public static void DrawModelMembersWireFrame_test(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions)
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
             {
-                Color wireFrameColor = Color.FromRgb(60, 60, 60);
+                Color wireFrameColor = sDisplayOptions.wireFrameColor;
                 double thickness = 1.0;
                 ScreenSpaceLines3D wireFrame_FrontSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
                 ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
@@ -1305,7 +1305,7 @@ namespace BaseClasses
             }
         }
         // Add all members in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort)
+        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions)
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
@@ -1325,9 +1325,9 @@ namespace BaseClasses
 
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(wireFramePoints);
-                wl.Color = Colors.White;
+                wl.Color = sDiplayOptions.wireFrameColor;
 
-                //priprava na centrovanie modelu                
+                // priprava na centrovanie modelu
                 if (centerModel)
                 {
                     wl.Transform = centerModelTransGr;
@@ -1345,7 +1345,7 @@ namespace BaseClasses
         }
 
         // Draw Model Connection Joints Wire Frame
-        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, bool drawConnectors = true)
+        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, bool drawConnectors = true)
         {
             //Wireframe Points of all joints
             List<Point3D> jointsWireFramePoints = new List<Point3D>();
@@ -1427,9 +1427,9 @@ namespace BaseClasses
 
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(jointsWireFramePoints);
-                wl.Color = Colors.White;
+                wl.Color = sDisplayOptions.wireFrameColor;
 
-                //priprava na centrovanie modelu                
+                //priprava na centrovanie modelu
                 if (centerModel)
                 {
                     wl.Transform = centerModelTransGr;
@@ -1544,7 +1544,7 @@ namespace BaseClasses
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = Brushes.Coral;
-                        tb.Background = Brushes.Black; // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
 
@@ -1600,7 +1600,7 @@ namespace BaseClasses
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = Brushes.Cyan; // Ina farba ako pre popis prutov
-                        tb.Background = Brushes.Black; // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
                         
                         float fOffsetZ = 0.06f;
                         float fOffsetX = 0.06f;
@@ -1855,7 +1855,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
-            tb.Background = Brushes.Black;
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             Point3D pTextPosition = GetNodalLoadCoordinates_GCS(load, displayOptions);
 
@@ -1884,7 +1884,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
-            tb.Background = Brushes.Black;
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             Model3DGroup model_gr = new Model3DGroup();
             model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.DisplayIn3DRatio);
@@ -1948,7 +1948,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = Brushes.Coral;
-            tb.Background = Brushes.Black;
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
             Point3D pTextPosition = new Point3D();

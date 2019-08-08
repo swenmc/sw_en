@@ -706,6 +706,8 @@
         public int RotateModelY;
         public int RotateModelZ;
 
+        public System.Windows.Media.Color backgroundColor;
+        public System.Windows.Media.Color wireFrameColor;
     }
 
     public struct BuildingDataInput

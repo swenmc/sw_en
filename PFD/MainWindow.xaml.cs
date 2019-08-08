@@ -127,13 +127,11 @@ namespace PFD
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-            
+
             UpdateAll(true);
 
             vm.Model.GroupModelMembers();
             vm.RecreateJoints = false;
-
-            
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
@@ -1679,6 +1677,12 @@ namespace PFD
             Combobox_SupportType.Items.Add("Fixed");
             Combobox_SupportType.Items.Add("Pinned");
             Combobox_SupportType.SelectedIndex = 1;
+
+            CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
+            Combobox_WireframeColor.SelectedIndex = 13; // Colors.Chartreuse;
+
+            CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
+            Combobox_BackgroundColor.SelectedIndex = 7; // Colors.Black;
         }
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
