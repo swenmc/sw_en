@@ -4,6 +4,7 @@ using BaseClasses.Helpers;
 using DATABASE.DTO;
 using FEM_CALC_BASE;
 using MATH;
+using CRSC;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -975,7 +976,11 @@ namespace EXPIMP
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;            
+            sDisplayOptions.bDisplayJoints = true;
+
+            // Do dokumentu exporujeme aj s wireframe
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.wireFrameColor = Colors.Black; // Fraba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
@@ -1172,6 +1177,34 @@ namespace EXPIMP
                 if (nodeList.IndexOf(jointModel.m_arrMembers[i].NodeEnd) == -1) nodeList.Add(jointModel.m_arrMembers[i].NodeEnd);
             }
             jointModel.m_arrNodes = nodeList.ToArray();
+
+            //--------------------------------------------------------------------------------------------------------------------------------------
+            // TO Ondrej - ked das zobrazit v preview joints wireframe, ak sa beru body este z povodnych celych prutov, niekde to treba updatovat, ale neviem kde :)))))
+            // Tu je nejaky pokus
+            // Prutom musime niekde updatetovat wire frame positions, neviem ci prave tu alebo to bude lepsie inde
+            // Tu som docasne vyrobil 3D model prutov
+            Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
+                sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+
+            // Tu sa snazim nastavit prutom Wireframe indices podla aktualnej geometrie
+            for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
+            {
+                CMember m = jointModel.m_arrMembers[i];
+                m.WireFramePoints.Clear();
+
+                GeometryModel3D gm3d = membersModel.Children[i] as GeometryModel3D;
+                MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
+
+                if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
+                {
+                    foreach (int n in m.CrScStart.WireFrameIndices)
+                    {
+                        m.WireFramePoints.Add(mesh.Positions[n]);
+                    }
+                }
+            }
+            //--------------------------------------------------------------------------------------------------------------------------------------
+
 
             jointClone = firstSameJoint.RecreateJoint();
             jointClone.m_arrPlates = firstSameJoint.m_arrPlates;
