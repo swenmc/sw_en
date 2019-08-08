@@ -19,6 +19,8 @@ using System.Collections.ObjectModel;
 using DATABASE.DTO;
 using EXPIMP;
 using M_AS4600;
+using BaseClasses.Helpers;
+using System.Windows.Media;
 
 namespace PFD
 {
@@ -55,9 +57,9 @@ namespace PFD
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
         private int MWireframeColorIndex;
-        public System.Windows.Media.Color WireframeColor; // ????? To Ondrej - ako spravne pracovat s comboboxom ked su tam items Colors a ako vystup pouzivam int
+        public Color WireframeColor;
         private int MBackgroundColorIndex;
-        public System.Windows.Media.Color BackgroundColor; // ????? To Ondrej - ako spravne pracovat s comboboxom ked su tam items Colors a ako vystup pouzivam int
+        public Color BackgroundColor;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -690,11 +692,10 @@ namespace PFD
             set
             {
                 MWireframeColorIndex = value;
+                
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                // TO Ondrej, toto by chcelo nejako skulturnit, amater nevie ako prevazat index z comboboxu na objekt farby
-                List<System.Windows.Media.Color> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[MWireframeColorIndex];
+                WireframeColor = listOfMediaColours[MWireframeColorIndex].Color;
 
                 RecreateModel = true;
                 NotifyPropertyChanged("WireframeColorIndex");
@@ -712,11 +713,10 @@ namespace PFD
             set
             {
                 MBackgroundColorIndex = value;
+                                
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                // TO Ondrej, toto by chcelo nejako skulturnit, amater nevie ako prevazat index z comboboxu na objekt farby
-                List<System.Windows.Media.Color> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                BackgroundColor = listOfMediaColours[MBackgroundColorIndex];
+                BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color;
 
                 RecreateModel = true;
                 NotifyPropertyChanged("BackgroundColorIndex");

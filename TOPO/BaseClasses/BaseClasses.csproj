@@ -104,6 +104,7 @@
     <Compile Include="GraphObj\CDimensionArc.cs" />
     <Compile Include="GraphObj\CDimensionLinear.cs" />
     <Compile Include="GraphObj\PointF.cs" />
+    <Compile Include="Helpers\CComboColor.cs" />
     <Compile Include="Helpers\CJointHelper.cs" />
     <Compile Include="Helpers\ModelValidationError.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
