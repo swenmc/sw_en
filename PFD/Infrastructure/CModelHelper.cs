@@ -462,7 +462,7 @@ namespace PFD
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
 
                         //set member Color
-                        m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color);
+                        m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
                         if(m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
                         break;
                     }

@@ -316,8 +316,8 @@ namespace EXPIMP
                 Row row = t.InsertRow();
                 row.Cells[0].Paragraphs[0].InsertText(cInfo.Prefix);
                 row.Cells[1].Paragraphs[0].InsertText("");
-                row.Cells[1].FillColor = System.Drawing.Color.FromName(cInfo.Color);
-                row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color));
+                row.Cells[1].FillColor = System.Drawing.Color.FromName(cInfo.Color.Name);
+                row.Cells[1].Paragraphs[0].Color(System.Drawing.Color.FromName(cInfo.Color.Name));
                 row.Cells[2].Paragraphs[0].InsertText(cInfo.ComponentName);
                 row.Cells[3].Paragraphs[0].InsertText(cInfo.Section);
                 row.Cells[4].Paragraphs[0].InsertText("");
