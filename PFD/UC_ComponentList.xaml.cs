@@ -84,7 +84,7 @@ namespace PFD
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 string header = ((DataGrid)sender).CurrentColumn.Header.ToString();
-                if (header == "Generate" || header == "Prefix" || header == "ComponentName" || header == "Sections" || header == "Material") return;
+                if (header == "Generate" || header == "Prefix" || header == "ComponentName" || header == "Sections" || header == "Material" || header == "Com. Color" || header == "Sec.Color") return;
 
                 CComponentListVM vm = this.DataContext as CComponentListVM;
                 CComponentInfo selectedInfo = ((DataGrid)sender).SelectedValue as CComponentInfo;

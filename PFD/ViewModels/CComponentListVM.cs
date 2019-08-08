@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using DATABASE;
 using DATABASE.DTO;
 using System.Windows.Media;
+using BaseClasses.Helpers;
 
 namespace PFD
 {
@@ -24,7 +25,7 @@ namespace PFD
         private int MSelectedComponentIndex;
 
         private List<string> MSections;
-        private List<BaseClasses.Helpers.CComboColor> MColors;
+        private List<CComboColor> MColors;
         private List<string> MSectionsForColumnsOrRafters;
         private List<string> MSectionsForGirtsOrPurlins;
         private List<string> MSectionsForDoorOrWindowFrame;
