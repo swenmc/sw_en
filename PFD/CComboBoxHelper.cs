@@ -163,6 +163,30 @@ namespace PFD
                 new CComboColor("YellowGreen", Colors.YellowGreen) // DB
         };
 
+        public static string GetColorName(Color color)
+        {
+            Type colors = typeof(Colors);
+            foreach (var prop in colors.GetProperties())
+            {
+                if (((Color)prop.GetValue(null, null)) == color)
+                    return prop.Name;
+            }
+
+            throw new Exception("The provided Color is not named.");
+        }
+
+        public static int GetColorIndex(Color color)
+        {
+            for(int i = 0; i < ColorList.Count; i++)
+            {
+                if (ColorList[i].Name == GetColorName(color))
+                    return i;
+            }
+
+            // return -1; // Exception
+            throw new Exception("The provided Color was not found.");
+        }
+
         public static void FillComboboxValues(string sDBName, string sTableName, string sColumnName, ComboBox combobox)
         {
             combobox.ItemsSource = CDatabaseManager.GetStringList(sDBName, sTableName, sColumnName);

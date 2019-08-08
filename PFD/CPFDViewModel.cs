@@ -252,8 +252,8 @@ namespace PFD
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
-                WireframeColorIndex = 13; //   WireframeColor = System.Windows.Media.Colors.Chartreuse;
-                BackgroundColorIndex = 7; // BackgroundColor = System.Windows.Media.Colors.Black;
+                WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+                BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
                 ModelCalculatedResultsValid = false;
 
                 RecreateJoints = true;

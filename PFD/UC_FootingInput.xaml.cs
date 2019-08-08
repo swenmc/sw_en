@@ -27,7 +27,6 @@ namespace PFD
         DisplayOptions sDisplayOptions;
         CPFDViewModel _pfdVM;
         CFootingInputVM vm;
-        
 
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
@@ -110,18 +109,22 @@ namespace PFD
                 e.PropertyName == "LongReinTop_x_No" ||
                 e.PropertyName == "LongReinTop_x_Phi" ||
                 e.PropertyName == "LongReinTop_x_distance_s_y" ||
+                e.PropertyName == "LongReinTop_x_ColorIndex" ||
 
                 e.PropertyName == "LongReinTop_y_No" ||
                 e.PropertyName == "LongReinTop_y_Phi" ||
                 e.PropertyName == "LongReinTop_y_distance_s_x" ||
+                e.PropertyName == "LongReinTop_y_ColorIndex" ||
 
                 e.PropertyName == "LongReinBottom_x_No" ||
                 e.PropertyName == "LongReinBottom_x_Phi" ||
                 e.PropertyName == "LongReinBottom_x_distance_s_y" ||
+                e.PropertyName == "LongReinBottom_x_ColorIndex" ||
 
                 e.PropertyName == "LongReinBottom_y_No" ||
                 e.PropertyName == "LongReinBottom_y_Phi" ||
                 e.PropertyName == "LongReinBottom_y_distance_s_x" ||
+                e.PropertyName == "LongReinBottom_y_ColorIndex" ||
 
                 e.PropertyName == "Eccentricity_ex" ||
                 e.PropertyName == "Eccentricity_ey" ||

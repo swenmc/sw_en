@@ -94,12 +94,16 @@ namespace BaseClasses.Helpers
             }
         }
 
+        public CComboColor()
+        {
+
+        }
+
         public CComboColor(string name, Color color)
         {
-            MName = name;            
+            MName = name;
             MColor = color;
             MCodeHEX = color.ToString();
         }
-
     }
 }

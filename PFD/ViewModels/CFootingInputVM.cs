@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using BaseClasses.GraphObj;
+using BaseClasses.Helpers;
 using DATABASE;
 using DATABASE.DTO;
 using MATH;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Media;
 using System.Windows.Controls;
 
 namespace PFD
@@ -29,6 +31,8 @@ namespace PFD
         private List<string> m_ReinforcementBarsList;
         private List<string> m_ReinforcementBarsCountList;
 
+        private List<CComboColor> m_ColorList;
+
         private int m_FootingPadMemberTypeIndex;
         private string m_ConcreteGrade;
         private string m_AggregateSize;
@@ -38,18 +42,26 @@ namespace PFD
         private string m_LongReinTop_x_No;
         private string m_LongReinTop_x_Phi;
         private float m_LongReinTop_x_distance_s_y;
+        private int m_LongReinTop_x_ColorIndex;
+        public Color LongReinTop_x_Color;
 
         private string m_LongReinTop_y_No;
         private string m_LongReinTop_y_Phi;
         private float m_LongReinTop_y_distance_s_x;
+        private int m_LongReinTop_y_ColorIndex;
+        public Color LongReinTop_y_Color;
 
         private string m_LongReinBottom_x_No;
         private string m_LongReinBottom_x_Phi;
         private float m_LongReinBottom_x_distance_s_y;
+        private int m_LongReinBottom_x_ColorIndex;
+        public Color LongReinBottom_x_Color;
 
         private string m_LongReinBottom_y_No;
         private string m_LongReinBottom_y_Phi;
         private float m_LongReinBottom_y_distance_s_x;
+        private int m_LongReinBottom_y_ColorIndex;
+        public Color LongReinBottom_y_Color;
 
         private float m_FootingPadSize_x_Or_a;
         private float m_FootingPadSize_y_Or_b;
@@ -185,6 +197,21 @@ namespace PFD
             {
                 m_ReinforcementBarsCountList = value;
                 NotifyPropertyChanged("ReinforcementBarsCountList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<CComboColor> ColorList
+        {
+            get
+            {
+                return m_ColorList;
+            }
+
+            set
+            {
+                m_ColorList = value;
+                NotifyPropertyChanged("ComboboxColors");
             }
         }
 
@@ -333,6 +360,33 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int LongReinTop_x_ColorIndex
+        {
+            get
+            {
+                return m_LongReinTop_x_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinTop_x_ColorIndex = value;
+
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                LongReinTop_x_Color = listOfMediaColours[m_LongReinTop_x_ColorIndex].Color;
+
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {
+                    pad.Reference_Top_Bar_x.m_volColor_2 = LongReinTop_x_Color;
+                }
+
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+
+                NotifyPropertyChanged("LongReinTop_x_ColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public string LongReinTop_y_No
         {
             get
@@ -394,6 +448,33 @@ namespace PFD
                 m_LongReinTop_y_distance_s_x = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI(); // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
                 NotifyPropertyChanged("LongReinTop_y_distance_s_x");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LongReinTop_y_ColorIndex
+        {
+            get
+            {
+                return m_LongReinTop_y_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinTop_y_ColorIndex = value;
+
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                LongReinTop_y_Color = listOfMediaColours[m_LongReinTop_y_ColorIndex].Color;
+
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {
+                    pad.Reference_Top_Bar_y.m_volColor_2 = LongReinTop_y_Color;
+                }
+
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+
+                NotifyPropertyChanged("LongReinTop_y_ColorIndex");
             }
         }
 
@@ -463,6 +544,33 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int LongReinBottom_x_ColorIndex
+        {
+            get
+            {
+                return m_LongReinBottom_x_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinBottom_x_ColorIndex = value;
+
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                LongReinBottom_x_Color = listOfMediaColours[m_LongReinBottom_x_ColorIndex].Color;
+
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {
+                    pad.Reference_Bottom_Bar_x.m_volColor_2 = LongReinBottom_x_Color;
+                }
+
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+
+                NotifyPropertyChanged("LongReinBottom_x_ColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public string LongReinBottom_y_No
         {
             get
@@ -525,6 +633,33 @@ namespace PFD
                 m_LongReinBottom_y_distance_s_x = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();  // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
                 NotifyPropertyChanged("LongReinBottom_y_distance_s_x");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LongReinBottom_y_ColorIndex
+        {
+            get
+            {
+                return m_LongReinBottom_y_ColorIndex;
+            }
+
+            set
+            {
+                m_LongReinBottom_y_ColorIndex = value;
+
+                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+
+                LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color;
+
+                foreach (CFoundation pad in listOfSelectedTypePads)
+                {
+                    pad.Reference_Bottom_Bar_y.m_volColor_2 = LongReinBottom_y_Color;
+                }
+
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+
+                NotifyPropertyChanged("LongReinBottom_y_ColorIndex");
             }
         }
 
@@ -766,6 +901,9 @@ namespace PFD
             // Zoznam priemerov kameniva
             AggregateSizesList = new List<string>() {"2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "24", "28", "32", "64", "128", "256" };
 
+            // Zoznam farieb
+            ColorList = CComboBoxHelper.ColorList;
+
             // Set default GUI
             FootingPadMemberTypeIndex = 1;
 
@@ -832,7 +970,11 @@ namespace PFD
 
             if (LongReinBottom_y_No != "None")
                 LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f);
-            //----------------------------------------------------------------------------------------------------
+
+            LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+            LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+            LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
+            LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
 
             IsSetFromCode = false;
         }
