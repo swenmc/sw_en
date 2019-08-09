@@ -21,6 +21,52 @@ namespace BaseClasses
         private static float fModel_Length_Y = 0;
         private static float fModel_Length_Z = 0;
         private static Transform3DGroup centerModelTransGr = null;
+        
+        private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
+        {
+            Transform3DGroup transGr = new Transform3DGroup();
+            if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                //nothing to DO
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            {
+                //takto pokial zachovavame Left/Right
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 180);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                
+                //takto pokial chceme zachovat Front/Back
+                //AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 180);
+                //transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            return transGr;
+        }
 
         public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
@@ -40,8 +86,11 @@ namespace BaseClasses
                 {
                     centerModelTransGr = new Transform3DGroup();
                     centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+
+                    //model rotation for the VIEW
+                    centerModelTransGr.Children.Add(GetModelRotationAccordingToView(sDisplayOptions));
+                    //AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
+                    //centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 }
 
                 // Global coordinate system - axis

@@ -15,6 +15,7 @@
         <CollectionViewSource x:Key="BuildingSides" Source="{Binding BuildingSides}"/>
         <CollectionViewSource x:Key="DoorsTypes" Source="{Binding DoorsTypes}"/>
         <CollectionViewSource x:Key="WindowColumns" Source="{Binding WindowColumns}"/>
+        <CollectionViewSource x:Key="ModelViews" Source="{Binding ModelViews}"/>
     </Window.Resources>
 
     <Grid>
@@ -46,6 +47,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
@@ -238,6 +240,9 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Views:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_Views" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project details" Width="20" Height="20" Click="btnProjectInfo_Click">
                             <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>

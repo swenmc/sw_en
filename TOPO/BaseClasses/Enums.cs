@@ -645,9 +645,23 @@
 
 
 
-        // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
+    public enum EModelViews
+    {
+        FRONT = 0,
+        BACK = 1,
+        TOP = 2,
+        BOTTOM = 3,
+        LEFT = 4,
+        RIGHT = 5
+    }
 
-    public struct DisplayOptions
+
+
+
+
+// Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
+
+public struct DisplayOptions
     {
         public bool bUseLightDirectional;
         public bool bUseLightPoint;
@@ -705,6 +719,7 @@
         public int RotateModelX;
         public int RotateModelY;
         public int RotateModelZ;
+        public int ModelView;
 
         public System.Windows.Media.Color backgroundColor;
         public System.Windows.Media.Color wireFrameColor;
@@ -932,4 +947,7 @@
         public float fBeta_z_TB_TFB_l_ez;
         public float fBeta_LTB_fl_LTB;
     }
+
+
+    
 }
