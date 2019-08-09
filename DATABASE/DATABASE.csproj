@@ -99,6 +99,9 @@
     <Compile Include="DTO\CReinforcementBarProperties.cs" />
     <Compile Include="DTO\CMatPropertiesRF.cs" />
     <Compile Include="DTO\CMatPropertiesRC.cs" />
+    <Compile Include="DTO\CTS_SectionPropertiesText.cs" />
+    <Compile Include="DTO\CTS_SectionProperties.cs" />
+    <Compile Include="DTO\CTS_CrscProperties.cs" />
     <Compile Include="DTO\QuantityLibraryItem.cs" />
     <Compile Include="DTO\DataExportTables.cs" />
     <Compile Include="DTO\CAnnualProbability.cs" />

@@ -342,8 +342,8 @@ namespace PFD
                 "C-back to back",
                 "C-nested",
                 "Box-63020",
-                "SmartDek",
-                "PurlinDek"
+                "Smartdek",
+                "Purlindek"
         };
 
         public string[] arr_Serie_Box_FS_Names = new string[1]

@@ -1666,8 +1666,8 @@ namespace PFD
             // Fill model combobox items
             CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
             // Cladding (type and colors)
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
 
             CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
             CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
