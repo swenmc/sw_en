@@ -73,7 +73,7 @@ namespace EXPIMP
             return stm;
         }
 
-        private static RenderTargetBitmap RenderVisual(UIElement elt)
+        public static RenderTargetBitmap RenderVisual(UIElement elt)
         {
             Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
             elt.Measure(size);
@@ -85,22 +85,19 @@ namespace EXPIMP
 
             bitmap.Render(elt);
             return bitmap;
+        }
+        public static RenderTargetBitmap RenderVisual(UIElement elt, double scale)
+        {
+            Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
+            elt.Measure(size);
+            elt.Arrange(new Rect(size));
+            elt.UpdateLayout();
 
-            //PresentationSource source = PresentationSource.FromVisual(elt);
-            //RenderTargetBitmap rtb = new RenderTargetBitmap((int)elt.RenderSize.Width,
-            //      (int)elt.RenderSize.Height, 96, 96, PixelFormats.Default);
+            var bitmap = new RenderTargetBitmap(
+                (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Default);
 
-            //VisualBrush sourceBrush = new VisualBrush(elt);
-            //DrawingVisual drawingVisual = new DrawingVisual();
-            //DrawingContext drawingContext = drawingVisual.RenderOpen();
-            //using (drawingContext)
-            //{
-            //    drawingContext.DrawRectangle(sourceBrush, null, new Rect(new Point(0, 0),
-            //          new Point(elt.RenderSize.Width, elt.RenderSize.Height)));
-            //}
-            //rtb.Render(drawingVisual);
-
-            //return rtb;
+            bitmap.Render(elt);
+            return bitmap;
         }
 
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
@@ -1484,5 +1481,19 @@ namespace EXPIMP
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }
+
+
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModel model)
+        {
+            Trackport3D _trackport = new Trackport3D();
+            _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
+            _trackport.Width = 2800;
+            _trackport.Height = 2000;
+            _trackport.ViewPort.RenderSize = new Size(2800, 2000);
+            
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+            return _trackport.ViewPort;
+        }
+
     }
 }
