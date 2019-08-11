@@ -3,6 +3,7 @@ using MATH;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
+using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
@@ -34,7 +35,7 @@ namespace EXPIMP
         private static XPdfFontOptions options;
         //private static PdfDocument document = null;
 
-        public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData, List<string[]> tableParams)
+        public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData)
         {
             // Set font encoding to unicode
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
@@ -44,23 +45,26 @@ namespace EXPIMP
             //s_document.Info.Author = "";
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
-            PdfPage page = s_document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
+            //PdfPage page = s_document.AddPage();
+            //page.Orientation = PdfSharp.PageOrientation.Landscape;
+            //XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            DrawLogo(gfx);
-            DrawProjectInfo(gfx,GetProjectInfo());
-            DrawModel3D(gfx, viewPort);
-            gfx.Dispose();
+            //DrawLogo(gfx);
+            //DrawProjectInfo(gfx,GetProjectInfo());
 
+            //DrawModel3D(gfx, viewPort);
+            //gfx.Dispose();
+                                    
+            DrawModelViews(s_document, modelData);
+            
+            //page = s_document.AddPage();
+            //gfx = XGraphics.FromPdfPage(page);
+            //DrawBasicGeometry(gfx, modelData);
 
-            page = s_document.AddPage();
-            gfx = XGraphics.FromPdfPage(page);
-            DrawBasicGeometry(gfx, modelData);
-
-            page = s_document.AddPage();
-            gfx = XGraphics.FromPdfPage(page);
-            AddBasicGeometryToDocument(gfx, modelData, 10);
+            //page = s_document.AddPage();
+            //gfx = XGraphics.FromPdfPage(page);
+            //AddBasicGeometryToDocument(gfx, modelData, 10);
 
 
             //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
@@ -75,9 +79,9 @@ namespace EXPIMP
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
 
-            PdfPage page2 = s_document.AddPage();
-            XGraphics gfx2 = XGraphics.FromPdfPage(page2);
-            AddTableToDocument(gfx2, 50, tableParams);
+            //PdfPage page2 = s_document.AddPage();
+            //XGraphics gfx2 = XGraphics.FromPdfPage(page2);
+            //AddTableToDocument(gfx2, 50, tableParams);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -96,15 +100,44 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
 
-            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
-            //XImage image = XImage.FromFile("ViewPort.png");
+            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));            
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width;
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 300, scaledImageWidth, scaledImageHeight);
+        }
 
-            //gfx.DrawImage(image, image.Size.Width, image.Size.Height);
+        private static void DrawModelViews(PdfDocument s_document, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;            
+            double scale = 1;
+            DisplayOptions opts = data.DisplayOptions;
+            
+            for (int i = 0; i < 6; i++)
+            {
+                page = s_document.AddPage();
+                page.Size = PageSize.A3;
+                page.Orientation = PdfSharp.PageOrientation.Landscape;
+                gfx = XGraphics.FromPdfPage(page);
+
+                opts.ModelView = i;
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model);
+                viewPort.UpdateLayout();
+                XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+                gfx.DrawString( $"{((EModelViews)i).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+                                
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
+                double scaleFactor = gfx.PageSize.Width / image.PointWidth;
+                double scaledImageWidth = gfx.PageSize.Width;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+
+                gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+
+                gfx.Dispose();
+            }
         }
 
         private static void DrawLogo(XGraphics gfx)

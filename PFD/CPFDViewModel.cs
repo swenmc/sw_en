@@ -60,6 +60,7 @@ namespace PFD
         public Color WireframeColor;
         private int MBackgroundColorIndex;
         public Color BackgroundColor;
+        private int MViewIndex;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -143,6 +144,7 @@ namespace PFD
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
+        private List<string> MModelViews;
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
@@ -1321,6 +1323,15 @@ namespace PFD
             }
         }
 
+        public List<string> ModelViews
+        {
+            get
+            {
+                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Top", "Bottom", "Left", "Right" };
+                return MModelViews;
+            }
+        }
+
         public List<int> WindowColumns
         {
             get
@@ -1834,6 +1845,20 @@ namespace PFD
             }
         }
 
+        public int ViewIndex
+        {
+            get
+            {
+                return MViewIndex;
+            }
+
+            set
+            {
+                MViewIndex = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ViewIndex");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2056,6 +2081,7 @@ namespace PFD
             ColorsAccordingToMembers = true;
             ColorsAccordingToSections = false;
             RecreateModel = true;
+            ViewIndex = (int)EModelViews.FRONT;
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
@@ -2642,6 +2668,7 @@ namespace PFD
 
             sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.backgroundColor = BackgroundColor;
+            sDisplayOptions.ModelView = ViewIndex;
 
             return sDisplayOptions;
         }
