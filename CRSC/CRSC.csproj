@@ -103,6 +103,8 @@
     <Compile Include="CrSc_3\FS\CCrSc_3_63020_BOX.cs" />
     <Compile Include="CrSc_3\CCrSc_3_51_C_TEMP.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_I_LIPS.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_TR_SHEETING.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_TR_SPEEDCLAD.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_TR_PURLINDEK.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_TR_SMARTDEK.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_Z.cs" />

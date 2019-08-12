@@ -2,7 +2,7 @@
 
 namespace CRSC
 {
-    public class CCrSc_3_TR_SMARTDEK : CSO
+    public class CCrSc_3_TR_SMARTDEK : CCrSc_3_TR_SHEETING
     {
         public CCrSc_3_TR_SMARTDEK() { }
         public CCrSc_3_TR_SMARTDEK(int iID_temp, float fh, float fb, float ft, Color color_temp)
@@ -10,7 +10,7 @@ namespace CRSC
             ID = iID_temp;
         }
 
-        public void CalcCrSc_Coord()
+        public override void CalcCrSc_Coord()
         {
         }
     }
