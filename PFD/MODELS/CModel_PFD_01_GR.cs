@@ -18,11 +18,11 @@ namespace PFD
     {
         public float fH1_frame;
         float fH2_frame;
-        public float fW_frame;
-        public float fL1_frame;
+        
+        
         public float fRoofPitch_rad;
         public int iFrameNo;
-        public float fL_tot;
+        
         public float fDist_Girt;
         public float fDist_Purlin;
         public float fDist_FrontColumns;

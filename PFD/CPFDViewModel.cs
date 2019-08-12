@@ -61,6 +61,7 @@ namespace PFD
         private int MBackgroundColorIndex;
         public Color BackgroundColor;
         private int MViewIndex;
+        private int MViewModelMembersIndex;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -145,6 +146,7 @@ namespace PFD
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
         private List<string> MModelViews;
+        private List<string> MViewModelMembers;
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
@@ -1331,6 +1333,14 @@ namespace PFD
                 return MModelViews;
             }
         }
+        public List<string> ViewModelMembers
+        {
+            get
+            {
+                if (MViewModelMembers == null) MViewModelMembers = new List<string>() { "All", "Front", "Back", "Middle Frame", "Top", "Bottom", "Left", "Right" };
+                return MViewModelMembers;
+            }
+        }
 
         public List<int> WindowColumns
         {
@@ -1859,6 +1869,20 @@ namespace PFD
             }
         }
 
+        public int ViewModelMembersIndex
+        {
+            get
+            {
+                return MViewModelMembersIndex;
+            }
+
+            set
+            {
+                MViewModelMembersIndex = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ViewModelMembersIndex");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2065,9 +2089,9 @@ namespace PFD
             MaterialDiffuse = true;
             MaterialEmissive = false;
             DisplayMembers = true;
-            DisplayJoints = true;
-            DisplayPlates = true;
-            DisplayConnectors = true;
+            DisplayJoints = false;
+            DisplayPlates = false;
+            DisplayConnectors = false;
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayReinforcementBars = false;
@@ -2078,15 +2102,21 @@ namespace PFD
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
-            ColorsAccordingToMembers = true;
-            ColorsAccordingToSections = false;
+            ColorsAccordingToMembers = false;
+            ColorsAccordingToSections = true;
             RecreateModel = true;
             ViewIndex = (int)EModelViews.FRONT;
+            ViewModelMembersIndex = (int)EViewModelMembers.All;
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
 
             ShowNodesDescription = false;
+            ShowMemberDescription = true;
+            ShowMemberID = true;
+            ShowMemberPrefix = true;
+            ShowMemberRealLength = true;
+            ShowMemberCrossSectionStartName = false;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
@@ -2122,7 +2152,7 @@ namespace PFD
 
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
-            MSynchronizeGUI = false;
+            MSynchronizeGUI = true;
 
             IsSetFromCode = false;
 
@@ -2669,6 +2699,7 @@ namespace PFD
             sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
+            sDisplayOptions.ViewModelMembers = ViewModelMembersIndex;
 
             return sDisplayOptions;
         }

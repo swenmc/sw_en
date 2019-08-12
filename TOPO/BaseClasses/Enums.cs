@@ -654,14 +654,25 @@
         LEFT = 4,
         RIGHT = 5
     }
+    public enum EViewModelMembers
+    {
+        All = 0,
+        FRONT = 1,
+        BACK = 2,
+        MIDDLE_FRAME = 3,
+        TOP = 4,
+        BOTTOM = 5,
+        LEFT = 6,
+        RIGHT = 7
+    }
 
 
 
 
 
-// Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
+    // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
-public struct DisplayOptions
+    public struct DisplayOptions
     {
         public bool bUseLightDirectional;
         public bool bUseLightPoint;
@@ -720,6 +731,7 @@ public struct DisplayOptions
         public int RotateModelY;
         public int RotateModelZ;
         public int ModelView;
+        public int ViewModelMembers;
         public bool bUseOrtographicCamera;
         public double OrtographicCameraWidth;
 

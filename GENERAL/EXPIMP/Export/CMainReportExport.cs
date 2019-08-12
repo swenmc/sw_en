@@ -125,6 +125,7 @@ namespace EXPIMP
                 gfx = XGraphics.FromPdfPage(page);
 
                 opts.ModelView = i;
+                
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model);
                 viewPort.UpdateLayout();
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);

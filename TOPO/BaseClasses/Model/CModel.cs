@@ -16,6 +16,10 @@ namespace BaseClasses
     [Serializable]
     public class CModel
     {
+        public float fL_tot;
+        public float fL1_frame;
+        public float fW_frame;
+
         // General project data
 
         public string m_sProjectName;

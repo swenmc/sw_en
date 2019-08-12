@@ -1490,8 +1490,9 @@ namespace EXPIMP
             _trackport.Width = 2800;
             _trackport.Height = 2000;
             _trackport.ViewPort.RenderSize = new Size(2800, 2000);
-            
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+
+            CModel frontModel = Drawing3D.GetModelAccordingToView(model, sDisplayOptions);
+            Drawing3D.DrawToTrackPort(_trackport, frontModel, sDisplayOptions, null);
             return _trackport.ViewPort;
         }
 

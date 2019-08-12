@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using BaseClasses.Helpers;
 using HelixToolkit.Wpf;
 using MATH;
 using Petzold.Media3D;
@@ -105,7 +106,7 @@ namespace BaseClasses
             }            
         }
 
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static void DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
             //DateTime start = DateTime.Now;
 
@@ -113,8 +114,10 @@ namespace BaseClasses
             _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
             
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
-            if (model != null)
+            if (_model != null)
             {
+                CModel model = Drawing3D.GetModelAccordingToView(_model, sDisplayOptions);
+
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
@@ -3044,6 +3047,56 @@ namespace BaseClasses
             }
 
             return jointModel;
+        }
+
+
+        public static CModel GetModelAccordingToView(CModel model, DisplayOptions sDisplayOptions)
+        {
+            CModel _model = new CModel();
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.All)
+            {
+                return model;
+            }            
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.FRONT)
+            {
+                _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
+
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.BACK)
+            {
+                _model.m_arrMembers = ModelHelper.GetBackViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetBackViewNodes(model);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.MIDDLE_FRAME)
+            {
+                _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
+                _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
+
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.TOP)
+            {
+                return model;
+
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.BOTTOM)
+            {
+                return model;
+
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.LEFT)
+            {
+                _model.m_arrMembers = ModelHelper.GetLeftViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetLeftViewNodes(model);
+
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.RIGHT)
+            {
+                _model.m_arrMembers = ModelHelper.GetRightViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetRightViewNodes(model);
+
+            }
+            return _model;
         }
     }
 }
