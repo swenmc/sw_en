@@ -117,19 +117,24 @@ namespace EXPIMP
             opts.bUseOrtographicCamera = true;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
-            for (int i = 0; i < 6; i++)
+
+            List<EViewModelMembers> list_views = new List<EViewModelMembers>()
+             { EViewModelMembers.FRONT, EViewModelMembers.MIDDLE_FRAME, EViewModelMembers.BACK, EViewModelMembers.LEFT, EViewModelMembers.RIGHT, EViewModelMembers.TOP, EViewModelMembers.BOTTOM };
+
+            foreach (EViewModelMembers viewMembers in list_views)
             {
                 page = s_document.AddPage();
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
                 gfx = XGraphics.FromPdfPage(page);
 
-                opts.ModelView = i;
-                
+                opts.ModelView = GetView(viewMembers);
+                opts.ViewModelMembers = (int)viewMembers;
+
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model);
                 viewPort.UpdateLayout();
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString( $"{((EModelViews)i).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString( $"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
                                 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
@@ -141,6 +146,18 @@ namespace EXPIMP
 
                 gfx.Dispose();
             }
+        }
+
+        private static int GetView(EViewModelMembers viewModelMembers)
+        {
+            if (viewModelMembers == EViewModelMembers.FRONT) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMembers.BACK) return (int)EModelViews.BACK;
+            else if (viewModelMembers == EViewModelMembers.MIDDLE_FRAME) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMembers.LEFT) return (int)EModelViews.LEFT;
+            else if (viewModelMembers == EViewModelMembers.RIGHT) return (int)EModelViews.RIGHT;
+            else if (viewModelMembers == EViewModelMembers.TOP) return (int)EModelViews.TOP;
+            else if (viewModelMembers == EViewModelMembers.BOTTOM) return (int)EModelViews.BOTTOM;
+            else return (int)EModelViews.FRONT;
         }
 
         private static void DrawLogo(XGraphics gfx)
