@@ -720,6 +720,9 @@ public struct DisplayOptions
         public int RotateModelY;
         public int RotateModelZ;
         public int ModelView;
+        public bool bUseOrtographicCamera;
+        public double OrtographicCameraWidth;
+
 
         public System.Windows.Media.Color backgroundColor;
         public System.Windows.Media.Color wireFrameColor;

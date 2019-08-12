@@ -114,7 +114,9 @@ namespace EXPIMP
             PdfPage page;            
             double scale = 1;
             DisplayOptions opts = data.DisplayOptions;
-            
+            opts.bUseOrtographicCamera = true;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
             for (int i = 0; i < 6; i++)
             {
                 page = s_document.AddPage();

@@ -71,7 +71,41 @@ namespace BaseClasses
             return transGr;
         }
 
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase, bool useOrtographicCamera = false)
+        private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z)
+        {            
+            if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.2;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.2;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                sDisplayOptions.OrtographicCameraWidth *= 1.2;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
+                sDisplayOptions.OrtographicCameraWidth *= 1.2;
+            }            
+        }
+
+        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
             //DateTime start = DateTime.Now;
 
@@ -151,9 +185,10 @@ namespace BaseClasses
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
                     
-                    if (useOrtographicCamera)
+                    if (sDisplayOptions.bUseOrtographicCamera)
                     {
-                        OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, maxLen);
+                        SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                        OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
                         _trackport.ViewPort.Camera = ort_camera;
                     }
                 }
