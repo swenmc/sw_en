@@ -68,7 +68,7 @@ namespace BaseClasses
             return transGr;
         }
 
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase, bool useOrtographicCamera = false)
         {
             //DateTime start = DateTime.Now;
 
@@ -140,13 +140,19 @@ namespace BaseClasses
                                 
                 if (centerModel)
                 {
-                    //translate transform to model center
-                    //((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+                    //translate transform to model center                    
                     ((Model3D)gr).Transform = centerModelTransGr;
+                    double maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
-                    Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * 2);
+                    Point3D cameraPosition = new Point3D(0, 0, maxLen * 2);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
+                    
+                    if (useOrtographicCamera)
+                    {
+                        OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, maxLen);
+                        _trackport.ViewPort.Camera = ort_camera;
+                    }
                 }
                 else
                 {
@@ -185,6 +191,8 @@ namespace BaseClasses
                 {
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
+
+               
             }
 
             _trackport.SetupScene();
