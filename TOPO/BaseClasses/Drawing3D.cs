@@ -1661,8 +1661,12 @@ namespace BaseClasses
                         pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
                         pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
 
+                        Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+                        SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
                         // Create text
-                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                        textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPosition, over, up);
 
                         if (centerModel)
                         {
@@ -3097,6 +3101,41 @@ namespace BaseClasses
 
             }
             return _model;
+        }
+
+
+        private static void SetLabelsUpAndOverVectors(DisplayOptions sDisplayOptions, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, out Vector3D over, out Vector3D up)
+        {
+            over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            {
+                //over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+                //up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            {
+                over = new Vector3D(-fTextBlockHorizontalSizeFactor, 0, 0);
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            {
+                over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            {
+                over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+                up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            {
+                over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+                up = new Vector3D(fTextBlockVerticalSizeFactor, 0, 0);
+            }
         }
     }
 }
