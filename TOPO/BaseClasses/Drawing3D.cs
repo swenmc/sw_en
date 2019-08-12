@@ -27,7 +27,8 @@ namespace BaseClasses
             Transform3DGroup transGr = new Transform3DGroup();
             if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
             {
-                //nothing to DO
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
             }
             else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
             {
@@ -46,7 +47,9 @@ namespace BaseClasses
                 //takto pokial zachovavame Left/Right
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 180);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
-                
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+
                 //takto pokial chceme zachovat Front/Back
                 //AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 180);
                 //transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
