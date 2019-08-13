@@ -49,7 +49,7 @@ namespace BaseClasses
             Z = fCoord_Z;
             FTime = fTime;
         }
-
+        
 
         #region IComparer Members
 

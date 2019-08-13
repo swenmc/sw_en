@@ -1,11 +1,18 @@
 ﻿
 using MATH;
 using System.Collections.Generic;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses.Helpers
 {
     public static class ModelHelper
     {
+
+        public static Point3D GetPoint3D(this CNode node)
+        {
+            return new Point3D(node.X, node.Y, node.Z);
+        }
+
         public static CMember[] GetFrontViewMembers(CModel model)
         {
             List<CMember> members = new List<CMember>();

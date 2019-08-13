@@ -145,18 +145,71 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public Point3D PointStartL2
+        {
+            get
+            {
+                return m_PointStartL2;
+            }
+
+            set
+            {
+                m_PointStartL2 = value;
+            }
+        }
+
+        public Point3D PointEndL2
+        {
+            get
+            {
+                return m_PointEndL2;
+            }
+
+            set
+            {
+                m_PointEndL2 = value;
+            }
+        }
+
+        public Point3D PointMainLine1
+        {
+            get
+            {
+                return m_PointMainLine1;
+            }
+
+            set
+            {
+                m_PointMainLine1 = value;
+            }
+        }
+
+        public Point3D PointMainLine2
+        {
+            get
+            {
+                return m_PointMainLine2;
+            }
+
+            set
+            {
+                m_PointMainLine2 = value;
+            }
+        }
+
         public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, Vector3D horizontal,  Vector3D vertical, double dimensionLinesLength, double dimensionMainLineDistance, string text)
+        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, /*Vector3D horizontal,  Vector3D vertical,*/ double dimensionLinesLength, double dimensionMainLineDistance, string text)
         {
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
             m_Direction = direction;
-            m_Horizontal = horizontal;
-            m_Vertical = vertical;
+            //m_Horizontal = horizontal;
+            //m_Vertical = vertical;
             m_DimensionLinesLength = dimensionLinesLength;
             m_DimensionMainLineDistance = dimensionMainLineDistance;
             m_Text = text;
             SetTextPoint();
+            SetPoints();
         }
 
         public void SetTextPoint()
@@ -183,6 +236,19 @@ namespace BaseClasses.GraphObj
                 X = m_PointEnd.X + Direction.X * DimensionMainLineDistance,
                 Y = m_PointEnd.Y + Direction.Y * DimensionMainLineDistance,
                 Z = m_PointEnd.Z + Direction.Z * DimensionMainLineDistance,
+            };
+
+            m_PointStartL2 = new Point3D()
+            {
+                X = m_PointStart.X + Direction.X * DimensionLinesLength,
+                Y = m_PointStart.Y + Direction.Y * DimensionLinesLength,
+                Z = m_PointStart.Z + Direction.Z * DimensionLinesLength,
+            };
+            m_PointEndL2 = new Point3D()
+            {
+                X = m_PointEnd.X + Direction.X * DimensionLinesLength,
+                Y = m_PointEnd.Y + Direction.Y * DimensionLinesLength,
+                Z = m_PointEnd.Z + Direction.Z * DimensionLinesLength,
             };
 
         }

@@ -234,6 +234,18 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.FRONT)
+                {
+                    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+
+                    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, (model.fW_frame * 1000).ToString());
+                    
+                    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                
+                
                
             }
 
@@ -1677,13 +1689,19 @@ namespace BaseClasses
             float fTextBlockVerticalSize = 0.1f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
+            // Tieto nastavenia sa nepouziju
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = Brushes.Coral;
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
             
 
             SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, dimension.PointText, over, up);
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
 
             if (centerModel)
             {
@@ -1691,35 +1709,37 @@ namespace BaseClasses
             }
             viewPort.Children.Add(textlabel);
 
+            Color dimensionColor = Colors.Orange;
+            float flineThickness = 2;
 
-            //WireLine w = new WireLine();
-            //w.Point1 = dimension.PointStart;
-            //w.Point2 = pAxisX;
-            //w.Thickness = flineThickness;
-            //w.Color = Colors.Red;
+            WireLine wL1 = new WireLine();
+            wL1.Point1 = dimension.PointStart;
+            wL1.Point2 = dimension.PointStartL2;
+            wL1.Thickness = flineThickness;
+            wL1.Color = dimensionColor;
 
-            //WireLine wY = new WireLine();
-            //wY.Point1 = pGCS_centre;
-            //wY.Point2 = pAxisY;
-            //wY.Thickness = flineThickness;
-            //wY.Color = Colors.Green;
+            WireLine wL2 = new WireLine();
+            wL2.Point1 = dimension.PointEnd;
+            wL2.Point2 = dimension.PointEndL2;
+            wL2.Thickness = flineThickness;
+            wL2.Color = dimensionColor;
 
-            //WireLine wZ = new WireLine();
-            //wZ.Point1 = pGCS_centre;
-            //wZ.Point2 = pAxisZ;
-            //wZ.Thickness = flineThickness;
-            //wZ.Color = Colors.Blue;
+            WireLine wMain = new WireLine();
+            wMain.Point1 = dimension.PointMainLine1;
+            wMain.Point2 = dimension.PointMainLine2;
+            wMain.Thickness = flineThickness;
+            wMain.Color = dimensionColor;
 
-            //if (trans != null)
-            //{
-            //    wX.Transform = trans;
-            //    wY.Transform = trans;
-            //    wZ.Transform = trans;
-            //}
+            if (centerModel)
+            {
+                wL1.Transform = centerModelTransGr;
+                wL2.Transform = centerModelTransGr;
+                wMain.Transform = centerModelTransGr;
+            }
 
-            //viewPort.Children.Add(wX);
-            //viewPort.Children.Add(wY);
-            //viewPort.Children.Add(wZ);
+            viewPort.Children.Add(wL1);
+            viewPort.Children.Add(wL2);
+            viewPort.Children.Add(wMain);
         }
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
@@ -3053,6 +3073,10 @@ namespace BaseClasses
         public static CModel GetModelAccordingToView(CModel model, DisplayOptions sDisplayOptions)
         {
             CModel _model = new CModel();
+            _model.fL1_frame = model.fL1_frame;
+            _model.fL_tot = model.fL_tot;
+            _model.fW_frame = model.fW_frame;
+
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.All)
             {
                 return model;
