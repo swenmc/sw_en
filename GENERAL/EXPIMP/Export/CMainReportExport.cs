@@ -31,6 +31,7 @@ namespace EXPIMP
         private const string fontFamily = "Calibri";
         private const int fontSizeTitle = 14;
         private const int fontSizeNormal = 12;
+        private const int fontSizeLegend = 10;
 
         private static XPdfFontOptions options;
         //private static PdfDocument document = null;
@@ -121,7 +122,8 @@ namespace EXPIMP
             List<EViewModelMembers> list_views = new List<EViewModelMembers>()
              { EViewModelMembers.FRONT, EViewModelMembers.MIDDLE_FRAME, EViewModelMembers.BACK, EViewModelMembers.LEFT, EViewModelMembers.RIGHT, EViewModelMembers.TOP, EViewModelMembers.BOTTOM };
 
-            int legendWidth = 100;
+            int legendImgWidth = 100;
+            int legendTextWidth = 60;
 
             foreach (EViewModelMembers viewMembers in list_views)
             {
@@ -138,7 +140,7 @@ namespace EXPIMP
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
                 viewPort.UpdateLayout();
 
-                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendWidth);
+                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString( $"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
@@ -146,8 +148,8 @@ namespace EXPIMP
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
 
-                double scaleFactor = (gfx.PageSize.Width - legendWidth) / image.PointWidth;
-                double scaledImageWidth = gfx.PageSize.Width - legendWidth;
+                double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
+                double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
@@ -180,16 +182,28 @@ namespace EXPIMP
             gfx.DrawImage(image, x, y, width, height);
         }
 
-        private static void DrawCrscLegend(XGraphics gfx, CModel model, int x)
+        private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
         {
             int width = 100;
-            int height = 100;
-            
+            int height = 76;            
             int y = 20;
+            int font_y = 20;
+            
+            XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
             List<string> list_crsc = GetCrscFromModel(model);
-            foreach (string s in list_crsc)
+            
+            foreach (string crsc in list_crsc)
             {
-                DrawImage(gfx, ConfigurationManager.AppSettings[s], x, y, width, height);
+                DrawImage(gfx, ConfigurationManager.AppSettings[crsc], x, y, width, height);
+
+                List<string> list_memberTypes = GetMemberTypesWithCrscFromModel(model, crsc);
+                font_y = 20;
+                foreach (string s in list_memberTypes)
+                {                    
+                    gfx.DrawString($"[{s}]", font, XBrushes.Black, x - textWidth, y + font_y);
+                    font_y += 15;
+                }
+                gfx.DrawString($"{crsc}", font, XBrushes.Black, x - textWidth, y + font_y);
                 y += height;
             }
         }
@@ -209,6 +223,23 @@ namespace EXPIMP
                 }
             }
             return list_crsc;
+        }
+
+        private static List<string> GetMemberTypesWithCrscFromModel(CModel model, string crscName)
+        {
+            List<string> list_memberTypes = new List<string>();
+            foreach (CMember m in model.m_arrMembers)
+            {
+                if (m.CrScStart != null && m.CrScStart.Name_short == crscName)
+                {
+                    if (!list_memberTypes.Contains(m.EMemberTypePosition.GetFriendlyName())) list_memberTypes.Add(m.EMemberTypePosition.GetFriendlyName());
+                }
+                if (m.CrScEnd != null && m.CrScEnd.Name_short == crscName)
+                {
+                    if (!list_memberTypes.Contains(m.EMemberTypePosition.GetFriendlyName())) list_memberTypes.Add(m.EMemberTypePosition.GetFriendlyName());
+                }
+            }
+            return list_memberTypes;
         }
 
         private static CProjectInfo GetProjectInfo()

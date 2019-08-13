@@ -17,6 +17,32 @@ namespace BaseClasses
             return JsonConvert.DeserializeObject<T>(serialized, settings);
         }
 
+        
+
+        public static string GetFriendlyName(this EMemberType_FS_Position pos)
+        {   
+            switch (pos)
+            {
+                case EMemberType_FS_Position.EdgeColumn: return "Edge Column";
+                case EMemberType_FS_Position.EdgeRafter: return "Edge Rafter";
+                case EMemberType_FS_Position.MainColumn: return "Main Column";
+                case EMemberType_FS_Position.MainRafter: return "Main Rafter";
+                case EMemberType_FS_Position.EdgePurlin: return "Edge Purlin";
+                case EMemberType_FS_Position.Purlin: return "Purlin";
+                case EMemberType_FS_Position.Girt: return "Girt";
+                case EMemberType_FS_Position.GirtFrontSide: return "Girt Front Side";
+                case EMemberType_FS_Position.GirtBackSide: return "Girt Back Side";
+                case EMemberType_FS_Position.ColumnFrontSide: return "Column Front Side";
+                case EMemberType_FS_Position.ColumnBackSide: return "Column Back Side";
+                case EMemberType_FS_Position.DoorFrame: return "Door Frame";
+                case EMemberType_FS_Position.DoorLintel: return "Door Lintel";
+                case EMemberType_FS_Position.DoorTrimmer: return "Door Trimmer";
+                case EMemberType_FS_Position.WindowFrame: return "Window Frame";
+            }
+            return "Unknown EMemberType_FS_Position";
+        }
+
+
         public static string GetFriendlyName(this ELCType lcType)
         {
             switch (lcType)
