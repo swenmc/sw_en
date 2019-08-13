@@ -93,6 +93,12 @@ namespace EXPIMP
             elt.Arrange(new Rect(size));
             elt.UpdateLayout();
 
+            //foreach (ModelVisual3D line in ((Viewport3D)elt).Children)
+            //{
+            //    if(line is ScreenSpaceLines3D) ((ScreenSpaceLines3D)line).Rescale();
+            //}
+            //elt.UpdateLayout();
+
             var bitmap = new RenderTargetBitmap(
                 (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Default);
 
@@ -1491,7 +1497,13 @@ namespace EXPIMP
             _trackport.Height = 2000;
             _trackport.ViewPort.RenderSize = new Size(2800, 2000);
 
+            //Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
+            //_trackport.ViewPort.Measure(size);
+            //_trackport.ViewPort.Arrange(new Rect(size));
+            //_trackport.ViewPort.UpdateLayout();
+
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+            
             return _trackport.ViewPort;
         }
 

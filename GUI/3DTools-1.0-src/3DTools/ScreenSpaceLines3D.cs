@@ -168,6 +168,20 @@ namespace _3DTools
             }
         }
 
+
+        public void Rescale()
+        {
+            if (Points.Count == 0 && (_mesh.Positions == null || _mesh.Positions.Count == 0))
+            {
+                return;
+            }
+
+            if (UpdateTransforms())
+            {
+                RebuildGeometry();
+            }
+        }
+
         private void GeometryDirty()
         {
             // Force next call to UpdateTransforms() to return true.

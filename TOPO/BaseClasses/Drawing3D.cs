@@ -188,12 +188,12 @@ namespace BaseClasses
                     Point3D cameraPosition = new Point3D(0, 0, maxLen * 2);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
-                    
+
                     if (sDisplayOptions.bUseOrtographicCamera)
                     {
                         SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
-                        _trackport.ViewPort.Camera = ort_camera;
+                        _trackport.ViewPort.Camera = ort_camera;                        
                     }
                 }
                 else
@@ -1712,23 +1712,43 @@ namespace BaseClasses
             Color dimensionColor = Colors.Red;
             float flineThickness = 4;
 
-            WireLine wL1 = new WireLine();
-            wL1.Point1 = dimension.PointStart;
-            wL1.Point2 = dimension.PointStartL2;
-            wL1.Thickness = flineThickness;
+            //WireLine wL1 = new WireLine();
+            //wL1.Point1 = dimension.PointStart;
+            //wL1.Point2 = dimension.PointStartL2;
+            //wL1.Thickness = flineThickness;
+            //wL1.Color = dimensionColor;
+
+            //WireLine wL2 = new WireLine();
+            //wL2.Point1 = dimension.PointEnd;
+            //wL2.Point2 = dimension.PointEndL2;
+            //wL2.Thickness = flineThickness;
+            //wL2.Color = dimensionColor;
+
+            //WireLine wMain = new WireLine();
+            //wMain.Point1 = dimension.PointMainLine1;
+            //wMain.Point2 = dimension.PointMainLine2;
+            //wMain.Thickness = flineThickness;
+            //wMain.Color = dimensionColor;
+
+
+
+            ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
+            ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
+            ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
+            wL1.Points.Add(dimension.PointStart);
+            wL1.Points.Add(dimension.PointStartL2);
             wL1.Color = dimensionColor;
+            wL1.Thickness = flineThickness;
 
-            WireLine wL2 = new WireLine();
-            wL2.Point1 = dimension.PointEnd;
-            wL2.Point2 = dimension.PointEndL2;
-            wL2.Thickness = flineThickness;
+            wL2.Points.Add(dimension.PointEnd);
+            wL2.Points.Add(dimension.PointEndL2);
             wL2.Color = dimensionColor;
+            wL2.Thickness = flineThickness;
 
-            WireLine wMain = new WireLine();
-            wMain.Point1 = dimension.PointMainLine1;
-            wMain.Point2 = dimension.PointMainLine2;
-            wMain.Thickness = flineThickness;
+            wMain.Points.Add(dimension.PointMainLine1);
+            wMain.Points.Add(dimension.PointMainLine2);
             wMain.Color = dimensionColor;
+            wMain.Thickness = flineThickness;
 
             if (centerModel)
             {
@@ -1736,10 +1756,14 @@ namespace BaseClasses
                 wL2.Transform = centerModelTransGr;
                 wMain.Transform = centerModelTransGr;
             }
-
+            
             viewPort.Children.Add(wL1);
             viewPort.Children.Add(wL2);
             viewPort.Children.Add(wMain);
+
+            wL1.Rescale();
+            wL2.Rescale();
+            wMain.Rescale();            
         }
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
