@@ -1668,6 +1668,60 @@ namespace BaseClasses
             }
         }
 
+        //Draw Dimension 3D
+        public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = dimension.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = 0.1f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+            
+
+            SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, dimension.PointText, over, up);
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+
+
+            //WireLine w = new WireLine();
+            //w.Point1 = dimension.PointStart;
+            //w.Point2 = pAxisX;
+            //w.Thickness = flineThickness;
+            //w.Color = Colors.Red;
+
+            //WireLine wY = new WireLine();
+            //wY.Point1 = pGCS_centre;
+            //wY.Point2 = pAxisY;
+            //wY.Thickness = flineThickness;
+            //wY.Color = Colors.Green;
+
+            //WireLine wZ = new WireLine();
+            //wZ.Point1 = pGCS_centre;
+            //wZ.Point2 = pAxisZ;
+            //wZ.Thickness = flineThickness;
+            //wZ.Color = Colors.Blue;
+
+            //if (trans != null)
+            //{
+            //    wX.Transform = trans;
+            //    wY.Transform = trans;
+            //    wZ.Transform = trans;
+            //}
+
+            //viewPort.Children.Add(wX);
+            //viewPort.Children.Add(wY);
+            //viewPort.Children.Add(wZ);
+        }
+
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
         {
             double nodesSize = 0.01; // Polovica dlzky strany kocky alebo polomer gule

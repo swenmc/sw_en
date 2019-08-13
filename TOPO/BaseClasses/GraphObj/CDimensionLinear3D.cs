@@ -13,6 +13,14 @@ namespace BaseClasses.GraphObj
     {
         private Point3D m_PointStart;
         private Point3D m_PointEnd;
+        private Point3D m_PointText;
+
+        private Point3D m_PointStartL2;
+        private Point3D m_PointEndL2;
+        private Point3D m_PointMainLine1;
+        private Point3D m_PointMainLine2;
+
+        private Vector3D m_Direction;
         private Vector3D m_Horizontal;
         private Vector3D m_Vertical;
         private double m_DimensionLinesLength;
@@ -111,20 +119,76 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public Vector3D Direction
+        {
+            get
+            {
+                return m_Direction;
+            }
+
+            set
+            {
+                m_Direction = value;
+            }
+        }
+
+        public Point3D PointText
+        {
+            get
+            {
+                return m_PointText;
+            }
+
+            set
+            {
+                m_PointText = value;
+            }
+        }
+
         public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D horizontal,  Vector3D vertical, double dimensionLinesLength, double dimensionMainLineDistance, string text)
+        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, Vector3D horizontal,  Vector3D vertical, double dimensionLinesLength, double dimensionMainLineDistance, string text)
         {
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
+            m_Direction = direction;
             m_Horizontal = horizontal;
             m_Vertical = vertical;
             m_DimensionLinesLength = dimensionLinesLength;
             m_DimensionMainLineDistance = dimensionMainLineDistance;
             m_Text = text;
+            SetTextPoint();
         }
 
-        
+        public void SetTextPoint()
+        {
+            m_PointText = new Point3D() {
+                X = (m_PointStart.X + m_PointEnd.X) / 2 + Direction.X * DimensionLinesLength,
+                Y = (m_PointStart.Y + m_PointEnd.Y) / 2 + Direction.Y * DimensionLinesLength,
+                Z = (m_PointStart.Z + m_PointEnd.Z) / 2 + Direction.Z * DimensionLinesLength
+            };
+            
+        }
 
-        
+        public void SetPoints()
+        {
+            m_PointMainLine1 = new Point3D()
+            {
+                X = m_PointStart.X + Direction.X * DimensionMainLineDistance,
+                Y = m_PointStart.Y + Direction.Y * DimensionMainLineDistance,
+                Z = m_PointStart.Z + Direction.Z * DimensionMainLineDistance,
+            };
+
+            m_PointMainLine2 = new Point3D()
+            {
+                X = m_PointEnd.X + Direction.X * DimensionMainLineDistance,
+                Y = m_PointEnd.Y + Direction.Y * DimensionMainLineDistance,
+                Z = m_PointEnd.Z + Direction.Z * DimensionMainLineDistance,
+            };
+
+        }
+
+
+
+
     }
 }
