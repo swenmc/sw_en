@@ -98,6 +98,7 @@
     <Compile Include="ComboItem.cs" />
     <Compile Include="CProjectInfo.cs" />
     <Compile Include="CProductionInfo.cs" />
+    <Compile Include="GraphObj\CDimensionLinear3D.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Model\CTrapezoidalSheetingMember.cs" />
     <Compile Include="ExtensionMethods.cs" />

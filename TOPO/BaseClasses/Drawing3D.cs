@@ -1345,67 +1345,7 @@ namespace BaseClasses
             viewPort.Children.Add(wY);
             viewPort.Children.Add(wZ);
         }
-
-        // TODO Ondrej - z tychto troch metod staci asi ponechat uz len jednu ??? pripadne popisat naco sa ktora este moze hodit aby to bolo hned zrejme
-        // Draw Members Wire Frame
-        public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
-        {
-            // Members - Wire Frame
-            if (model.m_arrMembers != null)
-            {
-                for (int i = 0; i < model.m_arrMembers.Length; i++)
-                {
-                    if (model.m_arrMembers[i] != null &&
-                        model.m_arrMembers[i].NodeStart != null &&
-                        model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null &&
-                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
-                    {
-                        // Create WireFrame in LCS
-                        ScreenSpaceLines3D wireFrame_FrontSide = model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start);
-                        ScreenSpaceLines3D wireFrame_BackSide = model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End);
-                        ScreenSpaceLines3D wireFrame_Lateral = model.m_arrMembers[i].CreateWireFrameLateral();
-
-                        // Add Wireframe Lines to the trackport
-                        viewPort.Children.Add(wireFrame_FrontSide);
-                        viewPort.Children.Add(wireFrame_BackSide);
-                        viewPort.Children.Add(wireFrame_Lateral);
-                    }
-                }
-            }
-        }
-        // Draw Members Wire Frame - test for better performance
-        public static void DrawModelMembersWireFrame_test(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions)
-        {
-            // Members - Wire Frame
-            if (model.m_arrMembers != null)
-            {
-                Color wireFrameColor = sDisplayOptions.wireFrameColor;
-                double thickness = 1.0;
-                ScreenSpaceLines3D wireFrame_FrontSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
-                ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
-                ScreenSpaceLines3D wireFrame_Lateral = new ScreenSpaceLines3D(wireFrameColor, thickness);
-
-                for (int i = 0; i < model.m_arrMembers.Length; i++)
-                {
-                    if (model.m_arrMembers[i] != null &&
-                        model.m_arrMembers[i].NodeStart != null &&
-                        model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null &&
-                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
-                    {
-                        // Create WireFrame in LCS
-                        wireFrame_FrontSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start).Points);
-                        wireFrame_BackSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End).Points);
-                        wireFrame_Lateral.AddPoints(model.m_arrMembers[i].CreateWireFrameLateral().Points);
-                    }
-                }
-                // Add Wireframe Lines to the trackport
-                viewPort.Children.Add(wireFrame_FrontSide);
-                viewPort.Children.Add(wireFrame_BackSide);
-                viewPort.Children.Add(wireFrame_Lateral);
-            }
-        }
+ 
         // Add all members in one wireframe collection of ScreenSpaceLines3D
         public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions)
         {
