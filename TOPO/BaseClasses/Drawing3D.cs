@@ -1709,8 +1709,8 @@ namespace BaseClasses
             }
             viewPort.Children.Add(textlabel);
 
-            Color dimensionColor = Colors.Orange;
-            float flineThickness = 2;
+            Color dimensionColor = Colors.Red;
+            float flineThickness = 4;
 
             WireLine wL1 = new WireLine();
             wL1.Point1 = dimension.PointStart;
