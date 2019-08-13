@@ -121,25 +121,33 @@ namespace EXPIMP
             List<EViewModelMembers> list_views = new List<EViewModelMembers>()
              { EViewModelMembers.FRONT, EViewModelMembers.MIDDLE_FRAME, EViewModelMembers.BACK, EViewModelMembers.LEFT, EViewModelMembers.RIGHT, EViewModelMembers.TOP, EViewModelMembers.BOTTOM };
 
+            int legendWidth = 100;
+
             foreach (EViewModelMembers viewMembers in list_views)
             {
                 page = s_document.AddPage();
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
                 gfx = XGraphics.FromPdfPage(page);
+                DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
 
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model);
+                CModel filteredModel = null;
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
                 viewPort.UpdateLayout();
+
+                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendWidth);
+
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString( $"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
                                 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
-                double scaleFactor = gfx.PageSize.Width / image.PointWidth;
-                double scaledImageWidth = gfx.PageSize.Width;
+
+                double scaleFactor = (gfx.PageSize.Width - legendWidth) / image.PointWidth;
+                double scaledImageWidth = gfx.PageSize.Width - legendWidth;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
@@ -164,6 +172,43 @@ namespace EXPIMP
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 10, 10, 300, 200);
+        }
+
+        private static void DrawImage(XGraphics gfx, string path, int x, int y, int width, int height)
+        {
+            XImage image = XImage.FromFile(path);
+            gfx.DrawImage(image, x, y, width, height);
+        }
+
+        private static void DrawCrscLegend(XGraphics gfx, CModel model, int x)
+        {
+            int width = 100;
+            int height = 100;
+            
+            int y = 20;
+            List<string> list_crsc = GetCrscFromModel(model);
+            foreach (string s in list_crsc)
+            {
+                DrawImage(gfx, ConfigurationManager.AppSettings[s], x, y, width, height);
+                y += height;
+            }
+        }
+
+        private static List<string> GetCrscFromModel(CModel model)
+        {
+            List<string> list_crsc = new List<string>();
+            foreach (CMember m in model.m_arrMembers)
+            {
+                if (m.CrScStart != null)
+                {
+                    if (!list_crsc.Contains(m.CrScStart.Name_short)) list_crsc.Add(m.CrScStart.Name_short);
+                }
+                if (m.CrScEnd != null)
+                {
+                    if (!list_crsc.Contains(m.CrScEnd.Name_short)) list_crsc.Add(m.CrScEnd.Name_short);
+                }
+            }
+            return list_crsc;
         }
 
         private static CProjectInfo GetProjectInfo()

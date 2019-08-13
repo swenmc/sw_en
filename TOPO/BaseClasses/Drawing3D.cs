@@ -106,8 +106,9 @@ namespace BaseClasses
             }            
         }
 
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
+            CModel model = null;
             //DateTime start = DateTime.Now;
 
             // Color of Trackport
@@ -116,7 +117,7 @@ namespace BaseClasses
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (_model != null)
             {
-                CModel model = Drawing3D.GetModelAccordingToView(_model, sDisplayOptions);
+                model = Drawing3D.GetModelAccordingToView(_model, sDisplayOptions);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
@@ -237,6 +238,7 @@ namespace BaseClasses
             }
 
             _trackport.SetupScene();
+            return model;
         }
 
         public static void DrawJointToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)
