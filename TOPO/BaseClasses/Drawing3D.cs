@@ -1240,7 +1240,6 @@ namespace BaseClasses
                 viewPort.Children.Add(sAxisZ_3D);
             }
 
-
             if (useWireLine)
             {
                 WireLine wX = new WireLine();
@@ -1425,31 +1424,54 @@ namespace BaseClasses
                         wireFramePoints.AddRange(model.m_arrMembers[i].WireFramePoints);
                     }
                 }
+                double thickness = 1.0;
 
-                WireLines wl = new WireLines();
-                wl.Lines = new Point3DCollection(wireFramePoints);
-                wl.Color = sDiplayOptions.wireFrameColor;
-
-                // priprava na centrovanie modelu
-                if (centerModel)
+                bool useWireLines = false;
+                bool useScreenSpaceLines = false;
+                bool useLinesVisual3D = true;
+                if (useWireLines)
                 {
-                    wl.Transform = centerModelTransGr;
+                    WireLines wl = new WireLines();                    
+                    wl.Lines = new Point3DCollection(wireFramePoints);
+                    wl.Color = sDiplayOptions.wireFrameColor;
+                    // priprava na centrovanie modelu
+                    if (centerModel)
+                    {
+                        wl.Transform = centerModelTransGr;
+                    }
+                    viewPort.Children.Add(wl);
                 }
-
-                viewPort.Children.Add(wl);
-
-                //ScreenSpaceLines are much slower = performance issue
-                //Color wireFrameColor = Color.FromRgb(60, 60, 60);
-                //double thickness = 1.0;
-                //ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
-                //wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
-                //viewPort.Children.Add(wireFrameAllMembers);
+                if (useScreenSpaceLines)
+                {
+                    //ScreenSpaceLines are much slower = performance issue                                        
+                    ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(sDiplayOptions.wireFrameColor, thickness); // Just one collection for all members
+                    wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
+                    if (centerModel)
+                    {
+                        wireFrameAllMembers.Transform = centerModelTransGr;
+                    }
+                    viewPort.Children.Add(wireFrameAllMembers);
+                }
+                if (useLinesVisual3D)
+                {
+                    LinesVisual3D wl = new LinesVisual3D();
+                    wl.Points = new Point3DCollection(wireFramePoints);
+                    wl.Color = sDiplayOptions.wireFrameColor;
+                    wl.Thickness = thickness;
+                    if (centerModel)
+                    {
+                        wl.Transform = centerModelTransGr;
+                    }
+                    viewPort.Children.Add(wl);
+                }
             }
         }
 
         // Draw Model Connection Joints Wire Frame
         public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, bool drawConnectors = true)
         {
+            //zaviedol som maxPoints z dovodu OutOfMemoryException - pocet bodov ide bezne aj cez 700.000
+            int maxPoints = 100000;
             //Wireframe Points of all joints
             List<Point3D> jointsWireFramePoints = new List<Point3D>();
 
@@ -1526,21 +1548,54 @@ namespace BaseClasses
                         var transPoints = jointPoints.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
                         jointsWireFramePoints.AddRange(transPoints);
                     }
+
+                    if (jointsWireFramePoints.Count > maxPoints)
+                    {
+                        AddLineToViewPort(jointsWireFramePoints, sDisplayOptions, viewPort);
+                        jointsWireFramePoints.Clear();
+                    }
                 }
 
+                AddLineToViewPort(jointsWireFramePoints, sDisplayOptions, viewPort);                
+            }
+        }
+
+        private static void AddLineToViewPort(List<Point3D> points, DisplayOptions opts, Viewport3D viewPort)
+        {
+            //TO Mato - tieto prepinace sa vyskytuju castejsie...je potrebne poprepinat a vyskusat jednotlive typy ciar, co sa tyka zobrazovania a tiez performance
+            double thickness = 1.0;
+
+            bool useWireLines = false;
+            bool useScreenSpaceLines = false;
+            bool useLinesVisual3D = true;
+
+            if (useWireLines)
+            {
                 WireLines wl = new WireLines();
-                wl.Lines = new Point3DCollection(jointsWireFramePoints);
-                wl.Color = sDisplayOptions.wireFrameColor;
-
-                //priprava na centrovanie modelu
-                if (centerModel)
-                {
-                    wl.Transform = centerModelTransGr;
-                }
-
+                wl.Lines = new Point3DCollection(points);
+                wl.Color = opts.wireFrameColor;
+                if (centerModel) { wl.Transform = centerModelTransGr; }
+                viewPort.Children.Add(wl);
+            }
+            if (useScreenSpaceLines)
+            {
+                //ScreenSpaceLines are much slower = performance issue                                        
+                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(opts.wireFrameColor, thickness); // Just one collection for all members
+                line_3D.Points = new Point3DCollection(points);
+                if (centerModel) { line_3D.Transform = centerModelTransGr; }
+                viewPort.Children.Add(line_3D);
+            }
+            if (useLinesVisual3D)
+            {
+                LinesVisual3D wl = new LinesVisual3D();
+                wl.Points = new Point3DCollection(points);
+                wl.Color = opts.wireFrameColor;
+                wl.Thickness = thickness;
+                if (centerModel) { wl.Transform = centerModelTransGr; }
                 viewPort.Children.Add(wl);
             }
         }
+
         public static GeometryModel3D GetGeometryModel3DFrom(Model3DGroup model3DGroup)
         {
             GeometryModel3D gm = null;
