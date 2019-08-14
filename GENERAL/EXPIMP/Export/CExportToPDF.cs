@@ -202,7 +202,8 @@ namespace EXPIMP
                                 ArcSegment arc = (ArcSegment)ps;
                                 xGrPath.AddArc(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop), 
                                     new XPoint(arc.Point.X * scaleFactor + marginLeft, arc.Point.Y * scaleFactor + marginTop), 
-                                    new XSize(arc.Size.Width, arc.Size.Height), arc.RotationAngle, arc.IsLargeArc, arc.SweepDirection);
+                                    new XSize(arc.Size.Width, arc.Size.Height), arc.RotationAngle, arc.IsLargeArc, (XSweepDirection)arc.SweepDirection);
+                                
                             }
                             else if (ps is BezierSegment)
                             {
@@ -735,7 +736,7 @@ namespace EXPIMP
         private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
-            gfx.MFEH = PdfFontEmbedding.Always;
+            //gfx.MFEH = PdfFontEmbedding.Always;
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
@@ -756,7 +757,7 @@ namespace EXPIMP
         private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
-            gfx.MFEH = PdfFontEmbedding.Always;
+            //gfx.MFEH = PdfFontEmbedding.Always;
             
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();

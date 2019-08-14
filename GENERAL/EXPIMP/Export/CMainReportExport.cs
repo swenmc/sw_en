@@ -131,7 +131,8 @@ namespace EXPIMP
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
                 gfx = XGraphics.FromPdfPage(page);
-                DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
+                //DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
+                DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
@@ -174,6 +175,39 @@ namespace EXPIMP
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 10, 10, 300, 200);
+        }
+
+        private static void DrawPDFLogo(XGraphics gfx, int x, int y)
+        {
+            int width = 240;
+            int height = 75;
+            XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
+
+            DrawImage(gfx, ConfigurationManager.AppSettings["logo2"], x, y, width, height);
+
+            int textX = x + width;
+            int textY = y + 6;
+            int lineHeight = 11;
+
+            gfx.DrawString("Formsteel Technologies", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("2 - 4 Waokauri Place", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("Mangere, Auckland", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("tel 09 275 0089", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("fax 09 257 2650", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("free 0800 800 003", font, XBrushes.Black, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("sales@formsteel.co.nz", font, XBrushes.Blue, textX, textY);
+            textY += lineHeight;
+            gfx.DrawString("www.formsteel.co.nz", font, XBrushes.Blue, textX, textY);
+            //Adding web link in older versions
+            //PdfSharp.Drawing.XRect rect2 = gfx.Transformer.WorldToDefaultPage(new PdfSharp.Drawing.XRect(new PdfSharp.Drawing.XPoint(textX, textY), new XSize(100, 12)));
+            //PdfSharp.Pdf.PdfRectangle rc2 = new PdfSharp.Pdf.PdfRectangle(rect2);
+            //gfx.PdfPage.AddWebLink(rc2, "www.formsteel.co.nz");
         }
 
         private static void DrawImage(XGraphics gfx, string path, int x, int y, int width, int height)
@@ -317,7 +351,7 @@ namespace EXPIMP
         private static void AddBasicGeometryToDocument(XGraphics gfx, CModelData data, double offsetY)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
-            gfx.MFEH = PdfFontEmbedding.Always;
+            //gfx.MFEH = PdfFontEmbedding.Always;
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
@@ -624,7 +658,7 @@ namespace EXPIMP
         private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
-            gfx.MFEH = PdfFontEmbedding.Always;
+            //gfx.MFEH = PdfFontEmbedding.Always;
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
@@ -645,7 +679,7 @@ namespace EXPIMP
         private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
-            gfx.MFEH = PdfFontEmbedding.Always;
+            //gfx.MFEH = PdfFontEmbedding.Always;
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
