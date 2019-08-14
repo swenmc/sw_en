@@ -193,7 +193,7 @@ namespace BaseClasses
                     {
                         SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
-                        _trackport.ViewPort.Camera = ort_camera;                        
+                        _trackport.ViewPort.Camera = ort_camera;
                     }
                 }
                 else
@@ -240,7 +240,12 @@ namespace BaseClasses
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                     CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, (model.fW_frame * 1000).ToString());
-                    
+
+                    Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
+                    _trackport.ViewPort.Measure(size);
+                    _trackport.ViewPort.Arrange(new Rect(size));
+                    _trackport.ViewPort.UpdateLayout();
+
                     Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 }
 
@@ -1730,7 +1735,9 @@ namespace BaseClasses
             //wMain.Thickness = flineThickness;
             //wMain.Color = dimensionColor;
 
-
+            //LinesVisual3D wL1 = new LinesVisual3D();
+            //LinesVisual3D wL2 = new LinesVisual3D();
+            //LinesVisual3D wMain = new LinesVisual3D();
 
             ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
             ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
@@ -1760,10 +1767,11 @@ namespace BaseClasses
             viewPort.Children.Add(wL1);
             viewPort.Children.Add(wL2);
             viewPort.Children.Add(wMain);
-
+            //viewPort.UpdateLayout();
             wL1.Rescale();
             wL2.Rescale();
-            wMain.Rescale();            
+            wMain.Rescale();
+            //viewPort.UpdateLayout();
         }
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
