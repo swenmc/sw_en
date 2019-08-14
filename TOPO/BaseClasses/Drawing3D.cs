@@ -1191,73 +1191,117 @@ namespace BaseClasses
         {
             float flineThickness = 3;
             // Global coordinate system - axis
-            ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D sAxisY_3D = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D sAxisZ_3D = new ScreenSpaceLines3D();
             Point3D pGCS_centre = new Point3D(0, 0, 0);
             Point3D pAxisX = new Point3D(1, 0, 0);
             Point3D pAxisY = new Point3D(0, 1, 0);
             Point3D pAxisZ = new Point3D(0, 0, 1);
 
-            sAxisX_3D.Points.Add(pGCS_centre);
-            sAxisX_3D.Points.Add(pAxisX);
-            sAxisX_3D.Color = Colors.Red;
-            sAxisX_3D.Thickness = flineThickness;
-            sAxisX_3D.Name = "AxisX";
+            bool useScreenSpaceLines3D = false;
+            bool useWireLine = false;
+            bool useLinesVisual3D = true;
 
-            sAxisY_3D.Points.Add(pGCS_centre);
-            sAxisY_3D.Points.Add(pAxisY);
-            sAxisY_3D.Color = Colors.Green;
-            sAxisY_3D.Thickness = flineThickness;
-            sAxisY_3D.Name = "AxisY";
-
-            sAxisZ_3D.Points.Add(pGCS_centre);
-            sAxisZ_3D.Points.Add(pAxisZ);
-            sAxisZ_3D.Color = Colors.Blue;
-            sAxisZ_3D.Thickness = flineThickness;
-            sAxisZ_3D.Name = "AxisZ";
-
-            if (model != null)
+            if (useScreenSpaceLines3D)
             {
-                model.AxisX = sAxisX_3D;
-                model.AxisY = sAxisY_3D;
-                model.AxisZ = sAxisZ_3D;
+                ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
+                ScreenSpaceLines3D sAxisY_3D = new ScreenSpaceLines3D();
+                ScreenSpaceLines3D sAxisZ_3D = new ScreenSpaceLines3D();
+                sAxisX_3D.Points.Add(pGCS_centre);
+                sAxisX_3D.Points.Add(pAxisX);
+                sAxisX_3D.Color = Colors.Red;
+                sAxisX_3D.Thickness = flineThickness;
+                sAxisX_3D.Name = "AxisX";
+
+                sAxisY_3D.Points.Add(pGCS_centre);
+                sAxisY_3D.Points.Add(pAxisY);
+                sAxisY_3D.Color = Colors.Green;
+                sAxisY_3D.Thickness = flineThickness;
+                sAxisY_3D.Name = "AxisY";
+
+                sAxisZ_3D.Points.Add(pGCS_centre);
+                sAxisZ_3D.Points.Add(pAxisZ);
+                sAxisZ_3D.Color = Colors.Blue;
+                sAxisZ_3D.Thickness = flineThickness;
+                sAxisZ_3D.Name = "AxisZ";
+
+                if (model != null)
+                {
+                    model.AxisX = sAxisX_3D;
+                    model.AxisY = sAxisY_3D;
+                    model.AxisZ = sAxisZ_3D;
+                }
+                if (trans != null)
+                {
+                    sAxisX_3D.Transform = trans;
+                    sAxisY_3D.Transform = trans;
+                    sAxisZ_3D.Transform = trans;
+                }
+                viewPort.Children.Add(sAxisX_3D);
+                viewPort.Children.Add(sAxisY_3D);
+                viewPort.Children.Add(sAxisZ_3D);
             }
 
-            //temp skuska
-            WireLine wX = new WireLine();
-            wX.Point1 = pGCS_centre;
-            wX.Point2 = pAxisX;
-            wX.Thickness = flineThickness;
-            wX.Color = Colors.Red;
 
-            WireLine wY = new WireLine();
-            wY.Point1 = pGCS_centre;
-            wY.Point2 = pAxisY;
-            wY.Thickness = flineThickness;
-            wY.Color = Colors.Green;
-
-            WireLine wZ = new WireLine();
-            wZ.Point1 = pGCS_centre;
-            wZ.Point2 = pAxisZ;
-            wZ.Thickness = flineThickness;
-            wZ.Color = Colors.Blue;
-            
-            if (trans != null)
+            if (useWireLine)
             {
-                wX.Transform = trans;
-                wY.Transform = trans;
-                wZ.Transform = trans;
+                WireLine wX = new WireLine();
+                wX.Point1 = pGCS_centre;
+                wX.Point2 = pAxisX;
+                wX.Thickness = flineThickness;
+                wX.Color = Colors.Red;
+
+                WireLine wY = new WireLine();
+                wY.Point1 = pGCS_centre;
+                wY.Point2 = pAxisY;
+                wY.Thickness = flineThickness;
+                wY.Color = Colors.Green;
+
+                WireLine wZ = new WireLine();
+                wZ.Point1 = pGCS_centre;
+                wZ.Point2 = pAxisZ;
+                wZ.Thickness = flineThickness;
+                wZ.Color = Colors.Blue;
+
+                if (trans != null)
+                {
+                    wX.Transform = trans;
+                    wY.Transform = trans;
+                    wZ.Transform = trans;
+                }
+                viewPort.Children.Add(wX);
+                viewPort.Children.Add(wY);
+                viewPort.Children.Add(wZ);
             }
 
-            viewPort.Children.Add(wX);
-            viewPort.Children.Add(wY);
-            viewPort.Children.Add(wZ);
-            //end temp skuska
+            if (useLinesVisual3D)
+            {
+                LinesVisual3D lX = new LinesVisual3D();
+                LinesVisual3D lY = new LinesVisual3D();
+                LinesVisual3D lZ = new LinesVisual3D();
+                lX.Points.Add(pGCS_centre);
+                lX.Points.Add(pAxisX);
+                lX.Color = Colors.Red;
+                lX.Thickness = flineThickness;                
 
-            //viewPort.Children.Add(sAxisX_3D);
-            //viewPort.Children.Add(sAxisY_3D);
-            //viewPort.Children.Add(sAxisZ_3D);
+                lY.Points.Add(pGCS_centre);
+                lY.Points.Add(pAxisY);
+                lY.Color = Colors.Green;
+                lY.Thickness = flineThickness;                
+
+                lZ.Points.Add(pGCS_centre);
+                lZ.Points.Add(pAxisZ);
+                lZ.Color = Colors.Blue;
+                lZ.Thickness = flineThickness;                
+
+                if (trans != null)
+                {
+                    lX.Transform = trans;
+                    lY.Transform = trans;
+                    lZ.Transform = trans;
+                }
+                viewPort.Children.Add(lX);
+                viewPort.Children.Add(lY);
+                viewPort.Children.Add(lZ);
+            }
         }
 
         // Draw Members Centerlines
@@ -1694,7 +1738,7 @@ namespace BaseClasses
             float fTextBlockVerticalSize = 0.1f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
-            // Tieto nastavenia sa nepouziju
+            
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;

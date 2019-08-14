@@ -46,15 +46,15 @@ namespace EXPIMP
             //s_document.Info.Author = "";
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
-            //PdfPage page = s_document.AddPage();
-            //page.Orientation = PdfSharp.PageOrientation.Landscape;
-            //XGraphics gfx = XGraphics.FromPdfPage(page);
+            PdfPage page = s_document.AddPage();
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            //DrawModel3D(gfx, viewPort);
+            DrawModel3D(gfx, viewPort);
             //gfx.Dispose();
                                     
             DrawModelViews(s_document, modelData);
