@@ -61,7 +61,7 @@ namespace PFD
         private int MBackgroundColorIndex;
         public Color BackgroundColor;
         private int MViewIndex;
-        private int MViewModelMembersIndex;
+        private int MViewModelMemberFilterIndex;
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
@@ -146,7 +146,7 @@ namespace PFD
         private List<string> MBuildingSides;
         private List<string> MDoorsTypes;
         private List<string> MModelViews;
-        private List<string> MViewModelMembers;
+        private List<string> MViewModelMemberFilters;
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private bool MModelCalculatedResultsValid;
@@ -1329,16 +1329,16 @@ namespace PFD
         {
             get
             {
-                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Top", "Bottom", "Left", "Right" };
+                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Top", /*"Bottom",*/ "Left", "Right" };
                 return MModelViews;
             }
         }
-        public List<string> ViewModelMembers
+        public List<string> ViewModelMemberFilters
         {
             get
             {
-                if (MViewModelMembers == null) MViewModelMembers = new List<string>() { "All", "Front", "Back", "Middle Frame", "Top", "Bottom", "Left", "Right" };
-                return MViewModelMembers;
+                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front", "Back", "Top", /*"Bottom",*/ "Left", "Right", "Middle Frame", };
+                return MViewModelMemberFilters;
             }
         }
 
@@ -1869,17 +1869,17 @@ namespace PFD
             }
         }
 
-        public int ViewModelMembersIndex
+        public int ViewModelMemberFilterIndex
         {
             get
             {
-                return MViewModelMembersIndex;
+                return MViewModelMemberFilterIndex;
             }
 
             set
             {
-                MViewModelMembersIndex = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ViewModelMembersIndex");
+                MViewModelMemberFilterIndex = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ViewModelMemberFilterIndex");
             }
         }
 
@@ -2106,7 +2106,7 @@ namespace PFD
             ColorsAccordingToSections = true;
             RecreateModel = true;
             ViewIndex = (int)EModelViews.FRONT;
-            ViewModelMembersIndex = (int)EViewModelMembers.All;
+            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
@@ -2699,7 +2699,7 @@ namespace PFD
             sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
-            sDisplayOptions.ViewModelMembers = ViewModelMembersIndex;
+            sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
 
             return sDisplayOptions;
         }

@@ -643,32 +643,26 @@
         eWindowFrame_Header_Sill_WindowFrameColumn = 48
     }
 
-
-
     public enum EModelViews
     {
         FRONT = 0,
         BACK = 1,
         TOP = 2,
-        BOTTOM = 3,
-        LEFT = 4,
-        RIGHT = 5
+        //BOTTOM = 3,
+        LEFT = 3,
+        RIGHT = 4
     }
-    public enum EViewModelMembers
+    public enum EViewModelMemberFilters
     {
         All = 0,
         FRONT = 1,
         BACK = 2,
-        MIDDLE_FRAME = 3,
-        TOP = 4,
-        BOTTOM = 5,
-        LEFT = 6,
-        RIGHT = 7
+        TOP = 3,
+        //BOTTOM = 4,
+        LEFT = 4,
+        RIGHT = 5,
+        MIDDLE_FRAME = 6
     }
-
-
-
-
 
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
