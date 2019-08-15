@@ -425,7 +425,7 @@
         eWF, // Window Frame
         eBG, // Base Girt
         eMR, // Main Rafter
-        eMC, // Main Column
+        eMC // Main Column
     }
 
     public enum EMemberType_FS_Position
@@ -647,21 +647,20 @@
     {
         FRONT = 0,
         BACK = 1,
-        TOP = 2,
-        //BOTTOM = 3,
-        LEFT = 3,
-        RIGHT = 4
+        LEFT = 2,
+        RIGHT = 3,
+        TOP = 4
     }
     public enum EViewModelMemberFilters
     {
         All = 0,
         FRONT = 1,
         BACK = 2,
-        TOP = 3,
-        //BOTTOM = 4,
-        LEFT = 4,
-        RIGHT = 5,
-        MIDDLE_FRAME = 6
+        LEFT = 3,
+        RIGHT = 4,
+        ROOF = 5,
+        MIDDLE_FRAME = 6,
+        COLUMNS = 7
     }
 
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy

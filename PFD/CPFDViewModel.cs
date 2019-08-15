@@ -1329,7 +1329,7 @@ namespace PFD
         {
             get
             {
-                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Top", /*"Bottom",*/ "Left", "Right" };
+                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Left", "Right", "Top" /*"Bottom",*/  };
                 return MModelViews;
             }
         }
@@ -1337,7 +1337,7 @@ namespace PFD
         {
             get
             {
-                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front", "Back", "Top", /*"Bottom",*/ "Left", "Right", "Middle Frame", };
+                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front Side", "Back Side", "Left Side", "Right Side", "Roof", "Middle Frame", "Columns" };
                 return MViewModelMemberFilters;
             }
         }

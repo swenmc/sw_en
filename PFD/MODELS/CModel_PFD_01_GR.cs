@@ -16,10 +16,8 @@ namespace PFD
 {
     public class CModel_PFD_01_GR : CModel_PFD
     {
-        public float fH1_frame;
         float fH2_frame;
-        
-        
+
         public float fRoofPitch_rad;
         public int iFrameNo;
         

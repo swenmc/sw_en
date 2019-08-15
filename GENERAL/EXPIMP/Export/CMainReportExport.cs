@@ -112,7 +112,7 @@ namespace EXPIMP
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
-            PdfPage page;            
+            PdfPage page;
             double scale = 1;
             DisplayOptions opts = data.DisplayOptions;
             opts.bUseOrtographicCamera = true;
@@ -120,7 +120,7 @@ namespace EXPIMP
             opts.bColorsAccordingToSections = true;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
-             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.TOP, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME,};
+             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS};
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -163,11 +163,11 @@ namespace EXPIMP
         {
             if (viewModelMembers == EViewModelMemberFilters.FRONT) return (int)EModelViews.FRONT;
             else if (viewModelMembers == EViewModelMemberFilters.BACK) return (int)EModelViews.BACK;
-            else if (viewModelMembers == EViewModelMemberFilters.MIDDLE_FRAME) return (int)EModelViews.FRONT;
             else if (viewModelMembers == EViewModelMemberFilters.LEFT) return (int)EModelViews.LEFT;
             else if (viewModelMembers == EViewModelMemberFilters.RIGHT) return (int)EModelViews.RIGHT;
-            else if (viewModelMembers == EViewModelMemberFilters.TOP) return (int)EModelViews.TOP;
-            //else if (viewModelMembers == EViewModelMemberFilters.BOTTOM) return (int)EModelViews.BOTTOM;
+            else if (viewModelMembers == EViewModelMemberFilters.ROOF) return (int)EModelViews.TOP;
+            else if (viewModelMembers == EViewModelMemberFilters.MIDDLE_FRAME) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMemberFilters.COLUMNS) return (int)EModelViews.TOP;
             else return (int)EModelViews.FRONT;
         }
 

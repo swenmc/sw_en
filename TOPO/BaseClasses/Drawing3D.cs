@@ -249,10 +249,6 @@ namespace BaseClasses
 
                     Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 }
-
-                
-                
-               
             }
 
             _trackport.SetupScene();
@@ -332,8 +328,6 @@ namespace BaseClasses
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-
-                
 
                 if (centerModel)
                 {
@@ -3208,37 +3202,22 @@ namespace BaseClasses
             _model.fL1_frame = model.fL1_frame;
             _model.fL_tot = model.fL_tot;
             _model.fW_frame = model.fW_frame;
+            _model.fH1_frame = model.fH1_frame;
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 return model;
-            }            
+            }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
-
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 _model.m_arrMembers = ModelHelper.GetBackViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetBackViewNodes(model);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
-            {
-                _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
-                _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
-
-            }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.TOP)
-            {
-                return model;
-            }
-            /*
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BOTTOM)
-            {
-                return model;
-            }*/
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 _model.m_arrMembers = ModelHelper.GetLeftViewMembers(model);
@@ -3249,9 +3228,24 @@ namespace BaseClasses
                 _model.m_arrMembers = ModelHelper.GetRightViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetRightViewNodes(model);
             }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            {
+                _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetRoofViewNodes(model);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            {
+                _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
+                _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            {
+                _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
+            }
+
             return _model;
         }
-
 
         private static void SetLabelsUpAndOverVectors(DisplayOptions sDisplayOptions, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, out Vector3D over, out Vector3D up)
         {
