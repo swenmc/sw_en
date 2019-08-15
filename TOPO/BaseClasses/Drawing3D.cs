@@ -43,6 +43,7 @@ namespace BaseClasses
                 AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
             }
+            /*
             else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
             {
                 //takto pokial zachovavame Left/Right
@@ -54,7 +55,7 @@ namespace BaseClasses
                 //takto pokial chceme zachovat Front/Back
                 //AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 180);
                 //transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
-            }
+            }*/
             else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
@@ -89,11 +90,11 @@ namespace BaseClasses
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
                 sDisplayOptions.OrtographicCameraWidth *= 1.2;
             }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
+            /*else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
             {
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
                 sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }
+            }*/
             else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
             {
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
@@ -234,7 +235,7 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.FRONT)
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
                 {
                     CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
@@ -3208,48 +3209,45 @@ namespace BaseClasses
             _model.fL_tot = model.fL_tot;
             _model.fW_frame = model.fW_frame;
 
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.All)
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
                 return model;
             }            
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.FRONT)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
 
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.BACK)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 _model.m_arrMembers = ModelHelper.GetBackViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetBackViewNodes(model);
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.MIDDLE_FRAME)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
                 _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
 
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.TOP)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.TOP)
             {
                 return model;
-
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.BOTTOM)
+            /*
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BOTTOM)
             {
                 return model;
-
-            }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.LEFT)
+            }*/
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 _model.m_arrMembers = ModelHelper.GetLeftViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetLeftViewNodes(model);
-
             }
-            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMembers.RIGHT)
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 _model.m_arrMembers = ModelHelper.GetRightViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetRightViewNodes(model);
-
             }
             return _model;
         }
@@ -3282,11 +3280,12 @@ namespace BaseClasses
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                 up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
             }
+            /*
             else if (sDisplayOptions.ModelView == (int)EModelViews.BOTTOM)
             {
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                 up = new Vector3D(fTextBlockVerticalSizeFactor, 0, 0);
-            }
+            }*/
         }
     }
 }

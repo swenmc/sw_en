@@ -119,13 +119,13 @@ namespace EXPIMP
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
 
-            List<EViewModelMembers> list_views = new List<EViewModelMembers>()
-             { EViewModelMembers.FRONT, EViewModelMembers.MIDDLE_FRAME, EViewModelMembers.BACK, EViewModelMembers.LEFT, EViewModelMembers.RIGHT, EViewModelMembers.TOP, EViewModelMembers.BOTTOM };
+            List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
+             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.TOP, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME,};
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
 
-            foreach (EViewModelMembers viewMembers in list_views)
+            foreach (EViewModelMemberFilters viewMembers in list_views)
             {
                 page = s_document.AddPage();
                 page.Size = PageSize.A3;
@@ -159,15 +159,15 @@ namespace EXPIMP
             }
         }
 
-        private static int GetView(EViewModelMembers viewModelMembers)
+        private static int GetView(EViewModelMemberFilters viewModelMembers)
         {
-            if (viewModelMembers == EViewModelMembers.FRONT) return (int)EModelViews.FRONT;
-            else if (viewModelMembers == EViewModelMembers.BACK) return (int)EModelViews.BACK;
-            else if (viewModelMembers == EViewModelMembers.MIDDLE_FRAME) return (int)EModelViews.FRONT;
-            else if (viewModelMembers == EViewModelMembers.LEFT) return (int)EModelViews.LEFT;
-            else if (viewModelMembers == EViewModelMembers.RIGHT) return (int)EModelViews.RIGHT;
-            else if (viewModelMembers == EViewModelMembers.TOP) return (int)EModelViews.TOP;
-            else if (viewModelMembers == EViewModelMembers.BOTTOM) return (int)EModelViews.BOTTOM;
+            if (viewModelMembers == EViewModelMemberFilters.FRONT) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMemberFilters.BACK) return (int)EModelViews.BACK;
+            else if (viewModelMembers == EViewModelMemberFilters.MIDDLE_FRAME) return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMemberFilters.LEFT) return (int)EModelViews.LEFT;
+            else if (viewModelMembers == EViewModelMemberFilters.RIGHT) return (int)EModelViews.RIGHT;
+            else if (viewModelMembers == EViewModelMemberFilters.TOP) return (int)EModelViews.TOP;
+            //else if (viewModelMembers == EViewModelMemberFilters.BOTTOM) return (int)EModelViews.BOTTOM;
             else return (int)EModelViews.FRONT;
         }
 
