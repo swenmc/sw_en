@@ -195,10 +195,12 @@ namespace BaseClasses
                     CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
                     CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
-                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
-                    // TODO - dorobit nastavenie v GUI
-                    if (/*sDisplayOptions.bDisplayDimensions*/ true) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };                    
+                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
+                    DrawDimensionText3D(dimPOKUSNA2, _trackport.ViewPort, sDisplayOptions);
                 }
 
                 if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
@@ -209,10 +211,11 @@ namespace BaseClasses
                     // stlpy na pravej strane maju PointEnd v Z = 0
                     CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString());
 
-                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};
-                    // TODO - dorobit nastavenie v GUI
-                    if (/*sDisplayOptions.bDisplayDimensions*/ true) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};                    
+                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);                    
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +237,8 @@ namespace BaseClasses
                     {
                         SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
+                        ort_camera.FarPlaneDistance = double.PositiveInfinity;
+                        ort_camera.NearPlaneDistance = double.NegativeInfinity;                        
                         _trackport.ViewPort.Camera = ort_camera;
                     }
                 }
@@ -281,12 +286,7 @@ namespace BaseClasses
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                     CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
-
-                    Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
-                    _trackport.ViewPort.Measure(size);
-                    _trackport.ViewPort.Arrange(new Rect(size));
-                    _trackport.ViewPort.UpdateLayout();
-
+                    
                     Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 }
             }
@@ -1817,6 +1817,35 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        //Draw Dimension 3D
+        public static void DrawDimensionText3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = dimension.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = 0.1f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = Brushes.Coral;
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
         }
 
         //Draw Dimension 3D

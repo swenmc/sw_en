@@ -90,6 +90,7 @@ namespace PFD
         private bool m_DisplayWireFrameModel;
         private bool m_DisplayDistinguishedColorMember;
         private bool m_DisplayTransparentModelMember;
+        private bool m_DisplayDimensions;
 
         // Load Case - display options
         private bool MShowLoads;
@@ -1883,6 +1884,20 @@ namespace PFD
             }
         }
 
+        public bool DisplayDimensions
+        {
+            get
+            {
+                return m_DisplayDimensions;
+            }
+
+            set
+            {
+                m_DisplayDimensions = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayDimensions");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2097,6 +2112,7 @@ namespace PFD
             DisplayReinforcementBars = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
+            DisplayDimensions = true;
             DisplayMembersCenterLines = false;
             DisplaySolidModel = true;
             DisplayWireFrameModel = false;
@@ -2153,7 +2169,7 @@ namespace PFD
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
             MSynchronizeGUI = true;
-
+                        
             IsSetFromCode = false;
 
             _worker.DoWork += CalculateInternalForces;
@@ -2700,6 +2716,7 @@ namespace PFD
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
+            sDisplayOptions.bDisplayDimensions = DisplayDimensions;
 
             return sDisplayOptions;
         }

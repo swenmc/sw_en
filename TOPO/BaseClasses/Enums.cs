@@ -714,6 +714,7 @@
         public bool bDisplayMemberLoads_Columns;
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
+        public bool bDisplayDimensions;
 
         public float DisplayIn3DRatio;
 

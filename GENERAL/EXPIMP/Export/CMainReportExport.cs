@@ -47,6 +47,7 @@ namespace EXPIMP
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
             PdfPage page = s_document.AddPage();
+            page.Size = PageSize.A3;
             page.Orientation = PdfSharp.PageOrientation.Landscape;
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
@@ -106,7 +107,7 @@ namespace EXPIMP
             double scaledImageWidth = gfx.PageSize.Width;
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
-            gfx.DrawImage(image, 0, 300, scaledImageWidth, scaledImageHeight);
+            gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
         }
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
