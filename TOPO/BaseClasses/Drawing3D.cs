@@ -280,15 +280,15 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
-                {
-                    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-                    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                //if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+                //{
+                //    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                //    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
-                    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
+                //    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
                     
-                    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
-                }
+                //    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
+                //}
             }
 
             _trackport.SetupScene();
