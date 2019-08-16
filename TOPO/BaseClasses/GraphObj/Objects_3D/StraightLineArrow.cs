@@ -6,6 +6,10 @@ namespace BaseClasses.GraphObj.Objects_3D
 {
     public class StraightLineArrow3D
     {
+        // Todo - Ondrej, tato trieda by asi mala vracat priamo objekt model3D alebo by triedy, ktore maju 3D geometricku reprezentaciu, napr. CVolume aj tato trieda mali mat model3D ako predka
+
+        public int iPrimaryArrowModelDirection; // Kod pre smer modelu sipky v LCS (0 - X, 1 - Y, 2 - Z, default pre zatazenie je 2 (smer z)
+        public bool bArrowAtBothEnds;
         public float fConeHeight;
         public float fCylinderHeight;
         public float fTotalHeight;
@@ -15,14 +19,28 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         public Point3DCollection ArrowPoints;
 
-        const int number_of_segments = 72;
+        const int number_of_segments = 16; //72; // Pocet segmentov v kruhu - PERFORMANCE!!!
 
         public StraightLineArrow3D()
         { }
 
-        public StraightLineArrow3D(float totalHeight)
+        public StraightLineArrow3D(float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             fTotalHeight = totalHeight;
+            iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
+            bArrowAtBothEnds = bArrowAtBothEnds_temp;
+
+            fConeHeight = 50 * fCylinderRadius; /// ???
+            fCylinderHeight = fTotalHeight - fConeHeight;
+
+            AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???
+        }
+
+        public StraightLineArrow3D(float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        {
+            fTotalHeight = totalHeight;
+            iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
+            bArrowAtBothEnds = bArrowAtBothEnds_temp;
 
             fConeHeight = 0.2f * fTotalHeight;
             fCylinderHeight = fTotalHeight - fConeHeight;
@@ -61,20 +79,28 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             for (int i = 0; i < number_of_segments; i++)
             {
-                cPointsCollection.Add(new Point3D(fAnnulusOutPoints[i, 0], fAnnulusOutPoints[i, 1], fConeHeight));
+                cPointsCollection.Add(GetPointinLCS(fAnnulusOutPoints[i, 0], fAnnulusOutPoints[i, 1], fConeHeight));
             }
 
             for (int i = 0; i < number_of_segments; i++)
             {
-                cPointsCollection.Add(new Point3D(fAnnulusInPoints[i, 0], fAnnulusInPoints[i, 1], fConeHeight));
+                cPointsCollection.Add(GetPointinLCS(fAnnulusInPoints[i, 0], fAnnulusInPoints[i, 1], fConeHeight));
             }
 
             for (int i = 0; i < number_of_segments; i++)
             {
-                cPointsCollection.Add(new Point3D(fAnnulusInPoints[i, 0], fAnnulusInPoints[i, 1], fTotalHeight));
+                cPointsCollection.Add(GetPointinLCS(fAnnulusInPoints[i, 0], fAnnulusInPoints[i, 1], bArrowAtBothEnds ? fTotalHeight - fConeHeight : fTotalHeight));
             }
 
-            cPointsCollection.Add(new Point3D(0, 0, fTotalHeight)); // Top middle point
+            if(bArrowAtBothEnds) // Second Arrow Outside Points
+            {
+                for (int i = 0; i < number_of_segments; i++)
+                {
+                    cPointsCollection.Add(GetPointinLCS(fAnnulusOutPoints[i, 0], fAnnulusOutPoints[i, 1], fTotalHeight - fConeHeight));
+                }
+            }
+
+            cPointsCollection.Add(GetPointinLCS(0, 0, fTotalHeight)); // Top middle point or tip
 
             return cPointsCollection;
         }
@@ -87,13 +113,13 @@ namespace BaseClasses.GraphObj.Objects_3D
             {
                 if (i < number_of_segments - 1)
                 {
-                    cArrowIndices.Add(0);
+                    cArrowIndices.Add(0); // Tip
                     cArrowIndices.Add(i + 2);
                     cArrowIndices.Add(i + 1);
                 }
                 else // last
                 {
-                    cArrowIndices.Add(0);
+                    cArrowIndices.Add(0); // Tip
                     cArrowIndices.Add(1);
                     cArrowIndices.Add(i + 1);
                 }
@@ -126,21 +152,56 @@ namespace BaseClasses.GraphObj.Objects_3D
                 }
             }
 
-            // Rozna orientacia normal !!!
-            // Top surface
-            for (int i = 0; i < number_of_segments; i++)
+            if (!bArrowAtBothEnds)
             {
-                if (i < number_of_segments - 1)
+                // Rozna orientacia normal !!!
+                // Top surface
+                for (int i = 0; i < number_of_segments; i++)
                 {
-                    cArrowIndices.Add(3 * number_of_segments + 1);
-                    cArrowIndices.Add(i + 1 + 2 * number_of_segments);
-                    cArrowIndices.Add(i + 2 + 2 * number_of_segments);
+                    if (i < number_of_segments - 1)
+                    {
+                        cArrowIndices.Add(3 * number_of_segments + 1);
+                        cArrowIndices.Add(i + 1 + 2 * number_of_segments);
+                        cArrowIndices.Add(i + 2 + 2 * number_of_segments);
+                    }
+                    else // last
+                    {
+                        cArrowIndices.Add(3 * number_of_segments + 1);
+                        cArrowIndices.Add(3 * number_of_segments);
+                        cArrowIndices.Add(2 * number_of_segments + 1);
+                    }
                 }
-                else // last
+            }
+
+            if (bArrowAtBothEnds)
+            {
+                // Annulus - second arrow
+                for (int i = 0; i < number_of_segments; i++)
                 {
-                    cArrowIndices.Add(3 * number_of_segments + 1);
-                    cArrowIndices.Add(3 * number_of_segments);
-                    cArrowIndices.Add(2 * number_of_segments + 1);
+                    if (i < number_of_segments - 1)
+                    {
+                        CreateRectangle_CCW(cArrowIndices, 2 * number_of_segments + i + 1, 2 * number_of_segments + i + 2, 2 * number_of_segments + i + 2 + number_of_segments, 2 * number_of_segments + i + 1 + number_of_segments);
+                    }
+                    else // last
+                    {
+                        CreateRectangle_CCW(cArrowIndices, 2 * number_of_segments + i + 1, 2 * number_of_segments + 1, 2 * number_of_segments + 1 + number_of_segments, 2 * number_of_segments + i + 1 + number_of_segments);
+                    }
+                }
+
+                for (int i = 0; i < number_of_segments; i++)
+                {
+                    if (i < number_of_segments - 1)
+                    {
+                        cArrowIndices.Add(4 * number_of_segments + 1); // Tip
+                        cArrowIndices.Add(3 * number_of_segments + i + 1);
+                        cArrowIndices.Add(3 * number_of_segments + i + 2);
+                    }
+                    else // last
+                    {
+                        cArrowIndices.Add(4 * number_of_segments + 1); // Tip
+                        cArrowIndices.Add(3 * number_of_segments + i + 1);
+                        cArrowIndices.Add(3 * number_of_segments + 1);
+                    }
                 }
             }
 
@@ -167,6 +228,35 @@ namespace BaseClasses.GraphObj.Objects_3D
             ArrowIndices.Add(i0);
             ArrowIndices.Add(i3);
             ArrowIndices.Add(i2);
+        }
+
+        // Refaktorovat s CVolume
+        private Point3D GetPointinLCS(double dCoordX, double dCoordY, double dCoordZ)
+        {
+            Point3D p = new Point3D();
+            // Nastavi suradnice uzla podla toho v akom smere sa ma sipka primarne vykreslit
+
+            // iPrimaryArrowModelDirection Kod pre smer modelu sipky v LCS(0 - X, 1 - Y, 2 - Z - default
+            if (iPrimaryArrowModelDirection == 0)
+            {
+                p.X = dCoordZ;
+                p.Y = dCoordX;
+                p.Z = dCoordY;
+            }
+            else if (iPrimaryArrowModelDirection == 1)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordZ;
+                p.Z = dCoordY;
+            }
+            else //if (iPrimaryArrowModelDirection == 2)// Default (sipka v smere Z)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordY;
+                p.Z = dCoordZ;
+            }
+
+            return p;
         }
     }
 }

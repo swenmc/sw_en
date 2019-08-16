@@ -26,12 +26,7 @@ namespace BaseClasses
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
         {
             Transform3DGroup transGr = new Transform3DGroup();
-            if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
-            {
-                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), -90);
-                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
@@ -70,17 +65,17 @@ namespace BaseClasses
                 AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
             }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), -90);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+            }
             return transGr;
         }
 
         private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z)
-        {            
-            if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
-            {
-                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
-                sDisplayOptions.OrtographicCameraWidth *= 1.5;
-            }
-            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+        {
+            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
             {
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
                 sDisplayOptions.OrtographicCameraWidth *= 1.2;
@@ -104,7 +99,12 @@ namespace BaseClasses
             {
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_Z, fModel_Length_Y);
                 sDisplayOptions.OrtographicCameraWidth *= 1.2;
-            }            
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Y);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
         }
 
         public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
@@ -178,11 +178,34 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
+
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // TO ONDREJ POKUS KRESLIT KOTY V 3D ako OBJEKTY
+                Model3DGroup dimensions3DGroup = null;
+
+                // ZATIAL POKUS KRESLIT JEDNU KOTU
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+                {
+                    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, (model.fW_frame * 1000).ToString());
+                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), 0.5, 0.4, (model.fH1_frame * 1000).ToString());
+
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+                    // TODO - dorobit nastavenie v GUI
+                    if (/*sDisplayOptions.bDisplayDimensions*/ true) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+                }
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-                                
+
                 if (centerModel)
                 {
-                    //translate transform to model center                    
+                    //translate transform to model center
                     ((Model3D)gr).Transform = centerModelTransGr;
                     double maxLen = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
 
@@ -248,6 +271,11 @@ namespace BaseClasses
                     _trackport.ViewPort.UpdateLayout();
 
                     Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
+
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    // TO Ondrej - pokus kreslit kotu ako 3D objekt
+
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
             }
 
@@ -1788,7 +1816,7 @@ namespace BaseClasses
             float fTextBlockVerticalSize = 0.1f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
-            
+
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
@@ -1796,7 +1824,6 @@ namespace BaseClasses
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-            
 
             SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
             // Create text
@@ -1809,6 +1836,9 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
 
             Color dimensionColor = Colors.Red;
+
+            // LINES
+
             float flineThickness = 4;
 
             //WireLine wL1 = new WireLine();
@@ -1857,7 +1887,7 @@ namespace BaseClasses
                 wL2.Transform = centerModelTransGr;
                 wMain.Transform = centerModelTransGr;
             }
-            
+
             viewPort.Children.Add(wL1);
             viewPort.Children.Add(wL2);
             viewPort.Children.Add(wMain);
@@ -1866,6 +1896,26 @@ namespace BaseClasses
             wL2.Rescale();
             wMain.Rescale();
             //viewPort.UpdateLayout();
+        }
+
+        private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model)
+        {
+           if (dimensions == null || dimensions.Count == 0)
+                return null;
+
+            // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
+            // Draw 3D objects (cylinder as a line)
+
+            Color dimensionColor = Colors.Cyan;
+
+            Model3DGroup gr = new Model3DGroup();
+
+            foreach (CDimensionLinear3D dimension in dimensions)
+            {
+                gr.Children.Add(dimension.GetDimensionModel(dimensionColor));
+            }
+
+            return gr;
         }
 
         private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)

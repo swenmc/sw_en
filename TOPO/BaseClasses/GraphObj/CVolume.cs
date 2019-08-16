@@ -693,7 +693,7 @@ namespace BaseClasses.GraphObj
         {
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
         }
-        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat)
+        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
@@ -731,14 +731,16 @@ namespace BaseClasses.GraphObj
             // Bottom  h = 0
             for (int i = 0; i < iTotNoPoints; i++)
             {
-                Point3D p = new Point3D(solidControlEdge.X + PointsOut[i,0], solidControlEdge.Y + PointsOut[i,1], solidControlEdge.Z);
+                Point3D pPrimary = GetPointinLCS(iPrimaryModelDirection, PointsOut[i, 0], PointsOut[i, 1], 0);
+                Point3D p = new Point3D(solidControlEdge.X + pPrimary.X, solidControlEdge.Y + pPrimary.Y, solidControlEdge.Z + pPrimary.Z);
                 meshGeom3D.Positions.Add(p);
             }
 
             // Top h = xxx
             for (int i = 0; i < iTotNoPoints; i++)
             {
-                Point3D p = new Point3D(solidControlEdge.X + PointsOut[i,0], solidControlEdge.Y + PointsOut[i,1], solidControlEdge.Z + fDim2_h);
+                Point3D pPrimary = GetPointinLCS(iPrimaryModelDirection, PointsOut[i, 0], PointsOut[i, 1], fDim2_h);
+                Point3D p = new Point3D(solidControlEdge.X + pPrimary.X, solidControlEdge.Y + pPrimary.Y, solidControlEdge.Z + pPrimary.Z);
                 meshGeom3D.Positions.Add(p);
             }
 
@@ -798,6 +800,36 @@ namespace BaseClasses.GraphObj
 
             return geomModel3D;
         }
+
+        // Refaktorovat s StraightLineArrow3D
+        private Point3D GetPointinLCS(int iPrimaryModelDirection, double dCoordX, double dCoordY, double dCoordZ)
+        {
+            Point3D p = new Point3D();
+            // Nastavi suradnice uzla podla toho v akom smere sa ma valec primarne vykreslit
+
+            // iPrimaryModelDirection Kod pre smer modelu valca v LCS(0 - X, 1 - Y, 2 - Z - default
+            if (iPrimaryModelDirection == 0)
+            {
+                p.X = dCoordZ;
+                p.Y = dCoordX;
+                p.Z = dCoordY;
+            }
+            else if (iPrimaryModelDirection == 1)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordZ;
+                p.Z = dCoordY;
+            }
+            else //if (iPrimaryModelDirection == 2)// Default (valec v smere Z)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordY;
+                p.Z = dCoordZ;
+            }
+
+            return p;
+        }
+
         public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
         {
             Int32Collection wireFrameIndices = new Int32Collection();

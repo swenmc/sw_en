@@ -198,7 +198,7 @@ namespace BaseClasses
 
             if (eLoadType == ENLoadType.eNLT_Fx || eLoadType == ENLoadType.eNLT_Fy || eLoadType == ENLoadType.eNLT_Fz) // Force
             {
-                // Tip (cone height id 20% from force value)
+                // Tip (cone height is 20% from force value)
                 StraightLineArrow3D arrow = new StraightLineArrow3D(Math.Abs(fValueFor3D));
                 GeometryModel3D model = new GeometryModel3D();
                 MeshGeometry3D mesh = new MeshGeometry3D();
@@ -207,7 +207,7 @@ namespace BaseClasses
                 mesh.TriangleIndices = arrow.GetArrowIndices();
                 model.Geometry = mesh;
                 model.Material = material;
-                model_gr.Children.Add(model);  // Add traight arrow
+                model_gr.Children.Add(model);  // Add straight arrow
             }
             else // Moment
             {
