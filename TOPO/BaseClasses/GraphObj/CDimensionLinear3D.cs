@@ -24,8 +24,10 @@ namespace BaseClasses.GraphObj
         private Vector3D m_Direction;
         private Vector3D m_Horizontal;
         private Vector3D m_Vertical;
-        private double m_DimensionLinesLength;
+        private double m_ExtensionLinesLength;
         private double m_DimensionMainLineDistance;
+
+        private float m_fOffSetFromPoint;
 
         private string m_Text;
 
@@ -85,12 +87,12 @@ namespace BaseClasses.GraphObj
         {
             get
             {
-                return m_DimensionLinesLength;
+                return m_ExtensionLinesLength;
             }
 
             set
             {
-                m_DimensionLinesLength = value;
+                m_ExtensionLinesLength = value;
             }
         }
 
@@ -198,8 +200,21 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public float OffSetFromPoint  // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
+        {
+            get
+            {
+                return m_fOffSetFromPoint;
+            }
+
+            set
+            {
+                m_fOffSetFromPoint = value;
+            }
+        }
+
         public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, /*Vector3D horizontal,  Vector3D vertical,*/ double dimensionLinesLength, double dimensionMainLineDistance, string text)
+        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, /*Vector3D horizontal,  Vector3D vertical,*/ double extensionLinesLength, double dimensionMainLineDistance, double fOffsetFromPoint, string text)
         {
             // TO Ondrej
             // Nazvy - main dimension line (hlavna kotovacia ciara) (ta hlavna dlha ciara na ktoru sa pise text)
@@ -210,8 +225,19 @@ namespace BaseClasses.GraphObj
             m_Direction = direction;
             //m_Horizontal = horizontal;
             //m_Vertical = vertical;
-            m_DimensionLinesLength = dimensionLinesLength;
+
+            // TO Ondrej - su by sme mohli vyrobit viacero moznosti a kombinacii:
+            // zadavat fixnu dlzku extension line
+            // zadavat vzdialenost hlavnej kotovacej ciary od kotovaneho bodu
+            // zadavat fixny offset extension line of kotovaneho bodu
+            // zadavat presah extension line za main dimension line
+
+            // V praxi vacsinou chceme, aby boli extension line rozne dlhe s fixnym odstupom od kotovaneho bodu
+            // Moznost ze su extension line konstantnej dlzky a odsadenie je rozne je menej casta lebo ak je odsadenie velke tak nemusi byt jasne ktory bod kotujeme
+
+            m_ExtensionLinesLength = extensionLinesLength;
             m_DimensionMainLineDistance = dimensionMainLineDistance;
+            m_fOffSetFromPoint = (float)fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
             SetTextPoint();
             SetPoints();
@@ -302,15 +328,26 @@ namespace BaseClasses.GraphObj
 
             // Nastavit offset celej koty od kotovaneho bodu (smer -Y)
 
-            float fOffSetFromPoint = 0.1f; // ??? TODO - malo by byt nastavitelne
-            TranslateTransform3D translate = new TranslateTransform3D(0, -(fExtensionLine1_Length - fExtensionLine1_OffsetBehindMainLine + fOffSetFromPoint), 0);
+            TranslateTransform3D translateOffset = new TranslateTransform3D(0, -(fExtensionLine1_Length - fExtensionLine1_OffsetBehindMainLine + m_fOffSetFromPoint), 0);
 
             // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();
             RotateTransform3D rotateZ = new RotateTransform3D();
 
-            if (Direction.X != 0) // TODO - Dopracovat pre ine smery
+            bool bDrawHorizontalDimesnionsInXY = false; // Toto by mohlo byt nastavitelne pre 3D scenu v GUI a pre export 3D pohladov, pre exporty 2D pohladov na rovinu XZ alebo YZ sa to nehodi, lebo kotu by nebolo vidno
+
+            if (!bDrawHorizontalDimesnionsInXY && Direction.Z != 0) // Kota v smere X alebo Y - ak chceme aby nebola vykreslena v rovine XY ale zvislo v XZ alebo YZ
+            {
+                // About X
+                AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
+                axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
+                axisAngleRotation3dX.Angle = 90;
+                rotateX.Rotation = axisAngleRotation3dX;
+            }
+
+            if ((Direction.X != 0 && (MathF.Equals(m_PointStart.X, m_PointEnd.X))) ||
+            (Direction.Y != 0 && MathF.Equals(m_PointStart.Y, m_PointEnd.Y))) // Zvisla kota TODO - Dopracovat pre ine smery
             {
                 // About Y
                 AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
@@ -325,11 +362,23 @@ namespace BaseClasses.GraphObj
                 rotateZ.Rotation = axisAngleRotation3dZ;
             }
 
+            if(Direction.X == 0 && MathF.Equals(m_PointStart.X, m_PointEnd.X)) // Kota v smere Y
+            {
+                // About Z
+                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                axisAngleRotation3dZ.Angle = 90;
+                rotateZ.Rotation = axisAngleRotation3dZ;
+            }
+
+            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_PointStart.X, m_PointStart.Y, m_PointStart.Z);
+
             Transform3DGroup transformGr = new Transform3DGroup();
-            transformGr.Children.Add(translate);
+            transformGr.Children.Add(translateOffset); // Posun o offset v rovine XY
             transformGr.Children.Add(rotateX);
             transformGr.Children.Add(rotateY);
             transformGr.Children.Add(rotateZ);
+            transformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
 
             model_gr.Transform = transformGr;
 

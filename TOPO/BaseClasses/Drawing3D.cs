@@ -178,28 +178,45 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
-
-
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // TO ONDREJ POKUS KRESLIT KOTY V 3D ako OBJEKTY
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // TO ONDREJ POKUS KRESLIT KOTY V 3D ako 3D OBJEKTY, nie ciary
                 Model3DGroup dimensions3DGroup = null;
 
-                // ZATIAL POKUS KRESLIT JEDNU KOTU
                 if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
                 {
                     CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
-                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, (model.fW_frame * 1000).ToString());
-                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), 0.5, 0.4, (model.fH1_frame * 1000).ToString());
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, 0.15, (model.fW_frame * 1000).ToString());
+                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString());
+
+                    CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
+                    CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
                     List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
                     // TODO - dorobit nastavenie v GUI
                     if (/*sDisplayOptions.bDisplayDimensions*/ true) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
                 }
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+                {
+                    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+
+                    // stlpy na pravej strane maju PointEnd v Z = 0
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString());
+
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};
+                    // TODO - dorobit nastavenie v GUI
+                    if (/*sDisplayOptions.bDisplayDimensions*/ true) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+                }
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
@@ -251,7 +268,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
-                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);                    
+                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
                 {
@@ -263,7 +280,7 @@ namespace BaseClasses
                     CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
-                    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, (model.fW_frame * 1000).ToString());
+                    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
 
                     Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
                     _trackport.ViewPort.Measure(size);
@@ -271,11 +288,6 @@ namespace BaseClasses
                     _trackport.ViewPort.UpdateLayout();
 
                     Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
-
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    // TO Ondrej - pokus kreslit kotu ako 3D objekt
-
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 }
             }
 
