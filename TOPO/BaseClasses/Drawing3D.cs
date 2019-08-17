@@ -1898,9 +1898,13 @@ namespace BaseClasses
                             viewVerticalVector.X, viewVerticalVector.Y, viewVerticalVector.Z, 0,
                             0, 0, 0, 1);
 
-                        Vector3D memberLCSAxis_xInView = memberLCSAxis_xInGCS * matrixViewInGCS;
-                        Vector3D memberLCSAxis_yInView = memberLCSAxis_yInGCS * matrixViewInGCS;
-                        Vector3D memberLCSAxis_zInView = memberLCSAxis_zInGCS * matrixViewInGCS;
+                        // Vytvorime inverznu maticu k matici pre View
+                        Matrix3D matrixViewInGCS_Inverse = matrixViewInGCS.Inverse();
+
+                        // Prevedieme osi pruta v GCS do osi pre View
+                        Vector3D memberLCSAxis_xInView = memberLCSAxis_xInGCS * matrixViewInGCS_Inverse;
+                        Vector3D memberLCSAxis_yInView = memberLCSAxis_yInGCS * matrixViewInGCS_Inverse;
+                        Vector3D memberLCSAxis_zInView = memberLCSAxis_zInGCS * matrixViewInGCS_Inverse;
 
                         // Urcenie pozicie LCS pruta voci smeru pohladu (Y - view)
 
@@ -1963,6 +1967,13 @@ namespace BaseClasses
                             pTextPositionInLCS.Z = fOffsetInPlane_z; // Kreslime nad prut v LCS smere z - v pripade potreby upravit alebo zohladnit znamienko (text nad alebo pod prierezom)
                             over_LCS = new Vector3D(0, 1, 0);
                             up_LCS = new Vector3D(0, 0, 1);
+
+                            // Ak smeruje lokalna osa x v smere zapornej osi Z potrebujeme text otocit aby sa vykreslil citalne zhora
+                            if (model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
+                            {
+                                over_LCS = new Vector3D(0, -1, 0); // ??? doriesit opacny smer textu
+                                up_LCS = new Vector3D(0, 0, 1);
+                            }
                         }
                         else if(iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
                         {
