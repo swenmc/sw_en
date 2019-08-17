@@ -2028,7 +2028,7 @@ namespace BaseClasses
                             // Sucin kladneho smeru LCS z a view Y je kladny (osa z smeruje opacnym smerom ako je smer pohladu)
                             if (memberLCSAxis_zInView.Y > 0) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
                             {
-                                over_LCS = new Vector3D(1, 0, 0);
+                                over_LCS = new Vector3D(-1, 0, 0);
                                 //up_LCS = new Vector3D(0, 1, 0);
                             }
 
