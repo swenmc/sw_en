@@ -1862,12 +1862,13 @@ namespace BaseClasses
                         memberVectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
 
                         // Ziskame transformaciu pruta z LCS do GCS
+                        // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
                         Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], false); // Ignorujeme rotaciu okolo LCS osi x
 
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         // Urobit transformaciu priamo pre Vektor3D
                         // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
-                        // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urebene aj pre vektor ale neviem kde
+                        // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urobene aj priamo pre vektor, aby sa to neuselo prevadzat cez point, ale neviem kde
                         Point3D pLCSAxisX = transform.Transform(new Point3D(memberAxis_xInLCS.X, memberAxis_xInLCS.Y, memberAxis_xInLCS.Z));
                         Point3D pLCSAxisY = transform.Transform(new Point3D(memberAxis_yInLCS.X, memberAxis_yInLCS.Y, memberAxis_yInLCS.Z));
                         Point3D pLCSAxisZ = transform.Transform(new Point3D(memberAxis_zInLCS.X, memberAxis_zInLCS.Y, memberAxis_zInLCS.Z));
@@ -1875,12 +1876,16 @@ namespace BaseClasses
                         Vector3D memberLCSAxis_xInGCS = new Vector3D(pLCSAxisX.X, pLCSAxisX.Y, pLCSAxisX.Z);
                         Vector3D memberLCSAxis_yInGCS = new Vector3D(pLCSAxisY.X, pLCSAxisY.Y, pLCSAxisY.Z);
                         Vector3D memberLCSAxis_zInGCS = new Vector3D(pLCSAxisZ.X, pLCSAxisZ.Y, pLCSAxisZ.Z);
+
+                        // TO Ondrej - Trosku sa mi nezdava co tu ziskam ako zlozky vektorov :-/ ak je prut zvislo to tak by som chcel len hodnoty 0,-1,1
                         memberLCSAxis_xInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
                         memberLCSAxis_yInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
                         memberLCSAxis_zInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
                         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                         // Vztah LCS osi a vektora pohladu
+                        // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
+                        // Malo by to urcit, ci osa smeruje za alebo pred rovinu pohladu (-1, 1) alebo je v rovine 0 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
                         Vector3D memberLCSAxis_xInView = new Vector3D(memberAxis_xInLCS.X * viewVector.X, memberAxis_xInLCS.Y * viewVector.X, memberAxis_xInLCS.Z * viewVector.X);
                         Vector3D memberLCSAxis_yInView = new Vector3D(memberAxis_yInLCS.X * viewVector.Y, memberAxis_yInLCS.Y * viewVector.Y, memberAxis_yInLCS.Z * viewVector.Y);
                         Vector3D memberLCSAxis_zInView = new Vector3D(memberAxis_zInLCS.X * viewVector.Z, memberAxis_zInLCS.Y * viewVector.Z, memberAxis_zInLCS.Z * viewVector.Z);
@@ -1935,14 +1940,16 @@ namespace BaseClasses
                         float fOffsetInPlaneBasic_y = (float)Math.Max(model.m_arrMembers[i].CrScStart.y_min, model.m_arrMembers[i].CrScStart.y_max);
                         float fOffsetInPlaneBasic_z = (float)model.m_arrMembers[i].CrScStart.z_max;
 
+                        // Tento offset urcuje, aka je medzera medzi prutom a riadiacim bodom textu
                         float fOffsetInPlaneAdd_y = 0.05f;
                         float fOffsetInPlaneAdd_z = 0.05f;
 
                         float fOffsetInPlane_y = fOffsetInPlaneBasic_y + fOffsetInPlaneAdd_y + 0.5f * fTextBlockVerticalSize;
                         float fOffsetInPlane_z = fOffsetInPlaneBasic_z + fOffsetInPlaneAdd_z + 0.5f * fTextBlockVerticalSize;
 
-                        float fOffsetOutOfPlane_y = 0.1f; // Offset z roviny LCS xz (znamienko podla smerovania osy y a rotacie textu)
-                        float fOffsetOutOfPlane_Z = 0.1f; // Offset z roviny LCS xy (znamienko podla smerovania osy z a rotacie textu)
+                        // Tento offset urcuje o kolko je text vysunuty pred prut, dal by sa nastavovat podla rozmerov prierezu
+                        float fOffsetOutOfPlane_y = -0.3f; // Offset z roviny LCS xz (znamienko podla smerovania osy y a rotacie textu)
+                        float fOffsetOutOfPlane_Z = 0.3f; // Offset z roviny LCS xy (znamienko podla smerovania osy z a rotacie textu)
 
                         Point3D pTextPositionInLCS = new Point3D(); // Riadiaci bod pre vlozenie textu v LCS pruta
                         Vector3D over_LCS;
@@ -1983,14 +1990,20 @@ namespace BaseClasses
                         // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
                         // podobne pre potocenie modelu okolo osi X a Y
 
-                        // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho aky je nastaveny view
+                        // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
+                        // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
+                        // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
                         Vector3D over_InView = new Vector3D(over_LCS.X * memberVectorInGCS.X + over_LCS.Y * memberVectorInGCS.X + over_LCS.Z * memberVectorInGCS.X,
                                                             over_LCS.X * memberVectorInGCS.Y + over_LCS.Y * memberVectorInGCS.Y + over_LCS.Z * memberVectorInGCS.Y,
                                                             over_LCS.X * memberVectorInGCS.Z + over_LCS.Y * memberVectorInGCS.Z + over_LCS.Z * memberVectorInGCS.Z);
 
+                        over_InView.Normalize();
+
                         Vector3D up_InView = new Vector3D(up_LCS.X * memberLCSAxis_zInGCS.X + up_LCS.Y * memberLCSAxis_zInGCS.X + up_LCS.Z * memberLCSAxis_zInGCS.X,
                                                           up_LCS.X * memberLCSAxis_zInGCS.Y + up_LCS.Y * memberLCSAxis_zInGCS.Y + up_LCS.Z * memberLCSAxis_zInGCS.Y,
                                                           up_LCS.X * memberLCSAxis_zInGCS.Z + up_LCS.Y * memberLCSAxis_zInGCS.Z + up_LCS.Z * memberLCSAxis_zInGCS.Z);
+
+                        up_InView.Normalize();
 
                         // Finalne vektory (prenasobenie faktorom velkosti textbloku)
                         Vector3D over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
