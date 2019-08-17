@@ -1885,22 +1885,19 @@ namespace BaseClasses
                         // Vztah LCS osi a vektora pohladu
                         // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
                         // Malo by to urcit, ci osa smeruje za alebo pred rovinu pohladu (-1, 1) alebo je v rovine 0 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewVector.X, memberLCSAxis_xInGCS.Y * viewVector.X, memberLCSAxis_xInGCS.Z * viewVector.X);
+                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewHorizontalVector.X, memberLCSAxis_xInGCS.Y * viewHorizontalVector.X, memberLCSAxis_xInGCS.Z * viewHorizontalVector.X);
                         Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.Y, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Y);
-                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVector.Z, memberLCSAxis_zInGCS.Y * viewVector.Z, memberLCSAxis_zInGCS.Z * viewVector.Z);
+                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVerticalVector.Z, memberLCSAxis_zInGCS.Y * viewVerticalVector.Z, memberLCSAxis_zInGCS.Z * viewVerticalVector.Z);
 
-                        if(model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
+                        if(model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
                         {
 
                         }
 
-                        // Urcenie pozicie LCS pruta voci smeru pohladu
-                        if (MathF.d_equal(memberLCSAxis_xInView.X, 1) ||
-                            MathF.d_equal(memberLCSAxis_xInView.X, -1) ||
-                            MathF.d_equal(memberLCSAxis_xInView.Y, 1) ||
-                            MathF.d_equal(memberLCSAxis_xInView.Y, -1) ||
-                            MathF.d_equal(memberLCSAxis_xInView.Z, 1) ||
-                            MathF.d_equal(memberLCSAxis_xInView.Z, -1)
+                        // Urcenie pozicie LCS pruta voci smeru pohladu (Y - view)
+
+                        if (MathF.d_equal(memberLCSAxis_xInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.Y, -1)
                             ) // Prut (osa x in LCS) smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS yz
@@ -1908,12 +1905,8 @@ namespace BaseClasses
 
                             // TODO - podla orientace vektora mozeme nastavit vector over pre text
                         }
-                        else if (MathF.d_equal(memberLCSAxis_yInView.X, 1) ||
-                            MathF.d_equal(memberLCSAxis_yInView.X, -1) ||
-                            MathF.d_equal(memberLCSAxis_yInView.Y, 1) ||
-                            MathF.d_equal(memberLCSAxis_yInView.Y, -1) ||
-                            MathF.d_equal(memberLCSAxis_yInView.Z , 1) ||
-                            MathF.d_equal(memberLCSAxis_yInView.Z, -1)
+                        else if (MathF.d_equal(memberLCSAxis_yInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.Y, -1)
                             ) // Lokalna osa y pruta v LCS smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS xz
@@ -1921,12 +1914,8 @@ namespace BaseClasses
 
                             // TODO - podla orientace vektora mozeme nastavit vector over pre text
                         }
-                        else if (MathF.d_equal(memberLCSAxis_zInView.X,1) ||
-                            MathF.d_equal(memberLCSAxis_zInView.X, -1) ||
-                            MathF.d_equal(memberLCSAxis_zInView.Y, 1) ||
-                            MathF.d_equal(memberLCSAxis_zInView.Y, -1) ||
-                            MathF.d_equal(memberLCSAxis_zInView.Z, 1) ||
-                            MathF.d_equal(memberLCSAxis_zInView.Z, -1)
+                        else if (MathF.d_equal(memberLCSAxis_zInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.Y, -1)
                             ) // Lokalna osa z pruta v LCS smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS xy
