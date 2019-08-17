@@ -1983,6 +1983,7 @@ namespace BaseClasses
                         // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
                         // podobne pre potocenie modelu okolo osi X a Y
 
+                        // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho aky je nastaveny view
                         Vector3D over_InView = new Vector3D(over_LCS.X * memberVectorInGCS.X + over_LCS.Y * memberVectorInGCS.X + over_LCS.Z * memberVectorInGCS.X,
                                                             over_LCS.X * memberVectorInGCS.Y + over_LCS.Y * memberVectorInGCS.Y + over_LCS.Z * memberVectorInGCS.Y,
                                                             over_LCS.X * memberVectorInGCS.Z + over_LCS.Y * memberVectorInGCS.Z + over_LCS.Z * memberVectorInGCS.Z);
