@@ -119,6 +119,7 @@ namespace EXPIMP
             opts.bUseOrtographicCamera = true;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS};
