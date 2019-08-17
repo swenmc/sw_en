@@ -1974,6 +1974,9 @@ namespace BaseClasses
                                 over_LCS = new Vector3D(0, -1, 0); // ??? doriesit opacny smer textu
                                 up_LCS = new Vector3D(0, 0, 1);
                             }
+
+                            // TO Ondrej
+                            // Pre Pohlad Top a Filter Columns treba pootacat vektory na stlpoch aby smerovali vsetky rovnako, pripadne to urobit natvrdo
                         }
                         else if(iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
                         {
