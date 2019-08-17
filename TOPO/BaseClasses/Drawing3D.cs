@@ -1989,6 +1989,13 @@ namespace BaseClasses
                                 over_LCS = new Vector3D(-1, 0, 0); // ??? doriesit opacny smer textu
                                 up_LCS = new Vector3D(0, 0, -1);
                             }
+
+                            // Sucin kladneho smeru LCS y a view Y je kladny (osa y smeruje opacnym smerom ako je smer pohladu)
+                            if (memberLCSAxis_yInView.Y < 0) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
+                            {
+                                over_LCS = new Vector3D(-1, 0, 0);
+                                //up_LCS = new Vector3D(0, 0, -1);
+                            }
                         }
                         else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
                         {
@@ -2003,6 +2010,13 @@ namespace BaseClasses
                             {
                                 over_LCS = new Vector3D(-1, 0, 0); // ??? doriesit opacny smer textu
                                 up_LCS = new Vector3D(0, -1, 0);
+                            }
+
+                            // Sucin kladneho smeru LCS z a view Y je kladny (osa z smeruje opacnym smerom ako je smer pohladu)
+                            if (memberLCSAxis_zInView.Y > 0) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
+                            {
+                                //over_LCS = new Vector3D(1, 0, 0);
+                                up_LCS = new Vector3D(0, 1, 0);
                             }
                         }
 
@@ -2023,17 +2037,15 @@ namespace BaseClasses
                         // Tato transformacia by sa mala nahradit transformaciou z LCS do VIEW AXIS
                         Vector3D over_InGCS;
                         TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InGCS);
-                        over_InGCS.Normalize();
 
-                        // Transformujeme vektor z GCS do View ??? // Este neviem ci s tym bude nieco treba robit :))) a hlavne co
-                        Vector3D over_InView = over_InGCS;
+                        // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
+                        Vector3D over_InView = over_InGCS;// * matrixViewInGCS_Inverse;
 
                         Vector3D up_InGCS;
                         TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, up_LCS, out up_InGCS);
-                        up_InGCS.Normalize();
 
-                        // Transformujeme vektor z GCS do View ??? Este neviem ci s tym bude nieco treba robit :))) a hlavne co
-                        Vector3D up_InView = up_InGCS;
+                        // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
+                        Vector3D up_InView = up_InGCS;// * matrixViewInGCS_Inverse;
 
                         // Finalne vektory (prenasobenie faktorom velkosti textbloku)
                         Vector3D over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
