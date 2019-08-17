@@ -1873,6 +1873,19 @@ namespace BaseClasses
                         Point3D pLCSAxisY = transform.Transform(new Point3D(memberAxis_yInLCS.X, memberAxis_yInLCS.Y, memberAxis_yInLCS.Z));
                         Point3D pLCSAxisZ = transform.Transform(new Point3D(memberAxis_zInLCS.X, memberAxis_zInLCS.Y, memberAxis_zInLCS.Z));
 
+                        // Chceme uplatnit len rotacne transformacie, nie posun
+                        pLCSAxisX.X -= model.m_arrMembers[i].NodeStart.X;
+                        pLCSAxisX.Y -= model.m_arrMembers[i].NodeStart.Y;
+                        pLCSAxisX.Z -= model.m_arrMembers[i].NodeStart.Z;
+
+                        pLCSAxisY.X -= model.m_arrMembers[i].NodeStart.X;
+                        pLCSAxisY.Y -= model.m_arrMembers[i].NodeStart.Y;
+                        pLCSAxisY.Z -= model.m_arrMembers[i].NodeStart.Z;
+
+                        pLCSAxisZ.X -= model.m_arrMembers[i].NodeStart.X;
+                        pLCSAxisZ.Y -= model.m_arrMembers[i].NodeStart.Y;
+                        pLCSAxisZ.Z -= model.m_arrMembers[i].NodeStart.Z;
+
                         Vector3D memberLCSAxis_xInGCS = new Vector3D(pLCSAxisX.X, pLCSAxisX.Y, pLCSAxisX.Z);
                         Vector3D memberLCSAxis_yInGCS = new Vector3D(pLCSAxisY.X, pLCSAxisY.Y, pLCSAxisY.Z);
                         Vector3D memberLCSAxis_zInGCS = new Vector3D(pLCSAxisZ.X, pLCSAxisZ.Y, pLCSAxisZ.Z);
@@ -1886,9 +1899,9 @@ namespace BaseClasses
                         // Vztah LCS osi a vektora pohladu
                         // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
                         // Malo by to urcit, ci osa smeruje za alebo pred rovinu pohladu (-1, 1) alebo je v rovine 0 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D memberLCSAxis_xInView = new Vector3D(memberAxis_xInLCS.X * viewVector.X, memberAxis_xInLCS.Y * viewVector.X, memberAxis_xInLCS.Z * viewVector.X);
-                        Vector3D memberLCSAxis_yInView = new Vector3D(memberAxis_yInLCS.X * viewVector.Y, memberAxis_yInLCS.Y * viewVector.Y, memberAxis_yInLCS.Z * viewVector.Y);
-                        Vector3D memberLCSAxis_zInView = new Vector3D(memberAxis_zInLCS.X * viewVector.Z, memberAxis_zInLCS.Y * viewVector.Z, memberAxis_zInLCS.Z * viewVector.Z);
+                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewVector.X, memberLCSAxis_xInGCS.X * viewVector.Y, memberLCSAxis_xInGCS.X * viewVector.Z);
+                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.Y * viewVector.X, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Y * viewVector.Z);
+                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.Z * viewVector.X, memberLCSAxis_zInGCS.Z * viewVector.Y, memberLCSAxis_zInGCS.Z * viewVector.Z);
 
                         // Urcenie pozicie LCS pruta voci smeru pohladu
                         if (memberLCSAxis_xInView.X == 1 ||
