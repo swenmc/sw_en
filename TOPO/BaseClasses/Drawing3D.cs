@@ -1828,31 +1828,43 @@ namespace BaseClasses
                         // Podla toho urcime ci vykreslujeme text pruta pre LCS pohlad x, y alebo z
 
                         Vector3D viewVector;
+                        Vector3D viewHorizontalVector;
+                        Vector3D viewVerticalVector; 
 
                         if (displayOptions.ModelView == (int)EModelViews.BACK)
                         {
                             viewVector = new Vector3D(0, -1, 0);
+                            viewHorizontalVector = new Vector3D(1, 0, 0);
+                            viewVerticalVector = new Vector3D(0, 0, 1);
                         }
                         else if (displayOptions.ModelView == (int)EModelViews.LEFT)
                         {
                             viewVector = new Vector3D(1, 0, 0);
+                            viewHorizontalVector = new Vector3D(0, -1, 0);
+                            viewVerticalVector = new Vector3D(0, 0, 1);
                         }
                         else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
                         {
                             viewVector = new Vector3D(-1, 0, 0);
+                            viewHorizontalVector = new Vector3D(0, 1, 0);
+                            viewVerticalVector = new Vector3D(0, 0, 1);
                         }
                         else if (displayOptions.ModelView == (int)EModelViews.TOP)
                         {
                             viewVector = new Vector3D(0, 0, -1);
+                            viewHorizontalVector = new Vector3D(0, 1, 0);
+                            viewVerticalVector = new Vector3D(-1, 0, 0);
                         }
                         else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
                         {
                             viewVector = new Vector3D(0, 1, 0);
+                            viewHorizontalVector = new Vector3D(1, 0, 0);
+                            viewVerticalVector = new Vector3D(0, 0, 1);
                         }
 
                         // Ziskame transformaciu pruta z LCS do GCS
                         // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
-                        Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], false); // Ignorujeme rotaciu okolo LCS osi x
+                        Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], true);
 
                         // TODO - toto kodovanie moze byt podla normaly textu alebo to mozeme urobit aj podla LCS rovin v ktorych text lezi
                         int iTextNormalInLCSCode; // 0 - text pre LCS x (rovina yz), 1 - text pre LCS y (rovina xz), 2 - text pre LCS z (rovina xy)
@@ -1873,17 +1885,22 @@ namespace BaseClasses
                         // Vztah LCS osi a vektora pohladu
                         // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
                         // Malo by to urcit, ci osa smeruje za alebo pred rovinu pohladu (-1, 1) alebo je v rovine 0 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewVector.X, memberLCSAxis_xInGCS.X * viewVector.Y, memberLCSAxis_xInGCS.X * viewVector.Z);
-                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.Y * viewVector.X, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Y * viewVector.Z);
-                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.Z * viewVector.X, memberLCSAxis_zInGCS.Z * viewVector.Y, memberLCSAxis_zInGCS.Z * viewVector.Z);
+                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewVector.X, memberLCSAxis_xInGCS.Y * viewVector.X, memberLCSAxis_xInGCS.Z * viewVector.X);
+                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.Y, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Y);
+                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVector.Z, memberLCSAxis_zInGCS.Y * viewVector.Z, memberLCSAxis_zInGCS.Z * viewVector.Z);
+
+                        if(model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.GirtFrontSide)
+                        {
+
+                        }
 
                         // Urcenie pozicie LCS pruta voci smeru pohladu
-                        if (memberLCSAxis_xInView.X == 1 ||
-                            memberLCSAxis_xInView.X == -1 ||
-                            memberLCSAxis_xInView.Y == 1 ||
-                            memberLCSAxis_xInView.Y == -1 ||
-                            memberLCSAxis_xInView.Z == 1 ||
-                            memberLCSAxis_xInView.Z == -1
+                        if (MathF.d_equal(memberLCSAxis_xInView.X, 1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.X, -1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.Y, -1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.Z, 1) ||
+                            MathF.d_equal(memberLCSAxis_xInView.Z, -1)
                             ) // Prut (osa x in LCS) smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS yz
@@ -1891,12 +1908,12 @@ namespace BaseClasses
 
                             // TODO - podla orientace vektora mozeme nastavit vector over pre text
                         }
-                        else if (memberLCSAxis_yInView.X == 1 ||
-                            memberLCSAxis_yInView.X == -1 ||
-                            memberLCSAxis_yInView.Y == 1 ||
-                            memberLCSAxis_yInView.Y == -1 ||
-                            memberLCSAxis_yInView.Z == 1 ||
-                            memberLCSAxis_yInView.Z == -1
+                        else if (MathF.d_equal(memberLCSAxis_yInView.X, 1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.X, -1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.Y, -1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.Z , 1) ||
+                            MathF.d_equal(memberLCSAxis_yInView.Z, -1)
                             ) // Lokalna osa y pruta v LCS smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS xz
@@ -1904,12 +1921,12 @@ namespace BaseClasses
 
                             // TODO - podla orientace vektora mozeme nastavit vector over pre text
                         }
-                        else if (memberLCSAxis_zInView.X == 1 ||
-                            memberLCSAxis_zInView.X == -1 ||
-                            memberLCSAxis_zInView.Y == 1 ||
-                            memberLCSAxis_zInView.Y == -1 ||
-                            memberLCSAxis_zInView.Z == 1 ||
-                            memberLCSAxis_zInView.Z == -1
+                        else if (MathF.d_equal(memberLCSAxis_zInView.X,1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.X, -1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.Y, 1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.Y, -1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.Z, 1) ||
+                            MathF.d_equal(memberLCSAxis_zInView.Z, -1)
                             ) // Lokalna osa z pruta v LCS smeruje kolmo na smer pohladu
                         {
                             // Text kreslime do roviny LCS xy
