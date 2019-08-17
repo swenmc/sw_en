@@ -1850,6 +1850,10 @@ namespace BaseClasses
                             viewVector = new Vector3D(0, 1, 0);
                         }
 
+                        // Ziskame transformaciu pruta z LCS do GCS
+                        // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
+                        Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], false); // Ignorujeme rotaciu okolo LCS osi x
+
                         // TODO - toto kodovanie moze byt podla normaly textu alebo to mozeme urobit aj podla LCS rovin v ktorych text lezi
                         int iTextNormalInLCSCode; // 0 - text pre LCS x (rovina yz), 1 - text pre LCS y (rovina xz), 2 - text pre LCS z (rovina xy)
 
@@ -1857,44 +1861,14 @@ namespace BaseClasses
                         Vector3D memberAxis_yInLCS = new Vector3D(0, 1, 0);
                         Vector3D memberAxis_zInLCS = new Vector3D(0, 0, 1);
 
-                        Vector3D memberVectorInGCS = new Vector3D(model.m_arrMembers[i].Delta_X, model.m_arrMembers[i].Delta_Y, model.m_arrMembers[i].Delta_Z);
+                        Vector3D memberLCSAxis_xInGCS;
+                        Vector3D memberLCSAxis_yInGCS;
+                        Vector3D memberLCSAxis_zInGCS;
 
-                        memberVectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
-
-                        // Ziskame transformaciu pruta z LCS do GCS
-                        // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
-                        Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], false); // Ignorujeme rotaciu okolo LCS osi x
-
-                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                        // Urobit transformaciu priamo pre Vektor3D
-                        // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
-                        // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urobene aj priamo pre vektor, aby sa to neuselo prevadzat cez point, ale neviem kde
-                        Point3D pLCSAxisX = transform.Transform(new Point3D(memberAxis_xInLCS.X, memberAxis_xInLCS.Y, memberAxis_xInLCS.Z));
-                        Point3D pLCSAxisY = transform.Transform(new Point3D(memberAxis_yInLCS.X, memberAxis_yInLCS.Y, memberAxis_yInLCS.Z));
-                        Point3D pLCSAxisZ = transform.Transform(new Point3D(memberAxis_zInLCS.X, memberAxis_zInLCS.Y, memberAxis_zInLCS.Z));
-
-                        // Chceme uplatnit len rotacne transformacie, nie posun
-                        pLCSAxisX.X -= model.m_arrMembers[i].NodeStart.X;
-                        pLCSAxisX.Y -= model.m_arrMembers[i].NodeStart.Y;
-                        pLCSAxisX.Z -= model.m_arrMembers[i].NodeStart.Z;
-
-                        pLCSAxisY.X -= model.m_arrMembers[i].NodeStart.X;
-                        pLCSAxisY.Y -= model.m_arrMembers[i].NodeStart.Y;
-                        pLCSAxisY.Z -= model.m_arrMembers[i].NodeStart.Z;
-
-                        pLCSAxisZ.X -= model.m_arrMembers[i].NodeStart.X;
-                        pLCSAxisZ.Y -= model.m_arrMembers[i].NodeStart.Y;
-                        pLCSAxisZ.Z -= model.m_arrMembers[i].NodeStart.Z;
-
-                        Vector3D memberLCSAxis_xInGCS = new Vector3D(pLCSAxisX.X, pLCSAxisX.Y, pLCSAxisX.Z);
-                        Vector3D memberLCSAxis_yInGCS = new Vector3D(pLCSAxisY.X, pLCSAxisY.Y, pLCSAxisY.Z);
-                        Vector3D memberLCSAxis_zInGCS = new Vector3D(pLCSAxisZ.X, pLCSAxisZ.Y, pLCSAxisZ.Z);
-
-                        // TO Ondrej - Trosku sa mi nezdava co tu ziskam ako zlozky vektorov :-/ ak je prut zvislo to tak by som chcel len hodnoty 0,-1,1
-                        memberLCSAxis_xInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
-                        memberLCSAxis_yInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
-                        memberLCSAxis_zInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
-                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // Transformujeme vektory LCS os do GCS systemu, transformacna matica je vstup lebo ju potrebujeme este dalej, pripadne by mohla byt vystupny parameter
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, memberAxis_xInLCS, out memberLCSAxis_xInGCS);
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, memberAxis_yInLCS, out memberLCSAxis_yInGCS);
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, memberAxis_zInLCS, out memberLCSAxis_zInGCS);
 
                         // Vztah LCS osi a vektora pohladu
                         // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
@@ -2006,16 +1980,12 @@ namespace BaseClasses
                         // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
                         // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
                         // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D over_InView = new Vector3D(over_LCS.X * memberVectorInGCS.X + over_LCS.Y * memberVectorInGCS.X + over_LCS.Z * memberVectorInGCS.X,
-                                                            over_LCS.X * memberVectorInGCS.Y + over_LCS.Y * memberVectorInGCS.Y + over_LCS.Z * memberVectorInGCS.Y,
-                                                            over_LCS.X * memberVectorInGCS.Z + over_LCS.Y * memberVectorInGCS.Z + over_LCS.Z * memberVectorInGCS.Z);
-
+                        Vector3D over_InView;
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InView);
                         over_InView.Normalize();
 
-                        Vector3D up_InView = new Vector3D(up_LCS.X * memberLCSAxis_zInGCS.X + up_LCS.Y * memberLCSAxis_zInGCS.X + up_LCS.Z * memberLCSAxis_zInGCS.X,
-                                                          up_LCS.X * memberLCSAxis_zInGCS.Y + up_LCS.Y * memberLCSAxis_zInGCS.Y + up_LCS.Z * memberLCSAxis_zInGCS.Y,
-                                                          up_LCS.X * memberLCSAxis_zInGCS.Z + up_LCS.Y * memberLCSAxis_zInGCS.Z + up_LCS.Z * memberLCSAxis_zInGCS.Z);
-
+                        Vector3D up_InView;
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, up_LCS, out up_InView);
                         up_InView.Normalize();
 
                         // Finalne vektory (prenasobenie faktorom velkosti textbloku)
@@ -3639,6 +3609,35 @@ namespace BaseClasses
                 over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
                 up = new Vector3D(fTextBlockVerticalSizeFactor, 0, 0);
             }*/
+        }
+
+        private static void TransformVectorsFromLCSAxisToGCSAxis(CMember m,
+            Transform3DGroup transform,
+            Vector3D memberAxisVectorInLCS, // Vektor v LCS
+            out Vector3D memberLCSAxis_VectorInGCS // Vektor v GCS
+            )
+        {
+            // To neviem ci sa pouzije
+            //Vector3D memberVectorInGCS = new Vector3D(m.Delta_X, m.Delta_Y, m.Delta_Z);
+            //memberVectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Urobit transformaciu priamo pre Vektor3D
+            // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
+            // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urobene aj priamo pre vektor, aby sa to neuselo prevadzat cez point, ale neviem kde
+            Point3D pLCSAxisVector = transform.Transform(new Point3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
+
+            // Chceme uplatnit len rotacne transformacie, nie posun
+            pLCSAxisVector.X -= m.NodeStart.X;
+            pLCSAxisVector.Y -= m.NodeStart.Y;
+            pLCSAxisVector.Z -= m.NodeStart.Z;
+
+            memberLCSAxis_VectorInGCS = new Vector3D(pLCSAxisVector.X, pLCSAxisVector.Y, pLCSAxisVector.Z);
+
+            // TO Ondrej - Trosku sa mi nezdava co tu ziskam ako zlozky vektorov :-/ ak je prut zvislo to tak by som chcel len hodnoty 0,-1,1
+            memberLCSAxis_VectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
 }
