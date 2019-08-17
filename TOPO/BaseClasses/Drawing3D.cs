@@ -272,7 +272,8 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
@@ -411,7 +412,8 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
@@ -560,7 +562,8 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
@@ -1770,6 +1773,244 @@ namespace BaseClasses
                 }
             }
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // 17.8.2019
+        // TO Ondrej - pokus kreslit text do LCS a potom ho presunut do GCS s tym ze vektrory pre smerovanie textu sa nastavia podla pohladu
+
+        public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            // Members
+            if (model.m_arrMembers != null)
+            {
+                ModelVisual3D textlabel = null;
+
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+                    {
+                        Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
+                        Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+
+                        string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
+
+                        TextBlock tb = new TextBlock();
+                        tb.Text = sTextToDisplay;
+                        tb.FontFamily = new FontFamily("Arial");
+                        float fTextBlockVerticalSize = 0.1f;
+                        float fTextBlockVerticalSizeFactor = 0.8f;
+                        float fTextBlockHorizontalSizeFactor = 0.3f;
+
+                        // Tieto nastavenia sa nepouziju
+                        tb.FontStretch = FontStretches.UltraCondensed;
+                        tb.FontStyle = FontStyles.Normal;
+                        tb.FontWeight = FontWeights.Thin;
+                        tb.Foreground = Brushes.LightGreen;
+                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+
+                        float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
+
+                        // TODO Ondrej - vylepsit vykreslovanie a odsadenie
+                        // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
+                        // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
+                        // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
+                        // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
+                        // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
+
+                        // Zistime v akej vzajomnej pozicii su voci sebe osovy system pruta v LCS a pohlad
+                        // Podla toho urcime ci vykreslujeme text pruta pre LCS pohlad x, y alebo z
+
+                        Vector3D viewVector;
+
+                        if (displayOptions.ModelView == (int)EModelViews.BACK)
+                        {
+                            viewVector = new Vector3D(0, -1, 0);
+                        }
+                        else if (displayOptions.ModelView == (int)EModelViews.LEFT)
+                        {
+                            viewVector = new Vector3D(1, 0, 0);
+                        }
+                        else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
+                        {
+                            viewVector = new Vector3D(-1, 0, 0);
+                        }
+                        else if (displayOptions.ModelView == (int)EModelViews.TOP)
+                        {
+                            viewVector = new Vector3D(0, 0, -1);
+                        }
+                        else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
+                        {
+                            viewVector = new Vector3D(0, 1, 0);
+                        }
+
+                        // TODO - toto kodovanie moze byt podla normaly textu alebo to mozeme urobit aj podla LCS rovin v ktorych text lezi
+                        int iTextNormalInLCSCode; // 0 - text pre LCS x (rovina yz), 1 - text pre LCS y (rovina xz), 2 - text pre LCS z (rovina xy)
+
+                        Vector3D memberAxis_xInLCS = new Vector3D(1, 0, 0);
+                        Vector3D memberAxis_yInLCS = new Vector3D(0, 1, 0);
+                        Vector3D memberAxis_zInLCS = new Vector3D(0, 0, 1);
+
+                        Vector3D memberVectorInGCS = new Vector3D(model.m_arrMembers[i].Delta_X, model.m_arrMembers[i].Delta_Y, model.m_arrMembers[i].Delta_Z);
+
+                        memberVectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+
+                        // Ziskame transformaciu pruta z LCS do GCS
+                        Transform3DGroup transform = model.m_arrMembers[i].CreateTransformCoordGroup(model.m_arrMembers[i], false); // Ignorujeme rotaciu okolo LCS osi x
+
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        // Urobit transformaciu priamo pre Vektor3D
+                        // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
+                        // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urebene aj pre vektor ale neviem kde
+                        Point3D pLCSAxisX = transform.Transform(new Point3D(memberAxis_xInLCS.X, memberAxis_xInLCS.Y, memberAxis_xInLCS.Z));
+                        Point3D pLCSAxisY = transform.Transform(new Point3D(memberAxis_yInLCS.X, memberAxis_yInLCS.Y, memberAxis_yInLCS.Z));
+                        Point3D pLCSAxisZ = transform.Transform(new Point3D(memberAxis_zInLCS.X, memberAxis_zInLCS.Y, memberAxis_zInLCS.Z));
+
+                        Vector3D memberLCSAxis_xInGCS = new Vector3D(pLCSAxisX.X, pLCSAxisX.Y, pLCSAxisX.Z);
+                        Vector3D memberLCSAxis_yInGCS = new Vector3D(pLCSAxisY.X, pLCSAxisY.Y, pLCSAxisY.Z);
+                        Vector3D memberLCSAxis_zInGCS = new Vector3D(pLCSAxisZ.X, pLCSAxisZ.Y, pLCSAxisZ.Z);
+                        memberLCSAxis_xInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+                        memberLCSAxis_yInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+                        memberLCSAxis_zInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                        // Vztah LCS osi a vektora pohladu
+                        Vector3D memberLCSAxis_xInView = new Vector3D(memberAxis_xInLCS.X * viewVector.X, memberAxis_xInLCS.Y * viewVector.X, memberAxis_xInLCS.Z * viewVector.X);
+                        Vector3D memberLCSAxis_yInView = new Vector3D(memberAxis_yInLCS.X * viewVector.Y, memberAxis_yInLCS.Y * viewVector.Y, memberAxis_yInLCS.Z * viewVector.Y);
+                        Vector3D memberLCSAxis_zInView = new Vector3D(memberAxis_zInLCS.X * viewVector.Z, memberAxis_zInLCS.Y * viewVector.Z, memberAxis_zInLCS.Z * viewVector.Z);
+
+                        // Urcenie pozicie LCS pruta voci smeru pohladu
+                        if (memberLCSAxis_xInView.X == 1 ||
+                            memberLCSAxis_xInView.X == -1 ||
+                            memberLCSAxis_xInView.Y == 1 ||
+                            memberLCSAxis_xInView.Y == -1 ||
+                            memberLCSAxis_xInView.Z == 1 ||
+                            memberLCSAxis_xInView.Z == -1
+                            ) // Prut (osa x in LCS) smeruje kolmo na smer pohladu
+                        {
+                            // Text kreslime do roviny LCS yz
+                            iTextNormalInLCSCode = 0;
+
+                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                        }
+                        else if (memberLCSAxis_yInView.X == 1 ||
+                            memberLCSAxis_yInView.X == -1 ||
+                            memberLCSAxis_yInView.Y == 1 ||
+                            memberLCSAxis_yInView.Y == -1 ||
+                            memberLCSAxis_yInView.Z == 1 ||
+                            memberLCSAxis_yInView.Z == -1
+                            ) // Lokalna osa y pruta v LCS smeruje kolmo na smer pohladu
+                        {
+                            // Text kreslime do roviny LCS xz
+                            iTextNormalInLCSCode = 1;
+
+                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                        }
+                        else if (memberLCSAxis_zInView.X == 1 ||
+                            memberLCSAxis_zInView.X == -1 ||
+                            memberLCSAxis_zInView.Y == 1 ||
+                            memberLCSAxis_zInView.Y == -1 ||
+                            memberLCSAxis_zInView.Z == 1 ||
+                            memberLCSAxis_zInView.Z == -1
+                            ) // Lokalna osa z pruta v LCS smeruje kolmo na smer pohladu
+                        {
+                            // Text kreslime do roviny LCS xy
+                            iTextNormalInLCSCode = 2;
+
+                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                        }
+                        else
+                        {
+                            //???? Default pre 3D pohlad na scenu
+                            iTextNormalInLCSCode = 2;
+                        }
+
+                        // Vzdialenost od stredovej taziskovej linie po okraj prierezu
+                        float fOffsetInPlaneBasic_y = (float)Math.Max(model.m_arrMembers[i].CrScStart.y_min, model.m_arrMembers[i].CrScStart.y_max);
+                        float fOffsetInPlaneBasic_z = (float)model.m_arrMembers[i].CrScStart.z_max;
+
+                        float fOffsetInPlaneAdd_y = 0.05f;
+                        float fOffsetInPlaneAdd_z = 0.05f;
+
+                        float fOffsetInPlane_y = fOffsetInPlaneBasic_y + fOffsetInPlaneAdd_y + 0.5f * fTextBlockVerticalSize;
+                        float fOffsetInPlane_z = fOffsetInPlaneBasic_z + fOffsetInPlaneAdd_z + 0.5f * fTextBlockVerticalSize;
+
+                        float fOffsetOutOfPlane_y = 0.1f; // Offset z roviny LCS xz (znamienko podla smerovania osy y a rotacie textu)
+                        float fOffsetOutOfPlane_Z = 0.1f; // Offset z roviny LCS xy (znamienko podla smerovania osy z a rotacie textu)
+
+                        Point3D pTextPositionInLCS = new Point3D(); // Riadiaci bod pre vlozenie textu v LCS pruta
+                        Vector3D over_LCS;
+                        Vector3D up_LCS;
+
+                        if (iTextNormalInLCSCode == 0) // Text pre LCS x (rovina yz)
+                        {
+                            pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
+                            pTextPositionInLCS.Y = 0; // v pripade potreby upravit
+                            pTextPositionInLCS.Z = fOffsetInPlane_z; // Kreslime nad prut v LCS smere z - v pripade potreby upravit alebo zohladnit znamienko (text nad alebo pod prierezom)
+                            over_LCS = new Vector3D(0, 1, 0);
+                            up_LCS = new Vector3D(0, 0, 1);
+                        }
+                        else if(iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
+                        {
+                            pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
+                            pTextPositionInLCS.Y = fOffsetOutOfPlane_y; // v pripade potreby upravit / TODO nastavit znamienko
+                            pTextPositionInLCS.Z = fOffsetInPlane_z; // Kreslime nad prut v LCS smere z - v pripade potreby upravit alebo zohladnit znamienko (text nad alebo pod prierezom)
+                            over_LCS = new Vector3D(1, 0, 0); // ??? doriesit opacny smer textu
+                            up_LCS = new Vector3D(0, 0, 1);
+                        }
+                        else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
+                        {
+                            pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
+                            pTextPositionInLCS.Y = fOffsetInPlane_y; // Kreslime vlavo / vpravo od pruta v LCS smere y - v pripade potreby upravit alebo zohladnit znamienko podla toho na ktorej strane pruta chceme text zobrazit
+                            pTextPositionInLCS.Z = fOffsetOutOfPlane_Z; // v pripade potreby upravit / TODO nastavit znamienko
+                            over_LCS = new Vector3D(1, 0, 0); // Text v smere kladnej osi x 
+                            up_LCS = new Vector3D(0, 1, 0);
+                        }
+
+                        Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
+
+                        // Transformujeme suradnice riadiaceho bodu z LCS do GCS
+                        pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
+
+                        // Vytvorime vektory pre urcenie smeru textu
+                        // To Ondrej - ako tak rozmyslam tak pre zakladny pohlad ked su vsetky texty zobrazene horizontalne a defaultne podla front je to up (0,0,1) a over (1,0,0),
+                        // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
+                        // podobne pre potocenie modelu okolo osi X a Y
+
+                        Vector3D over_InView = new Vector3D(over_LCS.X * memberVectorInGCS.X + over_LCS.Y * memberVectorInGCS.X + over_LCS.Z * memberVectorInGCS.X,
+                                                            over_LCS.X * memberVectorInGCS.Y + over_LCS.Y * memberVectorInGCS.Y + over_LCS.Z * memberVectorInGCS.Y,
+                                                            over_LCS.X * memberVectorInGCS.Z + over_LCS.Y * memberVectorInGCS.Z + over_LCS.Z * memberVectorInGCS.Z);
+
+                        Vector3D up_InView = new Vector3D(up_LCS.X * memberLCSAxis_zInGCS.X + up_LCS.Y * memberLCSAxis_zInGCS.X + up_LCS.Z * memberLCSAxis_zInGCS.X,
+                                                          up_LCS.X * memberLCSAxis_zInGCS.Y + up_LCS.Y * memberLCSAxis_zInGCS.Y + up_LCS.Z * memberLCSAxis_zInGCS.Y,
+                                                          up_LCS.X * memberLCSAxis_zInGCS.Z + up_LCS.Y * memberLCSAxis_zInGCS.Z + up_LCS.Z * memberLCSAxis_zInGCS.Z);
+
+                        // Finalne vektory (prenasobenie faktorom velkosti textbloku)
+                        Vector3D over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
+                        Vector3D up = new Vector3D(up_InView.X * fTextBlockVerticalSizeFactor, up_InView.Y * fTextBlockVerticalSizeFactor, up_InView.Z * fTextBlockVerticalSizeFactor);
+
+                        // Create text
+                        textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up);
+
+                        if (centerModel)
+                        {
+                            textlabel.Transform = centerModelTransGr;
+                        }
+                        viewPort.Children.Add(textlabel);
+                    }
+                }
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Draw Text in 3D
         public static void CreateNodesDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
