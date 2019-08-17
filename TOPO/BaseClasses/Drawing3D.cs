@@ -1827,6 +1827,7 @@ namespace BaseClasses
                         // Zistime v akej vzajomnej pozicii su voci sebe osovy system pruta v LCS a pohlad
                         // Podla toho urcime ci vykreslujeme text pruta pre LCS pohlad x, y alebo z
 
+                        // VIEW AXIS
                         Vector3D viewVector;
                         Vector3D viewHorizontalVector;
                         Vector3D viewVerticalVector; 
@@ -1883,16 +1884,23 @@ namespace BaseClasses
                         TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, memberAxis_zInLCS, out memberLCSAxis_zInGCS);
 
                         // Vztah LCS osi a vektora pohladu
+                        // TO ONDREJ
                         // Tu vieme vektory LCS pruta v GCS a vektory os smeru pohladu v GCS, potrebujeme ziskat vektora LCS pruta v systeme pohladu X - horizontalna, Y - v smere pohladu, Z vertikalna
+                        // PODOBNY PROBLEM AKO U ZATAZENIA
+                        // Vieme vztah LCS os ku GCS a vieme vztah VIEW AXIS ku GCS, potrebujeme zistit vztah medzi LCS pruta a VIEW AXIS
 
-                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewHorizontalVector.X, memberLCSAxis_xInGCS.Y * viewHorizontalVector.Y, memberLCSAxis_xInGCS.Z * viewHorizontalVector.Z);
-                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.X, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Z);
-                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVerticalVector.X, memberLCSAxis_zInGCS.Y * viewVerticalVector.Y, memberLCSAxis_zInGCS.Z * viewVerticalVector.Z);
+                        //Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewHorizontalVector.X, memberLCSAxis_xInGCS.Y * viewHorizontalVector.Y, memberLCSAxis_xInGCS.Z * viewHorizontalVector.Z);
+                        //Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.X, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Z);
+                        //Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVerticalVector.X, memberLCSAxis_zInGCS.Y * viewVerticalVector.Y, memberLCSAxis_zInGCS.Z * viewVerticalVector.Z);
 
-                        if(model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
-                        {
+                        Matrix3D matrixViewInGCS = new Matrix3D(viewHorizontalVector.X, viewHorizontalVector.Y, viewHorizontalVector.Z, 0,
+                            viewVector.X, viewVector.Y, viewVector.Z, 0,
+                            viewVerticalVector.X, viewVerticalVector.Y, viewVerticalVector.Z, 0,
+                            0, 0, 0, 1);
 
-                        }
+                        Vector3D memberLCSAxis_xInView = memberLCSAxis_xInGCS * matrixViewInGCS;
+                        Vector3D memberLCSAxis_yInView = memberLCSAxis_yInGCS * matrixViewInGCS;
+                        Vector3D memberLCSAxis_zInView = memberLCSAxis_zInGCS * matrixViewInGCS;
 
                         // Urcenie pozicie LCS pruta voci smeru pohladu (Y - view)
 
@@ -1903,7 +1911,7 @@ namespace BaseClasses
                             // Text kreslime do roviny LCS yz
                             iTextNormalInLCSCode = 0;
 
-                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                            // TODO - podla orientacie vektora mozeme nastavit vector over pre text
                         }
                         else if (MathF.d_equal(memberLCSAxis_yInView.Y, 1) ||
                             MathF.d_equal(memberLCSAxis_yInView.Y, -1)
@@ -1912,7 +1920,7 @@ namespace BaseClasses
                             // Text kreslime do roviny LCS xz
                             iTextNormalInLCSCode = 1;
 
-                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                            // TODO - podla orientacie vektora mozeme nastavit vector over pre text
                         }
                         else if (MathF.d_equal(memberLCSAxis_zInView.Y, 1) ||
                             MathF.d_equal(memberLCSAxis_zInView.Y, -1)
@@ -1921,7 +1929,7 @@ namespace BaseClasses
                             // Text kreslime do roviny LCS xy
                             iTextNormalInLCSCode = 2;
 
-                            // TODO - podla orientace vektora mozeme nastavit vector over pre text
+                            // TODO - podla orientacie vektora mozeme nastavit vector over pre text
                         }
                         else
                         {
@@ -2000,6 +2008,8 @@ namespace BaseClasses
                         // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
                         // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
                         // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
+
+                        // Tato transformacia by sa mala nahradit transformaciou z LCS do VIEW AXIS
                         Vector3D over_InGCS;
                         TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InGCS);
                         over_InGCS.Normalize();
