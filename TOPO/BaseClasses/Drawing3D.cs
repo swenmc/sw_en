@@ -1883,11 +1883,11 @@ namespace BaseClasses
                         TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, memberAxis_zInLCS, out memberLCSAxis_zInGCS);
 
                         // Vztah LCS osi a vektora pohladu
-                        // TO Ondrej ???? Neviem ci je to dobre, zase som raz skoncil na goniometrii a vektoroch v 3D :)
-                        // Malo by to urcit, ci osa smeruje za alebo pred rovinu pohladu (-1, 1) alebo je v rovine 0 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewHorizontalVector.X, memberLCSAxis_xInGCS.Y * viewHorizontalVector.X, memberLCSAxis_xInGCS.Z * viewHorizontalVector.X);
-                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.Y, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Y);
-                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVerticalVector.Z, memberLCSAxis_zInGCS.Y * viewVerticalVector.Z, memberLCSAxis_zInGCS.Z * viewVerticalVector.Z);
+                        // Tu vieme vektory LCS pruta v GCS a vektory os smeru pohladu v GCS, potrebujeme ziskat vektora LCS pruta v systeme pohladu X - horizontalna, Y - v smere pohladu, Z vertikalna
+
+                        Vector3D memberLCSAxis_xInView = new Vector3D(memberLCSAxis_xInGCS.X * viewHorizontalVector.X, memberLCSAxis_xInGCS.Y * viewHorizontalVector.Y, memberLCSAxis_xInGCS.Z * viewHorizontalVector.Z);
+                        Vector3D memberLCSAxis_yInView = new Vector3D(memberLCSAxis_yInGCS.X * viewVector.X, memberLCSAxis_yInGCS.Y * viewVector.Y, memberLCSAxis_yInGCS.Z * viewVector.Z);
+                        Vector3D memberLCSAxis_zInView = new Vector3D(memberLCSAxis_zInGCS.X * viewVerticalVector.X, memberLCSAxis_zInGCS.Y * viewVerticalVector.Y, memberLCSAxis_zInGCS.Z * viewVerticalVector.Z);
 
                         if(model.m_arrMembers[i].EMemberTypePosition == EMemberType_FS_Position.EdgeColumn)
                         {
