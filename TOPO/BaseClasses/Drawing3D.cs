@@ -3673,8 +3673,8 @@ namespace BaseClasses
             // Urobit transformaciu priamo pre Vektor3D
             // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
             // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urobene aj priamo pre vektor, aby sa to neuselo prevadzat cez point, ale neviem kde
-            //Point3D pLCSAxisVector = transform.Transform(new Point3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
-            Vector3D pLCSAxisVector = transform.Transform(new Vector3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
+            Point3D pLCSAxisVector = transform.Transform(new Point3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
+            //Vector3D pLCSAxisVector = transform.Transform(new Vector3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
 
             // Chceme uplatnit len rotacne transformacie, nie posun
             pLCSAxisVector.X -= m.NodeStart.X;
