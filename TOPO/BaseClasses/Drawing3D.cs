@@ -1957,13 +1957,16 @@ namespace BaseClasses
                         float fOffsetOutOfPlane_Z = 0.3f; // Offset z roviny LCS xy (znamienko podla smerovania osy z a rotacie textu)
 
                         Point3D pTextPositionInLCS = new Point3D(); // Riadiaci bod pre vlozenie textu v LCS pruta
-                        Vector3D over_LCS;
-                        Vector3D up_LCS;
+                        Vector3D over_LCS; // Vektor smeru textu v LCS
+                        Vector3D up_LCS; // Vektor smeru textu v LCS
+
+                        Vector3D over; // Vektor smeru textu vo view
+                        Vector3D up; // Vektor smeru textu vo view
 
                         if (iTextNormalInLCSCode == 0) // Text pre LCS x (rovina yz)
                         {
                             pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
-                            pTextPositionInLCS.Y = 0; // v pripade potreby upravit
+                            pTextPositionInLCS.Y = fOffsetInPlane_y; // v pripade potreby upravit
                             pTextPositionInLCS.Z = fOffsetInPlane_z; // Kreslime nad prut v LCS smere z - v pripade potreby upravit alebo zohladnit znamienko (text nad alebo pod prierezom)
                             over_LCS = new Vector3D(0, 1, 0);
                             up_LCS = new Vector3D(0, 0, 1);
@@ -1976,7 +1979,12 @@ namespace BaseClasses
                             }
 
                             // TO Ondrej
-                            // Pre Pohlad Top a Filter Columns treba pootacat vektory na stlpoch aby smerovali vsetky rovnako, pripadne to urobit natvrdo
+                            // Pre pohlad Top a Filter Columns treba pootacat vektory na stlpoch aby smerovali vsetky rovnako, pripadne to urobit natvrdo
+                            //TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, over_LCS, up_LCS, out over, out up);
+
+                            // Vzdy smeruje podla pohladu
+                            over = viewHorizontalVector * fTextBlockHorizontalSizeFactor;
+                            up = viewVerticalVector * fTextBlockVerticalSizeFactor;
                         }
                         else if(iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
                         {
@@ -1999,6 +2007,8 @@ namespace BaseClasses
                                 over_LCS = new Vector3D(-1, 0, 0);
                                 //up_LCS = new Vector3D(0, 0, -1);
                             }
+
+                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, over_LCS, up_LCS, out over, out up);
                         }
                         else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
                         {
@@ -2018,41 +2028,17 @@ namespace BaseClasses
                             // Sucin kladneho smeru LCS z a view Y je kladny (osa z smeruje opacnym smerom ako je smer pohladu)
                             if (memberLCSAxis_zInView.Y > 0) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
                             {
-                                //over_LCS = new Vector3D(1, 0, 0);
-                                up_LCS = new Vector3D(0, 1, 0);
+                                over_LCS = new Vector3D(1, 0, 0);
+                                //up_LCS = new Vector3D(0, 1, 0);
                             }
+
+                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, over_LCS, up_LCS, out over, out up);
                         }
 
                         Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
 
                         // Transformujeme suradnice riadiaceho bodu z LCS do GCS
                         pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
-
-                        // Vytvorime vektory pre urcenie smeru textu
-                        // To Ondrej - ako tak rozmyslam tak pre zakladny pohlad ked su vsetky texty zobrazene horizontalne a defaultne podla front je to up (0,0,1) a over (1,0,0),
-                        // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
-                        // podobne pre potocenie modelu okolo osi X a Y
-
-                        // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
-                        // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
-                        // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-
-                        // Tato transformacia by sa mala nahradit transformaciou z LCS do VIEW AXIS
-                        Vector3D over_InGCS;
-                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InGCS);
-
-                        // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
-                        Vector3D over_InView = over_InGCS;// * matrixViewInGCS_Inverse;
-
-                        Vector3D up_InGCS;
-                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, up_LCS, out up_InGCS);
-
-                        // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
-                        Vector3D up_InView = up_InGCS;// * matrixViewInGCS_Inverse;
-
-                        // Finalne vektory (prenasobenie faktorom velkosti textbloku)
-                        Vector3D over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
-                        Vector3D up = new Vector3D(up_InView.X * fTextBlockVerticalSizeFactor, up_InView.Y * fTextBlockVerticalSizeFactor, up_InView.Z * fTextBlockVerticalSizeFactor);
 
                         // Create text
                         textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up);
@@ -3700,6 +3686,44 @@ namespace BaseClasses
             memberLCSAxis_VectorInGCS.Normalize(); // Normalizujem vektor, aby sa ignorovala dlzka priemetu pruta
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
+
+        private static void TransformTextVectorsFromLCSAxisToViewAxis(
+            float fTextBlockHorizontalSizeFactor,
+            float fTextBlockVerticalSizeFactor,
+            CMember m,
+            Transform3DGroup transform,
+            Vector3D over_LCS,
+            Vector3D up_LCS,
+    out Vector3D over,
+            out Vector3D up
+    )
+        {
+            // Vytvorime vektory pre urcenie smeru textu
+            // To Ondrej - ako tak rozmyslam tak pre zakladny pohlad ked su vsetky texty zobrazene horizontalne a defaultne podla front je to up (0,0,1) a over (1,0,0),
+            // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
+            // podobne pre potocenie modelu okolo osi X a Y
+
+            // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
+            // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
+            // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
+
+            // Tato transformacia by sa mala nahradit transformaciou z LCS do VIEW AXIS
+            Vector3D over_InGCS;
+            TransformVectorsFromLCSAxisToGCSAxis(m, transform, over_LCS, out over_InGCS);
+
+            // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
+            Vector3D over_InView = over_InGCS;// * matrixViewInGCS_Inverse;
+
+            Vector3D up_InGCS;
+            TransformVectorsFromLCSAxisToGCSAxis(m, transform, up_LCS, out up_InGCS);
+
+            // Transformujeme vektor z GCS do View ??? Toto by sa malo urobit, ale ked som to skusal tak to vyzeralo nejako horsie. Zamysli sa :)
+            Vector3D up_InView = up_InGCS;// * matrixViewInGCS_Inverse;
+
+            // Finalne vektory (prenasobenie faktorom velkosti textbloku)
+            over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
+            up = new Vector3D(up_InView.X * fTextBlockVerticalSizeFactor, up_InView.Y * fTextBlockVerticalSizeFactor, up_InView.Z * fTextBlockVerticalSizeFactor);
         }
     }
 }
