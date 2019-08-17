@@ -1980,13 +1980,19 @@ namespace BaseClasses
                         // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
                         // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
                         // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
-                        Vector3D over_InView;
-                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InView);
-                        over_InView.Normalize();
+                        Vector3D over_InGCS;
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, over_LCS, out over_InGCS);
+                        over_InGCS.Normalize();
 
-                        Vector3D up_InView;
-                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, up_LCS, out up_InView);
-                        up_InView.Normalize();
+                        // Transformujeme vektor z GCS do View ??? // Este neviem ci s tym bude nieco treba robit :))) a hlavne co
+                        Vector3D over_InView = over_InGCS;
+
+                        Vector3D up_InGCS;
+                        TransformVectorsFromLCSAxisToGCSAxis(model.m_arrMembers[i], transform, up_LCS, out up_InGCS);
+                        up_InGCS.Normalize();
+
+                        // Transformujeme vektor z GCS do View ??? Este neviem ci s tym bude nieco treba robit :))) a hlavne co
+                        Vector3D up_InView = up_InGCS;
 
                         // Finalne vektory (prenasobenie faktorom velkosti textbloku)
                         Vector3D over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
