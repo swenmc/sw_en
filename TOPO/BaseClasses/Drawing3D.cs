@@ -2006,9 +2006,20 @@ namespace BaseClasses
                             {
                                 over_LCS = new Vector3D(-1, 0, 0);
                                 //up_LCS = new Vector3D(0, 0, -1);
+
+                                pTextPositionInLCS.Y *= -1;
                             }
 
-                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, over_LCS, up_LCS, out over, out up);
+                            // Sucin kladneho smeru LCS x a view horizontal je kladny (osa x smeruje opacnym smerom ako je smer horizontalnej osi pohladu)
+                            if (memberLCSAxis_xInView.X < 0) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
+                            {
+                                over_LCS = new Vector3D(-1, 0, 0);
+                                up_LCS = new Vector3D(0, 0, -1);
+
+                                pTextPositionInLCS.Z *= -1;
+                            }
+
+                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, matrixViewInGCS_Inverse, over_LCS, up_LCS, out over, out up);
                         }
                         else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
                         {
@@ -2030,9 +2041,11 @@ namespace BaseClasses
                             {
                                 over_LCS = new Vector3D(-1, 0, 0);
                                 //up_LCS = new Vector3D(0, 1, 0);
+
+                                pTextPositionInLCS.Z *= -1;
                             }
 
-                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, over_LCS, up_LCS, out over, out up);
+                            TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, matrixViewInGCS_Inverse, over_LCS, up_LCS, out over, out up);
                         }
 
                         Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
@@ -2047,7 +2060,12 @@ namespace BaseClasses
                         {
                             textlabel.Transform = centerModelTransGr;
                         }
-                        viewPort.Children.Add(textlabel);
+
+                        float fMemberLengthLimitToDisplayDescription = 0.5f;
+
+                        // podmienky pre pridanie textu (napriklad typ alebo dlzka pruta)
+                        if(model.m_arrMembers[i].FLength > fMemberLengthLimitToDisplayDescription)
+                            viewPort.Children.Add(textlabel);
                     }
                 }
             }
@@ -3673,8 +3691,8 @@ namespace BaseClasses
             // Urobit transformaciu priamo pre Vektor3D
             // Transformaciu z LCS do GCS aplikujeme na jednotlive lokalne osi pruta, ziskame tak ich vektor v GCS
             // TO Ondrej - myslim ze toto uz mame niekde pri generovani zatazeni urobene aj priamo pre vektor, aby sa to neuselo prevadzat cez point, ale neviem kde
-            //Point3D pLCSAxisVector = transform.Transform(new Point3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
-            Vector3D pLCSAxisVector = transform.Transform(new Vector3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
+            Point3D pLCSAxisVector = transform.Transform(new Point3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
+            //Vector3D pLCSAxisVector = transform.Transform(new Vector3D(memberAxisVectorInLCS.X, memberAxisVectorInLCS.Y, memberAxisVectorInLCS.Z));
 
             // Chceme uplatnit len rotacne transformacie, nie posun
             pLCSAxisVector.X -= m.NodeStart.X;
@@ -3694,9 +3712,10 @@ namespace BaseClasses
             float fTextBlockVerticalSizeFactor,
             CMember m,
             Transform3DGroup transform,
+            Matrix3D matrixViewInGCS_Inverse,
             Vector3D over_LCS,
             Vector3D up_LCS,
-    out Vector3D over,
+            out Vector3D over,
             out Vector3D up
     )
         {
