@@ -1957,6 +1957,13 @@ namespace BaseClasses
                             pTextPositionInLCS.Z = fOffsetInPlane_z; // Kreslime nad prut v LCS smere z - v pripade potreby upravit alebo zohladnit znamienko (text nad alebo pod prierezom)
                             over_LCS = new Vector3D(1, 0, 0); // ??? doriesit opacny smer textu
                             up_LCS = new Vector3D(0, 0, 1);
+
+                            // Ak smeruje lokalna osa x v smere zapornej osi Z potrebujeme text otocit aby sa vykreslil zhora dole
+                            if(model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
+                            {
+                                over_LCS = new Vector3D(-1, 0, 0); // ??? doriesit opacny smer textu
+                                up_LCS = new Vector3D(0, 0, -1);
+                            }
                         }
                         else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
                         {
@@ -1965,6 +1972,13 @@ namespace BaseClasses
                             pTextPositionInLCS.Z = fOffsetOutOfPlane_Z; // v pripade potreby upravit / TODO nastavit znamienko
                             over_LCS = new Vector3D(1, 0, 0); // Text v smere kladnej osi x 
                             up_LCS = new Vector3D(0, 1, 0);
+
+                            // Ak smeruje lokalna osa x v smere zapornej osi Z potrebujeme text otocit aby sa vykreslil zhora dole
+                            if (model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
+                            {
+                                over_LCS = new Vector3D(-1, 0, 0); // ??? doriesit opacny smer textu
+                                up_LCS = new Vector3D(0, -1, 0);
+                            }
                         }
 
                         Point3D pTextPositionInGCS = new Point3D(pTextPositionInLCS.X, pTextPositionInLCS.Y, pTextPositionInLCS.Z); // Riadiaci bod pre vlozenie textu v GCS
