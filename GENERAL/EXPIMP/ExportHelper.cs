@@ -1501,8 +1501,7 @@ namespace EXPIMP
             //_trackport.ViewPort.Measure(size);
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
-
-            //sDisplayOptions.bUseOrtographicCamera = false;
+            
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
             
             return _trackport.ViewPort;
