@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses.Helpers
 {
@@ -36,6 +37,12 @@ namespace BaseClasses.Helpers
             this.z = z;
         }
 
+        public R3(Point3D p)
+        {
+            this.x = p.X;
+            this.y = p.Y;
+            this.z = p.Z;
+        }
 
         public static
         R3

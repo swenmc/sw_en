@@ -3778,5 +3778,39 @@ namespace BaseClasses
             over = new Vector3D(over_InView.X * fTextBlockHorizontalSizeFactor, over_InView.Y * fTextBlockHorizontalSizeFactor, over_InView.Z * fTextBlockHorizontalSizeFactor);
             up = new Vector3D(up_InView.X * fTextBlockVerticalSizeFactor, up_InView.Y * fTextBlockVerticalSizeFactor, up_InView.Z * fTextBlockVerticalSizeFactor);
         }
+
+
+        public static Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color, Point3D pA, Point3D pB)
+        {
+            R3 p1 = new R3(pA);
+            R3 p2 = new R3(pB);
+            float distance = (float)R3.distance(p1, p2);
+            Model3DGroup model_gr = new Model3DGroup();
+
+            //DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
+            //temp to see where it is
+            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(Colors.Red));
+            
+            float fLineCylinderRadius = 0.05f;
+            
+            short NumberOfCirclePoints = 5;
+            
+            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(pA, NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0);
+            
+            // Priemet do osi GCS - rozdiel suradnic v GCS
+            double Delta_X = pB.X - pA.X;
+            double Delta_Y = pB.Y - pA.Y;
+            double Delta_Z = pB.Z - pA.Z;
+
+            CMember m = new CMember();
+            Point3DCollection points = m.TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, pA, Delta_X, Delta_Y, Delta_Z, 0, ((MeshGeometry3D)gm3D.Geometry).Positions);
+
+            //set transformed points
+            ((MeshGeometry3D)gm3D.Geometry).Positions = points;
+            
+            model_gr.Children.Add(gm3D);
+
+            return model_gr;
+        }
     }
 }
