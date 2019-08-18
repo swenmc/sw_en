@@ -2015,7 +2015,7 @@ namespace BaseClasses
                                 pTextPositionInLCS.Y *= -1;
                             }
 
-                            // Sucin kladneho smeru LCS x a view horizontal je kladny (osa x smeruje opacnym smerom ako je smer horizontalnej osi pohladu)
+                            // Sucin kladneho smeru LCS x a view horizontal je zaporny (osa x smeruje opacnym smerom ako je smer horizontalnej osi pohladu)
                             // Osa LCS z smeruje nadol (v smere zapornej vertikalnej osi pohladu)
                             if (memberLCSAxis_xInView.X < -1e-3f && memberLCSAxis_zInView.Z < -1e-3f)
                             {
@@ -2055,6 +2055,16 @@ namespace BaseClasses
                                 //up_LCS = new Vector3D(0, 1, 0);
 
                                 pTextPositionInLCS.Z *= -1;
+                            }
+
+                            // Sucin kladneho smeru LCS x a view horizontal je kladny (osa x smeruje rovnakym smerom ako je smer horizontalnej osi pohladu)
+                            // Osa LCS y smeruje nadol (v smere zapornej vertikalnej osi pohladu)
+                            if (memberLCSAxis_xInView.X > 1e-3f && memberLCSAxis_yInView.Z < -1e-3f)
+                            {
+                                over_LCS = new Vector3D(1, 0, 0);
+                                up_LCS = new Vector3D(0, -1, 0);
+
+                                pTextPositionInLCS.Y *= -1;
                             }
 
                             TransformTextVectorsFromLCSAxisToViewAxis(fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, model.m_arrMembers[i], transform, matrixViewInGCS_Inverse, over_LCS, up_LCS, out over, out up);
