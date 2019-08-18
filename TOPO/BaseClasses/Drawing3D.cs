@@ -2006,7 +2006,7 @@ namespace BaseClasses
                                 up_LCS = new Vector3D(0, 0, -1);
                             }
 
-                            // Sucin kladneho smeru LCS y a view Y je kladny (osa y smeruje opacnym smerom ako je smer pohladu)
+                            // Sucin kladneho smeru LCS y a view Y je zaporny (osa y smeruje opacnym smerom ako je smer pohladu)
                             if (memberLCSAxis_yInView.Y < -1e-3f) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
                             {
                                 over_LCS = new Vector3D(-1, 0, 0);
@@ -2048,7 +2048,7 @@ namespace BaseClasses
                                 up_LCS = new Vector3D(0, -1, 0);
                             }
 
-                            // Sucin kladneho smeru LCS z a view Y je kladny (osa z smeruje opacnym smerom ako je smer pohladu)
+                            // Sucin kladneho smeru LCS z a view Y je kladny (osa z smeruje rovnakym smerom ako je smer pohladu)
                             if (memberLCSAxis_zInView.Y > 1e-3f) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
                             {
                                 over_LCS = new Vector3D(-1, 0, 0);
