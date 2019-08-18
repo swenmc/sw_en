@@ -1963,11 +1963,6 @@ namespace BaseClasses
                         Vector3D over; // Vektor smeru textu vo view
                         Vector3D up; // Vektor smeru textu vo view
 
-                        if(model.m_arrMembers[i].EMemberType == EMemberType_FS.eER)
-                        {
-
-                        }
-
                         if (iTextNormalInLCSCode == 0) // Text pre LCS x (rovina yz)
                         {
                             pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
@@ -2055,6 +2050,16 @@ namespace BaseClasses
                                 //up_LCS = new Vector3D(0, 1, 0);
 
                                 pTextPositionInLCS.Z *= -1;
+                            }
+
+                            // Sucin kladneho smeru LCS z a view Y je zaporny (osa z smeruje opacnym smerom ako je smer pohladu)
+                            // Osa LCS y smeruje v smere horizontalnej osi pohladu
+                            if (memberLCSAxis_zInView.Y < 1e-3f && memberLCSAxis_yInView.X > 1e-3f) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
+                            {
+                                over_LCS = new Vector3D(-1, 0, 0);
+                                up_LCS = new Vector3D(0, -1, 0);
+
+                                pTextPositionInLCS.Y *= -1;
                             }
 
                             // Sucin kladneho smeru LCS x a view horizontal je kladny (osa x smeruje rovnakym smerom ako je smer horizontalnej osi pohladu)
