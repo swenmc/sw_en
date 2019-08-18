@@ -320,11 +320,11 @@ namespace BaseClasses.GraphObj
             float fExtensionLine2_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
 
             // Extension line 1 (start)
-            CVolume temp = new CVolume(); // Pomocne - bolo by dobre sa toho zbavit a vytvarat objekt typu cylinder priamo
-            model_gr.Children.Add(temp.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material,1));
+            //CVolume temp = new CVolume(); // Pomocne - bolo by dobre sa toho zbavit a vytvarat objekt typu cylinder priamo
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material,1));
 
             // Extension line 2 (end)
-            model_gr.Children.Add(temp.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material,1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material,1));
 
             // Nastavit offset celej koty od kotovaneho bodu (smer -Y)
 
@@ -363,6 +363,95 @@ namespace BaseClasses.GraphObj
             }
 
             if(Direction.X == 0 && MathF.Equals(m_PointStart.X, m_PointEnd.X)) // Kota v smere Y
+            {
+                // About Z
+                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                axisAngleRotation3dZ.Angle = 90;
+                rotateZ.Rotation = axisAngleRotation3dZ;
+            }
+
+            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_PointStart.X, m_PointStart.Y, m_PointStart.Z);
+
+            Transform3DGroup transformGr = new Transform3DGroup();
+            transformGr.Children.Add(translateOffset); // Posun o offset v rovine XY
+            transformGr.Children.Add(rotateX);
+            transformGr.Children.Add(rotateY);
+            transformGr.Children.Add(rotateZ);
+            transformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
+
+            model_gr.Transform = transformGr;
+
+            return model_gr;
+        }
+
+        public Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color)
+        {
+            
+            Model3DGroup model_gr = new Model3DGroup();
+
+            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
+
+            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny
+
+            // Main line
+            
+            // Add other lines
+            //TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
+            short NumberOfCirclePoints = 16 + 1; // Toto by malo byt rovnake ako u arrow, je potrebne to zjednotit, pridany jeden bod pre stred
+
+            // TO Ondrej - toto treba prerobit, ja kreslim tuto kotu v rovine XY a potom ju chcem otacat a presuvat podla potreby
+            float fExtensionLine1_Length = (float)DimensionLinesLength;
+            float fExtensionLine2_Length = (float)DimensionLinesLength;
+
+            float fExtensionLine1_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
+            float fExtensionLine2_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
+
+            // Extension line 1 (start)
+            //CVolume temp = new CVolume(); // Pomocne - bolo by dobre sa toho zbavit a vytvarat objekt typu cylinder priamo
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+
+            // Extension line 2 (end)
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+
+            // Nastavit offset celej koty od kotovaneho bodu (smer -Y)
+
+            TranslateTransform3D translateOffset = new TranslateTransform3D(0, -(fExtensionLine1_Length - fExtensionLine1_OffsetBehindMainLine + m_fOffSetFromPoint), 0);
+
+            // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
+            RotateTransform3D rotateX = new RotateTransform3D();
+            RotateTransform3D rotateY = new RotateTransform3D();
+            RotateTransform3D rotateZ = new RotateTransform3D();
+
+            bool bDrawHorizontalDimesnionsInXY = false; // Toto by mohlo byt nastavitelne pre 3D scenu v GUI a pre export 3D pohladov, pre exporty 2D pohladov na rovinu XZ alebo YZ sa to nehodi, lebo kotu by nebolo vidno
+
+            if (!bDrawHorizontalDimesnionsInXY && Direction.Z != 0) // Kota v smere X alebo Y - ak chceme aby nebola vykreslena v rovine XY ale zvislo v XZ alebo YZ
+            {
+                // About X
+                AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
+                axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
+                axisAngleRotation3dX.Angle = 90;
+                rotateX.Rotation = axisAngleRotation3dX;
+            }
+
+            if ((Direction.X != 0 && (MathF.Equals(m_PointStart.X, m_PointEnd.X))) ||
+            (Direction.Y != 0 && MathF.Equals(m_PointStart.Y, m_PointEnd.Y))) // Zvisla kota TODO - Dopracovat pre ine smery
+            {
+                // About Y
+                AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
+                axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
+                axisAngleRotation3dY.Angle = -90;
+                rotateY.Rotation = axisAngleRotation3dY;
+
+                // About Z
+                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                axisAngleRotation3dZ.Angle = -90;
+                rotateZ.Rotation = axisAngleRotation3dZ;
+            }
+
+            if (Direction.X == 0 && MathF.Equals(m_PointStart.X, m_PointEnd.X)) // Kota v smere Y
             {
                 // About Z
                 AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();

@@ -222,7 +222,7 @@ namespace BaseClasses.GraphObj
 
         // Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
         // Add in order 1,4,3,2
-        protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,
+        protected static void AddRectangleIndices_CCW_1234(Int32Collection Indices,
               int point1, int point2,
               int point3, int point4)
         {
@@ -693,7 +693,7 @@ namespace BaseClasses.GraphObj
         {
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
         }
-        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2)
+        public static GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
@@ -802,7 +802,7 @@ namespace BaseClasses.GraphObj
         }
 
         // Refaktorovat s StraightLineArrow3D
-        private Point3D GetPointinLCS(int iPrimaryModelDirection, double dCoordX, double dCoordY, double dCoordZ)
+        private static Point3D GetPointinLCS(int iPrimaryModelDirection, double dCoordX, double dCoordY, double dCoordZ)
         {
             Point3D p = new Point3D();
             // Nastavi suradnice uzla podla toho v akom smere sa ma valec primarne vykreslit
