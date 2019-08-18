@@ -296,7 +296,6 @@ namespace BaseClasses.GraphObj
             float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
             float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny
 
-
             model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, m_PointMainLine1, m_PointMainLine2));
 
             // Main line

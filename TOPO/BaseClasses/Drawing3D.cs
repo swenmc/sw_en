@@ -3782,9 +3782,13 @@ namespace BaseClasses
 
         public static Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color, Point3D pA, Point3D pB)
         {
-            R3 p1 = new R3(pA);
-            R3 p2 = new R3(pB);
-            float distance = (float)R3.distance(p1, p2);
+            // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
+            // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
+
+            //R3 p1 = new R3(pA);
+            //R3 p2 = new R3(pB);
+            //float distance = (float)R3.distance(p1, p2);
+
             Model3DGroup model_gr = new Model3DGroup();
 
             //DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
@@ -3794,14 +3798,19 @@ namespace BaseClasses
             float fLineCylinderRadius = 0.05f;
             
             short NumberOfCirclePoints = 5;
-            
-            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(pA, NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0);
-            
+
             // Priemet do osi GCS - rozdiel suradnic v GCS
             double Delta_X = pB.X - pA.X;
             double Delta_Y = pB.Y - pA.Y;
             double Delta_Z = pB.Z - pA.Z;
 
+            float distance = (float)Math.Sqrt((float)Math.Pow(Delta_X, 2f) + (float)Math.Pow(Delta_Y, 2f) + (float)Math.Pow(Delta_Z, 2f));
+
+            // Model valca v smere jeho lokalnej osi x
+            // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
+            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0);
+
+            // Transform cylinder from its LCS to GCS
             CMember m = new CMember();
             Point3DCollection points = m.TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, pA, Delta_X, Delta_Y, Delta_Z, 0, ((MeshGeometry3D)gm3D.Geometry).Positions);
 
