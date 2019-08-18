@@ -1946,8 +1946,8 @@ namespace BaseClasses
                         float fOffsetInPlaneBasic_z = (float)model.m_arrMembers[i].CrScStart.z_max;
 
                         // Tento offset urcuje, aka je medzera medzi prutom a riadiacim bodom textu
-                        float fOffsetInPlaneAdd_y = 0.02f;
-                        float fOffsetInPlaneAdd_z = 0.02f;
+                        float fOffsetInPlaneAdd_y = 0.04f;
+                        float fOffsetInPlaneAdd_z = 0.04f;
 
                         float fOffsetInPlane_y = fOffsetInPlaneBasic_y + fOffsetInPlaneAdd_y + 0.5f * fTextBlockVerticalSize;
                         float fOffsetInPlane_z = fOffsetInPlaneBasic_z + fOffsetInPlaneAdd_z + 0.5f * fTextBlockVerticalSize;
@@ -1962,6 +1962,11 @@ namespace BaseClasses
 
                         Vector3D over; // Vektor smeru textu vo view
                         Vector3D up; // Vektor smeru textu vo view
+
+                        if(model.m_arrMembers[i].EMemberType == EMemberType_FS.eER)
+                        {
+
+                        }
 
                         if (iTextNormalInLCSCode == 0) // Text pre LCS x (rovina yz)
                         {
@@ -2011,7 +2016,8 @@ namespace BaseClasses
                             }
 
                             // Sucin kladneho smeru LCS x a view horizontal je kladny (osa x smeruje opacnym smerom ako je smer horizontalnej osi pohladu)
-                            if (memberLCSAxis_xInView.X < -1e-3f) //  TO Ondrej - otacam pretacam, ale akosi to nefunguje - skus sa s tym pohrat
+                            // Osa LCS z smeruje nadol (v smere zapornej vertikalnej osi pohladu)
+                            if (memberLCSAxis_xInView.X < -1e-3f && memberLCSAxis_zInView.Z < -1e-3f)
                             {
                                 over_LCS = new Vector3D(-1, 0, 0);
                                 up_LCS = new Vector3D(0, 0, -1);
