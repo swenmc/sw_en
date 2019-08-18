@@ -1835,7 +1835,7 @@ namespace BaseClasses
                         if (displayOptions.ModelView == (int)EModelViews.BACK)
                         {
                             viewVector = new Vector3D(0, -1, 0);
-                            viewHorizontalVector = new Vector3D(1, 0, 0);
+                            viewHorizontalVector = new Vector3D(-1, 0, 0);
                             viewVerticalVector = new Vector3D(0, 0, 1);
                         }
                         else if (displayOptions.ModelView == (int)EModelViews.LEFT)
