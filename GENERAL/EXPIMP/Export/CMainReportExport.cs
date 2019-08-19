@@ -184,6 +184,8 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     bTransformScreenLines3DToCylinders3D = true;
+
+                    opts.bDisplayFloorSlab = true;
                 }
 
                 // Toto je len pokus ako to vyzera :)
