@@ -307,7 +307,7 @@ namespace BaseClasses
                         }
 
                         // Ak sa v zozname na urovni 1 nenachadzaju stlpy ktore patria dveram, kotu nekreslime a zoznam zmazeme
-                        // To Ondrej - toto by sa asi dalo zistit uz vopred
+                        // To Ondrej - toto by sa asi dalo zistit uz vopred este predtym nez vyrabam zoznamy uzlov
                         foreach (CMember m in membersFrontSide)
                         {
                             if (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT)
@@ -348,6 +348,8 @@ namespace BaseClasses
                         float fExtensionLineOffset = 0.15f;
 
                         float fDistanceBetweenMainLines = 0.2f;
+
+                        // TODO - Ondrej  pre text koty by sme mali pouzit nejaky algorimus podobny Member Description, mali by mat nastavitelne odsadenie od main line a zobrazovat rotovat sa spolu s kotou
 
                         if (bDrawDimension_1 == true)
                         {
