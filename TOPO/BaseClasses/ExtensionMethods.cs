@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -150,6 +152,16 @@ namespace BaseClasses
                 // Not implemented
             }
             return fLoadValue;
+        }
+
+        public static float GetDistanceTo(this Point3D p, Point3D p2)
+        {
+            double Delta_X = p2.X - p.X;
+            double Delta_Y = p2.Y - p.Y;
+            double Delta_Z = p2.Z - p.Z;
+
+            float distance = (float)Math.Sqrt((float)Math.Pow(Delta_X, 2f) + (float)Math.Pow(Delta_Y, 2f) + (float)Math.Pow(Delta_Z, 2f));
+            return distance;
         }
     }
 }

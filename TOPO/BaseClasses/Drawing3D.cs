@@ -1603,8 +1603,7 @@ namespace BaseClasses
 
                         for (int i = 0; i < wl.LineCollection.Count / 2; i++)
                         {
-                            Model3DGroup cylinder = new Model3DGroup();
-                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.LineCollection[i * 2], wl.LineCollection[i * 2 + 1]);
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.LineCollection[i * 2], wl.LineCollection[i * 2 + 1]);
                             cylinders.Children.Add(cylinder);
                         }
                     }
@@ -1628,8 +1627,7 @@ namespace BaseClasses
 
                         for(int i = 0; i < wireFrameAllMembers.Points.Count / 2; i++)
                         {
-                            Model3DGroup cylinder = new Model3DGroup();
-                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFrameAllMembers.Points[i * 2], wireFrameAllMembers.Points[i * 2 + 1]);
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFrameAllMembers.Points[i * 2], wireFrameAllMembers.Points[i * 2 + 1]);
                             cylinders.Children.Add(cylinder);
                         }
                     }
@@ -1654,8 +1652,7 @@ namespace BaseClasses
 
                         for (int i = 0; i < wl.Points.Count / 2; i++)
                         {
-                            Model3DGroup cylinder = new Model3DGroup();
-                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.Points[i * 2], wl.Points[i * 2 + 1]);
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.Points[i * 2], wl.Points[i * 2 + 1]);
                             cylinders.Children.Add(cylinder);
                         }
                     }
@@ -3938,17 +3935,11 @@ namespace BaseClasses
 
         // TO Ondrej - musi byt toto vracat Model3DGroup? Nastaci GeometryModel3D
         // Poredpokladam ze budeme celu ciaru kreslit rovnakou farbou, takze nepotrebujeme viacero materialov a mensich modelov pre rozne povrchy
-        public static Model3DGroup Get3DLineReplacement(Color color, float fLineThickness, Point3D pA, Point3D pB)
+        public static GeometryModel3D Get3DLineReplacement(Color color, float fLineThickness, Point3D pA, Point3D pB)
         {
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
             // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
-
-            //R3 p1 = new R3(pA);
-            //R3 p2 = new R3(pB);
-            //float distance = (float)R3.distance(p1, p2);
-
-            Model3DGroup model_gr = new Model3DGroup();
-
+            
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
             float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
@@ -3960,7 +3951,8 @@ namespace BaseClasses
             double Delta_Y = pB.Y - pA.Y;
             double Delta_Z = pB.Z - pA.Z;
 
-            float distance = (float)Math.Sqrt((float)Math.Pow(Delta_X, 2f) + (float)Math.Pow(Delta_Y, 2f) + (float)Math.Pow(Delta_Z, 2f));
+            //float distance = (float)Math.Sqrt((float)Math.Pow(Delta_X, 2f) + (float)Math.Pow(Delta_Y, 2f) + (float)Math.Pow(Delta_Z, 2f));
+            float distance = pA.GetDistanceTo(pB);
 
             // Model valca v smere jeho lokalnej osi x
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
@@ -3975,9 +3967,8 @@ namespace BaseClasses
             //set transformed points
             ((MeshGeometry3D)gm3D.Geometry).Positions = points;
 
-            model_gr.Children.Add(gm3D);
-
-            return model_gr;
+            
+            return gm3D;
         }
     }
 }
