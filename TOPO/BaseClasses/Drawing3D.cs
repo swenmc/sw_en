@@ -220,14 +220,96 @@ namespace BaseClasses
 
                 if(sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
                 {
-                     // Potrebujeme idenfikovat ktore pruty (stlpy) su, na ktorej strane a vyrobit medzi nimi koty
+                    // Potrebujeme idenfikovat ktore pruty (stlpy) su, na ktorej strane a vyrobit medzi nimi koty
 
+                    // Front side
+                    CMember[] membersFrontSide = null;
 
+                    foreach(CMember m in model.m_arrMembers)
+                    {
+                        membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
+                    }
 
+                    // Back side
+                    CMember[] membersBackSide = null;
 
+                    foreach (CMember m in model.m_arrMembers)
+                    {
+                        membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+                    }
 
+                    // Left side
+                    CMember[] membersLeftSide = null;
 
+                    foreach (CMember m in model.m_arrMembers)
+                    {
+                        membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
+                    }
 
+                    // Right side
+                    CMember[] membersRightSide = null;
+
+                    foreach (CMember m in model.m_arrMembers)
+                    {
+                        membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+                    }
+
+                    // 1 kotovacia ciara - vsetky stlpy
+                    // 2 kotovacia ciara - vsetky MC a EC (len left) alebo WP/C a EC (front a back)
+                    // 3 kotovacia ciara - cerlkovy rozmer (len left a front)
+
+                    // Pripravime si zoznamy kotovanych bodov
+
+                    // Front side
+                    List<CNode> membersBaseNodes_FrontSide = null;
+                    List<CNode> membersBaseNodes_FrontSide_2 = null; // Wind posts and edge columns
+                    List<CNode> membersBaseNodes_FrontSide_3 = null; // Edges
+
+                    // Toto celkovu kotu kreslime vzdy
+                    membersBaseNodes_FrontSide_3 = new List<CNode>();
+                    membersBaseNodes_FrontSide_3.Add(new CNode(0, 0, 0, 0, 0));
+                    membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+
+                    if (membersFrontSide != null)
+                    {
+                        membersBaseNodes_FrontSide = new List<CNode>();
+                        membersBaseNodes_FrontSide_2 = new List<CNode>();
+
+                        // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
+                        membersBaseNodes_FrontSide.Add(new CNode(0, 0, 0, 0, 0));
+                        membersBaseNodes_FrontSide.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+
+                        membersBaseNodes_FrontSide_2.Add(new CNode(0, 0, 0, 0, 0));
+                        membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+
+                        foreach (CMember m in membersFrontSide)
+                        {
+                            if (MathF.d_equal(m.NodeStart.Z, 0))
+                            {
+                                membersBaseNodes_FrontSide.Add(m.NodeStart);
+
+                                if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                                    membersBaseNodes_FrontSide_2.Add(m.NodeStart);
+                            }
+
+                            if (MathF.d_equal(m.NodeEnd.Z, 0))
+                            {
+                                membersBaseNodes_FrontSide.Add(m.NodeEnd);
+
+                                if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                                    membersBaseNodes_FrontSide_2.Add(m.NodeEnd);
+                            }
+                        }
+
+                        // Mame pripravene 3 zoznamy bodov
+                        // Body zoradime podla X od najvacsieho - koty kreslime zhora nadol, resp z +X smerom k 0
+
+                        // TODO Ondrej - zoradit uzly v zozname podla suradnice X od najvacsej
+                        //    membersBaseNodes_FrontSide
+                        //    membersBaseNodes_FrontSide_2
+                        //    membersBaseNodes_FrontSide_3
+
+                    }
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
