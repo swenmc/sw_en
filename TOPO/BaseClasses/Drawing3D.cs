@@ -258,35 +258,40 @@ namespace BaseClasses
                     // 2 kotovacia ciara - vsetky MC a EC (len left) alebo WP/C a EC (front a back)
                     // 3 kotovacia ciara - cerlkovy rozmer (len left a front)
 
+                    bool bDrawDimension_1 = false;
+                    bool bDrawDimension_2 = false;
+                    bool bDrawDimension_3 = true;
                     // Pripravime si zoznamy kotovanych bodov
 
+                    // float fh = (float)model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h;
+                    float fh = (float)model.m_arrMembers[0].CrScStart.h; // Docasne, prvy prut by mal byt Main Column
                     // Front side
-                    List<CNode> membersBaseNodes_FrontSide = null;
+                    List<CNode> membersBaseNodes_FrontSide_1 = null;
                     List<CNode> membersBaseNodes_FrontSide_2 = null; // Wind posts and edge columns
                     List<CNode> membersBaseNodes_FrontSide_3 = null; // Edges
 
                     // Toto celkovu kotu kreslime vzdy
                     membersBaseNodes_FrontSide_3 = new List<CNode>();
-                    membersBaseNodes_FrontSide_3.Add(new CNode(0, 0, 0, 0, 0));
-                    membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+                    membersBaseNodes_FrontSide_3.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
+                    membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
 
                     if (membersFrontSide != null)
                     {
-                        membersBaseNodes_FrontSide = new List<CNode>();
+                        membersBaseNodes_FrontSide_1 = new List<CNode>();
                         membersBaseNodes_FrontSide_2 = new List<CNode>();
 
                         // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
-                        membersBaseNodes_FrontSide.Add(new CNode(0, 0, 0, 0, 0));
-                        membersBaseNodes_FrontSide.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+                        membersBaseNodes_FrontSide_1.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
+                        membersBaseNodes_FrontSide_1.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
 
-                        membersBaseNodes_FrontSide_2.Add(new CNode(0, 0, 0, 0, 0));
-                        membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame, 0, 0, 0));
+                        membersBaseNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, 0, 0));
+                        membersBaseNodes_FrontSide_2.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
 
                         foreach (CMember m in membersFrontSide)
                         {
                             if (MathF.d_equal(m.NodeStart.Z, 0))
                             {
-                                membersBaseNodes_FrontSide.Add(m.NodeStart);
+                                membersBaseNodes_FrontSide_1.Add(m.NodeStart);
 
                                 if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
                                     membersBaseNodes_FrontSide_2.Add(m.NodeStart);
@@ -294,27 +299,101 @@ namespace BaseClasses
 
                             if (MathF.d_equal(m.NodeEnd.Z, 0))
                             {
-                                membersBaseNodes_FrontSide.Add(m.NodeEnd);
+                                membersBaseNodes_FrontSide_1.Add(m.NodeEnd);
 
                                 if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
                                     membersBaseNodes_FrontSide_2.Add(m.NodeEnd);
                             }
                         }
 
+                        // Ak sa v zozname na urovni 1 nenachadzaju stlpy ktore patria dveram, kotu nekreslime a zoznam zmazeme
+                        // To Ondrej - toto by sa asi dalo zistit uz vopred
+                        foreach (CMember m in membersFrontSide)
+                        {
+                            if (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT)
+                            {
+                                bDrawDimension_1 = true;
+                                break;
+                            }
+
+                            if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                            {
+                                bDrawDimension_2 = true;
+                                break;
+                            }
+                        }
+
+                        if (bDrawDimension_1 == false)
+                            membersBaseNodes_FrontSide_1 = null;
+
+                        if (bDrawDimension_2 == false)
+                            membersBaseNodes_FrontSide_2 = null;
+
                         // Mame pripravene 3 zoznamy bodov
                         // Body zoradime podla X od najvacsieho - koty kreslime zhora nadol, resp z +X smerom k 0
+                        if (membersBaseNodes_FrontSide_1 != null)
+                            membersBaseNodes_FrontSide_1 = membersBaseNodes_FrontSide_1.OrderBy(n => n.X).ToList();
 
-                        // TODO Ondrej - zoradit uzly v zozname podla suradnice X od najvacsej
-                        //    membersBaseNodes_FrontSide
-                        //    membersBaseNodes_FrontSide_2
-                        //    membersBaseNodes_FrontSide_3
+                        if (membersBaseNodes_FrontSide_2 != null)
+                            membersBaseNodes_FrontSide_2 = membersBaseNodes_FrontSide_2.OrderBy(n => n.X).ToList();
 
-                        //takto sa daju zoradit
-                        membersBaseNodes_FrontSide = membersBaseNodes_FrontSide.OrderByDescending(n => n.X).ToList();
+                        if (membersBaseNodes_FrontSide_3 != null)
+                            membersBaseNodes_FrontSide_3 = membersBaseNodes_FrontSide_3.OrderBy(n => n.X).ToList();
 
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions =null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSide_1.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i+1].GetPoint3D(), new Vector3D(0, 0, -1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString());
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_2 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSide_2.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_2[i].GetPoint3D(), membersBaseNodes_FrontSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString());
+                                listOfDimensions.Add(dim);
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = +fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_3 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSide_3.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_3[i].GetPoint3D(), membersBaseNodes_FrontSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString());
+                                listOfDimensions.Add(dim);
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
+
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
                     }
-
-                    
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
