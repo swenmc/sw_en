@@ -3840,7 +3840,7 @@ namespace BaseClasses
 
         // TO Ondrej - musi byt toto vracat Model3DGroup? Nastaci GeometryModel3D
         // Poredpokladam ze budeme celu ciaru kreslit rovnakou farbou, takze nepotrebujeme viacero materialov a mensich modelov pre rozne povrchy
-        public static Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color, float fLineThickness, Point3D pA, Point3D pB)
+        public static Model3DGroup Get3DLineReplacement(Color color, float fLineThickness, Point3D pA, Point3D pB)
         {
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
             // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
@@ -3866,7 +3866,9 @@ namespace BaseClasses
 
             // Model valca v smere jeho lokalnej osi x
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
-            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0);
+            // TODO - asi by sa dalo urobit to, ze model valca nahradime len plastom a nebudeme kreslit hornu a spodnu podstavu
+            // TODO - zjednotit triedy Cylinder a funkcie z CVolume pre valec
+            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
 
             // Transform cylinder from its LCS to GCS
             CMember m = new CMember();

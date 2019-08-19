@@ -693,7 +693,7 @@ namespace BaseClasses.GraphObj
         {
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
         }
-        public static GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2)
+        public static GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2, bool bDrawTop = true, bool bDrawBottom = true)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
@@ -746,37 +746,43 @@ namespace BaseClasses.GraphObj
 
             Int32Collection TriangleIndices = new Int32Collection();
 
-            // Front Side / Forehead
-            for (int i = 0; i < iTotNoPoints - 1; i++)
+            if (bDrawBottom == true)
             {
-                if (i < iTotNoPoints - 2)
+                // Front Side / Forehead
+                for (int i = 0; i < iTotNoPoints - 1; i++)
                 {
-                    TriangleIndices.Add(i + 1);
-                    TriangleIndices.Add(iTotNoPoints - 1);
-                    TriangleIndices.Add(i);
-                }
-                else // Last Element
-                {
-                    TriangleIndices.Add(0);
-                    TriangleIndices.Add(iTotNoPoints - 1);
-                    TriangleIndices.Add(i);
+                    if (i < iTotNoPoints - 2)
+                    {
+                        TriangleIndices.Add(i + 1);
+                        TriangleIndices.Add(iTotNoPoints - 1);
+                        TriangleIndices.Add(i);
+                    }
+                    else // Last Element
+                    {
+                        TriangleIndices.Add(0);
+                        TriangleIndices.Add(iTotNoPoints - 1);
+                        TriangleIndices.Add(i);
+                    }
                 }
             }
 
-            // Back Side
-            for (int i = 0; i < iTotNoPoints - 1; i++)
+            if (bDrawTop == true)
             {
-                if (i < iTotNoPoints - 2)
+                // Back Side
+                for (int i = 0; i < iTotNoPoints - 1; i++)
                 {
-                    TriangleIndices.Add(iTotNoPoints + iTotNoPoints - 1);
-                    TriangleIndices.Add(iTotNoPoints + i + 1);
-                    TriangleIndices.Add(iTotNoPoints + i);
-                }
-                else // Last Element
-                {
-                    TriangleIndices.Add(iTotNoPoints + iTotNoPoints - 1);
-                    TriangleIndices.Add(iTotNoPoints);
-                    TriangleIndices.Add(iTotNoPoints + i);
+                    if (i < iTotNoPoints - 2)
+                    {
+                        TriangleIndices.Add(iTotNoPoints + iTotNoPoints - 1);
+                        TriangleIndices.Add(iTotNoPoints + i + 1);
+                        TriangleIndices.Add(iTotNoPoints + i);
+                    }
+                    else // Last Element
+                    {
+                        TriangleIndices.Add(iTotNoPoints + iTotNoPoints - 1);
+                        TriangleIndices.Add(iTotNoPoints);
+                        TriangleIndices.Add(iTotNoPoints + i);
+                    }
                 }
             }
 

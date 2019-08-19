@@ -23,7 +23,6 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         const int number_of_segments = 72;
 
-
         public CurvedLineArrow3D()
         { }
 

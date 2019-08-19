@@ -5,6 +5,8 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses.GraphObj.Objects_3D
 {
     // Cylinder in local x-axis
+
+    // TODO - toto treba zjednotit s CVolume, tam je uz zapracovana moznost kreslit valec v roznych smeroch x,y,z
     public class Cylinder
     {
         public float m_fDim1_r;
@@ -21,7 +23,6 @@ namespace BaseClasses.GraphObj.Objects_3D
             m_fDim2_L = fDim2_L;
             m_mat = mat;
         }
-
 
         public Cylinder(short iNumberOfPointsWithCentroid, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
         {
