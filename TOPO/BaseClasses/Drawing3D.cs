@@ -217,19 +217,32 @@ namespace BaseClasses
 
                     DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
                 }
+
+                if(sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+                {
+                     // Potrebujeme idenfikovat ktore pruty (stlpy) su, na ktorej strane a vyrobit medzi nimi koty
+
+
+
+
+
+
+
+                }
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
+                    if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
                 {
-                    Model3DGroup lines; // linie ako 3D valce
+                    Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
 
                     if(lines != null)
-                       gr.Children.Add(lines); // Pridaj valce do modelu
+                       gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3812,11 +3825,9 @@ namespace BaseClasses
         {
             // Vytvorime vektory pre urcenie smeru textu
             // To Ondrej - ako tak rozmyslam tak pre zakladny pohlad ked su vsetky texty zobrazene horizontalne a defaultne podla front je to up (0,0,1) a over (1,0,0),
-            // asi by sa dalo urcit o okolo mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
+            // asi by sa dalo urcit o kolko mas v pohlade pootoceny model oproti pohladu front okolo Z a podla toho by sa dalo rotovat text pocas manipulacie, tak aby bol vzdy kolmy na obrazovku
             // podobne pre potocenie modelu okolo osi X a Y
 
-            // TO Ondrej - tu som trosku skoncil, potrebujem previest vektory definovane v LCS na GCS podla toho, aky je nastaveny view
-            // Na prvom stple to vyzera este dobre ale potom sa to uz pokazi
             // Nadobudane hodnoty by mali byt 0,-1, 1 (moze byt ine jedine pre sikme pruty ako su rafters alebo purlins)
 
             // Tato transformacia by sa mala nahradit transformaciou z LCS do VIEW AXIS
@@ -3866,7 +3877,7 @@ namespace BaseClasses
 
             // Model valca v smere jeho lokalnej osi x
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
-            // TODO - asi by sa dalo urobit to, ze model valca nahradime len plastom a nebudeme kreslit hornu a spodnu podstavu
+            // Model valca som nahradil len plastom a nebudeme kreslit hornu a spodnu podstavu, to bz malo pre "ciaru" postacovat
             // TODO - zjednotit triedy Cylinder a funkcie z CVolume pre valec
             GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
 
