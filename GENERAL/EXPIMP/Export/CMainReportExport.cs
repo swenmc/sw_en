@@ -99,6 +99,8 @@ namespace EXPIMP
         /// <param name="viewPort"></param>
         private static void DrawModel3D(XGraphics gfx, Viewport3D viewPort)
         {
+            // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
+
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
 
@@ -115,11 +117,43 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = data.DisplayOptions;
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = true;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
+
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+
+            // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
+            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
+
+            /*
+            7 PT    9 PX    2.5 MM  0.6 EM   60 %
+            7 PT    10 PX   2.5 MM  0.6 EM   60 %
+            8 PT    11 PX   2.8 MM  0.7 EM   70 %
+            9 PT    12 PX   3.4 MM  0.8 EM   80 %
+            9 PT    13 PX   3.4 MM  0.8 EM   80 %
+            10 PT   13 PX   3.4 MM  0.8 EM   80 %
+            10.5 PT 14 PX   3.6 MM  0.85 EM  85 %
+            11 PT   15 PX   3.9 MM  0.95 EM  95 %
+            12 PT   16 PX   4.2 MM  1.05 EM 105 %
+            12 PT   17 PX   4.2 MM  1.05 EM 105 %
+            13 PT   17 PX   4.2 MM  1.1 EM  110 %
+            13 PT   18 PX   4.8 MM  1.1 EM  110 %
+            14 PT   19 PX   5 MM    1.2 EM  120 %
+            15 PT   20 PX   5.4 MM  1.33 EM 133 %
+            16 PT   21 PX   5.8 MM  1.4 EM  140 %
+            16 PT   22 PX   5.8 MM  1.4 EM  140 %
+            17 PT   23 PX   6.2 MM  1.5 EM  150 %
+            */
+
+            opts.fMemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
+            opts.MemberDescriptionTextColor = System.Windows.Media.Colors.DarkGreen;
+
+            opts.fDimensionTextFontSize = 14;
+            opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
+            opts.DimensionLineColor = System.Windows.Media.Colors.Black;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS};
@@ -146,6 +180,14 @@ namespace EXPIMP
 
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
                 if (viewMembers == EViewModelMemberFilters.COLUMNS)
+                {
+                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                    opts.bDisplayWireFrameModel = true;
+                    bTransformScreenLines3DToCylinders3D = true;
+                }
+
+                // Toto je len pokus ako to vyzera :)
+                if(viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;

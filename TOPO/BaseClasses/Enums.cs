@@ -732,6 +732,15 @@
         public System.Windows.Media.Color backgroundColor;
         public System.Windows.Media.Color wireFrameColor;
         public float fWireFrameLineThickness;
+
+        public int fNodeDescriptionTextFontSize;
+        public int fMemberDescriptionTextFontSize;
+        public int fDimensionTextFontSize;
+
+        public System.Windows.Media.Color NodeDescriptionTextColor;
+        public System.Windows.Media.Color MemberDescriptionTextColor;
+        public System.Windows.Media.Color DimensionTextColor;
+        public System.Windows.Media.Color DimensionLineColor;
     }
 
     public struct BuildingDataInput

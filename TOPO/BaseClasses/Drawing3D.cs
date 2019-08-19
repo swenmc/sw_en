@@ -196,7 +196,7 @@ namespace BaseClasses
                     CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
                     List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
-                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
 
                     DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
@@ -211,11 +211,11 @@ namespace BaseClasses
                     // stlpy na pravej strane maju PointEnd v Z = 0
                     CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString());
 
-                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};                    
-                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};
+                    if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
 
-                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);                    
+                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
                 }
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1791,7 +1791,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = 0.1f;
+                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; //  0.1f; // To Ondrej - da sa velkost textu nejako prepojit s velkostou realne textu v 3D, napriklad vyska fontu 12 by bola 0.12 metra ???
                         float fTextBlockVerticalSizeFactor = 0.8f;
                         float fTextBlockHorizontalSizeFactor = 0.3f;
 
@@ -1799,7 +1799,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
-                        tb.Foreground = Brushes.Coral;
+                        tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor);
                         tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
@@ -1864,7 +1864,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = 0.1f;
+                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; 
                         float fTextBlockVerticalSizeFactor = 0.8f;
                         float fTextBlockHorizontalSizeFactor = 0.3f;
 
@@ -1872,7 +1872,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
-                        tb.Foreground = Brushes.LightGreen;
+                        tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ???
                         tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
@@ -2185,7 +2185,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = 0.1f;
+                        float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f; 
                         float fTextBlockVerticalSizeFactor = 0.8f;
                         float fTextBlockHorizontalSizeFactor = 0.3f;
 
@@ -2193,7 +2193,7 @@ namespace BaseClasses
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
-                        tb.Foreground = Brushes.Cyan; // Ina farba ako pre popis prutov
+                        tb.Foreground = new SolidColorBrush(displayOptions.NodeDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ??? // Ina farba ako pre popis prutov
                         tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
                         
                         float fOffsetZ = 0.06f;
@@ -2222,14 +2222,14 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = dimension.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = 0.1f;
+            float fTextBlockVerticalSize = displayOptions.fDimensionTextFontSize / 100f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
-            tb.Foreground = Brushes.Coral;
+            tb.Foreground = new SolidColorBrush(displayOptions.DimensionTextColor);
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
@@ -2336,7 +2336,7 @@ namespace BaseClasses
             //viewPort.UpdateLayout();
         }
 
-        private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model)
+        private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model, DisplayOptions displayOptions)
         {
            if (dimensions == null || dimensions.Count == 0)
                 return null;
@@ -2344,13 +2344,11 @@ namespace BaseClasses
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
 
-            Color dimensionColor = Colors.Cyan;
-
-            Model3DGroup gr = new Model3DGroup();
+             Model3DGroup gr = new Model3DGroup();
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
-                gr.Children.Add(dimension.GetDimensionModel(dimensionColor));
+                gr.Children.Add(dimension.GetDimensionModel(displayOptions.DimensionLineColor));
             }
 
             return gr;
