@@ -139,8 +139,21 @@ namespace EXPIMP
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
 
+                // Defaultne hodnoty pre vsetky pohlady
+                bool bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
+                opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
+
+                // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
+                if (viewMembers == EViewModelMemberFilters.COLUMNS)
+                {
+                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                    opts.bDisplayWireFrameModel = true;
+                    bTransformScreenLines3DToCylinders3D = true;
+                }
+
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, bTransformScreenLines3DToCylinders3D, out filteredModel);
                 viewPort.UpdateLayout();
 
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);

@@ -107,7 +107,7 @@ namespace BaseClasses
             }
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase, bool bTransformScreenLines3DToCylinders3D = false)
         {
             CModel model = null;
             //DateTime start = DateTime.Now;
@@ -195,7 +195,7 @@ namespace BaseClasses
                     CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
                     CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
-                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };                    
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
                     if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
 
@@ -220,6 +220,21 @@ namespace BaseClasses
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // Pokus vyrobit lines 3D objekty
+                // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
+                {
+                    Model3DGroup lines; // linie ako 3D valce
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
+
+                    if(lines != null)
+                       gr.Children.Add(lines); // Pridaj valce do modelu
+                }
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
@@ -238,7 +253,7 @@ namespace BaseClasses
                         SetOrtographicCameraWidth(ref sDisplayOptions, fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
                         OrthographicCamera ort_camera = new OrthographicCamera(cameraPosition, new Vector3D(0, 0, -1), _trackport.PerspectiveCamera.UpDirection, sDisplayOptions.OrtographicCameraWidth);
                         ort_camera.FarPlaneDistance = double.PositiveInfinity;
-                        ort_camera.NearPlaneDistance = double.NegativeInfinity;                        
+                        ort_camera.NearPlaneDistance = double.NegativeInfinity;
                         _trackport.ViewPort.Camera = ort_camera;
                     }
                 }
@@ -258,8 +273,9 @@ namespace BaseClasses
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
+                    Model3DGroup lines;
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -398,8 +414,9 @@ namespace BaseClasses
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
+                    Model3DGroup lines;
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, false, out lines);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -548,8 +565,9 @@ namespace BaseClasses
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
+                    Model3DGroup lines;
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, false, out lines);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -1366,11 +1384,11 @@ namespace BaseClasses
                     }
                 }
 
-                //priprava na centrovanie modelu                
+                //priprava na centrovanie modelu
                 if (centerModel)
                 {
                     lines.Transform = centerModelTransGr;
-                }                
+                }
 
                 viewPort.Children.Add(lines);
             }
@@ -1445,8 +1463,10 @@ namespace BaseClasses
         }
  
         // Add all members in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions)
+        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions, bool bTransformScreenLines3DToCylinders3D, out Model3DGroup cylinders)
         {
+            cylinders = null;
+
             // Members - Wire Frame
             if (model.m_arrMembers != null)
             {
@@ -1462,14 +1482,13 @@ namespace BaseClasses
                         wireFramePoints.AddRange(model.m_arrMembers[i].WireFramePoints);
                     }
                 }
-                double thickness = 1.0;
 
                 bool useWireLines = false;
                 bool useScreenSpaceLines = false;
                 bool useLinesVisual3D = true;
                 if (useWireLines)
                 {
-                    WireLines wl = new WireLines();                    
+                    WireLines wl = new WireLines();
                     wl.Lines = new Point3DCollection(wireFramePoints);
                     wl.Color = sDiplayOptions.wireFrameColor;
                     // priprava na centrovanie modelu
@@ -1477,29 +1496,70 @@ namespace BaseClasses
                     {
                         wl.Transform = centerModelTransGr;
                     }
+
+                    if(bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for (int i = 0; i < wl.LineCollection.Count / 2; i++)
+                        {
+                            Model3DGroup cylinder = new Model3DGroup();
+                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.LineCollection[i * 2], wl.LineCollection[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
                     viewPort.Children.Add(wl);
                 }
+
                 if (useScreenSpaceLines)
                 {
-                    //ScreenSpaceLines are much slower = performance issue                                        
-                    ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(sDiplayOptions.wireFrameColor, thickness); // Just one collection for all members
+                    //ScreenSpaceLines are much slower = performance issue
+                    ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness); // Just one collection for all members
                     wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
                     if (centerModel)
                     {
                         wireFrameAllMembers.Transform = centerModelTransGr;
                     }
+
+                    if (bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for(int i = 0; i < wireFrameAllMembers.Points.Count / 2; i++)
+                        {
+                            Model3DGroup cylinder = new Model3DGroup();
+                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFrameAllMembers.Points[i * 2], wireFrameAllMembers.Points[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
                     viewPort.Children.Add(wireFrameAllMembers);
                 }
+
                 if (useLinesVisual3D)
                 {
                     LinesVisual3D wl = new LinesVisual3D();
                     wl.Points = new Point3DCollection(wireFramePoints);
                     wl.Color = sDiplayOptions.wireFrameColor;
-                    wl.Thickness = thickness;
+                    wl.Thickness = sDiplayOptions.fWireFrameLineThickness;
                     if (centerModel)
                     {
                         wl.Transform = centerModelTransGr;
                     }
+
+                    if (bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for (int i = 0; i < wl.Points.Count / 2; i++)
+                        {
+                            Model3DGroup cylinder = new Model3DGroup();
+                            cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.Points[i * 2], wl.Points[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
                     viewPort.Children.Add(wl);
                 }
             }
@@ -3780,7 +3840,9 @@ namespace BaseClasses
         }
 
 
-        public static Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color, Point3D pA, Point3D pB)
+        // TO Ondrej - musi byt toto vracat Model3DGroup? Nastaci GeometryModel3D
+        // Poredpokladam ze budeme celu ciaru kreslit rovnakou farbou, takze nepotrebujeme viacero materialov a mensich modelov pre rozne povrchy
+        public static Model3DGroup Get3DLineReplacement(System.Windows.Media.Color color, float fLineThickness, Point3D pA, Point3D pB)
         {
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
             // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
@@ -3791,12 +3853,10 @@ namespace BaseClasses
 
             Model3DGroup model_gr = new Model3DGroup();
 
-            //DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
-            //temp to see where it is
-            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(Colors.Red));
-            
-            float fLineCylinderRadius = 0.05f;
-            
+            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
+
+            float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
+
             short NumberOfCirclePoints = 5;
 
             // Priemet do osi GCS - rozdiel suradnic v GCS
@@ -3816,7 +3876,7 @@ namespace BaseClasses
 
             //set transformed points
             ((MeshGeometry3D)gm3D.Geometry).Positions = points;
-            
+
             model_gr.Children.Add(gm3D);
 
             return model_gr;

@@ -294,9 +294,13 @@ namespace BaseClasses.GraphObj
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu kotovacich ciar (Okno options pre zobrazenie v GUI a pre Export)
 
             float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            float fLineThickness = 0.002f;
             float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny
 
-            model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, m_PointMainLine1, m_PointMainLine2));
+            // TO Ondrej - nemozeme sem pridavat do skupiny modelu koty tento transformovany valec, lebo ta sa kresli v smere x a az potom sa transformuje, takze tieto transformovane suradnice sa transformuju potom este raz
+            // Sem mozeme pridat len valec v LCS smere x koty
+            //model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, m_PointMainLine1, m_PointMainLine2));
+            model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, fLineThickness, new Point3D(0,0,0), new Point3D(fMainLineLength, 0, 0)));
 
             // Main line
             // Default tip (cone height is 20% from length)
@@ -386,7 +390,5 @@ namespace BaseClasses.GraphObj
 
             return model_gr;
         }
-
-        
     }
 }

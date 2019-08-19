@@ -2713,6 +2713,7 @@ namespace PFD
             sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
 
             sDisplayOptions.wireFrameColor = WireframeColor;
+            sDisplayOptions.fWireFrameLineThickness = 1; // TODO dopracovat nastavitelne v GUI
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;

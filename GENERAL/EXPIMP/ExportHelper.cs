@@ -1488,8 +1488,7 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-
-        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModel model, out CModel filteredModel)
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModel model, bool bTransformScreenLines3DToCylinders3D, out CModel filteredModel)
         {
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
@@ -1501,9 +1500,9 @@ namespace EXPIMP
             //_trackport.ViewPort.Measure(size);
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
-            
-            filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
-            
+
+            filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, bTransformScreenLines3DToCylinders3D);
+
             return _trackport.ViewPort;
         }
 
