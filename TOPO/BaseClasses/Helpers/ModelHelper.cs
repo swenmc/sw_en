@@ -154,14 +154,20 @@ namespace BaseClasses.Helpers
         }
 
         // Intermediate frame (main frame - 2nd gridline)
-        public static CMember[] GetMiddleFrameMembers(CModel model)
+        public static CMember[] GetMiddleFrameMembers(CModel model, bool bAddGirtsAndPurlins = true)
         {
-            return GetMembersInYDistance(model, model.fL1_frame);
+            if (!bAddGirtsAndPurlins)
+                return GetMembersInYDistance(model, model.fL1_frame);
+            else
+                return GetMembersInYDistanceInterval(model, 0, model.fL1_frame, false, true, false);
         }
 
-        public static CNode[] GetMiddleFrameNodes(CModel model)
+        public static CNode[] GetMiddleFrameNodes(CModel model, bool bAddGirtsAndPurlins = true)
         {
-            return GetNodesInYDistance(model, model.fL1_frame);
+            if (!bAddGirtsAndPurlins)
+                return GetNodesInYDistance(model, model.fL1_frame);
+            else
+                return GetNodesInYDistanceInterval(model, 0, model.fL1_frame, false, true);
         }
 
         public static CMember[] GetMembersInYDistance(CModel model, double length)
@@ -183,6 +189,62 @@ namespace BaseClasses.Helpers
             {
                 if (MathF.d_equal(n.Y, length)) nodes.Add(n);
             }
+            return nodes.ToArray();
+        }
+
+        public static CMember[] GetMembersInYDistanceInterval(CModel model, double startPositionY, double endPositionY, bool bIncludingStart = false, bool bIncludingEnd = false, bool bIncludingPartial = true)
+        {
+            // TODO - dopracovat selekciu podla typu pruta
+
+            List<CMember> members = new List<CMember>();
+
+            foreach (CMember m in model.m_arrMembers)
+            {
+                if (!bIncludingPartial) // Selektuje len pruty ktore su cele v otvorenom alebo uzavretom intervale
+                {
+                    if ((!bIncludingStart && !bIncludingEnd) && (m.NodeStart.Y > startPositionY && m.NodeEnd.Y > startPositionY) && (m.NodeStart.Y < endPositionY && m.NodeEnd.Y < endPositionY)) // Whole member in interval - otvoreny interval
+                        members.Add(m);
+                    else if (bIncludingStart && ((m.NodeStart.Y >= startPositionY && m.NodeEnd.Y >= startPositionY) && (m.NodeStart.Y < endPositionY && m.NodeEnd.Y < endPositionY)))
+                        members.Add(m);
+                    else if (bIncludingEnd && ((m.NodeStart.Y > startPositionY && m.NodeEnd.Y > startPositionY) && (m.NodeStart.Y <= endPositionY && m.NodeEnd.Y <= endPositionY)))
+                        members.Add(m);
+                    else if ((bIncludingStart && bIncludingEnd) && ((m.NodeStart.Y >= startPositionY && m.NodeEnd.Y >= startPositionY) && (m.NodeStart.Y <= endPositionY && m.NodeEnd.Y <= endPositionY))) // Uzavrety interval
+                        members.Add(m);
+                }
+                else // Selektuje pruty ktore maju aspon jeden uzol v intervale
+                {
+                    if ((!bIncludingStart && !bIncludingEnd) && ((m.NodeStart.Y > startPositionY || m.NodeEnd.Y > startPositionY) || (m.NodeStart.Y < endPositionY || m.NodeEnd.Y < endPositionY))) // Some node in interval - otvoreny interval
+                        members.Add(m);
+                    else if (bIncludingStart && ((m.NodeStart.Y >= startPositionY || m.NodeEnd.Y >= startPositionY) || (m.NodeStart.Y < endPositionY || m.NodeEnd.Y < endPositionY)))
+                        members.Add(m);
+                    else if (bIncludingEnd && ((m.NodeStart.Y > startPositionY || m.NodeEnd.Y > startPositionY) || (m.NodeStart.Y <= endPositionY || m.NodeEnd.Y <= endPositionY)))
+                        members.Add(m);
+                    else if ((bIncludingStart && bIncludingEnd) && ((m.NodeStart.Y >= startPositionY || m.NodeEnd.Y >= startPositionY) || (m.NodeStart.Y <= endPositionY || m.NodeEnd.Y <= endPositionY))) // Uzavrety interval
+                        members.Add(m);
+                }
+            }
+
+            return members.ToArray();
+        }
+
+        public static CNode[] GetNodesInYDistanceInterval(CModel model, double startPositionY, double endPositionY, bool bIncludingStart = false, bool bIncludingEnd = false/*, bool bIncludingPartial = true*/)
+        {
+            // TODO - dopracovat selekciu podla typu pruta
+
+            List<CNode> nodes = new List<CNode>();
+
+            foreach (CNode n in model.m_arrNodes)
+            {
+                if ((!bIncludingStart && !bIncludingEnd) && (n.Y > startPositionY && n.Y < endPositionY)) // Node in interval - otvoreny interval
+                    nodes.Add(n);
+                else if (bIncludingStart && (n.Y >= startPositionY && n.Y < endPositionY))
+                    nodes.Add(n);
+                else if (bIncludingEnd && (n.Y > startPositionY && n.Y <= endPositionY))
+                    nodes.Add(n);
+                else if ((bIncludingStart && bIncludingEnd) && (n.Y >= startPositionY && n.Y <= endPositionY)) // Uzavrety interval
+                    nodes.Add(n);
+            }
+
             return nodes.ToArray();
         }
     }
