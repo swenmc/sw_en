@@ -309,7 +309,12 @@ namespace BaseClasses
                         //    membersBaseNodes_FrontSide_2
                         //    membersBaseNodes_FrontSide_3
 
+                        //takto sa daju zoradit
+                        membersBaseNodes_FrontSide = membersBaseNodes_FrontSide.OrderByDescending(n => n.X).ToList();
+
                     }
+
+                    
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
