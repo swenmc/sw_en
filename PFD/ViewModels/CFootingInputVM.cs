@@ -24,12 +24,14 @@ namespace PFD
         private Dictionary<string, CMatPropertiesRC> m_ConcreteGrades;
         private Dictionary<string, CMatPropertiesRF> m_ReinforcementGrades;
         private Dictionary<int, CReinforcementBarProperties> m_ReinforcementBars;
+        private Dictionary<string, CMeshProperties> m_ReinforcementMeshGrades;
 
         private List<string> m_ConcreteGradesList;
         private List<string> m_AggregateSizesList;
         private List<string> m_ReinforcementGradesList;
         private List<string> m_ReinforcementBarsList;
         private List<string> m_ReinforcementBarsCountList;
+        private List<string> m_ReinforcementMeshGradesList;
 
         private List<CComboColor> m_ColorList;
 
@@ -38,6 +40,7 @@ namespace PFD
         private string m_AggregateSize;
         private float m_ConcreteDensity;
         private string m_ReinforcementGrade;
+        private string m_ReinforcementMeshGrade;
 
         private string m_LongReinTop_x_No;
         private string m_LongReinTop_x_Phi;
@@ -111,6 +114,21 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public Dictionary<string, CMeshProperties> ReinforcementMeshGrades
+        {
+            get
+            {
+                return m_ReinforcementMeshGrades;
+            }
+
+            set
+            {
+                m_ReinforcementMeshGrades = value;
+                NotifyPropertyChanged("ReinforcementMeshGrades");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public Dictionary<int, CReinforcementBarProperties> ReinforcementBars
         {
             get
@@ -167,6 +185,21 @@ namespace PFD
             {
                 m_ReinforcementGradesList = value;
                 NotifyPropertyChanged("ReinforcementGradesList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public List<string> ReinforcementMeshGradesList
+        {
+            get
+            {
+                return m_ReinforcementMeshGradesList;
+            }
+
+            set
+            {
+                m_ReinforcementMeshGradesList = value;
+                NotifyPropertyChanged("ReinforcementMeshGradesList");
             }
         }
 
@@ -290,6 +323,21 @@ namespace PFD
             {
                 m_ReinforcementGrade = value;
                 NotifyPropertyChanged("ReinforcementGrade");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string ReinforcementMeshGrade
+        {
+            get
+            {
+                return m_ReinforcementMeshGrade;
+            }
+
+            set
+            {
+                m_ReinforcementMeshGrade = value;
+                NotifyPropertyChanged("ReinforcementMeshGrade");
             }
         }
 
@@ -886,6 +934,7 @@ namespace PFD
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
             ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
             ReinforcementBars = CReinforcementBarManager.LoadReiforcementBarProperties();
+            ReinforcementMeshGrades = CMeshesManager.LoadMeshesProperties_Dictionary();
 
             // To Ondrej - asi by som mal urobit zoznamy objektov vlastnosti/properties priamo v Database Manager
             // v Database Manager mame niekde dictionary, niekde list of properties, neviem ci nam to fakt oboje treba a ci by to nemalo byt jednotne vsade jedno alebo druhe (dictionary alebo list of properties objects)
@@ -894,6 +943,7 @@ namespace PFD
             ReinforcementGradesList = ReinforcementGrades.Keys.ToList();
             List<int> rcBarsDiameters = ReinforcementBars.Keys.ToList();
             ReinforcementBarsList = rcBarsDiameters.ConvertAll<string>(x => x.ToString());
+            ReinforcementMeshGradesList = ReinforcementMeshGrades.Keys.ToList();
 
             // Zoznam poctov vyztuznych tyci pre jeden smer (None alebo 2 - 30)
             ReinforcementBarsCountList = GetReinforcementBarsCountList();
@@ -912,6 +962,7 @@ namespace PFD
 
             ConcreteDensity = 2300f; // kg / m^3
             ReinforcementGrade = "500E"; // 500 MPa
+            ReinforcementMeshGrade = "SE92DE"; // SE92
 
             SoilReductionFactor_Phi = 0.5f;
             SoilReductionFactorEQ_Phi = 0.8f;
