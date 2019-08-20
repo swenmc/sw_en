@@ -703,6 +703,8 @@
         public bool bDisplayMemberPrefix;
         public bool bDisplayMemberCrossSectionStartName;
         public bool bDisplayMemberRealLength;
+        public bool bDisplayMemberRealLengthInMM;
+        public bool bDisplayMemberRealLengthUnit;
         public bool bDisplayNodesDescription;
 
         public bool bDisplayLoads;

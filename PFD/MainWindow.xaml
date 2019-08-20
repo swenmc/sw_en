@@ -290,6 +290,7 @@
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
                             <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Display Cross-Section name</CheckBox>
                             <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
+                            <CheckBox Name="chbDisplayMemberRealLengthUnit" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLengthUnit}" >Display Unit</CheckBox>
                             <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
                         </StackPanel>
 

@@ -125,6 +125,8 @@ namespace PFD
         private bool MShowMemberPrefix;
         private bool MShowMemberCrossSectionStartName;
         private bool MShowMemberRealLength;
+        private bool MShowMemberRealLengthInMM;
+        private bool MShowMemberRealLengthUnit;        
         private bool MShowNodesDescription;
 
         private float MDisplayIn3DRatio;
@@ -1022,6 +1024,31 @@ namespace PFD
                 MShowMemberRealLength = value;
                 RecreateModel = false;
                 NotifyPropertyChanged("ShowMemberRealLength");
+            }
+        }
+        public bool ShowMemberRealLengthInMM
+        {
+            get
+            {
+                return MShowMemberRealLengthInMM;
+            }
+
+            set
+            {
+                MShowMemberRealLengthInMM = value;                
+            }
+        }
+        public bool ShowMemberRealLengthUnit
+        {
+            get
+            {
+                return MShowMemberRealLengthUnit;
+            }
+
+            set
+            {
+                MShowMemberRealLengthUnit = value;
+                NotifyPropertyChanged("ShowMemberRealLengthUnit");
             }
         }
 
@@ -2124,14 +2151,15 @@ namespace PFD
             ViewIndex = (int)EModelViews.FRONT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
 
-            ShowMemberID = true;
-            ShowMemberRealLength = true;
+            ShowMemberID = true;            
 
             ShowNodesDescription = false;
             ShowMemberDescription = true;
             ShowMemberID = true;
             ShowMemberPrefix = true;
             ShowMemberRealLength = true;
+            ShowMemberRealLengthInMM = true;
+            ShowMemberRealLengthUnit = false;
             ShowMemberCrossSectionStartName = false;
 
             ShowLoads = false;
@@ -2683,6 +2711,8 @@ namespace PFD
             sDisplayOptions.bDisplayMemberPrefix = ShowMemberPrefix;
             sDisplayOptions.bDisplayMemberCrossSectionStartName = ShowMemberCrossSectionStartName;
             sDisplayOptions.bDisplayMemberRealLength = ShowMemberRealLength;
+            sDisplayOptions.bDisplayMemberRealLengthInMM = ShowMemberRealLengthInMM;
+            sDisplayOptions.bDisplayMemberRealLengthUnit = ShowMemberRealLengthUnit;
             sDisplayOptions.bDisplayNodesDescription = ShowNodesDescription;
 
             sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;

@@ -3173,8 +3173,19 @@ namespace BaseClasses
             if (options.bDisplayMemberID) parts.Add(m.ID.ToString());
             if (options.bDisplayMemberPrefix) parts.Add(m.Prefix.ToString());
             if (options.bDisplayMemberCrossSectionStartName) parts.Add(m.CrScStart?.Name_short);
-            if (options.bDisplayMemberRealLength) parts.Add(m.FLength_real.ToString("F3") + " m");
-
+            if (options.bDisplayMemberRealLength)
+            {
+                if (options.bDisplayMemberRealLengthUnit)
+                {
+                    if (options.bDisplayMemberRealLengthInMM) parts.Add((m.FLength_real * 1000).ToString("F0") + " mm");
+                    else parts.Add(m.FLength_real.ToString("F3") + " m");
+                }
+                else
+                {
+                    if (options.bDisplayMemberRealLengthInMM) parts.Add((m.FLength_real * 1000).ToString("F0"));
+                    else parts.Add(m.FLength_real.ToString("F3"));
+                }
+            } 
             return string.Join(separator, parts);
         }
 
