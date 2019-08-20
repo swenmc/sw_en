@@ -839,16 +839,7 @@ namespace BaseClasses
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-
-                // Add WireFrame Model
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
-                //{
-                //    Model3DGroup lines;
-                //    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                //    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
-                //}
-                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
-
+                
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -2152,7 +2143,7 @@ namespace BaseClasses
         }
 
         // Draw Model Connection Joints Wire Frame
-        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, bool drawConnectors = true)
+        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions)
         {
             //zaviedol som maxPoints z dovodu OutOfMemoryException - pocet bodov ide bezne aj cez 700.000
             int maxPoints = 100000;
@@ -2176,7 +2167,7 @@ namespace BaseClasses
                                 // Create WireFrame in LCS
                                 List<Point3D> jointPlatePoints = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel().Points.ToList();
 
-                                if (drawConnectors)
+                                if (sDisplayOptions.bDisplayConnectors)
                                 {
                                     // Add plate connectors
                                     if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null &&
