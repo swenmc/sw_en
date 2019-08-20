@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Collections.Generic;
 
 namespace BaseClasses.GraphObj
 {
@@ -434,6 +435,61 @@ namespace BaseClasses.GraphObj
             */
 
             return CreateGM_3D_Volume_8EdgesOld(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1);
+        }
+        public List<Point3D> GetWireFramePoints_Volume_8Edges(GeometryModel3D volumeModel)
+        {
+            List<Point3D> wireframePoints = new List<Point3D>();
+            MeshGeometry3D geom = volumeModel.Geometry as MeshGeometry3D;
+
+            List<Point3D> transformedPoints = new List<Point3D>(); // Pole transformovanych bodov
+
+            foreach (Point3D p in geom.Positions)
+            {
+                Point3D transdformed = volumeModel.Transform.Transform(p); // Transformujeme povodny bod
+                transformedPoints.Add(transdformed);
+            }
+
+            int iNumberOfEdgesTotal = 8;
+            int iNumberOfEdges_Base = iNumberOfEdgesTotal / 2; // Plati pre pravidelne hranoly, valce atd, celkovy pocet bodov je vzdy parny
+
+            // Spodna podstava - Bottom Base
+            for (int i = 0; i < iNumberOfEdges_Base; i++)
+            {
+                if (i < iNumberOfEdges_Base - 1)
+                {
+                    wireframePoints.Add(transformedPoints[i]);
+                    wireframePoints.Add(transformedPoints[i + 1]);
+                }
+                else
+                {
+                    wireframePoints.Add(transformedPoints[i]);
+                    wireframePoints.Add(transformedPoints[0]);
+                }
+            }
+
+            // Horna podstava - Top Base
+            for (int i = 0; i < iNumberOfEdges_Base; i++)
+            {
+                if (i < iNumberOfEdges_Base - 1)
+                {
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
+                }
+                else
+                {
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
+                }
+            }
+
+            // Plast hranola
+            for (int i = 0; i < iNumberOfEdges_Base; i++)
+            {
+                    wireframePoints.Add(transformedPoints[i]);
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+            }
+
+            return wireframePoints;
         }
 
         //--------------------------------------------------------------------------------------------

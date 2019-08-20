@@ -163,6 +163,10 @@ namespace BaseClasses
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
+                Model3DGroup foundationsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
+                if (foundationsModel3DGroup != null) gr.Children.Add(foundationsModel3DGroup);
+
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
@@ -760,6 +764,7 @@ namespace BaseClasses
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
+                // Members
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
@@ -768,6 +773,17 @@ namespace BaseClasses
 
                     if(lines != null)
                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
+
+                // Foundations
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations && bTransformScreenLines3DToCylinders3D)
+                {
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
+
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -823,6 +839,18 @@ namespace BaseClasses
                     Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
+                {
+                    Model3DGroup lines;
+                    if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, bTransformScreenLines3DToCylinders3D, out lines);
+                }
+
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab)
+                {
+
+                }
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
@@ -1588,67 +1616,10 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        // Create Other model objects model 3d group
-        public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        // Create foundation model objects model 3d group
+        public static Model3DGroup CreateModelFoundationsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
         {
             Model3DGroup model3D_group = new Model3DGroup();
-
-            // Physical 3D Model
-
-            if (cmodel.m_arrGOAreas != null) // Some areas exist
-            {
-                // Model Groups of Areas
-
-
-
-            }
-
-            if (cmodel.m_arrGOVolumes != null && sDisplayOptions.bDisplayFloorSlab) // Some volumes exist
-            {
-                // Model Groups of Volumes
-                for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
-                {
-                    if (cmodel.m_arrGOVolumes[i] != null &&
-                        cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                    {
-                        // Get shape - prism , sphere, ...
-
-                        switch (cmodel.m_arrGOVolumes[i].m_eShapeType)
-                        {
-                            case EVolumeShapeType.eShape3DCube:
-                            case EVolumeShapeType.eShape3DPrism_8Edges:
-                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
-                                break;
-                            case EVolumeShapeType.eShape3D_Cylinder:
-                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
-                                break;
-                            default:
-                                //TODO - prepracovat a dopracovat
-                                break;
-                        }
-                    }
-                }
-            }
-
-            if (cmodel.m_arrGOStrWindows != null) // Some windows exist
-            {
-                // Model Groups of Windows
-                for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
-                {
-                    if (cmodel.m_arrGOStrWindows[i] != null &&
-                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
-                        cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                    {
-                        if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
-                            model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
-                        else
-                        {
-                            //Exception - not implemented
-                        }
-                    }
-                }
-            }
 
             if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
             {
@@ -1662,11 +1633,11 @@ namespace BaseClasses
                         cmodel.m_arrFoundations[i].m_pControlPoint != null &&
                         cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
-                        if(sDisplayOptions.bDisplayReinforcementBars)
+                        if (sDisplayOptions.bDisplayReinforcementBars)
                         {
                             // TODO - Ondrej - vykreslujeme vystuz hore a dole v smere x a y, takze su to 4 zoznamy, asi by sa do dalo refaktorovat
                             // Top layer - x
-                            if(cmodel.m_arrFoundations[i].Top_Bars_x != null)
+                            if (cmodel.m_arrFoundations[i].Top_Bars_x != null)
                             {
                                 for (int j = 0; j < cmodel.m_arrFoundations[i].Top_Bars_x.Count; j++) // Each bar in the list
                                 {
@@ -1725,6 +1696,72 @@ namespace BaseClasses
                             // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt zakladu
                             GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
                             model3D_group.Children.Add(model); // Add foundation to the model group
+                        }
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        // Create Other model objects model 3d group
+        public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            // Physical 3D Model
+
+            if (cmodel.m_arrGOAreas != null) // Some areas exist
+            {
+                // Model Groups of Areas
+
+
+
+            }
+
+            if (cmodel.m_arrGOVolumes != null && sDisplayOptions.bDisplayFloorSlab) // Some volumes exist
+            {
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
+                {
+                    if (cmodel.m_arrGOVolumes[i] != null &&
+                        cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        // Get shape - prism , sphere, ...
+
+                        switch (cmodel.m_arrGOVolumes[i].m_eShapeType)
+                        {
+                            case EVolumeShapeType.eShape3DCube:
+                            case EVolumeShapeType.eShape3DPrism_8Edges:
+                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+                                break;
+                            case EVolumeShapeType.eShape3D_Cylinder:
+                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
+                                break;
+                            default:
+                                //TODO - prepracovat a dopracovat
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (cmodel.m_arrGOStrWindows != null) // Some windows exist
+            {
+                // Model Groups of Windows
+                for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
+                {
+                    if (cmodel.m_arrGOStrWindows[i] != null &&
+                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
+                            model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
+                        else
+                        {
+                            //Exception - not implemented
                         }
                     }
                 }
@@ -2190,6 +2227,104 @@ namespace BaseClasses
                 }
 
                 AddLineToViewPort(jointsWireFramePoints, sDisplayOptions, viewPort);                
+            }
+        }
+
+        // Add all foundations in one wireframe collection of ScreenSpaceLines3D
+        public static void DrawModelFoundationsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions, bool bTransformScreenLines3DToCylinders3D, out Model3DGroup cylinders)
+        {
+            cylinders = null;
+
+            // Foundations - Wire Frame
+            if (model.m_arrFoundations != null)
+            {
+                List<Point3D> wireFramePoints = new List<Point3D>();
+                for (int i = 0; i < model.m_arrFoundations.Count; i++) // Per each foundation
+                {
+                    if (model.m_arrFoundations[i] != null &&
+                        model.m_arrFoundations[i].BIsDisplayed) // Foundation object is valid (not empty) and is active to be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrFoundations[i].WireFramePoints);
+                    }
+                }
+
+                // TODO Ondrej - Refaktorovat s vykreslovanim wireframe members
+                bool useWireLines = false;
+                bool useScreenSpaceLines = false;
+                bool useLinesVisual3D = true;
+                if (useWireLines)
+                {
+                    WireLines wl = new WireLines();
+                    wl.Lines = new Point3DCollection(wireFramePoints);
+                    wl.Color = sDiplayOptions.wireFrameColor;
+                    // priprava na centrovanie modelu
+                    if (centerModel)
+                    {
+                        wl.Transform = centerModelTransGr;
+                    }
+
+                    if (bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for (int i = 0; i < wl.LineCollection.Count / 2; i++)
+                        {
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.LineCollection[i * 2], wl.LineCollection[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
+                    viewPort.Children.Add(wl);
+                }
+
+                if (useScreenSpaceLines)
+                {
+                    //ScreenSpaceLines are much slower = performance issue
+                    ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness); // Just one collection for all members
+                    wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
+                    if (centerModel)
+                    {
+                        wireFrameAllMembers.Transform = centerModelTransGr;
+                    }
+
+                    if (bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for (int i = 0; i < wireFrameAllMembers.Points.Count / 2; i++)
+                        {
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFrameAllMembers.Points[i * 2], wireFrameAllMembers.Points[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
+                    viewPort.Children.Add(wireFrameAllMembers);
+                }
+
+                if (useLinesVisual3D)
+                {
+                    LinesVisual3D wl = new LinesVisual3D();
+                    wl.Points = new Point3DCollection(wireFramePoints);
+                    wl.Color = sDiplayOptions.wireFrameColor;
+                    wl.Thickness = sDiplayOptions.fWireFrameLineThickness;
+                    if (centerModel)
+                    {
+                        wl.Transform = centerModelTransGr;
+                    }
+
+                    if (bTransformScreenLines3DToCylinders3D)
+                    {
+                        cylinders = new Model3DGroup();
+
+                        for (int i = 0; i < wl.Points.Count / 2; i++)
+                        {
+                            GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wl.Points[i * 2], wl.Points[i * 2 + 1]);
+                            cylinders.Children.Add(cylinder);
+                        }
+                    }
+
+                    viewPort.Children.Add(wl);
+                }
             }
         }
 

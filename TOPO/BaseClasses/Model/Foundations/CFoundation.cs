@@ -42,13 +42,14 @@ namespace BaseClasses
 
         private float m_fConcreteCover;
 
+        private List<Point3D> MWireFramePoints;
+
         private CJointDesignDetails m_DesignDetails;
         public CJointDesignDetails DesignDetails
         {
             get { return m_DesignDetails; }
             set { m_DesignDetails = value; }
         }
-
 
         public float Eccentricity_x
         {
@@ -310,6 +311,20 @@ namespace BaseClasses
             }
         }
 
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
+                return MWireFramePoints;
+            }
+
+            set
+            {
+                MWireFramePoints = value;
+            }
+        }
+
         public CFoundation()
         {
         }
@@ -415,12 +430,20 @@ namespace BaseClasses
                 // Set the Transform property of the GeometryModel to the Transform3DGroup
                 // Nastavim vyslednu transformaciu
                 model.Transform = GetFoundationTransformGroup_Complete();
+
+                // Naplnime pole bodov wireFrame
+                // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
+                // TODO Ondrej - tu chyba v tom ze beriem pozicie z povodneho zakladu nie z posunuteho do finalnej pozicie
+                WireFramePoints = GetWireFramePoints_Volume_8Edges(model);
             }
             else
             {
                 throw new NotImplementedException();
             }
             Visual_Object = model;
+
+
+
             return model;
         }
 
