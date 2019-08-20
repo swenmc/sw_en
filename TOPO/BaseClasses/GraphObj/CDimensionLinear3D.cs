@@ -297,10 +297,17 @@ namespace BaseClasses.GraphObj
             float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
             float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
-            // TO Ondrej - nemozeme sem pridavat do skupiny modelu koty tento transformovany valec, lebo ta sa kresli v smere x a az potom sa transformuje, takze tieto transformovane suradnice sa transformuju potom este raz
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TO Ondre pozri na toto a ak rozumies o com pisem mozes to zmazat, ak nie tak nakreslim a dovysvetlim :-)
+            // Komentar - TO Ondrej - nemozeme sem pridavat do skupiny modelu koty tento transformovany valec, lebo ta sa kresli v smere x a az potom sa transformuje, takze tieto transformovane suradnice sa transformuju potom este raz
             // Sem mozeme pridat len valec v LCS smere x koty
+            // Pokus - Ondrej
             //model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, m_PointMainLine1, m_PointMainLine2));
-            model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, fLineThickness, new Point3D(0,0,0), new Point3D(fMainLineLength, 0, 0)));
+            // Pokus - Martin
+            bool bUkazkaPreOndreja_MozeSaZmazat = false;
+            if(bUkazkaPreOndreja_MozeSaZmazat)
+               model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, fLineThickness, new Point3D(0,0,0), new Point3D(fMainLineLength, 0, 0))); // Tak to by to bolo spravne
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Main line
             // Default tip (cone height is 20% from length)
@@ -337,6 +344,9 @@ namespace BaseClasses.GraphObj
             TranslateTransform3D translateOffset = new TranslateTransform3D(0, -(fExtensionLine1_Length - fExtensionLine1_OffsetBehindMainLine + m_fOffSetFromPoint), 0);
 
             // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
+            // TODO - toto otacanie by chcelo nejako sprehladnit a zjednodusit - kotu vyrobim v rovine XY a potom ju mozeme otacat tak aby bola v rovine pohladu, moze sa stat ze je pootocena okolo osy smerujucej kolmo na monitor (oznacena pre view Y - vid member description)
+            // Skus porozmyslat a navrhnut nejaky univerzalny system ako budeme tie koty a ich texty umiestnovat
+
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();
             RotateTransform3D rotateZ = new RotateTransform3D();
@@ -348,8 +358,35 @@ namespace BaseClasses.GraphObj
                 // About X
                 AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
                 axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
-                axisAngleRotation3dX.Angle = 90;
+                axisAngleRotation3dX.Angle = Direction.Z == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
                 rotateX.Rotation = axisAngleRotation3dX;
+
+                // Kota je v rovine XZ alebo YZ
+                // Sikme koty potrebujeme pootocit okolo globalnych os X resp. Y, tomu zodpoveda pootocenie okolo LCS z
+
+                // Spocitame priemety 
+                double dDeltaX = m_PointEnd.X - m_PointStart.X;
+                double dDeltaY = m_PointEnd.Y - m_PointStart.Y;
+                double dDeltaZ = m_PointEnd.Z - m_PointStart.Z;
+
+                // Returns transformed coordinates of member nodes
+                // Angles
+                double dAlphaX = 0, dBetaY = 0, dGammaZ = 0;
+
+                // Uhly pootocenia LCS okolo osi GCS
+                // Angles
+                dAlphaX = Geom2D.GetAlpha2D_CW(dDeltaY, dDeltaZ);
+                dBetaY = Geom2D.GetAlpha2D_CW_2(dDeltaX, dDeltaZ); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
+                dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
+
+                if (MathF.d_equal(dDeltaY, 0)) // Kota je v GCS rovine XZ
+                {
+                    // About Y
+                    AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
+                    axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
+                    axisAngleRotation3dY.Angle = Geom2D.RadiansToDegrees(dBetaY);
+                    rotateY.Rotation = axisAngleRotation3dY;
+                }
             }
 
             if ((Direction.X != 0 && (MathF.Equals(m_PointStart.X, m_PointEnd.X))) ||
