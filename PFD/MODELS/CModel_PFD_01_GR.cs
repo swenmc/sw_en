@@ -2534,18 +2534,18 @@ namespace PFD
                 materialConcrete.m_fE = 30e+9f;
 
                 // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.05f;
-                float fFloorSlab_AdditionalOffset_Y = 0.05f;
+                float fFloorSlab_AdditionalOffset_X = 0.02f; // Rozmer o ktory doska presahuje od hrany stlpa
+                float fFloorSlab_AdditionalOffset_Y = 0.02f; // Rozmer o ktory doska presahuje od hrany stlpa
                 float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
                 float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
-                float fTolerance = 0.001f; // Tolerance - 3D graphics collision
+                float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stly aby bolo vidno ich obrys
                 float fFloorSlab_h = 0.125f;
                 float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
                 float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
 
                 int iLastFoundationIndex = m_arrFoundations.Count;
 
-                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
+                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
                     controlPoint_FloorSlab,

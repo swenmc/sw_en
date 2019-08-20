@@ -399,7 +399,7 @@ namespace BaseClasses
 
             // Set the Transform property of the GeometryModel to the Transform3DGroup
             // Nastavim vyslednu transformaciu
-            model.Transform = GetSlabTransformGroup_Complete();
+            model.Transform = GetSlabTransformGroup();
 
             // Naplnime pole bodov wireFrame
             // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
@@ -426,31 +426,12 @@ namespace BaseClasses
             // Add the rotation transform to a Transform3DGroup
             myTransform3DGroup.Children.Add(myRotateTransform3D);
 
-            // Presun celehho zakladu do GCS
+            // Presun celej dosky do GCS z [0,0,0] do control point
             // Create and apply translation
             TranslateTransform3D myTranslateTransform3D_GCS = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);
-
-            return myTransform3DGroup;
-        }
-
-        public Transform3DGroup GetSlabTransformGroup_Complete()
-        {
-            // Tato cast prva translate zlozka transformacie sa na reinforcement bars nepouzije, lebo pri vytvarani vyztuze sa uz uvazuje upraveny m_pControlPoint
-            // Model Transformation
-            // Apply multiple transformations to the object.
-            // Presun v ramci LCS (tak ze [0,0,0] bude v mieste, kde je joinNode
-            // Create and apply translation
-            TranslateTransform3D myTranslateTransform3D = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
-
-            Transform3DGroup myTransform3DGroup = new Transform3DGroup();
-            // Add the translation transform to the Transform3DGroup.
-            myTransform3DGroup.Children.Add(myTranslateTransform3D);
-
-            // Pridam transformaciu zakladu do GCS
-            myTransform3DGroup.Children.Add(GetSlabTransformGroup());
 
             return myTransform3DGroup;
         }
