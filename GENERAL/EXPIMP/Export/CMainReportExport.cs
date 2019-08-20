@@ -156,7 +156,7 @@ namespace EXPIMP
             opts.DimensionLineColor = System.Windows.Media.Colors.Black;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
-             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS};
+             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS};
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -185,7 +185,7 @@ namespace EXPIMP
                     opts.bDisplayWireFrameModel = true;
                     bTransformScreenLines3DToCylinders3D = true;
 
-                    opts.bDisplayFoundations = true; // ???? Neviem ci to chceme zobrazit aj na fs 04 alebo len fs 05
+                    //opts.bDisplayFoundations = true; // ???? Neviem ci to chceme zobrazit aj na fs 04 alebo len fs 05
                     opts.bDisplayFloorSlab = true;
                 }
 
@@ -195,6 +195,17 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     bTransformScreenLines3DToCylinders3D = true;
+                }
+
+                if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
+                {
+                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                    opts.bDisplayWireFrameModel = true;
+                    bTransformScreenLines3DToCylinders3D = true;
+
+                    opts.bDisplayFoundations = true;
+                    opts.bDisplayReinforcementBars = true;
+                    opts.bDisplayFloorSlab = true;
                 }
 
                 CModel filteredModel = null;
@@ -228,6 +239,7 @@ namespace EXPIMP
             else if (viewModelMembers == EViewModelMemberFilters.ROOF) return (int)EModelViews.TOP;
             else if (viewModelMembers == EViewModelMemberFilters.MIDDLE_FRAME) return (int)EModelViews.FRONT;
             else if (viewModelMembers == EViewModelMemberFilters.COLUMNS) return (int)EModelViews.TOP;
+            else if (viewModelMembers == EViewModelMemberFilters.FOUNDATIONS) return (int)EModelViews.TOP;
             else return (int)EModelViews.FRONT;
         }
 

@@ -661,7 +661,8 @@
         RIGHT = 4,
         ROOF = 5,
         MIDDLE_FRAME = 6,
-        COLUMNS = 7
+        COLUMNS = 7,
+        FOUNDATIONS = 8
     }
 
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
