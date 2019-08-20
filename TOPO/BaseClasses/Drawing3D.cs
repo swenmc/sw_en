@@ -310,16 +310,14 @@ namespace BaseClasses
                         // To Ondrej - toto by sa asi dalo zistit uz vopred este predtym nez vyrabam zoznamy uzlov
                         foreach (CMember m in membersFrontSide)
                         {
-                            if (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT)
+                            if (!bDrawDimension_1 && (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT))
                             {
                                 bDrawDimension_1 = true;
-                                break;
                             }
 
-                            if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC  || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                            if (!bDrawDimension_2 && (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC  || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP))
                             {
                                 bDrawDimension_2 = true;
-                                break;
                             }
                         }
 
@@ -361,6 +359,7 @@ namespace BaseClasses
                             for (int i = 0; i < membersBaseNodes_FrontSide_1.Count - 1; i++)
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i+1].GetPoint3D(), new Vector3D(0, 0, -1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString());
+                                listOfDimensions.Add(dim);
                                 DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
@@ -466,16 +465,14 @@ namespace BaseClasses
                         // To Ondrej - toto by sa asi dalo zistit uz vopred este predtym nez vyrabam zoznamy uzlov
                         foreach (CMember m in membersLeftSide)
                         {
-                            if (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT)
+                            if (!bDrawDimension_1 && (m.EMemberType == EMemberType_FS.eDF || m.EMemberType == EMemberType_FS.eDT))
                             {
                                 bDrawDimension_1 = true;
-                                break;
                             }
 
-                            if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                            if (!bDrawDimension_2 && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC))
                             {
                                 bDrawDimension_2 = true;
-                                break;
                             }
                         }
 
@@ -513,6 +510,7 @@ namespace BaseClasses
                             for (int i = 0; i < membersBaseNodes_LeftSide_1.Count - 1; i++)
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString());
+                                listOfDimensions.Add(dim);
                                 DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
@@ -661,6 +659,7 @@ namespace BaseClasses
                             for (int i = 0; i < membersBaseNodes_FrontSideGirts_1.Count - 1; i++)
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString());
+                                listOfDimensions.Add(dim);
                                 DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
@@ -724,6 +723,7 @@ namespace BaseClasses
                             {
                                 float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].X - membersBaseNodes_FrontSidePurlins_1[i].X) + MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].Z - membersBaseNodes_FrontSidePurlins_1[i].Z));
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString());
+                                listOfDimensions.Add(dim);
                                 DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
