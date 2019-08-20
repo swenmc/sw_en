@@ -258,7 +258,7 @@ namespace BaseClasses
                     {
                         // 1 kotovacia ciara - vsetky stlpy
                         // 2 kotovacia ciara - vsetky MC a EC (len left) alebo WP/C a EC (front a back)
-                        // 3 kotovacia ciara - cerlkovy rozmer (len left a front)
+                        // 3 kotovacia ciara - celkovy rozmer (len left a front)
 
                         bool bDrawDimension_1 = false;
                         bool bDrawDimension_2 = false;
@@ -272,7 +272,7 @@ namespace BaseClasses
                         List<CNode> membersBaseNodes_FrontSide_2 = null; // Wind posts and edge columns
                         List<CNode> membersBaseNodes_FrontSide_3 = null; // Edges
 
-                        // Toto celkovu kotu kreslime vzdy
+                        // Tuto celkovu kotu kreslime vzdy
                         membersBaseNodes_FrontSide_3 = new List<CNode>();
                         membersBaseNodes_FrontSide_3.Add(new CNode(0, -0.5f * fh, 0, 0, 0)); // Suradnice sa menia pre smer X
                         membersBaseNodes_FrontSide_3.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, 0, 0));
@@ -554,12 +554,213 @@ namespace BaseClasses
                     }
                 }
 
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+                {
+                    // Potrebujeme identifikovat girts, purlins, eave purlins ???
+                    // Na ram sa pripajaju z oboch stran, vyberieme len tie, ktore na rame koncia a vidime ich v pohlade na ram zpredu, aby sme nemali body duplicitne
+
+                    // Girts
+                    CMember[] membersFrontSideGirts = null;
+
+                    foreach (CMember m in model.m_arrMembers)
+                    {
+                        membersFrontSideGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
+                    }
+
+                    // Purlins
+                    CMember[] membersFrontSidePurlins = null;
+
+                    foreach (CMember m in model.m_arrMembers)
+                    {
+                        membersFrontSidePurlins = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eP, true, true, false); // smer Y
+                    }
+
+                    List<CNode> membersBaseNodes_FrontSideGirts_1 = null; // Girts
+                    // Tuto celkovu kotu kreslime vzdy
+                    List<CNode> membersBaseNodes_FrontSideVertical_2 = new List<CNode>(); // Overall knee height H1
+
+                    List<CNode> membersBaseNodes_FrontSidePurlins_1 = null; // Purlins
+                    // Tuto celkovu kotu kreslime vzdy
+                    List<CNode> membersBaseNodes_FrontSideRafter_2 = new List<CNode>(); // Overall rafter length
+
+                    // Kedze chceme kotovat od spodnej hrany a vo vyske H1 musime pridat uzly na koncoch stlpa
+                    membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
+                    membersBaseNodes_FrontSideVertical_2.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+
+                    // Kedze chceme kotovat od zaciatku po koniec raftera musime pridat uzly na koncoch
+                    CMember leftRafter = model.m_arrMembers.FirstOrDefault(m => m.EMemberType == EMemberType_FS.eMR);
+
+                    membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+                    membersBaseNodes_FrontSideRafter_2.Add(new CNode(0, leftRafter.NodeEnd.X, model.fL1_frame, leftRafter.NodeEnd.Z, 0));
+
+                    if (membersFrontSideGirts != null)
+                    {
+                        membersBaseNodes_FrontSideGirts_1 = new List<CNode>(); // Girts
+
+                        membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
+                        membersBaseNodes_FrontSideGirts_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+
+                        foreach (CMember m in membersFrontSideGirts)
+                        {
+                            if (MathF.d_equal(m.NodeEnd.X, 0) && MathF.d_equal(m.NodeEnd.Y, model.fL1_frame)) // Koncovy bod pruta typu girt je na rame // Girt je na lavom stlpe
+                            {
+                                membersBaseNodes_FrontSideGirts_1.Add(m.NodeEnd);
+                            }
+                        }
+                    }
+
+                    if (membersFrontSidePurlins != null)
+                    {
+                        membersBaseNodes_FrontSidePurlins_1 = new List<CNode>(); // Purlins
+
+                        membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+                        membersBaseNodes_FrontSidePurlins_1.Add(new CNode(0, leftRafter.NodeEnd.X, model.fL1_frame, leftRafter.NodeEnd.Z, 0));
+
+                        foreach (CMember m in membersFrontSidePurlins)
+                        {
+                            if ((m.NodeEnd.X < leftRafter.NodeEnd.X) && MathF.d_equal(m.NodeEnd.Y, model.fL1_frame)) // Koncovy bod pruta typu purlin je na rame // Purlin je na lavom raftery
+                            {
+                                membersBaseNodes_FrontSidePurlins_1.Add(m.NodeEnd);
+                            }
+                        }
+                    }
+
+                    bool bDrawDimensionsOnWallMembers = true;
+                    bool bDrawDimesnionsOnRoofMembers = true;
+
+                    if (bDrawDimensionsOnWallMembers)
+                    {
+                        // 1 kotovacia ciara - vsetky girts
+                        // 2 kotovacia ciara - celkovy rozmer - vyska stlpa
+
+                        bool bDrawDimension_1 = false;
+                        bool bDrawDimension_2 = true;
+
+                        if (membersBaseNodes_FrontSideGirts_1 != null)
+                            membersBaseNodes_FrontSideGirts_1 = membersBaseNodes_FrontSideGirts_1.OrderBy(n => n.Z).ToList();
+
+                        if (membersBaseNodes_FrontSideVertical_2 != null)
+                            membersBaseNodes_FrontSideVertical_2 = membersBaseNodes_FrontSideVertical_2.OrderBy(n => n.Z).ToList();
+
+                        if (membersBaseNodes_FrontSideGirts_1 != null)
+                            bDrawDimension_1 = true;
+
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions = null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        // TODO - Ondrej  pre text koty by sme mali pouzit nejaky algorimus podobny Member Description, mali by mat nastavitelne odsadenie od main line a zobrazovat rotovat sa spolu s kotou
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSideGirts_1.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString());
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_2 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSideVertical_2.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideVertical_2[i].GetPoint3D(), membersBaseNodes_FrontSideVertical_2[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString());
+                                listOfDimensions.Add(dim);
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = +fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+                    }
+
+                    if (bDrawDimesnionsOnRoofMembers)
+                    {
+                        // 1 kotovacia ciara - vsetky purlins
+                        // 2 kotovacia ciara - celkovy rozmer - dlzka raftera
+
+                        bool bDrawDimension_1 = false;
+                        bool bDrawDimension_2 = true;
+
+                        if (membersBaseNodes_FrontSidePurlins_1 != null)
+                            membersBaseNodes_FrontSidePurlins_1 = membersBaseNodes_FrontSidePurlins_1.OrderBy(n => n.Z).ToList();
+
+                        if (membersBaseNodes_FrontSideRafter_2 != null)
+                            membersBaseNodes_FrontSideRafter_2 = membersBaseNodes_FrontSideRafter_2.OrderBy(n => n.Z).ToList();
+
+                        if (membersBaseNodes_FrontSidePurlins_1 != null)
+                            bDrawDimension_1 = true;
+
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions = null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        // TODO - Ondrej  pre text koty by sme mali pouzit nejaky algorimus podobny Member Description, mali by mat nastavitelne odsadenie od main line a zobrazovat rotovat sa spolu s kotou
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSidePurlins_1.Count - 1; i++)
+                            {
+                                float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].X - membersBaseNodes_FrontSidePurlins_1[i].X) + MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].Z - membersBaseNodes_FrontSidePurlins_1[i].Z));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString());
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_2 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersBaseNodes_FrontSideRafter_2.Count - 1; i++)
+                            {
+                                float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].X - membersBaseNodes_FrontSideRafter_2[i].X) + MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].Z - membersBaseNodes_FrontSideRafter_2[i].Z));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideRafter_2[i].GetPoint3D(), membersBaseNodes_FrontSideRafter_2[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString());
+                                listOfDimensions.Add(dim);
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = +fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+                    }
+                }
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
-                    if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && bTransformScreenLines3DToCylinders3D)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);

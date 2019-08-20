@@ -410,6 +410,7 @@
 
     public enum EMemberType_FS
     {
+        //eInvalid = -1,
         eG = 0,  // Girt
         eC,  // Column
         eER, // End Rafter

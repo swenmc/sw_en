@@ -149,7 +149,21 @@ namespace BaseClasses.Helpers
                 float fNodeStartCoordinate = SetNodeCoordinateForSpecificDirection(m.NodeStart, iDirectionCode);
                 float fNodeEndCoordinate = SetNodeCoordinateForSpecificDirection(m.NodeEnd, iDirectionCode);
 
-                if (MathF.d_equal(fNodeStartCoordinate, coordinate) && MathF.d_equal(fNodeEndCoordinate, coordinate)) members.Add(m);
+                // Porovname suradnice a typ prvku (dopracovat typ prvku)
+                if ((MathF.d_equal(fNodeStartCoordinate, coordinate) && MathF.d_equal(fNodeEndCoordinate, coordinate))) members.Add(m);
+            }
+            return members.ToArray();
+        }
+
+        public static CMember[] GetMembersInDistance(CModel model, double coordinate, int iDirectionCode, EMemberType_FS type)
+        {
+            CMember[] membersAll = GetMembersInDistance(model, coordinate, iDirectionCode);
+
+            List<CMember> members = new List<CMember>();
+            foreach (CMember m in membersAll)
+            {
+                if (m.EMemberType == type)
+                    members.Add(m);
             }
             return members.ToArray();
         }
@@ -207,6 +221,19 @@ namespace BaseClasses.Helpers
                 }
             }
 
+            return members.ToArray();
+        }
+
+        public static CMember[] GetMembersInDistanceInterval(CModel model, double startPosition, double endPosition, int iDirectionCode, EMemberType_FS type, bool bIncludingStart = false, bool bIncludingEnd = false, bool bIncludingPartial = true)
+        {
+            CMember[] membersAll = GetMembersInDistanceInterval(model, startPosition, endPosition, iDirectionCode, bIncludingStart, bIncludingEnd, bIncludingPartial);
+
+            List<CMember> members = new List<CMember>();
+            foreach (CMember m in membersAll)
+            {
+                if (m.EMemberType == type)
+                    members.Add(m);
+            }
             return members.ToArray();
         }
 
