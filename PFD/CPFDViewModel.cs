@@ -1338,7 +1338,7 @@ namespace PFD
         {
             get
             {
-                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front Side", "Back Side", "Left Side", "Right Side", "Roof", "Middle Frame", "Columns" };
+                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front Side", "Back Side", "Left Side", "Right Side", "Roof", "Middle Frame", "Columns", "Foundations" };
                 return MViewModelMemberFilters;
             }
         }
