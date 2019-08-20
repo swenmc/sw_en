@@ -185,6 +185,7 @@ namespace EXPIMP
                     opts.bDisplayWireFrameModel = true;
                     bTransformScreenLines3DToCylinders3D = true;
 
+                    opts.bDisplayFoundations = true; // ???? Neviem ci to chceme zobrazit aj na fs 04 alebo len fs 05
                     opts.bDisplayFloorSlab = true;
                 }
 

@@ -83,7 +83,7 @@ namespace PFD
                 CComponentListVM componentListVM,
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
-                CVolume floorSlab,
+                List<CSlab> slabs,
                 CPFDViewModel vm
             )
         {
@@ -871,12 +871,12 @@ namespace PFD
             else
                 m_arrFoundations = foundations;
 
-            if(m_arrGOVolumes == null)
+            if(m_arrSlabs == null)
             {
                 CreateFloorSlab();
             }
             else
-                m_arrGOVolumes[0] = floorSlab;
+                m_arrSlabs = slabs;
 
             #endregion
 
@@ -2523,13 +2523,19 @@ namespace PFD
 
         private void CreateFloorSlab()
         {
-            bool bGenerateFoundations = true;
+            bool bGenerateSlabs = true;
 
-            if (bGenerateFoundations)
+            if (bGenerateSlabs)
             {
+                // Docasne
+                CMat_02_00 materialConcrete = new CMat_02_00();
+                materialConcrete.Fck = 25e+6f;
+                materialConcrete.m_fRho = 2300f;
+                materialConcrete.m_fE = 30e+9f;
+
                 // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.1f;
-                float fFloorSlab_AdditionalOffset_Y = 0.1f;
+                float fFloorSlab_AdditionalOffset_X = 0.05f;
+                float fFloorSlab_AdditionalOffset_Y = 0.05f;
                 float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
                 float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
                 float fTolerance = 0.001f; // Tolerance - 3D graphics collision
@@ -2540,9 +2546,27 @@ namespace PFD
                 int iLastFoundationIndex = m_arrFoundations.Count;
 
                 CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
-                m_arrGOVolumes = new CVolume[1];
-                //m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, Colors.Gray, 0.5f, true, 0);
-                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush(Colors.DarkGray)), true, 0);
+                m_arrSlabs = new List<CSlab>();
+                m_arrSlabs.Add(new CSlab(1,
+                    controlPoint_FloorSlab,
+                            materialConcrete,
+                            fFloorSlab_aX,
+                            fFloorSlab_bY,
+                            fFloorSlab_h,
+                             0, 0, 0,
+                            //fConcreteCover,
+                            //BackColumnFootingReference_Top_Bar_x,
+                            //BackColumnFootingReference_Top_Bar_y,
+                            //BackColumnFootingReference_Bottom_Bar_x,
+                            //BackColumnFootingReference_Bottom_Bar_y,
+                            //iBackColumnFootingNumberOfBarsTop_x,
+                            //iBackColumnFootingNumberOfBarsTop_y,
+                            //iBackColumnFootingNumberOfBarsBottom_x,
+                            //iBackColumnFootingNumberOfBarsBottom_y,
+                            Colors.LightGray,
+                            0.3f,
+                            true,
+                            0));
             }
         }
 

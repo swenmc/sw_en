@@ -867,7 +867,7 @@ namespace PFD
                     throw new ArgumentException("Floor slab thickness must be between 50 and 500 [mm]");
 
                 m_FloorSlabThickness = value;
-                _model.m_arrGOVolumes.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
                 NotifyPropertyChanged("FloorSlabThickness");
             }
         }
@@ -923,7 +923,7 @@ namespace PFD
             // Alebo sa tu nastavia a podla toho sa vyrobi model
             
             //FloorSlabThickness = 125; // mm 0.125f; m
-            FloorSlabThickness = _model.m_arrGOVolumes.First().m_fDim3 * 1000;
+            FloorSlabThickness = _model.m_arrSlabs.First().m_fDim3 * 1000;
 
             CFoundation pad = GetSelectedFootingPad();
             FootingPadSize_x_Or_a = pad.m_fDim1;

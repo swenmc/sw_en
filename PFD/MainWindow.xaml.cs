@@ -731,8 +731,8 @@ namespace PFD
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
             //else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
 
-            CVolume floorSlab = null;
-            if (!vm.RecreateFloorSlab) floorSlab = vm.Model.m_arrGOVolumes[0];
+            List<CSlab> slabs = null;
+            if (!vm.RecreateFloorSlab) slabs = vm.Model.m_arrSlabs;
             //else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
 
             if (vm.RecreateModel)
@@ -754,9 +754,8 @@ namespace PFD
                     compList,
                     joints,
                     foundations,
-                    floorSlab, vm);
+                    slabs, vm);
 
-                
                 UpdateUC_Joints();
                 UpdateUC_Footings();
             }
