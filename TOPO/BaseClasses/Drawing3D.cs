@@ -4543,6 +4543,8 @@ namespace BaseClasses
             {
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
+                _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
+                _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
             }
 
             return _model;

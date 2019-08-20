@@ -119,6 +119,16 @@ namespace BaseClasses.Helpers
             return nodes.ToArray();
         }
 
+        public static List<CFoundation> GetColumnsViewFoundations(CModel model)
+        {
+            return model.m_arrFoundations;
+        }
+
+        public static List<CSlab> GetColumnsViewSlabs(CModel model)
+        {
+            return model.m_arrSlabs;
+        }
+
         // Intermediate frame (main frame - 2nd gridline)
         public static CMember[] GetMiddleFrameMembers(CModel model, bool bAddGirtsAndPurlins = true)
         {
