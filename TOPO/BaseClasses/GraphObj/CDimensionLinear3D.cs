@@ -214,7 +214,7 @@ namespace BaseClasses.GraphObj
         }
 
         public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, /*Vector3D horizontal,  Vector3D vertical,*/ double extensionLinesLength, double dimensionMainLineDistance, double fOffsetFromPoint, string text)
+        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, Vector3D textHorizontal, Vector3D textVertical, double extensionLinesLength, double dimensionMainLineDistance, double fOffsetFromPoint, string text)
         {
             // TO Ondrej
             // Nazvy - main dimension line (hlavna kotovacia ciara) (ta hlavna dlha ciara na ktoru sa pise text)
@@ -223,8 +223,8 @@ namespace BaseClasses.GraphObj
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
             m_Direction = direction;
-            //m_Horizontal = horizontal;
-            //m_Vertical = vertical;
+            m_Horizontal = textHorizontal;
+            m_Vertical = textVertical;
 
             // TO Ondrej - su by sme mohli vyrobit viacero moznosti a kombinacii:
             // zadavat fixnu dlzku extension line
