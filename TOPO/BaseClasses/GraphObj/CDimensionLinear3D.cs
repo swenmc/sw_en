@@ -333,7 +333,7 @@ namespace BaseClasses.GraphObj
             };
         }
 
-        // Ak je akceptovatelna GetDimensionModel2 tak tuto funkciu treba zmazat
+        // Ak je akceptovatelna GetDimensionModelNew tak tuto funkciu treba zmazat
         public Model3DGroup GetDimensionModelOld(System.Windows.Media.Color color)
         {
             // Zakladny model koty - hlavna kotovacia ciara - smer X, vynasacie ciary - smer Y

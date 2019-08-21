@@ -420,7 +420,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i+1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -436,7 +435,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_2[i].GetPoint3D(), membersBaseNodes_FrontSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -452,12 +450,21 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_3[i].GetPoint3D(), membersBaseNodes_FrontSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
                         }
 
+                        // Create Dimensions 3D Model
                         if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                         if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach(CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
                     }
 
                     // TODO Ondrej - niektore casti kodu pre jednotlive steny front a left by sli zrefaktorovat a zjednotit do funkcii
@@ -571,7 +578,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -587,7 +593,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_2[i].GetPoint3D(), membersBaseNodes_LeftSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -603,12 +608,20 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_3[i].GetPoint3D(), membersBaseNodes_LeftSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_3[i + 1].Y - membersBaseNodes_LeftSide_3[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
                         }
 
                         if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                         if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
                     }
                 }
 
@@ -720,7 +733,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -736,7 +748,6 @@ namespace BaseClasses
                             {
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideVertical_2[i].GetPoint3D(), membersBaseNodes_FrontSideVertical_2[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -747,6 +758,15 @@ namespace BaseClasses
 
                         if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                         if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
                     }
 
                     if (bDrawDimesnionsOnRoofMembers)
@@ -784,7 +804,6 @@ namespace BaseClasses
                                 float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].X - membersBaseNodes_FrontSidePurlins_1[i].X) + MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].Z - membersBaseNodes_FrontSidePurlins_1[i].Z));
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -801,7 +820,6 @@ namespace BaseClasses
                                 float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].X - membersBaseNodes_FrontSideRafter_2[i].X) + MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].Z - membersBaseNodes_FrontSideRafter_2[i].Z));
                                 CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideRafter_2[i].GetPoint3D(), membersBaseNodes_FrontSideRafter_2[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
-                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
                             }
 
                             // Nastavime parametre pre dalsie koty
@@ -812,6 +830,15 @@ namespace BaseClasses
 
                         if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                         if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
                     }
                 }
 
@@ -3068,6 +3095,12 @@ namespace BaseClasses
             if (centerModel)
             {
                 Transform3DGroup tr = new Transform3DGroup();
+
+                if (dimension.TransformGr == null)
+                {
+                    throw new Exception("Dimension in local coordinate system! Transformation object is null!");
+                }
+
                 if (dimension.TransformGr != null)
                 {
                     //tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
