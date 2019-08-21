@@ -3178,7 +3178,7 @@ namespace BaseClasses
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
-                gr.Children.Add(dimension.GetDimensionModel(displayOptions.DimensionLineColor));
+                gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor));
             }
 
             return gr;

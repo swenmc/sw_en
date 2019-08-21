@@ -285,7 +285,8 @@ namespace BaseClasses.GraphObj
             };
         }
 
-        public Model3DGroup GetDimensionModel(System.Windows.Media.Color color)
+        // Ak je akceptovatelna GetDimensionModel2 tak tuto funkciu treba zmazat
+        public Model3DGroup GetDimensionModelOld(System.Windows.Media.Color color)
         {
             // Zakladny model koty - hlavna kotovacia ciara - smer X, vynasacie ciary - smer Y
             // TEXT by som kreslil v LCS koty do roviny XY a potom ho otacal s kotou (system potom mozeme pouzit aj pre popisy prutov, staci vyplnut zobrazenie koty a ostane len text)
@@ -313,11 +314,11 @@ namespace BaseClasses.GraphObj
 
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(fMainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0,0,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
 
-            mesh.Positions = arrow.GetArrowPoints();
+            mesh.Positions = arrow.ArrowPoints;
             mesh.TriangleIndices = arrow.GetArrowIndices();
             model.Geometry = mesh;
             model.Material = material;
@@ -420,6 +421,136 @@ namespace BaseClasses.GraphObj
 
             TransformGr = new Transform3DGroup();
             TransformGr.Children.Add(translateOffset); // Posun o offset v rovine XY
+            TransformGr.Children.Add(rotateX);
+            TransformGr.Children.Add(rotateY);
+            TransformGr.Children.Add(rotateZ);
+            TransformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
+
+            model_gr.Transform = TransformGr;
+
+            return model_gr;
+        }
+
+        public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color)
+        {
+            // Zakladny model koty - hlavna kotovacia ciara - smer X, vynasacie ciary - smer Y
+            // TEXT by som kreslil v LCS koty do roviny XY a potom ho otacal s kotou (system potom mozeme pouzit aj pre popisy prutov, staci vyplnut zobrazenie koty a ostane len text)
+
+            Model3DGroup model_gr = new Model3DGroup();
+
+            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu kotovacich ciar (Okno options pre zobrazenie v GUI a pre Export)
+
+            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
+            float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
+
+            // Main Line Point - uvazuje sa ze [0,0,0] je v kotovanom bode
+            // Suradnica y main line
+            double DimensionMainLinePositionIncludingOffset = DimensionMainLineDistance + m_fOffSetFromPoint;
+            // Main line
+            // Default tip (cone height is 20% from length)
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0, -DimensionMainLinePositionIncludingOffset,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
+            GeometryModel3D model = new GeometryModel3D();
+            MeshGeometry3D mesh = new MeshGeometry3D();
+
+            mesh.Positions = arrow.ArrowPoints;
+            mesh.TriangleIndices = arrow.GetArrowIndices();
+            model.Geometry = mesh;
+            model.Material = material;
+            model_gr.Children.Add(model);  // Add straight arrow
+
+            // Add other lines
+            //TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
+            short NumberOfCirclePoints = 16 + 1; // Toto by malo byt rovnake ako u arrow, je potrebne to zjednotit, pridany jeden bod pre stred
+
+            // TO Ondrej - toto treba prerobit, ja kreslim tuto kotu v rovine XY a potom ju chcem otacat a presuvat podla potreby
+            float fExtensionLine1_Length = (float)DimensionLinesLength;
+            float fExtensionLine2_Length = (float)DimensionLinesLength;
+
+            float fExtensionLine1_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
+            float fExtensionLine2_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
+
+            // Extension line 1 (start)
+            //CVolume temp = new CVolume(); // Pomocne - bolo by dobre sa toho zbavit a vytvarat objekt typu cylinder priamo
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+
+            // Extension line 2 (end)
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+
+            // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
+            // TODO - toto otacanie by chcelo nejako sprehladnit a zjednodusit - kotu vyrobim v rovine XY a potom ju mozeme otacat tak aby bola v rovine pohladu, moze sa stat ze je pootocena okolo osy smerujucej kolmo na monitor (oznacena pre view Y - vid member description)
+            // Skus porozmyslat a navrhnut nejaky univerzalny system ako budeme tie koty a ich texty umiestnovat
+
+            RotateTransform3D rotateX = new RotateTransform3D();
+            RotateTransform3D rotateY = new RotateTransform3D();
+            RotateTransform3D rotateZ = new RotateTransform3D();
+
+            bool bDrawHorizontalDimesnionsInXY = false; // Toto by mohlo byt nastavitelne pre 3D scenu v GUI a pre export 3D pohladov, pre exporty 2D pohladov na rovinu XZ alebo YZ sa to nehodi, lebo kotu by nebolo vidno
+
+            if (!bDrawHorizontalDimesnionsInXY && Direction.Z != 0) // Kota v smere X alebo Y - ak chceme aby nebola vykreslena v rovine XY ale zvislo v XZ alebo YZ
+            {
+                // About X
+                AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
+                axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
+                axisAngleRotation3dX.Angle = Direction.Z == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                rotateX.Rotation = axisAngleRotation3dX;
+
+                // Kota je v rovine XZ alebo YZ
+                // Sikme koty potrebujeme pootocit okolo globalnych os X resp. Y, tomu zodpoveda pootocenie okolo LCS z
+
+                // Spocitame priemety 
+                double dDeltaX = m_PointEnd.X - m_PointStart.X;
+                double dDeltaY = m_PointEnd.Y - m_PointStart.Y;
+                double dDeltaZ = m_PointEnd.Z - m_PointStart.Z;
+
+                // Returns transformed coordinates of member nodes
+                // Angles
+                double dAlphaX = 0, dBetaY = 0, dGammaZ = 0;
+
+                // Uhly pootocenia LCS okolo osi GCS
+                // Angles
+                dAlphaX = Geom2D.GetAlpha2D_CW(dDeltaY, dDeltaZ);
+                dBetaY = Geom2D.GetAlpha2D_CW_2(dDeltaX, dDeltaZ); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
+                dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
+
+                if (MathF.d_equal(dDeltaY, 0)) // Kota je v GCS rovine XZ
+                {
+                    // About Y
+                    AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
+                    axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
+                    axisAngleRotation3dY.Angle = Geom2D.RadiansToDegrees(dBetaY);
+                    rotateY.Rotation = axisAngleRotation3dY;
+                }
+            }
+
+            if ((Direction.X != 0 && (MathF.Equals(m_PointStart.X, m_PointEnd.X))) ||
+            (Direction.Y != 0 && MathF.Equals(m_PointStart.Y, m_PointEnd.Y))) // Zvisla kota TODO - Dopracovat pre ine smery
+            {
+                // About Y
+                AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
+                axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
+                axisAngleRotation3dY.Angle = -90;
+                rotateY.Rotation = axisAngleRotation3dY;
+
+                // About Z
+                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                axisAngleRotation3dZ.Angle = -90;
+                rotateZ.Rotation = axisAngleRotation3dZ;
+            }
+
+            if (Direction.X == 0 && MathF.Equals(m_PointStart.X, m_PointEnd.X)) // Kota v smere Y
+            {
+                // About Z
+                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                axisAngleRotation3dZ.Angle = 90;
+                rotateZ.Rotation = axisAngleRotation3dZ;
+            }
+
+            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_PointStart.X, m_PointStart.Y, m_PointStart.Z);
+
+            TransformGr = new Transform3DGroup();
             TransformGr.Children.Add(rotateX);
             TransformGr.Children.Add(rotateY);
             TransformGr.Children.Add(rotateZ);

@@ -8,6 +8,7 @@ namespace BaseClasses.GraphObj.Objects_3D
     {
         // Todo - Ondrej, tato trieda by asi mala vracat priamo objekt model3D alebo by triedy, ktore maju 3D geometricku reprezentaciu, napr. CVolume aj tato trieda mali mat model3D ako predka
 
+        CPoint pControlPoint;
         public int iPrimaryArrowModelDirection; // Kod pre smer modelu sipky v LCS (0 - X, 1 - Y, 2 - Z, default pre zatazenie je 2 (smer z)
         public bool bArrowAtBothEnds;
         public float fConeHeight;
@@ -24,8 +25,9 @@ namespace BaseClasses.GraphObj.Objects_3D
         public StraightLineArrow3D()
         { }
 
-        public StraightLineArrow3D(float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        public StraightLineArrow3D(CPoint pControlPoint_temp, float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
+            pControlPoint = pControlPoint_temp;
             fTotalHeight = totalHeight;
             iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
             bArrowAtBothEnds = bArrowAtBothEnds_temp;
@@ -34,10 +36,15 @@ namespace BaseClasses.GraphObj.Objects_3D
             fCylinderHeight = fTotalHeight - fConeHeight;
 
             AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???
+
+            ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
+
+            TransformArrowPointsToControlPoint();
         }
 
-        public StraightLineArrow3D(float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        public StraightLineArrow3D(CPoint pControlPoint_temp, float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
+            pControlPoint = pControlPoint_temp;
             fTotalHeight = totalHeight;
             iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
             bArrowAtBothEnds = bArrowAtBothEnds_temp;
@@ -46,6 +53,10 @@ namespace BaseClasses.GraphObj.Objects_3D
             fCylinderHeight = fTotalHeight - fConeHeight;
 
             AnnulusPoints(totalHeight * 0.005f, totalHeight * 0.05f);
+
+            ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
+
+            TransformArrowPointsToControlPoint();
         }
 
         float[,] GetCircleCoordinates(float fr)
@@ -228,6 +239,19 @@ namespace BaseClasses.GraphObj.Objects_3D
             ArrowIndices.Add(i0);
             ArrowIndices.Add(i3);
             ArrowIndices.Add(i2);
+        }
+
+        private void TransformArrowPointsToControlPoint()
+        {
+            for (int i = 0; i < ArrowPoints.Count; i++)
+            {
+                Point3D p = ArrowPoints[i];
+                p.X += pControlPoint.X;
+                p.Y += pControlPoint.Y;
+                p.Z += pControlPoint.Z;
+
+                ArrowPoints[i] = p;
+            }
         }
 
         // Refaktorovat s CVolume
