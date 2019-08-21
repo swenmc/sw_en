@@ -28,6 +28,8 @@ namespace BaseClasses.GraphObj
         private double m_DimensionMainLineDistance;
 
         private float m_fOffSetFromPoint;
+        private float m_fMainLineLength;
+        private double m_DimensionMainLinePositionIncludingOffset;
 
         private string m_Text;
 
@@ -213,6 +215,32 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public float MainLineLength  // Dlzka hlavnej kotovacej ciary
+        {
+            get
+            {
+                return m_fMainLineLength;
+            }
+
+            set
+            {
+                m_fMainLineLength = value;
+            }
+        }
+
+        public double DimensionMainLinePositionIncludingOffset  // Finalna poloha hlavnej kotovacej ciary vratane offsetu od kotovaneho bodu
+        {
+            get
+            {
+                return m_DimensionMainLinePositionIncludingOffset;
+            }
+
+            set
+            {
+                m_DimensionMainLinePositionIncludingOffset = value;
+            }
+        }
+
         public Transform3DGroup TransformGr;
 
         public CDimensionLinear3D() { }
@@ -241,8 +269,28 @@ namespace BaseClasses.GraphObj
             m_DimensionMainLineDistance = dimensionMainLineDistance;
             m_fOffSetFromPoint = (float)fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
-            SetTextPoint();
+            
+            //SetTextPoint(); // Text v GCS
             SetPoints();
+
+            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            // Suradnica y main line
+            m_DimensionMainLinePositionIncludingOffset = - (m_DimensionMainLineDistance + m_fOffSetFromPoint);
+
+            SetTextPointInLCS(); // Text v LCS
+        }
+
+        public void SetTextPointInLCS()
+        {
+            float fOffsetFromMainLine = 0.1f; // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
+
+            m_PointText = new Point3D()
+            {
+
+                X = 0.5 * m_fMainLineLength,
+                Y = m_DimensionMainLinePositionIncludingOffset + fOffsetFromMainLine,
+                Z = 0
+            };
         }
 
         public void SetTextPoint()
@@ -296,7 +344,6 @@ namespace BaseClasses.GraphObj
 
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu kotovacich ciar (Okno options pre zobrazenie v GUI a pre Export)
 
-            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
             float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
             float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
@@ -309,12 +356,12 @@ namespace BaseClasses.GraphObj
             // Pokus - Martin
             bool bUkazkaPreOndreja_MozeSaZmazat = false;
             if(bUkazkaPreOndreja_MozeSaZmazat)
-               model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, fLineThickness, new Point3D(0,0,0), new Point3D(fMainLineLength, 0, 0))); // Tak to by to bolo spravne
+               model_gr.Children.Add(Drawing3D.Get3DLineReplacement(color, fLineThickness, new Point3D(0,0,0), new Point3D(MainLineLength, 0, 0))); // Tak to by to bolo spravne
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0,0,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0,0,0,0), MainLineLength, fLineCylinderRadius, 0, true);
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
 
@@ -340,7 +387,7 @@ namespace BaseClasses.GraphObj
             model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material,1));
 
             // Extension line 2 (end)
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material,1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(MainLineLength, -fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material,1));
 
             // Nastavit offset celej koty od kotovaneho bodu (smer -Y)
 
@@ -444,12 +491,10 @@ namespace BaseClasses.GraphObj
             float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
             float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
-            // Main Line Point - uvazuje sa ze [0,0,0] je v kotovanom bode
-            // Suradnica y main line
-            double DimensionMainLinePositionIncludingOffset = DimensionMainLineDistance + m_fOffSetFromPoint;
+            // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0, -DimensionMainLinePositionIncludingOffset,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0, DimensionMainLinePositionIncludingOffset,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
 
@@ -472,10 +517,10 @@ namespace BaseClasses.GraphObj
 
             // Extension line 1 (start)
             //CVolume temp = new CVolume(); // Pomocne - bolo by dobre sa toho zbavit a vytvarat objekt typu cylinder priamo
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, -DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
             // Extension line 2 (end)
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, -DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, m_DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
 
             // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
             // TODO - toto otacanie by chcelo nejako sprehladnit a zjednodusit - kotu vyrobim v rovine XY a potom ju mozeme otacat tak aby bola v rovine pohladu, moze sa stat ze je pootocena okolo osy smerujucej kolmo na monitor (oznacena pre view Y - vid member description)
