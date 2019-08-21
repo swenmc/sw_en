@@ -38,6 +38,10 @@ namespace BaseClasses.GraphObj
         public int iVectorOverFactor_LCS;
         public int iVectorUpFactor_LCS;
 
+        public int iGlobalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+        public int iVectorOfProjectionToHorizontalViewAxis; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
+        public int iVectorOfProjectionToVerticalViewAxis; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertiklane napravo od bodov, 0 - nie je definovane
+
         public Point3D PointStart
         {
             get
@@ -249,7 +253,18 @@ namespace BaseClasses.GraphObj
         public Transform3DGroup TransformGr;
 
         public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, Vector3D textHorizontal, Vector3D textVertical, double extensionLinesLength, double dimensionMainLineDistance, double fOffsetFromPoint, string text)
+        public CDimensionLinear3D(Point3D pointStart,
+            Point3D pointEnd,
+            Vector3D direction,
+            int iGlobalPlane_temp, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+            int iVectorOfProjectionToHorizontalViewAxis_temp, // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
+            int iVectorOfProjectionToVerticalViewAxis_temp, // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
+            Vector3D textHorizontal,
+            Vector3D textVertical,
+            double extensionLinesLength,
+            double dimensionMainLineDistance,
+            double fOffsetFromPoint,
+            string text)
         {
             // TO Ondrej
             // Nazvy - main dimension line (hlavna kotovacia ciara) (ta hlavna dlha ciara na ktoru sa pise text)
@@ -257,13 +272,22 @@ namespace BaseClasses.GraphObj
 
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
-            // TO Ondrej
 
+            // TO Ondrej
             // Tento parameter by som mozno nahradil/doplnil parametrom ktory urcuje do akej roviny GCS sa kota ma kreslit XY, XZ, XY 
             // (ak vieme rovinu, tak vieme ako mame kotu potocit kedze pozname pA a pB suradnicu v rovine,
             // pripadne sa da nastavovat to ze budeme kotovat priemet do osi tvoriacich rovinu,
             // napriklad pre XY bude mozne este nastavit ci chcem priemet do X, priemet do Y alebo realnu vzdialenost medzi pA a pB
             // (pootocena kota, ak nemaju body rovnake suradnice X ani Y)
+
+            // TO Ondrej - tu som pripravil nejake parametre ktore by sme mohli pouzit, predpokladam ze sa Ti to nebude pacit a nebudes tomu asi ani uplne rozumiet :)
+            // Ide mi o to mat moznost nastavit do akej GCS roviny chcem kotu kreslit
+            // Mat moznost nastavit ci chcem kotovat realnu dlzku alebo priemet a ktorym smerom podla nastaveneho pohladu kotu priemetu orientovat
+            // ak by boli obe hodnoty iVectorOfProjectionToHorizontalViewAxis a iVectorOfProjectionToVerticalViewAxis rovne 0 znamenalo by to ze chcem v danej rovine kotovat skutocnu vzdialenost a kota moze byt teda pootocena okolo osi kolmej na tuto rovinu
+
+            iGlobalPlane = iGlobalPlane_temp; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+            iVectorOfProjectionToHorizontalViewAxis = iVectorOfProjectionToHorizontalViewAxis_temp; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
+            iVectorOfProjectionToVerticalViewAxis = iVectorOfProjectionToVerticalViewAxis_temp; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
 
             // V system komponent viewer kotujeme aj skutocne dlzky aj tie priemety, ale priemety trosku klamem tym ze tam neposielam skutocne body ale take body/suradnice,
             // aby som ziskal kotu v smere osy

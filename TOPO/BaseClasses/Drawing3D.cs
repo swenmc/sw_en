@@ -249,8 +249,8 @@ namespace BaseClasses
                     CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
-                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fW_frame * 1000).ToString("F0"));
-                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0), 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString("F0"));
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 2, -1, 0, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fW_frame * 1000).ToString("F0"));
+                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), 2, 0, -1, new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0), 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString("F0"));
 
                     CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
                     CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
@@ -269,7 +269,7 @@ namespace BaseClasses
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                     // stlpy na pravej strane maju PointEnd v Z = 0
-                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString("F0"));
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 1, 1, 0, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString("F0"));
 
                     List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};
                     if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
@@ -418,7 +418,7 @@ namespace BaseClasses
                             listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_FrontSide_1.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i+1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i+1].GetPoint3D(), new Vector3D(0, 0, -1), 0,0,-1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -433,7 +433,7 @@ namespace BaseClasses
                             if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_FrontSide_2.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_2[i].GetPoint3D(), membersBaseNodes_FrontSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_2[i].GetPoint3D(), membersBaseNodes_FrontSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), 0,0,-1, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -448,7 +448,7 @@ namespace BaseClasses
                             if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_FrontSide_3.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_3[i].GetPoint3D(), membersBaseNodes_FrontSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_3[i].GetPoint3D(), membersBaseNodes_FrontSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), 0, 0, -1, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
                         }
@@ -576,7 +576,7 @@ namespace BaseClasses
                             listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_LeftSide_1.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), 0, 1, 0, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -591,7 +591,7 @@ namespace BaseClasses
                             if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_LeftSide_2.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_2[i].GetPoint3D(), membersBaseNodes_LeftSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_2[i].GetPoint3D(), membersBaseNodes_LeftSide_2[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), 0, 1, 0, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -606,7 +606,7 @@ namespace BaseClasses
                             if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_LeftSide_3.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_3[i].GetPoint3D(), membersBaseNodes_LeftSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_3[i + 1].Y - membersBaseNodes_LeftSide_3[i].Y) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_3[i].GetPoint3D(), membersBaseNodes_LeftSide_3[i + 1].GetPoint3D(), new Vector3D(0, 0, -1), 0,1,0, new Vector3D(0, 0, 1), new Vector3D(0, 1, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_3[i + 1].Y - membersBaseNodes_LeftSide_3[i].Y) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
                         }
@@ -731,7 +731,7 @@ namespace BaseClasses
                             listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_FrontSideGirts_1.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), 1, 0,-1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -746,7 +746,7 @@ namespace BaseClasses
                             if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                             for (int i = 0; i < membersBaseNodes_FrontSideVertical_2.Count - 1; i++)
                             {
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideVertical_2[i].GetPoint3D(), membersBaseNodes_FrontSideVertical_2[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideVertical_2[i].GetPoint3D(), membersBaseNodes_FrontSideVertical_2[i + 1].GetPoint3D(), new Vector3D(-1, 0, 0), 1, 0, -1, new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -802,7 +802,7 @@ namespace BaseClasses
                             for (int i = 0; i < membersBaseNodes_FrontSidePurlins_1.Count - 1; i++)
                             {
                                 float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].X - membersBaseNodes_FrontSidePurlins_1[i].X) + MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].Z - membersBaseNodes_FrontSidePurlins_1[i].Z));
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), 1, 0, 0, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
@@ -818,7 +818,7 @@ namespace BaseClasses
                             for (int i = 0; i < membersBaseNodes_FrontSideRafter_2.Count - 1; i++)
                             {
                                 float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].X - membersBaseNodes_FrontSideRafter_2[i].X) + MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].Z - membersBaseNodes_FrontSideRafter_2[i].Z));
-                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideRafter_2[i].GetPoint3D(), membersBaseNodes_FrontSideRafter_2[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideRafter_2[i].GetPoint3D(), membersBaseNodes_FrontSideRafter_2[i + 1].GetPoint3D(), new Vector3D(0, 0, 1), 1, 0, 0, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
                                 listOfDimensions.Add(dim);
                             }
 
