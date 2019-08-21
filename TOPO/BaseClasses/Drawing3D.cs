@@ -3068,8 +3068,8 @@ namespace BaseClasses
             if (centerModel)
             {
                 Transform3DGroup tr = new Transform3DGroup();
-                /*if (dimension.TransformGr != null) */tr.Children.Add(dimension.TransformGr);
-                tr.Children.Add(centerModelTransGr);                
+                if (dimension.TransformGr != null) tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
+                tr.Children.Add(centerModelTransGr);
                 textlabel.Transform = tr; //centerModelTransGr;
             }
             viewPort.Children.Add(textlabel);
