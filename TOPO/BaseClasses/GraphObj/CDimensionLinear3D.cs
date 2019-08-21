@@ -257,6 +257,17 @@ namespace BaseClasses.GraphObj
 
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
+            // TO Ondrej
+
+            // Tento parameter by som mozno nahradil/doplnil parametrom ktory urcuje do akej roviny GCS sa kota ma kreslit XY, XZ, XY 
+            // (ak vieme rovinu, tak vieme ako mame kotu potocit kedze pozname pA a pB suradnicu v rovine,
+            // pripadne sa da nastavovat to ze budeme kotovat priemet do osi tvoriacich rovinu,
+            // napriklad pre XY bude mozne este nastavit ci chcem priemet do X, priemet do Y alebo realnu vzdialenost medzi pA a pB
+            // (pootocena kota, ak nemaju body rovnake suradnice X ani Y)
+
+            // V system komponent viewer kotujeme aj skutocne dlzky aj tie priemety, ale priemety trosku klamem tym ze tam neposielam skutocne body ale take body/suradnice,
+            // aby som ziskal kotu v smere osy
+
             m_Direction = direction;
             m_Horizontal = textHorizontal;
             m_Vertical = textVertical;
