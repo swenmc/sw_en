@@ -3085,8 +3085,8 @@ namespace BaseClasses
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             //Vector3D over = new Vector3D(dimension.Horizontal.X * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Y * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Z * fTextBlockHorizontalSizeFactor);
             //Vector3D up = new Vector3D(dimension.Vertical.X * fTextBlockVerticalSizeFactor, dimension.Vertical.Y * fTextBlockVerticalSizeFactor, dimension.Vertical.Z * fTextBlockVerticalSizeFactor);
-            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
-            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor, 0);
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * dimension.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * dimension.iVectorUpFactor_LCS, 0);
 
             //SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
             // Create text
@@ -3098,19 +3098,18 @@ namespace BaseClasses
 
                 if (dimension.TransformGr == null)
                 {
-                    throw new Exception("Dimension in local coordinate system! Transformation object is null!");
+                    throw new Exception("Dimension in local coordinate system! \nTransformation object is null! \nText label is probably created before dimension model exists!");
                 }
 
                 if (dimension.TransformGr != null)
                 {
-                    //tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
+                    tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
 
-                    // Pokus transformovat samostatne bod a vektory a az potom vytvorit label
-                    Vector3D overTransformed = dimension.TransformGr.Transform(over);
-                    Vector3D upTransformed = dimension.TransformGr.Transform(up);
-                    Point3D pTransformed = dimension.TransformGr.Transform(dimension.PointText);
-
-                    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, overTransformed, upTransformed);
+                    // Pokus transformovat samostatne bod a vektory a az potom vytvorit label, netransformuje sa teda label ako celok
+                    //Vector3D overTransformed = dimension.TransformGr.Transform(over);
+                    //Vector3D upTransformed = dimension.TransformGr.Transform(up);
+                    //Point3D pTransformed = dimension.TransformGr.Transform(dimension.PointText);
+                    //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, overTransformed, upTransformed);
                 }
                 tr.Children.Add(centerModelTransGr); // o Ondrej - Mam otazku ci treba tuto transformaciu pre text robit samostatna alebo je uz obsiahnuta v transformacii koty
                 textlabel.Transform = tr; //centerModelTransGr;

@@ -33,6 +33,11 @@ namespace BaseClasses.GraphObj
 
         private string m_Text;
 
+        // TO Ondrej - ak maju podla teba tie premenne zmysel tak z nich treba urobit properties, mozno by sa dalo riesit priamo v tomto objekte aky je smer textu
+        bool bTextAboveMainLine; // true - text je medzi vynasacimi ciarami, false - text je na opacnej strane nez vynasacie ciary
+        public int iVectorOverFactor_LCS;
+        public int iVectorUpFactor_LCS;
+
         public Point3D PointStart
         {
             get
@@ -282,7 +287,29 @@ namespace BaseClasses.GraphObj
 
         public void SetTextPointInLCS()
         {
-            float fOffsetFromMainLine = 0.1f; // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
+            // To Ondrej - toto vsetko treba poupravovat aby to malo nejaky koncept a hlavu a patu.
+            // Potrebujeme riesit to ze ked kota otocena tak ci onak, ci je pB s nejakou nizsou suradnicou nez pA, tak text je v rovine pohladu a je citatelny horizontalne, pripadne zprava
+            // podobne ako sme to robili pre Plates v SystemComponent Viewer, mozno by sa dalo z toho nieco pouzit aby by sme celu tuto ulohu pre koty zuzili na 2D problem aj uz vieme v akej rovine GCS kreslime
+
+            if (Direction.Z == -1)
+            {
+                bTextAboveMainLine = true;
+                iVectorOverFactor_LCS = 1;
+                iVectorUpFactor_LCS = 1;
+            }
+            else
+            {
+                bTextAboveMainLine = false;
+                iVectorOverFactor_LCS = -1;
+                iVectorUpFactor_LCS = -1;
+            }
+            
+            float fOffsetFromMainLine;
+
+            if (bTextAboveMainLine)
+                fOffsetFromMainLine = 0.1f; // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
+            else
+                fOffsetFromMainLine = - 0.1f;
 
             m_PointText = new Point3D()
             {
