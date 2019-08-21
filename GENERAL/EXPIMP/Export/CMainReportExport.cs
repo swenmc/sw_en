@@ -55,11 +55,13 @@ namespace EXPIMP
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            DrawModel3D(gfx, /*viewPort,*/ modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
+            DrawTitlePage(gfx, s_document, GetProjectInfo()); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+
+            DrawModel3D(/*gfx, viewPort,*/ s_document, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
             DrawModelViews(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData);
+            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -97,10 +99,18 @@ namespace EXPIMP
         /// </summary>
         /// <param name="gfx"></param>
         /// <param name="viewPort"></param>
-        private static void DrawModel3D(XGraphics gfx/*, Viewport3D viewPort*/, CModelData data)
+        private static void DrawModel3D(/*XGraphics gfx, Viewport3D viewPort,*/PdfDocument s_document, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
-            // TO Ondrej - nechcem zobrazovat aktualnu scenu ale ISO FRONT RIGHT view
+            // TO Ondrej - nechcem zobrazovat aktualnu scenu, ale ISO FRONT RIGHT view v maximalnej velkosti bez kot a popisov
+            // TO Ondrej - Nieco som pokazil a nekresli sa mi to :)
+
+            XGraphics gfx;
+            PdfPage page;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
 
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = true;
@@ -185,6 +195,8 @@ namespace EXPIMP
                 //DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
+                DrawTitleBlock(gfx, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
 
@@ -267,6 +279,8 @@ namespace EXPIMP
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
+            DrawTitleBlock(gfx, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
             double dImagePosition_y = 2;
@@ -347,6 +361,8 @@ namespace EXPIMP
 
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
+                DrawTitleBlock(gfx2, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+
                 dImagePosition_x = 2;
                 // 1st row
                 if ((bAddRollerDoorDetail && !bAddPersonnelAccessDoorDetail) || (!bAddRollerDoorDetail && bAddPersonnelAccessDoorDetail)) // Add roller or personnel door detail
@@ -376,6 +392,36 @@ namespace EXPIMP
                     dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
                 }
             }
+        }
+
+        private static void DrawTitlePage(XGraphics gfx, PdfDocument s_document, CProjectInfo pInfo) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        {
+            XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            gfx.DrawString("Project Name: ", font, XBrushes.Black, 30, 30);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBold, XBrushes.Black, 30 + 120, 30);
+
+            gfx.DrawString("TITLE PAGE", font, XBrushes.Black, 500, 400);
+            // Do stredu by sa mozno mohol vlozit malicky preview isometricky pohlad na konstrukciu, aby to nebolo take prazdne :)
+            // Bez kot, bez popisov
+
+            //DrawLogo
+
+            gfx.DrawString("TO BE READ IN CONJUCTION WITH ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 800, 600);
+            gfx.DrawString("ENGINEERING PLAN SET", fontBold, XBrushes.Black, 800, 650);
+        }
+
+        private static void DrawTitleBlock(XGraphics gfx, int x, int y, PdfDocument s_document, CProjectInfo pInfo) // TODO Ondrej - Tabulka s rozpiskou
+        {
+            XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
+            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+
+            // TODO - Onddrej - sem treba vykreslit tabulku podla vzoru co som Ti poslal (nemusis vsetko, len zhruba :) aby som si to vedel podoplnat)
+            // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
+
+            gfx.DrawString("Project Name: ", font, XBrushes.Black, x, y);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBold, XBrushes.Black, x + 120, y);
         }
 
         private static int GetView(EViewModelMemberFilters viewModelMembers)
