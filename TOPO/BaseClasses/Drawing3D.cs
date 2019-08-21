@@ -3068,8 +3068,18 @@ namespace BaseClasses
             if (centerModel)
             {
                 Transform3DGroup tr = new Transform3DGroup();
-                if (dimension.TransformGr != null) tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
-                tr.Children.Add(centerModelTransGr);
+                if (dimension.TransformGr != null)
+                {
+                    //tr.Children.Add(dimension.TransformGr); // TO Ondrej - tu si mal zakomentovanu podmienku a ak bola dimension.TransformGr null tak to tu padlo, neviem ci moze byt null, jedine ze sa s kotou nic nerobi ale to sa mi nezda
+
+                    // Pokus transformovat samostatne bod a vektory a az potom vytvorit label
+                    Vector3D overTransformed = dimension.TransformGr.Transform(over);
+                    Vector3D upTransformed = dimension.TransformGr.Transform(up);
+                    Point3D pTransformed = dimension.TransformGr.Transform(dimension.PointText);
+
+                    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, overTransformed, upTransformed);
+                }
+                tr.Children.Add(centerModelTransGr); // o Ondrej - Mam otazku ci treba tuto transformaciu pre text robit samostatna alebo je uz obsiahnuta v transformacii koty
                 textlabel.Transform = tr; //centerModelTransGr;
             }
             viewPort.Children.Add(textlabel);
