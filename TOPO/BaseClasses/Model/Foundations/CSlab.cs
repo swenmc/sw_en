@@ -335,7 +335,7 @@ namespace BaseClasses
             float ex,
             float ey,
             float rotationAboiutZInDeg,
-            //float fConcreteCover,
+            float fConcreteCover,
             //CReinforcementBar refTopBar_x,
             //CReinforcementBar refTopBar_y,
             //CReinforcementBar refBottomBar_x,
@@ -357,8 +357,8 @@ namespace BaseClasses
             m_fDim3 = fZ;
             m_Eccentricity_x = ex;
             m_Eccentricity_y = ey;
-            //m_RotationAboutZ_deg = rotationAboiutZInDeg;
-            //m_fConcreteCover = fConcreteCover;
+            m_RotationAboutZ_deg = rotationAboiutZInDeg;
+            m_fConcreteCover = fConcreteCover;
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
             //m_Reference_Bottom_Bar_x = refBottomBar_x;

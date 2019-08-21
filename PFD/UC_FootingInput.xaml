@@ -96,6 +96,11 @@
             Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
+            <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Cover mc:" VerticalAlignment="Top" Width="120"/>
+            <TextBox Grid.Row="9" Grid.Column="5" Name="TextBoxMeshConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+            Text="{Binding Path=MeshConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="9" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
+            
             <TextBlock Grid.Row="10" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Mesh:" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
             <ComboBox Grid.Row="10" Grid.Column="5" Name ="Combobox_ReinforcementMeshGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"
             ItemsSource="{Binding Path=ReinforcementMeshGradesList}" SelectedValue="{Binding Path=ReinforcementMeshGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
@@ -116,7 +121,7 @@
             Text="{Binding Path=FootingPadSize_z_Or_h, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="30"/>
 
-            <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentricities" VerticalAlignment="Top" Width="100"/>
+            <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentricities" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
             <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentrictiy x:" VerticalAlignment="Top" Width="100"/>
             <TextBox Grid.Row="12" Grid.Column="5" Name="TextBoxEccentricity_ex" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" MaxLength="250"
         Text="{Binding Path=Eccentricity_ex, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>

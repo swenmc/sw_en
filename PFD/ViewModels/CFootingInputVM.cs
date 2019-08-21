@@ -79,6 +79,7 @@ namespace PFD
         private float m_SoilBearingCapacity;
         private float m_ConcreteCover;
         private float m_FloorSlabThickness;
+        private float m_MeshConcreteCover;
 
         private List<CFoundation> listOfSelectedTypePads;
         public bool IsSetFromCode = false;
@@ -902,6 +903,27 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float MeshConcreteCover
+        {
+            get
+            {
+                return m_MeshConcreteCover;
+            }
+
+            set
+            {
+                if (value < 10f || value > 0.5 * m_FloorSlabThickness)
+                    throw new ArgumentException("Concrete cover must be between 10 [mm] and 50% of slab thickness");
+
+                m_MeshConcreteCover = value;
+
+                //if (IsSetFromCode == false) UpdateValuesInGUI();
+                _model.m_arrSlabs.First().ConcreteCover = m_MeshConcreteCover / 1000;
+                NotifyPropertyChanged("MeshConcreteCover");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float FloorSlabThickness
         {
             get
@@ -975,6 +997,7 @@ namespace PFD
             
             //FloorSlabThickness = 125; // mm 0.125f; m
             FloorSlabThickness = _model.m_arrSlabs.First().m_fDim3 * 1000;
+            MeshConcreteCover = _model.m_arrSlabs.First().ConcreteCover * 1000f;
 
             CFoundation pad = GetSelectedFootingPad();
             FootingPadSize_x_Or_a = pad.m_fDim1;

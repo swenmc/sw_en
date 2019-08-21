@@ -2547,6 +2547,7 @@ namespace PFD
                 float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
                 //float fFloorSlab_eY = + 0.5f * (float)m_arrCrSc[0].b - fh_GirtFront - fFloorSlab_AdditionalOffset_Y;
 
+                float fConcreteCoverTop = 0.05f; // 50 mm
                 int iLastFoundationIndex = m_arrFoundations.Count;
 
                 CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
@@ -2558,7 +2559,7 @@ namespace PFD
                             fFloorSlab_bY,
                             fFloorSlab_h,
                              0, 0, 0,
-                            //fConcreteCover,
+                            fConcreteCoverTop,
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
                             //BackColumnFootingReference_Bottom_Bar_x,
