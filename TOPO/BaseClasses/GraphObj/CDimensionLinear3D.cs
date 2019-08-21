@@ -274,16 +274,22 @@ namespace BaseClasses.GraphObj
             m_PointEnd = pointEnd;
 
             // TO Ondrej
-            // Tento parameter by som mozno nahradil/doplnil parametrom ktory urcuje do akej roviny GCS sa kota ma kreslit XY, XZ, XY 
+            // m_Direction - Tento parameter by som mozno nahradil/doplnil parametrom ktory urcuje do akej roviny GCS sa kota ma kreslit XY, XZ, XY 
             // (ak vieme rovinu, tak vieme ako mame kotu potocit kedze pozname pA a pB suradnicu v rovine,
             // pripadne sa da nastavovat to ze budeme kotovat priemet do osi tvoriacich rovinu,
             // napriklad pre XY bude mozne este nastavit ci chcem priemet do X, priemet do Y alebo realnu vzdialenost medzi pA a pB
             // (pootocena kota, ak nemaju body rovnake suradnice X ani Y)
 
-            // TO Ondrej - tu som pripravil nejake parametre ktore by sme mohli pouzit, predpokladam ze sa Ti to nebude pacit a nebudes tomu asi ani uplne rozumiet :)
+            // TO Ondrej - tu som pripravil nejake parametre, ktore by sme mohli pouzit na inspiraciu, predpokladam ze sa Ti to nebude pacit a nebudes tomu asi ani uplne rozumiet :)
             // Ide mi o to mat moznost nastavit do akej GCS roviny chcem kotu kreslit
             // Mat moznost nastavit ci chcem kotovat realnu dlzku alebo priemet a ktorym smerom podla nastaveneho pohladu kotu priemetu orientovat
             // ak by boli obe hodnoty iVectorOfProjectionToHorizontalViewAxis a iVectorOfProjectionToVerticalViewAxis rovne 0 znamenalo by to ze chcem v danej rovine kotovat skutocnu vzdialenost a kota moze byt teda pootocena okolo osi kolmej na tuto rovinu
+
+            // Pre nastavenie projekcie a identifikaciu parametrov pohladu by sme mohli pouzit tieto vektory
+            // VIEW AXIS
+            //Vector3D viewVector;
+            //Vector3D viewHorizontalVector;
+            //Vector3D viewVerticalVector;
 
             iGlobalPlane = iGlobalPlane_temp; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
             iVectorOfProjectionToHorizontalViewAxis = iVectorOfProjectionToHorizontalViewAxis_temp; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
