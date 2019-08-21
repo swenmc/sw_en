@@ -58,7 +58,9 @@ namespace EXPIMP
             DrawModel3D(gfx, /*viewPort,*/ modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
             DrawModelViews(s_document, modelData);
-            
+
+            DrawStandardDetails(s_document, modelData);
+
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
             //DrawBasicGeometry(gfx, modelData);
@@ -254,6 +256,128 @@ namespace EXPIMP
             }
         }
 
+        private static void DrawStandardDetails(PdfDocument s_document, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+
+            double scale = 0.2; // 20% of original file dimensions in pixels
+            double dImagePosition_x = 2;
+            double dImagePosition_y = 2;
+            double dRowPosition = 0;
+
+            // 1st row
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["SD_03_ridge"]);
+            double imageWidthOriginal = image.PixelWidth;
+            double imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["SD_04_cladding"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+
+            // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
+            // 2nd row
+            dImagePosition_x = 2; // Zaciname znova od laveho okraja
+            double dRowPosition2 = dRowPosition;
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["SD_02_barge"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["SD_05_cladding_corner"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["SD_06_gutter"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+            // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
+            // 3rd row
+            dImagePosition_x = 2; // Zaciname znova od laveho okraja
+            double dRowPosition3 = dRowPosition;
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["SD_01_roof"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dRowPosition3, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dRowPosition3 + dImagePosition_y + imageHeightOriginal * scale);
+
+            if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
+            {
+                bool bAddRollerDoorDetail = false;
+                bool bAddPersonnelAccessDoorDetail = false;
+                foreach(DoorProperties prop in data.DoorBlocksProperties)
+                {
+                    if (prop.sDoorType == "Roller Door")
+                        bAddRollerDoorDetail = true;
+
+                    if (prop.sDoorType == "Personnel Door")
+                        bAddPersonnelAccessDoorDetail = true;
+                }
+
+                XGraphics gfx2;
+                PdfPage page2;
+                page2 = s_document.AddPage();
+                page2.Size = PageSize.A3;
+                page2.Orientation = PdfSharp.PageOrientation.Landscape;
+                gfx2 = XGraphics.FromPdfPage(page2);
+
+                DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+
+                dImagePosition_x = 2;
+                // 1st row
+                if ((bAddRollerDoorDetail && !bAddPersonnelAccessDoorDetail) || (!bAddRollerDoorDetail && bAddPersonnelAccessDoorDetail)) // Add roller or personnel door detail
+                {
+                    string fileName = (bAddRollerDoorDetail == true) ? "SD_07_roller_door_surround" : "SD_08_pa_door_surround";
+                    image = XImage.FromFile(ConfigurationManager.AppSettings[fileName]);
+                    imageWidthOriginal = image.PixelWidth;
+                    imageHeightOriginal = image.PixelHeight;
+                    gfx2.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                    dImagePosition_x += imageWidthOriginal * scale;
+                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+                }
+                else // Add both details
+                {
+                    image = XImage.FromFile(ConfigurationManager.AppSettings["SD_07_roller_door_surround"]);
+                    imageWidthOriginal = image.PixelWidth;
+                    imageHeightOriginal = image.PixelHeight;
+                    gfx2.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                    dImagePosition_x += imageWidthOriginal * scale;
+                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+
+                    image = XImage.FromFile(ConfigurationManager.AppSettings["SD_08_pa_door_surround"]);
+                    imageWidthOriginal = image.PixelWidth;
+                    imageHeightOriginal = image.PixelHeight;
+                    gfx2.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                    dImagePosition_x += imageWidthOriginal * scale;
+                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+                }
+            }
+        }
+
         private static int GetView(EViewModelMemberFilters viewModelMembers)
         {
             if (viewModelMembers == EViewModelMemberFilters.FRONT) return (int)EModelViews.FRONT;
@@ -316,13 +440,13 @@ namespace EXPIMP
         private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
         {
             int width = 100;
-            int height = 76;            
+            int height = 76;
             int y = 20;
             int font_y = 20;
             
             XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
             List<string> list_crsc = GetCrscFromModel(model);
-            
+
             foreach (string crsc in list_crsc)
             {
                 DrawImage(gfx, ConfigurationManager.AppSettings[crsc], x, y, width, height);
