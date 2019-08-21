@@ -1357,15 +1357,16 @@ namespace PFD
         {
             get
             {
-                if (MModelViews == null) MModelViews = new List<string>() { "Front", "Back", "Left", "Right", "Top" /*"Bottom",*/  };
+                if (MModelViews == null) MModelViews = new List<string>() { "ISO Front-Right", "ISO Front-Left", "ISO Back-Right", "ISO Back-Left", "Front", "Back", "Left", "Right", "Top" /*"Bottom",*/  };
                 return MModelViews;
             }
         }
+
         public List<string> ViewModelMemberFilters
         {
             get
             {
-                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front Side", "Back Side", "Left Side", "Right Side", "Roof", "Middle Frame", "Columns", "Foundations" };
+                if (MViewModelMemberFilters == null) MViewModelMemberFilters = new List<string>() { "All", "Front Side", "Back Side", "Left Side", "Right Side", "Roof", "Middle Frame", "Columns", "Foundations", "Floor" };
                 return MViewModelMemberFilters;
             }
         }
@@ -2148,10 +2149,10 @@ namespace PFD
             ColorsAccordingToMembers = false;
             ColorsAccordingToSections = true;
             RecreateModel = true;
-            ViewIndex = (int)EModelViews.FRONT;
+            ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
 
-            ShowMemberID = true;            
+            ShowMemberID = true;
 
             ShowNodesDescription = false;
             ShowMemberDescription = true;

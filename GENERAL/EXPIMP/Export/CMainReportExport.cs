@@ -55,9 +55,8 @@ namespace EXPIMP
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            DrawModel3D(gfx, viewPort);
+            DrawModel3D(gfx, /*viewPort,*/ modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
-                                    
             DrawModelViews(s_document, modelData);
             
             //page = s_document.AddPage();
@@ -67,7 +66,6 @@ namespace EXPIMP
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
             //AddBasicGeometryToDocument(gfx, modelData, 10);
-
 
             //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
 
@@ -97,14 +95,29 @@ namespace EXPIMP
         /// </summary>
         /// <param name="gfx"></param>
         /// <param name="viewPort"></param>
-        private static void DrawModel3D(XGraphics gfx, Viewport3D viewPort)
+        private static void DrawModel3D(XGraphics gfx/*, Viewport3D viewPort*/, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
+            // TO Ondrej - nechcem zobrazovat aktualnu scenu ale ISO FRONT RIGHT view
+
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            opts.bUseOrtographicCamera = true;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
+
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+
+            bool  bTransformScreenLines3DToCylinders3D = true;
+
+            CModel filteredModel = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, bTransformScreenLines3DToCylinders3D, out filteredModel);
+            viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
 
-            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));            
+            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width;
             double scaledImageHeight = image.PointHeight * scaleFactor;
@@ -156,7 +169,7 @@ namespace EXPIMP
             opts.DimensionLineColor = System.Windows.Media.Colors.Black;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
-             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS};
+             { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -185,7 +198,8 @@ namespace EXPIMP
                     opts.bDisplayWireFrameModel = true;
                     bTransformScreenLines3DToCylinders3D = true;
 
-                    //opts.bDisplayFoundations = true; // ???? Neviem ci to chceme zobrazit aj na fs 04 alebo len fs 05
+                    opts.bDisplayFoundations = false;
+                    opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
                 }
 
@@ -208,6 +222,17 @@ namespace EXPIMP
                     opts.bDisplayFloorSlab = true;
                 }
 
+                if (viewMembers == EViewModelMemberFilters.FLOOR)
+                {
+                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                    opts.bDisplayWireFrameModel = true;
+                    bTransformScreenLines3DToCylinders3D = true;
+
+                    opts.bDisplayFoundations = true;
+                    opts.bDisplayReinforcementBars = false;
+                    opts.bDisplayFloorSlab = true;
+                }
+
                 CModel filteredModel = null;
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, bTransformScreenLines3DToCylinders3D, out filteredModel);
                 viewPort.UpdateLayout();
@@ -216,9 +241,8 @@ namespace EXPIMP
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString( $"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
-                                
-                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
                 double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
                 double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
@@ -240,7 +264,8 @@ namespace EXPIMP
             else if (viewModelMembers == EViewModelMemberFilters.MIDDLE_FRAME) return (int)EModelViews.FRONT;
             else if (viewModelMembers == EViewModelMemberFilters.COLUMNS) return (int)EModelViews.TOP;
             else if (viewModelMembers == EViewModelMemberFilters.FOUNDATIONS) return (int)EModelViews.TOP;
-            else return (int)EModelViews.FRONT;
+            else if (viewModelMembers == EViewModelMemberFilters.FLOOR) return (int)EModelViews.TOP;
+            else return (int)EModelViews.ISO_FRONT_RIGHT;
         }
 
         private static void DrawLogo(XGraphics gfx)

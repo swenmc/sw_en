@@ -646,11 +646,15 @@
 
     public enum EModelViews
     {
-        FRONT = 0,
-        BACK = 1,
-        LEFT = 2,
-        RIGHT = 3,
-        TOP = 4
+        ISO_FRONT_RIGHT = 0, // Default
+        ISO_FRONT_LEFT = 1,
+        ISO_BACK_RIGHT = 2,
+        ISO_BACK_LEFT = 3,
+        FRONT = 4,
+        BACK = 5,
+        LEFT = 6,
+        RIGHT = 7,
+        TOP = 8
     }
     public enum EViewModelMemberFilters
     {
@@ -662,7 +666,8 @@
         ROOF = 5,
         MIDDLE_FRAME = 6,
         COLUMNS = 7,
-        FOUNDATIONS = 8
+        FOUNDATIONS = 8,
+        FLOOR = 9
     }
 
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy

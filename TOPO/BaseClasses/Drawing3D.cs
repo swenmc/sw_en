@@ -26,7 +26,39 @@ namespace BaseClasses
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
         {
             Transform3DGroup transGr = new Transform3DGroup();
-            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -70);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -20);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -70);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 20);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 80);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 20);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
+            {
+                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 80);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+                AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), -20);
+                transGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
             {
                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
                 transGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
@@ -75,7 +107,27 @@ namespace BaseClasses
 
         private static void SetOrtographicCameraWidth(ref DisplayOptions sDisplayOptions, float fModel_Length_X, float fModel_Length_Y, float fModel_Length_Z)
         {
-            if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
+            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_RIGHT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_FRONT_LEFT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_RIGHT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.ISO_BACK_LEFT)
+            {
+                sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
+                sDisplayOptions.OrtographicCameraWidth *= 1.5;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT)
             {
                 sDisplayOptions.OrtographicCameraWidth = Math.Max(fModel_Length_X, fModel_Length_Z);
                 sDisplayOptions.OrtographicCameraWidth *= 1.2;
@@ -4515,6 +4567,13 @@ namespace BaseClasses
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            {
+                _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
+                _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
+                _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
+                _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
