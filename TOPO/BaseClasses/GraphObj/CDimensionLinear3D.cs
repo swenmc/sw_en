@@ -213,6 +213,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public Transform3DGroup TransformGr;
+
         public CDimensionLinear3D() { }
         public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd, Vector3D direction, Vector3D textHorizontal, Vector3D textVertical, double extensionLinesLength, double dimensionMainLineDistance, double fOffsetFromPoint, string text)
         {
@@ -416,14 +418,14 @@ namespace BaseClasses.GraphObj
 
             TranslateTransform3D translateOrigin = new TranslateTransform3D(m_PointStart.X, m_PointStart.Y, m_PointStart.Z);
 
-            Transform3DGroup transformGr = new Transform3DGroup();
-            transformGr.Children.Add(translateOffset); // Posun o offset v rovine XY
-            transformGr.Children.Add(rotateX);
-            transformGr.Children.Add(rotateY);
-            transformGr.Children.Add(rotateZ);
-            transformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
+            TransformGr = new Transform3DGroup();
+            TransformGr.Children.Add(translateOffset); // Posun o offset v rovine XY
+            TransformGr.Children.Add(rotateX);
+            TransformGr.Children.Add(rotateY);
+            TransformGr.Children.Add(rotateZ);
+            TransformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
 
-            model_gr.Transform = transformGr;
+            model_gr.Transform = TransformGr;
 
             return model_gr;
         }

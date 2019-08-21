@@ -3056,16 +3056,21 @@ namespace BaseClasses
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.DimensionTextColor);
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            Vector3D over = new Vector3D(dimension.Horizontal.X * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Y * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Z * fTextBlockHorizontalSizeFactor);
-            Vector3D up = new Vector3D(dimension.Vertical.X * fTextBlockVerticalSizeFactor, dimension.Vertical.Y * fTextBlockVerticalSizeFactor, dimension.Vertical.Z * fTextBlockVerticalSizeFactor);
-            
+            //Vector3D over = new Vector3D(dimension.Horizontal.X * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Y * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Z * fTextBlockHorizontalSizeFactor);
+            //Vector3D up = new Vector3D(dimension.Vertical.X * fTextBlockVerticalSizeFactor, dimension.Vertical.Y * fTextBlockVerticalSizeFactor, dimension.Vertical.Z * fTextBlockVerticalSizeFactor);
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor, 0);
+
             //SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
 
             if (centerModel)
             {
-                textlabel.Transform = centerModelTransGr;
+                Transform3DGroup tr = new Transform3DGroup();
+                /*if (dimension.TransformGr != null) */tr.Children.Add(dimension.TransformGr);
+                tr.Children.Add(centerModelTransGr);                
+                textlabel.Transform = tr; //centerModelTransGr;
             }
             viewPort.Children.Add(textlabel);
         }
