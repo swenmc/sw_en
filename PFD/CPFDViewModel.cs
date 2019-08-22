@@ -2800,10 +2800,19 @@ namespace PFD
             sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
+            sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
             sDisplayOptions.NodeDescriptionTextColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.MemberDescriptionTextColor = Colors.Beige; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionTextColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionLineColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            sDisplayOptions.SawCutTextColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.SawCutLineColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            sDisplayOptions.ControlJointTextColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.ControlJointLineColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

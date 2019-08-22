@@ -354,7 +354,6 @@ namespace BaseClasses.GraphObj
 
             m_PointText = new Point3D()
             {
-
                 X = 0.5 * m_fMainLineLength,
                 Y = m_DimensionMainLinePositionIncludingOffset + fOffsetFromMainLine,
                 Z = 0

@@ -749,11 +749,19 @@
         public int fNodeDescriptionTextFontSize;
         public int fMemberDescriptionTextFontSize;
         public int fDimensionTextFontSize;
+        public int fSawCutTextFontSize;
+        public int fControlJointTextFontSize;
 
         public System.Windows.Media.Color NodeDescriptionTextColor;
         public System.Windows.Media.Color MemberDescriptionTextColor;
         public System.Windows.Media.Color DimensionTextColor;
         public System.Windows.Media.Color DimensionLineColor;
+
+        public System.Windows.Media.Color SawCutTextColor;
+        public System.Windows.Media.Color SawCutLineColor;
+
+        public System.Windows.Media.Color ControlJointTextColor;
+        public System.Windows.Media.Color ControlJointLineColor;
     }
 
     public struct BuildingDataInput

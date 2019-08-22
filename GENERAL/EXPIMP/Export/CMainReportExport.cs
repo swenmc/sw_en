@@ -146,6 +146,12 @@ namespace EXPIMP
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
             opts.bTransformScreenLines3DToCylinders3D = true;
 
+            opts.bDisplayJoints = true; //???
+            opts.bDisplayPlates = true; //???
+
+            opts.bDisplaySawCuts = false;
+            opts.bDisplayControlJoints = false;
+
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
@@ -213,6 +219,14 @@ namespace EXPIMP
             opts.fDimensionTextFontSize = 14;
             opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
             opts.DimensionLineColor = System.Windows.Media.Colors.Black;
+
+            opts.fSawCutTextFontSize = 14;
+            opts.SawCutTextColor = System.Windows.Media.Colors.DarkGoldenrod;
+            opts.SawCutLineColor = System.Windows.Media.Colors.DarkGoldenrod;
+
+            opts.fControlJointTextFontSize = 14;
+            opts.ControlJointTextColor = System.Windows.Media.Colors.DarkMagenta;
+            opts.ControlJointLineColor = System.Windows.Media.Colors.DarkMagenta;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
@@ -477,6 +491,12 @@ namespace EXPIMP
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
             opts.bTransformScreenLines3DToCylinders3D = true;
+
+            opts.bDisplayJoints = true; //???
+            opts.bDisplayPlates = true; //???
+
+            opts.bDisplaySawCuts = false;
+            opts.bDisplayControlJoints = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);

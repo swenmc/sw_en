@@ -27,6 +27,14 @@ namespace BaseClasses
             set { m_PointEnd = value; }
         }
 
+        private Point3D m_PointText;
+
+        public Point3D PointText
+        {
+            get { return m_PointText; }
+            set { m_PointText = value; }
+        }
+
         private float m_fLength;
 
         public float Length
@@ -34,6 +42,19 @@ namespace BaseClasses
             get { return m_fLength; }
             set { m_fLength = value; }
         }
+
+        private string m_Text;
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
+        }
+
+        // TO Ondrej - ak maju podla teba tie premenne zmysel tak z nich treba urobit properties, mozno by sa dalo riesit priamo v tomto objekte aky je smer textu
+        bool bTextAboveLine; // true - text je medzi nad liniou (alebo nalavo od nej), false - text je na opacnej strane (pod liniou) alebo napravo od nej
+        public int iVectorOverFactor_LCS;
+        public int iVectorUpFactor_LCS;
 
         public Transform3DGroup TransformGr;
 
@@ -45,7 +66,35 @@ namespace BaseClasses
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 
+            m_Text = "CONTROL JOINT";
+
             Length = (float)Math.Sqrt((float)Math.Pow(m_PointEnd.X - m_PointStart.X, 2f) + (float)Math.Pow(m_PointEnd.Y - m_PointStart.Y, 2f) + (float)Math.Pow(m_PointEnd.Z - m_PointStart.Z, 2f));
+
+            SetTextPointInLCS(); // Text v LCS
+        }
+
+        // TODO Ondrej - Refaktorovat
+        public void SetTextPointInLCS()
+        {
+            bTextAboveLine = false;
+
+            iVectorOverFactor_LCS = -1;
+            iVectorUpFactor_LCS = -1;
+
+            float fOffsetFromLine;
+            float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+
+            if (bTextAboveLine)
+                fOffsetFromLine = 0.1f; // Mezera medzi ciarou a textom (kladna - text nad ciarou (+y), zaporna, text pod ciarou (-y))
+            else
+                fOffsetFromLine = -0.1f;
+
+            m_PointText = new Point3D()
+            {
+                X = 0.2 * m_fLength, // Kreslime v 20% dlzky od zaciatku
+                Y = fOffsetFromLine,
+                Z = fOffsetFromPlane
+            };
         }
 
         public GeometryModel3D GetControlJointModel(System.Windows.Media.Color color)
@@ -74,6 +123,25 @@ namespace BaseClasses
             dAlphaX = Geom2D.GetAlpha2D_CW(dDeltaY, dDeltaZ);
             dBetaY = Geom2D.GetAlpha2D_CW_2(dDeltaX, dDeltaZ); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
             dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
+
+            // To Ondrej - toto treba nejako normalnejsie poskladat a refaktorovat s CDimensionLineLinear3D a CSawCut
+            if (dGammaZ > 0) // Otacame proti smeru hodinovych ruciciek - text chceme mat citatelny horizontalne takze musime prehodit vektor
+            {
+                bTextAboveLine = true;
+
+                iVectorOverFactor_LCS = 1;
+                iVectorUpFactor_LCS = 1;
+
+                float fOffsetFromLine = 0.1f;
+                float fOffsetFromPlane = 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+
+                m_PointText = new Point3D()
+                {
+                    X = 0.2 * m_fLength, // Kreslime v 20% dlzky od zaciatku
+                    Y = fOffsetFromLine,
+                    Z = fOffsetFromPlane
+                };
+            }
 
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();

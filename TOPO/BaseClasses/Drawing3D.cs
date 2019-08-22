@@ -850,7 +850,7 @@ namespace BaseClasses
                     }
                 }
 
-                if(sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
                 {
                     // Pre zakladne koty okotujeme podorys podobne ako pre Columns View
 
@@ -1098,9 +1098,20 @@ namespace BaseClasses
                     Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
+
                 if (sDisplayOptions.bDisplayNodesDescription)
                 {
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplaySawCuts)
+                {
+                    Drawing3D.CreateSawCutDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplayControlJoints)
+                {
+                    Drawing3D.CreateControlJointDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
                 //if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
@@ -1109,7 +1120,7 @@ namespace BaseClasses
                 //    CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                 //    CDimensionLinear3D dim = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 0.5, 0.4,0.1, (model.fW_frame * 1000).ToString());
-                    
+
                 //    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 //}
             }
@@ -3145,7 +3156,7 @@ namespace BaseClasses
             }
         }
 
-        //Draw Dimension 3D
+        // Draw Dimension Text 3D
         public static void DrawDimensionText3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
@@ -3194,7 +3205,7 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
-        //Draw Dimension 3D
+        // Draw Dimension 3D
         public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
@@ -3283,6 +3294,114 @@ namespace BaseClasses
             wL2.Rescale();
             wMain.Rescale();
             //viewPort.UpdateLayout();
+        }
+
+        // Draw Saw Cut Text 3D
+        public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = sawcut.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = new SolidColorBrush(displayOptions.SawCutTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sawcut.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sawcut.iVectorUpFactor_LCS, 0);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sawcut.PointText, over, up);
+
+            if (centerModel)
+            {
+                Transform3DGroup tr = new Transform3DGroup();
+
+                if (sawcut.TransformGr == null)
+                {
+                    throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
+                }
+
+                if (sawcut.TransformGr != null)
+                {
+                    tr.Children.Add(sawcut.TransformGr);
+                }
+                tr.Children.Add(centerModelTransGr);
+                textlabel.Transform = tr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateSawCutDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSawCuts != null)
+            {
+                for (int i = 0; i < model.m_arrSawCuts.Count; i++)
+                {
+                    if (model.m_arrSawCuts[i] != null) // Saw cut object is valid (not empty)
+                    {
+                        DrawSawCutText3D(model.m_arrSawCuts[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Draw Control Joint Text 3D
+        public static void DrawControlText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = controlJoint.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = new SolidColorBrush(displayOptions.ControlJointTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * controlJoint.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * controlJoint.iVectorUpFactor_LCS, 0);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, controlJoint.PointText, over, up);
+
+            if (centerModel)
+            {
+                Transform3DGroup tr = new Transform3DGroup();
+
+                if (controlJoint.TransformGr == null)
+                {
+                    throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
+                }
+
+                if (controlJoint.TransformGr != null)
+                {
+                    tr.Children.Add(controlJoint.TransformGr);
+                }
+                tr.Children.Add(centerModelTransGr);
+                textlabel.Transform = tr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateControlJointDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrControlJoints != null)
+            {
+                for (int i = 0; i < model.m_arrControlJoints.Count; i++)
+                {
+                    if (model.m_arrControlJoints[i] != null) // Control joint object is valid (not empty)
+                    {
+                       DrawControlText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
+                    }
+                }
+            }
         }
 
         private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model, DisplayOptions displayOptions)
