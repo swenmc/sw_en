@@ -91,6 +91,7 @@ namespace PFD
         private bool m_DisplayDistinguishedColorMember;
         private bool m_DisplayTransparentModelMember;
         private bool m_DisplayDimensions;
+        private bool m_TransformScreenLines3DToCylinders3D;
 
         // Load Case - display options
         private bool MShowLoads;
@@ -1957,6 +1958,19 @@ namespace PFD
             }
         }
 
+        public bool TransformScreenLines3DToCylinders3D
+        {
+            get
+            {
+                return m_TransformScreenLines3DToCylinders3D;
+            }
+
+            set
+            {
+                m_TransformScreenLines3DToCylinders3D = value;
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2182,6 +2196,7 @@ namespace PFD
             RecreateModel = true;
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
+            TransformScreenLines3DToCylinders3D = false;            
 
             ShowMemberID = true;
 

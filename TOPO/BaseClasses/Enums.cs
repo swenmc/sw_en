@@ -724,6 +724,7 @@
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
         public bool bDisplayDimensions;
+        public bool bTransformScreenLines3DToCylinders3D;
 
         public bool bDisplaySawCuts;
         public bool bDisplayControlJoints;

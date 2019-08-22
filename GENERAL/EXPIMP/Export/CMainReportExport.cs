@@ -96,10 +96,8 @@ namespace EXPIMP
 
         /// <summary>
         /// Draw scaled 3Model to PDF
-        /// </summary>
-        /// <param name="gfx"></param>
-        /// <param name="viewPort"></param>
-        private static void DrawModel3D(/*XGraphics gfx, Viewport3D viewPort,*/PdfDocument s_document, CModelData data)
+        /// </summary>        
+        private static void DrawModel3D(PdfDocument s_document, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
             // TO Ondrej - nechcem zobrazovat aktualnu scenu, ale ISO FRONT RIGHT view v maximalnej velkosti bez kot a popisov
@@ -119,11 +117,13 @@ namespace EXPIMP
             opts.bDisplayGlobalAxis = false;
             opts.bDisplayMemberDescription = false;
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
+            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bTransformScreenLines3DToCylinders3D = true;
 
-            bool  bTransformScreenLines3DToCylinders3D = true;
+            
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, bTransformScreenLines3DToCylinders3D, out filteredModel);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -151,6 +151,7 @@ namespace EXPIMP
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
+            opts.bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
 
@@ -205,7 +206,7 @@ namespace EXPIMP
                 opts.ViewModelMembers = (int)viewMembers;
 
                 // Defaultne hodnoty pre vsetky pohlady
-                bool bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
+                opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
                 opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
                 opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
 
@@ -214,7 +215,7 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
-                    bTransformScreenLines3DToCylinders3D = true;
+                    opts.bTransformScreenLines3DToCylinders3D = true;
 
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
@@ -226,14 +227,14 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
-                    bTransformScreenLines3DToCylinders3D = true;
+                    opts.bTransformScreenLines3DToCylinders3D = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
-                    bTransformScreenLines3DToCylinders3D = true;
+                    opts.bTransformScreenLines3DToCylinders3D = true;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -244,7 +245,7 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
-                    bTransformScreenLines3DToCylinders3D = true;
+                    opts.bTransformScreenLines3DToCylinders3D = true;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
@@ -252,7 +253,7 @@ namespace EXPIMP
                 }
 
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, bTransformScreenLines3DToCylinders3D, out filteredModel);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
                 viewPort.UpdateLayout();
 
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
