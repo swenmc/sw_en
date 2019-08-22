@@ -48,20 +48,43 @@ namespace EXPIMP
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
 
-            
-
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            DrawTitlePage(s_document, GetProjectInfo(), modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
-            
+            // TODO Ondrej - toto ma byt dynamicke - to znamena ze by sme do tohto zoznamu mali pridavat polozky pocas generovania stranok a az na konci vlozit tabulku na prvu stranku podla toho co sme vygenerovali
+            // Podobne ako ked sa vytvaraju obsahy v dokumentoch
 
-            DrawModel3D(/*gfx, viewPort,*/ s_document, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
+            // Tabulka so zoznamom vykresov
+            // TODO
+            // TO Ondrej - vyrobil by som nejaku triedu s nazvom pageDetails alebo layoutDetails
+            // Vyrobil by som nejaky enum s moznymi nazvami vykresov
+            // To tej triedy by som daj ako property ten enum, nazov vykresu, mozno enum pre filter pre vykresy ktore sa tvoria z 3D pohladu filtra
+            // A potom by som podla enumu pre nazov layoutu alebo enumu pre nazov view vkladal riadky do zoznamu pre tabulku na prvej stranke
+            // fs01-fs12 by sa mali generovat automaticky podla toho kolko stranok vygenerujem
+
+            string[] row1 = new string[2] { "fs01", "Isometric View" };
+            string[] row2 = new string[2] { "fs02", "Front Elevation" };
+            string[] row3 = new string[2] { "fs03", "Back Elevation" };
+            string[] row4 = new string[2] { "fs04", "Left Elevation" };
+            string[] row5 = new string[2] { "fs05", "Right Elevation" };
+            string[] row6 = new string[2] { "fs06", "Roof Layout" };
+            string[] row7 = new string[2] { "fs07", "Middle Frame" };
+            string[] row8 = new string[2] { "fs08", "Columns" };
+            string[] row9 = new string[2] { "fs09", "Foundation Pads" };
+            string[] row10 = new string[2] { "fs10", "Floor Plan" };
+            string[] row11 = new string[2] { "fs11", "Standard Details 1" };
+            string[] row12 = new string[2] { "fs12", "Standard Details 2" };
+
+            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12 };
+
+            DrawTitlePage(s_document, GetProjectInfo(), tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+
+            DrawModel3D(/*gfx, viewPort,*/ s_document, tableParams, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
-            DrawModelViews(s_document, modelData);
+            DrawModelViews(s_document, tableParams, modelData);
 
-            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
+            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -96,8 +119,8 @@ namespace EXPIMP
 
         /// <summary>
         /// Draw scaled 3Model to PDF
-        /// </summary>        
-        private static void DrawModel3D(PdfDocument s_document, CModelData data)
+        /// </summary>
+        private static void DrawModel3D(PdfDocument s_document, List<string[]> tableParams, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
             // TO Ondrej - nechcem zobrazovat aktualnu scenu, ale ISO FRONT RIGHT view v maximalnej velkosti bez kot a popisov
@@ -110,6 +133,9 @@ namespace EXPIMP
             page.Orientation = PdfSharp.PageOrientation.Landscape;
             gfx = XGraphics.FromPdfPage(page);
 
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
@@ -119,7 +145,7 @@ namespace EXPIMP
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
             opts.bTransformScreenLines3DToCylinders3D = true;
-            
+
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
@@ -127,7 +153,8 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
+            string[] pageDetails = tableParams[sheetNo-1];
+            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -143,7 +170,7 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        private static void DrawModelViews(PdfDocument s_document, CModelData data)
+        private static void DrawModelViews(PdfDocument s_document, List<string[]> tableParams, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -202,8 +229,10 @@ namespace EXPIMP
                 gfx = XGraphics.FromPdfPage(page);
                 //DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+                DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-                DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
+                string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
+                DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
@@ -276,7 +305,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawStandardDetails(PdfDocument s_document, CModelData data)
+        private static void DrawStandardDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -286,9 +315,12 @@ namespace EXPIMP
             gfx = XGraphics.FromPdfPage(page);
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             sheetNo++;
-            DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
+
+            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu vykresu detailov, chcelo by to vytvorit nejaky zoznam
+            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
 
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
@@ -368,9 +400,13 @@ namespace EXPIMP
                 page2.Orientation = PdfSharp.PageOrientation.Landscape;
                 gfx2 = XGraphics.FromPdfPage(page2);
 
-                DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+                DrawPDFLogo(gfx2, 0, (int)page.Height.Point - 90);
+                DrawCopyRightNote(gfx2, 400, (int)page.Height.Point - 15);
+
                 sheetNo++;
-                DrawTitleBlock(gfx2, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
+
+                pageDetails = tableParams[sheetNo - 1];
+                DrawTitleBlock(gfx2, GetProjectInfo(), pageDetails[1], sheetNo, 0);
 
                 dImagePosition_x = 2;
                 // 1st row
@@ -403,7 +439,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        private static void DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, List<string[]> tableParams, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
         {
             PdfPage page = s_document.AddPage();
             page.Size = PageSize.A3;
@@ -453,14 +489,8 @@ namespace EXPIMP
             double scaledImageHeight = imageModel.PointHeight * scaleFactor;
 
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
-            
 
-
-            
-            
-            
-            
-            AddTitlePageTableToDocument(gfx);
+            AddTitlePageTableToDocument(gfx, tableParams);
 
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
@@ -472,12 +502,14 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
+        // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
         private static void DrawTable(XGraphics gfx, int x, int y, List<string[]>tableParams)
         {
             AddTableToDocument(gfx, x, y, tableParams);
         }
 
-        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, string jobNo, int sheetNo, int issue) // TODO Ondrej - Tabulka s rozpiskou
+        // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
+        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, int sheetNo, int issue) // TODO Ondrej - Tabulka s rozpiskou
         {
             // TODO - Onddrej - sem treba vykreslit tabulku podla vzoru co som Ti poslal (nemusis vsetko, len zhruba :) aby som si to vedel podoplnat)
             // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
@@ -536,6 +568,13 @@ namespace EXPIMP
             //PdfSharp.Drawing.XRect rect2 = gfx.Transformer.WorldToDefaultPage(new PdfSharp.Drawing.XRect(new PdfSharp.Drawing.XPoint(textX, textY), new XSize(100, 12)));
             //PdfSharp.Pdf.PdfRectangle rc2 = new PdfSharp.Pdf.PdfRectangle(rect2);
             //gfx.PdfPage.AddWebLink(rc2, "www.formsteel.co.nz");
+        }
+
+        private static void DrawCopyRightNote(XGraphics gfx, int x, int y)
+        {
+            string s = "© Formsteel Technologies 2019";
+            XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Bold, options);
+            gfx.DrawString(s, font, XBrushes.Red, x, y);
         }
 
         private static void DrawImage(XGraphics gfx, string path, int x, int y, int width, int height)
@@ -966,7 +1005,6 @@ namespace EXPIMP
             }
         }
 
-
         private static void DrawImage(XGraphics gfx)
         {
             try
@@ -1004,20 +1042,10 @@ namespace EXPIMP
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
-        private static void AddTitlePageTableToDocument(XGraphics gfx)
+        private static void AddTitlePageTableToDocument(XGraphics gfx, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
-
-            // Tabulka so zoznamom vykresov
-            string[] row1 = new string[2] { "fs01", "Isometric View" };
-            string[] row2 = new string[2] { "fs02", "Front Elevation" };
-            string[] row3 = new string[2] { "fs03", "Back Elevation" };
-            string[] row4 = new string[2] { "fs04", "Left Elevation" };
-            string[] row5 = new string[2] { "fs05", "Right Elevation" };
-            string[] row6 = new string[2] { "fs06", "Roof Layout" };
-
-            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6 };
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
@@ -1030,8 +1058,13 @@ namespace EXPIMP
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
             docRenderer.PrepareDocument();
 
+            double dTableRowHeight = 20;
+
+            XFont font1 = new XFont(fontFamily, 20, XFontStyle.Bold);
+            gfx.DrawString("Contents:", font1, XBrushes.Black, 30, gfx.PageSize.Height - t.Rows.Count * dTableRowHeight - 20);
+
             double offsetX = 30;
-            double offsetY = gfx.PageSize.Height - 150;
+            double offsetY = gfx.PageSize.Height - t.Rows.Count * dTableRowHeight; // TO Ondrej - Pozicia by sa mohla nastavovat podla toho ze vieme, aky vysoky je riadok tabulky a kolko riadkov tabulka ma
             double width = 300;
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
