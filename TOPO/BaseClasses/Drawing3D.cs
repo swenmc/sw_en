@@ -228,7 +228,7 @@ namespace BaseClasses
                 if (sawCutsModel3DGroup != null) gr.Children.Add(sawCutsModel3DGroup);
 
                 Model3DGroup controlJointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayControlJoints) sawCutsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayControlJoints) controlJointsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
                 if (controlJointsModel3DGroup != null) gr.Children.Add(controlJointsModel3DGroup);
 
                 bool displayOtherObjects3D = true;

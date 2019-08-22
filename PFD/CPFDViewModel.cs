@@ -269,6 +269,9 @@ namespace PFD
                 RecreateFoundations = true;
                 RecreateFloorSlab = true;
 
+                RecreateSawCuts = true;
+                RecreateControlJoints = true;
+
                 RecreateModel = true;
                 IsSetFromCode = false;
                 NotifyPropertyChanged("ModelIndex");
@@ -2204,6 +2207,7 @@ namespace PFD
             ShowGlobalAxis = true;
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = false;
+
             DisplayIn3DRatio = 0.003f;
 
             GenerateNodalLoads = true;

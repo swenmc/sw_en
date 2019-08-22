@@ -54,6 +54,7 @@ namespace BaseClasses
             float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
             float fLineCylinderRadius = 0.005f; //0.005f * fLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
+            // TODO - dorobit transformaciu do GCS
             return CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, fLineCylinderRadius, m_fLength, material, 0);
         }
     }

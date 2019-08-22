@@ -2600,10 +2600,10 @@ namespace PFD
 
             if (bGenerateSawCuts)
             {
-                float fMaximumDistance = 6; // 6 m
+                float fMinimumDistance = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo minimalne 6 metrov od seba
                 // Create raster of lines in XY-plane
-                int iNumberInXDirection = (int)(fW_frame / fMaximumDistance)-1;
-                int iNumberInYDirection = (int)(fL_tot / fMaximumDistance)-1;
+                int iNumberInXDirection = (int)(fW_frame / fMinimumDistance) -1;
+                int iNumberInYDirection = (int)(fL_tot / fMinimumDistance) -1;
 
                 float fDistanceInXDirection = fW_frame / iNumberInYDirection;
                 float fDistanceInYDirection = fL_tot / iNumberInXDirection;
