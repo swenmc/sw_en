@@ -54,8 +54,8 @@ namespace EXPIMP
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            DrawTitlePage(gfx, s_document, GetProjectInfo()); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
-            gfx.Dispose();
+            DrawTitlePage(gfx, s_document, GetProjectInfo(), modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            
 
             DrawModel3D(/*gfx, viewPort,*/ s_document, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
@@ -111,7 +111,7 @@ namespace EXPIMP
             gfx = XGraphics.FromPdfPage(page);
 
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
+            opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
@@ -119,9 +119,7 @@ namespace EXPIMP
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
             opts.bTransformScreenLines3DToCylinders3D = true;
-
             
-
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
@@ -129,16 +127,18 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            //XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
+            int legendImgWidth = 100;
+            int legendTextWidth = 60;
+            DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
+            
             XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
-            double scaleFactor = gfx.PageSize.Width / image.PointWidth;
-            double scaledImageWidth = gfx.PageSize.Width;
+            
+            double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
+            double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
-
             gfx.Dispose();
-
         }
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
@@ -399,7 +399,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawTitlePage(XGraphics gfx, PdfDocument s_document, CProjectInfo pInfo) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        private static void DrawTitlePage(XGraphics gfx, PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
         {
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -419,10 +419,33 @@ namespace EXPIMP
             gfx.DrawString("Project Part: ", fontProjectInfo, XBrushes.Black, 30, 90);
             if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectPart, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 90);
 
-            gfx.DrawString("TITLE PAGE", font, XBrushes.Black, 500, 400);
+            //gfx.DrawString("TITLE PAGE", font, XBrushes.Black, 500, 400);
 
             // Do stredu by sa mozno mohol vlozit malicky preview isometricky pohlad na konstrukciu, aby to nebolo take prazdne :)
             // Bez kot, bez popisov
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            opts.bUseOrtographicCamera = false;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
+            opts.bDisplayMemberDescription = false;
+            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
+            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bTransformScreenLines3DToCylinders3D = true;
+
+            CModel filteredModel = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
+            viewPort.UpdateLayout();
+            
+            XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
+
+            double scaleFactor = (gfx.PageSize.Width / 2 ) / imageModel.PointWidth;
+            double scaledImageWidth = gfx.PageSize.Width / 2;
+            double scaledImageHeight = imageModel.PointHeight * scaleFactor;
+
+            gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
+            
+
 
             // Skusal som kreslit tabulku ale neuspesne, nieco tam asi posielam nespravne
             /*
@@ -445,6 +468,7 @@ namespace EXPIMP
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
             gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, 530, 800);
+            gfx.Dispose();
         }
 
         private static void DrawTable(XGraphics gfx, int x, int y, List<string[]>tableParams)
