@@ -842,6 +842,150 @@ namespace BaseClasses
                     }
                 }
 
+                if(sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+                {
+                    // Pre zakladne koty okotujeme podorys podobne ako pre Columns View
+
+                    // Potrebujeme okotovat jednotlive typy patiek
+                    // To znamena ziskat body na krajnej hrane patiek uplne vpravo a body na krajnej hrane patiek uplne vzadu pre jednotlive typy patiek
+
+                    // All foundation points
+                    List<Point3D> foundationPoints = ModelHelper.GetFootingPadsPoints(model);
+
+                    bool bDrawDimension_Right = true;
+                    bool bDrawDimension_Back = true;
+
+                    if (bDrawDimension_Right == true) // Kota vpravo od budovy
+                    {
+                        // Maximum right coordinate points Z = 0
+                        List<Point3D> foundationPointsX = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fW_frame, model.fW_frame + 10, 0, true, false); // X
+                        List<Point3D> dimensionPoints_1 = ModelHelper.GetPointsInDistance(foundationPointsX, 0, 2); // Z
+
+                        dimensionPoints_1 = dimensionPoints_1.OrderBy(p => p.Y).ToList(); // Sort by Y coordinate
+                        List<Point3D> dimensionPoints_2 = new List<Point3D>() { dimensionPoints_1.First(), dimensionPoints_1.Last() };
+
+                        bool bDrawDimension_1 = true;
+                        bool bDrawDimension_2 = true;
+
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions = null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < dimensionPoints_1.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1], new Vector3D(0, 0, -1), 0, 1, 0, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_1[i + 1].Y - dimensionPoints_1[i].Y) * 1000).ToString("F0"));
+                                listOfDimensions.Add(dim);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_2 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < dimensionPoints_2.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1], new Vector3D(0, 0, -1), 0, 1, 0, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_2[i + 1].Y - dimensionPoints_2[i].Y) * 1000).ToString("F0"));
+                                listOfDimensions.Add(dim);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = +fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
+                    }
+
+                    if (bDrawDimension_Back == true) // Kota v zadnej casti budovy
+                    {
+                        // Maximum back coordinate points Z = 0
+                        // Maximalna suradnica zakladu pre wind post Y moze byt teoreticky byt mensia dlzka budovy (je to nespravne, ale je to mozne tak zadat :)
+                        List<Point3D> foundationPointsY = ModelHelper.GetPointsInDistanceInterval(foundationPoints, model.fL_tot - 0.2f, model.fL_tot + 10, 1, true, false); // Y
+                        List<Point3D> dimensionPoints_1 = ModelHelper.GetPointsInDistance(foundationPointsY, 0, 2); // Z
+
+                        dimensionPoints_1 = dimensionPoints_1.OrderBy(p => p.X).ToList(); // Sort by X coordinate
+
+                        List<Point3D> dimensionPoints_2 = new List<Point3D>() { dimensionPoints_1.First(), dimensionPoints_1.Last() };
+
+                        bool bDrawDimension_1 = true;
+                        bool bDrawDimension_2 = true;
+
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions = null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < dimensionPoints_1.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1], new Vector3D(0, 0, -1), 0, 0, -1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_1[i + 1].X - dimensionPoints_1[i].X) * 1000).ToString("F0"));
+                                listOfDimensions.Add(dim);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (bDrawDimension_2 == true)
+                        {
+                            if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < dimensionPoints_2.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1], new Vector3D(0, 0, -1), 0, 0, -1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_2[i + 1].X - dimensionPoints_2[i].X) * 1000).ToString("F0"));
+                                listOfDimensions.Add(dim);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
+                    }
+                }
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4615,6 +4759,11 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
             {
+                // Ak vyberiem filter pre foundations, chcem aby sa automaticky nastavilo v display options zobrazenie foundations
+                sDisplayOptions.bDisplayFoundations = true;
+                sDisplayOptions.bDisplayReinforcementBars = true;
+                sDisplayOptions.bDisplayFloorSlab = true;
+
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
@@ -4622,6 +4771,9 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
+                // Ak vyberiem filter pre floor slabs, chcem aby sa automaticky nastavilo v display options zobrazenie slabs
+                sDisplayOptions.bDisplayFloorSlab = true;
+
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);

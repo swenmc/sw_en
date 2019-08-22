@@ -273,6 +273,87 @@ namespace BaseClasses.Helpers
             return nodes.ToArray();
         }
 
+        // Foundation points
+        public static List<Point3D> GetFootingPadsPoints(CModel model)
+        {
+            List<Point3D> list = null;
+
+            if (model.m_arrFoundations != null && model.m_arrFoundations.Count > 0) // Check that some foundations exists
+            {
+                list = new List<Point3D>();
+                // Refaktorovat s inymi castami v Drawing3D.cs
+
+                foreach (CFoundation f in model.m_arrFoundations)
+                {
+                    GeometryModel3D model3D = f.Visual_Object;
+
+                    if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
+                        model3D = f.Visual_Object = f.CreateGeomModel3D(0.2f); // TODO zaviest opacity ako parameter
+
+                    MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
+
+                    foreach (Point3D point3D in mesh3D.Positions)
+                    {
+                        // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
+                        // 1
+                        Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
+
+                        // 2
+                        //Transform3DGroup trans = new Transform3DGroup();
+                        //trans.Children.Add(model3D.Transform);
+
+                        Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
+                        list.Add(p);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        public static List<Point3D> GetPointsInDistance(List<Point3D> sourcePoints, double coordinate, int iDirectionCode)
+        {
+            List<Point3D> points = new List<Point3D>();
+
+            foreach (Point3D p in sourcePoints)
+            {
+                double dPointCoordinate = SetPointCoordinateForSpecificDirection(p, iDirectionCode);
+                if (MathF.d_equal(dPointCoordinate, coordinate)) points.Add(p);
+            }
+
+            if (points.Count == 0) return null;
+
+            return points;
+        }
+
+        public static List<Point3D> GetPointsInDistanceInterval(List<Point3D> sourcePoints, double startPosition, double endPosition, int iDirectionCode, bool bIncludingStart = false, bool bIncludingEnd = false/*, bool bIncludingPartial = true*/)
+        {
+            float fLimit = 0.0001f; // Limit pre uzatvoreny interval (0.1 mm)
+
+            if (bIncludingStart) startPosition -= fLimit;
+            if (bIncludingEnd) endPosition += fLimit;
+
+            List<Point3D> points = new List<Point3D>();
+
+            foreach (Point3D p in sourcePoints)
+            {
+                double PointCoordinate = SetPointCoordinateForSpecificDirection(p, iDirectionCode);
+
+                if ((!bIncludingStart && !bIncludingEnd) && (PointCoordinate > startPosition && PointCoordinate < endPosition)) // Node in interval - otvoreny interval
+                    points.Add(p);
+                else if (bIncludingStart && (PointCoordinate >= startPosition && PointCoordinate < endPosition))
+                    points.Add(p);
+                else if (bIncludingEnd && (PointCoordinate > startPosition && PointCoordinate <= endPosition))
+                    points.Add(p);
+                else if ((bIncludingStart && bIncludingEnd) && (PointCoordinate >= startPosition && PointCoordinate <= endPosition)) // Uzavrety interval
+                    points.Add(p);
+            }
+
+            if (points.Count == 0) return null;
+
+            return points;
+        }
+
         private static float SetNodeCoordinateForSpecificDirection(CNode n, int iDirectionCode)
         {
             // Funckia vrati suradnicu uzla pre specificky smer GCS ktory chceme uvazovat
@@ -281,8 +362,20 @@ namespace BaseClasses.Helpers
                 return n.X;
             if (iDirectionCode == 1) // Direction Y
                 return n.Y;
-            else //if (iDirectionCode == 2) // Direction ZX
+            else //if (iDirectionCode == 2) // Direction Z
                 return n.Z;
+        }
+
+        private static double SetPointCoordinateForSpecificDirection(Point3D p, int iDirectionCode)
+        {
+            // Funckia vrati suradnicu bodu pre specificky smer GCS ktory chceme uvazovat
+
+            if (iDirectionCode == 0) // Direction X
+                return p.X;
+            if (iDirectionCode == 1) // Direction Y
+                return p.Y;
+            else //if (iDirectionCode == 2) // Direction Z
+                return p.Z;
         }
     }
 }
