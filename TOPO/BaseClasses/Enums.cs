@@ -725,6 +725,9 @@
         public bool bDisplaySurfaceLoads;
         public bool bDisplayDimensions;
 
+        public bool bDisplaySawCuts;
+        public bool bDisplayControlJoints;
+
         public float DisplayIn3DRatio;
 
         public bool bColorsAccordingToMembers;

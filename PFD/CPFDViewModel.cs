@@ -2764,6 +2764,9 @@ namespace PFD
             sDisplayOptions.bDisplayMemberLoads_Frames = ShowLoadsOnFrameMembers;
             sDisplayOptions.bDisplaySurfaceLoads = ShowSurfaceLoads;
 
+            sDisplayOptions.bDisplaySawCuts = true; // TODO dopracovat nastavitelne v GUI
+            sDisplayOptions.bDisplayControlJoints = true; // TODO dopracovat nastavitelne v GUI
+
             sDisplayOptions.bDisplayLoadsLabels = ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = ShowLoadsLabelsUnits;
 

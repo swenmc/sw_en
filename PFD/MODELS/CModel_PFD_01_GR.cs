@@ -2613,12 +2613,12 @@ namespace PFD
                 // Sawcuts per X axis
                 for (int i = 0; i < iNumberInXDirection; i++)
                 {
-                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D(i * fDistanceInXDirection, 0, 0), new Point3D(i * fDistanceInXDirection, fL_tot, 0), 0));
+                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D(i * fDistanceInXDirection, 0, 0), new Point3D(i * fDistanceInXDirection, fL_tot, 0), true, 0));
                 }
 
                 // Sawcuts per Y axis
                 for (int i = 0; i < iNumberInYDirection; i++)
-                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, i * fDistanceInYDirection, 0), new Point3D(fW_frame, i * fDistanceInYDirection, 0), 0));
+                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, i * fDistanceInYDirection, 0), new Point3D(fW_frame, i * fDistanceInYDirection, 0), true, 0));
             }
         }
 
@@ -2633,7 +2633,7 @@ namespace PFD
                 // TODO - dopracovat generovanie po 20 m
 
                 m_arrControlJoints = new List<CControlJoint>();
-                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), 0));
+                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), true, 0));
             }
         }
 

@@ -223,6 +223,14 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
+                Model3DGroup sawCutsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplaySawCuts) sawCutsModel3DGroup = Drawing3D.CreateModelSawCutsModel3DGroup(model, sDisplayOptions);
+                if (sawCutsModel3DGroup != null) gr.Children.Add(sawCutsModel3DGroup);
+
+                Model3DGroup controlJointsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayControlJoints) sawCutsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
+                if (controlJointsModel3DGroup != null) gr.Children.Add(controlJointsModel3DGroup);
+
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
@@ -1959,6 +1967,58 @@ namespace BaseClasses
                         // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt betonovej dosky
                         GeometryModel3D model = cmodel.m_arrSlabs[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
                         model3D_group.Children.Add(model); // Add slab to the model group
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        // Create saw cuts model objects model 3d group
+        public static Model3DGroup CreateModelSawCutsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrSawCuts != null && sDisplayOptions.bDisplaySawCuts)
+            {
+                float fbrushOpacity = 0.3f;
+
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrSawCuts.Count; i++)
+                {
+                    if (cmodel.m_arrSawCuts[i] != null &&
+                        cmodel.m_arrSawCuts[i].m_pControlPoint != null &&
+                        cmodel.m_arrSawCuts[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                    {
+                        GeometryModel3D model = cmodel.m_arrSawCuts[i].GetSawCutModel(Colors.DarkGoldenrod);
+                        model3D_group.Children.Add(model); // Add saw cut to the model group
+                    }
+                }
+            }
+
+            return model3D_group;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        // Create control joints model objects model 3d group
+        public static Model3DGroup CreateModelControlJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrControlJoints != null && sDisplayOptions.bDisplayControlJoints)
+            {
+                float fbrushOpacity = 0.3f;
+
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrControlJoints.Count; i++)
+                {
+                    if (cmodel.m_arrControlJoints[i] != null &&
+                        cmodel.m_arrControlJoints[i].m_pControlPoint != null &&
+                        cmodel.m_arrControlJoints[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                    {
+                        GeometryModel3D model = cmodel.m_arrControlJoints[i].GetControlJointModel(Colors.DarkMagenta);
+                        model3D_group.Children.Add(model); // Add saw cut to the model group
                     }
                 }
             }
