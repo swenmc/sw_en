@@ -132,9 +132,6 @@
                     <Label Name="LabelAmountLH" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="5">LH:</Label>
                     <TextBox Name="TextBoxAmountLH" Grid.Column="1" Grid.Row="5" Text="{Binding Path=AmountLH}" MinWidth="40" Height="20" HorizontalAlignment="Left"></TextBox>
                 </Grid>
-                
-                
-                
             </StackPanel>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>

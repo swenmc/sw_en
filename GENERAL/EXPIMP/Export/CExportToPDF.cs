@@ -84,7 +84,7 @@ namespace EXPIMP
 
             PdfPage page2 = s_document.AddPage();
             XGraphics gfx2 = XGraphics.FromPdfPage(page2);
-            AddTableToDocument(gfx2, 50, tableParams);
+            AddTableToDocument(gfx2, 40, 50, tableParams);
             
             string fileName = GetPDFNameForPlate(plate);
             // Save the s_document...
@@ -92,7 +92,6 @@ namespace EXPIMP
             // ...and start a viewer
             Process.Start(fileName);
         }
-
 
         public static void CreatePDFDocument()
         {
@@ -121,7 +120,7 @@ namespace EXPIMP
         {
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            AddPlatesTableToDocument(gfx, 50, tableParams);
+            AddPlatesTableToDocument(gfx, 40, 50, tableParams);
         }
 
         public static void SavePDFDocument(string fileName)
@@ -733,7 +732,7 @@ namespace EXPIMP
             }
         }
 
-        private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
+        private static void AddTableToDocument(XGraphics gfx, double offsetX, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
@@ -750,11 +749,11 @@ namespace EXPIMP
             docRenderer.PrepareDocument();
             
             // Render the paragraph. You can render tables or shapes the same way.
-            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
-        private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
+        private static void AddPlatesTableToDocument(XGraphics gfx, double offsetX, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
@@ -771,7 +770,7 @@ namespace EXPIMP
             docRenderer.PrepareDocument();
 
             // Render the paragraph. You can render tables or shapes the same way.
-            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 

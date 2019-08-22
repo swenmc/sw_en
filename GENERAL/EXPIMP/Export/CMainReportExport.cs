@@ -25,10 +25,9 @@ namespace EXPIMP
 {
     public class CMainReportExport
     {
-
         //private const string fontFamily = "Verdana";
         //private const string fontFamily = "Times New Roman";
-        private const string fontFamily = "Calibri";
+        private const string fontFamily = "Arial";
         private const int fontSizeTitle = 14;
         private const int fontSizeNormal = 12;
         private const int fontSizeLegend = 10;
@@ -127,7 +126,7 @@ namespace EXPIMP
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 280);
+            gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
             XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
@@ -399,17 +398,52 @@ namespace EXPIMP
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
 
-            gfx.DrawString("Project Name: ", font, XBrushes.Black, 30, 30);
-            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBold, XBrushes.Black, 30 + 120, 30);
+            XFont fontProjectInfo = new XFont(fontFamily, 20, XFontStyle.Regular, options);
+            XFont fontBoltProjectInfo = new XFont(fontFamily, 20, XFontStyle.Bold, options);
+
+            XFont fontBoltTitle = new XFont(fontFamily, 50, XFontStyle.Bold, options);
+
+            // Project info
+            gfx.DrawString("Project Name: ", fontProjectInfo, XBrushes.Black, 30, 30);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 30);
+
+            gfx.DrawString("Project Site: ", fontProjectInfo, XBrushes.Black, 30, 60);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.Site, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 60);
+
+            gfx.DrawString("Project Part: ", fontProjectInfo, XBrushes.Black, 30, 90);
+            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectPart, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 90);
 
             gfx.DrawString("TITLE PAGE", font, XBrushes.Black, 500, 400);
+
             // Do stredu by sa mozno mohol vlozit malicky preview isometricky pohlad na konstrukciu, aby to nebolo take prazdne :)
             // Bez kot, bez popisov
 
-            //DrawLogo
+            // Skusal som kreslit tabulku ale neuspesne, nieco tam asi posielam nespravne
+            /*
+            // Tabulka so zoznamom vykresov - TODO Ondrej
+            string[] row1 = new string[2] { "fs01", "Isometric View" };
+            string[] row2 = new string[2] { "fs02", "Front Elevation" };
+            string[] row3 = new string[2] { "fs03", "Back Elevation" };
+            string[] row4 = new string[2] { "fs04", "Left Elevation" };
+            string[] row5 = new string[2] { "fs05", "Right Elevation" };
+            string[] row6 = new string[2] { "fs06", "Roof Layout" };
 
-            gfx.DrawString("TO BE READ IN CONJUCTION WITH ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 800, 600);
-            gfx.DrawString("ENGINEERING PLAN SET", fontBold, XBrushes.Black, 800, 650);
+            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6 };
+
+            DrawTable(gfx, 30, 300, tableParams);
+            */
+            // Logo
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
+            gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
+
+            gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
+            gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
+            gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, 530, 800);
+        }
+
+        private static void DrawTable(XGraphics gfx, int x, int y, List<string[]>tableParams)
+        {
+            AddTableToDocument(gfx, x, y, tableParams);
         }
 
         private static void DrawTitleBlock(XGraphics gfx, int x, int y, PdfDocument s_document, CProjectInfo pInfo) // TODO Ondrej - Tabulka s rozpiskou
@@ -922,7 +956,7 @@ namespace EXPIMP
             }
         }
 
-        private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
+        private static void AddTableToDocument(XGraphics gfx, double offsetX, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
@@ -939,7 +973,7 @@ namespace EXPIMP
             docRenderer.PrepareDocument();
 
             // Render the paragraph. You can render tables or shapes the same way.
-            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
