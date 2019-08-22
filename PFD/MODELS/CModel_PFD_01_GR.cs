@@ -84,6 +84,8 @@ namespace PFD
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
                 List<CSlab> slabs,
+                List<CSawCut> sawCuts,
+                List<CControlJoint> controlJoints,
                 CPFDViewModel vm
             )
         {
@@ -870,13 +872,30 @@ namespace PFD
             }
             else
                 m_arrFoundations = foundations;
+            #endregion
 
-            if(m_arrSlabs == null)
+            #region Floor slab, saw cuts and control joints
+
+            if (m_arrSlabs == null)
             {
                 CreateFloorSlab();
             }
             else
                 m_arrSlabs = slabs;
+
+            if (m_arrSawCuts == null)
+            {
+                CreateSawCuts();
+            }
+            else
+                m_arrSawCuts = sawCuts;
+
+            if (m_arrControlJoints == null)
+            {
+                CreateControlJoints();
+            }
+            else
+                m_arrControlJoints = controlJoints;
 
             #endregion
 
@@ -2572,6 +2591,49 @@ namespace PFD
                             0.3f,
                             true,
                             0));
+            }
+        }
+
+        private void CreateSawCuts()
+        {
+            bool bGenerateSawCuts = true;
+
+            if (bGenerateSawCuts)
+            {
+                float fMaximumDistance = 6; // 6 m
+                // Create raster of lines in XY-plane
+                int iNumberInXDirection = (int)(fW_frame / fMaximumDistance)-1;
+                int iNumberInYDirection = (int)(fL_tot / fMaximumDistance)-1;
+
+                float fDistanceInXDirection = fW_frame / iNumberInYDirection;
+                float fDistanceInYDirection = fL_tot / iNumberInXDirection;
+
+                m_arrSawCuts = new List<CSawCut>();
+
+                // Sawcuts per X axis
+                for (int i = 0; i < iNumberInXDirection; i++)
+                {
+                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D(i * fDistanceInXDirection, 0, 0), new Point3D(i * fDistanceInXDirection, fL_tot, 0), 0));
+                }
+
+                // Sawcuts per Y axis
+                for (int i = 0; i < iNumberInYDirection; i++)
+                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, i * fDistanceInYDirection, 0), new Point3D(fW_frame, i * fDistanceInYDirection, 0), 0));
+            }
+        }
+
+        private void CreateControlJoints()
+        {
+            bool bGenerateControlJoints = true;
+
+            if (bGenerateControlJoints)
+            {
+                // Create raster of lines in XY-plane
+                // V smere X v polovici budovy
+                // TODO - dopracovat generovanie po 20 m
+
+                m_arrControlJoints = new List<CControlJoint>();
+                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), 0));
             }
         }
 

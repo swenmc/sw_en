@@ -56,8 +56,12 @@ namespace BaseClasses
         public List<CConnectionJointTypes> m_arrConnectionJoints;
         // Foundations
         public List<CFoundation> m_arrFoundations;
-        // Foundations
+        // Slabs
         public List<CSlab> m_arrSlabs;
+        // Saw Cuts
+        public List<CSawCut> m_arrSawCuts;
+        // Control Joints
+        public List<CControlJoint> m_arrControlJoints;
 
         // Loading
         // Nodal Loads
