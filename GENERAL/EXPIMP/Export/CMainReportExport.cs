@@ -125,7 +125,7 @@ namespace EXPIMP
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
+            gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
             DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
 
@@ -481,8 +481,8 @@ namespace EXPIMP
         {
             // TODO - Onddrej - sem treba vykreslit tabulku podla vzoru co som Ti poslal (nemusis vsetko, len zhruba :) aby som si to vedel podoplnat)
             // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
-            
-            AddPageTitleBlockTableToDocument(gfx, pInfo, contents, jobNo, sheetNo, issue);
+
+            AddPageTitleBlockTableToDocument(gfx, pInfo, contents, sheetNo, issue);
         }
 
         private static int GetView(EViewModelMemberFilters viewModelMembers)
@@ -1051,9 +1051,9 @@ namespace EXPIMP
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(2));
             column1.Format.Alignment = ParagraphAlignment.Center;
-            column1.Format.Font.Bold = true;            
+            column1.Format.Font.Bold = true;
             Column column2 = table.AddColumn(Unit.FromCentimeter(8));
-            column2.Format.Alignment = ParagraphAlignment.Left;            
+            column2.Format.Alignment = ParagraphAlignment.Left;
 
             foreach (string[] strParams in tableParams)
             {
@@ -1063,7 +1063,7 @@ namespace EXPIMP
                 //cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
                 cell.AddParagraph(strParams[0]);
                 cell = row.Cells[1];
-                cell.AddParagraph(strParams[1]);                
+                cell.AddParagraph(strParams[1]);
             }
 
             table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
@@ -1071,14 +1071,14 @@ namespace EXPIMP
             return table;
         }
 
-        private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, string jobNo, int sheetNo, int issue)
+        private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, int sheetNo, int issue)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
             
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-            Table t = GetPageTitleBlockTable(doc, projectInfo, contents, jobNo, sheetNo, issue);
+            Table t = GetPageTitleBlockTable(doc, projectInfo, contents, sheetNo, issue);
 
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
@@ -1095,7 +1095,7 @@ namespace EXPIMP
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
         }
 
-        private static Table GetPageTitleBlockTable(Document document, CProjectInfo projectInfo, string contents, string jobNo, int sheetNo, int issue)
+        private static Table GetPageTitleBlockTable(Document document, CProjectInfo projectInfo, string contents, int sheetNo, int issue)
         {
             Section sec = document.AddSection();
             Table table = new Table();
@@ -1108,16 +1108,16 @@ namespace EXPIMP
             table.Format.Font.Size = fontSizeNormal;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(3));
-            column1.Format.Alignment = ParagraphAlignment.Left;            
+            column1.Format.Alignment = ParagraphAlignment.Left;
             Column column2 = table.AddColumn(Unit.FromCentimeter(4));
             column2.Format.Alignment = ParagraphAlignment.Left;
             Column column3 = table.AddColumn(Unit.FromCentimeter(3));
-            column3.Format.Alignment = ParagraphAlignment.Left;            
+            column3.Format.Alignment = ParagraphAlignment.Left;
             Column column4 = table.AddColumn(Unit.FromCentimeter(4));
             column4.Format.Alignment = ParagraphAlignment.Left;
-                        
+
             Row row = table.AddRow();
-            Cell cell = row.Cells[0];                
+            Cell cell = row.Cells[0];
             cell.AddParagraph("Project Title:");
             cell.MergeDown = 1;
             cell = row.Cells[1];
@@ -1131,7 +1131,7 @@ namespace EXPIMP
             row = table.AddRow();
             cell = row.Cells[0];
             cell.AddParagraph("");
-            cell = row.Cells[1];            
+            cell = row.Cells[1];
             cell.Format.Borders.Top.Width = 0;
             cell.Format.Borders.Top = null;
             cell.MergeRight = 2;
@@ -1148,7 +1148,7 @@ namespace EXPIMP
             cell = row.Cells[0];
             cell.AddParagraph("Job No.:");
             cell = row.Cells[1];
-            cell.AddParagraph(jobNo);
+            cell.AddParagraph(projectInfo.ProjectNumber);
             cell = row.Cells[2];
             cell.AddParagraph("Date:");
             cell = row.Cells[3];
