@@ -2600,25 +2600,25 @@ namespace PFD
 
             if (bGenerateSawCuts)
             {
-                float fMinimumDistance = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo minimalne 6 metrov od seba
+                float fMinimumDistance = Math.Min(3, fL1_frame); // 6 m // V kazdej bay alebo minimalne 6 metrov od seba
                 // Create raster of lines in XY-plane
                 int iNumberInXDirection = (int)(fW_frame / fMinimumDistance) -1;
                 int iNumberInYDirection = (int)(fL_tot / fMinimumDistance) -1;
 
-                float fDistanceInXDirection = fW_frame / iNumberInYDirection;
-                float fDistanceInYDirection = fL_tot / iNumberInXDirection;
+                float fDistanceInXDirection = fW_frame / (iNumberInXDirection+1); // Pocet rezov + jeden segment
+                float fDistanceInYDirection = fL_tot / (iNumberInYDirection+1);// Pocet rezov + jeden segment
 
                 m_arrSawCuts = new List<CSawCut>();
 
-                // Sawcuts per X axis
+                // Sawcuts per X axis - rezanie v smere Y
                 for (int i = 0; i < iNumberInXDirection; i++)
                 {
-                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D(i * fDistanceInXDirection, 0, 0), new Point3D(i * fDistanceInXDirection, fL_tot, 0), true, 0));
+                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D((i+1) * fDistanceInXDirection, 0, 0), new Point3D((i+1) * fDistanceInXDirection, fL_tot, 0), true, 0));
                 }
 
-                // Sawcuts per Y axis
+                // Sawcuts per Y axis - rezanie v smere X
                 for (int i = 0; i < iNumberInYDirection; i++)
-                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, i * fDistanceInYDirection, 0), new Point3D(fW_frame, i * fDistanceInYDirection, 0), true, 0));
+                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, (i+1) * fDistanceInYDirection, 0), new Point3D(fW_frame, (i+1) * fDistanceInYDirection, 0), true, 0));
             }
         }
 
