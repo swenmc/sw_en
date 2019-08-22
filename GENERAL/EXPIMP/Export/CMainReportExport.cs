@@ -31,12 +31,14 @@ namespace EXPIMP
         private const int fontSizeTitle = 14;
         private const int fontSizeNormal = 12;
         private const int fontSizeLegend = 10;
+        private static int sheetNo;
 
         private static XPdfFontOptions options;
         //private static PdfDocument document = null;
 
         public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData)
         {
+            sheetNo = 1;
             // Set font encoding to unicode
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
 
@@ -125,6 +127,8 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
+            DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
+
             int legendImgWidth = 100;
             int legendTextWidth = 60;
             DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
@@ -188,9 +192,10 @@ namespace EXPIMP
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
-
+            
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
+                sheetNo++;
                 page = s_document.AddPage();
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
@@ -198,7 +203,7 @@ namespace EXPIMP
                 //DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
-                DrawTitleBlock(gfx, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+                DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
@@ -282,7 +287,8 @@ namespace EXPIMP
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
 
-            DrawTitleBlock(gfx, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+            sheetNo++;
+            DrawTitleBlock(gfx, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
 
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
@@ -363,8 +369,8 @@ namespace EXPIMP
                 gfx2 = XGraphics.FromPdfPage(page2);
 
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
-
-                DrawTitleBlock(gfx2, (int)page.Width.Point - 300, (int)page.Height.Point - 150, s_document, GetProjectInfo());
+                sheetNo++;
+                DrawTitleBlock(gfx2, GetProjectInfo(), "Floor Plan", "B6028", sheetNo, 0);
 
                 dImagePosition_x = 2;
                 // 1st row
@@ -471,16 +477,12 @@ namespace EXPIMP
             AddTableToDocument(gfx, x, y, tableParams);
         }
 
-        private static void DrawTitleBlock(XGraphics gfx, int x, int y, PdfDocument s_document, CProjectInfo pInfo) // TODO Ondrej - Tabulka s rozpiskou
+        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, string jobNo, int sheetNo, int issue) // TODO Ondrej - Tabulka s rozpiskou
         {
-            XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
-            XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-
             // TODO - Onddrej - sem treba vykreslit tabulku podla vzoru co som Ti poslal (nemusis vsetko, len zhruba :) aby som si to vedel podoplnat)
             // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
-
-            gfx.DrawString("Project Name: ", font, XBrushes.Black, x, y);
-            if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectName, fontBold, XBrushes.Black, x + 120, y);
+            
+            AddPageTitleBlockTableToDocument(gfx, pInfo, contents, jobNo, sheetNo, issue);
         }
 
         private static int GetView(EViewModelMemberFilters viewModelMembers)
@@ -1065,6 +1067,114 @@ namespace EXPIMP
             }
 
             table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
+        }
+
+        private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, string jobNo, int sheetNo, int issue)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+            
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = GetPageTitleBlockTable(doc, projectInfo, contents, jobNo, sheetNo, issue);
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            double width = 410;
+            double offsetX = gfx.PageSize.Width - width;
+            double offsetY = gfx.PageSize.Height - 120;
+            
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
+        }
+
+        private static Table GetPageTitleBlockTable(Document document, CProjectInfo projectInfo, string contents, string jobNo, int sheetNo, int issue)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.LeftPadding = 3;
+            table.RightPadding = 1;
+            table.TopPadding = 1;
+            table.BottomPadding = 1;
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+            table.Format.Font.Size = fontSizeNormal;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(3));
+            column1.Format.Alignment = ParagraphAlignment.Left;            
+            Column column2 = table.AddColumn(Unit.FromCentimeter(4));
+            column2.Format.Alignment = ParagraphAlignment.Left;
+            Column column3 = table.AddColumn(Unit.FromCentimeter(3));
+            column3.Format.Alignment = ParagraphAlignment.Left;            
+            Column column4 = table.AddColumn(Unit.FromCentimeter(4));
+            column4.Format.Alignment = ParagraphAlignment.Left;
+                        
+            Row row = table.AddRow();
+            Cell cell = row.Cells[0];                
+            cell.AddParagraph("Project Title:");
+            cell.MergeDown = 1;
+            cell = row.Cells[1];
+            cell.MergeRight = 2;
+            cell.Format.Borders.Bottom.Width = 0;
+            cell.Format.Borders.Bottom = null;
+            cell.AddParagraph(projectInfo.ProjectName);
+            cell.Format.Font.Size = 16;
+            cell.Format.Font.Bold = true;
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("");
+            cell = row.Cells[1];            
+            cell.Format.Borders.Top.Width = 0;
+            cell.Format.Borders.Top = null;
+            cell.MergeRight = 2;
+            cell.AddParagraph(projectInfo.Site);
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("Contents:");
+            cell = row.Cells[1];
+            cell.MergeRight = 2;
+            cell.AddParagraph(contents);
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("Job No.:");
+            cell = row.Cells[1];
+            cell.AddParagraph(jobNo);
+            cell = row.Cells[2];
+            cell.AddParagraph("Date:");
+            cell = row.Cells[3];
+            cell.AddParagraph(projectInfo.Date.ToShortDateString());
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("Sheet No.:");
+            cell = row.Cells[1];
+            cell.AddParagraph($"fs {sheetNo.ToString("D2")}");
+            cell = row.Cells[2];
+            cell.AddParagraph("Scale:");
+            cell = row.Cells[3];
+            cell.AddParagraph("Not to scale");
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("Issue:");
+            cell = row.Cells[1];
+            cell.AddParagraph(issue.ToString());
+            cell = row.Cells[2];
+            cell.AddParagraph("Size:");
+            cell = row.Cells[3];
+            cell.AddParagraph("420x297 - A3");
+            
+            table.SetEdge(0, 0, 4, 6, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
