@@ -45,16 +45,14 @@ namespace EXPIMP
             //s_document.Info.Author = "";
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
-            PdfPage page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
-            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             //DrawLogo(gfx);
             //DrawProjectInfo(gfx,GetProjectInfo());
 
-            DrawTitlePage(gfx, s_document, GetProjectInfo(), modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            DrawTitlePage(s_document, GetProjectInfo(), modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
             
 
             DrawModel3D(/*gfx, viewPort,*/ s_document, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
@@ -399,8 +397,13 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawTitlePage(XGraphics gfx, PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        private static void DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
         {
+            PdfPage page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
 
@@ -447,20 +450,12 @@ namespace EXPIMP
             
 
 
-            // Skusal som kreslit tabulku ale neuspesne, nieco tam asi posielam nespravne
-            /*
-            // Tabulka so zoznamom vykresov - TODO Ondrej
-            string[] row1 = new string[2] { "fs01", "Isometric View" };
-            string[] row2 = new string[2] { "fs02", "Front Elevation" };
-            string[] row3 = new string[2] { "fs03", "Back Elevation" };
-            string[] row4 = new string[2] { "fs04", "Left Elevation" };
-            string[] row5 = new string[2] { "fs05", "Right Elevation" };
-            string[] row6 = new string[2] { "fs06", "Roof Layout" };
+            
+            
+            
+            
+            AddTitlePageTableToDocument(gfx);
 
-            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6 };
-
-            DrawTable(gfx, 30, 300, tableParams);
-            */
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
             gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
@@ -1005,6 +1000,73 @@ namespace EXPIMP
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
+        }
+
+        private static void AddTitlePageTableToDocument(XGraphics gfx)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+
+            // Tabulka so zoznamom vykresov
+            string[] row1 = new string[2] { "fs01", "Isometric View" };
+            string[] row2 = new string[2] { "fs02", "Front Elevation" };
+            string[] row3 = new string[2] { "fs03", "Back Elevation" };
+            string[] row4 = new string[2] { "fs04", "Left Elevation" };
+            string[] row5 = new string[2] { "fs05", "Right Elevation" };
+            string[] row6 = new string[2] { "fs06", "Roof Layout" };
+
+            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6 };
+
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = GetTitlePageTable(doc, tableParams);
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            double offsetX = 30;
+            double offsetY = gfx.PageSize.Height - 150;
+            double width = 300;
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
+        }
+
+        private static Table GetTitlePageTable(Document document, List<string[]> tableParams)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.LeftPadding = 1;
+            table.RightPadding = 1;
+            table.TopPadding = 1;
+            table.BottomPadding = 1;
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+            table.Format.Font.Size = fontSizeNormal;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(2));
+            column1.Format.Alignment = ParagraphAlignment.Center;
+            column1.Format.Font.Bold = true;            
+            Column column2 = table.AddColumn(Unit.FromCentimeter(8));
+            column2.Format.Alignment = ParagraphAlignment.Left;            
+
+            foreach (string[] strParams in tableParams)
+            {
+                Row row = table.AddRow();
+                //row.Shading.Color = Colors.PaleGoldenrod;
+                Cell cell = row.Cells[0];
+                //cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
+                cell.AddParagraph(strParams[0]);
+                cell = row.Cells[1];
+                cell.AddParagraph(strParams[1]);                
+            }
+
+            table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
         }
 
         private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
