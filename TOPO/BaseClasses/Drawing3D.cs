@@ -4833,11 +4833,16 @@ namespace BaseClasses
             {
                 // Ak vyberiem filter pre floor slabs, chcem aby sa automaticky nastavilo v display options zobrazenie slabs
                 sDisplayOptions.bDisplayFloorSlab = true;
+                sDisplayOptions.bDisplaySawCuts = true;
+                sDisplayOptions.bDisplayControlJoints = true;
 
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
+
+                _model.m_arrSawCuts = model.m_arrSawCuts;
+                _model.m_arrControlJoints = model.m_arrControlJoints;
             }
 
             return _model;

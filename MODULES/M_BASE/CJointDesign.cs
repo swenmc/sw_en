@@ -47,8 +47,6 @@ namespace M_BASE
             //FootingCalcSettings.SoilBearingCapacity = 100e+3f;
             //FootingCalcSettings.FloorSlabThickness = 0.125f;
             ////-------------------------------------------------------------------------------------------------------------
-            
-
 
             for (int j = 0; j < iNumberOfDesignSections; j++)
             {
