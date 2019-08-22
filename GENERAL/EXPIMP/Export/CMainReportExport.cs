@@ -55,6 +55,7 @@ namespace EXPIMP
             //DrawProjectInfo(gfx,GetProjectInfo());
 
             DrawTitlePage(gfx, s_document, GetProjectInfo()); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            gfx.Dispose();
 
             DrawModel3D(/*gfx, viewPort,*/ s_document, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
@@ -116,8 +117,8 @@ namespace EXPIMP
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
-
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMemberDescription = false;
+            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
 
             bool  bTransformScreenLines3DToCylinders3D = true;
 
@@ -128,12 +129,16 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Structural model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
+            //XImage image = XImage.FromBitmapSource(ExportHelper.SaveViewPortContentAsImage(viewPort));
+            XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
             double scaleFactor = gfx.PageSize.Width / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width;
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+
+            gfx.Dispose();
+
         }
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
