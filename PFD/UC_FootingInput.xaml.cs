@@ -172,13 +172,14 @@ namespace PFD
 
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
-            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.RotateModelX = -90;
             sDisplayOptions.RotateModelY = 45;
+            sDisplayOptions.bDisplayMemberDescription = false;
 
             CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 

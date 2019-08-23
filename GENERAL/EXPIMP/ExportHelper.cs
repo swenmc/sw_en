@@ -982,11 +982,12 @@ namespace EXPIMP
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
-
+            sDisplayOptions.bDisplayMemberDescription = false;
             // Do dokumentu exporujeme aj s wireframe
-            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = true;            
+            sDisplayOptions.fWireFrameLineThickness = 1;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = false;
-            sDisplayOptions.wireFrameColor = Colors.Black; // Fraba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            //sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
