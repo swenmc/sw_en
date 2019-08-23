@@ -53,6 +53,10 @@ namespace DATABASE.DTO
         public double A_w1;
         public double A_vz;
         public double fvz_red_factor;
+        public bool IsBuiltUp;
+        public int iScrewsNumber;
+        public int iScrewsGauge;
+        public double dScrewDistance;
 
         public CrScProperties(){}
     }

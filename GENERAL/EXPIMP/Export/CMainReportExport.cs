@@ -43,10 +43,16 @@ namespace EXPIMP
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
 
             PdfDocument s_document = new PdfDocument();
-            s_document.Info.Title = "Export from software";
-            //s_document.Info.Author = "";
-            //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
-            //s_document.Info.Keywords = "PDFsharp, XGraphics";
+
+            CProjectInfo projectInfo = GetProjectInfo();
+
+            s_document.Info.Title = projectInfo.ProjectName;
+            s_document.Info.Author = "Formsteel Technologies";
+            s_document.Info.Subject = "Number:" + projectInfo.ProjectNumber;
+            s_document.Info.Keywords = projectInfo.ProjectNumber + ", " +
+                                       "Formsteel Technologies" + ", " +
+                                       "cold-formed steel" + ", " +
+                                       "portal frame";
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             //DrawLogo(gfx);
@@ -78,7 +84,7 @@ namespace EXPIMP
 
             List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12 };
 
-            DrawTitlePage(s_document, GetProjectInfo(), tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
             DrawModel3D(/*gfx, viewPort,*/ s_document, tableParams, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
             //gfx.Dispose();
@@ -636,14 +642,28 @@ namespace EXPIMP
             {
                 DrawImage(gfx, ConfigurationManager.AppSettings[crsc], x, y, width, height);
 
+                // List of member types
                 List<string> list_memberTypes = GetMemberTypesWithCrscFromModel(model, crsc);
                 font_y = 20;
                 foreach (string s in list_memberTypes)
-                {                    
+                {
                     gfx.DrawString($"[{s}]", font, XBrushes.Black, x - textWidth, y + font_y);
                     font_y += 15;
                 }
-                gfx.DrawString($"{crsc}", font, XBrushes.Black, x - textWidth, y + font_y);
+
+                // Cross-section name
+                gfx.DrawString($"{crsc}", font, XBrushes.Black, x - textWidth, y + font_y); // cross-section name
+                font_y += 15;
+
+                // TEK screws number, gauge and distance - TO Ondrej - mozem to nacitavat tu z databazy znova alebo je lepsie dostat sem nie len crsc string ale cely objekt a necitat to z neho
+                DATABASE.DTO.CrScProperties crscProp = DATABASE.CSectionManager.GetSectionProperties(crsc); // Load cross-section properties
+
+                if(crscProp.IsBuiltUp == true)
+                {
+                    string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge+"g" +" teks@"+ (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
+                    gfx.DrawString(sScrewsDescrtiption, font, XBrushes.Black, x - textWidth, y + font_y); // built-up cross-section number of screws and distance
+                }
+
                 y += height;
             }
         }

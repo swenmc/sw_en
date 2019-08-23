@@ -366,7 +366,7 @@ namespace DATABASE
             crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
 
             crsc.A_stiff = reader["A_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["A_stiff"].ToString(), nfi);
-            crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString(), nfi);
+            crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString());
             crsc.y_stiff = reader["y_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["y_stiff"].ToString(), nfi);
 
             crsc.b_1_flat_portion = double.Parse(reader["b_1_flat_portion"].ToString(), nfi);
@@ -381,6 +381,12 @@ namespace DATABASE
             crsc.A_w1 = double.Parse(reader["A_w1"].ToString(), nfi);
             crsc.A_vz = double.Parse(reader["A_vz"].ToString(), nfi);
             crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
+
+            crsc.IsBuiltUp = bool.Parse(reader["bIsBuiltUp"].ToString());
+            crsc.iScrewsNumber =  int.Parse(reader["screwsNumber"].ToString());
+            crsc.iScrewsGauge = int.Parse(reader["screwsGauge"].ToString());
+            crsc.dScrewDistance = double.Parse(reader["screwsDistance"].ToString(), nfi);
+
             return crsc;
         }
         private static List<string> FillListOfSectionPropertiesString(CSectionProperties properties)
