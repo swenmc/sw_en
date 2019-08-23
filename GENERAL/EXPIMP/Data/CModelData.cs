@@ -114,6 +114,8 @@ namespace EXPIMP
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
+
+        public Dictionary<CConnectionDescription, CConnectionJointTypes> JointsDict;
         
 
         private CModel MModel;

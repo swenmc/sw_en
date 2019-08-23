@@ -2630,6 +2630,8 @@ namespace PFD
             data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
             data.frameModels = frameModels;
 
+            data.JointsDict = JointsVM.DictJoints;            
+
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();
             return data;

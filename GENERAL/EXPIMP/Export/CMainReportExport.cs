@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using DATABASE.DTO;
 using MATH;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -81,16 +82,19 @@ namespace EXPIMP
             string[] row10 = new string[2] { "fs10", "Floor Plan" };
             string[] row11 = new string[2] { "fs11", "Standard Details 1" };
             string[] row12 = new string[2] { "fs12", "Standard Details 2" };
+            string[] row13 = new string[2] { "fs13", "Joints" };
 
-            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12 };
+            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13 };
 
-            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            //DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            DrawModel3D(s_document, tableParams, modelData); 
-            
-            DrawModelViews(s_document, tableParams, modelData);
+            //DrawModel3D(s_document, tableParams, modelData);
 
-            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+            //DrawModelViews(s_document, tableParams, modelData);
+
+            //DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+
+            DrawJointTypes(s_document, tableParams, modelData);
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -169,15 +173,15 @@ namespace EXPIMP
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
-            string[] pageDetails = tableParams[sheetNo-1];
+            string[] pageDetails = tableParams[sheetNo - 1];
             DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
             DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
-            
+
             XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
-            
+
             double scaleFactor = (gfx.PageSize.Width - legendImgWidth - legendTextWidth) / image.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width - legendImgWidth - legendTextWidth;
             double scaledImageHeight = image.PointHeight * scaleFactor;
@@ -250,7 +254,7 @@ namespace EXPIMP
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
-            
+
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
                 sheetNo++;
@@ -288,7 +292,7 @@ namespace EXPIMP
                 }
 
                 // Toto je len pokus ako to vyzera :)
-                if(viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
+                if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
@@ -333,7 +337,7 @@ namespace EXPIMP
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-                gfx.DrawString( $"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
+                gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
@@ -345,6 +349,71 @@ namespace EXPIMP
 
                 gfx.Dispose();
             }
+        }
+
+        private static void DrawJointTypes(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            double scale = 1;
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            opts.bUseOrtographicCamera = true;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
+            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.bTransformScreenLines3DToCylinders3D = true;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            
+            sheetNo++;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
+            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
+            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+
+            //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+            //gfx.DrawString("Joints:", fontBold, XBrushes.Black, 20, 20);
+
+            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+            
+
+            double moveX = 0;
+            double moveY = 40;
+            int maxInRow = 7;
+            int numInRow = 0;
+            var tf = new XTextFormatter(gfx);
+            XStringFormat format = new XStringFormat();
+            format.LineAlignment = XLineAlignment.Near;
+            format.Alignment = XStringAlignment.Near;
+
+            foreach (KeyValuePair<CConnectionDescription, CConnectionJointTypes> kvp in data.JointsDict)
+            {
+                numInRow++;
+                CConnectionJointTypes joint = kvp.Value;
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, data.DisplayOptions, data.Model);
+                viewPort.UpdateLayout();
+
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
+                double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
+                double scaledImageWidth = gfx.PageSize.Width / maxInRow;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+
+                tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 10, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
+                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
+
+                moveX += scaledImageWidth;
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; }                
+            }
+            
+            gfx.Dispose();
+
         }
 
         private static void DrawStandardDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
@@ -426,7 +495,7 @@ namespace EXPIMP
             {
                 bool bAddRollerDoorDetail = false;
                 bool bAddPersonnelAccessDoorDetail = false;
-                foreach(DoorProperties prop in data.DoorBlocksProperties)
+                foreach (DoorProperties prop in data.DoorBlocksProperties)
                 {
                     if (prop.sDoorType == "Roller Door")
                         bAddRollerDoorDetail = true;
@@ -530,14 +599,14 @@ namespace EXPIMP
 
             opts.bDisplayFoundationsDescription = false;
             opts.bDisplayFloorSlabDescription = false;
-            
+
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
-            
+
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
 
-            double scaleFactor = (gfx.PageSize.Width / 2 ) / imageModel.PointWidth;
+            double scaleFactor = (gfx.PageSize.Width / 2) / imageModel.PointWidth;
             double scaledImageWidth = gfx.PageSize.Width / 2;
             double scaledImageHeight = imageModel.PointHeight * scaleFactor;
 
@@ -556,7 +625,7 @@ namespace EXPIMP
         }
 
         // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
-        private static void DrawTable(XGraphics gfx, int x, int y, List<string[]>tableParams)
+        private static void DrawTable(XGraphics gfx, int x, int y, List<string[]> tableParams)
         {
             AddTableToDocument(gfx, x, y, tableParams);
         }
@@ -642,7 +711,7 @@ namespace EXPIMP
             int height = 76;
             int y = 20;
             int font_y = 20;
-            
+
             XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
             List<string> list_crsc = GetCrscFromModel(model);
 
@@ -666,9 +735,9 @@ namespace EXPIMP
                 // TEK screws number, gauge and distance - TO Ondrej - mozem to nacitavat tu z databazy znova alebo je lepsie dostat sem nie len crsc string ale cely objekt a necitat to z neho
                 DATABASE.DTO.CrScProperties crscProp = DATABASE.CSectionManager.GetSectionProperties(crsc); // Load cross-section properties
 
-                if(crscProp.IsBuiltUp == true)
+                if (crscProp.IsBuiltUp == true)
                 {
-                    string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge+"g" +" teks@"+ (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
+                    string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge + "g" + " teks@" + (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
                     gfx.DrawString(sScrewsDescrtiption, font, XBrushes.Black, x - textWidth, y + font_y); // built-up cross-section number of screws and distance
                 }
 
@@ -717,7 +786,7 @@ namespace EXPIMP
         }
 
         private static void DrawProjectInfo(XGraphics gfx, CProjectInfo pInfo)
-        {           
+        {
             XFont font = new XFont(fontFamily, fontSizeTitle, XFontStyle.Regular, options);
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
 
@@ -779,7 +848,7 @@ namespace EXPIMP
             gfx.DrawString("Pitch", font, XBrushes.Black, offsetX1, 140);
             gfx.DrawString("α", font, XBrushes.Black, offsetX2, 140);
             gfx.DrawString(data.RoofPitch_deg.ToString(), font, XBrushes.Black, offsetX3, 140);
-            gfx.DrawString("deg", font, XBrushes.Black, offsetX4, 140);            
+            gfx.DrawString("deg", font, XBrushes.Black, offsetX4, 140);
         }
 
         private static void AddBasicGeometryToDocument(XGraphics gfx, CModelData data, double offsetY)
@@ -833,7 +902,7 @@ namespace EXPIMP
             }
             return fileName;
         }
- 
+
 
 
 
@@ -1175,7 +1244,7 @@ namespace EXPIMP
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
-            
+
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
             Table t = GetPageTitleBlockTable(doc, projectInfo, contents, sheetNo, issue);
@@ -1190,7 +1259,7 @@ namespace EXPIMP
             double width = 410;
             double offsetX = gfx.PageSize.Width - width;
             double offsetY = gfx.PageSize.Height - 120;
-            
+
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
         }
@@ -1273,7 +1342,7 @@ namespace EXPIMP
             cell.AddParagraph("Size:");
             cell = row.Cells[3];
             cell.AddParagraph("420x297 - A3");
-            
+
             table.SetEdge(0, 0, 4, 6, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;

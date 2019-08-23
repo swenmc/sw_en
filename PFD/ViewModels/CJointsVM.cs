@@ -1,4 +1,5 @@
-﻿using DATABASE;
+﻿using BaseClasses;
+using DATABASE;
 using DATABASE.DTO;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace PFD
         private int m_JointTypeIndex;
         private List<CConnectionDescription> m_JointTypes;
         private List<CConnectionDescription> m_AllJointTypes;
+        private Dictionary<CConnectionDescription, CConnectionJointTypes> m_DictJoints;
+
 
         private List<TabItem> m_TabItems;
         
@@ -130,7 +133,20 @@ namespace PFD
             }
         }
 
-        
+        public Dictionary<CConnectionDescription, CConnectionJointTypes> DictJoints
+        {
+            get
+            {
+                return m_DictJoints;
+            }
+
+            set
+            {
+                m_DictJoints = value;
+            }
+        }
+
+
 
         //public List<CComponentParamsView> ScrewArrangementParameters
         //{

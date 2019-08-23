@@ -98,12 +98,17 @@ namespace PFD
         public void ArrangeConnectionJoints()
         {
             jointsDict = new Dictionary<int, List<CConnectionJointTypes>>();
+            vm.DictJoints = new Dictionary<CConnectionDescription, CConnectionJointTypes>();
             List<CConnectionDescription> listJointTypes = new List<CConnectionDescription>();
             foreach (CConnectionDescription c in vm.AllJointTypes)
             {
-                List<CConnectionJointTypes> listFoundJointTyes = GetConnectionJointTypesFor(c);
-                jointsDict.Add(c.ID, listFoundJointTyes);
-                if (listFoundJointTyes.Count > 0) listJointTypes.Add(c);
+                List<CConnectionJointTypes> listFoundJointTypes = GetConnectionJointTypesFor(c);
+                jointsDict.Add(c.ID, listFoundJointTypes);
+                if (listFoundJointTypes.Count > 0)
+                {
+                    listJointTypes.Add(c);
+                    vm.DictJoints.Add(c, listFoundJointTypes.FirstOrDefault());
+                }
 
                 //----------------------------------------------------------------------------------------------------------------------------
                 // TO Ondrej - pozri prosim na toto
