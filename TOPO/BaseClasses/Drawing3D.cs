@@ -250,19 +250,18 @@ namespace BaseClasses
 
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
+                // Add WireFrame Model
                 // Members
-                //Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-
                     if(lines != null)
                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
-                //Joints
+                // Joints
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
@@ -273,23 +272,21 @@ namespace BaseClasses
                 }
 
                 // Foundations
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations && sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
                     Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
                 // Slabs
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                     Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -472,9 +469,8 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
-
-
-                //Add WireFrame Model
+                // Add WireFrame Model
+                // Members
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
@@ -485,7 +481,7 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
-                //Joints
+                // Joints
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
@@ -602,11 +598,12 @@ namespace BaseClasses
 
                 Model3DGroup jointsModel3DGroup = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                if (jointsModel3DGroup != null)
-                {
-                    gr.Children.Add(jointsModel3DGroup);
-                }
+                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+
+                Model3DGroup foundationsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFoundations) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
+                if (foundationsModel3DGroup != null) gr.Children.Add(foundationsModel3DGroup);
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
@@ -618,18 +615,20 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
-                //Add WireFrame Model
+                // Pokus vyrobit lines 3D objekty
+                // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
+                // Add WireFrame Model
+                // Members
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
-                //Joints
+                // Joints
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
@@ -639,6 +638,15 @@ namespace BaseClasses
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
+                // Foundations
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
+                {
+                    Model3DGroup lines;  // linie ako 3D valcove plochy
+                    if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                }
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
