@@ -82,6 +82,8 @@ namespace PFD
         private float m_MeshConcreteCover;
 
         private List<CFoundation> listOfSelectedTypePads;
+        private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
+
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -943,6 +945,37 @@ namespace PFD
             }
         }
 
+        public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> DictFootings
+        {
+            get
+            {
+                if (m_DictFootings == null)
+                {
+                    
+                    m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
+                    CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
+                    CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
+                    m_DictFootings.Add("Main Column", Tuple.Create<CFoundation, CConnectionJointTypes> (pad, joint));
+
+                    pad = GetFootingPad(EMemberType_FS_Position.EdgeColumn);
+                    joint = GetBaseJointForSelectedNode(pad.m_Node);
+                    m_DictFootings.Add("Edge Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+
+                    pad = GetFootingPad(EMemberType_FS_Position.ColumnFrontSide);
+                    joint = GetBaseJointForSelectedNode(pad.m_Node);
+                    m_DictFootings.Add("Wind Post - Front", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+
+                    pad = GetFootingPad(EMemberType_FS_Position.ColumnBackSide);
+                    joint = GetBaseJointForSelectedNode(pad.m_Node);
+                    m_DictFootings.Add("Wind Post - Back", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+                }
+
+                return m_DictFootings;
+            }
+
+            
+        }
+
         CPFDViewModel _pfdVM;
         CModel_PFD_01_GR _model;
         //-------------------------------------------------------------------------------------------------------------
@@ -1078,6 +1111,29 @@ namespace PFD
             CFoundation pad = listOfSelectedTypePads.FirstOrDefault();
 
             return pad;
+        }
+        public CConnectionJointTypes GetBaseJointForSelectedNode(CNode node)
+        {
+            // Vrati spoj typu base plate pre uzol selektovanej patky
+
+            for (int i = 0; i < _pfdVM.Model.m_arrConnectionJoints.Count; i++)
+            {
+                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_B_basic)
+                {
+                    return _pfdVM.Model.m_arrConnectionJoints[i];
+                }
+            }
+
+            return null; // Error - joint wasn't found
+        }
+
+        public CFoundation GetFootingPad(EMemberType_FS_Position memberType)
+        {
+            for (int i = 0; i < _pfdVM.Model.m_arrFoundations.Count; i++)
+            {
+                if (memberType == _pfdVM.Model.m_arrFoundations[i].m_ColumnMemberTypePosition) return _pfdVM.Model.m_arrFoundations[i];
+            }
+            return null;
         }
 
         private EMemberType_FS_Position GetSelectedFootingPadMemberType()

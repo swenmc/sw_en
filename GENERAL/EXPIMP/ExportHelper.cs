@@ -1232,6 +1232,8 @@ namespace EXPIMP
 
         public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions)
         {
+            //refaktoring!!!!  tieto nastavenie Display Options by mali dojst do funkcie a nie nastavovat ich vo vnutri
+
             //Here is the place to overwrite displayOptions from Main Model
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
@@ -1242,7 +1244,7 @@ namespace EXPIMP
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             
-            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = false;
             sDisplayOptions.fWireFrameLineThickness = 0.001f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
             sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export

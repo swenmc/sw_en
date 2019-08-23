@@ -116,7 +116,9 @@ namespace EXPIMP
         public List<CBeam_Simple> beamSimpleModels;
 
         public Dictionary<CConnectionDescription, CConnectionJointTypes> JointsDict;
-        
+        public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> FootingsDict;
+
+
 
         private CModel MModel;
 

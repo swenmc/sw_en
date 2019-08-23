@@ -83,18 +83,24 @@ namespace EXPIMP
             string[] row11 = new string[2] { "fs11", "Standard Details 1" };
             string[] row12 = new string[2] { "fs12", "Standard Details 2" };
             string[] row13 = new string[2] { "fs13", "Joints" };
+            string[] row14 = new string[2] { "fs14", "Footings" };
 
-            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13 };
+            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
-            //DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            //DrawModel3D(s_document, tableParams, modelData);
+            DrawModel3D(s_document, tableParams, modelData);
 
-            //DrawModelViews(s_document, tableParams, modelData);
+            DrawModelViews(s_document, tableParams, modelData);
 
-            //DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
 
             DrawJointTypes(s_document, tableParams, modelData);
+
+            DrawFootingTypes(s_document, tableParams, modelData);
+
+
+
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -412,6 +418,73 @@ namespace EXPIMP
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; }                
             }
             
+            gfx.Dispose();
+
+        }
+
+        private static void DrawFootingTypes(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            double scale = 1;
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            opts.bUseOrtographicCamera = true;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
+            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.bTransformScreenLines3DToCylinders3D = true;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+
+            sheetNo++;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
+            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
+            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+
+            //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
+            //gfx.DrawString("Footings:", fontBold, XBrushes.Black, 20, 20);
+
+            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+
+
+            double moveX = 0;
+            double moveY = 40;
+            int maxInRow = 4;
+            int numInRow = 0;
+            //var tf = new XTextFormatter(gfx);
+            //XStringFormat format = new XStringFormat();
+            //format.LineAlignment = XLineAlignment.Near;
+            //format.Alignment = XStringAlignment.Near;
+
+            foreach (KeyValuePair<string, Tuple<CFoundation, CConnectionJointTypes>> kvp in data.FootingsDict)
+            {
+                numInRow++;
+                CFoundation pad = kvp.Value.Item1;
+                CConnectionJointTypes joint = kvp.Value.Item2;
+
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, data.DisplayOptions);
+                viewPort.UpdateLayout();
+
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
+                double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
+                double scaledImageWidth = gfx.PageSize.Width / maxInRow;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+
+                gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
+                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
+
+                moveX += scaledImageWidth;
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; }
+            }
+
             gfx.Dispose();
 
         }

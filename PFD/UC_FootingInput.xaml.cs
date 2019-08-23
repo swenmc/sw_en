@@ -41,7 +41,7 @@ namespace PFD
             vm.FootingPadMemberTypeIndex = 0;
 
             CFoundation pad = vm.GetSelectedFootingPad();
-            CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
+            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
 
@@ -136,24 +136,11 @@ namespace PFD
                 _pfdVM.FootingChanged = true;
             }
             CFoundation pad = vm.GetSelectedFootingPad();
-            CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
+            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
         
-        private CConnectionJointTypes GetBaseJointForSelectedNode(CNode node)
-        {
-            // Vrati spoj typu base plate pre uzol selektovanej patky
-
-            for (int i = 0; i < _pfdVM.Model.m_arrConnectionJoints.Count; i++)
-            {
-                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_B_basic)
-                {
-                    return _pfdVM.Model.m_arrConnectionJoints[i];
-                }
-            }
-
-            return null; // Error - joint wasn't found
-        }
+        
 
         private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
