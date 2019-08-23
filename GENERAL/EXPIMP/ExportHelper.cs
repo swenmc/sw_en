@@ -980,9 +980,12 @@ namespace EXPIMP
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.bDisplayGlobalAxis = false;
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bTransformScreenLines3DToCylinders3D = false;
             sDisplayOptions.wireFrameColor = Colors.Black; // Fraba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
@@ -1229,13 +1232,14 @@ namespace EXPIMP
         public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions)
         {
             //Here is the place to overwrite displayOptions from Main Model
-            sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
             sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.RotateModelX = -90;
             sDisplayOptions.RotateModelY = 45;
+            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.bDisplayGlobalAxis = false;
 
 
             CConnectionJointTypes jointClone = joint.Clone();

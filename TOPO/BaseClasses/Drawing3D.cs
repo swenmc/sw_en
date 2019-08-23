@@ -2503,37 +2503,6 @@ namespace BaseClasses
                     }
                 }
 
-                bool useWireLines = false;
-                bool useScreenSpaceLines = false;
-                bool useLinesVisual3D = true;
-                if (useWireLines)
-                {
-                    WireLines wl = new WireLines();
-                    wl.Lines = new Point3DCollection(wireFramePoints);
-                    wl.Color = sDiplayOptions.wireFrameColor;                    
-                    if (centerModel) { wl.Transform = centerModelTransGr; }
-                    viewPort.Children.Add(wl);
-                }
-
-                if (useScreenSpaceLines)
-                {
-                    //ScreenSpaceLines are much slower = performance issue
-                    ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness); // Just one collection for all members
-                    wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
-                    if (centerModel) { wireFrameAllMembers.Transform = centerModelTransGr; }
-                    viewPort.Children.Add(wireFrameAllMembers);
-                }
-
-                if (useLinesVisual3D)
-                {
-                    LinesVisual3D wl = new LinesVisual3D();
-                    wl.Points = new Point3DCollection(wireFramePoints);
-                    wl.Color = sDiplayOptions.wireFrameColor;
-                    wl.Thickness = sDiplayOptions.fWireFrameLineThickness;
-                    if (centerModel) { wl.Transform = centerModelTransGr; }
-                    viewPort.Children.Add(wl);
-                }
-
                 if (sDiplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     cylinders = new Model3DGroup();
@@ -2543,6 +2512,10 @@ namespace BaseClasses
                         GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
+                }
+                else
+                {
+                    AddLineToViewPort(wireFramePoints, sDiplayOptions, viewPort);
                 }
 
             }
