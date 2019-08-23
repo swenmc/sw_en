@@ -985,9 +985,9 @@ namespace EXPIMP
             sDisplayOptions.bDisplayMemberDescription = false;
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;            
-            sDisplayOptions.fWireFrameLineThickness = 1;
-            sDisplayOptions.bTransformScreenLines3DToCylinders3D = false;
-            //sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
@@ -1241,7 +1241,11 @@ namespace EXPIMP
             sDisplayOptions.RotateModelY = 45;
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
-
+            
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();

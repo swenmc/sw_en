@@ -86,8 +86,8 @@ namespace EXPIMP
 
             DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            DrawModel3D(/*gfx, viewPort,*/ s_document, tableParams, modelData); // To Ondrej - Tu by som chcel exportovat ISO front right view s nejako pekne nastavenymi display options, nechcem exportovat aktualnu scenu
-            //gfx.Dispose();
+            DrawModel3D(s_document, tableParams, modelData); 
+            
             DrawModelViews(s_document, tableParams, modelData);
 
             DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
@@ -150,6 +150,7 @@ namespace EXPIMP
             opts.bDisplayMemberDescription = false;
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayJoints = true; //???
@@ -195,6 +196,7 @@ namespace EXPIMP
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
+            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
@@ -277,6 +279,7 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
@@ -290,6 +293,7 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -297,6 +301,7 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -311,6 +316,7 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
@@ -512,7 +518,9 @@ namespace EXPIMP
             opts.bDisplayMemberDescription = false;
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.bTransformScreenLines3DToCylinders3D = true;
+            opts.fWireFrameLineThickness = 0.001f;
 
             opts.bDisplayJoints = true; //???
             opts.bDisplayPlates = true; //???
@@ -522,7 +530,7 @@ namespace EXPIMP
 
             opts.bDisplayFoundationsDescription = false;
             opts.bDisplayFloorSlabDescription = false;
-
+            
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
