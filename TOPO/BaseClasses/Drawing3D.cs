@@ -1114,6 +1114,16 @@ namespace BaseClasses
                     Drawing3D.CreateControlJointDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
+                if (sDisplayOptions.bDisplayFoundationsDescription)
+                {
+                    Drawing3D.CreateFoundationsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
+                if (sDisplayOptions.bDisplayFloorSlabDescription)
+                {
+                    Drawing3D.CreateFloorSlabsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                }
+
                 //if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
                 //{
                 //    CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
@@ -1123,7 +1133,7 @@ namespace BaseClasses
 
                 //    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 //}
-            }
+                }
 
             _trackport.SetupScene();
             return model;
@@ -3199,7 +3209,7 @@ namespace BaseClasses
                     //Point3D pTransformed = dimension.TransformGr.Transform(dimension.PointText);
                     //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, overTransformed, upTransformed);
                 }
-                tr.Children.Add(centerModelTransGr); // o Ondrej - Mam otazku ci treba tuto transformaciu pre text robit samostatna alebo je uz obsiahnuta v transformacii koty
+                tr.Children.Add(centerModelTransGr); // To Ondrej - Mam otazku ci treba tuto transformaciu pre text robit samostatna alebo je uz obsiahnuta v transformacii koty
                 textlabel.Transform = tr; //centerModelTransGr;
             }
             viewPort.Children.Add(textlabel);
@@ -3351,7 +3361,7 @@ namespace BaseClasses
         }
 
         // Draw Control Joint Text 3D
-        public static void DrawControlText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
+        public static void DrawControlJointText3D(CControlJoint controlJoint, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             TextBlock tb = new TextBlock();
             tb.Text = controlJoint.Text;
@@ -3398,7 +3408,127 @@ namespace BaseClasses
                 {
                     if (model.m_arrControlJoints[i] != null) // Control joint object is valid (not empty)
                     {
-                       DrawControlText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
+                       DrawControlJointText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Draw Foundations Text 3D
+        public static void DrawFoundationText3D(CFoundation foundation, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = foundation.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = new SolidColorBrush(displayOptions.FoundationTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // Nastavujeme pre GCS (rovina XY - text v smere Y)
+            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up); ;
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (foundation.GetFoundationTransformGroup_Complete() == null)
+            {
+                throw new Exception("Foundation in local coordinate system! \nTransformation object is null! \nText label is probably created before foundation model exists!");
+            }
+
+            if (foundation.GetFoundationTransformGroup_Complete() != null)
+            {
+                tr.Children.Add(foundation.GetFoundationTransformGroup_Complete());
+
+                // Nechceme transofrmovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(foundation.PointText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateFoundationsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrFoundations != null)
+            {
+                for (int i = 0; i < model.m_arrFoundations.Count; i++)
+                {
+                    if (model.m_arrFoundations[i] != null) // Foundation object is valid (not empty)
+                    {
+                        DrawFoundationText3D(model.m_arrFoundations[i], viewPort, displayOptions);
+                    }
+                }
+            }
+        }
+
+        // Draw Floor Slabs Text 3D
+        public static void DrawFloorSlabText3D(CSlab slab, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = slab.Text;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fFloorSlabTextFontSize / 100f;
+            int iNumberOfRowsInTexBlock = 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
+            float fTextBlockVerticalSizeFactor = 0.8f * iNumberOfRowsInTexBlock;
+            float fTextBlockHorizontalSizeFactor = 0.3f / iNumberOfRowsInTexBlock;
+
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // Nastavujeme pre GCS (rovina XY - text v smere Y)
+            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor,0, 0);
+
+            // Create text
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up); ;
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (slab.GetSlabTransformGroup() == null)
+            {
+                throw new Exception("Slab in local coordinate system! \nTransformation object is null! \nText label is probably created before slab model exists!");
+            }
+
+            if (slab.GetSlabTransformGroup() != null)
+            {
+                tr.Children.Add(slab.GetSlabTransformGroup());
+
+                // Nechceme transofrmovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(slab.PointText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
+        public static void CreateFloorSlabsDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            if (model.m_arrSlabs != null)
+            {
+                for (int i = 0; i < model.m_arrSlabs.Count; i++)
+                {
+                    if (model.m_arrSlabs[i] != null) // Slab object is valid (not empty)
+                    {
+                        DrawFloorSlabText3D(model.m_arrSlabs[i], viewPort, displayOptions);
                     }
                 }
             }
@@ -4815,6 +4945,7 @@ namespace BaseClasses
                 sDisplayOptions.bDisplayFoundations = true;
                 sDisplayOptions.bDisplayReinforcementBars = true;
                 sDisplayOptions.bDisplayFloorSlab = true;
+                sDisplayOptions.bDisplayFoundationsDescription = true;
 
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);
@@ -4827,6 +4958,9 @@ namespace BaseClasses
                 sDisplayOptions.bDisplayFloorSlab = true;
                 sDisplayOptions.bDisplaySawCuts = true;
                 sDisplayOptions.bDisplayControlJoints = true;
+
+                sDisplayOptions.bDisplayFloorSlabDescription = true;
+                sDisplayOptions.bDisplayFoundationsDescription = false;
 
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);

@@ -338,6 +338,7 @@ namespace PFD
             set
             {
                 m_ReinforcementMeshGrade = value;
+                _model.m_arrSlabs.First().MeshGradeName = m_ReinforcementMeshGrade;
                 NotifyPropertyChanged("ReinforcementMeshGrade");
             }
         }

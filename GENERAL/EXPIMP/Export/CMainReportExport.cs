@@ -152,6 +152,9 @@ namespace EXPIMP
             opts.bDisplaySawCuts = false;
             opts.bDisplayControlJoints = false;
 
+            opts.bDisplayFoundationsDescription = false;
+            opts.bDisplayFloorSlabDescription = false;
+
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
@@ -228,6 +231,12 @@ namespace EXPIMP
             opts.ControlJointTextColor = System.Windows.Media.Colors.DarkMagenta;
             opts.ControlJointLineColor = System.Windows.Media.Colors.DarkMagenta;
 
+            opts.fFoundationTextFontSize = 14;
+            opts.FoundationTextColor = System.Windows.Media.Colors.Black;
+
+            opts.fFloorSlabTextFontSize = 14;
+            opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
+
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
 
@@ -266,6 +275,7 @@ namespace EXPIMP
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
+                    opts.bDisplayFloorSlabDescription = false;
                 }
 
                 // Toto je len pokus ako to vyzera :)
@@ -285,6 +295,9 @@ namespace EXPIMP
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
                     opts.bDisplayFloorSlab = true;
+                    opts.bDisplayFloorSlabDescription = false;
+                    opts.bDisplayFoundationsDescription = true;
+                    opts.bDisplayMemberDescription = false;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -296,6 +309,9 @@ namespace EXPIMP
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
+                    opts.bDisplayFloorSlabDescription = true;
+                    opts.bDisplayFoundationsDescription = false;
+                    opts.bDisplayMemberDescription = false;
                 }
 
                 CModel filteredModel = null;
@@ -497,6 +513,9 @@ namespace EXPIMP
 
             opts.bDisplaySawCuts = false;
             opts.bDisplayControlJoints = false;
+
+            opts.bDisplayFoundationsDescription = false;
+            opts.bDisplayFloorSlabDescription = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);

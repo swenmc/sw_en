@@ -2763,6 +2763,9 @@ namespace PFD
             sDisplayOptions.bDisplayMemberRealLengthUnit = ShowMemberRealLengthUnit;
             sDisplayOptions.bDisplayNodesDescription = ShowNodesDescription;
 
+            sDisplayOptions.bDisplayFoundationsDescription = true;  // TODO dopracovat nastavitelne v GUI
+            sDisplayOptions.bDisplayFloorSlabDescription = true;  // TODO dopracovat nastavitelne v GUI
+
             sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
             sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
             sDisplayOptions.bDisplayWireFrameModel = DisplayWireFrameModel;
@@ -2803,6 +2806,9 @@ namespace PFD
             sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
+            sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
             sDisplayOptions.NodeDescriptionTextColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.MemberDescriptionTextColor = Colors.Beige; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionTextColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
@@ -2813,6 +2819,9 @@ namespace PFD
 
             sDisplayOptions.ControlJointTextColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.ControlJointLineColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            sDisplayOptions.FoundationTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.FloorSlabTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

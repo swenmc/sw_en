@@ -712,6 +712,9 @@
         public bool bDisplayMemberRealLengthUnit;
         public bool bDisplayNodesDescription;
 
+        public bool bDisplayFoundationsDescription;
+        public bool bDisplayFloorSlabDescription;
+
         public bool bDisplayLoads;
         public bool bDisplayLoadsLabels;
         public bool bDisplayLoadsLabelsUnits;
@@ -751,6 +754,8 @@
         public int fDimensionTextFontSize;
         public int fSawCutTextFontSize;
         public int fControlJointTextFontSize;
+        public int fFoundationTextFontSize;
+        public int fFloorSlabTextFontSize;
 
         public System.Windows.Media.Color NodeDescriptionTextColor;
         public System.Windows.Media.Color MemberDescriptionTextColor;
@@ -762,6 +767,9 @@
 
         public System.Windows.Media.Color ControlJointTextColor;
         public System.Windows.Media.Color ControlJointLineColor;
+
+        public System.Windows.Media.Color FoundationTextColor;
+        public System.Windows.Media.Color FloorSlabTextColor;
     }
 
     public struct BuildingDataInput

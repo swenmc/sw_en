@@ -325,6 +325,22 @@ namespace BaseClasses
             }
         }
 
+        private Point3D m_PointText;
+
+        public Point3D PointText
+        {
+            get { return m_PointText; }
+            set { m_PointText = value; }
+        }
+
+        private string m_Text;
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
+        }
+
         public CFoundation()
         {
         }
@@ -335,6 +351,7 @@ namespace BaseClasses
             CNode node,
             MATERIAL.CMat_02_00 materialConcrete,
             EMemberType_FS_Position memberTypePosition,
+            string descriptionText,
             //CPoint pControlEdgePoint,
             float fX,
             float fY,
@@ -361,6 +378,7 @@ namespace BaseClasses
             m_Node = node; // Note that is assigned to the foundation / footing pad
             m_Mat = materialConcrete;
             m_ColumnMemberTypePosition = memberTypePosition;
+            m_Text = descriptionText;
             //m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
@@ -388,6 +406,26 @@ namespace BaseClasses
             m_pControlPoint.Z = -fZ;
 
             CreateReinforcementBars();
+
+            SetTextPoint();
+        }
+
+        public void SetTextPoint()
+        {
+            // V systeme GCS
+            float fCornerPointOffsetX = 0.3f;
+            float fCornerPointOffsetY = 0.2f;
+
+            float fOffsetX = m_fDim1 + m_Eccentricity_x + fCornerPointOffsetX;
+            float fOffsetY = m_fDim2 + m_Eccentricity_y + fCornerPointOffsetY;
+            float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+
+            m_PointText = new Point3D()
+            {
+                X = fOffsetX,
+                Y = fOffsetY,
+                Z = fOffsetFromPlane
+            };
         }
 
         //public /*override*/ GeometryModel3D CreateGeomModel3D()

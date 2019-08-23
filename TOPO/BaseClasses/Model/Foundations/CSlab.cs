@@ -38,6 +38,8 @@ namespace BaseClasses
 
         private float m_fConcreteCover;
 
+        private string m_sMeshGradeName;
+
         private List<Point3D> MWireFramePoints;
 
         private CJointDesignDetails m_DesignDetails;
@@ -307,6 +309,12 @@ namespace BaseClasses
             }
         }
 
+        public string MeshGradeName
+        {
+            get { return m_sMeshGradeName; }
+            set { m_sMeshGradeName = value; }
+        }
+
         public List<Point3D> WireFramePoints
         {
             get
@@ -319,6 +327,22 @@ namespace BaseClasses
             {
                 MWireFramePoints = value;
             }
+        }
+
+        private Point3D m_PointText;
+
+        public Point3D PointText
+        {
+            get { return m_PointText; }
+            set { m_PointText = value; }
+        }
+
+        private string m_Text;
+
+        public string Text
+        {
+            get { return m_Text; }
+            set { m_Text = value; }
         }
 
         public CSlab()
@@ -336,6 +360,8 @@ namespace BaseClasses
             float ey,
             float rotationAboiutZInDeg,
             float fConcreteCover,
+            string sMeshGradeName,
+            string descriptionText,
             //CReinforcementBar refTopBar_x,
             //CReinforcementBar refTopBar_y,
             //CReinforcementBar refBottomBar_x,
@@ -359,6 +385,8 @@ namespace BaseClasses
             m_Eccentricity_y = ey;
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
             m_fConcreteCover = fConcreteCover;
+            m_sMeshGradeName = sMeshGradeName;
+            m_Text = descriptionText;
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
             //m_Reference_Bottom_Bar_x = refBottomBar_x;
@@ -371,6 +399,25 @@ namespace BaseClasses
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            SetTextPoint();
+        }
+
+        public void SetTextPoint()
+        {
+            // V systeme GCS
+            float fAdditionalOffsetX = 0.6f;
+            float fAdditionalOffsetY = 0.7f; // TODO Ondrej - Toto by bolo super vediet nastavit podla polohy saw cut a control joint aby sa neprekryvali texty
+            float fOffsetX = 0.5f * m_fDim1 + fAdditionalOffsetX;
+            float fOffsetY = 0.5f * m_fDim2 + fAdditionalOffsetY;
+            float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+
+            m_PointText = new Point3D()
+            {
+                X = fOffsetX,
+                Y = fOffsetY,
+                Z = fOffsetFromPlane
+            };
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity)
