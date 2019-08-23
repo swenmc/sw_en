@@ -1928,8 +1928,6 @@ namespace BaseClasses
         private static void AddLineToViewPort(List<Point3D> points, DisplayOptions opts, Viewport3D viewPort)
         {
             //TO Mato - tieto prepinace sa vyskytuju castejsie...je potrebne poprepinat a vyskusat jednotlive typy ciar, co sa tyka zobrazovania a tiez performance
-            double thickness = 1.0;
-
             bool useWireLines = false;
             bool useScreenSpaceLines = false;
             bool useLinesVisual3D = true;
@@ -1939,13 +1937,14 @@ namespace BaseClasses
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(points);
                 wl.Color = opts.wireFrameColor;
+                wl.Thickness = opts.fWireFrameLineThickness;
                 if (centerModel) { wl.Transform = centerModelTransGr; }
                 viewPort.Children.Add(wl);
             }
             if (useScreenSpaceLines)
             {
                 //ScreenSpaceLines are much slower = performance issue                                        
-                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(opts.wireFrameColor, thickness); // Just one collection for all members
+                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(opts.wireFrameColor, opts.fWireFrameLineThickness); // Just one collection for all members
                 line_3D.Points = new Point3DCollection(points);
                 if (centerModel) { line_3D.Transform = centerModelTransGr; }
                 viewPort.Children.Add(line_3D);
@@ -1955,7 +1954,7 @@ namespace BaseClasses
                 LinesVisual3D wl = new LinesVisual3D();
                 wl.Points = new Point3DCollection(points);
                 wl.Color = opts.wireFrameColor;
-                wl.Thickness = thickness;
+                wl.Thickness = opts.fWireFrameLineThickness;
                 if (centerModel) { wl.Transform = centerModelTransGr; }
                 viewPort.Children.Add(wl);
             }
