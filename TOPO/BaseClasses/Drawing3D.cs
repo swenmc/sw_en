@@ -250,6 +250,13 @@ namespace BaseClasses
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // TO ONDREJ POKUS KRESLIT KOTY V 3D ako 3D OBJEKTY, nie ciary
+
+                // TODO - Ondrej - tieto if pre jednotlive pohlady je potrebne poriadne prejst a zrefaktorovat, je tu kopec nakopirovaneho kodu
+                // Ide o to ze nejakym sposobom ziskame zoznam uzlov alebo bodov ktore chceme kotovat a potom vyrabame koty a texty
+                // Kota moze byt jedna alebo niekolko za sebou v linii - retazove kóty
+                // Dalej mozu byt dalsie koty pridavane s nejakym odstupom voci prvej kolmo na hlavnu kotovaciu ciaru, tak ziskame niekolko kot pod sebou
+                // Ja ich tu mam 1 - 3
+
                 Model3DGroup dimensions3DGroup = null;
 
                 if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
@@ -264,11 +271,108 @@ namespace BaseClasses
                     CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
                     List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+
+                    // Create Dimensions
                     if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
 
-                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
-                    DrawDimensionText3D(dimPOKUSNA2, _trackport.ViewPort, sDisplayOptions);
+                    // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                    if (dimensions3DGroup != null)
+                    {
+                        foreach (CDimensionLinear3D dim in listOfDimensions)
+                        {
+                            DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                        }
+                    }
+                }
+
+                if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+                {
+                    // Najdeme girts na lavej strane
+                    // Girts
+                    CMember[] membersLeftSideGirts = null;
+   
+                    membersLeftSideGirts = ModelHelper.GetMembersInDistance(model, 0, 0, EMemberType_FS.eG); // smer X
+
+                    CMember[] membersLeftSideFirstBayGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
+
+                    if (membersLeftSideFirstBayGirts != null)
+                    {
+                        // 1 kotovacia ciara - vsetky girts
+                        bool bDrawDimension_1 = true;
+
+                        // Pripravime si zoznamy kotovanych bodov
+                        List<CNode> membersLeftSideFirstBayGirtsNodes_1 = null;
+                        membersLeftSideFirstBayGirtsNodes_1 = new List<CNode>();
+
+                        // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
+                        membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.fL1_frame, 0, 0));
+                        membersLeftSideFirstBayGirtsNodes_1.Add(new CNode(0, 0, model.fL1_frame, model.fH1_frame, 0));
+
+                        foreach (CMember m in membersLeftSideFirstBayGirts)
+                        {
+                            if (MathF.d_equal(m.NodeStart.Y, model.fL1_frame))
+                            {
+                                membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeStart);
+                            }
+
+                            if (MathF.d_equal(m.NodeEnd.Y, model.fL1_frame))
+                            {
+                                membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeEnd);
+                            }
+                        }
+
+                        if (bDrawDimension_1 == false)
+                            membersLeftSideFirstBayGirtsNodes_1 = null;
+
+                        // Mame pripraveny zoznam bodov
+                        // Body zoradime podla Z od najvacsieho - koty kreslime , resp z +X smerom k 0
+
+                        // TO Ondrej - toto momentalne neplati lebo to by sme museli implementovat rotaciu kot
+                        // kreslim a radim od 0 smerom k +Z
+
+                        if (membersLeftSideFirstBayGirtsNodes_1 != null)
+                            membersLeftSideFirstBayGirtsNodes_1 = membersLeftSideFirstBayGirtsNodes_1.OrderBy(n => n.Z).ToList();
+
+                        // Create Dimensions
+                        List<CDimensionLinear3D> listOfDimensions = null;
+
+                        float fExtensionLineLength = 0.5f;
+                        float fMainLinePosition = 0.4f;
+                        float fExtensionLineOffset = 0.15f;
+
+                        float fDistanceBetweenMainLines = 0.2f;
+
+                        // TODO - Ondrej  pre text koty by sme mali pouzit nejaky algorimus podobny Member Description, mali by mat nastavitelne odsadenie od main line a zobrazovat rotovat sa spolu s kotou
+
+                        if (bDrawDimension_1 == true)
+                        {
+                            listOfDimensions = new List<CDimensionLinear3D>();
+                            for (int i = 0; i < membersLeftSideFirstBayGirtsNodes_1.Count - 1; i++)
+                            {
+                                CDimensionLinear3D dim = new CDimensionLinear3D(membersLeftSideFirstBayGirtsNodes_1[i].GetPoint3D(), membersLeftSideFirstBayGirtsNodes_1[i + 1].GetPoint3D(), new Vector3D(0, 1, 0), 2, 0, 1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersLeftSideFirstBayGirtsNodes_1[i + 1].Z - membersLeftSideFirstBayGirtsNodes_1[i].Z) * 1000).ToString("F0"));
+                                listOfDimensions.Add(dim);
+                            }
+
+                            // Nastavime parametre pre dalsie koty
+                            //fExtensionLineLength += fDistanceBetweenMainLines;
+                            //fMainLinePosition = + fDistanceBetweenMainLines;
+                            fExtensionLineOffset += fDistanceBetweenMainLines;
+                        }
+ 
+                        // Create Dimensions 3D Model
+                        if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
+                        if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
+
+                        // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                        if (dimensions3DGroup != null)
+                        {
+                            foreach (CDimensionLinear3D dim in listOfDimensions)
+                            {
+                                DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                            }
+                        }
+                    }
                 }
 
                 if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
@@ -277,13 +381,25 @@ namespace BaseClasses
                     CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                     // stlpy na pravej strane maju PointEnd v Z = 0
-                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 1, 1, 0, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString("F0"));
+                    CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), 2, 1, 0, new Vector3D(0, 1, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString("F0"));
 
-                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1};
+                    // stlp vlavo - vyskova kota
+                    CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(0, 1, 0), 2, 0, 1, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1), 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString("F0"));
+
+                    List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+
+                    // Create Dimensions
                     if (sDisplayOptions.bDisplayDimensions) dimensions3DGroup = Drawing3D.CreateModelDimensions_Model3DGroup(listOfDimensions, model, sDisplayOptions);
                     if (dimensions3DGroup != null) gr.Children.Add(dimensions3DGroup);
 
-                    DrawDimensionText3D(dimPOKUSNA1, _trackport.ViewPort, sDisplayOptions);
+                    // Create Dimensions Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model koty
+                    if (dimensions3DGroup != null)
+                    {
+                        foreach (CDimensionLinear3D dim in listOfDimensions)
+                        {
+                            DrawDimensionText3D(dim, _trackport.ViewPort, sDisplayOptions);
+                        }
+                    }
                 }
 
                 if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
@@ -293,34 +409,24 @@ namespace BaseClasses
                     // Front side
                     CMember[] membersFrontSide = null;
 
-                    foreach(CMember m in model.m_arrMembers)
-                    {
-                        membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
-                    }
+                    membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
 
                     // Back side
                     CMember[] membersBackSide = null;
 
-                    foreach (CMember m in model.m_arrMembers)
-                    {
-                        membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
-                    }
+                    membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
 
                     // Left side
                     CMember[] membersLeftSide = null;
 
-                    foreach (CMember m in model.m_arrMembers)
-                    {
-                        membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
-                    }
+                    membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
 
                     // Right side
                     CMember[] membersRightSide = null;
 
-                    foreach (CMember m in model.m_arrMembers)
-                    {
-                        membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
-                    }
+                    membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+
+                    // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
 
                     if (membersFrontSide != null)
                     {
@@ -483,6 +589,8 @@ namespace BaseClasses
                     // Potrebovali by sme vymysliet co spravime ak je kota taka kratka ze sa sipky nemaju kam vykreslit a ani na text tam nie je miesto, zvycajne sa to robi cez odkazovu ciaru
                     // Mozeme to urobit aj tak ze taka mini kota tam proste teraz nebude zobrazena a hotovo :)
 
+                    // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
+
                     if (membersLeftSide != null)
                     {
                         // 1 kotovacia ciara - vsetky stlpy
@@ -641,18 +749,12 @@ namespace BaseClasses
                     // Girts
                     CMember[] membersFrontSideGirts = null;
 
-                    foreach (CMember m in model.m_arrMembers)
-                    {
-                        membersFrontSideGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
-                    }
-
+                    membersFrontSideGirts = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eG, true, true, false); // smer Y
+ 
                     // Purlins
                     CMember[] membersFrontSidePurlins = null;
 
-                    foreach (CMember m in model.m_arrMembers)
-                    {
-                        membersFrontSidePurlins = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eP, true, true, false); // smer Y
-                    }
+                    membersFrontSidePurlins = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, EMemberType_FS.eP, true, true, false); // smer Y
 
                     List<CNode> membersBaseNodes_FrontSideGirts_1 = null; // Girts
                     // Tuto celkovu kotu kreslime vzdy
