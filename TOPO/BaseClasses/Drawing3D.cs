@@ -476,7 +476,6 @@ namespace BaseClasses
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -584,6 +583,38 @@ namespace BaseClasses
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
+                float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
+
+                if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
+                    CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+                fModel_Length_X = 0;
+                fModel_Length_Y = 0;
+                fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
+                centerModelTransGr = new Transform3DGroup();
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
+                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
+
+                if (sDisplayOptions.RotateModelX != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
+                }
+                if (sDisplayOptions.RotateModelY != 0)
+                {
+                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+
+                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
+                }
+                if (sDisplayOptions.RotateModelZ != 0)
+                {
+                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
+                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
+                }
+
                 // Global coordinate system - axis
                 if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model, null);
                 if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
@@ -650,44 +681,15 @@ namespace BaseClasses
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
-                float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
-
-                if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                   CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-
-                fModel_Length_X = 0;
-                fModel_Length_Y = 0;
-                fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-
-                centerModelTransGr = new Transform3DGroup();
-                centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
-                centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-
-                if (sDisplayOptions.RotateModelX != 0)
-                {
-                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
-                }
-                if (sDisplayOptions.RotateModelY != 0)
-                {
-                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
-
-                    AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
-                }
-                if (sDisplayOptions.RotateModelZ != 0)
-                {
-                    AxisAngleRotation3D Rotation_LCS_z = new AxisAngleRotation3D(new Vector3D(0, 0, 1), sDisplayOptions.RotateModelZ);
-                    centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_z));
-                }
-
                 if (centerModel)
                 {
                     //translate transform to model center
                     ((Model3D)gr).Transform = centerModelTransGr;
 
-                    Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * 2.5);  //tu sa da nastavit zoom patky
+                    double zoomFactor = 2.5;
+                    if (fModel_Length_X > 2 * fModel_Length_Z) zoomFactor = 1.5;
+
+                    Point3D cameraPosition = new Point3D(0, 0, MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) * zoomFactor);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, 0, -1);
                 }
