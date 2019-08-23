@@ -4177,7 +4177,7 @@ namespace BaseClasses
                 }
                 //--------------------------------------------------------------------------------------------------------------------------------------
 
-                jointClone = joint.RecreateJoint();
+                joint = joint.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
                 jointClone.m_arrPlates = joint.m_arrPlates;
 
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
