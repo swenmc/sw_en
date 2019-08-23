@@ -48,7 +48,7 @@ namespace EXPIMP
 
             s_document.Info.Title = projectInfo.ProjectName;
             s_document.Info.Author = "Formsteel Technologies";
-            s_document.Info.Subject = "Number:" + projectInfo.ProjectNumber;
+            s_document.Info.Subject = "No " + projectInfo.ProjectNumber;
             s_document.Info.Keywords = projectInfo.ProjectNumber + ", " +
                                        "Formsteel Technologies" + ", " +
                                        "cold-formed steel" + ", " +
