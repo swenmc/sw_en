@@ -193,6 +193,7 @@ namespace EXPIMP
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+            image.Dispose();
             gfx.Dispose();
         }
 
@@ -352,6 +353,7 @@ namespace EXPIMP
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+                image.Dispose();
 
                 gfx.Dispose();
             }
@@ -370,29 +372,23 @@ namespace EXPIMP
             opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.bTransformScreenLines3DToCylinders3D = true;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-            
+
+            //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
+            string pageDetails = "Joints";
             sheetNo++;
-            page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
-            gfx = XGraphics.FromPdfPage(page);
-
-            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
-            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
-
-            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+            AddPageToDocument(s_document, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("Joints:", fontBold, XBrushes.Black, 20, 20);
 
-            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
-            
+            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
 
             double moveX = 0;
             double moveY = 40;
-            int maxInRow = 7;
+            int maxInRow = 4;
+            int maxInColumn = 2;
             int numInRow = 0;
+            int numInColumn = 0;
             var tf = new XTextFormatter(gfx);
             XStringFormat format = new XStringFormat();
             format.LineAlignment = XLineAlignment.Near;
@@ -402,10 +398,14 @@ namespace EXPIMP
             {
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
+
                 Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, data.DisplayOptions, data.Model);
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
+                viewPort.Children.Clear();
+                viewPort = null;
 
                 double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
                 double scaledImageWidth = gfx.PageSize.Width / maxInRow;
@@ -413,9 +413,21 @@ namespace EXPIMP
 
                 tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 10, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
+                image.Dispose();
 
                 moveX += scaledImageWidth;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; }                
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
+
+                if (numInColumn == maxInColumn)
+                {
+                    numInColumn = 0;
+                    moveY = 40;
+                    gfx.Dispose();
+
+                    sheetNo++;
+                    AddPageToDocument(s_document, out page, out gfx, pageDetails);
+                    tf = new XTextFormatter(gfx);
+                }
             }
             
             gfx.Dispose();
@@ -437,16 +449,10 @@ namespace EXPIMP
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
 
             sheetNo++;
-            page = s_document.AddPage();
-            page.Size = PageSize.A3;
-            page.Orientation = PdfSharp.PageOrientation.Landscape;
-            gfx = XGraphics.FromPdfPage(page);
+            //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
+            string pageDetails = "Footings";
 
-            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
-            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
-
-            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+            AddPageToDocument(s_document, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("Footings:", fontBold, XBrushes.Black, 20, 20);
@@ -457,7 +463,9 @@ namespace EXPIMP
             double moveX = 0;
             double moveY = 40;
             int maxInRow = 4;
+            int maxInColumn = 2;
             int numInRow = 0;
+            int numInColumn = 0;
             //var tf = new XTextFormatter(gfx);
             //XStringFormat format = new XStringFormat();
             //format.LineAlignment = XLineAlignment.Near;
@@ -480,13 +488,37 @@ namespace EXPIMP
 
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
+                image.Dispose();
 
                 moveX += scaledImageWidth;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; }
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
+
+                if (numInColumn == maxInColumn)
+                {
+                    numInColumn = 0;
+                    moveY = 40;                    
+                    gfx.Dispose();
+
+                    sheetNo++;
+                    AddPageToDocument(s_document, out page, out gfx, pageDetails);                    
+                }
             }
 
             gfx.Dispose();
 
+        }
+
+        private static void AddPageToDocument(PdfDocument s_document, out PdfPage page, out XGraphics gfx, string pageDetails)
+        {
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+            
+            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails, sheetNo, 0);
         }
 
         private static void DrawStandardDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
@@ -516,6 +548,7 @@ namespace EXPIMP
             double imageWidthOriginal = image.PixelWidth;
             double imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
 
@@ -523,6 +556,7 @@ namespace EXPIMP
             imageWidthOriginal = image.PixelWidth;
             imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
 
@@ -535,6 +569,7 @@ namespace EXPIMP
             imageWidthOriginal = image.PixelWidth;
             imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
@@ -542,6 +577,7 @@ namespace EXPIMP
             imageWidthOriginal = image.PixelWidth;
             imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
@@ -549,6 +585,7 @@ namespace EXPIMP
             imageWidthOriginal = image.PixelWidth;
             imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
@@ -561,6 +598,7 @@ namespace EXPIMP
             imageWidthOriginal = image.PixelWidth;
             imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dRowPosition3, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition3 + dImagePosition_y + imageHeightOriginal * scale);
 
@@ -684,12 +722,14 @@ namespace EXPIMP
             double scaledImageHeight = imageModel.PointHeight * scaleFactor;
 
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
+            imageModel.Dispose();
 
             AddTitlePageTableToDocument(gfx, tableParams);
 
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
             gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
+            image.Dispose();
 
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
@@ -730,6 +770,7 @@ namespace EXPIMP
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 10, 10, 300, 200);
+            image.Dispose();
         }
 
         private static void DrawPDFLogo(XGraphics gfx, int x, int y)
@@ -776,6 +817,7 @@ namespace EXPIMP
         {
             XImage image = XImage.FromFile(path);
             gfx.DrawImage(image, x, y, width, height);
+            image.Dispose();
         }
 
         private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
@@ -1182,6 +1224,7 @@ namespace EXPIMP
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+                image.Dispose();
                 return scaledImageHeight;
             }
             catch (Exception ex)
