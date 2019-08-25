@@ -80,10 +80,10 @@ namespace EXPIMP
             string[] row8 = new string[2] { "fs08", "Columns" };
             string[] row9 = new string[2] { "fs09", "Foundation Pads" };
             string[] row10 = new string[2] { "fs10", "Floor Plan" };
-            string[] row11 = new string[2] { "fs11", "Standard Details 1" };
-            string[] row12 = new string[2] { "fs12", "Standard Details 2" };
-            string[] row13 = new string[2] { "fs13", "Joints" };
-            string[] row14 = new string[2] { "fs14", "Footings" };
+            string[] row11 = new string[2] { "fs11", "Details - Standard 1" };
+            string[] row12 = new string[2] { "fs12", "Details - Standard 2" };
+            string[] row13 = new string[2] { "fs13", "Details - Joints" };
+            string[] row14 = new string[2] { "fs14", "Details - Footing Pads" };
 
             List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
@@ -374,12 +374,12 @@ namespace EXPIMP
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
 
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            string pageDetails = "Joints";
+            string pageDetails = "Details - Joints";
             sheetNo++;
             AddPageToDocument(s_document, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            //gfx.DrawString("Joints:", fontBold, XBrushes.Black, 20, 20);
+            //gfx.DrawString("JDetails - Joints:", fontBold, XBrushes.Black, 20, 20);
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
 
@@ -450,12 +450,12 @@ namespace EXPIMP
 
             sheetNo++;
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            string pageDetails = "Footings";
+            string pageDetails = "Details - Footing Pads";
 
             AddPageToDocument(s_document, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
-            //gfx.DrawString("Footings:", fontBold, XBrushes.Black, 20, 20);
+            //gfx.DrawString("Footing Pads:", fontBold, XBrushes.Black, 20, 20);
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
 
