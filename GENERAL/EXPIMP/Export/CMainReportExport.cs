@@ -31,7 +31,8 @@ namespace EXPIMP
         private const string fontFamily = "Arial";
         private const int fontSizeTitle = 14;
         private const int fontSizeNormal = 12;
-        private const int fontSizeLegend = 10;
+        private const int fontSizeLegend = 8; // Cross-section shape legend
+        private const int fontSizeDetailTable = 8; // Details description tables text
         private static int sheetNo;
 
         private static XPdfFontOptions options;
@@ -1480,18 +1481,46 @@ namespace EXPIMP
             //gfx.MFEH = PdfFontEmbedding.Always;
 
             List<string[]> tableParams = new List<string[]>();
-            tableParams.Add(new string[2] { "ID", joint.ID.ToString() });
+            //tableParams.Add(new string[2] { "ID", joint.ID.ToString() });
             if(joint.m_MainMember != null)
-                tableParams.Add(new string[2] { "Main Member", joint.m_MainMember.EMemberTypePosition.GetFriendlyName() });
+                tableParams.Add(new string[2] { "Main Member", joint.m_MainMember.Prefix + " - " + joint.m_MainMember.EMemberTypePosition.GetFriendlyName() });
             if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
-                tableParams.Add(new string[2] { "Secondary Member", joint.m_SecondaryMembers[0].EMemberTypePosition.GetFriendlyName() });
-            if (joint.m_arrPlates != null)
-                tableParams.Add(new string[2] { "Plates count", joint.m_arrPlates.Length.ToString() });
+                tableParams.Add(new string[2] { "Secondary Member", joint.m_SecondaryMembers[0].Prefix + " - " + joint.m_SecondaryMembers[0].EMemberTypePosition.GetFriendlyName() });
+            //if (joint.m_arrPlates != null)
+            //    tableParams.Add(new string[2] { "Plates count", joint.m_arrPlates.Length.ToString() });
             if (joint.m_arrPlates != null && joint.m_arrPlates.Length > 0)
-                tableParams.Add(new string[2] { "Plate width", joint.m_arrPlates.FirstOrDefault().Width_bx.ToString() });
-            if (joint.m_arrWelds != null)
-                tableParams.Add(new string[2] { "Screws count", joint.m_arrWelds.Length.ToString()});
-            tableParams.Add(new string[2] { "Screw radius", "????" }); //netusim kde to je
+            {
+                //tableParams.Add(new string[2] { "Plate name", joint.m_arrPlates.FirstOrDefault().Name.ToString() });
+                //tableParams.Add(new string[2] { "Plate thickness", (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
+                tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
+                //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
+                //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
+                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
+
+                if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
+                {
+                    CScrewArrangementCircleApexOrKnee circleArrangement = (CScrewArrangementCircleApexOrKnee)joint.m_arrPlates.FirstOrDefault().ScrewArrangement;
+
+                    tableParams.Add(new string[2] { "Number of circles", circleArrangement.INumberOfCirclesInGroup.ToString() });
+
+                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence)
+                    {
+                        CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
+                        tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]"  });
+                    }
+                }
+
+                if(joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic) // Base plate
+                {
+                    CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
+                    CAnchorArrangement anchorArrangement = plate.AnchorArrangement;
+
+                    //tableParams.Add(new string[2] { "Number of anchors", anchorArrangement.IHolesNumber.ToString() });
+                    //tableParams.Add(new string[2] { "Anchor", "M"+(anchorArrangement.referenceAnchor.Diameter_shank*1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
+                    tableParams.Add(new string[2] { "Anchors", anchorArrangement.IHolesNumber.ToString() + " x " + "M" + (anchorArrangement.referenceAnchor.Diameter_shank * 1000).ToString() + " HD bolts - " + (anchorArrangement.referenceAnchor.Length * 1000).ToString() + " [mm]" });
+                    tableParams.Add(new string[2] { "Note", "Drypack between plate and floor to suit" });
+                }
+            }
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
@@ -1607,22 +1636,23 @@ namespace EXPIMP
             Table table = new Table();
             table.Borders.Width = 0.75;
             table.Format.Font.Name = fontFamily;
+            table.Format.Font.Size = fontSizeDetailTable;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(4));
             column1.Format.Alignment = ParagraphAlignment.Left;
             Column column2 = table.AddColumn(Unit.FromCentimeter(4));
-            column2.Format.Alignment = ParagraphAlignment.Left;            
+            column2.Format.Alignment = ParagraphAlignment.Left;
 
             foreach (string[] strParams in tableParams)
             {
-                Row row = table.AddRow();                
+                Row row = table.AddRow();
                 Cell cell = row.Cells[0];
                 if (strParams[0] != null) cell.AddParagraph(strParams[0]);
                 cell = row.Cells[1];
                 if (strParams[1] != null) cell.AddParagraph(strParams[1]);
             }
 
-            table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
+            table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1.0, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
