@@ -87,13 +87,13 @@ namespace EXPIMP
 
             List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
-            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            //DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            DrawModel3D(s_document, tableParams, modelData);
+            //DrawModel3D(s_document, tableParams, modelData);
 
-            DrawModelViews(s_document, tableParams, modelData);
+            //DrawModelViews(s_document, tableParams, modelData);
 
-            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+            //DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
 
             DrawJointTypes(s_document, tableParams, modelData);
 
@@ -389,6 +389,7 @@ namespace EXPIMP
             int maxInColumn = 2;
             int numInRow = 0;
             int numInColumn = 0;
+            int tableWidth = 100;
             var tf = new XTextFormatter(gfx);
             XStringFormat format = new XStringFormat();
             format.LineAlignment = XLineAlignment.Near;
@@ -407,7 +408,7 @@ namespace EXPIMP
                 viewPort.Children.Clear();
                 viewPort = null;
 
-                double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
+                double scaleFactor = (gfx.PageSize.Width) / (image.PointWidth) / maxInRow;
                 double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
@@ -415,8 +416,11 @@ namespace EXPIMP
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
 
+                DrawJointTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, joint);
+
                 moveX += scaledImageWidth;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
+                
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
 
                 if (numInColumn == maxInColumn)
                 {
@@ -458,11 +462,10 @@ namespace EXPIMP
             //gfx.DrawString("Footings:", fontBold, XBrushes.Black, 20, 20);
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
-
-
-            double moveX = 0;
+            
+            double moveX = -50;
             double moveY = 40;
-            int maxInRow = 4;
+            int maxInRow = 2;
             int maxInColumn = 2;
             int numInRow = 0;
             int numInColumn = 0;
@@ -482,16 +485,23 @@ namespace EXPIMP
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
-                double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
-                double scaledImageWidth = gfx.PageSize.Width / maxInRow;
-                double scaledImageHeight = image.PointHeight * scaleFactor;
+                //double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
+                //double scaledImageWidth = gfx.PageSize.Width / maxInRow;
+                //double scaledImageHeight = image.PointHeight * scaleFactor;
 
+                double scaleFactor = image.PointWidth / 500;
+                double scaledImageWidth = 500;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+                
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
-                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
+                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);                
                 image.Dispose();
 
-                moveX += scaledImageWidth;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
+                //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
+                DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 100, moveY, pad);
+
+                moveX += scaledImageWidth + 90;
+                if (numInRow == maxInRow) { numInRow = 0; moveX = -50; moveY += scaledImageHeight + 80; numInColumn++; }
 
                 if (numInColumn == maxInColumn)
                 {
@@ -1464,6 +1474,77 @@ namespace EXPIMP
             return table;
         }
 
+        private static void DrawJointTableToDocument(XGraphics gfx, double offsetX, double offsetY, CConnectionJointTypes joint)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+
+            List<string[]> tableParams = new List<string[]>();
+            tableParams.Add(new string[2] { "ID", joint.ID.ToString() });
+            if(joint.m_MainMember != null)
+                tableParams.Add(new string[2] { "Main Member", joint.m_MainMember.EMemberTypePosition.GetFriendlyName() });
+            if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
+                tableParams.Add(new string[2] { "Secondary Member", joint.m_SecondaryMembers[0].EMemberTypePosition.GetFriendlyName() });
+            if (joint.m_arrPlates != null)
+                tableParams.Add(new string[2] { "Plates count", joint.m_arrPlates.Length.ToString() });
+            if (joint.m_arrPlates != null && joint.m_arrPlates.Length > 0)
+                tableParams.Add(new string[2] { "Plate width", joint.m_arrPlates.FirstOrDefault().Width_bx.ToString() });
+            if (joint.m_arrWelds != null)
+                tableParams.Add(new string[2] { "Screws count", joint.m_arrWelds.Length.ToString()});
+            tableParams.Add(new string[2] { "Screw radius", "????" }); //netusim kde to je
+
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = Get2ColumnTable(doc, tableParams);
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(100), t);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
+        }
+
+        private static void DrawFootingTableToDocument(XGraphics gfx, double offsetX, double offsetY, CFoundation pad)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+
+            List<string[]> tableParams = new List<string[]>();
+            tableParams.Add(new string[2] { "ID", pad.ID.ToString() });
+            tableParams.Add(new string[2] { "Name", pad.Name });
+            tableParams.Add(new string[2] { "Prefix", pad.Prefix });
+            tableParams.Add(new string[2] { "W", pad.m_fDim1.ToString() });
+            tableParams.Add(new string[2] { "H", pad.m_fDim2.ToString() });
+            tableParams.Add(new string[2] { "L", pad.m_fDim3.ToString() });
+
+            tableParams.Add(new string[2] { "Count Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() });
+            tableParams.Add(new string[2] { "Count Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() });
+            tableParams.Add(new string[2] { "Count Top Bars x", pad.Count_Top_Bars_x.ToString() });
+            tableParams.Add(new string[2] { "Count Top Bars y", pad.Count_Top_Bars_y.ToString() });            
+
+            if (pad.m_Mat != null) tableParams.Add(new string[2] { "Material", pad.m_Mat.Name });
+            
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = Get2ColumnTable(doc, tableParams);
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(100), t);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
+        }
+
         private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
@@ -1517,6 +1598,31 @@ namespace EXPIMP
             }
 
             table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
+        }
+        public static Table Get2ColumnTable(Document document, List<string[]> tableParams)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(4));
+            column1.Format.Alignment = ParagraphAlignment.Left;
+            Column column2 = table.AddColumn(Unit.FromCentimeter(4));
+            column2.Format.Alignment = ParagraphAlignment.Left;            
+
+            foreach (string[] strParams in tableParams)
+            {
+                Row row = table.AddRow();                
+                Cell cell = row.Cells[0];
+                if (strParams[0] != null) cell.AddParagraph(strParams[0]);
+                cell = row.Cells[1];
+                if (strParams[1] != null) cell.AddParagraph(strParams[1]);
+            }
+
+            table.SetEdge(0, 0, 2, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
