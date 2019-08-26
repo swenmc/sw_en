@@ -305,7 +305,7 @@
                             <CheckBox Name="chbDisplayJointsWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayJointsWireFrame}">Joints</CheckBox>
                             <CheckBox Name="chbDisplayPlatesWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayPlatesWireFrame}">Plates</CheckBox>
                             <CheckBox Name="chbDisplayConnectorsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayConnectorsWireFrame}">Connectors</CheckBox>
-                            <CheckBox Name="chbDisplayNodesWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayNodesWireFrame}">Nodes</CheckBox>
+                            <!--<CheckBox Name="chbDisplayNodesWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayNodesWireFrame}">Nodes</CheckBox>-->
                             <CheckBox Name="chbDisplayFoundationsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFoundationsWireFrame}">Foundations</CheckBox>
                             <CheckBox Name="chbDisplayReinforcementBarsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBarsWireFrame}">Reinforcement Bars</CheckBox>
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>

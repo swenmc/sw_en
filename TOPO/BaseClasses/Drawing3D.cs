@@ -1791,7 +1791,6 @@ namespace BaseClasses
                             }
                         }
 
-
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
 
@@ -1844,7 +1843,6 @@ namespace BaseClasses
                     }
                 }
 
-
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     if (cylinders == null) cylinders = new Model3DGroup();
@@ -1858,7 +1856,6 @@ namespace BaseClasses
                 {
                     AddLineToViewPort(jointsWireFramePoints, sDisplayOptions, viewPort);
                 }
-
             }
         }
 
