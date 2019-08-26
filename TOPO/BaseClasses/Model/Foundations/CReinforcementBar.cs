@@ -127,6 +127,7 @@ namespace BaseClasses
         }
         */
 
+        // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
         public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, CPoint pControlEdgePoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
@@ -165,6 +166,8 @@ namespace BaseClasses
             m_Mat.m_ft_interval = new float[1] { 0.1f };
             m_Mat.m_ff_yk = new float[1] { (float)prop.Ry };
         }
+
+        // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(Transform3DGroup temp)
         {
