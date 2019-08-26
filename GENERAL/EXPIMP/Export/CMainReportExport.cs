@@ -384,7 +384,7 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.fWireFrameLineThickness = 1;
+            opts.fWireFrameLineThickness = 2;
             opts.bTransformScreenLines3DToCylinders3D = false;
             opts.bDisplayJointsWireFrame = true;
             opts.bDisplayPlatesWireFrame = true;
@@ -482,7 +482,7 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.fWireFrameLineThickness = 1;
+            opts.fWireFrameLineThickness = 2;
             opts.bTransformScreenLines3DToCylinders3D = false;
             opts.bDisplayJointsWireFrame = true;
             opts.bDisplayPlatesWireFrame = true;

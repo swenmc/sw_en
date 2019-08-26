@@ -4410,7 +4410,7 @@ namespace BaseClasses
 
             float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
 
-            short NumberOfCirclePoints = 5;
+            short NumberOfCirclePoints = 9; // Osem uholnik + stredovy bod (je pocet bodov len 4+1 tak moze mat ciara inu hrubku podla toho ako je hranol otoceny)
 
             // Priemet do osi GCS - rozdiel suradnic v GCS
             double Delta_X = pB.X - pA.X;
