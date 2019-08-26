@@ -700,15 +700,19 @@ namespace EXPIMP
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
 
+            XFont fontDimension = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+            XBrush brushDimension = XBrushes.DarkOrange;
+
+            XFont fontNote = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
+            XBrush brushNote = XBrushes.Black;
+
             if (data.Model.m_arrSawCuts != null && data.Model.m_arrSawCuts.Count > 0)
             {
-                XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
-
                 string sCutWidth = (data.Model.m_arrSawCuts[0].CutWidth * 1000).ToString("F0");
-                gfx.DrawString(sCutWidth, font, XBrushes.DarkOrange, 115, 17);
+                gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
 
                 string sCutDepth = (data.Model.m_arrSawCuts[0].CutDepth * 1000).ToString("F0");
-                gfx.DrawString(sCutDepth, font, XBrushes.DarkOrange, 60, 40);
+                gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
             }
 
             image = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
@@ -721,8 +725,6 @@ namespace EXPIMP
 
             if (data.Model.m_arrControlJoints != null && data.Model.m_arrControlJoints.Count > 0)
             {
-                XFont font = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
-
                 /*
                 string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
                     " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
@@ -734,9 +736,9 @@ namespace EXPIMP
                     (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES";
                 string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
 
-                gfx.DrawString(sText1, font, XBrushes.Black, 315, 125);
-                gfx.DrawString(sText2, font, XBrushes.Black, 315, 135);
-                gfx.DrawString(sText3, font, XBrushes.Black, 315, 145);
+                gfx.DrawString(sText1, fontNote, brushNote, 315, 125);
+                gfx.DrawString(sText2, fontNote, brushNote, 315, 135);
+                gfx.DrawString(sText3, fontNote, brushNote, 315, 145);
             }
 
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
@@ -751,6 +753,39 @@ namespace EXPIMP
             image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+            float fPerimeterDepth = 0.55f;
+            float fPerimeterBottomWidth = 0.25f;
+            float fMeshAndStartersOverlapping = 0.6f;
+
+            CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
+            float fFloorSlabTopCover = slab.ConcreteCover;
+            CFoundation f = data.Model.m_arrFoundations.FirstOrDefault(); // ???? Budeme zadavat samostatne pre perimeter, vytvorit objekt perimeter ????
+            float fPerimeterCover = f.ConcreteCover;
+
+            float fStarterTopPosition = fFloorSlabTopCover + 0.02f; // Mesh position + 20 mm
+            float fMiddleDimension = fPerimeterDepth - fPerimeterCover;
+
+            string sTextP1 = (fPerimeterDepth * 1000).ToString("F0");
+            string sTextP2 = (fPerimeterCover * 1000).ToString("F0");
+            string sTextP3 = (fMiddleDimension * 1000).ToString("F0");
+            string sTextP4 = (fStarterTopPosition * 1000).ToString("F0");
+
+            string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
+            string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0");
+
+            string sTextP7 = "HD12 Starters / 600 mm crs";
+
+            // IN WORK 26.8.2019
+            //  TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
+
+            gfx.DrawString(sTextP1, fontDimension, brushDimension, 315, 225);
+            gfx.DrawString(sTextP2, fontDimension, brushDimension, 315, 235);
+            gfx.DrawString(sTextP3, fontDimension, brushDimension, 315, 245);
+            gfx.DrawString(sTextP4, fontDimension, brushDimension, 315, 255);
+            gfx.DrawString(sTextP5, fontDimension, brushDimension, 315, 265);
+            gfx.DrawString(sTextP6, fontDimension, brushDimension, 315, 275);
+            gfx.DrawString(sTextP7, fontNote, brushNote, 325, 285);
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
