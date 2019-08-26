@@ -294,11 +294,10 @@
                             <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="15" Grid.Column="3" Grid.RowSpan="4">
+                        <StackPanel Grid.Row="10" Grid.Column="3" Grid.RowSpan="5">
                             <CheckBox Name="chbDisplayMembersCenterLines" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>
                             <CheckBox Name="chbDisplaySolidModel"  IsChecked="{Binding Path=DisplaySolidModel}">Display Solid Model</CheckBox>
                             <CheckBox Name="chbDisplayWireFrameModel" IsChecked="{Binding Path=DisplayWireFrameModel}">Display Wireframe Model</CheckBox>
-
 
                             <CheckBox Name="chbDisplayMembersWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayMembersWireFrame}">Members Wireframe</CheckBox>
                             <CheckBox Name="chbDisplayJointsWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayJointsWireFrame}">Joints Wireframe</CheckBox>
@@ -310,14 +309,17 @@
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab Wireframe</CheckBox>
 
                         </StackPanel>
+
+                        <StackPanel Grid.Row="15" Grid.Column="3" Grid.RowSpan="3">
+                            <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Color Members</CheckBox>
+                            <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
+
+                            <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
+                            <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
+                            <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
+                        </StackPanel>
+
                         
-
-                        <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Color Members</CheckBox>
-                        <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
-
-                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
-                        <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
-                        <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
 
 
                         <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>

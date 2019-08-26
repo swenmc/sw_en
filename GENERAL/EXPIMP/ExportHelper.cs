@@ -970,26 +970,10 @@ namespace EXPIMP
             return joint;
         }
         
-
-        //ToDo: toto chcem refaktorovat, lebo nastavenia displayOptions maju byt von a nie vo vnutri tejto metody
-        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model)
+        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model, double width = 570, double height = 430)
         {
             CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
-
-            sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.bUseOrtographicCamera = false;
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.bDisplayMemberDescription = false;
-            // Do dokumentu exporujeme aj s wireframe
-            sDisplayOptions.bDisplayWireFrameModel = true;            
-            sDisplayOptions.fWireFrameLineThickness = 0.002f;
-            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
-            sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
-
+            
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
             float fMainMemberLength = 0;
@@ -1212,8 +1196,6 @@ namespace EXPIMP
                 }
             }
             //--------------------------------------------------------------------------------------------------------------------------------------
-
-
             jointClone = firstSameJoint.RecreateJoint();
             jointClone.m_arrPlates = firstSameJoint.m_arrPlates;
             
@@ -1221,35 +1203,22 @@ namespace EXPIMP
             
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
-            _trackport.Width = 570;
-            _trackport.Height = 430;
-            _trackport.ViewPort.RenderSize = new Size(570, 430);
-
+            _trackport.Width = width;
+            _trackport.Height = height;
+            _trackport.ViewPort.RenderSize = new Size(width, height);
+            
+            Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
+            _trackport.ViewPort.Measure(size);
+            _trackport.ViewPort.Arrange(new Rect(size));
+            
             CJointHelper.SetJoinModelRotationDisplayOptions(firstSameJoint, ref sDisplayOptions);
             Drawing3D.DrawJointToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }
 
 
-        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions)
+        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, double width = 570, double height = 430)
         {
-            //refaktoring!!!!  tieto nastavenie Display Options by mali dojst do funkcie a nie nastavovat ich vo vnutri
-
-            //Here is the place to overwrite displayOptions from Main Model
-            sDisplayOptions.bDisplaySolidModel = true;
-            sDisplayOptions.bDisplayPlates = true;
-            sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.RotateModelX = -90;
-            sDisplayOptions.RotateModelY = 45;
-            sDisplayOptions.bUseOrtographicCamera = false;
-            sDisplayOptions.bDisplayGlobalAxis = false;
-            
-            sDisplayOptions.bDisplayWireFrameModel = false;
-            sDisplayOptions.fWireFrameLineThickness = 0.001f;
-            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
-            sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
-
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
 
@@ -1488,14 +1457,14 @@ namespace EXPIMP
 
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
-            _trackport.Width = 570;
-            _trackport.Height = 430;
-            _trackport.ViewPort.RenderSize = new Size(570, 430);
-
-            //CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
-
-            sDisplayOptions.RotateModelX = -80; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = 5;
-
+            _trackport.Width = width;
+            _trackport.Height = height;
+            _trackport.ViewPort.RenderSize = new Size(width, height);
+            
+            Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
+            _trackport.ViewPort.Measure(size);
+            _trackport.ViewPort.Arrange(new Rect(size));
+            
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
         }

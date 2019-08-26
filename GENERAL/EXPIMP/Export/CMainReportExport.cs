@@ -1,4 +1,5 @@
-﻿using BaseClasses;
+﻿using _3DTools;
+using BaseClasses;
 using DATABASE.DTO;
 using MATH;
 using MigraDoc.DocumentObjectModel;
@@ -20,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace EXPIMP
@@ -366,14 +368,26 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
+            opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMembers = true;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayPlates = true;
+            opts.bDisplayConnectors = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayMemberDescription = false;
+            // Do dokumentu exporujeme aj s wireframe
+            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.fWireFrameLineThickness = 1;
+            opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
             opts.bDisplayConnectorsWireFrame = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
 
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Joints";
@@ -414,7 +428,11 @@ namespace EXPIMP
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
 
-                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, /*data.DisplayOptions*/ opts, data.Model);
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model);
+                foreach (Visual3D obj3D in viewPort.Children)
+                {
+                    if(obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
+                }
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
@@ -435,8 +453,6 @@ namespace EXPIMP
                 moveX += scaledImageWidth;
                 
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
-
-                
             }
             
             gfx.Dispose();
@@ -447,14 +463,27 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
+            //Here is the place to overwrite displayOptions from Main Model
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
+            opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayGlobalAxis = false;                        
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta            
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayPlates = true;
+            opts.bDisplayConnectors = true;
+            opts.bDisplayJoints = true;            
+            opts.bDisplayWireFrameModel = true;
+            opts.bDisplayMembersWireFrame = true;
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
+            opts.bDisplayFloorSlabWireFrame = true;
+            opts.fWireFrameLineThickness = 1;
+            opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
+            opts.RotateModelX = -80; opts.RotateModelY = 45; opts.RotateModelZ = 5;
 
             sheetNo++;
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
@@ -495,7 +524,11 @@ namespace EXPIMP
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, /*data.DisplayOptions*/ opts);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts);
+                foreach (Visual3D obj3D in viewPort.Children)
+                {
+                    if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
+                }
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));                
