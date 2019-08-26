@@ -971,6 +971,7 @@ namespace EXPIMP
         }
         
 
+        //ToDo: toto chcem refaktorovat, lebo nastavenia displayOptions maju byt von a nie vo vnutri tejto metody
         public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model)
         {
             CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
@@ -985,7 +986,7 @@ namespace EXPIMP
             sDisplayOptions.bDisplayMemberDescription = false;
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;            
-            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            sDisplayOptions.fWireFrameLineThickness = 0.002f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
             sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 

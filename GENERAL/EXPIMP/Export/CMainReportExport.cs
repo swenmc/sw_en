@@ -373,6 +373,7 @@ namespace EXPIMP
             opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.bTransformScreenLines3DToCylinders3D = true;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayConnectorsWireFrame = false;
 
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Joints";

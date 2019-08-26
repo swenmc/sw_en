@@ -692,6 +692,15 @@
         public bool bDisplayFloorSlab;
         public bool bDisplayNodalSupports;
 
+        public bool bDisplayMembersWireFrame;
+        public bool bDisplayJointsWireFrame;
+        public bool bDisplayPlatesWireFrame;
+        public bool bDisplayConnectorsWireFrame;
+        public bool bDisplayNodesWireFrame;
+        public bool bDisplayFoundationsWireFrame;
+        public bool bDisplayReinforcementBarsWireFrame;
+        public bool bDisplayFloorSlabWireFrame;
+
         public bool bDisplayMembersCenterLines;
         public bool bDisplaySolidModel;
         public bool bDisplayWireFrameModel;

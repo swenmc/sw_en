@@ -93,6 +93,16 @@ namespace PFD
         private bool m_DisplayDimensions;
         private bool m_TransformScreenLines3DToCylinders3D;
 
+        
+        private bool m_DisplayMembersWireFrame;
+        private bool m_DisplayJointsWireFrame;
+        private bool m_DisplayPlatesWireFrame;
+        private bool m_DisplayConnectorsWireFrame;
+        private bool m_DisplayNodesWireFrame;
+        private bool m_DisplayFoundationsWireFrame;
+        private bool m_DisplayReinforcementBarsWireFrame;
+        private bool m_DisplayFloorSlabWireFrame;
+
         // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
@@ -1971,6 +1981,118 @@ namespace PFD
             }
         }
 
+        public bool DisplayMembersWireFrame
+        {
+            get
+            {
+                return m_DisplayMembersWireFrame;
+            }
+
+            set
+            {
+                m_DisplayMembersWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayMembersWireFrame");
+            }
+        }
+
+        public bool DisplayJointsWireFrame
+        {
+            get
+            {
+                return m_DisplayJointsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayJointsWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayJointsWireFrame");
+            }
+        }
+
+        public bool DisplayPlatesWireFrame
+        {
+            get
+            {
+                return m_DisplayPlatesWireFrame;
+            }
+
+            set
+            {
+                m_DisplayPlatesWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayPlatesWireFrame");
+            }
+        }
+
+        public bool DisplayConnectorsWireFrame
+        {
+            get
+            {
+                return m_DisplayConnectorsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayConnectorsWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayConnectorsWireFrame");
+            }
+        }
+
+        public bool DisplayNodesWireFrame
+        {
+            get
+            {
+                return m_DisplayNodesWireFrame;
+            }
+
+            set
+            {
+                m_DisplayNodesWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayNodesWireFrame");
+            }
+        }
+
+        public bool DisplayFoundationsWireFrame
+        {
+            get
+            {
+                return m_DisplayFoundationsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayFoundationsWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayFoundationsWireFrame");
+            }
+        }
+
+        public bool DisplayReinforcementBarsWireFrame
+        {
+            get
+            {
+                return m_DisplayReinforcementBarsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayReinforcementBarsWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayReinforcementBarsWireFrame");
+            }
+        }
+
+        public bool DisplayFloorSlabWireFrame
+        {
+            get
+            {
+                return m_DisplayFloorSlabWireFrame;
+            }
+
+            set
+            {
+                m_DisplayFloorSlabWireFrame = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayFloorSlabWireFrame");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2183,6 +2305,14 @@ namespace PFD
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayReinforcementBars = false;
+            DisplayFloorSlab = false;
+            DisplayMembersWireFrame = true;
+            DisplayJointsWireFrame = false;
+            DisplayPlatesWireFrame = false;
+            DisplayConnectorsWireFrame = false;
+            DisplayNodesWireFrame = false;
+            DisplayFoundationsWireFrame = false;
+            DisplayReinforcementBarsWireFrame = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
             DisplayDimensions = true;
@@ -2756,6 +2886,15 @@ namespace PFD
             sDisplayOptions.bDisplayReinforcementBars = DisplayReinforcementBars;
             sDisplayOptions.bDisplayFloorSlab = DisplayFloorSlab;
             sDisplayOptions.bDisplayNodalSupports = DisplayNodalSupports;
+
+            sDisplayOptions.bDisplayMembersWireFrame = DisplayMembersWireFrame;
+            sDisplayOptions.bDisplayJointsWireFrame = DisplayJointsWireFrame;
+            sDisplayOptions.bDisplayPlatesWireFrame = DisplayPlatesWireFrame;
+            sDisplayOptions.bDisplayConnectorsWireFrame = DisplayConnectorsWireFrame;
+            sDisplayOptions.bDisplayNodesWireFrame = DisplayNodesWireFrame;
+            sDisplayOptions.bDisplayFoundationsWireFrame = DisplayFoundationsWireFrame;
+            sDisplayOptions.bDisplayReinforcementBarsWireFrame = DisplayReinforcementBarsWireFrame;
+            sDisplayOptions.bDisplayFloorSlabWireFrame = DisplayFloorSlabWireFrame;            
 
             sDisplayOptions.bDisplayMemberDescription = ShowMemberDescription;
             sDisplayOptions.bDisplayMemberID = ShowMemberID;

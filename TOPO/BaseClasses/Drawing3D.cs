@@ -22,7 +22,7 @@ namespace BaseClasses
         private static float fModel_Length_Y = 0;
         private static float fModel_Length_Z = 0;
         private static Transform3DGroup centerModelTransGr = null;
-        
+
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
         {
             Transform3DGroup transGr = new Transform3DGroup();
@@ -166,7 +166,7 @@ namespace BaseClasses
 
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
-            
+
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (_model != null)
             {
@@ -205,7 +205,7 @@ namespace BaseClasses
 
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
-                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, 
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
                         sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
                 //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
@@ -252,17 +252,17 @@ namespace BaseClasses
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
                 // Members
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                    if(lines != null)
-                       gr.Children.Add(lines); // Pridaj valcove plochy do modelu
+                    if (lines != null)
+                        gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
 
                 // Joints
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints && sDisplayOptions.bDisplayJointsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -272,7 +272,7 @@ namespace BaseClasses
                 }
 
                 // Foundations
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations && sDisplayOptions.bDisplayFoundationsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
@@ -282,7 +282,7 @@ namespace BaseClasses
                 }
 
                 // Slabs
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayFloorSlabWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
@@ -328,7 +328,7 @@ namespace BaseClasses
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-                
+
                 //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 //{
                 //    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -391,7 +391,7 @@ namespace BaseClasses
 
                 //    Drawing3D.DrawDimension3D(dim, _trackport.ViewPort, sDisplayOptions);
                 //}
-                }
+            }
 
             _trackport.SetupScene();
             return model;
@@ -409,18 +409,18 @@ namespace BaseClasses
             {
                 float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
-                if(model.m_arrMembers!= null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                  CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
+                    CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
                 Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-                
+
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f));
-                
+
                 if (sDisplayOptions.RotateModelX != 0)
                 {
                     AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
@@ -428,8 +428,8 @@ namespace BaseClasses
                 }
                 if (sDisplayOptions.RotateModelY != 0)
                 {
-                    if(!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
-                    
+                    if (!IsJointSecondaryMemberTowardsCamera(model)) sDisplayOptions.RotateModelY += 180;
+
                     AxisAngleRotation3D Rotation_LCS_y = new AxisAngleRotation3D(new Vector3D(0, 1, 0), sDisplayOptions.RotateModelY);
                     centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_y));
                 }
@@ -471,7 +471,7 @@ namespace BaseClasses
 
                 // Add WireFrame Model
                 // Members
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
@@ -481,7 +481,7 @@ namespace BaseClasses
                 }
 
                 // Joints
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints && sDisplayOptions.bDisplayJointsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -551,7 +551,7 @@ namespace BaseClasses
             //viewCube.BackText = "Back";
             //viewCube.FrontText = "Front";            
             //AxisAngleRotation3D Rot_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), sDisplayOptions.RotateModelX);
-            
+
             //Transform3DGroup tr_gr = new Transform3DGroup();
             //tr_gr.Children.Add(new ScaleTransform3D(0.01,0.01,0.01));
             //tr_gr.Children.Add(new RotateTransform3D(Rot_x));
@@ -650,7 +650,7 @@ namespace BaseClasses
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
                 // Members
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
@@ -660,7 +660,7 @@ namespace BaseClasses
                 }
 
                 // Joints
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints && sDisplayOptions.bDisplayJointsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -670,7 +670,7 @@ namespace BaseClasses
                 }
 
                 // Foundations
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations && sDisplayOptions.bDisplayFoundationsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
@@ -780,7 +780,7 @@ namespace BaseClasses
             float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
             if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-              CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             fModel_Length_X = fTempMax_X - fTempMin_X;
             fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -815,7 +815,7 @@ namespace BaseClasses
             {
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplayMembers)
-                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, 
+                    membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
                         sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, null, null, null, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
@@ -876,8 +876,8 @@ namespace BaseClasses
                         {
                             //Set Colors
                             if (bColorsAccordingToMembers && model.m_arrMembers[i].Color != null) shell = new SolidColorBrush(model.m_arrMembers[i].Color);
-                            else if(bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
-                            
+                            else if (bColorsAccordingToSections && model.m_arrMembers[i].CrScStart.CSColor != null) shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+
                             if (bFastRendering ||
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
@@ -886,7 +886,7 @@ namespace BaseClasses
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
                                 GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                
+
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
@@ -971,7 +971,7 @@ namespace BaseClasses
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                 {
-                    if (cmodel.m_arrConnectionJoints[i] != null && 
+                    if (cmodel.m_arrConnectionJoints[i] != null &&
                         cmodel.m_arrConnectionJoints[i].BIsGenerated &&
                         cmodel.m_arrConnectionJoints[i].BIsDisplayed)
                     {
@@ -1571,17 +1571,17 @@ namespace BaseClasses
                 lX.Points.Add(pGCS_centre);
                 lX.Points.Add(pAxisX);
                 lX.Color = Colors.Red;
-                lX.Thickness = flineThickness;                
+                lX.Thickness = flineThickness;
 
                 lY.Points.Add(pGCS_centre);
                 lY.Points.Add(pAxisY);
                 lY.Color = Colors.Green;
-                lY.Thickness = flineThickness;                
+                lY.Thickness = flineThickness;
 
                 lZ.Points.Add(pGCS_centre);
                 lZ.Points.Add(pAxisZ);
                 lZ.Color = Colors.Blue;
-                lZ.Thickness = flineThickness;                
+                lZ.Thickness = flineThickness;
 
                 if (trans != null)
                 {
@@ -1697,7 +1697,7 @@ namespace BaseClasses
             viewPort.Children.Add(wY);
             viewPort.Children.Add(wZ);
         }
- 
+
         // Add all members in one wireframe collection
         public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions, out Model3DGroup cylinders)
         {
@@ -1761,10 +1761,14 @@ namespace BaseClasses
                         {
                             for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++)
                             {
-                                // Create WireFrame in LCS
-                                List<Point3D> jointPlatePoints = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel().Points.ToList();
+                                List<Point3D> jointPlatePoints = new List<Point3D>();
+                                if (sDisplayOptions.bDisplayPlatesWireFrame)
+                                {
+                                    // Create WireFrame in LCS
+                                    jointPlatePoints = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel().Points.ToList();
+                                }
 
-                                if (sDisplayOptions.bDisplayConnectors)
+                                if (sDisplayOptions.bDisplayConnectorsWireFrame)
                                 {
                                     // Add plate connectors
                                     if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null &&
@@ -1784,9 +1788,9 @@ namespace BaseClasses
                                     var transPoints_Plate = jointPlatePoints.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
                                     jointPoints.AddRange(transPoints_Plate);
                                 }
-                                
                             }
                         }
+
 
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
@@ -1825,7 +1829,7 @@ namespace BaseClasses
                     {
                         if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                         {
-                            if(cylinders == null) cylinders = new Model3DGroup();
+                            if (cylinders == null) cylinders = new Model3DGroup();
                             for (int j = 0; j < jointsWireFramePoints.Count / 2; j++)
                             {
                                 GeometryModel3D cylinder = Get3DLineReplacement(sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, jointsWireFramePoints[j * 2], jointsWireFramePoints[j * 2 + 1]);
@@ -1854,7 +1858,7 @@ namespace BaseClasses
                 {
                     AddLineToViewPort(jointsWireFramePoints, sDisplayOptions, viewPort);
                 }
-                
+
             }
         }
 
@@ -1875,7 +1879,7 @@ namespace BaseClasses
                         wireFramePoints.AddRange(model.m_arrFoundations[i].WireFramePoints);
                     }
                 }
-                
+
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     cylinders = new Model3DGroup();
@@ -2132,7 +2136,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; 
+                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;
                         float fTextBlockVerticalSizeFactor = 0.8f;
                         float fTextBlockHorizontalSizeFactor = 0.3f;
 
@@ -2158,7 +2162,7 @@ namespace BaseClasses
                         // VIEW AXIS
                         Vector3D viewVector;
                         Vector3D viewHorizontalVector;
-                        Vector3D viewVerticalVector; 
+                        Vector3D viewVerticalVector;
 
                         if (displayOptions.ModelView == (int)EModelViews.BACK)
                         {
@@ -2314,7 +2318,7 @@ namespace BaseClasses
                             over = viewHorizontalVector * fTextBlockHorizontalSizeFactor;
                             up = viewVerticalVector * fTextBlockVerticalSizeFactor;
                         }
-                        else if(iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
+                        else if (iTextNormalInLCSCode == 1) // Text pre LCS y (rovina xz)
                         {
                             pTextPositionInLCS.X = fRelativePositionFactor * model.m_arrMembers[i].FLength;
                             pTextPositionInLCS.Y = fOffsetOutOfPlane_y; // v pripade potreby upravit / TODO nastavit znamienko
@@ -2323,7 +2327,7 @@ namespace BaseClasses
                             up_LCS = new Vector3D(0, 0, 1);
 
                             // Ak smeruje lokalna osa x v smere zapornej osi Z potrebujeme text otocit aby sa vykreslil zhora dole
-                            if(model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
+                            if (model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
                             {
                                 over_LCS = new Vector3D(-1, 0, 0); // ??? doriesit opacny smer textu
                                 up_LCS = new Vector3D(0, 0, -1);
@@ -2353,7 +2357,7 @@ namespace BaseClasses
                             if (memberLCSAxis_xInView.Z == 1 || memberLCSAxis_xInView.Z == -1) // Osa pruta smeruje zvislo v smere verikalnej osi pohladu (vzdy chceme citat zprava a zdola nahor)
                             {
                                 over = viewVerticalVector * fTextBlockHorizontalSizeFactor;
-                                up =  Vector3D.Multiply(-1, viewHorizontalVector) * fTextBlockVerticalSizeFactor;
+                                up = Vector3D.Multiply(-1, viewHorizontalVector) * fTextBlockVerticalSizeFactor;
                             }
                         }
                         else // if(iTextNormalInLCSCode == 2) // Text pre LCS z (rovina xy)
@@ -2425,7 +2429,7 @@ namespace BaseClasses
                         float fMemberLengthLimitToDisplayDescription = 0.5f;
 
                         // podmienky pre pridanie textu (napriklad typ alebo dlzka pruta)
-                        if(model.m_arrMembers[i].FLength > fMemberLengthLimitToDisplayDescription)
+                        if (model.m_arrMembers[i].FLength > fMemberLengthLimitToDisplayDescription)
                             viewPort.Children.Add(textlabel);
                     }
                 }
@@ -2453,7 +2457,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f; 
+                        float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f;
                         float fTextBlockVerticalSizeFactor = 0.8f;
                         float fTextBlockHorizontalSizeFactor = 0.3f;
 
@@ -2463,7 +2467,7 @@ namespace BaseClasses
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = new SolidColorBrush(displayOptions.NodeDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ??? // Ina farba ako pre popis prutov
                         tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
-                        
+
                         float fOffsetZ = 0.06f;
                         float fOffsetX = 0.06f;
                         Point3D pTextPosition = new Point3D();
@@ -2726,7 +2730,7 @@ namespace BaseClasses
                 {
                     if (model.m_arrControlJoints[i] != null) // Control joint object is valid (not empty)
                     {
-                       DrawControlJointText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
+                        DrawControlJointText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
                     }
                 }
             }
@@ -2810,7 +2814,7 @@ namespace BaseClasses
 
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor,0, 0);
+            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
             // Create text
@@ -2854,13 +2858,13 @@ namespace BaseClasses
 
         private static Model3DGroup CreateModelDimensions_Model3DGroup(List<CDimensionLinear3D> dimensions, CModel model, DisplayOptions displayOptions)
         {
-           if (dimensions == null || dimensions.Count == 0)
+            if (dimensions == null || dimensions.Count == 0)
                 return null;
 
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
 
-             Model3DGroup gr = new Model3DGroup();
+            Model3DGroup gr = new Model3DGroup();
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
@@ -2919,7 +2923,7 @@ namespace BaseClasses
                     if (options.bDisplayMemberRealLengthInMM) parts.Add((m.FLength_real * 1000).ToString("F0"));
                     else parts.Add(m.FLength_real.ToString("F3"));
                 }
-            } 
+            }
             return string.Join(separator, parts);
         }
 
@@ -3564,7 +3568,7 @@ namespace BaseClasses
 
                         GeometryModel3D model3D = f.Visual_Object;
 
-                        if(f.Visual_Object == null) // In case that foundation exist but geometry is not generated
+                        if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
                             model3D = f.Visual_Object = f.CreateGeomModel3D(0.2f); // TODO zaviest opacity ako parameter
 
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
@@ -3601,8 +3605,8 @@ namespace BaseClasses
                 fMax_Z = Math.Max(fMax_Z, (float)allFoundationPoints.Max(p => p.Z));
                 fMin_Z = Math.Min(fMin_Z, (float)allFoundationPoints.Min(p => p.Z));
             }
-            
-            if(fMax_X == float.MinValue ||
+
+            if (fMax_X == float.MinValue ||
             fMin_X == float.MaxValue ||
             fMax_Y == float.MinValue ||
             fMin_Y == float.MaxValue ||
@@ -3648,11 +3652,11 @@ namespace BaseClasses
 
             if (allMembersPoints != null) // Some member outline points exist (transformed external outline points of real member)
             {
-                fMax_X = Math.Max(fMax_X,(float)allMembersPoints.Max(p => p.X));
-                fMin_X = Math.Min(fMin_X,(float)allMembersPoints.Min(p => p.X));
-                fMax_Y = Math.Max(fMax_Y,(float)allMembersPoints.Max(p => p.Y));
-                fMin_Y = Math.Min(fMin_Y,(float)allMembersPoints.Min(p => p.Y));
-                fMax_Z = Math.Max(fMax_Z,(float)allMembersPoints.Max(p => p.Z));
+                fMax_X = Math.Max(fMax_X, (float)allMembersPoints.Max(p => p.X));
+                fMin_X = Math.Min(fMin_X, (float)allMembersPoints.Min(p => p.X));
+                fMax_Y = Math.Max(fMax_Y, (float)allMembersPoints.Max(p => p.Y));
+                fMin_Y = Math.Min(fMin_Y, (float)allMembersPoints.Min(p => p.Y));
+                fMax_Z = Math.Max(fMax_Z, (float)allMembersPoints.Max(p => p.Z));
                 fMin_Z = Math.Min(fMin_Z, (float)allMembersPoints.Min(p => p.Z));
             }
 
@@ -3943,7 +3947,7 @@ namespace BaseClasses
         {
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
-            if(pad != null) padClone.Visual_Object = pad.Visual_Object;
+            if (pad != null) padClone.Visual_Object = pad.Visual_Object;
 
             CModel jointModel = null;
 
@@ -4177,12 +4181,12 @@ namespace BaseClasses
                     MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
 
                     if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
-                     {
-                         foreach (int n in m.CrScStart.WireFrameIndices)
-                         {
+                    {
+                        foreach (int n in m.CrScStart.WireFrameIndices)
+                        {
                             m.WireFramePoints.Add(mesh.Positions[n]);
-                         }
-                     }
+                        }
+                    }
                 }
                 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -4401,7 +4405,7 @@ namespace BaseClasses
         {
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
             // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
-            
+
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
             float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
@@ -4420,7 +4424,7 @@ namespace BaseClasses
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
             // Model valca som nahradil len plastom a nebudeme kreslit hornu a spodnu podstavu, to bz malo pre "ciaru" postacovat
             // TODO - zjednotit triedy Cylinder a funkcie z CVolume pre valec
-            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
+            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
 
             // Transform cylinder from its LCS to GCS
             CMember m = new CMember();
@@ -4429,7 +4433,7 @@ namespace BaseClasses
             //set transformed points
             ((MeshGeometry3D)gm3D.Geometry).Positions = points;
 
-            
+
             return gm3D;
         }
 
