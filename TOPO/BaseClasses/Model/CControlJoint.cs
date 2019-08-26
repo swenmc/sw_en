@@ -51,6 +51,22 @@ namespace BaseClasses
             set { m_Text = value; }
         }
 
+        private float m_DowelSpacing;
+
+        public float DowelSpacing
+        {
+            get { return m_DowelSpacing; }
+            set { m_DowelSpacing = value; }
+        }
+
+        private CDowel m_ReferenceDowel;
+
+        public CDowel ReferenceDowel
+        {
+            get { return m_ReferenceDowel; }
+            set { m_ReferenceDowel = value; }
+        }
+
         // TO Ondrej - ak maju podla teba tie premenne zmysel tak z nich treba urobit properties, mozno by sa dalo riesit priamo v tomto objekte aky je smer textu
         bool bTextAboveLine; // true - text je medzi nad liniou (alebo nalavo od nej), false - text je na opacnej strane (pod liniou) alebo napravo od nej
         public int iVectorOverFactor_LCS;
@@ -58,11 +74,13 @@ namespace BaseClasses
 
         public Transform3DGroup TransformGr;
 
-        public CControlJoint(int id, Point3D start, Point3D end, bool bIsDiplayed_temp, int fTime)
+        public CControlJoint(int id, Point3D start, Point3D end, CDowel referenceDowel, float fDowelSpacing, bool bIsDiplayed_temp, int fTime)
         {
             ID = id;
-            PointStart = start;
-            PointEnd = end;
+            m_PointStart = start;
+            m_PointEnd = end;
+            m_ReferenceDowel = referenceDowel;
+            m_DowelSpacing = fDowelSpacing;
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 

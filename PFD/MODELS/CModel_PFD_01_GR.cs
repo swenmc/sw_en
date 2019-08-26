@@ -2624,6 +2624,9 @@ namespace PFD
 
             if (bGenerateSawCuts)
             {
+                float fcutWidth = 0.01f;
+                float fcutDepth = 0.03f;
+
                 float fMinimumDistance = Math.Min(3, fL1_frame); // 6 m // V kazdej bay alebo minimalne 6 metrov od seba
                 // Create raster of lines in XY-plane
                 int iNumberInXDirection = (int)(fW_frame / fMinimumDistance) -1;
@@ -2637,12 +2640,12 @@ namespace PFD
                 // Sawcuts per X axis - rezanie v smere Y
                 for (int i = 0; i < iNumberInXDirection; i++)
                 {
-                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D((i+1) * fDistanceInXDirection, 0, 0), new Point3D((i+1) * fDistanceInXDirection, fL_tot, 0), true, 0));
+                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D((i+1) * fDistanceInXDirection, 0, 0), new Point3D((i+1) * fDistanceInXDirection, fL_tot, 0), fcutWidth, fcutDepth, true, 0));
                 }
 
                 // Sawcuts per Y axis - rezanie v smere X
                 for (int i = 0; i < iNumberInYDirection; i++)
-                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, (i+1) * fDistanceInYDirection, 0), new Point3D(fW_frame, (i+1) * fDistanceInYDirection, 0), true, 0));
+                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, (i+1) * fDistanceInYDirection, 0), new Point3D(fW_frame, (i+1) * fDistanceInYDirection, 0), fcutWidth, fcutDepth, true, 0));
             }
         }
 
@@ -2652,12 +2655,15 @@ namespace PFD
 
             if (bGenerateControlJoints)
             {
+                CDowel referenceDowel = new CDowel(new CPoint(0, 0, 0, 0, 0), 0.016f, 0.6f, 0.947f, true);
+                float fDowelSpacing = 0.4f;
+
                 // Create raster of lines in XY-plane
                 // V smere X v polovici budovy
                 // TODO - dopracovat generovanie po 20 m
 
                 m_arrControlJoints = new List<CControlJoint>();
-                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), true, 0));
+                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), referenceDowel, fDowelSpacing, true, 0));
             }
         }
 

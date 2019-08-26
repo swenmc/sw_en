@@ -51,6 +51,22 @@ namespace BaseClasses
             set { m_Text = value; }
         }
 
+        private float m_CutWidth;
+
+        public float CutWidth
+        {
+            get { return m_CutWidth; }
+            set { m_CutWidth = value; }
+        }
+
+        private float m_CutDepth;
+
+        public float CutDepth
+        {
+            get { return m_CutDepth; }
+            set { m_CutDepth = value; }
+        }
+
         // TO Ondrej - ak maju podla teba tie premenne zmysel tak z nich treba urobit properties, mozno by sa dalo riesit priamo v tomto objekte aky je smer textu
         bool bTextAboveLine; // true - text je medzi nad liniou (alebo nalavo od nej), false - text je na opacnej strane (pod liniou) alebo napravo od nej
         public int iVectorOverFactor_LCS;
@@ -58,11 +74,13 @@ namespace BaseClasses
 
         public Transform3DGroup TransformGr;
 
-        public CSawCut(int id, Point3D start, Point3D end, bool bIsDiplayed_temp, int fTime)
+        public CSawCut(int id, Point3D start, Point3D end, float cutWidth, float cutDepth,  bool bIsDiplayed_temp, int fTime)
         {
             ID = id;
-            PointStart = start;
-            PointEnd = end;
+            m_PointStart = start;
+            m_PointEnd = end;
+            m_CutWidth = cutWidth;
+            m_CutDepth = cutDepth;
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 

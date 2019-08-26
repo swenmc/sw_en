@@ -494,7 +494,7 @@ namespace EXPIMP
                 double scaledImageHeight = image.PointHeight * scaleFactor;
                 
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
-                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);                
+                gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
 
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
@@ -503,7 +503,7 @@ namespace EXPIMP
                 moveX += scaledImageWidth + 90;
                 if (numInRow == maxInRow) { numInRow = 0; moveX = -50; moveY += scaledImageHeight + 80; numInColumn++; }
 
-                if (numInColumn == maxInColumn)
+                if (numInColumn > maxInColumn) // To Ondrej - novu stranku by sme mali pridavat len ak je index pre pocet obrazkov v stlpci vacsi nez maximalny, na predchadzajucom riadku sa totiz inkrementuje po vlozeni posledneho obrazku
                 {
                     numInColumn = 0;
                     moveY = 40;
@@ -1552,7 +1552,7 @@ namespace EXPIMP
             //tableParams.Add(new string[2] { "W", pad.m_fDim2.ToString() });
             //tableParams.Add(new string[2] { "H", pad.m_fDim3.ToString() });
             tableParams.Add(new string[2] { "Dimensions L x W x H", pad.m_fDim1.ToString() + " x " + pad.m_fDim2.ToString() + " x " + pad.m_fDim3.ToString() + " [m]" });
-            if (pad.m_Mat != null) tableParams.Add(new string[2] { "Concrete Grade", pad.m_Mat.Name + "[MPa]" }); // !!! vzdy by mal byt priradeny material
+            if (pad.m_Mat != null) tableParams.Add(new string[2] { "Concrete Grade", pad.m_Mat.Name + " [MPa]" }); // !!! vzdy by mal byt priradeny material
             tableParams.Add(new string[2] { "Reinforcement Grade", pad.Reference_Bottom_Bar_x.m_Mat.Name });
 
             //tableParams.Add(new string[2] { "Count Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() });
