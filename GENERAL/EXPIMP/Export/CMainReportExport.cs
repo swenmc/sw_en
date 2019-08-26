@@ -778,20 +778,29 @@ namespace EXPIMP
             string sTextP4 = (fStarterTopPosition * 1000).ToString("F0");
 
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
-            string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0");
+            string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
             string sTextP7 = "HD12 Starters / 600 mm crs";
 
             // IN WORK 26.8.2019
-            //  TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
+            // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
+            // TO Ondrej - zistil som ze to otocim vid nizsie, aj to funguje, ale musim vytvorit novu XGraphics pre kazdy text
+            // Rozumiem tomu spravne ze mam vykreslit najprv vsetko, co je horizontalne, potom gfx.Dispose(); a potom vytvorit pre kazdy rotovany text novu XGraphics?
 
-            gfx.DrawString(sTextP1, fontDimension, brushDimension, 315, 225);
-            gfx.DrawString(sTextP2, fontDimension, brushDimension, 315, 235);
-            gfx.DrawString(sTextP3, fontDimension, brushDimension, 315, 245);
-            gfx.DrawString(sTextP4, fontDimension, brushDimension, 315, 255);
-            gfx.DrawString(sTextP5, fontDimension, brushDimension, 315, 265);
-            gfx.DrawString(sTextP6, fontDimension, brushDimension, 315, 275);
-            gfx.DrawString(sTextP7, fontNote, brushNote, 325, 285);
+            /*
+            gfx.Dispose();
+            XGraphics gfxRotate = XGraphics.FromPdfPage(page);
+            gfxRotate.RotateAtTransform(-90, new XPoint(200, 300));
+            gfxRotate.DrawString("Text Here", fontDimension, XBrushes.Black, new XPoint(200, 300));
+            */
+
+            gfx.DrawString(sTextP1, fontDimension, brushDimension, 17, 295);
+            gfx.DrawString(sTextP2, fontDimension, brushDimension, 45, 380);
+            gfx.DrawString(sTextP3, fontDimension, brushDimension, 40, 295);
+            gfx.DrawString(sTextP4, fontDimension, brushDimension, 45, 225);
+            gfx.DrawString(sTextP5, fontDimension, brushDimension, 90, 380);
+            gfx.DrawString(sTextP6, fontDimension, brushDimension, 100, 210);
+            gfx.DrawString(sTextP7, fontNote, brushNote, 180, 290);
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
