@@ -371,14 +371,17 @@ namespace EXPIMP
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
+
             opts.bDisplayGlobalAxis = false;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-            opts.bDisplayMembers = true;
             opts.bDisplaySolidModel = true;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMemberDescription = false;
+
+            opts.bDisplayMembers = true;
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
             opts.bDisplayJoints = true;
-            opts.bDisplayMemberDescription = false;
+
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.fWireFrameLineThickness = 1;
@@ -387,7 +390,6 @@ namespace EXPIMP
             opts.bDisplayPlatesWireFrame = true;
             opts.bDisplayConnectorsWireFrame = false;
             opts.wireFrameColor = System.Windows.Media.Colors.Black;
-
 
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Joints";
@@ -399,7 +401,7 @@ namespace EXPIMP
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
 
-            double moveX = 0;
+            double moveX = 5; // Odsadenie od laveho okraja vykresu
             double moveY = 40;
             int maxInRow = 4;
             int maxInColumn = 2;
@@ -452,7 +454,7 @@ namespace EXPIMP
 
                 moveX += scaledImageWidth;
                 
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 5; moveY += scaledImageHeight + 130; numInColumn++; }
             }
             
             gfx.Dispose();
@@ -463,27 +465,38 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            //Here is the place to overwrite displayOptions from Main Model
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;                        
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta            
+
+            opts.bDisplayGlobalAxis = false;
             opts.bDisplaySolidModel = true;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMemberDescription = false;
+
+            opts.bDisplayMembers = true;
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
-            opts.bDisplayJoints = true;            
-            opts.bDisplayWireFrameModel = true;
-            opts.bDisplayMembersWireFrame = true;
-            opts.bDisplayJointsWireFrame = true;
-            opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayFloorSlabWireFrame = true;
+            opts.bDisplayJoints = true;
+
+            // Do dokumentu exporujeme aj s wireframe
+            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.fWireFrameLineThickness = 1;
             opts.bTransformScreenLines3DToCylinders3D = false;
-            opts.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
+            opts.bDisplayConnectorsWireFrame = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
-            opts.RotateModelX = -80; opts.RotateModelY = 45; opts.RotateModelZ = 5;
+            // Foundations
+            opts.bDisplayFoundations = true;
+            opts.bDisplayReinforcementBars = true;
+            opts.bDisplayFoundationsWireFrame = true;
+            opts.bDisplayReinforcementBarsWireFrame = true;
+            opts.RotateModelX = -80;
+            opts.RotateModelY = 45;
+            opts.RotateModelZ = 5;
 
             sheetNo++;
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
@@ -495,7 +508,7 @@ namespace EXPIMP
             //gfx.DrawString("Footing Pads:", fontBold, XBrushes.Black, 20, 20);
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
-            
+
             double moveX = -50;
             double moveY = 40;
             int maxInRow = 2;
@@ -813,7 +826,8 @@ namespace EXPIMP
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
             string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP7 = "HD12 Starters / 600 mm crs";
+            string sTextP7 = "HD12 Starters";
+            string sTextP8 = "600 mm crs";
 
             // IN WORK 26.8.2019
             // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
@@ -829,11 +843,12 @@ namespace EXPIMP
 
             gfx.DrawString(sTextP1, fontDimension, brushDimension, 17, 295);
             gfx.DrawString(sTextP2, fontDimension, brushDimension, 45, 380);
-            gfx.DrawString(sTextP3, fontDimension, brushDimension, 40, 295);
+            gfx.DrawString(sTextP3, fontDimension, brushDimension, 43, 295);
             gfx.DrawString(sTextP4, fontDimension, brushDimension, 45, 225);
             gfx.DrawString(sTextP5, fontDimension, brushDimension, 90, 380);
             gfx.DrawString(sTextP6, fontDimension, brushDimension, 100, 210);
             gfx.DrawString(sTextP7, fontNote, brushNote, 180, 290);
+            gfx.DrawString(sTextP8, fontNote, brushNote, 180, 300);
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
@@ -846,6 +861,8 @@ namespace EXPIMP
 
                 if (bAddRollerDoorDetail) // Add roller door rebate detail
                 {
+                    int iPictureTextOffset = 240;
+
                     image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
                     imageWidthOriginal = image.PixelWidth;
                     imageHeightOriginal = image.PixelHeight;
@@ -853,6 +870,20 @@ namespace EXPIMP
                     image.Dispose();
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+                    float fPerimeterDepthRebate = fPerimeterDepth - 0.02f; // 10 + 10 mm
+                    sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
+
+                    float fRollerDoorRebate = 0.5f;
+                    sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
+
+                    gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
+                    gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
+                    //gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 43, 295);
+                    //gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 45, 225);
+                    gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
+                    gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
+                    //gfx.DrawString(sTextP7, fontNote, brushNote, iPictureTextOffset + 180, 290);
                 }
             }
         }
