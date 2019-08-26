@@ -1931,8 +1931,8 @@ namespace BaseClasses
         {
             //TO Mato - tieto prepinace sa vyskytuju castejsie...je potrebne poprepinat a vyskusat jednotlive typy ciar, co sa tyka zobrazovania a tiez performance
             bool useWireLines = false;
-            bool useScreenSpaceLines = false;
-            bool useLinesVisual3D = true;
+            bool useScreenSpaceLines = true;
+            bool useLinesVisual3D = false;
 
             if (useWireLines)
             {

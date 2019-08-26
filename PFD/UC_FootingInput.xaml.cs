@@ -47,52 +47,35 @@ namespace PFD
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //ja neviem co sa to tu robi...
+            if (!(sender is CPFDViewModel)) return;
+            CFoundation pad = vm.GetSelectedFootingPad(); 
+            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
 
-            // TO Ondrej
-            // Neviem ci to co je tu suvisi s viewmodelom tabu General alebo to ma byt inde
+            //Toto Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
+            // Joint with base plate and anchors
+            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
+                float feccentricity_x = 0;
+                float feccentricity_y = 0;
+                float fpad_x = pad.m_fDim1;
+                float fpad_y = pad.m_fDim2;
 
-            // A) Ked sa zmeni hlavny viewModel Tabu General, tak sa pre zvoleny typ componenty hladaju vsetky objekty zakladov a z toho zoznamu sa 
-            // vyberie prva GetSelectedFootingPad();
+                float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
+                float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
 
-            // B) Pre tuto vybranu patku sa najde spoj ktory prislucha k uzlu na ktorom je patka GetBaseJointForSelectedNode(pad.m_Node);
+                float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
+                float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
+                float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
+                float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
 
-            // C) Prepocitaju sa nejake vzdialenosti ktore budem potrebovat pre vypocet
-            // blok kodu if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
+                float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
+                float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
 
-            // D) Prekresli sa preview
+                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
+            }
 
-            // Ak to tu nema byt tak to potrebujem dat niekam inam, aby sa to updatovalo pri zmenach v GUI viewmodelu, resp. zmene dat (foundation) hlavneho modelu
-            // CModel_PFD_01_GR.cs
-
-            //if (!(sender is CPFDViewModel)) return;
-            //CFoundation pad = GetSelectedFootingPad(); // TO DO Ondrej - dopracovat a napojit objekty pad a joint ako parametre funkcie
-            //CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node); // Napojit objekt joint ktory prislucha k danemu typu patky
-
-            //// Joint with base plate and anchors
-            //if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
-            //{
-            //    CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
-            //    float feccentricity_x = 0;
-            //    float feccentricity_y = 0;
-            //    float fpad_x = pad.m_fDim1;
-            //    float fpad_y = pad.m_fDim2;
-
-            //    float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
-            //    float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
-
-            //    float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
-            //    float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
-            //    float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
-            //    float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
-
-            //    float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
-            //    float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
-
-            //    basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
-            //}
-
-            //displayFootingPad(pad, joint);
+            displayFootingPad(pad, joint);
         }
 
         protected void HandleFootingPadPropertyChangedEvent(object sender, PropertyChangedEventArgs e)

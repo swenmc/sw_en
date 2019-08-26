@@ -2800,7 +2800,7 @@ namespace PFD
             sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
 
             sDisplayOptions.wireFrameColor = WireframeColor;
-            sDisplayOptions.fWireFrameLineThickness = 1; // TODO dopracovat nastavitelne v GUI
+            sDisplayOptions.fWireFrameLineThickness = 2; // TODO dopracovat nastavitelne v GUI
 
             sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
