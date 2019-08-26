@@ -88,13 +88,13 @@ namespace EXPIMP
 
             List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
-            //DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            //DrawModel3D(s_document, tableParams, modelData);
+            DrawModel3D(s_document, tableParams, modelData);
 
-            //DrawModelViews(s_document, tableParams, modelData);
+            DrawModelViews(s_document, tableParams, modelData);
 
-            //DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
 
             DrawJointTypes(s_document, tableParams, modelData);
 
@@ -397,6 +397,18 @@ namespace EXPIMP
 
             foreach (KeyValuePair<CConnectionDescription, CConnectionJointTypes> kvp in data.JointsDict)
             {
+                //add new page when whole page is used
+                if (numInColumn == maxInColumn)
+                {
+                    numInColumn = 0;
+                    moveY = 40;
+                    gfx.Dispose();
+
+                    sheetNo++;
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+                    tf = new XTextFormatter(gfx);
+                }
+
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
 
@@ -422,16 +434,7 @@ namespace EXPIMP
                 
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
 
-                if (numInColumn == maxInColumn) // ???? Pozri Footings - vkladala sa tam prazdna stranka, ale treba to opravit nejako inak To Ondrej - novu stranku by sme mali pridavat len ak je index pre pocet obrazkov v stlpci vacsi nez maximalny, na predchadzajucom riadku sa totiz inkrementuje po vlozeni posledneho obrazku
-                {
-                    numInColumn = 0;
-                    moveY = 40;
-                    gfx.Dispose();
-
-                    sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
-                    tf = new XTextFormatter(gfx);
-                }
+                
             }
             
             gfx.Dispose();
@@ -475,6 +478,17 @@ namespace EXPIMP
 
             foreach (KeyValuePair<string, Tuple<CFoundation, CConnectionJointTypes>> kvp in data.FootingsDict)
             {
+                //add new page when whole page is used
+                if (numInColumn > maxInColumn)
+                {
+                    numInColumn = 0;
+                    moveY = 40;
+                    gfx.Dispose();
+
+                    sheetNo++;
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+                }
+
                 numInRow++;
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
@@ -501,16 +515,6 @@ namespace EXPIMP
 
                 moveX += scaledImageWidth + 90;
                 if (numInRow == maxInRow) { numInRow = 0; moveX = -50; moveY += scaledImageHeight + 80; numInColumn++; }
-
-                if (numInColumn > maxInColumn) // To Ondrej - novu stranku by sme mali pridavat len ak je index pre pocet obrazkov v stlpci vacsi nez maximalny, na predchadzajucom riadku sa totiz inkrementuje po vlozeni posledneho obrazku
-                {
-                    numInColumn = 0;
-                    moveY = 40;
-                    gfx.Dispose();
-
-                    sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
-                }
             }
 
             gfx.Dispose();
