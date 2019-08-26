@@ -1503,18 +1503,18 @@ namespace EXPIMP
         {
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
-            //_trackport.Width = 2800;
-            //_trackport.Height = 2000;
-            //_trackport.ViewPort.RenderSize = new Size(2800, 2000);
-            _trackport.Width = 1400;
-            _trackport.Height = 1000;
-            _trackport.ViewPort.RenderSize = new Size(1400, 1000);
+            _trackport.Width = 2800;
+            _trackport.Height = 2000;
+            _trackport.ViewPort.RenderSize = new Size(2800, 2000);
+            //_trackport.Width = 1400;
+            //_trackport.Height = 1000;
+            //_trackport.ViewPort.RenderSize = new Size(1400, 1000);
 
             //Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
             //_trackport.ViewPort.Measure(size);
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
-            
+
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
 
             return _trackport.ViewPort;

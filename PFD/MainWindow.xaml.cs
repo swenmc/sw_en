@@ -1705,8 +1705,8 @@ namespace PFD
             
             try
             {
-                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
-                CMainReportExport.ReportAllDataToPDFFile(viewPort, modelData);
+                //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
+                CMainReportExport.ReportAllDataToPDFFile(modelData);
             }
             catch (Exception ex)
             {

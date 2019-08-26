@@ -38,7 +38,7 @@ namespace EXPIMP
         private static XPdfFontOptions options;
         //private static PdfDocument document = null;
 
-        public static void ReportAllDataToPDFFile(Viewport3D viewPort, CModelData modelData)
+        public static void ReportAllDataToPDFFile(CModelData modelData)
         {
             sheetNo = 1;
             // Set font encoding to unicode
@@ -193,6 +193,7 @@ namespace EXPIMP
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+            viewPort = null;
             image.Dispose();
             gfx.Dispose();
         }
@@ -354,7 +355,7 @@ namespace EXPIMP
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
-
+                viewPort = null;
                 gfx.Dispose();
             }
         }
@@ -496,8 +497,8 @@ namespace EXPIMP
                 Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, /*data.DisplayOptions*/ opts);
                 viewPort.UpdateLayout();
 
-                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
-
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));                
+                
                 //double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
                 //double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 //double scaledImageHeight = image.PointHeight * scaleFactor;
@@ -509,7 +510,7 @@ namespace EXPIMP
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
-
+                viewPort = null;
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
                 DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 100, moveY, pad);
 
@@ -882,6 +883,7 @@ namespace EXPIMP
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
             gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
             image.Dispose();
+            viewPort = null;
 
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
