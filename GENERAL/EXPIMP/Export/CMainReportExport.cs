@@ -780,7 +780,8 @@ namespace EXPIMP
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
             string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP7 = "HD12 Starters / 600 mm crs";
+            string sTextP7 = "HD12 Starters";
+            string sTextP8 = "600 mm crs";
 
             // IN WORK 26.8.2019
             // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
@@ -796,11 +797,12 @@ namespace EXPIMP
 
             gfx.DrawString(sTextP1, fontDimension, brushDimension, 17, 295);
             gfx.DrawString(sTextP2, fontDimension, brushDimension, 45, 380);
-            gfx.DrawString(sTextP3, fontDimension, brushDimension, 40, 295);
+            gfx.DrawString(sTextP3, fontDimension, brushDimension, 43, 295);
             gfx.DrawString(sTextP4, fontDimension, brushDimension, 45, 225);
             gfx.DrawString(sTextP5, fontDimension, brushDimension, 90, 380);
             gfx.DrawString(sTextP6, fontDimension, brushDimension, 100, 210);
             gfx.DrawString(sTextP7, fontNote, brushNote, 180, 290);
+            gfx.DrawString(sTextP8, fontNote, brushNote, 180, 300);
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
@@ -813,6 +815,8 @@ namespace EXPIMP
 
                 if (bAddRollerDoorDetail) // Add roller door rebate detail
                 {
+                    int iPictureTextOffset = 240;
+
                     image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
                     imageWidthOriginal = image.PixelWidth;
                     imageHeightOriginal = image.PixelHeight;
@@ -820,6 +824,20 @@ namespace EXPIMP
                     image.Dispose();
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+                    float fPerimeterDepthRebate = fPerimeterDepth - 0.02f; // 10 + 10 mm
+                    sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
+
+                    float fRollerDoorRebate = 0.5f;
+                    sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
+
+                    gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
+                    gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
+                    //gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 43, 295);
+                    //gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 45, 225);
+                    gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
+                    gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
+                    //gfx.DrawString(sTextP7, fontNote, brushNote, iPictureTextOffset + 180, 290);
                 }
             }
         }
