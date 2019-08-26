@@ -952,6 +952,21 @@ namespace EXPIMP
 
         private static void DrawJointDesign(DocX document, CModelData data)
         {
+            DisplayOptions sDisplayOptions = data.DisplayOptions;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayMemberDescription = false;
+            // Do dokumentu exporujeme aj s wireframe
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.fWireFrameLineThickness = 0.002f;
+            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
             par.RemoveText(0);
 
@@ -976,7 +991,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions, data.Model);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 
@@ -1002,7 +1017,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, data.DisplayOptions, data.Model);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 
@@ -1016,8 +1031,25 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
+            DisplayOptions sDisplayOptions = data.DisplayOptions;
+            //Here is the place to overwrite displayOptions from Main Model
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayJoints = true;            
+            sDisplayOptions.bUseOrtographicCamera = false;
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.RotateModelX = -80; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = 5;
+
+            sDisplayOptions.bDisplayWireFrameModel = false;
+            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+            sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);
+
+
 
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
@@ -1051,7 +1083,7 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, data.DisplayOptions);
+                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
 

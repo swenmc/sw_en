@@ -1,4 +1,5 @@
-﻿using BaseClasses;
+﻿using _3DTools;
+using BaseClasses;
 using DATABASE.DTO;
 using MATH;
 using MigraDoc.DocumentObjectModel;
@@ -20,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace EXPIMP
@@ -366,14 +368,26 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
+            opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMembers = true;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayPlates = true;
+            opts.bDisplayConnectors = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayMemberDescription = false;
+            // Do dokumentu exporujeme aj s wireframe
+            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.fWireFrameLineThickness = 1;
+            opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
             opts.bDisplayConnectorsWireFrame = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
 
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Joints";
@@ -385,7 +399,7 @@ namespace EXPIMP
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
 
-            double moveX = 5; // Odsadenie od laveho okraja aby nebola tabulka na kraji vykresu
+            double moveX = 0;
             double moveY = 40;
             int maxInRow = 4;
             int maxInColumn = 2;
@@ -414,7 +428,11 @@ namespace EXPIMP
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
 
-                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, /*data.DisplayOptions*/ opts, data.Model);
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model);
+                foreach (Visual3D obj3D in viewPort.Children)
+                {
+                    if(obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
+                }
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
@@ -434,8 +452,9 @@ namespace EXPIMP
 
                 moveX += scaledImageWidth;
                 
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 5; moveY += scaledImageHeight + 130; numInColumn++; }
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
             }
+            
             gfx.Dispose();
         }
 
@@ -444,14 +463,27 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
+            //Here is the place to overwrite displayOptions from Main Model
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
+            opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayGlobalAxis = false;                        
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta            
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayPlates = true;
+            opts.bDisplayConnectors = true;
+            opts.bDisplayJoints = true;            
+            opts.bDisplayWireFrameModel = true;
+            opts.bDisplayMembersWireFrame = true;
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
+            opts.bDisplayFloorSlabWireFrame = true;
+            opts.fWireFrameLineThickness = 1;
+            opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
+            opts.RotateModelX = -80; opts.RotateModelY = 45; opts.RotateModelZ = 5;
 
             sheetNo++;
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
@@ -492,7 +524,11 @@ namespace EXPIMP
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, /*data.DisplayOptions*/ opts);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts);
+                foreach (Visual3D obj3D in viewPort.Children)
+                {
+                    if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
+                }
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));                
@@ -777,8 +813,7 @@ namespace EXPIMP
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
             string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP7 = "HD12 Starters";
-            string sTextP8 = "600 mm crs";
+            string sTextP7 = "HD12 Starters / 600 mm crs";
 
             // IN WORK 26.8.2019
             // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
@@ -794,12 +829,11 @@ namespace EXPIMP
 
             gfx.DrawString(sTextP1, fontDimension, brushDimension, 17, 295);
             gfx.DrawString(sTextP2, fontDimension, brushDimension, 45, 380);
-            gfx.DrawString(sTextP3, fontDimension, brushDimension, 43, 295);
+            gfx.DrawString(sTextP3, fontDimension, brushDimension, 40, 295);
             gfx.DrawString(sTextP4, fontDimension, brushDimension, 45, 225);
             gfx.DrawString(sTextP5, fontDimension, brushDimension, 90, 380);
             gfx.DrawString(sTextP6, fontDimension, brushDimension, 100, 210);
             gfx.DrawString(sTextP7, fontNote, brushNote, 180, 290);
-            gfx.DrawString(sTextP8, fontNote, brushNote, 180, 300);
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
@@ -812,8 +846,6 @@ namespace EXPIMP
 
                 if (bAddRollerDoorDetail) // Add roller door rebate detail
                 {
-                    int iPictureTextOffset = 240;
-
                     image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
                     imageWidthOriginal = image.PixelWidth;
                     imageHeightOriginal = image.PixelHeight;
@@ -821,20 +853,6 @@ namespace EXPIMP
                     image.Dispose();
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
-
-                    float fPerimeterDepthRebate = fPerimeterDepth - 0.02f; // 10 + 10 mm
-                    sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
-
-                    float fRollerDoorRebate = 0.5f;
-                    sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
-
-                    gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
-                    gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
-                    //gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 43, 295);
-                    //gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 45, 225);
-                    gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
-                    gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
-                    //gfx.DrawString(sTextP7, fontNote, brushNote, iPictureTextOffset + 180, 290);
                 }
             }
         }
@@ -1665,7 +1683,7 @@ namespace EXPIMP
                 tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
                 //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
                 //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
-                tableParams.Add(new string[2] { "Screws in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
+                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
 
                 if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
                 {
@@ -1676,7 +1694,6 @@ namespace EXPIMP
                     if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence)
                     {
                         CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
-                        tableParams.Add(new string[2] { "Number of screws in sequence", seq.INumberOfConnectors.ToString()});
                         tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]"  });
                     }
                 }
