@@ -100,8 +100,7 @@ namespace EXPIMP
 
             DrawFootingTypes(s_document, tableParams, modelData);
 
-
-
+            DrawFloorDetails(s_document, tableParams, modelData);
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -423,7 +422,7 @@ namespace EXPIMP
                 
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
 
-                if (numInColumn == maxInColumn)
+                if (numInColumn == maxInColumn) // ???? Pozri Footings - vkladala sa tam prazdna stranka, ale treba to opravit nejako inak To Ondrej - novu stranku by sme mali pridavat len ak je index pre pocet obrazkov v stlpci vacsi nez maximalny, na predchadzajucom riadku sa totiz inkrementuje po vlozeni posledneho obrazku
                 {
                     numInColumn = 0;
                     moveY = 40;
@@ -666,6 +665,111 @@ namespace EXPIMP
                     gfx2.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+                }
+            }
+        }
+
+        private static void DrawFloorDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            page = s_document.AddPage();
+            page.Size = PageSize.A3;
+            page.Orientation = PdfSharp.PageOrientation.Landscape;
+            gfx = XGraphics.FromPdfPage(page);
+
+            DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
+            DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
+
+            sheetNo++;
+
+            string[] pageDetails = new string[] { "fs15", "Details - Floor" }; //tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu vykresu detailov, chcelo by to vytvorit nejaky zoznam
+            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+
+            double scale = 0.2; // 20% of original file dimensions in pixels
+            double dImagePosition_x = 2;
+            double dImagePosition_y = 2;
+            double dRowPosition = 0;
+
+            // 1st row
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
+            double imageWidthOriginal = image.PixelWidth;
+            double imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+
+            if (data.Model.m_arrSawCuts != null && data.Model.m_arrSawCuts.Count > 0)
+            {
+                XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+
+                string sCutWidth = (data.Model.m_arrSawCuts[0].CutWidth * 1000).ToString("F0");
+                gfx.DrawString(sCutWidth, font, XBrushes.DarkOrange, 115, 17);
+
+                string sCutDepth = (data.Model.m_arrSawCuts[0].CutDepth * 1000).ToString("F0");
+                gfx.DrawString(sCutDepth, font, XBrushes.DarkOrange, 60, 40);
+            }
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+
+            if (data.Model.m_arrControlJoints != null && data.Model.m_arrControlJoints.Count > 0)
+            {
+                XFont font = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
+
+                /*
+                string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
+                    " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
+                    (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
+                */
+
+                string sText1 = "D" + (data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
+                string sText2 = "(" + (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
+                    (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES";
+                string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
+
+                gfx.DrawString(sText1, font, XBrushes.Black, 315, 125);
+                gfx.DrawString(sText2, font, XBrushes.Black, 315, 135);
+                gfx.DrawString(sText3, font, XBrushes.Black, 315, 145);
+            }
+
+            // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
+            // 2nd row
+            dImagePosition_x = 2; // Zaciname znova od laveho okraja
+            double dRowPosition2 = dRowPosition;
+
+            image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
+            imageWidthOriginal = image.PixelWidth;
+            imageHeightOriginal = image.PixelHeight;
+            gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+            image.Dispose();
+            dImagePosition_x += imageWidthOriginal * scale;
+            dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+
+            if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
+            {
+                bool bAddRollerDoorDetail = false;
+                foreach (DoorProperties prop in data.DoorBlocksProperties)
+                {
+                    if (prop.sDoorType == "Roller Door")
+                        bAddRollerDoorDetail = true;
+                }
+
+                if (bAddRollerDoorDetail) // Add roller door rebate detail
+                {
+                    image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
+                    imageWidthOriginal = image.PixelWidth;
+                    imageHeightOriginal = image.PixelHeight;
+                    gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                    image.Dispose();
+                    dImagePosition_x += imageWidthOriginal * scale;
+                    dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
                 }
             }
         }

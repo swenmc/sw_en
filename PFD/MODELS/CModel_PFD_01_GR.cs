@@ -2655,7 +2655,17 @@ namespace PFD
 
             if (bGenerateControlJoints)
             {
-                CDowel referenceDowel = new CDowel(new CPoint(0, 0, 0, 0, 0), 0.016f, 0.6f, 0.947f, true);
+                //Diameters available = 10, 12, 16, 20, 25, 32, 40
+                /*
+                12mm x 460mm Galvanised Dowel
+                16mm x 400mm Galvanised Dowel
+                16mm x 600mm Galvanised Dowel
+                20mm x 400mm Galvanised Dowel
+                20mm x 600mm Galvanised Dowel
+                33mm x 450mm Galvanised Dowel
+                */
+
+                CDowel referenceDowel = new CDowel(new CPoint(0, 0, 0, 0, 0), 0.033f, 0.6f, 4.028f, true);
                 float fDowelSpacing = 0.4f;
 
                 // Create raster of lines in XY-plane
