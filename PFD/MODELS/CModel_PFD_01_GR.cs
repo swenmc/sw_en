@@ -2261,9 +2261,15 @@ namespace PFD
             {
                 // Docasne
                 CMat_02_00 materialConcrete = new CMat_02_00();
+                materialConcrete.Name = "30";
                 materialConcrete.Fck = 25e+6f;
                 materialConcrete.m_fRho = 2300f;
                 materialConcrete.m_fE = 30e+9f;
+
+                DATABASE.DTO.CMatPropertiesRC concreteProperties = DATABASE.CMaterialManager.LoadMaterialPropertiesRC(materialConcrete.Name);
+                materialConcrete.Fck = concreteProperties.Fc;
+                materialConcrete.m_fRho = (float)concreteProperties.Rho;
+                materialConcrete.m_fE = (float)concreteProperties.E;
 
                 // Foundations
                 // Footings

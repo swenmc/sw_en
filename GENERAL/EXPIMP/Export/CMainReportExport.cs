@@ -46,7 +46,7 @@ namespace EXPIMP
 
             PdfDocument s_document = new PdfDocument();
 
-            CProjectInfo projectInfo = GetProjectInfo();
+            CProjectInfo projectInfo = modelData.ProjectInfo; // GetProjectInfo();
 
             s_document.Info.Title = projectInfo.ProjectName;
             s_document.Info.Author = "Formsteel Technologies";
@@ -181,7 +181,7 @@ namespace EXPIMP
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
 
             string[] pageDetails = tableParams[sheetNo - 1];
-            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -275,7 +275,7 @@ namespace EXPIMP
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
                 string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-                DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+                DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
@@ -377,7 +377,7 @@ namespace EXPIMP
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Joints";
             sheetNo++;
-            AddPageToDocument(s_document, out page, out gfx, pageDetails);
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("JDetails - Joints:", fontBold, XBrushes.Black, 20, 20);
@@ -401,7 +401,7 @@ namespace EXPIMP
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
 
-                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, data.DisplayOptions, data.Model);
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, /*data.DisplayOptions*/ opts, data.Model);
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
@@ -430,13 +430,12 @@ namespace EXPIMP
                     gfx.Dispose();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, out page, out gfx, pageDetails);
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
                     tf = new XTextFormatter(gfx);
                 }
             }
             
             gfx.Dispose();
-
         }
 
         private static void DrawFootingTypes(PdfDocument s_document, List<string[]> tableParams, CModelData data)
@@ -457,7 +456,7 @@ namespace EXPIMP
             //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
             string pageDetails = "Details - Footing Pads";
 
-            AddPageToDocument(s_document, out page, out gfx, pageDetails);
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("Footing Pads:", fontBold, XBrushes.Black, 20, 20);
@@ -481,7 +480,7 @@ namespace EXPIMP
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, data.DisplayOptions);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, /*data.DisplayOptions*/ opts);
                 viewPort.UpdateLayout();
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
@@ -507,19 +506,18 @@ namespace EXPIMP
                 if (numInColumn == maxInColumn)
                 {
                     numInColumn = 0;
-                    moveY = 40;                    
+                    moveY = 40;
                     gfx.Dispose();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, out page, out gfx, pageDetails);                    
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
                 }
             }
 
             gfx.Dispose();
-
         }
 
-        private static void AddPageToDocument(PdfDocument s_document, out PdfPage page, out XGraphics gfx, string pageDetails)
+        private static void AddPageToDocument(PdfDocument s_document, CProjectInfo projectInfo, out PdfPage page, out XGraphics gfx, string pageDetails)
         {
             page = s_document.AddPage();
             page.Size = PageSize.A3;
@@ -528,8 +526,8 @@ namespace EXPIMP
 
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
-            
-            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails, sheetNo, 0);
+
+            DrawTitleBlock(gfx, projectInfo, pageDetails, sheetNo, 0);
         }
 
         private static void DrawStandardDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
@@ -547,7 +545,7 @@ namespace EXPIMP
             sheetNo++;
 
             string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu vykresu detailov, chcelo by to vytvorit nejaky zoznam
-            DrawTitleBlock(gfx, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
 
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
@@ -639,7 +637,7 @@ namespace EXPIMP
                 sheetNo++;
 
                 pageDetails = tableParams[sheetNo - 1];
-                DrawTitleBlock(gfx2, GetProjectInfo(), pageDetails[1], sheetNo, 0);
+                DrawTitleBlock(gfx2, data.ProjectInfo, pageDetails[1], sheetNo, 0);
 
                 dImagePosition_x = 2;
                 // 1st row
@@ -905,11 +903,13 @@ namespace EXPIMP
             return list_memberTypes;
         }
 
+        /*
         private static CProjectInfo GetProjectInfo()
         {
             CProjectInfo pInfo = new CProjectInfo("New self storage", "8 Forest Road, Stoke", "B6351", "Building 1", DateTime.Now);
             return pInfo;
         }
+        */
 
         private static void DrawProjectInfo(XGraphics gfx, CProjectInfo pInfo)
         {
@@ -1495,7 +1495,7 @@ namespace EXPIMP
                 tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
                 //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
                 //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
-                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
+                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
 
                 if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
                 {
@@ -1544,20 +1544,28 @@ namespace EXPIMP
             //gfx.MFEH = PdfFontEmbedding.Always;
 
             List<string[]> tableParams = new List<string[]>();
-            tableParams.Add(new string[2] { "ID", pad.ID.ToString() });
-            tableParams.Add(new string[2] { "Name", pad.Name });
-            tableParams.Add(new string[2] { "Prefix", pad.Prefix });
-            tableParams.Add(new string[2] { "W", pad.m_fDim1.ToString() });
-            tableParams.Add(new string[2] { "H", pad.m_fDim2.ToString() });
-            tableParams.Add(new string[2] { "L", pad.m_fDim3.ToString() });
+            //tableParams.Add(new string[2] { "ID", pad.ID.ToString() });
+            //tableParams.Add(new string[2] { "Name", pad.Name });
+            //tableParams.Add(new string[2] { "Prefix", pad.Prefix });
+            tableParams.Add(new string[2] { "Name", pad.Text });
+            //tableParams.Add(new string[2] { "L", pad.m_fDim1.ToString() });
+            //tableParams.Add(new string[2] { "W", pad.m_fDim2.ToString() });
+            //tableParams.Add(new string[2] { "H", pad.m_fDim3.ToString() });
+            tableParams.Add(new string[2] { "Dimensions L x W x H", pad.m_fDim1.ToString() + " x " + pad.m_fDim2.ToString() + " x " + pad.m_fDim3.ToString() + " [m]" });
+            if (pad.m_Mat != null) tableParams.Add(new string[2] { "Concrete Grade", pad.m_Mat.Name + "[MPa]" }); // !!! vzdy by mal byt priradeny material
+            tableParams.Add(new string[2] { "Reinforcement Grade", pad.Reference_Bottom_Bar_x.m_Mat.Name });
 
-            tableParams.Add(new string[2] { "Count Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() });
-            tableParams.Add(new string[2] { "Count Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() });
-            tableParams.Add(new string[2] { "Count Top Bars x", pad.Count_Top_Bars_x.ToString() });
-            tableParams.Add(new string[2] { "Count Top Bars y", pad.Count_Top_Bars_y.ToString() });            
+            //tableParams.Add(new string[2] { "Count Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() });
+            //tableParams.Add(new string[2] { "Count Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() });
+            //tableParams.Add(new string[2] { "Count Top Bars x", pad.Count_Top_Bars_x.ToString() });
+            //tableParams.Add(new string[2] { "Count Top Bars y", pad.Count_Top_Bars_y.ToString() });
+            tableParams.Add(new string[2] { "Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_x.Diameter * 1000).ToString("F0") });
+            tableParams.Add(new string[2] { "Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_y.Diameter * 1000).ToString("F0") });
+            tableParams.Add(new string[2] { "Top Bars x", pad.Count_Top_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_x.Diameter * 1000).ToString("F0") });
+            tableParams.Add(new string[2] { "Top Bars y", pad.Count_Top_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_y.Diameter * 1000).ToString("F0") });
 
-            if (pad.m_Mat != null) tableParams.Add(new string[2] { "Material", pad.m_Mat.Name });
-            
+            tableParams.Add(new string[2] { "Concrete Cover", (pad.ConcreteCover * 1000).ToString("F0") + " [mm]" });
+
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
             Table t = Get2ColumnTable(doc, tableParams);
