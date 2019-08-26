@@ -385,7 +385,7 @@ namespace EXPIMP
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
 
-            double moveX = 0;
+            double moveX = 5; // Odsadenie od laveho okraja aby nebola tabulka na kraji vykresu
             double moveY = 40;
             int maxInRow = 4;
             int maxInColumn = 2;
@@ -434,11 +434,8 @@ namespace EXPIMP
 
                 moveX += scaledImageWidth;
                 
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 130; numInColumn++; }
-
-                
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 5; moveY += scaledImageHeight + 130; numInColumn++; }
             }
-            
             gfx.Dispose();
         }
 
@@ -1668,7 +1665,7 @@ namespace EXPIMP
                 tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
                 //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
                 //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
-                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
+                tableParams.Add(new string[2] { "Screws in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
 
                 if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
                 {
@@ -1679,6 +1676,7 @@ namespace EXPIMP
                     if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence)
                     {
                         CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
+                        tableParams.Add(new string[2] { "Number of screws in sequence", seq.INumberOfConnectors.ToString()});
                         tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]"  });
                     }
                 }

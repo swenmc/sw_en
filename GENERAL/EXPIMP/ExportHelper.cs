@@ -972,24 +972,34 @@ namespace EXPIMP
         
 
         //ToDo: toto chcem refaktorovat, lebo nastavenia displayOptions maju byt von a nie vo vnutri tejto metody
+        // To Ondrej - OK, zatial som ich aspon zoradil tak ze joint a footings to maju rovnako
         public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model)
         {
-            CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
+            //refaktoring!!!!  tieto nastavenie Display Options by mali dojst do funkcie a nie nastavovat ich vo vnutri
+
+            //Here is the place to overwrite displayOptions from Main Model
+            // TO Ondrej - toto je rovnake ako pre GetFootingViewport
+            sDisplayOptions.bDisplaySolidModel = true;
 
             sDisplayOptions.bDisplayMembers = true;
-            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
+
             // Do dokumentu exporujeme aj s wireframe
-            sDisplayOptions.bDisplayWireFrameModel = true;            
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bDisplayMembersWireFrame = true;
+            sDisplayOptions.bDisplayPlatesWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = true;
             sDisplayOptions.fWireFrameLineThickness = 0.002f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
             sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
+            CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
             CConnectionJointTypes jointClone = firstSameJoint.Clone();
             
             float fMainMemberLength = 0;
@@ -1213,7 +1223,6 @@ namespace EXPIMP
             }
             //--------------------------------------------------------------------------------------------------------------------------------------
 
-
             jointClone = firstSameJoint.RecreateJoint();
             jointClone.m_arrPlates = firstSameJoint.m_arrPlates;
             
@@ -1230,25 +1239,42 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-
+        //ToDo: toto chcem refaktorovat, lebo nastavenia displayOptions maju byt von a nie vo vnutri tejto metody
+        // To Ondrej - OK, zatial som ich aspon zoradil tak ze joint a footings to maju rovnako
         public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions)
         {
             //refaktoring!!!!  tieto nastavenie Display Options by mali dojst do funkcie a nie nastavovat ich vo vnutri
 
             //Here is the place to overwrite displayOptions from Main Model
+            // TO Ondrej - toto je rovnake ako pre GetJointViewport
             sDisplayOptions.bDisplaySolidModel = true;
+
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
-            sDisplayOptions.RotateModelX = -90;
-            sDisplayOptions.RotateModelY = 45;
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
-            
-            sDisplayOptions.bDisplayWireFrameModel = false;
-            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            sDisplayOptions.bDisplayMemberDescription = false;
+
+            // Do dokumentu exporujeme aj s wireframe
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bDisplayMembersWireFrame = true;
+            sDisplayOptions.bDisplayPlatesWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = true;
+            sDisplayOptions.fWireFrameLineThickness = 0.002f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
             sDisplayOptions.wireFrameColor = Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
+            // Only footings
+            sDisplayOptions.bDisplayFoundations = true;
+            sDisplayOptions.bDisplayReinforcementBars = true;
+            sDisplayOptions.bDisplayFoundationsWireFrame = true;
+            sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
+            sDisplayOptions.RotateModelX = -80;
+            sDisplayOptions.RotateModelY = 45;
+            sDisplayOptions.RotateModelZ = 5;
 
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
@@ -1467,6 +1493,33 @@ namespace EXPIMP
                 }
                 jointModel.m_arrNodes = nodeList.ToArray();
 
+                //--------------------------------------------------------------------------------------------------------------------------------------
+                // TO Ondrej - ked das zobrazit v preview joints wireframe, ak sa beru body este z povodnych celych prutov, niekde to treba updatovat, ale neviem kde :)))))
+                // Tu je nejaky pokus
+                // Prutom musime niekde updatetovat wire frame positions, neviem ci prave tu alebo to bude lepsie inde
+                // Tu som docasne vyrobil 3D model prutov
+                Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
+                    sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
+
+                // Tu sa snazim nastavit prutom Wireframe indices podla aktualnej geometrie
+                for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
+                {
+                    CMember m = jointModel.m_arrMembers[i];
+                    m.WireFramePoints.Clear();
+
+                    GeometryModel3D gm3d = membersModel.Children[i] as GeometryModel3D;
+                    MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
+
+                    if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
+                    {
+                        foreach (int n in m.CrScStart.WireFrameIndices)
+                        {
+                            m.WireFramePoints.Add(mesh.Positions[n]);
+                        }
+                    }
+                }
+                //--------------------------------------------------------------------------------------------------------------------------------------
+
                 jointClone = joint.RecreateJoint();
                 jointClone.m_arrPlates = joint.m_arrPlates;
 
@@ -1476,9 +1529,6 @@ namespace EXPIMP
             // Footing Pad
             if (padClone != null)
             {
-                sDisplayOptions.bDisplayFoundations = true; // Display always footing pads
-                sDisplayOptions.bDisplayReinforcementBars = true; // Display always reinforcement bars
-
                 if (jointModel == null)
                     jointModel = new CModel();
 
@@ -1491,10 +1541,6 @@ namespace EXPIMP
             _trackport.Width = 570;
             _trackport.Height = 430;
             _trackport.ViewPort.RenderSize = new Size(570, 430);
-
-            //CJointHelper.SetJoinModelRotationDisplayOptions(joint, ref sDisplayOptions);
-
-            sDisplayOptions.RotateModelX = -80; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = 5;
 
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, sDisplayOptions);
             return _trackport.ViewPort;
