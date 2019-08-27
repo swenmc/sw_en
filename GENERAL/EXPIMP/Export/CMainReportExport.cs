@@ -163,11 +163,14 @@ namespace EXPIMP
             opts.bDisplayMemberDescription = false;
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.bTransformScreenLines3DToCylinders3D = true;
 
-            opts.bDisplayJoints = true; //???
-            opts.bDisplayPlates = true; //???
+            opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayPlates = true;
 
             opts.bDisplayFoundations = false;
             opts.bDisplayFloorSlab = false;
@@ -215,10 +218,16 @@ namespace EXPIMP
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+
+            opts.bDisplayMembers = true;
+            //opts.bDisplayJoints = true;
+            //opts.bDisplayPlates = true;
 
             // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
             // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
@@ -379,13 +388,14 @@ namespace EXPIMP
 
             opts.bDisplayGlobalAxis = false;
             opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
             opts.bDisplayMemberDescription = false;
 
             opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
-            opts.bDisplayJoints = true;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -477,13 +487,14 @@ namespace EXPIMP
 
             opts.bDisplayGlobalAxis = false;
             opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
             opts.bDisplayMemberDescription = false;
 
             opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
-            opts.bDisplayJoints = true;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -927,12 +938,15 @@ namespace EXPIMP
             opts.bDisplayMemberDescription = false;
             opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
             opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.bTransformScreenLines3DToCylinders3D = true;
             opts.fWireFrameLineThickness = 0.001f;
 
-            opts.bDisplayJoints = true; //???
-            opts.bDisplayPlates = true; //???
+            opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayPlates = true;
 
             opts.bDisplayFoundations = false;
             opts.bDisplayFloorSlab = false;
