@@ -362,12 +362,12 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplaySawCuts)
+                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplaySawCutsDescription)
                 {
                     Drawing3D.CreateSawCutDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplayControlJoints)
+                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayControlJoints && sDisplayOptions.bDisplayControlJointsDescription)
                 {
                     Drawing3D.CreateControlJointDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
@@ -1347,8 +1347,6 @@ namespace BaseClasses
 
             if (cmodel.m_arrControlJoints != null && sDisplayOptions.bDisplayControlJoints)
             {
-                float fbrushOpacity = 0.3f;
-
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrControlJoints.Count; i++)
                 {
@@ -4279,7 +4277,8 @@ namespace BaseClasses
                 sDisplayOptions.bDisplayControlJoints = true;
 
                 sDisplayOptions.bDisplayFloorSlabDescription = true;
-                sDisplayOptions.bDisplayFoundationsDescription = false;
+                sDisplayOptions.bDisplaySawCutsDescription = true;
+                sDisplayOptions.bDisplayControlJointsDescription = true;
 
                 _model.m_arrMembers = ModelHelper.GetColumnsViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetColumnsViewNodes(model);

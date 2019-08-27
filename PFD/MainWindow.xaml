@@ -271,22 +271,22 @@
                             <RadioButton Name="radioColorsIn3DSections" GroupName="radioColorsIn3D" IsChecked="{Binding Path=ColorsAccordingToSections}">Colors according to Sections</RadioButton>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="4" Grid.Column="3" Grid.RowSpan="4">
+                        <StackPanel Grid.Row="4" Grid.Column="3" Grid.RowSpan="5">
                             <CheckBox Name="chbDisplayMembers" IsChecked="{Binding Path=DisplayMembers}">Display Members</CheckBox>
                             <CheckBox Name="chbDisplayJoints"  IsChecked="{Binding Path=DisplayJoints}">Display Joints</CheckBox>
-                            <CheckBox Name="chbDisplayPlates"  IsChecked="{Binding Path=DisplayPlates}">Display Plates</CheckBox>
-                            <CheckBox Name="chbDisplayConnectors" IsChecked="{Binding Path=DisplayConnectors}">Display Connectors</CheckBox>
+                            <CheckBox Name="chbDisplayPlates" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayPlates}">Display Plates</CheckBox>
+                            <CheckBox Name="chbDisplayConnectors" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayConnectors}">Display Connectors</CheckBox>
                             <CheckBox Name="chbDisplayNodes" IsChecked="{Binding Path=DisplayNodes}">Display Nodes</CheckBox>
 
                             <CheckBox Name="chbDisplayFoundations" IsChecked="{Binding Path=DisplayFoundations}">Display Foundations</CheckBox>
-                            <CheckBox Name="chbDisplayReinforcementBars" IsChecked="{Binding Path=DisplayReinforcementBars}">Display Reinforcement Bars</CheckBox>
+                            <CheckBox Name="chbDisplayReinforcementBars" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBars}">Display Reinforcement</CheckBox>
                             <CheckBox Name="chbDisplayFloorSlab" IsChecked="{Binding Path=DisplayFloorSlab}">Display Floor Slab</CheckBox>
+                            <CheckBox Name="chbDisplaySawCuts" Margin="25 0 0 0" IsChecked="{Binding Path=DisplaySawCuts}">Display Saw Cuts Slab</CheckBox>
+                            <CheckBox Name="chbDisplayControlJoints" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayControlJoints}">Display Control Joints</CheckBox>
                             <CheckBox Name="chbDisplayNodalSupports" IsChecked="{Binding Path=DisplayNodalSupports}">Nodal Supports</CheckBox>
-                            <CheckBox Name="chbDisplayDimensions" IsChecked="{Binding Path=DisplayDimensions}">Display Dimensions</CheckBox>
                         </StackPanel>
-                        
 
-                        <StackPanel Grid.Row="4" Grid.Column="4" Grid.RowSpan="3">
+                        <StackPanel Grid.Row="4" Grid.Column="4" Grid.RowSpan="5">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
                             <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
@@ -294,6 +294,11 @@
                             <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
                             <CheckBox Name="chbDisplayMemberRealLengthUnit" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLengthUnit}" >Display Unit</CheckBox>
                             <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
+                            <CheckBox Name="chbDisplayFoundationsDescription" IsChecked="{Binding Path=ShowFoundationsDescription}">Display Foundations Description</CheckBox>
+                            <CheckBox Name="chbDisplayFloorSlabDescription" IsChecked="{Binding Path=ShowFloorSlabDescription}">Display FloorSlab Description</CheckBox>
+                            <CheckBox Name="chbDisplaySawCutsDescription" IsChecked="{Binding Path=ShowSawCutsDescription}">Display Saw Cuts Description</CheckBox>
+                            <CheckBox Name="chbDisplayControlJointsDescription" IsChecked="{Binding Path=ShowControlJointsDescription}">Display Control Joints Description</CheckBox>
+                            <CheckBox Name="chbDisplayDimensions" IsChecked="{Binding Path=ShowDimensions}">Display Dimensions</CheckBox>
                         </StackPanel>
 
                         <StackPanel Grid.Row="9" Grid.Column="3" Grid.RowSpan="5">
@@ -303,11 +308,11 @@
 
                             <CheckBox Name="chbDisplayMembersWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayMembersWireFrame}">Members</CheckBox>
                             <CheckBox Name="chbDisplayJointsWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayJointsWireFrame}">Joints</CheckBox>
-                            <CheckBox Name="chbDisplayPlatesWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayPlatesWireFrame}">Plates</CheckBox>
-                            <CheckBox Name="chbDisplayConnectorsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayConnectorsWireFrame}">Connectors</CheckBox>
+                            <CheckBox Name="chbDisplayPlatesWireFrame"  Margin="50 0 0 0" IsChecked="{Binding Path=DisplayPlatesWireFrame}">Plates</CheckBox>
+                            <CheckBox Name="chbDisplayConnectorsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayConnectorsWireFrame}">Connectors</CheckBox>
                             <!--<CheckBox Name="chbDisplayNodesWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayNodesWireFrame}">Nodes</CheckBox>-->
                             <CheckBox Name="chbDisplayFoundationsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFoundationsWireFrame}">Foundations</CheckBox>
-                            <CheckBox Name="chbDisplayReinforcementBarsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBarsWireFrame}">Reinforcement Bars</CheckBox>
+                            <CheckBox Name="chbDisplayReinforcementBarsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBarsWireFrame}">Reinforcement Bars</CheckBox>
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
                         </StackPanel>
 

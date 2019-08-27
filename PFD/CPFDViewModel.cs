@@ -84,16 +84,16 @@ namespace PFD
         private bool m_DisplayFoundations;
         private bool m_DisplayReinforcementBars;
         private bool m_DisplayFloorSlab;
+        private bool m_DisplaySawCuts;
+        private bool m_DisplayControlJoints;
         private bool m_DisplayNodalSupports;
         private bool m_DisplayMembersCenterLines;
         private bool m_DisplaySolidModel;
         private bool m_DisplayWireFrameModel;
         private bool m_DisplayDistinguishedColorMember;
         private bool m_DisplayTransparentModelMember;
-        private bool m_DisplayDimensions;
         private bool m_TransformScreenLines3DToCylinders3D;
 
-        
         private bool m_DisplayMembersWireFrame;
         private bool m_DisplayJointsWireFrame;
         private bool m_DisplayPlatesWireFrame;
@@ -137,8 +137,14 @@ namespace PFD
         private bool MShowMemberCrossSectionStartName;
         private bool MShowMemberRealLength;
         private bool MShowMemberRealLengthInMM;
-        private bool MShowMemberRealLengthUnit;        
+        private bool MShowMemberRealLengthUnit;
         private bool MShowNodesDescription;
+
+        private bool MShowFoundationsDescription;
+        private bool MShowFloorSlabDescription;
+        private bool MShowSawCutsDescription;
+        private bool MShowControlJointsDescription;
+        private bool MShowDimensions;
 
         private float MDisplayIn3DRatio;
 
@@ -1647,6 +1653,36 @@ namespace PFD
             }
         }
 
+        public bool DisplaySawCuts
+        {
+            get
+            {
+                return m_DisplaySawCuts;
+            }
+
+            set
+            {
+                m_DisplaySawCuts = value;
+                RecreateModel = false;
+                NotifyPropertyChanged("DisplaySawCuts");
+            }
+        }
+
+        public bool DisplayControlJoints
+        {
+            get
+            {
+                return m_DisplayControlJoints;
+            }
+
+            set
+            {
+                m_DisplayControlJoints = value;
+                RecreateModel = false;
+                NotifyPropertyChanged("DisplayControlJoints");
+            }
+        }
+
         public bool DisplayNodalSupports
         {
             get
@@ -1954,17 +1990,73 @@ namespace PFD
             }
         }
 
-        public bool DisplayDimensions
+        public bool ShowFoundationsDescription
         {
             get
             {
-                return m_DisplayDimensions;
+                return MShowFoundationsDescription;
             }
 
             set
             {
-                m_DisplayDimensions = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayDimensions");
+                MShowFoundationsDescription = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowFoundationsDescription");
+            }
+        }
+
+        public bool ShowFloorSlabDescription
+        {
+            get
+            {
+                return MShowFloorSlabDescription;
+            }
+
+            set
+            {
+                MShowFloorSlabDescription = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowFloorSlabDescription");
+            }
+        }
+
+        public bool ShowSawCutsDescription
+        {
+            get
+            {
+                return MShowSawCutsDescription;
+            }
+
+            set
+            {
+                MShowSawCutsDescription = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowSawCutsDescription");
+            }
+        }
+
+        public bool ShowControlJointsDescription
+        {
+            get
+            {
+                return MShowControlJointsDescription;
+            }
+
+            set
+            {
+                MShowControlJointsDescription = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowControlJointsDescription");
+            }
+        }
+
+        public bool ShowDimensions
+        {
+            get
+            {
+                return MShowDimensions;
+            }
+
+            set
+            {
+                MShowDimensions = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowDimensions");
             }
         }
 
@@ -2306,6 +2398,9 @@ namespace PFD
             DisplayFoundations = false;
             DisplayReinforcementBars = false;
             DisplayFloorSlab = false;
+            DisplaySawCuts = false;
+            DisplayControlJoints = false;
+
             DisplayMembersWireFrame = true;
             DisplayJointsWireFrame = false;
             DisplayPlatesWireFrame = false;
@@ -2315,7 +2410,6 @@ namespace PFD
             DisplayReinforcementBarsWireFrame = false;
             DisplayFloorSlab = false;
             DisplayNodalSupports = false;
-            DisplayDimensions = true;
             DisplayMembersCenterLines = false;
             DisplaySolidModel = true;
             DisplayWireFrameModel = false;
@@ -2338,6 +2432,10 @@ namespace PFD
             ShowMemberRealLengthInMM = true;
             ShowMemberRealLengthUnit = false;
             ShowMemberCrossSectionStartName = false;
+            ShowFoundationsDescription = false;
+            ShowSawCutsDescription = false;
+            ShowControlJointsDescription = false;
+            ShowDimensions = true;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
@@ -2885,6 +2983,8 @@ namespace PFD
             sDisplayOptions.bDisplayFoundations = DisplayFoundations;
             sDisplayOptions.bDisplayReinforcementBars = DisplayReinforcementBars;
             sDisplayOptions.bDisplayFloorSlab = DisplayFloorSlab;
+            sDisplayOptions.bDisplaySawCuts = DisplaySawCuts;
+            sDisplayOptions.bDisplayControlJoints = DisplayControlJoints;
             sDisplayOptions.bDisplayNodalSupports = DisplayNodalSupports;
 
             sDisplayOptions.bDisplayMembersWireFrame = DisplayMembersWireFrame;
@@ -2894,7 +2994,7 @@ namespace PFD
             sDisplayOptions.bDisplayNodesWireFrame = DisplayNodesWireFrame;
             sDisplayOptions.bDisplayFoundationsWireFrame = DisplayFoundationsWireFrame;
             sDisplayOptions.bDisplayReinforcementBarsWireFrame = DisplayReinforcementBarsWireFrame;
-            sDisplayOptions.bDisplayFloorSlabWireFrame = DisplayFloorSlabWireFrame;            
+            sDisplayOptions.bDisplayFloorSlabWireFrame = DisplayFloorSlabWireFrame;
 
             sDisplayOptions.bDisplayMemberDescription = ShowMemberDescription;
             sDisplayOptions.bDisplayMemberID = ShowMemberID;
@@ -2905,8 +3005,11 @@ namespace PFD
             sDisplayOptions.bDisplayMemberRealLengthUnit = ShowMemberRealLengthUnit;
             sDisplayOptions.bDisplayNodesDescription = ShowNodesDescription;
 
-            sDisplayOptions.bDisplayFoundationsDescription = true;  // TODO dopracovat nastavitelne v GUI
-            sDisplayOptions.bDisplayFloorSlabDescription = true;  // TODO dopracovat nastavitelne v GUI
+            sDisplayOptions.bDisplayFoundationsDescription = ShowFoundationsDescription;
+            sDisplayOptions.bDisplayFloorSlabDescription = ShowFloorSlabDescription;
+            sDisplayOptions.bDisplaySawCutsDescription = ShowSawCutsDescription;
+            sDisplayOptions.bDisplayControlJointsDescription = ShowControlJointsDescription;
+            sDisplayOptions.bDisplayDimensions = ShowDimensions;
 
             sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
             sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
@@ -2927,9 +3030,6 @@ namespace PFD
             sDisplayOptions.bDisplayMemberLoads_Columns = ShowLoadsOnColumns;
             sDisplayOptions.bDisplayMemberLoads_Frames = ShowLoadsOnFrameMembers;
             sDisplayOptions.bDisplaySurfaceLoads = ShowSurfaceLoads;
-
-            sDisplayOptions.bDisplaySawCuts = true; // TODO dopracovat nastavitelne v GUI
-            sDisplayOptions.bDisplayControlJoints = true; // TODO dopracovat nastavitelne v GUI
 
             sDisplayOptions.bDisplayLoadsLabels = ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = ShowLoadsLabelsUnits;
@@ -2968,7 +3068,6 @@ namespace PFD
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
-            sDisplayOptions.bDisplayDimensions = DisplayDimensions;
 
             return sDisplayOptions;
         }

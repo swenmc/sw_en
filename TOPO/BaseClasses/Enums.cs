@@ -690,6 +690,8 @@
         public bool bDisplayFoundations;
         public bool bDisplayReinforcementBars;
         public bool bDisplayFloorSlab;
+        public bool bDisplaySawCuts;
+        public bool bDisplayControlJoints;
         public bool bDisplayNodalSupports;
 
         public bool bDisplayMembersWireFrame;
@@ -723,6 +725,9 @@
 
         public bool bDisplayFoundationsDescription;
         public bool bDisplayFloorSlabDescription;
+        public bool bDisplaySawCutsDescription;
+        public bool bDisplayControlJointsDescription;
+        public bool bDisplayDimensions;
 
         public bool bDisplayLoads;
         public bool bDisplayLoadsLabels;
@@ -735,11 +740,8 @@
         public bool bDisplayMemberLoads_Columns;
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
-        public bool bDisplayDimensions;
-        public bool bTransformScreenLines3DToCylinders3D;
 
-        public bool bDisplaySawCuts;
-        public bool bDisplayControlJoints;
+        public bool bTransformScreenLines3DToCylinders3D;
 
         public float DisplayIn3DRatio;
 

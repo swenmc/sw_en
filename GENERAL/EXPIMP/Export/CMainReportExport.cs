@@ -168,11 +168,15 @@ namespace EXPIMP
             opts.bDisplayJoints = true; //???
             opts.bDisplayPlates = true; //???
 
+            opts.bDisplayFoundations = false;
+            opts.bDisplayFloorSlab = false;
             opts.bDisplaySawCuts = false;
             opts.bDisplayControlJoints = false;
 
             opts.bDisplayFoundationsDescription = false;
             opts.bDisplayFloorSlabDescription = false;
+            opts.bDisplaySawCutsDescription = false;
+            opts.bDisplayControlJointsDescription = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
@@ -932,11 +936,15 @@ namespace EXPIMP
             opts.bDisplayJoints = true; //???
             opts.bDisplayPlates = true; //???
 
+            opts.bDisplayFoundations = false;
+            opts.bDisplayFloorSlab = false;
             opts.bDisplaySawCuts = false;
             opts.bDisplayControlJoints = false;
 
             opts.bDisplayFoundationsDescription = false;
             opts.bDisplayFloorSlabDescription = false;
+            opts.bDisplaySawCutsDescription = false;
+            opts.bDisplayControlJointsDescription = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
