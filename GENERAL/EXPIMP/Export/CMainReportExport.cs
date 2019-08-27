@@ -306,6 +306,7 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
+                    opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
                     //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
@@ -328,6 +329,8 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
+                    opts.bDisplayFoundationsWireFrame = true;
+                    opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
                     //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
@@ -343,6 +346,8 @@ namespace EXPIMP
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
+                    opts.bDisplayFoundationsWireFrame = true;
+                    opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
                     //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
@@ -352,6 +357,11 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabDescription = true;
                     opts.bDisplayFoundationsDescription = false;
                     opts.bDisplayMemberDescription = false;
+
+                    opts.bDisplaySawCuts = true;
+                    opts.bDisplaySawCutsDescription = true;
+                    opts.bDisplayControlJoints = true;
+                    opts.bDisplayControlJointsDescription = true;
                 }
 
                 CModel filteredModel = null;
