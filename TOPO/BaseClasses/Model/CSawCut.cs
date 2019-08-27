@@ -109,7 +109,7 @@ namespace BaseClasses
 
             m_PointText = new Point3D()
             {
-                X = 0.2 * m_fLength, // Kreslime v 20% dlzky od zaciatku
+                X = 0.3 * m_fLength, // Kreslime v 30% dlzky od zaciatku
                 Y = fOffsetFromLine,
                 Z = fOffsetFromPlane
             };

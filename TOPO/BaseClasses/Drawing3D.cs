@@ -224,11 +224,11 @@ namespace BaseClasses
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
                 Model3DGroup sawCutsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplaySawCuts) sawCutsModel3DGroup = Drawing3D.CreateModelSawCutsModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts) sawCutsModel3DGroup = Drawing3D.CreateModelSawCutsModel3DGroup(model, sDisplayOptions);
                 if (sawCutsModel3DGroup != null) gr.Children.Add(sawCutsModel3DGroup);
 
                 Model3DGroup controlJointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayControlJoints) controlJointsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayControlJoints) controlJointsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
                 if (controlJointsModel3DGroup != null) gr.Children.Add(controlJointsModel3DGroup);
 
                 bool displayOtherObjects3D = true;
@@ -362,22 +362,22 @@ namespace BaseClasses
                     Drawing3D.CreateNodesDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplaySawCuts)
+                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplaySawCuts)
                 {
                     Drawing3D.CreateSawCutDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayControlJoints)
+                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplayControlJoints)
                 {
                     Drawing3D.CreateControlJointDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayFoundationsDescription)
+                if (sDisplayOptions.bDisplayFoundations && sDisplayOptions.bDisplayFoundationsDescription)
                 {
                     Drawing3D.CreateFoundationsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
-                if (sDisplayOptions.bDisplayFloorSlabDescription)
+                if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayFloorSlabDescription)
                 {
                     Drawing3D.CreateFloorSlabsDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
