@@ -952,19 +952,29 @@ namespace EXPIMP
 
         private static void DrawJointDesign(DocX document, CModelData data)
         {
+            // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
-            sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplaySolidModel = true;
+
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
+
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
             sDisplayOptions.fWireFrameLineThickness = 0.002f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+
+            sDisplayOptions.bDisplayMembersWireFrame = true;
+            sDisplayOptions.bDisplayJointsWireFrame = true;
+            sDisplayOptions.bDisplayPlatesWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = true;
+
             sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[JointDesign]"));
@@ -1031,25 +1041,44 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
+            // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
-            //Here is the place to overwrite displayOptions from Main Model
             sDisplayOptions.bDisplaySolidModel = true;
+
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;            
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
-            sDisplayOptions.RotateModelX = -80; sDisplayOptions.RotateModelY = 45; sDisplayOptions.RotateModelZ = 5;
+            sDisplayOptions.bDisplayMemberDescription = false;
 
-            sDisplayOptions.bDisplayWireFrameModel = false;
-            sDisplayOptions.fWireFrameLineThickness = 0.001f;
+            // Do dokumentu exporujeme aj s wireframe
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.fWireFrameLineThickness = 0.003f; // zavisi od zoomu !!!
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
+
+            sDisplayOptions.bDisplayMembersWireFrame = true;
+            sDisplayOptions.bDisplayJointsWireFrame = true;
+            sDisplayOptions.bDisplayPlatesWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = true;
+
             sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
+
+            // Foundations
+            sDisplayOptions.bDisplayFoundations = true;
+            sDisplayOptions.bDisplayReinforcementBars = true;
+
+            sDisplayOptions.bDisplayFoundationsWireFrame = true;
+            sDisplayOptions.bDisplayReinforcementBarsWireFrame = true;
+
+            sDisplayOptions.RotateModelX = -80;
+            sDisplayOptions.RotateModelY = 45;
+            sDisplayOptions.RotateModelZ = 5;
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[FootingDesign]"));
             par.RemoveText(0);
-
-
 
             foreach (CComponentInfo cInfo in data.ComponentList)
             {
@@ -1092,8 +1121,6 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("");
                     AddSimpleTableAfterParagraph(t, par);
                 }
-
-                
             }
         }
 

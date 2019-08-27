@@ -1113,12 +1113,15 @@ namespace PFD
 
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
+            // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
             sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayMemberDescription = false;
+
             sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
-            sDisplayOptions.bDisplayJoints = true;            
-            sDisplayOptions.bDisplayMemberDescription = false;
 
             CModel jointModel = Drawing3D.GetJointPreviewModel(joint, null, ref sDisplayOptions);
 
