@@ -122,6 +122,30 @@ namespace BaseClasses
             return "Unknown Snow Elevation Region";
         }
 
+        public static string GetFriendlyName(this EPDFPageContentType t)
+        {
+            switch (t)
+            {
+                case EPDFPageContentType.Isometric_View: return "Isometric View";
+                case EPDFPageContentType.Front_Elevation: return "Front Elevation";
+                case EPDFPageContentType.Back_Elevation: return "Back Elevation";
+                case EPDFPageContentType.Left_Elevation: return "Left Elevation";
+                case EPDFPageContentType.Right_Elevation: return "Right Elevation";
+                case EPDFPageContentType.Roof_Layout: return "Roof Layout";
+                case EPDFPageContentType.Middle_Frame: return "Middle Frame";
+                case EPDFPageContentType.Columns: return "Columns";
+                case EPDFPageContentType.Foundation_Pads: return "Foundation Pads";
+                case EPDFPageContentType.Floor_Plan: return "Floor Plan";
+                case EPDFPageContentType.Details_Standard_1: return "Details - Standard 1";
+                case EPDFPageContentType.Details_Standard_2: return "Details - Standard 2";
+                case EPDFPageContentType.Details_Joints: return "Details - Joints";
+                case EPDFPageContentType.Details_Footing_Pads: return "Details - Footing Pads";
+                case EPDFPageContentType.Details_Floor: return "Details - Floor";
+                    
+
+            }
+            return "Unknown EPDFPageContentType";
+        }
 
         public static float GetLoadValue(this CMLoad load)
         {

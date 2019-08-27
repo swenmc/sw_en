@@ -101,7 +101,7 @@ namespace EXPIMP
 
             var bitmap = new RenderTargetBitmap(
                 (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Default);
-
+                        
             bitmap.Render(elt);
             return bitmap;
         }
@@ -1497,12 +1497,12 @@ namespace EXPIMP
         {
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
-            _trackport.Width = 2800;
-            _trackport.Height = 2000;
-            _trackport.ViewPort.RenderSize = new Size(2800, 2000);
-            //_trackport.Width = 1400;
-            //_trackport.Height = 1000;
-            //_trackport.ViewPort.RenderSize = new Size(1400, 1000);
+            //_trackport.Width = 2800;
+            //_trackport.Height = 2000;
+            //_trackport.ViewPort.RenderSize = new Size(2800, 2000);
+            _trackport.Width = 1400;
+            _trackport.Height = 1000;
+            _trackport.ViewPort.RenderSize = new Size(1400, 1000);
 
             //Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
             //_trackport.ViewPort.Measure(size);

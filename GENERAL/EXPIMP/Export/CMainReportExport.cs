@@ -39,6 +39,7 @@ namespace EXPIMP
 
         private static XPdfFontOptions options;
         //private static PdfDocument document = null;
+        private static List<string[]> contents = new List<string[]>();
 
         public static void ReportAllDataToPDFFile(CModelData modelData)
         {
@@ -73,36 +74,39 @@ namespace EXPIMP
             // A potom by som podla enumu pre nazov layoutu alebo enumu pre nazov view vkladal riadky do zoznamu pre tabulku na prvej stranke
             // fs01-fs12 by sa mali generovat automaticky podla toho kolko stranok vygenerujem
 
-            string[] row1 = new string[2] { "fs01", "Isometric View" };
-            string[] row2 = new string[2] { "fs02", "Front Elevation" };
-            string[] row3 = new string[2] { "fs03", "Back Elevation" };
-            string[] row4 = new string[2] { "fs04", "Left Elevation" };
-            string[] row5 = new string[2] { "fs05", "Right Elevation" };
-            string[] row6 = new string[2] { "fs06", "Roof Layout" };
-            string[] row7 = new string[2] { "fs07", "Middle Frame" };
-            string[] row8 = new string[2] { "fs08", "Columns" };
-            string[] row9 = new string[2] { "fs09", "Foundation Pads" };
-            string[] row10 = new string[2] { "fs10", "Floor Plan" };
-            string[] row11 = new string[2] { "fs11", "Details - Standard 1" };
-            string[] row12 = new string[2] { "fs12", "Details - Standard 2" };
-            string[] row13 = new string[2] { "fs13", "Details - Joints" };
-            string[] row14 = new string[2] { "fs14", "Details - Footing Pads" };
+            //string[] row1 = new string[2] { "fs01", "Isometric View" };
+            //string[] row2 = new string[2] { "fs02", "Front Elevation" };
+            //string[] row3 = new string[2] { "fs03", "Back Elevation" };
+            //string[] row4 = new string[2] { "fs04", "Left Elevation" };
+            //string[] row5 = new string[2] { "fs05", "Right Elevation" };
+            //string[] row6 = new string[2] { "fs06", "Roof Layout" };
+            //string[] row7 = new string[2] { "fs07", "Middle Frame" };
+            //string[] row8 = new string[2] { "fs08", "Columns" };
+            //string[] row9 = new string[2] { "fs09", "Foundation Pads" };
+            //string[] row10 = new string[2] { "fs10", "Floor Plan" };
+            //string[] row11 = new string[2] { "fs11", "Details - Standard 1" };
+            //string[] row12 = new string[2] { "fs12", "Details - Standard 2" };
+            //string[] row13 = new string[2] { "fs13", "Details - Joints" };
+            //string[] row14 = new string[2] { "fs14", "Details - Footing Pads" };
 
-            List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
+            //List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
-            DrawTitlePage(s_document, projectInfo, tableParams, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
-            DrawModel3D(s_document, tableParams, modelData);
+            DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, tableParams, modelData);
+            DrawModelViews(s_document, modelData);
+            
+            DrawJointTypes(s_document, modelData);
 
-            DrawStandardDetails(s_document, tableParams, modelData); // To Ondrej - for review
+            DrawFootingTypes(s_document, modelData);
 
-            DrawJointTypes(s_document, tableParams, modelData);
+            DrawFloorDetails(s_document, modelData);
 
-            DrawFootingTypes(s_document, tableParams, modelData);
+            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
 
-            DrawFloorDetails(s_document, tableParams, modelData);
+
+            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             //page = s_document.AddPage();
             //gfx = XGraphics.FromPdfPage(page);
@@ -138,12 +142,9 @@ namespace EXPIMP
         /// <summary>
         /// Draw scaled 3Model to PDF
         /// </summary>
-        private static void DrawModel3D(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawModel3D(PdfDocument s_document, CModelData data)
         {
             // TO Ondrej - pre export 3D sceny implementovat samostatne display options podobne ako to mame pre pohlady ModelViews
-            // TO Ondrej - nechcem zobrazovat aktualnu scenu, ale ISO FRONT RIGHT view v maximalnej velkosti bez kot a popisov
-            // TO Ondrej - Nieco som pokazil a nekresli sa mi to :)
-
             XGraphics gfx;
             PdfPage page;
             page = s_document.AddPage();
@@ -184,9 +185,9 @@ namespace EXPIMP
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
-
-            string[] pageDetails = tableParams[sheetNo - 1];
-            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+                        
+            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
 
             int legendImgWidth = 100;
             int legendTextWidth = 60;
@@ -204,7 +205,7 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        private static void DrawModelViews(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawModelViews(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -280,8 +281,8 @@ namespace EXPIMP
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-                string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-                DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+                DrawTitleBlock(gfx, data.ProjectInfo, ((EPDFPageContentType)viewMembers).GetFriendlyName(), sheetNo, 0);
+                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", ((EPDFPageContentType)viewMembers).GetFriendlyName() });
 
                 opts.ModelView = GetView(viewMembers);
                 opts.ViewModelMembers = (int)viewMembers;
@@ -366,7 +367,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawJointTypes(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawJointTypes(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -395,10 +396,9 @@ namespace EXPIMP
             opts.bDisplayConnectorsWireFrame = false;
             opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
-            //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            string pageDetails = "Details - Joints";
             sheetNo++;
-            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Joints.GetFriendlyName() });
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("JDetails - Joints:", fontBold, XBrushes.Black, 20, 20);
@@ -427,7 +427,8 @@ namespace EXPIMP
                     gfx.Dispose();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
+                    contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Joints.GetFriendlyName() });
                     tf = new XTextFormatter(gfx);
                 }
 
@@ -464,7 +465,7 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        private static void DrawFootingTypes(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawFootingTypes(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -503,10 +504,8 @@ namespace EXPIMP
             opts.RotateModelZ = 5;
 
             sheetNo++;
-            //string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu filtra, chcelo by to vytvorit nejaky zoznam kde budu enumy jednotlivych vykresov, a ich nazov
-            string pageDetails = "Details - Footing Pads";
-
-            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+            AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
 
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("Footing Pads:", fontBold, XBrushes.Black, 20, 20);
@@ -534,7 +533,8 @@ namespace EXPIMP
                     gfx.Dispose();
 
                     sheetNo++;
-                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, pageDetails);
+                    AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
+                    contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
                 }
 
                 numInRow++;
@@ -585,7 +585,7 @@ namespace EXPIMP
             DrawTitleBlock(gfx, projectInfo, pageDetails, sheetNo, 0);
         }
 
-        private static void DrawStandardDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawStandardDetails(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -597,10 +597,9 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            sheetNo++;
-
-            string[] pageDetails = tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu vykresu detailov, chcelo by to vytvorit nejaky zoznam
-            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+            sheetNo++;            
+            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Standard_1.GetFriendlyName(), sheetNo, 0);
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Standard_1.GetFriendlyName() });
 
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
@@ -690,9 +689,8 @@ namespace EXPIMP
                 DrawCopyRightNote(gfx2, 400, (int)page.Height.Point - 15);
 
                 sheetNo++;
-
-                pageDetails = tableParams[sheetNo - 1];
-                DrawTitleBlock(gfx2, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+                DrawTitleBlock(gfx2, data.ProjectInfo, EPDFPageContentType.Details_Standard_2.GetFriendlyName(), sheetNo, 0);
+                contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Standard_2.GetFriendlyName() });
 
                 dImagePosition_x = 2;
                 // 1st row
@@ -725,7 +723,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawFloorDetails(PdfDocument s_document, List<string[]> tableParams, CModelData data)
+        private static void DrawFloorDetails(PdfDocument s_document, CModelData data)
         {
             XGraphics gfx;
             PdfPage page;
@@ -738,9 +736,9 @@ namespace EXPIMP
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             sheetNo++;
-
-            string[] pageDetails = new string[] { "fs15", "Details - Floor" }; //tableParams[sheetNo - 1]; // TO Ondrej Toto by sa malo brat z nazvu vykresu detailov, chcelo by to vytvorit nejaky zoznam
-            DrawTitleBlock(gfx, data.ProjectInfo, pageDetails[1], sheetNo, 0);
+            
+            DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Floor.GetFriendlyName(), sheetNo, 0);
+            contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Floor.GetFriendlyName() });
 
             double scale = 0.2; // 20% of original file dimensions in pixels
             double dImagePosition_x = 2;
@@ -892,7 +890,7 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, List<string[]> tableParams, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
         {
             PdfPage page = s_document.AddPage();
             page.Size = PageSize.A3;
@@ -959,7 +957,7 @@ namespace EXPIMP
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
             imageModel.Dispose();
 
-            AddTitlePageTableToDocument(gfx, tableParams);
+            
 
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
@@ -970,7 +968,7 @@ namespace EXPIMP
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
             gfx.DrawString("ENGINEERING PLAN SET", fontBoltTitle, XBrushes.Black, 530, 800);
-            gfx.Dispose();
+            return gfx;
         }
 
         // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
@@ -1532,7 +1530,7 @@ namespace EXPIMP
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
-        private static void AddTitlePageTableToDocument(XGraphics gfx, List<string[]> tableParams)
+        private static void AddTitlePageContentTableToDocument(XGraphics gfx, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
@@ -1564,8 +1562,8 @@ namespace EXPIMP
         {
             Section sec = document.AddSection();
             Table table = new Table();
-            table.LeftPadding = 1;
-            table.RightPadding = 1;
+            table.LeftPadding = 5;
+            table.RightPadding = 5;
             table.TopPadding = 1;
             table.BottomPadding = 1;
             table.Borders.Width = 0.75;

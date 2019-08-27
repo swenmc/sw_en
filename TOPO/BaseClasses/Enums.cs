@@ -670,6 +670,25 @@
         FLOOR = 9
     }
 
+    public enum EPDFPageContentType
+    {
+        Isometric_View = 0,
+        Front_Elevation = 1,
+        Back_Elevation = 2,
+        Left_Elevation = 3,
+        Right_Elevation = 4,
+        Roof_Layout = 5,
+        Middle_Frame = 6,
+        Columns = 7,
+        Foundation_Pads = 8,
+        Floor_Plan = 9,
+        Details_Standard_1 = 10,
+        Details_Standard_2 = 11,
+        Details_Joints = 12,
+        Details_Footing_Pads = 13,
+        Details_Floor = 14
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions
