@@ -529,10 +529,11 @@ namespace BaseClasses
             m_PointStart.Z = m_NodeStart.Z;
 
             Point3DCollection temp = new Point3DCollection();
-            Point3D tempPoint = new Point3D(-m_fAlignment_Start,0,0);
+            Point3D tempPoint = new Point3D(-m_fAlignment_Start,0,0); // skratenie je ma zapornu hodnotu, predlzenie ma kladnu hodnotu
             temp.Add(tempPoint);
 
-            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, m_PointStart, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
+            // Riadiaci uzol/bod pre translaciu bodov pruta je vzdy NodeStart
+            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, new Point3D(m_NodeStart.X, m_NodeStart.Y, m_NodeStart.Z), Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
 
             m_PointStart = temp[0];
         }
@@ -543,10 +544,11 @@ namespace BaseClasses
             m_PointEnd.Z = m_NodeEnd.Z;
 
             Point3DCollection temp = new Point3DCollection();
-            Point3D tempPoint = new Point3D(m_fAlignment_End, 0, 0);
+            Point3D tempPoint = new Point3D(m_fAlignment_End, 0, 0); // skratenie je ma zapornu hodnotu, predlzenie ma kladnu hodnotu
             temp.Add(tempPoint);
 
-            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, m_PointEnd, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
+            // Riadiaci uzol/bod pre translaciu bodov pruta je vzdy NodeStart
+            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, new Point3D(m_NodeStart.X, m_NodeStart.Y, m_NodeStart.Z), Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
 
             m_PointEnd = temp[0];
         }
