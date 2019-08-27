@@ -91,12 +91,14 @@ namespace EXPIMP
 
             //List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
+            contents = new List<string[]>();
+
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
             DrawModel3D(s_document, modelData);
 
             DrawModelViews(s_document, modelData);
-            
+
             DrawJointTypes(s_document, modelData);
 
             DrawFootingTypes(s_document, modelData);
@@ -193,8 +195,8 @@ namespace EXPIMP
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
 
             int legendImgWidth = 100;
-            int legendTextWidth = 60;
-            DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
+            int legendTextWidth = 70;
+            DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
 
             XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
 
@@ -203,8 +205,8 @@ namespace EXPIMP
             double scaledImageHeight = image.PointHeight * scaleFactor;
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
-            viewPort = null;
             image.Dispose();
+            viewPort = null;            
             gfx.Dispose();
         }
 
@@ -277,7 +279,7 @@ namespace EXPIMP
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
 
             int legendImgWidth = 100;
-            int legendTextWidth = 60;
+            int legendTextWidth = 70;
 
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
@@ -368,7 +370,7 @@ namespace EXPIMP
                 Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
                 viewPort.UpdateLayout();
 
-                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth, legendTextWidth);
+                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);
@@ -533,7 +535,7 @@ namespace EXPIMP
 
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
 
-            double moveX = -50;
+            double moveX = 0;
             double moveY = 40;
             int maxInRow = 2;
             int maxInColumn = 2;
@@ -562,7 +564,7 @@ namespace EXPIMP
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, 1140, 800);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -575,8 +577,8 @@ namespace EXPIMP
                 //double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 //double scaledImageHeight = image.PointHeight * scaleFactor;
 
-                double scaleFactor = image.PointWidth / 500;
-                double scaledImageWidth = 500;
+                double scaleFactor = 430 / image.PointWidth;
+                double scaledImageWidth = 430;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
                 
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
@@ -584,10 +586,10 @@ namespace EXPIMP
                 image.Dispose();
                 viewPort = null;
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
-                DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 100, moveY, pad);
+                DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 30, moveY, pad);
 
                 moveX += scaledImageWidth + 90;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = -50; moveY += scaledImageHeight + 80; numInColumn++; }
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
             }
 
             gfx.Dispose();
