@@ -174,6 +174,10 @@ namespace EXPIMP
             opts.bDisplayJoints = true;
             opts.bDisplayPlates = true;
 
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
+
             opts.bDisplayFoundations = false;
             opts.bDisplayFloorSlab = false;
             opts.bDisplaySawCuts = false;
@@ -226,6 +230,10 @@ namespace EXPIMP
             opts.bTransformScreenLines3DToCylinders3D = true;
 
             opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
 
             opts.bDisplayMembers = true;
             //opts.bDisplayJoints = true;
@@ -409,6 +417,10 @@ namespace EXPIMP
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
 
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
+
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.fWireFrameLineThickness = 2;
@@ -507,6 +519,10 @@ namespace EXPIMP
             opts.bDisplayJoints = true;
             opts.bDisplayPlates = true;
             opts.bDisplayConnectors = true;
+
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -959,6 +975,10 @@ namespace EXPIMP
             opts.bDisplayMembers = true;
             opts.bDisplayJoints = true;
             opts.bDisplayPlates = true;
+
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
 
             opts.bDisplayFoundations = false;
             opts.bDisplayFloorSlab = false;
