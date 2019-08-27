@@ -91,6 +91,8 @@ namespace EXPIMP
 
             //List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
 
+            contents = new List<string[]>();
+
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
 
             DrawModel3D(s_document, modelData);
