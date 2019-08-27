@@ -529,7 +529,7 @@ namespace BaseClasses
             m_PointStart.Z = m_NodeStart.Z;
 
             Point3DCollection temp = new Point3DCollection();
-            Point3D tempPoint = new Point3D(-m_fAlignment_Start,0,0); // skratenie je ma zapornu hodnotu, predlzenie ma kladnu hodnotu
+            Point3D tempPoint = new Point3D(-m_fAlignment_Start,0,0); // skratenie ma zapornu hodnotu, predlzenie ma kladnu hodnotu - bod je definovany v LCS pruta, [0,0,0] je v NodeStart
             temp.Add(tempPoint);
 
             // Riadiaci uzol/bod pre translaciu bodov pruta je vzdy NodeStart
@@ -544,7 +544,7 @@ namespace BaseClasses
             m_PointEnd.Z = m_NodeEnd.Z;
 
             Point3DCollection temp = new Point3DCollection();
-            Point3D tempPoint = new Point3D(m_fAlignment_End, 0, 0); // skratenie je ma zapornu hodnotu, predlzenie ma kladnu hodnotu
+            Point3D tempPoint = new Point3D(m_fLength + m_fAlignment_End, 0, 0); // skratenie ma zapornu hodnotu, predlzenie ma kladnu hodnotu - bod je definovany v LCS pruta, [0,0,0] je v NodeStart
             temp.Add(tempPoint);
 
             // Riadiaci uzol/bod pre translaciu bodov pruta je vzdy NodeStart
