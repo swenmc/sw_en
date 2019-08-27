@@ -1391,7 +1391,7 @@ namespace PFD
         //    float fMiddleStiffenerSize = 0.18f;
         //    float fAdditionalConnectorDistance = 0.03f;
 
-        //    CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+        //    Point3D controlpoint = new Point3D(0, 0, 0, 0, 0);
         //    CScrew referenceScrew = new CScrew("TEK", "14");
         //    CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
 
@@ -1605,7 +1605,7 @@ namespace PFD
         //    float fHoleDiameter;
         //    float fConnectorLength = 0.02f;
         //    float fConnectorMass = 0.012f;
-        //    CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+        //    Point3D controlpoint = new Point3D(0, 0, 0, 0, 0);
 
         //    databaseComponents = new CDatabaseComponents();
 

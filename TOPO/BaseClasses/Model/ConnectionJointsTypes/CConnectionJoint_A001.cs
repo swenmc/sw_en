@@ -4,6 +4,7 @@ using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
 using System.Globalization;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -40,8 +41,8 @@ namespace BaseClasses
 
             Name = "Rafter Apex Joint";
 
-            CPoint ControlPoint_P1 = new CPoint(0, m_Node.X + 0.5 * m_fb, m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - /*0.5f **/ m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1), 0);
-            CPoint ControlPoint_P2 = new CPoint(1, m_Node.X - 0.5 * m_fb, m_Node.Y + m_MainMember.CrScStart.y_max /*+ 0.5f * m_MainMember.CrScStart.b*/ + /*1.5f **/ m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1), 0);
+            Point3D ControlPoint_P1 = new Point3D(m_Node.X + 0.5 * m_fb, m_Node.Y + m_MainMember.CrScStart.y_min /*- 0.5f * m_MainMember.CrScStart.b*/ - /*0.5f **/ m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1));
+            Point3D ControlPoint_P2 = new Point3D(m_Node.X - 0.5 * m_fb, m_Node.Y + m_MainMember.CrScStart.y_max /*+ 0.5f * m_MainMember.CrScStart.b*/ + /*1.5f **/ m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1));
 
             // Screw arrangement parameters
             // TODO nacitavat parametre z prierezu

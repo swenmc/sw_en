@@ -428,7 +428,7 @@ namespace BaseClasses.GraphObj
 
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0,0,0,0), MainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new Point3D(0,0,0), MainLineLength, fLineCylinderRadius, 0, true);
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
 
@@ -561,7 +561,7 @@ namespace BaseClasses.GraphObj
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new CPoint(0,0, DimensionMainLinePositionIncludingOffset,0,0), fMainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new Point3D(0, DimensionMainLinePositionIncludingOffset,0), fMainLineLength, fLineCylinderRadius, 0, true);
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
 

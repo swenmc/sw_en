@@ -5,6 +5,7 @@ using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
 using System.Globalization;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -63,8 +64,8 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
-            CPoint ControlPoint_P2 = new CPoint(0, fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+            Point3D ControlPoint_P2 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
 
             int iConnectorNumberinOnePlate = 14;
 
@@ -99,8 +100,8 @@ namespace BaseClasses
                 }
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
-                ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z, 0);
+                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
+                ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
 
                 pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_F, ControlPoint_P1, 0, m_fPlate_Angle_RightLeg_BX1, m_fPlate_Angle_RightLeg_BX2, m_fPlate_Angle_Height, m_fPlate_Angle_LeftLeg, m_ft, 90, 0, 180 + 0, screwArrangement1, BIsDisplayed); // Rotation angle in degrees
                 pRightPlate = new CConCom_Plate_F_or_L(sPlateType_F, ControlPoint_P2, 1, m_fPlate_Angle_RightLeg_BX1, m_fPlate_Angle_RightLeg_BX2, m_fPlate_Angle_Height, m_fPlate_Angle_LeftLeg, m_ft, 90, 0, 180 + 180, screwArrangement2, BIsDisplayed); // Rotation angle in degrees

@@ -108,7 +108,7 @@ namespace BaseClasses
         public CConnector()
         {
             BIsDisplayed = true;
-            m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
+            m_pControlPoint = new Point3D(0, 0, 0);
             m_DiffuseMat = new DiffuseMaterial();
             m_cylinder = new Cylinder();
         }
@@ -116,12 +116,12 @@ namespace BaseClasses
         public CConnector(bool bIsDisplayed)
         {
             BIsDisplayed = bIsDisplayed;
-            m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
+            m_pControlPoint = new Point3D(0, 0, 0);
             m_DiffuseMat = new DiffuseMaterial();
             m_cylinder = new Cylinder();
         }
 
-        public CConnector(string sName_temp, CPoint controlpoint, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConnector(string sName_temp, Point3D controlpoint, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
             m_Mat.Name = "Class 3 / 4 / B8";

@@ -12,7 +12,7 @@ namespace Examples
     {
         public CExample_3D_90()
         {
-            m_arrGOPoints = new BaseClasses.GraphObj.CPoint[1];
+            m_arrGOPoints = new Point3D[1];
             //m_arrGOLines = new BaseClasses.GraphObj.CLine[21];
             m_arrGOAreas = new BaseClasses.GraphObj.CArea[0];
             m_arrGOVolumes = new BaseClasses.GraphObj.CVolume[1];
@@ -31,7 +31,7 @@ namespace Examples
             float y = 0.0f;
             float z = 10.0f;
 
-            m_arrGOPoints[00] = new CPoint(1, x , y , z, 0);
+            m_arrGOPoints[00] = new Point3D(x , y , z);
 
             DiffuseMaterial DiffMat1 = new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(255, 255, 120)));
 

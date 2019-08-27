@@ -5,6 +5,7 @@ using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
 using System.Globalization;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -93,8 +94,8 @@ namespace BaseClasses
                 fControlPointYCoord2 = (float)(m_Node.Y + m_MainMember.CrScStart.y_max /*0.5f * m_MainMember.CrScStart.b*/ + 1.5f * m_ft - m_ft);
             }
 
-            CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
-            CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
+            Point3D ControlPoint_P1 = new Point3D(fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1);
+            Point3D ControlPoint_P2 = new Point3D(fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1);
 
             // Screw arrangement parameters
             // TODO nacitavat parametre z prierezu

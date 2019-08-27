@@ -6,6 +6,7 @@ using MATH;
 using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -63,8 +64,8 @@ namespace BaseClasses
                 fControlPointPosition_z_end = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z;
             }
 
-            CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, fControlPointPosition_y_start, fControlPointPosition_z_start, 0);
-            CPoint ControlPoint_P2 = new CPoint(0, fAlignment_x + fPlateCenterDistanceInx, fControlPointPosition_y_start, fControlPointPosition_z_start, 0);
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, fControlPointPosition_y_start, fControlPointPosition_z_start);
+            Point3D ControlPoint_P2 = new Point3D(fAlignment_x + fPlateCenterDistanceInx, fControlPointPosition_y_start, fControlPointPosition_z_start);
 
             int iConnectorNumberinOnePlate = 12;
 
@@ -78,8 +79,8 @@ namespace BaseClasses
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, fControlPointPosition_y_end, fControlPointPosition_z_start, 0);
-                ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x - fPlateCenterDistanceInx, fControlPointPosition_y_end, fControlPointPosition_z_start, 0);
+                ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, fControlPointPosition_y_end, fControlPointPosition_z_start);
+                ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x - fPlateCenterDistanceInx, fControlPointPosition_y_end, fControlPointPosition_z_start);
 
                 pPlate1 = new CConCom_Plate_N("N", ControlPoint_P1, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
                 pPlate2 = new CConCom_Plate_N("N", ControlPoint_P2, fbX1, fbX3, fhY, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees

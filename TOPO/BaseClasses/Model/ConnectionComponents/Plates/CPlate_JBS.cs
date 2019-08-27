@@ -19,7 +19,7 @@ namespace BaseClasses
         }
 
         public CConCom_Plate_JBS(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             float fb_temp,
             float fh_1_temp,
             float fh_2_temp,

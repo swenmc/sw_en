@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -110,12 +111,12 @@ namespace PFD
             // Surface Free Loads
             // Roof Surface Geometry
             // Control Points
-            CPoint pRoofFrontLeft = new CPoint(0, 0, 0, fH1_frame, 0);
-            CPoint pRoofFrontApex = new CPoint(0, 0.5f * fW_frame, 0, fH2_frame, 0);
-            CPoint pRoofFrontRight = new CPoint(0, fW_frame, 0, fH1_frame, 0);
-            CPoint pRoofBackLeft = new CPoint(0, 0, fL_tot, fH1_frame, 0);
-            CPoint pRoofBackApex = new CPoint(0, 0.5f * fW_frame, fL_tot, fH2_frame, 0);
-            CPoint pRoofBackRight = new CPoint(0, fW_frame, fL_tot, fH1_frame, 0);
+            Point3D pRoofFrontLeft = new Point3D(0, 0, fH1_frame);
+            Point3D pRoofFrontApex = new Point3D(0.5f * fW_frame, 0, fH2_frame);
+            Point3D pRoofFrontRight = new Point3D(fW_frame, 0, fH1_frame);
+            Point3D pRoofBackLeft = new Point3D(0, fL_tot, fH1_frame);
+            Point3D pRoofBackApex = new Point3D(0.5f * fW_frame, fL_tot, fH2_frame);
+            Point3D pRoofBackRight = new Point3D(fW_frame, fL_tot, fH1_frame);
 
             // Dimensions
             float fRoof_X = fL_tot;
@@ -123,10 +124,10 @@ namespace PFD
 
             // Wall Surface Geometry
             // Control Point
-            CPoint pWallFrontLeft = new CPoint(0, 0, 0, 0, 0);
-            CPoint pWallFrontRight = new CPoint(0, fW_frame, 0, 0, 0);
-            CPoint pWallBackRight = new CPoint(0, fW_frame, fL_tot, 0, 0);
-            CPoint pWallBackLeft = new CPoint(0, 0, fL_tot, 0, 0);
+            Point3D pWallFrontLeft = new Point3D(0, 0, 0);
+            Point3D pWallFrontRight = new Point3D(fW_frame, 0, 0);
+            Point3D pWallBackRight = new Point3D(fW_frame, fL_tot, 0);
+            Point3D pWallBackLeft = new Point3D(0, fL_tot, 0);
 
             // Dimensions
             float fWallLeftOrRight_X = fL_tot;
@@ -425,12 +426,12 @@ namespace PFD
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallFront,
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallBack,
             ELSType eLSType,
-            CPoint pRoofFrontApex,
-            CPoint pRoofFrontRight,
+            Point3D pRoofFrontApex,
+            Point3D pRoofFrontRight,
             float fRoof_X,
             float fRoof_Y,
-            CPoint pWallFrontLeft,
-            CPoint pWallBackRight,
+            Point3D pWallFrontLeft,
+            Point3D pWallBackRight,
             float fWallLeftOrRight_X,
             float fWallLeftOrRight_Y,
             float fWallFrontOrBack_X,
@@ -507,12 +508,12 @@ namespace PFD
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallBack,
             ELSType eLSType,
             int iCodeForCpiMinMaxValue,
-            CPoint pRoofFrontApex,
-            CPoint pRoofFrontRight,
+            Point3D pRoofFrontApex,
+            Point3D pRoofFrontRight,
             float fRoof_X,
             float fRoof_Y,
-            CPoint pWallFrontLeft,
-            CPoint pWallBackRight,
+            Point3D pWallFrontLeft,
+            Point3D pWallBackRight,
             float fWallLeftOrRight_X,
             float fWallLeftOrRight_Y,
             float fWallFrontOrBack_X,
@@ -616,18 +617,18 @@ namespace PFD
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallFront,
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallBack,
             ELSType eLSType,
-            CPoint pRoofFrontLeft,
-            CPoint pRoofFrontApex,
-            CPoint pRoofFrontRight,
-            CPoint pRoofBackLeft,
-            CPoint pRoofBackApex,
-            CPoint pRoofBackRight,
+            Point3D pRoofFrontLeft,
+            Point3D pRoofFrontApex,
+            Point3D pRoofFrontRight,
+            Point3D pRoofBackLeft,
+            Point3D pRoofBackApex,
+            Point3D pRoofBackRight,
             float fRoof_X,
             float fRoof_Y,
-            CPoint pWallFrontLeft,
-            CPoint pWallFrontRight,
-            CPoint pWallBackRight,
-            CPoint pWallBackLeft,
+            Point3D pWallFrontLeft,
+            Point3D pWallFrontRight,
+            Point3D pWallBackRight,
+            Point3D pWallBackLeft,
             float fWallLeftOrRight_X,
             float fWallLeftOrRight_Y,
             float fWallFrontOrBack_X,
@@ -761,18 +762,18 @@ namespace PFD
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallBack,
             ELSType eLSType,
             int iCodeForCpeMinMaxValue,
-            CPoint pRoofFrontLeft,
-            CPoint pRoofFrontApex,
-            CPoint pRoofFrontRight,
-            CPoint pRoofBackLeft,
-            CPoint pRoofBackApex,
-            CPoint pRoofBackRight,
+            Point3D pRoofFrontLeft,
+            Point3D pRoofFrontApex,
+            Point3D pRoofFrontRight,
+            Point3D pRoofBackLeft,
+            Point3D pRoofBackApex,
+            Point3D pRoofBackRight,
             float fRoof_X,
             float fRoof_Y,
-            CPoint pWallFrontLeft,
-            CPoint pWallFrontRight,
-            CPoint pWallBackRight,
-            CPoint pWallBackLeft,
+            Point3D pWallFrontLeft,
+            Point3D pWallFrontRight,
+            Point3D pWallBackRight,
+            Point3D pWallBackLeft,
             float fWallLeftOrRight_X,
             float fWallLeftOrRight_Y,
             float fWallFrontOrBack_X,

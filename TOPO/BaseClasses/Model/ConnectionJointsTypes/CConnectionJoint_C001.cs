@@ -1,5 +1,5 @@
 ﻿using BaseClasses.GraphObj;
-
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -38,7 +38,7 @@ namespace BaseClasses
                 fControlPointYCoord1 = (float)(m_Node.Y + 0.5f * m_MainMember.CrScStart.b + m_ft);
             }
 
-            CPoint ControlPoint_P1 = new CPoint(0, m_Node.X, fControlPointYCoord1, m_Node.Z - 0.5 * m_SecondaryMembers[0].CrScStart.h, 0);
+            Point3D ControlPoint_P1 = new Point3D(m_Node.X, fControlPointYCoord1, m_Node.Z - 0.5 * m_SecondaryMembers[0].CrScStart.h);
             CScrew referenceScrew = new CScrew("TEK", "12");
             CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(0, referenceScrew);
 

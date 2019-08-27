@@ -1164,7 +1164,7 @@ namespace PFD
             }
         }
 
-        public void RotateAndTranslateNodeAboutZ_CCW(CPoint pControlPoint, CNode node, float fAngle_rad)
+        public void RotateAndTranslateNodeAboutZ_CCW(Point3D pControlPoint, CNode node, float fAngle_rad)
         {
             // Rotate node
             float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(node.X, node.Y, fAngle_rad);
@@ -1411,7 +1411,7 @@ namespace PFD
             CMember mColumnRight;
             CMember mEavesPurlin;
             CBlock_3D_001_DoorInBay door;
-            CPoint pControlPointBlock;
+            Point3D pControlPointBlock;
             float fBayWidth;
             float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstMemberToDeactivate;
@@ -1454,7 +1454,7 @@ namespace PFD
             CMember mColumnRight;
             CMember mEavesPurlin;
             CBlock_3D_002_WindowInBay window;
-            CPoint pControlPointBlock;
+            Point3D pControlPointBlock;
             float fBayWidth;
             float fBayHeight = fH1_frame; // TODO - spocitat vysku bay v mieste bloku (pre front a back budu dve vysky v mieste vlozenia stlpov bloku
             int iFirstGirtInBay;
@@ -1516,7 +1516,7 @@ namespace PFD
             out CMember mColumnLeft,                  // Left column of bay
             out CMember mColumnRight,                 // Right column of bay
             out CMember mEavesPurlin,                  // Eave purlin for left and right side
-            out CPoint pControlPointBlock,            // Conctrol point to insert block - defined as left column base point
+            out Point3D pControlPointBlock,            // Conctrol point to insert block - defined as left column base point
             out float fBayWidth,                      // Width of bay (distance between bay columns)
             out int iFirstMemberToDeactivate,         // Index of first girt in the bay which is in collision with the block and must be deactivated
             out bool bIsReverseSession,               // Front or back wall bay can have reverse direction of girts in X
@@ -1643,7 +1643,7 @@ namespace PFD
                 mEavesPurlin = null; // Not defined for the front and back side
             }
 
-            pControlPointBlock = new CPoint(0, mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z, 0);
+            pControlPointBlock = new Point3D(mColumnLeft.NodeStart.X, mColumnLeft.NodeStart.Y, mColumnLeft.NodeStart.Z);
         }
 
         //Tuto funkciu mam pozriet - Mato chce:
@@ -1653,7 +1653,7 @@ namespace PFD
         //tie moje "patlacky" ako sa to tam dolepuje do poli atd by som nebral velmi vazne
         //Malo by ty to fungovat tak, ze ked pridam prve dvere tak sa tie prierezy pridaju a ked pridavam dalsie, tak uz sa pridavaju len uzly a pruty a prierez sa len nastavi
         //uz by sa nemal vytvarat novy
-        public void AddDoorOrWindowBlockProperties(CPoint pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
+        public void AddDoorOrWindowBlockProperties(Point3D pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
         {
             int arraysizeoriginal;
             
@@ -2333,7 +2333,7 @@ namespace PFD
 
                     // Left
                     CNode node_left = m_arrNodes[i * iFrameNodesNo + 0];
-                    //CPoint controlPoint_left = new CPoint(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
+                    //Point3D controlPoint_left = new Point3D(i * 2 + 1, node_left.X - 0.5f * fMainColumnFooting_aX, node_left.Y - 0.5f * fMainColumnFooting_bY, node_left.Z - fMainColumnFooting_h, 0);
                     m_arrFoundations.Add(new CFoundation(i * 2 + 1,
                         EFoundationType.ePad,
                         node_left,
@@ -2361,7 +2361,7 @@ namespace PFD
 
                     // Right
                     CNode node_right = m_arrNodes[i * iFrameNodesNo + 4];
-                    //CPoint controlPoint_right = new CPoint(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
+                    //Point3D controlPoint_right = new Point3D(i * 2 + 2, node_right.X - 0.5f * fMainColumnFooting_aX, node_right.Y - 0.5f * fMainColumnFooting_bY, node_right.Z - fMainColumnFooting_h, 0);
                     m_arrFoundations.Add(new CFoundation(i * 2 + 2,
                         EFoundationType.ePad,
                         node_right,
@@ -2439,7 +2439,7 @@ namespace PFD
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
-                        //CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
+                        //Point3D controlPoint = new Point3D(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
@@ -2517,7 +2517,7 @@ namespace PFD
 
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
-                        //CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
+                        //Point3D controlPoint = new Point3D(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fBackColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fBackColumnFooting_bY, listOfControlPoints[i].Z - fBackColumnFooting_h, 0);
                         m_arrFoundations.Add(new CFoundation(iLastFoundationIndex + i + 1,
                             EFoundationType.ePad,
                             listOfControlPoints[i],
@@ -2591,7 +2591,8 @@ namespace PFD
 
                 int iLastFoundationIndex = m_arrFoundations.Count;
 
-                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
+                //Point3D controlPoint_FloorSlab = new Point3D(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
+                Point3D controlPoint_FloorSlab = new Point3D(m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance);
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
                     controlPoint_FloorSlab,
@@ -2665,7 +2666,7 @@ namespace PFD
                 33mm x 450mm Galvanised Dowel
                 */
 
-                CDowel referenceDowel = new CDowel(new CPoint(0, 0, 0, 0, 0), 0.033f, 0.6f, 4.028f, true);
+                CDowel referenceDowel = new CDowel(new Point3D(0, 0, 0), 0.033f, 0.6f, 4.028f, true);
                 float fDowelSpacing = 0.4f;
 
                 // Create raster of lines in XY-plane
@@ -2714,10 +2715,10 @@ namespace PFD
             iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterBottom_Bar_x, fConcreteCover);
             iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterBottom_Bar_y, fConcreteCover);
 
-            CPoint cp_Top_x = new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x, 0);
-            CPoint cp_Top_y = new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0);
-            CPoint cp_Bottom_x = new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x, 0);
-            CPoint cp_Bottom_y = new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0);
+            Point3D cp_Top_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
+            Point3D cp_Top_y = new Point3D(fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
+            Point3D cp_Bottom_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
+            Point3D cp_Bottom_y = new Point3D(fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
 
             reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
             reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);

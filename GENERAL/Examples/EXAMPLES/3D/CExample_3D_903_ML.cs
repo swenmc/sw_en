@@ -4,6 +4,7 @@ using CRSC;
 using MATERIAL;
 using System.Collections.Generic;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace Examples
 {
@@ -82,7 +83,7 @@ namespace Examples
             m_arrSLoads = new CSLoad_Free[1];
             FreeSurfaceLoadsMemberTypeData memberTypeData = new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eP, 0.5f);
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData = new List<FreeSurfaceLoadsMemberTypeData>(1);
-            BaseClasses.GraphObj.CPoint loadAreaControlPoint = new BaseClasses.GraphObj.CPoint(1, 0f, 0f, 0f, 0);
+            Point3D loadAreaControlPoint = new Point3D(0f, 0f, 0f);
             float fLoadValue = -1000f; // N/m^2 (Pa)
             float fLoadArea_x = 5; //m
             float fLoadArea_y = 2; //m

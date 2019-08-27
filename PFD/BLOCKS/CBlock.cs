@@ -3,6 +3,7 @@ using CRSC;
 using MATERIAL;
 using System;
 using BaseClasses;
+using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -113,7 +114,7 @@ namespace PFD
         {
             m_arrMat = new CMat[iMatNum];
             //m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrGOPoints = new CPoint[iPointNum];
+            m_arrGOPoints = new Point3D[iPointNum];
             //m_arrMembers = new CMember[iMemNum];
             m_arrGOAreas = new CArea[iAreaNum];
             m_arrGOVolumes = new CVolume[iVolumeNum];

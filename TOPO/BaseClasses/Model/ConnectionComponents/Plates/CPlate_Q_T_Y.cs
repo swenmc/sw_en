@@ -77,7 +77,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_Q_T_Y(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float fl_Z2_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float fl_Z2_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -115,7 +115,7 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
         }
 
-        public CConCom_Plate_Q_T_Y(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_Q_T_Y(string sName_temp, Point3D controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;

@@ -21,7 +21,7 @@ namespace BaseClasses
         }
         */
         
-        public CPoint m_pControlPoint = new CPoint();
+        public Point3D m_pControlPoint = new Point3D();
         public CMat m_Mat;
         [NonSerialized]
         public DiffuseMaterial m_Material3DGraphics;

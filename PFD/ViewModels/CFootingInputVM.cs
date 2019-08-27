@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -1231,10 +1232,10 @@ namespace PFD
             float fDiameterBottom_Bar_x = float.Parse(LongReinBottom_x_Phi) / 1000f;
             float fDiameterBottom_Bar_y = float.Parse(LongReinBottom_y_Phi) / 1000f;
 
-            CPoint cp_Top_x = new CPoint(1, fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, m_FootingPadSize_z_Or_h - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x, 0);
-            CPoint cp_Top_y = new CPoint(2, fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, m_FootingPadSize_z_Or_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y, 0);
-            CPoint cp_Bottom_x = new CPoint(3, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x, 0);
-            CPoint cp_Bottom_y = new CPoint(4, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y, 0);
+            Point3D cp_Top_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, m_FootingPadSize_z_Or_h - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
+            Point3D cp_Top_y = new Point3D(fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, m_FootingPadSize_z_Or_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
+            Point3D cp_Bottom_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
+            Point3D cp_Bottom_y = new Point3D(fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
 
             // Regenerate reinforcement bars
             foreach (CFoundation pad in listOfSelectedTypePads)

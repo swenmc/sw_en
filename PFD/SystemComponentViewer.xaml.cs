@@ -42,7 +42,7 @@ namespace PFD
         CCrSc_TW crsc;
         public CPlate plate;
         CScrew screw;
-        CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+        Point3D controlpoint = new Point3D(0, 0, 0);
         System.Windows.Media.Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
         float fb; // in plane XY -X coord

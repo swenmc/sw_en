@@ -48,7 +48,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 3
         // Rectangular Prism 8 Edges
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlEdgePoint, float fX, float fY, float fZ, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
@@ -66,7 +66,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 4
         // Rectangular Prism 8 Edges
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
@@ -87,7 +87,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 5a
         // Rectangular Prism 8 Edges
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
@@ -108,7 +108,7 @@ namespace BaseClasses.GraphObj
         }
 
         // Constructor 5b
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlEdgePoint, float fX, float fY, float fZ, MaterialGroup matGroup, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, MaterialGroup matGroup, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
@@ -131,7 +131,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 6
         // Sphere
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlCenterPoint, float fr, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlCenterPoint, float fr, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;
@@ -151,7 +151,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 7
         // SquarePyramid
-        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, CPoint pControlCenterPoint, float fa, float fh, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
+        public CVolume(int iVolume_ID, EVolumeShapeType iShapeType, Point3D pControlCenterPoint, float fa, float fh, DiffuseMaterial volMat1, bool bIsDisplayed, float fTime)
         {
             ID = iVolume_ID;
             m_eShapeType = iShapeType;

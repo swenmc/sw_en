@@ -199,7 +199,7 @@ namespace BaseClasses
             if (eLoadType == ENLoadType.eNLT_Fx || eLoadType == ENLoadType.eNLT_Fy || eLoadType == ENLoadType.eNLT_Fz) // Force
             {
                 // Tip (cone height is 20% from force value)
-                StraightLineArrow3D arrow = new StraightLineArrow3D(new GraphObj.CPoint(0,0,0,0,0),Math.Abs(fValueFor3D));
+                StraightLineArrow3D arrow = new StraightLineArrow3D(new Point3D(0,0,0),Math.Abs(fValueFor3D));
                 GeometryModel3D model = new GeometryModel3D();
                 MeshGeometry3D mesh = new MeshGeometry3D();
 

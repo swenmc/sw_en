@@ -78,7 +78,7 @@ namespace BaseClasses
         }
 
         public CConCom_Plate_B_basic(string sName_temp,
-            GraphObj.CPoint controlpoint,
+            Point3D controlpoint,
             float fbX_temp,
             float fhY_temp,
             float fl_Z_temp,

@@ -1,7 +1,7 @@
 ﻿using BaseClasses.GraphObj;
 using MATH;
 using System;
-
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -48,7 +48,7 @@ namespace BaseClasses
 
             float rotation_x_member = -(float)(m_SecondaryMembers[0].DTheta_x / MathF.dPI * 180); // Conversion to deg
 
-            CPoint ControlPoint_P1 = new CPoint(0, m_Node.X + fy, fControlPointYCoord1, m_Node.Z - fz, 0);
+            Point3D ControlPoint_P1 = new Point3D(m_Node.X + fy, fControlPointYCoord1, m_Node.Z - fz);
             CScrew referenceScrew = new CScrew("TEK", "12");
             CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(0, referenceScrew);
 

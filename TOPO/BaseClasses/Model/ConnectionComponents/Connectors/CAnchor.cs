@@ -375,7 +375,7 @@ namespace BaseClasses
         {
             Prefix = "Anchor";
             Name = name_temp;
-            m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
+            m_pControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
             CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
@@ -424,7 +424,7 @@ namespace BaseClasses
         {
             Prefix = "Anchor";
             Name = name_temp;
-            m_pControlPoint = new CPoint(0, 0, 0, 0, 0);
+            m_pControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
             CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
@@ -469,7 +469,7 @@ namespace BaseClasses
             m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, CPoint controlpoint, float fLength_temp, float fh_eff_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;

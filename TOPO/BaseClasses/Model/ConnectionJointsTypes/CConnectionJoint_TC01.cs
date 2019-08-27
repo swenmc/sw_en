@@ -1,4 +1,5 @@
 ﻿using BaseClasses.GraphObj;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -42,7 +43,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
-            CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft - fTolerance, -0.5f * fh_plate + flocaleccentricity_z, 0);
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft - fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
             CAnchor referenceAnchor = new CAnchor("M16","8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
@@ -57,7 +58,7 @@ namespace BaseClasses
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new CPoint(0, m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft + fTolerance, -0.5f * fh_plate + flocaleccentricity_z, 0);
+                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft + fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
                 m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }

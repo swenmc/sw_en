@@ -111,7 +111,7 @@ namespace BaseClasses
         }
 
         public CConCom_Plate_O(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             float fbX1_temp,
             float fbX2_temp,
             float fhY1_temp,

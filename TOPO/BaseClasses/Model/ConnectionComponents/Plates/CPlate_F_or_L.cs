@@ -80,7 +80,7 @@ namespace BaseClasses
 
         // L with or without holes
         public CConCom_Plate_F_or_L(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             float fbX_temp,
             float fhY_temp,
             float fl_Z_temp,
@@ -146,7 +146,7 @@ namespace BaseClasses
 
         // F - with or without holes
         public CConCom_Plate_F_or_L(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             int iLeftRightIndex_temp, // 0 - left (original), 1 - right
             float fbX1_temp,
             float fbX2_temp,
@@ -539,12 +539,12 @@ namespace BaseClasses
                 {
                     if (i < iNumberOfScrewsInLeftLeg) // Left Leg
                     {
-                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
                         screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, fRotationAngleAboutYAxis, 0, true);
                     }
                     else
                     {
-                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
                         screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, -90, 0, true);
                     }
                 }

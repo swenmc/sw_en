@@ -51,7 +51,7 @@ namespace sw_en_GUI
             
             
 
-            CPoint[] m_arrGOPoints = new BaseClasses.GraphObj.CPoint[1];
+            Point3D[] m_arrGOPoints = new Point3D[1];
             CArea[] m_arrGOAreas = new CArea[0];
             CVolume[] m_arrGOVolumes = new CVolume[1];
 
@@ -59,7 +59,7 @@ namespace sw_en_GUI
             float y = 0.0f;
             float z = 10.0f;
 
-            m_arrGOPoints[00] = new CPoint(1, x, y, z, 0);
+            m_arrGOPoints[00] = new Point3D(x, y, z);
 
             DiffuseMaterial DiffMat1 = new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(255, 255, 120)));
 

@@ -8,7 +8,7 @@ namespace BaseClasses.GraphObj.Objects_3D
     {
         // Todo - Ondrej, tato trieda by asi mala vracat priamo objekt model3D alebo by triedy, ktore maju 3D geometricku reprezentaciu, napr. CVolume aj tato trieda mali mat model3D ako predka
 
-        CPoint pControlPoint;
+        Point3D pControlPoint;
         public int iPrimaryArrowModelDirection; // Kod pre smer modelu sipky v LCS (0 - X, 1 - Y, 2 - Z, default pre zatazenie je 2 (smer z)
         public bool bArrowAtBothEnds;
         public float fConeHeight;
@@ -25,7 +25,7 @@ namespace BaseClasses.GraphObj.Objects_3D
         public StraightLineArrow3D()
         { }
 
-        public StraightLineArrow3D(CPoint pControlPoint_temp, float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        public StraightLineArrow3D(Point3D pControlPoint_temp, float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             pControlPoint = pControlPoint_temp;
             fTotalHeight = totalHeight;
@@ -42,7 +42,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             TransformArrowPointsToControlPoint();
         }
 
-        public StraightLineArrow3D(CPoint pControlPoint_temp, float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        public StraightLineArrow3D(Point3D pControlPoint_temp, float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             pControlPoint = pControlPoint_temp;
             fTotalHeight = totalHeight;

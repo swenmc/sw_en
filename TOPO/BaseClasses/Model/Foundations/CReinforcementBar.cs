@@ -108,7 +108,7 @@ namespace BaseClasses
         }
 
         /*
-        public CReinforcementBar(int iBar_ID, string materialName, CPoint pControlEdgePoint, Point3D startPoint, Point3D endPoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CReinforcementBar(int iBar_ID, string materialName, Point3D pControlEdgePoint, Point3D startPoint, Point3D endPoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
             m_pControlPoint = pControlEdgePoint;
@@ -128,7 +128,7 @@ namespace BaseClasses
         */
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, CPoint pControlEdgePoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
             Name = barName;

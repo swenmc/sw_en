@@ -6,6 +6,7 @@ using MATERIAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
@@ -80,9 +81,8 @@ namespace BaseClasses
         public CLimitState[] m_arrLimitStates;
 
         // Geometrical graphical model objects
-        // Points
-        //public CPoint[] m_arrGOPoints;
-        public CPoint[] m_arrGOPoints;
+        // Points        
+        public Point3D[] m_arrGOPoints;
         // Lines
         public CLine[] m_arrGOLines;
         // Areas
@@ -160,7 +160,7 @@ namespace BaseClasses
             m_eGCS = eGCS;
             m_arrMat = new CMat[iMatNum];
             //m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrGOPoints = new CPoint[iPointNum];
+            m_arrGOPoints = new Point3D[iPointNum];
             //m_arrMembers = new CMember[iMemNum];
             m_arrGOAreas = new CArea[iAreaNum];
             m_arrGOVolumes = new CVolume[iVolumeNum];

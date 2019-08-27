@@ -42,7 +42,7 @@ namespace BaseClasses
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
                ELoadDirection eLoadDirection_temp,
-               CPoint pControlPoint_temp,
+               Point3D pControlPoint_temp,
                float[] fX_coordinates_temp,
                float fX_dimension_max_temp,
                float fY_dimension_temp,
@@ -86,7 +86,7 @@ namespace BaseClasses
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
                ELoadDirection eLoadDirection_temp, // Load direction related to the surface (global, or local)
-               CPoint pControlPoint_temp,
+               Point3D pControlPoint_temp,
                float[] fX_coordinates_temp,
                float fX_dimension_max_temp,
                float fY_dimension_temp,
@@ -153,7 +153,7 @@ namespace BaseClasses
                     segmentStart_x_coordinate = fX_coordinates[i]; // Coordinate of segment start
                     segment_x_dimension = fX_coordinates[i + 1] - fX_coordinates[i]; // Length of particular segment
 
-                    CPoint pControlPoint_segment = new CPoint();
+                    Point3D pControlPoint_segment = new Point3D();
                     pControlPoint_segment.X = segmentStart_x_coordinate;
                     pControlPoint_segment.Y = 0;
                     pControlPoint_segment.Z = 0;
@@ -188,7 +188,7 @@ namespace BaseClasses
                     segmentStart_x_coordinate = fX_coordinates[i]; // Coordinate of segment start
                     segment_x_dimension = fX_dimension_max - fX_coordinates[i]; // Length of particular segment
 
-                    CPoint pControlPoint_segment = new CPoint();
+                    Point3D pControlPoint_segment = new Point3D();
                     pControlPoint_segment.X = segmentStart_x_coordinate;
                     pControlPoint_segment.Y = 0;
                     pControlPoint_segment.Z = 0;

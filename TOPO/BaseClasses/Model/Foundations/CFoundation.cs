@@ -352,7 +352,7 @@ namespace BaseClasses
             MATERIAL.CMat_02_00 materialConcrete,
             EMemberType_FS_Position memberTypePosition,
             string descriptionText,
-            //CPoint pControlEdgePoint,
+            //Point3D pControlEdgePoint,
             float fX,
             float fY,
             float fZ,
@@ -461,7 +461,7 @@ namespace BaseClasses
             if (eFoundationType == EFoundationType.ePad)
             {
                 // Create foundation block - origin [0,0,0]
-                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, new CPoint(1,0,0,0,0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
+                CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, new Point3D(0,0,0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
                 //model = volume.CreateGM_3D_Volume_8Edges(volume);
                 model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
 
@@ -545,12 +545,16 @@ namespace BaseClasses
 
                     // m_pControlPoint bod kam je vlozene [0,0,0] celeho zakladu v GCS
                     // referenceBar.m_pControlPoint bod kam je vlozena prva tyc do zakladu v LCS zakladu
+                    //Point3D controlPoint = new Point3D(i + 1,
+                    //    m_pControlPoint.X + cp_X_coordinate,
+                    //    m_pControlPoint.Y + cp_Y_coordinate,
+                    //    m_pControlPoint.Z + referenceBar.m_pControlPoint.Z,
+                    //    0);
 
-                    CPoint controlPoint = new CPoint(i + 1,
+                    Point3D controlPoint = new Point3D(
                         m_pControlPoint.X + cp_X_coordinate,
                         m_pControlPoint.Y + cp_Y_coordinate,
-                        m_pControlPoint.Z + referenceBar.m_pControlPoint.Z,
-                        0);
+                        m_pControlPoint.Z + referenceBar.m_pControlPoint.Z);
 
                     list.Add(new CReinforcementBar(i + 1,
                         "500E",

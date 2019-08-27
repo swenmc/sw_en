@@ -7,7 +7,7 @@ namespace BaseClasses.GraphObj
     [Serializable]
     public class CStructure_Window : CEntity3D
     {
-        //public CPoint m_pControlPoint = new CPoint();
+        //public Point3D m_pControlPoint = new Point3D();
 
         EWindowShapeType m_eShapeType = EWindowShapeType.eClassic;
 
@@ -46,7 +46,7 @@ namespace BaseClasses.GraphObj
 
         // Constructor 4
 
-        public CStructure_Window(int i_ID, EWindowShapeType iShapeType, CPoint pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, bool bIsDisplayed, float fTime)
+        public CStructure_Window(int i_ID, EWindowShapeType iShapeType, Point3D pControlEdgePoint, float fX, float fY, float fZ, DiffuseMaterial volMat1, DiffuseMaterial volMat2, bool bIsDisplayed, float fTime)
         {
             ID = i_ID;
             m_eShapeType = iShapeType;
@@ -64,7 +64,7 @@ namespace BaseClasses.GraphObj
         }
 
         // Constructor 5
-        public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, CPoint pControlEdgePoint, float fL, float fH, float ft, DiffuseMaterial volMat1, DiffuseMaterial volMat2, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
+        public CStructure_Window(int iW_ID, EWindowShapeType iShapeType, int iSegmentNum, Point3D pControlEdgePoint, float fL, float fH, float ft, DiffuseMaterial volMat1, DiffuseMaterial volMat2, float fGlassThickness, float fRotationZDegrees, bool bIsDisplayed, float fTime)
         {
             ID = iW_ID;
             m_eShapeType = iShapeType;

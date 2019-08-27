@@ -93,7 +93,7 @@ namespace BaseClasses
         }
 
         public CConCom_Plate_KA(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             float fb_1_temp,
             float fh_1_temp,
             float fb_2_temp,

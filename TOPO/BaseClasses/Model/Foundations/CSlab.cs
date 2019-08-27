@@ -351,7 +351,7 @@ namespace BaseClasses
 
         // Rectangular
         public CSlab(int iSlab_ID,
-            CPoint pControlEdgePoint,
+            Point3D pControlEdgePoint,
             MATERIAL.CMat_02_00 materialConcrete,
             float fX,
             float fY,
@@ -441,7 +441,7 @@ namespace BaseClasses
             qOuterMaterial.Children.Add(qSpecTrans);
 
             // Create slab - origin [0,0,0]
-            CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, new CPoint(1, 0, 0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
+            CVolume volume = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, new Point3D(0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial, true, 0);
             model = volume.CreateM_3D_G_Volume_8Edges(new Point3D(0, 0, 0), m_fDim1, m_fDim2, m_fDim3, qOuterMaterial);
 
             // Set the Transform property of the GeometryModel to the Transform3DGroup

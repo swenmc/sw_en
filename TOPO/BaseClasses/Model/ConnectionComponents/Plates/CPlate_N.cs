@@ -101,7 +101,7 @@ namespace BaseClasses
         }
 
         public CConCom_Plate_N(string sName_temp,
-            CPoint controlpoint,
+            Point3D controlpoint,
             float fbX1_temp,
             float fbX3_temp,
             float fhY_temp,
@@ -399,7 +399,7 @@ namespace BaseClasses
 
                 for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                 {
-                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                    Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
                         screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, -90, 0, true);
                 }
             }
