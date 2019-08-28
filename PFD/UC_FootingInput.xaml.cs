@@ -161,8 +161,6 @@ namespace PFD
                 //TODO Mato - je potrebne updatovat property v Modeli ak sa zmenia property vo view modeli v GUI (vid vyssie)
                 //_pfdVM.Model.m_arrSlabs.First().Eccentricity_x
             }
-            
-
         }
 
         private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)

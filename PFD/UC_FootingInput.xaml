@@ -98,21 +98,6 @@
             Text="{Binding Path=ConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
-                    <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Thickness t:" VerticalAlignment="Top" Width="120"/>
-                    <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxFloorSlabThickness" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                    <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
-
-                    
-                    <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Cover mc:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="9" Grid.Column="5" Name="TextBoxMeshConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=MeshConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-                    <TextBlock Grid.Row="9" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
-
-                    <TextBlock Grid.Row="10" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Mesh:" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
-                    <ComboBox Grid.Row="10" Grid.Column="5" Name ="Combobox_ReinforcementMeshGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80"
-            ItemsSource="{Binding Path=ReinforcementMeshGradesList}" SelectedValue="{Binding Path=ReinforcementMeshGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
                     <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="100"/>
                     <TextBlock Grid.Row="12" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Size x:" VerticalAlignment="Top" Width="100"/>
                     <TextBox Grid.Row="12" Grid.Column="1" Name="TextBoxFootingPadSize_x_Or_a" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" MaxLength="250"
@@ -130,7 +115,7 @@
                     <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="30"/>
 
                     <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentricities" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                    <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentrictiy x:" VerticalAlignment="Top" Width="100"/>
+                    <TextBlock Grid.Row="12" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Eccentricity x:" VerticalAlignment="Top" Width="100"/>
                     <TextBox Grid.Row="12" Grid.Column="5" Name="TextBoxEccentricity_ex" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" MaxLength="250"
         Text="{Binding Path=Eccentricity_ex, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="12" Grid.Column="6" HorizontalAlignment="Left"  Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="30"/>
@@ -253,18 +238,21 @@
         <TabItem Name="FloorSlab">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Floor Slap" Foreground="Blue"/>
+                    <TextBlock Text="Floor Slab" Foreground="Blue"/>
                 </StackPanel>
             </TabItem.Header>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Margin="5,5,5,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="90"/>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
@@ -313,38 +301,49 @@
 
 
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NumberOfControlJointsInDirectionX:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joint Count X-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="6" Grid.Column="1" Name="TextBoxNumberOfControlJointsInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=NumberOfControlJointsInDirectionX, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="NumberOfControlJointsInDirectionY:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joint Count Y-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="7" Grid.Column="1" Name="TextBoxNumberOfControlJointsInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=NumberOfControlJointsInDirectionY, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
-                    <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="FirstControlJointPositionInDirectionX:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Control Joint Position X-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="8" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=FirstControlJointPositionInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
-                    <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="FirstControlJointPositionInDirectionY:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Control Joint Position Y-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="9" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=FirstControlJointPositionInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
-                    <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="ControlJointsSpacingInDirectionX:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joints Spacing X-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=ControlJointsSpacingInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
-                    <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="ControlJointsSpacingInDirectionY:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
+                    <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joints Spacing Y-Direction:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="11" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                  Text="{Binding Path=ControlJointsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
+                    <TextBlock Grid.Row="13" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Top Cover mc:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="13" Grid.Column="1" Name="TextBoxMeshConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=MeshConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
+                    <TextBlock Grid.Row="14" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Mesh:" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
+                    <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_ReinforcementMeshGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80"
+                 ItemsSource="{Binding Path=ReinforcementMeshGradesList}" SelectedValue="{Binding Path=ReinforcementMeshGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
+                    <TextBlock Grid.Row="15" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Thickness t:" VerticalAlignment="Top" Width="120"/>
+                    <TextBox Grid.Row="15" Grid.Column="1" Name="TextBoxFloorSlabThickness" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                  Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
                 </Grid>
             </ScrollViewer>
