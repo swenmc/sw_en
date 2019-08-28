@@ -88,13 +88,13 @@ namespace PFD
         private float m_FirstSawCutPositionInDirectionY;
         private float m_SawCutsSpacingInDirectionX;
         private float m_SawCutsSpacingInDirectionY;
-        
+
         private int m_NumberOfControlJointsInDirectionX;
         private int m_NumberOfControlJointsInDirectionY;
         private float m_FirstControlJointPositionInDirectionX;
         private float m_FirstControlJointPositionInDirectionY;
         private float m_ControlJointsSpacingInDirectionX;
-        private float m_ControlJointsSpacingInDirectionY;        
+        private float m_ControlJointsSpacingInDirectionY;
 
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
@@ -355,7 +355,7 @@ namespace PFD
             set
             {
                 m_ReinforcementMeshGrade = value;
-                _model.m_arrSlabs.First().MeshGradeName = m_ReinforcementMeshGrade;
+                //_model.m_arrSlabs.First().MeshGradeName = m_ReinforcementMeshGrade;
                 NotifyPropertyChanged("ReinforcementMeshGrade");
             }
         }
@@ -399,8 +399,8 @@ namespace PFD
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
-                  // Dim 1 je polomer valca
-                  pad.Reference_Top_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinTop_x_Phi) / 1000f;
+                    // Dim 1 je polomer valca
+                    pad.Reference_Top_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinTop_x_Phi) / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateValuesInGUI();
 
@@ -813,7 +813,7 @@ namespace PFD
             {
                 if (value < -0.5f * FootingPadSize_x_Or_a || value > 0.5f * FootingPadSize_x_Or_a)
                     throw new ArgumentException("Eccentricity must be between -x/2 = " + string.Format("{0:0.000}", -0.5f * FootingPadSize_x_Or_a) +
-                                                                          "and x/2 = " + string.Format("{0:0.000}",  0.5f * FootingPadSize_x_Or_a) + " [m]");
+                                                                          "and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
 
                 m_Eccentricity_ex = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
@@ -832,8 +832,8 @@ namespace PFD
             set
             {
                 if (value < -0.5f * FootingPadSize_y_Or_b || value > 0.5f * FootingPadSize_y_Or_b)
-                    throw new ArgumentException("Eccentricity must be between -y/2= " + string.Format("{0:0.000}", -0.5f * FootingPadSize_y_Or_b)+
-                                                                          "and y/2= " + string.Format("{0:0.000}",  0.5f * FootingPadSize_y_Or_b) + "[m]");
+                    throw new ArgumentException("Eccentricity must be between -y/2= " + string.Format("{0:0.000}", -0.5f * FootingPadSize_y_Or_b) +
+                                                                          "and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
 
                 m_Eccentricity_ey = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
@@ -912,7 +912,7 @@ namespace PFD
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
-                   pad.ConcreteCover = ConcreteCover / 1000f;
+                    pad.ConcreteCover = ConcreteCover / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateValuesInGUI();
 
@@ -936,7 +936,7 @@ namespace PFD
                 m_MeshConcreteCover = value;
 
                 //if (IsSetFromCode == false) UpdateValuesInGUI();
-                _model.m_arrSlabs.First().ConcreteCover = m_MeshConcreteCover / 1000;
+                //_model.m_arrSlabs.First().ConcreteCover = m_MeshConcreteCover / 1000;
                 NotifyPropertyChanged("MeshConcreteCover");
             }
         }
@@ -955,7 +955,7 @@ namespace PFD
                     throw new ArgumentException("Floor slab thickness must be between 50 and 500 [mm]");
 
                 m_FloorSlabThickness = value;
-                _model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
                 NotifyPropertyChanged("FloorSlabThickness");
             }
         }
@@ -974,8 +974,10 @@ namespace PFD
                     throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
 
                 m_NumberOfSawCutsInDirectionX = value;
-                _model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = m_NumberOfSawCutsInDirectionX;
+                //_model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = m_NumberOfSawCutsInDirectionX;
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
+
+
             }
         }
 
@@ -993,7 +995,8 @@ namespace PFD
                     throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
 
                 m_NumberOfSawCutsInDirectionY = value;
-                _model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = m_NumberOfSawCutsInDirectionY;
+
+                //_model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = m_NumberOfSawCutsInDirectionY;
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
             }
         }
@@ -1012,7 +1015,8 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionX = value;
-                _model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = m_FirstSawCutPositionInDirectionX;
+
+                //_model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = m_FirstSawCutPositionInDirectionX;
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
             }
         }
@@ -1031,7 +1035,8 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionY = value;
-                _model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = m_FirstSawCutPositionInDirectionY;
+
+                //_model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = m_FirstSawCutPositionInDirectionY;
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
             }
         }
@@ -1050,8 +1055,9 @@ namespace PFD
                 //    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionX = value;
-                _model.m_arrSlabs.First().SawCutsSpacingInDirectionX = m_SawCutsSpacingInDirectionX;
+                //_model.m_arrSlabs.First().SawCutsSpacingInDirectionX = m_SawCutsSpacingInDirectionX;
                 NotifyPropertyChanged("SawCutsSpacingInDirectionX");
+
             }
         }
 
@@ -1069,8 +1075,8 @@ namespace PFD
                     throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionY = value;
-                _model.m_arrSlabs.First().SawCutsSpacingInDirectionY = m_SawCutsSpacingInDirectionY;
-                NotifyPropertyChanged("SawCutsSpacingInDirectionY");
+                //_model.m_arrSlabs.First().SawCutsSpacingInDirectionY = m_SawCutsSpacingInDirectionY;
+                NotifyPropertyChanged("SawCutsSpacingInDirectionY");                
             }
         }
 
@@ -1088,8 +1094,11 @@ namespace PFD
                 //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionX = value;
-                _model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = m_NumberOfControlJointsInDirectionX;
-                NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = m_NumberOfControlJointsInDirectionX;
+                    NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
+                }
             }
         }
 
@@ -1107,8 +1116,11 @@ namespace PFD
                 //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionY = value;
-                _model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = m_NumberOfControlJointsInDirectionY;
-                NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = m_NumberOfControlJointsInDirectionY;
+                    NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
+                }
             }
         }
 
@@ -1126,8 +1138,11 @@ namespace PFD
                 //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionX = value;
-                _model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = m_FirstControlJointPositionInDirectionX;
-                NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = m_FirstControlJointPositionInDirectionX;
+                    NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
+                }
             }
         }
 
@@ -1145,8 +1160,11 @@ namespace PFD
                 //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionY = value;
-                _model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = m_FirstControlJointPositionInDirectionY;
-                NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = m_FirstControlJointPositionInDirectionY;
+                    NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
+                }
             }
         }
 
@@ -1164,8 +1182,11 @@ namespace PFD
                 //    throw new ArgumentException("Spacing of control joints must be between 1 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionX = value;
-                _model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = m_ControlJointsSpacingInDirectionX;
-                NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = m_ControlJointsSpacingInDirectionX;
+                    NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
+                }
             }
         }
 
@@ -1183,8 +1204,11 @@ namespace PFD
                 //    throw new ArgumentException("Spacing of saw control joints be between 1 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionY = value;
-                _model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = m_ControlJointsSpacingInDirectionY;
-                NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
+                //if (!IsSetFromCode)
+                {
+                    //_model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = m_ControlJointsSpacingInDirectionY;
+                    NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
+                }
             }
         }
 
@@ -1197,7 +1221,7 @@ namespace PFD
                     m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
                     CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
                     CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
-                    m_DictFootings.Add("Main Column", Tuple.Create<CFoundation, CConnectionJointTypes> (pad, joint));
+                    m_DictFootings.Add("Main Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
                     pad = GetFootingPad(EMemberType_FS_Position.EdgeColumn);
                     joint = GetBaseJointForSelectedNode(pad.m_Node);
@@ -1217,7 +1241,7 @@ namespace PFD
         }
 
         CPFDViewModel _pfdVM;
-        CModel_PFD_01_GR _model;
+        //CModel_PFD_01_GR _model;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1225,7 +1249,7 @@ namespace PFD
         {
             IsSetFromCode = true;
             _pfdVM = pfdVM;
-            _model = pfdVM.Model as CModel_PFD_01_GR;
+            //_model = pfdVM.Model as CModel_PFD_01_GR;
             // Fill dictionaries
             ConcreteGrades = CMaterialManager.LoadMaterialPropertiesRC();
             ReinforcementGrades = CMaterialManager.LoadMaterialPropertiesRF();
@@ -1245,7 +1269,7 @@ namespace PFD
             ReinforcementBarsCountList = GetReinforcementBarsCountList();
 
             // Zoznam priemerov kameniva
-            AggregateSizesList = new List<string>() {"2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "24", "28", "32", "64", "128", "256" };
+            AggregateSizesList = new List<string>() { "2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "24", "28", "32", "64", "128", "256" };
 
             // Zoznam farieb
             ColorList = CComboBoxHelper.ColorList;
@@ -1268,26 +1292,12 @@ namespace PFD
             // ---------------------------------------------------------------------------------------------------
             // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
             // Alebo sa tu nastavia a podla toho sa vyrobi model
-            
+
             //FloorSlabThickness = 125; // mm 0.125f; m
-            FloorSlabThickness = _model.m_arrSlabs.First().m_fDim3 * 1000;
-            MeshConcreteCover = _model.m_arrSlabs.First().ConcreteCover * 1000f;
+            FloorSlabThickness = pfdVM.Model.m_arrSlabs.First().m_fDim3 * 1000;
+            MeshConcreteCover = pfdVM.Model.m_arrSlabs.First().ConcreteCover * 1000f;
 
-            // Saw Cuts
-            FirstSawCutPositionInDirectionX = _model.m_arrSlabs.First().FirstSawCutPositionInDirectionX;
-            FirstSawCutPositionInDirectionY = _model.m_arrSlabs.First().FirstSawCutPositionInDirectionY;
-            NumberOfSawCutsInDirectionX = _model.m_arrSlabs.First().NumberOfSawCutsInDirectionX;
-            NumberOfSawCutsInDirectionY = _model.m_arrSlabs.First().NumberOfSawCutsInDirectionY;
-            SawCutsSpacingInDirectionX = _model.m_arrSlabs.First().SawCutsSpacingInDirectionX;
-            SawCutsSpacingInDirectionY = _model.m_arrSlabs.First().SawCutsSpacingInDirectionY;
-
-            // Control Joints
-            FirstControlJointPositionInDirectionX = _model.m_arrSlabs.First().FirstControlJointPositionInDirectionX;
-            FirstControlJointPositionInDirectionY = _model.m_arrSlabs.First().FirstControlJointPositionInDirectionY;
-            NumberOfControlJointsInDirectionX = _model.m_arrSlabs.First().NumberOfControlJointsInDirectionX;
-            NumberOfControlJointsInDirectionY = _model.m_arrSlabs.First().NumberOfControlJointsInDirectionY;
-            ControlJointsSpacingInDirectionX = _model.m_arrSlabs.First().ControlJointsSpacingInDirectionX;
-            ControlJointsSpacingInDirectionY = _model.m_arrSlabs.First().ControlJointsSpacingInDirectionY;
+            UpdateFloorSlab();
 
             CFoundation pad = GetSelectedFootingPad();
             FootingPadSize_x_Or_a = pad.m_fDim1;
@@ -1314,8 +1324,8 @@ namespace PFD
             LongReinTop_x_No = pad.Count_Top_Bars_x == 0 ? "None" : pad.Count_Top_Bars_x.ToString();
             LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fDim1 * 2f * 1000f).ToString();
 
-            if(LongReinTop_x_No != "None")
-               LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f);
+            if (LongReinTop_x_No != "None")
+                LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f);
 
             LongReinTop_y_No = pad.Count_Top_Bars_y == 0 ? "None" : pad.Count_Top_Bars_y.ToString();
             LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fDim1 * 2f * 1000f).ToString();
@@ -1324,13 +1334,13 @@ namespace PFD
                 LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f);
 
             LongReinBottom_x_No = pad.Count_Bottom_Bars_x == 0 ? "None" : pad.Count_Bottom_Bars_x.ToString();
-            LongReinBottom_x_Phi=(pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
+            LongReinBottom_x_Phi = (pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
 
             if (LongReinBottom_x_No != "None")
                 LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f);
 
             LongReinBottom_y_No = pad.Count_Bottom_Bars_y == 0 ? "None" : pad.Count_Bottom_Bars_y.ToString();
-            LongReinBottom_y_Phi=(pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
+            LongReinBottom_y_Phi = (pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
 
             if (LongReinBottom_y_No != "None")
                 LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f);
@@ -1455,6 +1465,25 @@ namespace PFD
             }
         }
 
+        public void UpdateFloorSlab()
+        {
+            // Saw Cuts
+            FirstSawCutPositionInDirectionX = _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionX;
+            FirstSawCutPositionInDirectionY = _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionY;
+            NumberOfSawCutsInDirectionX = _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionX;
+            NumberOfSawCutsInDirectionY = _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionY;
+            SawCutsSpacingInDirectionX = _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionX;
+            SawCutsSpacingInDirectionY = _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionY;
+
+            // Control Joints
+            FirstControlJointPositionInDirectionX = _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX;
+            FirstControlJointPositionInDirectionY = _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY;
+            NumberOfControlJointsInDirectionX = _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionX;
+            NumberOfControlJointsInDirectionY = _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY;
+            ControlJointsSpacingInDirectionX = _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX;
+            ControlJointsSpacingInDirectionY = _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY;
+        }
+
         private void UpdateValuesInGUI()
         {
             IsSetFromCode = true;
@@ -1473,7 +1502,7 @@ namespace PFD
             float fConcreteCover = ConcreteCover / 1000f; // Hodnota v metroch
 
             if (iLongReinTop_x_No > 0)
-              LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, iLongReinTop_x_No, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
+                LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, iLongReinTop_x_No, (float)Convert.ToDouble(LongReinTop_x_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
             if (iLongReinTop_y_No > 0)
                 LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, iLongReinTop_y_No, (float)Convert.ToDouble(LongReinTop_y_Phi) * 0.001f, fConcreteCover); // Concrete Cover factor - mm to m (docasne faktor pre konverziu, TODO odstranit a nastavit concrete cover na metre)
             if (iLongReinBottom_x_No > 0)

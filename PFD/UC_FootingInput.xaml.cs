@@ -130,11 +130,39 @@ namespace PFD
                 e.PropertyName == "ControlJointsSpacingInDirectionY"
                 )
             {
+                UpdateModelProperties();
                 _pfdVM.FootingChanged = true;
             }
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
+        }
+
+        private void UpdateModelProperties()
+        {
+            if (_pfdVM.Model.m_arrSlabs != null)
+            {
+                _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = vm.NumberOfSawCutsInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = vm.NumberOfSawCutsInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = vm.FirstSawCutPositionInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = vm.FirstSawCutPositionInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionX = vm.SawCutsSpacingInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionY = vm.SawCutsSpacingInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = vm.NumberOfControlJointsInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = vm.NumberOfControlJointsInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = vm.FirstControlJointPositionInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = vm.FirstControlJointPositionInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = vm.ControlJointsSpacingInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = vm.ControlJointsSpacingInDirectionY;
+
+                _pfdVM.Model.m_arrSlabs.First().CreateSawCuts();
+                _pfdVM.Model.m_arrSlabs.First().CreateControlJoints();
+
+                //TODO Mato - je potrebne updatovat property v Modeli ak sa zmenia property vo view modeli v GUI (vid vyssie)
+                //_pfdVM.Model.m_arrSlabs.First().Eccentricity_x
+            }
+            
+
         }
 
         private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)

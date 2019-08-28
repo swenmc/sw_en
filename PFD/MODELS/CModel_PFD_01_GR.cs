@@ -864,7 +864,7 @@ namespace PFD
             #endregion
 
             #region Foundations
-            if(m_arrFoundations == null)
+            if(foundations == null)
             {
                 CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns);
             }
@@ -874,7 +874,7 @@ namespace PFD
 
             #region Floor slab, saw cuts and control joints
 
-            if (m_arrSlabs == null)
+            if (slabs == null)
             {
                 CreateFloorSlab();
             }

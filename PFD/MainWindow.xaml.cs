@@ -759,6 +759,12 @@ namespace PFD
 
                 UpdateUC_Joints();
                 UpdateUC_Footings();
+
+                //temp nastavenie Recreate****
+                //je potrebne niekde nastavit vsetky recreate na false a zapnut ich iba ak sa zmenilo nieco co vyzaduje aby boli pregenerovane
+                vm.RecreateJoints = false;
+                vm.RecreateFoundations = false;
+                vm.RecreateFloorSlab = false;
             }
 
             bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
@@ -824,6 +830,12 @@ namespace PFD
             if (vm.RecreateJoints)
             {
                 vm.FootingVM.FootingPadMemberTypeIndex = vm.FootingVM.FootingPadMemberTypeIndex; //redraw same selected footing
+            }
+            if (vm.RecreateFloorSlab)
+            {
+                vm.IsSetFromCode = true;
+                vm.FootingVM.UpdateFloorSlab();
+                vm.IsSetFromCode = false;
             }
         }
 

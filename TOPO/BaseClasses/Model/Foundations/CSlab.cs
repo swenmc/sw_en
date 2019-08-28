@@ -613,7 +613,7 @@ namespace BaseClasses
             return myTransform3DGroup;
         }
 
-        private void CreateSawCuts()
+        public void CreateSawCuts()
         {
             bool bGenerateSawCuts = true;
 
@@ -665,7 +665,7 @@ namespace BaseClasses
             }
         }
 
-        private void CreateControlJoints()
+        public void CreateControlJoints()
         {
             bool bGenerateControlJoints = true;
 
