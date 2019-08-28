@@ -98,6 +98,16 @@ namespace PFD
         private float m_ControlJointsSpacingInDirectionX;
         private float m_ControlJointsSpacingInDirectionY;
 
+        private bool m_IsEnabledFirstSawCutPositionInDirectionX;
+        private bool m_IsEnabledFirstSawCutPositionInDirectionY;
+        private bool m_IsEnabledSawCutsSpacingInDirectionX;
+        private bool m_IsEnabledSawCutsSpacingInDirectionY;
+
+        private bool m_IsEnabledFirstControlJointPositionInDirectionX;
+        private bool m_IsEnabledFirstControlJointPositionInDirectionY;
+        private bool m_IsEnabledControlJointsSpacingInDirectionX;
+        private bool m_IsEnabledControlJointsSpacingInDirectionY;
+
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
 
@@ -976,10 +986,17 @@ namespace PFD
                     throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
 
                 m_NumberOfSawCutsInDirectionX = value;
-                //_model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = m_NumberOfSawCutsInDirectionX;
+
+                if(m_NumberOfSawCutsInDirectionX <= 0)
+                    m_FirstSawCutPositionInDirectionX = 0;
+
+                if (m_NumberOfSawCutsInDirectionX <= 1)
+                    m_SawCutsSpacingInDirectionX = 0;
+
+                SetIsEnabledFirstSawCutPositionInDirectionX();
+                //SetIsEnabledSawCutsSpacingInDirectionX();
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
-
-
             }
         }
 
@@ -998,7 +1015,15 @@ namespace PFD
 
                 m_NumberOfSawCutsInDirectionY = value;
 
-                //_model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = m_NumberOfSawCutsInDirectionY;
+                if (m_NumberOfSawCutsInDirectionY <= 0)
+                    m_FirstSawCutPositionInDirectionY = 0;
+
+                if (m_NumberOfSawCutsInDirectionY <= 1)
+                    m_SawCutsSpacingInDirectionY = 0;
+
+                SetIsEnabledFirstSawCutPositionInDirectionY();
+                //SetIsEnabledSawCutsSpacingInDirectionY();
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
             }
         }
@@ -1013,12 +1038,11 @@ namespace PFD
 
             set
             {
-                if (value < 0.2f || value > 10)
+                if (value < 0f || value > 10)
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionX = value;
-
-                //_model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = m_FirstSawCutPositionInDirectionX;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
             }
         }
@@ -1033,12 +1057,11 @@ namespace PFD
 
             set
             {
-                if (value < 0.2f || value > 10)
-                    throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
+                if (value < 0.0f || value > 10)
+                    throw new ArgumentException("Position of saw cut must be between 0.0 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionY = value;
-
-                //_model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = m_FirstSawCutPositionInDirectionY;
+                if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
             }
         }
@@ -1053,13 +1076,13 @@ namespace PFD
 
             set
             {
-                if (value < 1f || value > 10)
-                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+                if (value < 0f || value > 10)
+                    throw new ArgumentException("Spacing of saw cuts must be between 0 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionX = value;
-                //_model.m_arrSlabs.First().SawCutsSpacingInDirectionX = m_SawCutsSpacingInDirectionX;
-                NotifyPropertyChanged("SawCutsSpacingInDirectionX");
 
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("SawCutsSpacingInDirectionX");
             }
         }
 
@@ -1073,12 +1096,13 @@ namespace PFD
 
             set
             {
-                if (value < 1f || value > 10)
-                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+                if (value < 0f || value > 10)
+                    throw new ArgumentException("Spacing of saw cuts must be between 0 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionY = value;
-                //_model.m_arrSlabs.First().SawCutsSpacingInDirectionY = m_SawCutsSpacingInDirectionY;
-                NotifyPropertyChanged("SawCutsSpacingInDirectionY");                
+
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("SawCutsSpacingInDirectionY");
             }
         }
 
@@ -1096,11 +1120,17 @@ namespace PFD
                     throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionX = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = m_NumberOfControlJointsInDirectionX;
-                    NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
-                }
+
+                if (m_NumberOfControlJointsInDirectionX <= 0)
+                    m_FirstControlJointPositionInDirectionX = 0;
+
+                if (m_NumberOfControlJointsInDirectionX <= 1)
+                    m_ControlJointsSpacingInDirectionX = 0;
+
+                SetIsEnabledFirstControlJointPositionInDirectionX();
+                //SetIsEnabledControlJointsSpacingInDirectionX();
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
             }
         }
 
@@ -1118,11 +1148,18 @@ namespace PFD
                     throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionY = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = m_NumberOfControlJointsInDirectionY;
-                    NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
-                }
+
+
+                if (m_NumberOfControlJointsInDirectionY <= 0)
+                    m_FirstControlJointPositionInDirectionY = 0;
+
+                if (m_NumberOfControlJointsInDirectionY <= 1)
+                    m_ControlJointsSpacingInDirectionY = 0;
+
+                SetIsEnabledFirstControlJointPositionInDirectionY();
+                //SetIsEnabledControlJointsSpacingInDirectionY();
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
             }
         }
 
@@ -1136,15 +1173,12 @@ namespace PFD
 
             set
             {
-                if (value < 0.2f || value > 50)
-                    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Position of control joint must be between 0 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionX = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = m_FirstControlJointPositionInDirectionX;
-                    NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
-                }
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
             }
         }
 
@@ -1158,15 +1192,12 @@ namespace PFD
 
             set
             {
-                if (value < 0.2f || value > 50)
-                    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Position of control joint must be between 0 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionY = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = m_FirstControlJointPositionInDirectionY;
-                    NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
-                }
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
             }
         }
 
@@ -1180,15 +1211,12 @@ namespace PFD
 
             set
             {
-                if (value < 1f || value > 50)
-                    throw new ArgumentException("Spacing of control joints must be between 1 and 50 [m]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Spacing of control joints must be between 0 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionX = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = m_ControlJointsSpacingInDirectionX;
-                    NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
-                }
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
             }
         }
 
@@ -1202,15 +1230,132 @@ namespace PFD
 
             set
             {
-                if (value < 1f || value > 50)
-                    throw new ArgumentException("Spacing of saw control joints be between 1 and 50 [m]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Spacing of saw control joints be between 0 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionY = value;
-                //if (!IsSetFromCode)
-                {
-                    //_model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = m_ControlJointsSpacingInDirectionY;
-                    NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
-                }
+                if (IsSetFromCode == false) UpdateValuesInGUI();
+                NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledFirstSawCutPositionInDirectionX
+        {
+            get
+            {
+                return m_IsEnabledFirstSawCutPositionInDirectionX;
+            }
+
+            set
+            {
+                m_IsEnabledFirstSawCutPositionInDirectionX = value;
+                NotifyPropertyChanged("IsEnabledFirstSawCutPositionInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledFirstSawCutPositionInDirectionY
+        {
+            get
+            {
+                return m_IsEnabledFirstSawCutPositionInDirectionY;
+            }
+
+            set
+            {
+                m_IsEnabledFirstSawCutPositionInDirectionY = value;
+                NotifyPropertyChanged("IsEnabledFirstSawCutPositionInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledSawCutsSpacingInDirectionX
+        {
+            get
+            {
+                return m_IsEnabledSawCutsSpacingInDirectionX;
+            }
+
+            set
+            {
+                m_IsEnabledSawCutsSpacingInDirectionX = value;
+                NotifyPropertyChanged("IsEnabledSawCutsSpacingInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledSawCutsSpacingInDirectionY
+        {
+            get
+            {
+                return m_IsEnabledSawCutsSpacingInDirectionY;
+            }
+
+            set
+            {
+                m_IsEnabledSawCutsSpacingInDirectionY = value;
+                NotifyPropertyChanged("IsEnabledSawCutsSpacingInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledFirstControlJointPositionInDirectionX
+        {
+            get
+            {
+                return m_IsEnabledFirstControlJointPositionInDirectionX;
+            }
+
+            set
+            {
+                m_IsEnabledFirstControlJointPositionInDirectionX = value;
+                NotifyPropertyChanged("IsEnabledFirstControlJointPositionInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledFirstControlJointPositionInDirectionY
+        {
+            get
+            {
+                return m_IsEnabledFirstControlJointPositionInDirectionY;
+            }
+
+            set
+            {
+                m_IsEnabledFirstControlJointPositionInDirectionY = value;
+                NotifyPropertyChanged("IsEnabledFirstControlJointPositionInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledControlJointsSpacingInDirectionX
+        {
+            get
+            {
+                return m_IsEnabledControlJointsSpacingInDirectionX;
+            }
+
+            set
+            {
+                m_IsEnabledControlJointsSpacingInDirectionX = value;
+                NotifyPropertyChanged("IsEnabledControlJointsSpacingInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsEnabledControlJointsSpacingInDirectionY
+        {
+            get
+            {
+                return m_IsEnabledControlJointsSpacingInDirectionY;
+            }
+
+            set
+            {
+                m_IsEnabledControlJointsSpacingInDirectionY = value;
+                NotifyPropertyChanged("IsEnabledControlJointsSpacingInDirectionY");
             }
         }
 
@@ -1295,10 +1440,6 @@ namespace PFD
             // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
             // Alebo sa tu nastavia a podla toho sa vyrobi model
 
-            //FloorSlabThickness = 125; // mm 0.125f; m
-            FloorSlabThickness = pfdVM.Model.m_arrSlabs.First().m_fDim3 * 1000;
-            MeshConcreteCover = pfdVM.Model.m_arrSlabs.First().ConcreteCover * 1000f;
-
             UpdateFloorSlab();
 
             CFoundation pad = GetSelectedFootingPad();
@@ -1352,10 +1493,80 @@ namespace PFD
             LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
             LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
 
-
-
             IsSetFromCode = false;
         }
+
+        //-------------------------------------------------------------------------------------------------------------
+        private void SetIsEnabledFirstSawCutPositionInDirectionX()
+        {
+            if (m_NumberOfSawCutsInDirectionX <= 0)
+                IsEnabledFirstSawCutPositionInDirectionX = false;
+            else
+                IsEnabledFirstSawCutPositionInDirectionX = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        private void SetIsEnabledFirstSawCutPositionInDirectionY()
+        {
+            if (m_NumberOfSawCutsInDirectionY <= 0)
+                IsEnabledFirstSawCutPositionInDirectionY = false;
+            else
+                IsEnabledFirstSawCutPositionInDirectionY = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //private void SetIsEnabledSawCutsSpacingInDirectionX()
+        //{
+        //    if (m_NumberOfSawCutsInDirectionX <= 1)
+        //        IsEnabledSawCutsSpacingInDirectionX = false;
+        //    else
+        //        IsEnabledSawCutsSpacingInDirectionX = true;
+        //}
+
+        //-------------------------------------------------------------------------------------------------------------
+        //private void SetIsEnabledSawCutsSpacingInDirectionY()
+        //{
+        //    if (m_NumberOfSawCutsInDirectionY <= 1)
+        //        IsEnabledSawCutsSpacingInDirectionY = false;
+        //    else
+        //        IsEnabledSawCutsSpacingInDirectionY = true;
+        //}
+
+        //-------------------------------------------------------------------------------------------------------------
+        private void SetIsEnabledFirstControlJointPositionInDirectionX()
+        {
+            if (m_NumberOfControlJointsInDirectionX <= 0)
+                IsEnabledFirstControlJointPositionInDirectionX = false;
+            else
+                IsEnabledFirstControlJointPositionInDirectionX = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        private void SetIsEnabledFirstControlJointPositionInDirectionY()
+        {
+            if (m_NumberOfControlJointsInDirectionY <= 0)
+                IsEnabledFirstControlJointPositionInDirectionY = false;
+            else
+                IsEnabledFirstControlJointPositionInDirectionY = true;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //private void SetIsEnabledControlJointsSpacingInDirectionX()
+        //{
+        //    if (m_NumberOfControlJointsInDirectionX <= 1)
+        //        IsEnabledControlJointsSpacingInDirectionX = false;
+        //    else
+        //        IsEnabledControlJointsSpacingInDirectionX = true;
+        //}
+
+        //-------------------------------------------------------------------------------------------------------------
+        //private void SetIsEnabledControlJointsSpacingInDirectionY()
+        //{
+        //    if (m_NumberOfControlJointsInDirectionY <= 1)
+        //        IsEnabledControlJointsSpacingInDirectionY = false;
+        //    else
+        //        IsEnabledControlJointsSpacingInDirectionY = true;
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
@@ -1469,6 +1680,11 @@ namespace PFD
 
         public void UpdateFloorSlab()
         {
+            //FloorSlabThickness = 125; // mm 0.125f; m
+            FloorSlabThickness = _pfdVM.Model.m_arrSlabs.First().m_fDim3 * 1000;
+            MeshConcreteCover = _pfdVM.Model.m_arrSlabs.First().ConcreteCover * 1000f;
+            ReinforcementMeshGrade = _pfdVM.Model.m_arrSlabs.First().MeshGradeName;
+
             // Saw Cuts
             FirstSawCutPositionInDirectionX = _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionX;
             FirstSawCutPositionInDirectionY = _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionY;
@@ -1546,6 +1762,22 @@ namespace PFD
                 // Create sets of reinforcement bars
                 pad.CreateReinforcementBars();
             }
+
+            // Floor Slab
+            float fFloorSlab_aX = _pfdVM.Model.m_arrSlabs.First().m_fDim1; // _pfdVM.GableWidth; // Tu by sme potrebovali dostat rozmery floor slab
+            float fFloorSlab_bY = _pfdVM.Model.m_arrSlabs.First().m_fDim2; // _pfdVM.Length;
+
+            // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
+            if (m_NumberOfSawCutsInDirectionX >= 1)
+                m_SawCutsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
+            if (m_NumberOfSawCutsInDirectionY >= 1)
+                m_SawCutsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstSawCutPositionInDirectionY) / (m_NumberOfSawCutsInDirectionY - 1);
+
+            // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
+            if (m_NumberOfControlJointsInDirectionX >= 1)
+                m_ControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstControlJointPositionInDirectionX) / (m_NumberOfControlJointsInDirectionX - 1);
+            if (m_NumberOfControlJointsInDirectionY >= 1)
+                m_ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
 
             IsSetFromCode = false;
         }

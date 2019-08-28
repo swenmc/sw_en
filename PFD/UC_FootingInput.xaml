@@ -280,22 +280,22 @@
                     <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Saw Cut Position X-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="TextBoxFirstSawCutPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="TextBoxFirstSawCutPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="{Binding Path=IsEnabledFirstSawCutPositionInDirectionX}"
                  Text="{Binding Path=FirstSawCutPositionInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Saw Cut Position Y-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxFirstSawCutPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxFirstSawCutPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="{Binding Path=IsEnabledFirstSawCutPositionInDirectionY}"
                  Text="{Binding Path=FirstSawCutPositionInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Spacing X-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" Name="TextBoxSawCutsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="TextBoxSawCutsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False"
                  Text="{Binding Path=SawCutsSpacingInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Spacing Y-direction:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Name="TextBoxSawCutsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="5" Grid.Column="1" Name="TextBoxSawCutsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False"
                  Text="{Binding Path=SawCutsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
@@ -312,22 +312,22 @@
                     <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Control Joint Position X-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="8" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="8" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="{Binding Path=IsEnabledFirstControlJointPositionInDirectionX}"
                  Text="{Binding Path=FirstControlJointPositionInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Control Joint Position Y-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="9" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="9" Grid.Column="1" Name="TextBoxFirstControlJointPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="{Binding Path=IsEnabledFirstControlJointPositionInDirectionY}"
                  Text="{Binding Path=FirstControlJointPositionInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joints Spacing X-Direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="10" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False"
                  Text="{Binding Path=ControlJointsSpacingInDirectionX, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joints Spacing Y-Direction:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
-                    <TextBox Grid.Row="11" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                    <TextBox Grid.Row="11" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False"
                  Text="{Binding Path=ControlJointsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
