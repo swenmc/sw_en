@@ -1779,6 +1779,14 @@ namespace PFD
             if (m_NumberOfControlJointsInDirectionY >= 1)
                 m_ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
 
+            if(m_SawCutsSpacingInDirectionX > 10 || m_SawCutsSpacingInDirectionY > 10)
+            {
+                // Bug 357
+                // TODO Ondrej - ked zmenim podorysne rozmery modelu potrebujem nastavit saw cuts a control joints na defaultne hodnoty podla rozmerov modelu
+                // pozri v metode CreateFloorSlab() lines 2569-2594 v CModel_PFD_01_GR.cs
+                throw new Exception("If model size changed set default number of saw cuts and control joints.");
+            }
+
             IsSetFromCode = false;
         }
 
