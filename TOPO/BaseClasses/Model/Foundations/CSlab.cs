@@ -685,28 +685,46 @@ namespace BaseClasses
                 float fDowelSpacing = 0.4f;
 
                 // Create raster of lines in XY-plane
-                // V smere X v polovici budovy
-                // TODO - dopracovat generovanie po 20 m
                 ControlJoints = new List<CControlJoint>();
 
-                // ControlJoints per X axis - rezanie v smere Y
+                // ControlJoints per X axis
                 for (int i = 0; i < NumberOfControlJointsInDirectionX; i++)
                 {
-                    // Prerobit suradnice podla saw cut - zohladnit odsadenie dosky od [0,0,0]
+                    double coordX = m_pControlPoint.X;
+                    double coordStartY = m_pControlPoint.Y;
+                    double coordEndY = m_pControlPoint.Y + m_fDim2;
+                    double coordZ = 0;
+
                     if (i == 0) // First
-                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(FirstControlJointPositionInDirectionX, 0, 0), new Point3D(FirstControlJointPositionInDirectionX, m_fDim2, 0), referenceDowel, fDowelSpacing, true, 0));
+                    {
+                        coordX = m_pControlPoint.X + FirstControlJointPositionInDirectionX;
+                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), referenceDowel, fDowelSpacing, true, 0));
+                    }
                     else
-                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX, 0, 0), new Point3D(FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX, m_fDim2, 0), referenceDowel, fDowelSpacing, true, 0));
+                    {
+                        coordX = m_pControlPoint.X + FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX;
+                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), referenceDowel, fDowelSpacing, true, 0));
+                    }
                 }
-                // ControlJoints per Y axis - rezanie v smere X
+                // ControlJoints per Y axis
                 for (int i = 0; i < NumberOfControlJointsInDirectionY; i++)
                 {
-                    if (i == 0) // First
-                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(0, FirstControlJointPositionInDirectionY, 0), new Point3D(m_fDim1, FirstControlJointPositionInDirectionY, 0), referenceDowel, fDowelSpacing, true, 0));
-                    else
-                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(0, FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY, 0), new Point3D(m_fDim1, FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY, 0), referenceDowel, fDowelSpacing, true, 0));
-                }
+                    double coordStartX = m_pControlPoint.X;
+                    double coordEndX = m_pControlPoint.X + m_fDim1;
+                    double coordY = m_pControlPoint.Y;
+                    double coordZ = 0;
 
+                    if (i == 0) // First
+                    {
+                        coordY = m_pControlPoint.Y + FirstControlJointPositionInDirectionY;
+                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), referenceDowel, fDowelSpacing, true, 0));
+                    }
+                    else
+                    {
+                        coordY = m_pControlPoint.Y + FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY;
+                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), referenceDowel, fDowelSpacing, true, 0));
+                    }
+                }
             }
         }
     }

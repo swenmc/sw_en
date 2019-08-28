@@ -2576,8 +2576,8 @@ namespace PFD
                 // Create raster of lines in XY-plane
                 float fSawCutMaximumDistance = Math.Min(3, fL1_frame); // 3 m // V kazdej bay alebo maximalne 3 metre od seba
 
-                float fFirstSawCutPositionInDirectionX = Math.Min(fL1_frame, 3) / 2f;
-                float fFirstSawCutPositionInDirectionY = Math.Min(fL1_frame, 3) / 2f;
+                float fFirstSawCutPositionInDirectionX = fSawCutMaximumDistance / 2f;
+                float fFirstSawCutPositionInDirectionY = fSawCutMaximumDistance / 2f;
 
                 int iNumberOfSawCutsInDirectionX = (int)(fW_frame / fSawCutMaximumDistance);
                 int iNumberOfSawCutsInDirectionY = (int)(fL_tot / fSawCutMaximumDistance);
@@ -2588,10 +2588,10 @@ namespace PFD
 
                 // ControlJoints
                 // Create raster of lines in XY-plane
-                float fControlJointMaximumDistance = Math.Min(20, 2 * fL1_frame); // 20 m // V kazdej 2 bay alebo maximalne 20 metrov od seba
+                float fControlJointMaximumDistance = Math.Min(40, fL_tot); // 40 m // Dlzka budovy
 
-                float fFirstControlJointPositionInDirectionX = Math.Min(fL1_frame, 3) / 2f;
-                float fFirstControlJointPositionInDirectionY = Math.Min(fL1_frame, 3) / 2f;
+                float fFirstControlJointPositionInDirectionX = fControlJointMaximumDistance / 2f;
+                float fFirstControlJointPositionInDirectionY = fControlJointMaximumDistance / 2f;
 
                 int iNumberOfControlJointsInDirectionX = (int)(fW_frame / fControlJointMaximumDistance);
                 int iNumberOfControlJointsInDirectionY = (int)(fL_tot / fControlJointMaximumDistance);
