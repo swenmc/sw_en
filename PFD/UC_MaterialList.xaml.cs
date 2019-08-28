@@ -625,7 +625,7 @@ namespace PFD
             // Add Table to Dataset
             ds.Tables.Add(table3);
 
-            for (int i = 0; i < listPlatePrefix.Count; i++)
+            for (int i = 0; i < listConnectorPrefix.Count; i++)
             {
                 DataRow row = table3.NewRow();
 

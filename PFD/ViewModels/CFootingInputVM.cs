@@ -88,13 +88,13 @@ namespace PFD
         private float m_FirstSawCutPositionInDirectionY;
         private float m_SawCutsSpacingInDirectionX;
         private float m_SawCutsSpacingInDirectionY;
-
+        
         private int m_NumberOfControlJointsInDirectionX;
         private int m_NumberOfControlJointsInDirectionY;
         private float m_FirstControlJointPositionInDirectionX;
         private float m_FirstControlJointPositionInDirectionY;
         private float m_ControlJointsSpacingInDirectionX;
-        private float m_ControlJointsSpacingInDirectionY;
+        private float m_ControlJointsSpacingInDirectionY;        
 
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
