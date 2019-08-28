@@ -2639,7 +2639,7 @@ namespace BaseClasses
         {
             if (model.m_arrSlabs != null)
             {
-                for (int i = 0; i < model.m_arrSlabs.Count;)
+                for (int i = 0; i < model.m_arrSlabs.Count; i++)
                 {
                     if (model.m_arrSlabs[i].SawCuts != null)
                     {
@@ -2699,7 +2699,7 @@ namespace BaseClasses
         {
             if (model.m_arrSlabs != null)
             {
-                for (int i = 0; i < model.m_arrSlabs.Count;)
+                for (int i = 0; i < model.m_arrSlabs.Count; i++)
                 {
                     if (model.m_arrSlabs[i].ControlJoints != null)
                     {
