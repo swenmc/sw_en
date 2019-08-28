@@ -2574,31 +2574,32 @@ namespace PFD
 
                 // Saw Cuts
                 // Create raster of lines in XY-plane
-                float fSawCutMaximumDistance = Math.Min(3, fL1_frame); // 3 m // V kazdej bay alebo maximalne 3 metre od seba
+                float fSawCutMaximumDistanceY = Math.Min(6, fL1_frame); // 6 m // V kazdej bay alebo maximalne 6 metrov od seba
+                float fSawCutMaximumDistanceX = 0.5f * fSawCutMaximumDistanceY; // Pomer Y : X = 2:1
 
-                float fFirstSawCutPositionInDirectionX = fSawCutMaximumDistance / 2f;
-                float fFirstSawCutPositionInDirectionY = fSawCutMaximumDistance / 2f;
+                float fFirstSawCutPositionInDirectionX = fSawCutMaximumDistanceX / 2f;
+                float fFirstSawCutPositionInDirectionY = fSawCutMaximumDistanceY / 2f;
 
-                int iNumberOfSawCutsInDirectionX = (int)(fW_frame / fSawCutMaximumDistance);
-                int iNumberOfSawCutsInDirectionY = (int)(fL_tot / fSawCutMaximumDistance);
+                int iNumberOfSawCutsInDirectionX = (int)(fFloorSlab_aX / fSawCutMaximumDistanceX);
+                int iNumberOfSawCutsInDirectionY = (int)(fFloorSlab_bY / fSawCutMaximumDistanceY);
 
                 // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
-                float fSawCutsSpacingInDirectionX = (fW_frame - 2 * fFirstSawCutPositionInDirectionX) / (iNumberOfSawCutsInDirectionX - 1);
-                float fSawCutsSpacingInDirectionY = (fL_tot - 2 * fFirstSawCutPositionInDirectionY) / (iNumberOfSawCutsInDirectionY - 1);
+                float fSawCutsSpacingInDirectionX = (fFloorSlab_aX - 2 * fFirstSawCutPositionInDirectionX) / (iNumberOfSawCutsInDirectionX - 1);
+                float fSawCutsSpacingInDirectionY = (fFloorSlab_bY - 2 * fFirstSawCutPositionInDirectionY) / (iNumberOfSawCutsInDirectionY - 1);
 
                 // ControlJoints
                 // Create raster of lines in XY-plane
-                float fControlJointMaximumDistance = Math.Min(40, fL_tot); // 40 m // Dlzka budovy
+                float fControlJointMaximumDistance = Math.Min(24, fFloorSlab_bY); // 24 m alebo dlzka budovy (vzdy jeden joint v strede ???)
 
                 float fFirstControlJointPositionInDirectionX = fControlJointMaximumDistance / 2f;
                 float fFirstControlJointPositionInDirectionY = fControlJointMaximumDistance / 2f;
 
-                int iNumberOfControlJointsInDirectionX = (int)(fW_frame / fControlJointMaximumDistance);
-                int iNumberOfControlJointsInDirectionY = (int)(fL_tot / fControlJointMaximumDistance);
+                int iNumberOfControlJointsInDirectionX = (int)(fFloorSlab_aX / fControlJointMaximumDistance);
+                int iNumberOfControlJointsInDirectionY = (int)(fFloorSlab_bY / fControlJointMaximumDistance);
 
                 // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
-                float fControlJointsSpacingInDirectionX = (fW_frame - 2 * fFirstControlJointPositionInDirectionX) / (iNumberOfControlJointsInDirectionX - 1);
-                float fControlJointsSpacingInDirectionY = (fL_tot - 2 * fFirstControlJointPositionInDirectionY) / (iNumberOfControlJointsInDirectionY - 1);
+                float fControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * fFirstControlJointPositionInDirectionX) / (iNumberOfControlJointsInDirectionX - 1);
+                float fControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * fFirstControlJointPositionInDirectionY) / (iNumberOfControlJointsInDirectionY - 1);
 
                 // int iLastFoundationIndex = m_arrFoundations.Count;
                 //Point3D controlPoint_FloorSlab = new Point3D(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
