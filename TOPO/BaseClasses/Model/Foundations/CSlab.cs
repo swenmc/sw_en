@@ -627,18 +627,40 @@ namespace BaseClasses
                 // Sawcuts per X axis - rezanie v smere Y
                 for (int i = 0; i < NumberOfSawCutsInDirectionX; i++)
                 {
-                    if(i == 0) // First
-                        SawCuts.Add(new CSawCut(i + 1, new Point3D(FirstSawCutPositionInDirectionX, 0, 0), new Point3D(FirstSawCutPositionInDirectionX, m_fDim2, 0), fcutWidth, fcutDepth, true, 0));
+                    double coordX = m_pControlPoint.X;
+                    double coordStartY = m_pControlPoint.Y;
+                    double coordEndY = m_pControlPoint.Y + m_fDim2;
+                    double coordZ = 0;
+
+                    if (i == 0) // First
+                    {
+                        coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX;
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), fcutWidth, fcutDepth, true, 0));
+                    }
                     else
-                        SawCuts.Add(new CSawCut(i + 1, new Point3D(FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX, 0, 0), new Point3D(FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX, m_fDim2, 0), fcutWidth, fcutDepth, true, 0));
+                    {
+                        coordX = m_pControlPoint.X + FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX;
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(coordX, coordStartY, coordZ), new Point3D(coordX, coordEndY, coordZ), fcutWidth, fcutDepth, true, 0));
+                    }
                 }
                 // Sawcuts per Y axis - rezanie v smere X
                 for (int i = 0; i < NumberOfSawCutsInDirectionY; i++)
                 {
+                    double coordStartX = m_pControlPoint.X;
+                    double coordEndX = m_pControlPoint.X + m_fDim1;
+                    double coordY = m_pControlPoint.Y;
+                    double coordZ = 0;
+
                     if (i == 0) // First
-                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(0, FirstSawCutPositionInDirectionY, 0), new Point3D(m_fDim1, FirstSawCutPositionInDirectionY, 0), fcutWidth, fcutDepth, true, 0));
+                    {
+                        coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY;
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), fcutWidth, fcutDepth, true, 0));
+                    }
                     else
-                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(0, FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY, 0), new Point3D(m_fDim1, FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY, 0), fcutWidth, fcutDepth, true, 0));
+                    {
+                        coordY = m_pControlPoint.Y + FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY;
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(coordStartX, coordY, coordZ), new Point3D(coordEndX, coordY, coordZ), fcutWidth, fcutDepth, true, 0));
+                    }
                 }
             }
         }
@@ -670,6 +692,7 @@ namespace BaseClasses
                 // ControlJoints per X axis - rezanie v smere Y
                 for (int i = 0; i < NumberOfControlJointsInDirectionX; i++)
                 {
+                    // Prerobit suradnice podla saw cut - zohladnit odsadenie dosky od [0,0,0]
                     if (i == 0) // First
                         ControlJoints.Add(new CControlJoint(i + 1, new Point3D(FirstControlJointPositionInDirectionX, 0, 0), new Point3D(FirstControlJointPositionInDirectionX, m_fDim2, 0), referenceDowel, fDowelSpacing, true, 0));
                     else
