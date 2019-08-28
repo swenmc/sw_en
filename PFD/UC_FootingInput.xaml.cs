@@ -113,7 +113,11 @@ namespace PFD
                 e.PropertyName == "Eccentricity_ey" ||
 
                 e.PropertyName == "ConcreteCover" ||
+
+                // Floor
                 e.PropertyName == "FloorSlabThickness" ||
+                e.PropertyName == "MeshConcreteCover" ||
+                e.PropertyName == "ReinforcementMeshGrade" ||
 
                 e.PropertyName == "NumberOfSawCutsInDirectionX" ||
                 e.PropertyName == "NumberOfSawCutsInDirectionY" ||
@@ -142,6 +146,10 @@ namespace PFD
         {
             if (_pfdVM.Model.m_arrSlabs != null)
             {
+                _pfdVM.Model.m_arrSlabs.First().m_fDim3 = vm.FloorSlabThickness / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().MeshGradeName = vm.ReinforcementMeshGrade;
+                _pfdVM.Model.m_arrSlabs.First().ConcreteCover = vm.MeshConcreteCover / 1000f;
+
                 _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = vm.NumberOfSawCutsInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = vm.NumberOfSawCutsInDirectionY;
                 _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = vm.FirstSawCutPositionInDirectionX;
@@ -155,11 +163,14 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = vm.ControlJointsSpacingInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = vm.ControlJointsSpacingInDirectionY;
 
+                // Update floor slab - methods
+                _pfdVM.Model.m_arrSlabs.First().SetControlPoint();
+                _pfdVM.Model.m_arrSlabs.First().SetTextPoint();
                 _pfdVM.Model.m_arrSlabs.First().CreateSawCuts();
                 _pfdVM.Model.m_arrSlabs.First().CreateControlJoints();
+                _pfdVM.Model.m_arrSlabs.First().SetDescriptionText();
 
                 //TODO Mato - je potrebne updatovat property v Modeli ak sa zmenia property vo view modeli v GUI (vid vyssie)
-                //_pfdVM.Model.m_arrSlabs.First().Eccentricity_x
             }
         }
 

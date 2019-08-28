@@ -79,6 +79,8 @@ namespace PFD
 
         private float m_SoilBearingCapacity;
         private float m_ConcreteCover;
+
+        // Floor
         private float m_FloorSlabThickness;
         private float m_MeshConcreteCover;
 
@@ -1051,8 +1053,8 @@ namespace PFD
 
             set
             {
-                //if (value < 1f || value > 10)
-                //    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+                if (value < 1f || value > 10)
+                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionX = value;
                 //_model.m_arrSlabs.First().SawCutsSpacingInDirectionX = m_SawCutsSpacingInDirectionX;
@@ -1090,8 +1092,8 @@ namespace PFD
 
             set
             {
-                //if (value < 0f || value > 50)
-                //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionX = value;
                 //if (!IsSetFromCode)
@@ -1112,8 +1114,8 @@ namespace PFD
 
             set
             {
-                //if (value < 0f || value > 50)
-                //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
 
                 m_NumberOfControlJointsInDirectionY = value;
                 //if (!IsSetFromCode)
@@ -1134,8 +1136,8 @@ namespace PFD
 
             set
             {
-                //if (value < 0.2f || value > 50)
-                //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+                if (value < 0.2f || value > 50)
+                    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionX = value;
                 //if (!IsSetFromCode)
@@ -1156,8 +1158,8 @@ namespace PFD
 
             set
             {
-                //if (value < 0.2f || value > 50)
-                //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+                if (value < 0.2f || value > 50)
+                    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionY = value;
                 //if (!IsSetFromCode)
@@ -1178,8 +1180,8 @@ namespace PFD
 
             set
             {
-                //if (value < 1f || value > 50)
-                //    throw new ArgumentException("Spacing of control joints must be between 1 and 50 [m]");
+                if (value < 1f || value > 50)
+                    throw new ArgumentException("Spacing of control joints must be between 1 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionX = value;
                 //if (!IsSetFromCode)
@@ -1200,8 +1202,8 @@ namespace PFD
 
             set
             {
-                //if (value < 1f || value > 50)
-                //    throw new ArgumentException("Spacing of saw control joints be between 1 and 50 [m]");
+                if (value < 1f || value > 50)
+                    throw new ArgumentException("Spacing of saw control joints be between 1 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionY = value;
                 //if (!IsSetFromCode)

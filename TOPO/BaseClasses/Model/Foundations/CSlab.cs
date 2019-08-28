@@ -447,13 +447,14 @@ namespace BaseClasses
             set { m_ControlJoints = value; }
         }
 
+        private float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stlpy aby bolo vidno ich obrys
+
         public CSlab()
         {
         }
 
         // Rectangular
         public CSlab(int iSlab_ID,
-            Point3D pControlEdgePoint,
             MATERIAL.CMat_02_00 materialConcrete,
             float fX,
             float fY,
@@ -463,7 +464,6 @@ namespace BaseClasses
             float rotationAboiutZInDeg,
             float fConcreteCover,
             string sMeshGradeName,
-            string descriptionText,
             int   iNumberOfSawCutsInDirectionX,
             int   iNumberOfSawCutsInDirectionY,
             float fFirstSawCutPositionInDirectionX,
@@ -490,7 +490,6 @@ namespace BaseClasses
             float fTime)
         {
             ID = iSlab_ID;
-            m_pControlPoint = pControlEdgePoint;
             m_Mat = materialConcrete;
             m_fDim1 = fX; // Width
             m_fDim2 = fY; // Length
@@ -500,7 +499,6 @@ namespace BaseClasses
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
             m_fConcreteCover = fConcreteCover;
             m_sMeshGradeName = sMeshGradeName;
-            m_Text = descriptionText;
             m_NumberOfSawCutsInDirectionX = iNumberOfSawCutsInDirectionX;
             m_NumberOfSawCutsInDirectionY = iNumberOfSawCutsInDirectionY;
             m_FirstSawCutPositionInDirectionX = fFirstSawCutPositionInDirectionX;
@@ -527,10 +525,11 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
+            SetControlPoint();
             SetTextPoint();
-
             CreateSawCuts();
             CreateControlJoints();
+            SetDescriptionText();
         }
 
         public void SetTextPoint()
@@ -630,7 +629,7 @@ namespace BaseClasses
                     double coordX = m_pControlPoint.X;
                     double coordStartY = m_pControlPoint.Y;
                     double coordEndY = m_pControlPoint.Y + m_fDim2;
-                    double coordZ = 0;
+                    double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
@@ -649,7 +648,7 @@ namespace BaseClasses
                     double coordStartX = m_pControlPoint.X;
                     double coordEndX = m_pControlPoint.X + m_fDim1;
                     double coordY = m_pControlPoint.Y;
-                    double coordZ = 0;
+                    double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
@@ -693,7 +692,7 @@ namespace BaseClasses
                     double coordX = m_pControlPoint.X;
                     double coordStartY = m_pControlPoint.Y;
                     double coordEndY = m_pControlPoint.Y + m_fDim2;
-                    double coordZ = 0;
+                    double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
@@ -712,7 +711,7 @@ namespace BaseClasses
                     double coordStartX = m_pControlPoint.X;
                     double coordEndX = m_pControlPoint.X + m_fDim1;
                     double coordY = m_pControlPoint.Y;
-                    double coordZ = 0;
+                    double coordZ = fTolerance; // Nad hornou stranou plochy
 
                     if (i == 0) // First
                     {
@@ -726,6 +725,21 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        public void SetDescriptionText()
+        {
+            m_Text = m_sMeshGradeName + " MESH" + "\n" +
+                        (m_fConcreteCover * 1000).ToString("F0") + " mm TOP COVER" + "\n" +
+                        (m_fDim3 * 1000).ToString("F0") + " mm THICK" + "\n" +
+                        "CONCRETE SLAB" + "\n" +
+                        "DPC OVER SANDBLINDING" + "\n" +
+                        "& COMPACTED HARDFILL";
+        }
+
+        public void SetControlPoint()
+        {
+            m_pControlPoint = new Point3D(0 + m_Eccentricity_x, 0 + m_Eccentricity_y, 0 - m_fDim3 - fTolerance);
         }
     }
 }

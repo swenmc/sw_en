@@ -2556,7 +2556,6 @@ namespace PFD
                 float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
                 float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
                 ///float fFloorSlab_bY = fL_tot - (float)m_arrCrSc[0].b + fh_GirtFront + fh_GirtBack + 2 * fFloorSlab_AdditionalOffset_Y;
-                float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stly aby bolo vidno ich obrys
                 float fFloorSlab_h = 0.125f;
                 float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
                 float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
@@ -2564,13 +2563,6 @@ namespace PFD
 
                 float fConcreteCoverTop = 0.05f; // 50 mm
                 string sMeshGradeName = "SE92DE";
-
-                string text = sMeshGradeName + " MESH" + "\n" +
-                    (fConcreteCoverTop * 1000).ToString("F0") + " mm TOP COVER" + "\n" +
-                    (fFloorSlab_h * 1000).ToString("F0") + " mm THICK" + "\n" +
-                    "CONCRETE SLAB" + "\n" +
-                    "DPC OVER SANDBLINDING" + "\n" +
-                    "& COMPACTED HARDFILL";
 
                 // Saw Cuts
                 // Create raster of lines in XY-plane
@@ -2601,21 +2593,16 @@ namespace PFD
                 float fControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * fFirstControlJointPositionInDirectionX) / (iNumberOfControlJointsInDirectionX - 1);
                 float fControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * fFirstControlJointPositionInDirectionY) / (iNumberOfControlJointsInDirectionY - 1);
 
-                // int iLastFoundationIndex = m_arrFoundations.Count;
-                //Point3D controlPoint_FloorSlab = new Point3D(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
-
-                Point3D controlPoint_FloorSlab = new Point3D(m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance);
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
-                            controlPoint_FloorSlab,
                             materialConcrete,
                             fFloorSlab_aX,
                             fFloorSlab_bY,
                             fFloorSlab_h,
-                             0, 0, 0,
+                            fFloorSlab_eX,
+                            fFloorSlab_eY, 0,
                             fConcreteCoverTop,
                             sMeshGradeName,
-                            text,
                             iNumberOfSawCutsInDirectionX,
                             iNumberOfSawCutsInDirectionY,
                             fFirstSawCutPositionInDirectionX,
