@@ -96,13 +96,43 @@
             Text="{Binding Path=FloorSlabThickness, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
-            <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Cover mc:" VerticalAlignment="Top" Width="120"/>
+            <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Count X-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="3" Grid.Column="5" Name="TextBoxNumberOfSawCutsInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=NumberOfSawCutsInDirectionX, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="3" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Count Y-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="4" Grid.Column="5" Name="TextBoxNumberOfSawCutsInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=NumberOfSawCutsInDirectionY, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="4" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Saw Cut Position X-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="5" Grid.Column="5" Name="TextBoxFirstSawCutPositionInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=FirstSawCutPositionInDirectionX, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="5" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="First Saw Cut Position Y-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="6" Grid.Column="5" Name="TextBoxFirstSawCutPositionInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=FirstSawCutPositionInDirectionY, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="6" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Spacing X-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="7" Grid.Column="5" Name="TextBoxSawCutsSpacingInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=SawCutsSpacingInDirectionX, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="7" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="8" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cuts Spacing Y-direction:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
+            <TextBox Grid.Row="8" Grid.Column="5" Name="TextBoxSawCutsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=SawCutsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="8" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+            <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Cover mc:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>
             <TextBox Grid.Row="9" Grid.Column="5" Name="TextBoxMeshConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
             Text="{Binding Path=MeshConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="9" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
             
             <TextBlock Grid.Row="10" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Floor Slab Mesh:" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
-            <ComboBox Grid.Row="10" Grid.Column="5" Name ="Combobox_ReinforcementMeshGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"
+            <ComboBox Grid.Row="10" Grid.Column="5" Name ="Combobox_ReinforcementMeshGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80"
             ItemsSource="{Binding Path=ReinforcementMeshGradesList}" SelectedValue="{Binding Path=ReinforcementMeshGrade, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="100"/>

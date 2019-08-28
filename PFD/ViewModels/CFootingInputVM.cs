@@ -82,6 +82,13 @@ namespace PFD
         private float m_FloorSlabThickness;
         private float m_MeshConcreteCover;
 
+        private int m_NumberOfSawCutsInDirectionX;
+        private int m_NumberOfSawCutsInDirectionY;
+        private float m_FirstSawCutPositionInDirectionX;
+        private float m_FirstSawCutPositionInDirectionY;
+        private float m_SawCutsSpacingInDirectionX;
+        private float m_SawCutsSpacingInDirectionY;
+
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
 
@@ -946,6 +953,120 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public int NumberOfSawCutsInDirectionX
+        {
+            get
+            {
+                return m_NumberOfSawCutsInDirectionX;
+            }
+
+            set
+            {
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
+
+                m_NumberOfSawCutsInDirectionX = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int NumberOfSawCutsInDirectionY
+        {
+            get
+            {
+                return m_NumberOfSawCutsInDirectionY;
+            }
+
+            set
+            {
+                if (value < 0f || value > 50)
+                    throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
+
+                m_NumberOfSawCutsInDirectionX = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FirstSawCutPositionInDirectionX
+        {
+            get
+            {
+                return m_FirstSawCutPositionInDirectionX;
+            }
+
+            set
+            {
+                if (value < 0.2f || value > 10)
+                    throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
+
+                m_FirstSawCutPositionInDirectionX = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FirstSawCutPositionInDirectionY
+        {
+            get
+            {
+                return m_FirstSawCutPositionInDirectionY;
+            }
+
+            set
+            {
+                if (value < 0.2f || value > 10)
+                    throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
+
+                m_FirstSawCutPositionInDirectionY = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float SawCutsSpacingInDirectionX
+        {
+            get
+            {
+                return m_SawCutsSpacingInDirectionX;
+            }
+
+            set
+            {
+                if (value < 1f || value > 10)
+                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+
+                m_SawCutsSpacingInDirectionX = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("SawCutsSpacingInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float SawCutsSpacingInDirectionY
+        {
+            get
+            {
+                return m_SawCutsSpacingInDirectionY;
+            }
+
+            set
+            {
+                if (value < 1f || value > 10)
+                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+
+                m_SawCutsSpacingInDirectionY = value;
+                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                NotifyPropertyChanged("SawCutsSpacingInDirectionY");
+            }
+        }
+
         public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> DictFootings
         {
             get
@@ -973,8 +1094,6 @@ namespace PFD
 
                 return m_DictFootings;
             }
-
-            
         }
 
         CPFDViewModel _pfdVM;
@@ -1034,6 +1153,14 @@ namespace PFD
             FloorSlabThickness = _model.m_arrSlabs.First().m_fDim3 * 1000;
             MeshConcreteCover = _model.m_arrSlabs.First().ConcreteCover * 1000f;
 
+            m_NumberOfSawCutsInDirectionX = (int)(_model.fW_frame / Math.Min(_model.fL1_frame , 4));
+            m_NumberOfSawCutsInDirectionY = (int)(_model.fL_tot / Math.Min(_model.fL1_frame, 4));
+            m_FirstSawCutPositionInDirectionX = Math.Min(_model.fL1_frame, 4) / 2f;
+            m_FirstSawCutPositionInDirectionY = Math.Min(_model.fL1_frame, 4) / 2f;
+            // Predpoklada sa ze posledny was cut je rovnako vzdialeny od konca ako prvy od zaciatku
+            m_SawCutsSpacingInDirectionX = (_model.fW_frame - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
+            m_SawCutsSpacingInDirectionY = (_model.fL_tot - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
+
             CFoundation pad = GetSelectedFootingPad();
             FootingPadSize_x_Or_a = pad.m_fDim1;
             FootingPadSize_y_Or_b = pad.m_fDim2;
@@ -1084,6 +1211,8 @@ namespace PFD
             LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
             LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
             LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
+
+
 
             IsSetFromCode = false;
         }
