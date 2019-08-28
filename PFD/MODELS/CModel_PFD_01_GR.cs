@@ -84,8 +84,6 @@ namespace PFD
                 List<CConnectionJointTypes> joints,
                 List<CFoundation> foundations,
                 List<CSlab> slabs,
-                List<CSawCut> sawCuts,
-                List<CControlJoint> controlJoints,
                 CPFDViewModel vm
             )
         {
@@ -882,21 +880,6 @@ namespace PFD
             }
             else
                 m_arrSlabs = slabs;
-
-            if (m_arrSawCuts == null)
-            {
-                CreateSawCuts();
-            }
-            else
-                m_arrSawCuts = sawCuts;
-
-            if (m_arrControlJoints == null)
-            {
-                CreateControlJoints();
-            }
-            else
-                m_arrControlJoints = controlJoints;
-
             #endregion
 
             SetJointDefaultParameters();
@@ -2589,13 +2572,41 @@ namespace PFD
                     "DPC OVER SANDBLINDING" + "\n" +
                     "& COMPACTED HARDFILL";
 
-                int iLastFoundationIndex = m_arrFoundations.Count;
+                // Saw Cuts
+                // Create raster of lines in XY-plane
+                float fSawCutMaximumDistance = Math.Min(3, fL1_frame); // 3 m // V kazdej bay alebo maximalne 3 metre od seba
 
+                float fFirstSawCutPositionInDirectionX = Math.Min(fL1_frame, 3) / 2f;
+                float fFirstSawCutPositionInDirectionY = Math.Min(fL1_frame, 3) / 2f;
+
+                int iNumberOfSawCutsInDirectionX = (int)(fW_frame / fSawCutMaximumDistance);
+                int iNumberOfSawCutsInDirectionY = (int)(fL_tot / fSawCutMaximumDistance);
+
+                // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
+                float fSawCutsSpacingInDirectionX = (fW_frame - 2 * fFirstSawCutPositionInDirectionX) / (iNumberOfSawCutsInDirectionX - 1);
+                float fSawCutsSpacingInDirectionY = (fL_tot - 2 * fFirstSawCutPositionInDirectionY) / (iNumberOfSawCutsInDirectionY - 1);
+
+                // ControlJoints
+                // Create raster of lines in XY-plane
+                float fControlJointMaximumDistance = Math.Min(20, 2 * fL1_frame); // 20 m // V kazdej 2 bay alebo maximalne 20 metrov od seba
+
+                float fFirstControlJointPositionInDirectionX = Math.Min(fL1_frame, 3) / 2f;
+                float fFirstControlJointPositionInDirectionY = Math.Min(fL1_frame, 3) / 2f;
+
+                int iNumberOfControlJointsInDirectionX = (int)(fW_frame / fControlJointMaximumDistance);
+                int iNumberOfControlJointsInDirectionY = (int)(fL_tot / fControlJointMaximumDistance);
+
+                // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
+                float fControlJointsSpacingInDirectionX = (fW_frame - 2 * fFirstControlJointPositionInDirectionX) / (iNumberOfControlJointsInDirectionX - 1);
+                float fControlJointsSpacingInDirectionY = (fL_tot - 2 * fFirstControlJointPositionInDirectionY) / (iNumberOfControlJointsInDirectionY - 1);
+
+                // int iLastFoundationIndex = m_arrFoundations.Count;
                 //Point3D controlPoint_FloorSlab = new Point3D(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance, 0);
+
                 Point3D controlPoint_FloorSlab = new Point3D(m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h - fTolerance);
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
-                    controlPoint_FloorSlab,
+                            controlPoint_FloorSlab,
                             materialConcrete,
                             fFloorSlab_aX,
                             fFloorSlab_bY,
@@ -2604,6 +2615,19 @@ namespace PFD
                             fConcreteCoverTop,
                             sMeshGradeName,
                             text,
+                            iNumberOfSawCutsInDirectionX,
+                            iNumberOfSawCutsInDirectionY,
+                            fFirstSawCutPositionInDirectionX,
+                            fFirstSawCutPositionInDirectionY,
+                            fSawCutsSpacingInDirectionX,
+                            fSawCutsSpacingInDirectionY,
+                            iNumberOfControlJointsInDirectionX,
+                            iNumberOfControlJointsInDirectionY,
+                            fFirstControlJointPositionInDirectionX,
+                            fFirstControlJointPositionInDirectionY,
+                            fControlJointsSpacingInDirectionX,
+                            fControlJointsSpacingInDirectionY,
+
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
                             //BackColumnFootingReference_Bottom_Bar_x,
@@ -2616,65 +2640,6 @@ namespace PFD
                             0.3f,
                             true,
                             0));
-            }
-        }
-
-        private void CreateSawCuts()
-        {
-            bool bGenerateSawCuts = true;
-
-            if (bGenerateSawCuts)
-            {
-                float fcutWidth = 0.01f;
-                float fcutDepth = 0.03f;
-
-                float fMinimumDistance = Math.Min(3, fL1_frame); // 6 m // V kazdej bay alebo minimalne 6 metrov od seba
-                // Create raster of lines in XY-plane
-                int iNumberInXDirection = (int)(fW_frame / fMinimumDistance) -1;
-                int iNumberInYDirection = (int)(fL_tot / fMinimumDistance) -1;
-
-                float fDistanceInXDirection = fW_frame / (iNumberInXDirection+1); // Pocet rezov + jeden segment
-                float fDistanceInYDirection = fL_tot / (iNumberInYDirection+1);// Pocet rezov + jeden segment
-
-                m_arrSawCuts = new List<CSawCut>();
-
-                // Sawcuts per X axis - rezanie v smere Y
-                for (int i = 0; i < iNumberInXDirection; i++)
-                {
-                    m_arrSawCuts.Add(new CSawCut(i + 1, new Point3D((i+1) * fDistanceInXDirection, 0, 0), new Point3D((i+1) * fDistanceInXDirection, fL_tot, 0), fcutWidth, fcutDepth, true, 0));
-                }
-
-                // Sawcuts per Y axis - rezanie v smere X
-                for (int i = 0; i < iNumberInYDirection; i++)
-                    m_arrSawCuts.Add(new CSawCut(iNumberInXDirection + i + 1, new Point3D(0, (i+1) * fDistanceInYDirection, 0), new Point3D(fW_frame, (i+1) * fDistanceInYDirection, 0), fcutWidth, fcutDepth, true, 0));
-            }
-        }
-
-        private void CreateControlJoints()
-        {
-            bool bGenerateControlJoints = true;
-
-            if (bGenerateControlJoints)
-            {
-                //Diameters available = 10, 12, 16, 20, 25, 32, 40
-                /*
-                12mm x 460mm Galvanised Dowel
-                16mm x 400mm Galvanised Dowel
-                16mm x 600mm Galvanised Dowel
-                20mm x 400mm Galvanised Dowel
-                20mm x 600mm Galvanised Dowel
-                33mm x 450mm Galvanised Dowel
-                */
-
-                CDowel referenceDowel = new CDowel(new Point3D(0, 0, 0), 0.033f, 0.6f, 4.028f, true);
-                float fDowelSpacing = 0.4f;
-
-                // Create raster of lines in XY-plane
-                // V smere X v polovici budovy
-                // TODO - dopracovat generovanie po 20 m
-
-                m_arrControlJoints = new List<CControlJoint>();
-                m_arrControlJoints.Add(new CControlJoint(1, new Point3D(0, 0.5 * fL_tot, 0), new Point3D(fW_frame, 0.5 * fL_tot, 0), referenceDowel, fDowelSpacing, true, 0));
             }
         }
 

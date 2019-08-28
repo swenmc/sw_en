@@ -735,14 +735,6 @@ namespace PFD
             if (!vm.RecreateFloorSlab) slabs = vm.Model.m_arrSlabs;
             //else if (vm.Model != null) MessageBox.Show("Floor slab will be recreated and changed to default.");
 
-            List<CSawCut> sawCuts = null;
-            if (!vm.RecreateSawCuts) sawCuts = vm.Model.m_arrSawCuts;
-            //else if (vm.Model != null) MessageBox.Show("Saw cuts will be recreated and changed to defaults.");
-
-            List<CControlJoint> controlJoints = null;
-            if (!vm.RecreateControlJoints) controlJoints = vm.Model.m_arrControlJoints;
-            //else if (vm.Model != null) MessageBox.Show("Control joints will be recreated and changed to default.");
-
             if (vm.RecreateModel)
             {
                 // Create Model
@@ -763,8 +755,6 @@ namespace PFD
                     joints,
                     foundations,
                     slabs,
-                    sawCuts,
-                    controlJoints,
                     vm);
 
                 UpdateUC_Joints();

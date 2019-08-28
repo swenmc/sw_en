@@ -223,14 +223,6 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                 if (slabsModel3DGroup != null) gr.Children.Add(slabsModel3DGroup);
 
-                Model3DGroup sawCutsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts) sawCutsModel3DGroup = Drawing3D.CreateModelSawCutsModel3DGroup(model, sDisplayOptions);
-                if (sawCutsModel3DGroup != null) gr.Children.Add(sawCutsModel3DGroup);
-
-                Model3DGroup controlJointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayControlJoints) controlJointsModel3DGroup = Drawing3D.CreateModelControlJointsModel3DGroup(model, sDisplayOptions);
-                if (controlJointsModel3DGroup != null) gr.Children.Add(controlJointsModel3DGroup);
-
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
@@ -1306,56 +1298,36 @@ namespace BaseClasses
                         // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt betonovej dosky
                         GeometryModel3D model = cmodel.m_arrSlabs[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
                         model3D_group.Children.Add(model); // Add slab to the model group
-                    }
-                }
-            }
 
-            return model3D_group;
-        }
+                        if (cmodel.m_arrSlabs[i].SawCuts != null && sDisplayOptions.bDisplaySawCuts)
+                        {
+                            // Model Groups of Volumes
+                            for (int j = 0; j < cmodel.m_arrSlabs[i].SawCuts.Count; j++)
+                            {
+                                if (cmodel.m_arrSlabs[i].SawCuts[j] != null &&
+                                    cmodel.m_arrSlabs[i].SawCuts[j].m_pControlPoint != null &&
+                                    cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                                {
+                                    GeometryModel3D modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(Colors.DarkGoldenrod);
+                                    model3D_group.Children.Add(modelsc); // Add saw cut to the model group
+                                }
+                            }
+                        }
 
-        //-------------------------------------------------------------------------------------------------------------
-        // Create saw cuts model objects model 3d group
-        public static Model3DGroup CreateModelSawCutsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
-        {
-            Model3DGroup model3D_group = new Model3DGroup();
-
-            if (cmodel.m_arrSawCuts != null && sDisplayOptions.bDisplaySawCuts)
-            {
-                float fbrushOpacity = 0.3f;
-
-                // Model Groups of Volumes
-                for (int i = 0; i < cmodel.m_arrSawCuts.Count; i++)
-                {
-                    if (cmodel.m_arrSawCuts[i] != null &&
-                        cmodel.m_arrSawCuts[i].m_pControlPoint != null &&
-                        cmodel.m_arrSawCuts[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
-                    {
-                        GeometryModel3D model = cmodel.m_arrSawCuts[i].GetSawCutModel(Colors.DarkGoldenrod);
-                        model3D_group.Children.Add(model); // Add saw cut to the model group
-                    }
-                }
-            }
-
-            return model3D_group;
-        }
-
-        //-------------------------------------------------------------------------------------------------------------
-        // Create control joints model objects model 3d group
-        public static Model3DGroup CreateModelControlJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
-        {
-            Model3DGroup model3D_group = new Model3DGroup();
-
-            if (cmodel.m_arrControlJoints != null && sDisplayOptions.bDisplayControlJoints)
-            {
-                // Model Groups of Volumes
-                for (int i = 0; i < cmodel.m_arrControlJoints.Count; i++)
-                {
-                    if (cmodel.m_arrControlJoints[i] != null &&
-                        cmodel.m_arrControlJoints[i].m_pControlPoint != null &&
-                        cmodel.m_arrControlJoints[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
-                    {
-                        GeometryModel3D model = cmodel.m_arrControlJoints[i].GetControlJointModel(Colors.DarkMagenta);
-                        model3D_group.Children.Add(model); // Add saw cut to the model group
+                        if (cmodel.m_arrSlabs[i].ControlJoints != null && sDisplayOptions.bDisplayControlJoints)
+                        {
+                            // Model Groups of Volumes
+                            for (int j = 0; j < cmodel.m_arrSlabs[i].ControlJoints.Count; j++)
+                            {
+                                if (cmodel.m_arrSlabs[i].ControlJoints[j] != null &&
+                                    cmodel.m_arrSlabs[i].ControlJoints[j].m_pControlPoint != null &&
+                                    cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                                {
+                                    GeometryModel3D modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(Colors.DarkMagenta);
+                                    model3D_group.Children.Add(modelcj); // Add saw cut to the model group
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2665,13 +2637,19 @@ namespace BaseClasses
 
         public static void CreateSawCutDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            if (model.m_arrSawCuts != null)
+            if (model.m_arrSlabs != null)
             {
-                for (int i = 0; i < model.m_arrSawCuts.Count; i++)
+                for (int i = 0; i < model.m_arrSlabs.Count;)
                 {
-                    if (model.m_arrSawCuts[i] != null) // Saw cut object is valid (not empty)
+                    if (model.m_arrSlabs[i].SawCuts != null)
                     {
-                        DrawSawCutText3D(model.m_arrSawCuts[i], viewPort, displayOptions);
+                        for (int j = 0; j < model.m_arrSlabs[i].SawCuts.Count; j++)
+                        {
+                            if (model.m_arrSlabs[i].SawCuts[j] != null) // Saw cut object is valid (not empty)
+                            {
+                                DrawSawCutText3D(model.m_arrSlabs[i].SawCuts[j], viewPort, displayOptions);
+                            }
+                        }
                     }
                 }
             }
@@ -2719,13 +2697,19 @@ namespace BaseClasses
 
         public static void CreateControlJointDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
-            if (model.m_arrControlJoints != null)
+            if (model.m_arrSlabs != null)
             {
-                for (int i = 0; i < model.m_arrControlJoints.Count; i++)
+                for (int i = 0; i < model.m_arrSlabs.Count;)
                 {
-                    if (model.m_arrControlJoints[i] != null) // Control joint object is valid (not empty)
+                    if (model.m_arrSlabs[i].ControlJoints != null)
                     {
-                        DrawControlJointText3D(model.m_arrControlJoints[i], viewPort, displayOptions);
+                        for (int j = 0; j < model.m_arrSlabs[i].ControlJoints.Count; j++)
+                        {
+                            if (model.m_arrSlabs[i].ControlJoints[j] != null) // Control joint object is valid (not empty)
+                            {
+                                DrawControlJointText3D(model.m_arrSlabs[i].ControlJoints[j], viewPort, displayOptions);
+                            }
+                        }
                     }
                 }
             }
@@ -4285,8 +4269,8 @@ namespace BaseClasses
                 _model.m_arrFoundations = ModelHelper.GetColumnsViewFoundations(model);
                 _model.m_arrSlabs = ModelHelper.GetColumnsViewSlabs(model);
 
-                _model.m_arrSawCuts = model.m_arrSawCuts;
-                _model.m_arrControlJoints = model.m_arrControlJoints;
+                //_model.m_arrSawCuts = model.m_arrSawCuts;
+                //_model.m_arrControlJoints = model.m_arrControlJoints;
             }
 
             return _model;

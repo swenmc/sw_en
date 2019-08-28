@@ -89,6 +89,13 @@ namespace PFD
         private float m_SawCutsSpacingInDirectionX;
         private float m_SawCutsSpacingInDirectionY;
 
+        private int m_NumberOfControlJointsInDirectionX;
+        private int m_NumberOfControlJointsInDirectionY;
+        private float m_FirstControlJointPositionInDirectionX;
+        private float m_FirstControlJointPositionInDirectionY;
+        private float m_ControlJointsSpacingInDirectionX;
+        private float m_ControlJointsSpacingInDirectionY;
+
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
 
@@ -967,7 +974,7 @@ namespace PFD
                     throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
 
                 m_NumberOfSawCutsInDirectionX = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = m_NumberOfSawCutsInDirectionX;
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
             }
         }
@@ -985,8 +992,8 @@ namespace PFD
                 if (value < 0f || value > 50)
                     throw new ArgumentException("Number of saw cuts must be between 0 and 50 [-]");
 
-                m_NumberOfSawCutsInDirectionX = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                m_NumberOfSawCutsInDirectionY = value;
+                _model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = m_NumberOfSawCutsInDirectionY;
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
             }
         }
@@ -1005,7 +1012,7 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionX = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = m_FirstSawCutPositionInDirectionX;
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
             }
         }
@@ -1024,7 +1031,7 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionY = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = m_FirstSawCutPositionInDirectionY;
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
             }
         }
@@ -1039,11 +1046,11 @@ namespace PFD
 
             set
             {
-                if (value < 1f || value > 10)
-                    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
+                //if (value < 1f || value > 10)
+                //    throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionX = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().SawCutsSpacingInDirectionX = m_SawCutsSpacingInDirectionX;
                 NotifyPropertyChanged("SawCutsSpacingInDirectionX");
             }
         }
@@ -1062,8 +1069,122 @@ namespace PFD
                     throw new ArgumentException("Spacing of saw cuts must be between 1 and 10 [m]");
 
                 m_SawCutsSpacingInDirectionY = value;
-                //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                _model.m_arrSlabs.First().SawCutsSpacingInDirectionY = m_SawCutsSpacingInDirectionY;
                 NotifyPropertyChanged("SawCutsSpacingInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int NumberOfControlJointsInDirectionX
+        {
+            get
+            {
+                return m_NumberOfControlJointsInDirectionX;
+            }
+
+            set
+            {
+                //if (value < 0f || value > 50)
+                //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
+
+                m_NumberOfControlJointsInDirectionX = value;
+                _model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = m_NumberOfControlJointsInDirectionX;
+                NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int NumberOfControlJointsInDirectionY
+        {
+            get
+            {
+                return m_NumberOfControlJointsInDirectionY;
+            }
+
+            set
+            {
+                //if (value < 0f || value > 50)
+                //    throw new ArgumentException("Number of control joints must be between 0 and 50 [-]");
+
+                m_NumberOfControlJointsInDirectionY = value;
+                _model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = m_NumberOfControlJointsInDirectionY;
+                NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FirstControlJointPositionInDirectionX
+        {
+            get
+            {
+                return m_FirstControlJointPositionInDirectionX;
+            }
+
+            set
+            {
+                //if (value < 0.2f || value > 50)
+                //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+
+                m_FirstControlJointPositionInDirectionX = value;
+                _model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = m_FirstControlJointPositionInDirectionX;
+                NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FirstControlJointPositionInDirectionY
+        {
+            get
+            {
+                return m_FirstControlJointPositionInDirectionY;
+            }
+
+            set
+            {
+                //if (value < 0.2f || value > 50)
+                //    throw new ArgumentException("Position of control joint must be between 0.2 and 50 [m]");
+
+                m_FirstControlJointPositionInDirectionY = value;
+                _model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = m_FirstControlJointPositionInDirectionY;
+                NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ControlJointsSpacingInDirectionX
+        {
+            get
+            {
+                return m_ControlJointsSpacingInDirectionX;
+            }
+
+            set
+            {
+                //if (value < 1f || value > 50)
+                //    throw new ArgumentException("Spacing of control joints must be between 1 and 50 [m]");
+
+                m_ControlJointsSpacingInDirectionX = value;
+                _model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = m_ControlJointsSpacingInDirectionX;
+                NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ControlJointsSpacingInDirectionY
+        {
+            get
+            {
+                return m_ControlJointsSpacingInDirectionY;
+            }
+
+            set
+            {
+                //if (value < 1f || value > 50)
+                //    throw new ArgumentException("Spacing of saw control joints be between 1 and 50 [m]");
+
+                m_ControlJointsSpacingInDirectionY = value;
+                _model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = m_ControlJointsSpacingInDirectionY;
+                NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
             }
         }
 
@@ -1073,7 +1194,6 @@ namespace PFD
             {
                 if (m_DictFootings == null)
                 {
-                    
                     m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
                     CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
                     CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
@@ -1153,13 +1273,21 @@ namespace PFD
             FloorSlabThickness = _model.m_arrSlabs.First().m_fDim3 * 1000;
             MeshConcreteCover = _model.m_arrSlabs.First().ConcreteCover * 1000f;
 
-            m_NumberOfSawCutsInDirectionX = (int)(_model.fW_frame / Math.Min(_model.fL1_frame , 4));
-            m_NumberOfSawCutsInDirectionY = (int)(_model.fL_tot / Math.Min(_model.fL1_frame, 4));
-            m_FirstSawCutPositionInDirectionX = Math.Min(_model.fL1_frame, 4) / 2f;
-            m_FirstSawCutPositionInDirectionY = Math.Min(_model.fL1_frame, 4) / 2f;
-            // Predpoklada sa ze posledny was cut je rovnako vzdialeny od konca ako prvy od zaciatku
-            m_SawCutsSpacingInDirectionX = (_model.fW_frame - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
-            m_SawCutsSpacingInDirectionY = (_model.fL_tot - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
+            // Saw Cuts
+            FirstSawCutPositionInDirectionX = _model.m_arrSlabs.First().FirstSawCutPositionInDirectionX;
+            FirstSawCutPositionInDirectionY = _model.m_arrSlabs.First().FirstSawCutPositionInDirectionY;
+            NumberOfSawCutsInDirectionX = _model.m_arrSlabs.First().NumberOfSawCutsInDirectionX;
+            NumberOfSawCutsInDirectionY = _model.m_arrSlabs.First().NumberOfSawCutsInDirectionY;
+            SawCutsSpacingInDirectionX = _model.m_arrSlabs.First().SawCutsSpacingInDirectionX;
+            SawCutsSpacingInDirectionY = _model.m_arrSlabs.First().SawCutsSpacingInDirectionY;
+
+            // Control Joints
+            FirstControlJointPositionInDirectionX = _model.m_arrSlabs.First().FirstControlJointPositionInDirectionX;
+            FirstControlJointPositionInDirectionY = _model.m_arrSlabs.First().FirstControlJointPositionInDirectionY;
+            NumberOfControlJointsInDirectionX = _model.m_arrSlabs.First().NumberOfControlJointsInDirectionX;
+            NumberOfControlJointsInDirectionY = _model.m_arrSlabs.First().NumberOfControlJointsInDirectionY;
+            ControlJointsSpacingInDirectionX = _model.m_arrSlabs.First().ControlJointsSpacingInDirectionX;
+            ControlJointsSpacingInDirectionY = _model.m_arrSlabs.First().ControlJointsSpacingInDirectionY;
 
             CFoundation pad = GetSelectedFootingPad();
             FootingPadSize_x_Or_a = pad.m_fDim1;

@@ -40,6 +40,24 @@ namespace BaseClasses
 
         private string m_sMeshGradeName;
 
+        private int m_NumberOfSawCutsInDirectionX;
+        private int m_NumberOfSawCutsInDirectionY;
+        private float m_FirstSawCutPositionInDirectionX;
+        private float m_FirstSawCutPositionInDirectionY;
+        private float m_SawCutsSpacingInDirectionX;
+        private float m_SawCutsSpacingInDirectionY;
+
+        private List<CSawCut> m_SawCuts;
+
+        private int m_NumberOfControlJointsInDirectionX;
+        private int m_NumberOfControlJointsInDirectionY;
+        private float m_FirstControlJointPositionInDirectionX;
+        private float m_FirstControlJointPositionInDirectionY;
+        private float m_ControlJointsSpacingInDirectionX;
+        private float m_ControlJointsSpacingInDirectionY;
+
+        private List<CControlJoint> m_ControlJoints;
+
         private List<Point3D> MWireFramePoints;
 
         private CJointDesignDetails m_DesignDetails;
@@ -345,6 +363,90 @@ namespace BaseClasses
             set { m_Text = value; }
         }
 
+        public int NumberOfSawCutsInDirectionX
+        {
+            get { return m_NumberOfSawCutsInDirectionX; }
+            set { m_NumberOfSawCutsInDirectionX = value; }
+        }
+
+        public int NumberOfSawCutsInDirectionY
+        {
+            get { return m_NumberOfSawCutsInDirectionY; }
+            set { m_NumberOfSawCutsInDirectionY = value; }
+        }
+
+        public float FirstSawCutPositionInDirectionX
+        {
+            get { return m_FirstSawCutPositionInDirectionX; }
+            set { m_FirstSawCutPositionInDirectionX = value; }
+        }
+
+        public float FirstSawCutPositionInDirectionY
+        {
+            get { return m_FirstSawCutPositionInDirectionY; }
+            set { m_FirstSawCutPositionInDirectionY = value; }
+        }
+
+        public float SawCutsSpacingInDirectionX
+        {
+            get { return m_SawCutsSpacingInDirectionX; }
+            set { m_SawCutsSpacingInDirectionX = value; }
+        }
+
+        public float SawCutsSpacingInDirectionY
+        {
+            get { return m_SawCutsSpacingInDirectionY; }
+            set { m_SawCutsSpacingInDirectionY = value; }
+        }
+
+        public List<CSawCut> SawCuts
+        {
+            get { return m_SawCuts; }
+            set { m_SawCuts = value; }
+        }
+
+        public int NumberOfControlJointsInDirectionX
+        {
+            get { return m_NumberOfControlJointsInDirectionX; }
+            set { m_NumberOfControlJointsInDirectionX = value; }
+        }
+
+        public int NumberOfControlJointsInDirectionY
+        {
+            get { return m_NumberOfControlJointsInDirectionY; }
+            set { m_NumberOfControlJointsInDirectionY = value; }
+        }
+
+        public float FirstControlJointPositionInDirectionX
+        {
+            get { return m_FirstControlJointPositionInDirectionX; }
+            set { m_FirstControlJointPositionInDirectionX = value; }
+        }
+
+        public float FirstControlJointPositionInDirectionY
+        {
+            get { return m_FirstControlJointPositionInDirectionY; }
+            set { m_FirstControlJointPositionInDirectionY = value; }
+        }
+
+        public float ControlJointsSpacingInDirectionX
+        {
+            get { return m_ControlJointsSpacingInDirectionX; }
+            set { m_ControlJointsSpacingInDirectionX = value; }
+        }
+
+        public float ControlJointsSpacingInDirectionY
+        {
+            get { return m_ControlJointsSpacingInDirectionY; }
+            set { m_ControlJointsSpacingInDirectionY = value; }
+        }
+
+        public List<CControlJoint> ControlJoints
+        {
+            get { return m_ControlJoints; }
+            set { m_ControlJoints = value; }
+        }
+
         public CSlab()
         {
         }
@@ -362,6 +464,18 @@ namespace BaseClasses
             float fConcreteCover,
             string sMeshGradeName,
             string descriptionText,
+            int   iNumberOfSawCutsInDirectionX,
+            int   iNumberOfSawCutsInDirectionY,
+            float fFirstSawCutPositionInDirectionX,
+            float fFirstSawCutPositionInDirectionY,
+            float fSawCutsSpacingInDirectionX,
+            float fSawCutsSpacingInDirectionY,
+            int   iNumberOfControlJointsInDirectionX,
+            int   iNumberOfControlJointsInDirectionY,
+            float fFirstControlJointPositionInDirectionX,
+            float fFirstControlJointPositionInDirectionY,
+            float fControlJointsSpacingInDirectionX,
+            float fControlJointsSpacingInDirectionY,
             //CReinforcementBar refTopBar_x,
             //CReinforcementBar refTopBar_y,
             //CReinforcementBar refBottomBar_x,
@@ -378,8 +492,8 @@ namespace BaseClasses
             ID = iSlab_ID;
             m_pControlPoint = pControlEdgePoint;
             m_Mat = materialConcrete;
-            m_fDim1 = fX;
-            m_fDim2 = fY;
+            m_fDim1 = fX; // Width
+            m_fDim2 = fY; // Length
             m_fDim3 = fZ;
             m_Eccentricity_x = ex;
             m_Eccentricity_y = ey;
@@ -387,6 +501,19 @@ namespace BaseClasses
             m_fConcreteCover = fConcreteCover;
             m_sMeshGradeName = sMeshGradeName;
             m_Text = descriptionText;
+            m_NumberOfSawCutsInDirectionX = iNumberOfSawCutsInDirectionX;
+            m_NumberOfSawCutsInDirectionY = iNumberOfSawCutsInDirectionY;
+            m_FirstSawCutPositionInDirectionX = fFirstSawCutPositionInDirectionX;
+            m_FirstSawCutPositionInDirectionY = fFirstSawCutPositionInDirectionY;
+            m_SawCutsSpacingInDirectionX = fSawCutsSpacingInDirectionX;
+            m_SawCutsSpacingInDirectionY = fSawCutsSpacingInDirectionY;
+            m_NumberOfControlJointsInDirectionX = iNumberOfControlJointsInDirectionX;
+            m_NumberOfControlJointsInDirectionY = iNumberOfControlJointsInDirectionY;
+            m_FirstControlJointPositionInDirectionX = fFirstControlJointPositionInDirectionX;
+            m_FirstControlJointPositionInDirectionY = fFirstControlJointPositionInDirectionY;
+            m_ControlJointsSpacingInDirectionX = fControlJointsSpacingInDirectionX;
+            m_ControlJointsSpacingInDirectionY = fControlJointsSpacingInDirectionY;
+
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
             //m_Reference_Bottom_Bar_x = refBottomBar_x;
@@ -401,6 +528,9 @@ namespace BaseClasses
             FTime = fTime;
 
             SetTextPoint();
+
+            CreateSawCuts();
+            CreateControlJoints();
         }
 
         public void SetTextPoint()
@@ -481,6 +611,80 @@ namespace BaseClasses
             myTransform3DGroup.Children.Add(myTranslateTransform3D_GCS);
 
             return myTransform3DGroup;
+        }
+
+        private void CreateSawCuts()
+        {
+            bool bGenerateSawCuts = true;
+
+            if (bGenerateSawCuts)
+            {
+                float fcutWidth = 0.01f;
+                float fcutDepth = 0.03f;
+
+                SawCuts = new List<CSawCut>();
+
+                // Sawcuts per X axis - rezanie v smere Y
+                for (int i = 0; i < NumberOfSawCutsInDirectionX; i++)
+                {
+                    if(i == 0) // First
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(FirstSawCutPositionInDirectionX, 0, 0), new Point3D(FirstSawCutPositionInDirectionX, m_fDim2, 0), fcutWidth, fcutDepth, true, 0));
+                    else
+                        SawCuts.Add(new CSawCut(i + 1, new Point3D(FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX, 0, 0), new Point3D(FirstSawCutPositionInDirectionX + i * SawCutsSpacingInDirectionX, m_fDim2, 0), fcutWidth, fcutDepth, true, 0));
+                }
+                // Sawcuts per Y axis - rezanie v smere X
+                for (int i = 0; i < NumberOfSawCutsInDirectionY; i++)
+                {
+                    if (i == 0) // First
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(0, FirstSawCutPositionInDirectionY, 0), new Point3D(m_fDim1, FirstSawCutPositionInDirectionY, 0), fcutWidth, fcutDepth, true, 0));
+                    else
+                        SawCuts.Add(new CSawCut(NumberOfSawCutsInDirectionX + i + 1, new Point3D(0, FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY, 0), new Point3D(m_fDim1, FirstSawCutPositionInDirectionY + i * SawCutsSpacingInDirectionY, 0), fcutWidth, fcutDepth, true, 0));
+                }
+            }
+        }
+
+        private void CreateControlJoints()
+        {
+            bool bGenerateControlJoints = true;
+
+            if (bGenerateControlJoints)
+            {
+                //Diameters available = 10, 12, 16, 20, 25, 32, 40
+                /*
+                12mm x 460mm Galvanised Dowel
+                16mm x 400mm Galvanised Dowel
+                16mm x 600mm Galvanised Dowel
+                20mm x 400mm Galvanised Dowel
+                20mm x 600mm Galvanised Dowel
+                33mm x 450mm Galvanised Dowel
+                */
+
+                CDowel referenceDowel = new CDowel(new Point3D(0, 0, 0), 0.033f, 0.6f, 4.028f, true);
+                float fDowelSpacing = 0.4f;
+
+                // Create raster of lines in XY-plane
+                // V smere X v polovici budovy
+                // TODO - dopracovat generovanie po 20 m
+                ControlJoints = new List<CControlJoint>();
+
+                // ControlJoints per X axis - rezanie v smere Y
+                for (int i = 0; i < NumberOfControlJointsInDirectionX; i++)
+                {
+                    if (i == 0) // First
+                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(FirstControlJointPositionInDirectionX, 0, 0), new Point3D(FirstControlJointPositionInDirectionX, m_fDim2, 0), referenceDowel, fDowelSpacing, true, 0));
+                    else
+                        ControlJoints.Add(new CControlJoint(i + 1, new Point3D(FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX, 0, 0), new Point3D(FirstControlJointPositionInDirectionX + i * ControlJointsSpacingInDirectionX, m_fDim2, 0), referenceDowel, fDowelSpacing, true, 0));
+                }
+                // ControlJoints per Y axis - rezanie v smere X
+                for (int i = 0; i < NumberOfControlJointsInDirectionY; i++)
+                {
+                    if (i == 0) // First
+                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(0, FirstControlJointPositionInDirectionY, 0), new Point3D(m_fDim1, FirstControlJointPositionInDirectionY, 0), referenceDowel, fDowelSpacing, true, 0));
+                    else
+                        ControlJoints.Add(new CControlJoint(NumberOfControlJointsInDirectionX + i + 1, new Point3D(0, FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY, 0), new Point3D(m_fDim1, FirstControlJointPositionInDirectionY + i * ControlJointsSpacingInDirectionY, 0), referenceDowel, fDowelSpacing, true, 0));
+                }
+
+            }
         }
     }
 }

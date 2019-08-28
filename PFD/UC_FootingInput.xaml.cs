@@ -113,7 +113,21 @@ namespace PFD
                 e.PropertyName == "Eccentricity_ey" ||
 
                 e.PropertyName == "ConcreteCover" ||
-                e.PropertyName == "FloorSlabThickness"
+                e.PropertyName == "FloorSlabThickness" ||
+
+                e.PropertyName == "NumberOfSawCutsInDirectionX" ||
+                e.PropertyName == "NumberOfSawCutsInDirectionY" ||
+                e.PropertyName == "FirstSawCutPositionInDirectionX" ||
+                e.PropertyName == "FirstSawCutPositionInDirectionY" ||
+                e.PropertyName == "SawCutsSpacingInDirectionX" ||
+                e.PropertyName == "SawCutsSpacingInDirectionY" ||
+
+                e.PropertyName == "NumberOfControlJointsInDirectionX" ||
+                e.PropertyName == "NumberOfControlJointsInDirectionY" ||
+                e.PropertyName == "FirstControlJointPositionInDirectionX" ||
+                e.PropertyName == "FirstControlJointPositionInDirectionY" ||
+                e.PropertyName == "ControlJointsSpacingInDirectionX" ||
+                e.PropertyName == "ControlJointsSpacingInDirectionY"
                 )
             {
                 _pfdVM.FootingChanged = true;
@@ -122,8 +136,6 @@ namespace PFD
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
-        
-        
 
         private void FrameFootingPadPreview3D_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {

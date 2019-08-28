@@ -60,9 +60,9 @@ namespace BaseClasses
         // Slabs
         public List<CSlab> m_arrSlabs;
         // Saw Cuts
-        public List<CSawCut> m_arrSawCuts;
+        //public List<CSawCut> m_arrSawCuts;
         // Control Joints
-        public List<CControlJoint> m_arrControlJoints;
+        //public List<CControlJoint> m_arrControlJoints;
 
         // Loading
         // Nodal Loads

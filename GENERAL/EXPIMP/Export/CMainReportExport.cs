@@ -799,13 +799,16 @@ namespace EXPIMP
             XFont fontNote = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
             XBrush brushNote = XBrushes.Black;
 
-            if (data.Model.m_arrSawCuts != null && data.Model.m_arrSawCuts.Count > 0)
+            if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
             {
-                string sCutWidth = (data.Model.m_arrSawCuts[0].CutWidth * 1000).ToString("F0");
-                gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
+                if (data.Model.m_arrSlabs.FirstOrDefault().SawCuts != null && data.Model.m_arrSlabs.FirstOrDefault().SawCuts.Count > 0)
+                {
+                    string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().SawCuts.FirstOrDefault().CutWidth * 1000).ToString("F0");
+                    gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
 
-                string sCutDepth = (data.Model.m_arrSawCuts[0].CutDepth * 1000).ToString("F0");
-                gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
+                    string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().SawCuts.FirstOrDefault().CutDepth * 1000).ToString("F0");
+                    gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
+                }
             }
 
             image = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
@@ -816,22 +819,25 @@ namespace EXPIMP
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
 
-            if (data.Model.m_arrControlJoints != null && data.Model.m_arrControlJoints.Count > 0)
+            if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
             {
-                /*
-                string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
-                    " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
-                    (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
-                */
+                if (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints != null && data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.Count > 0)
+                {
+                    /*
+                    string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
+                        " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
+                        (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
+                    */
 
-                string sText1 = "D" + (data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
-                string sText2 = "(" + (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
-                    (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES";
-                string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
+                    string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
+                    string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
+                        (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().DowelSpacing * 1000).ToString("F0") + " CENTRES";
+                    string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
 
-                gfx.DrawString(sText1, fontNote, brushNote, 315, 125);
-                gfx.DrawString(sText2, fontNote, brushNote, 315, 135);
-                gfx.DrawString(sText3, fontNote, brushNote, 315, 145);
+                    gfx.DrawString(sText1, fontNote, brushNote, 315, 125);
+                    gfx.DrawString(sText2, fontNote, brushNote, 315, 135);
+                    gfx.DrawString(sText3, fontNote, brushNote, 315, 145);
+                }
             }
 
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
