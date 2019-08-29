@@ -1310,7 +1310,7 @@ namespace BaseClasses
                                     cmodel.m_arrSlabs[i].SawCuts[j].m_pControlPoint != null &&
                                     cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                                 {
-                                    GeometryModel3D modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(Colors.DarkGoldenrod);
+                                    Model3DGroup modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(sDisplayOptions.SawCutLineColor, sDisplayOptions.SawCutLinePatternType);
                                     model3D_group.Children.Add(modelsc); // Add saw cut to the model group
                                 }
                             }
@@ -1325,7 +1325,7 @@ namespace BaseClasses
                                     cmodel.m_arrSlabs[i].ControlJoints[j].m_pControlPoint != null &&
                                     cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                                 {
-                                    GeometryModel3D modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(Colors.DarkMagenta);
+                                    Model3DGroup modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(sDisplayOptions.ControlJointLineColor, sDisplayOptions.ControlJointLinePatternType);
                                     model3D_group.Children.Add(modelcj); // Add saw cut to the model group
                                 }
                             }
@@ -5408,14 +5408,14 @@ namespace BaseClasses
             for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
             {
                 Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
-                CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), (i+1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y);
+                CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), (i+1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y, sDisplayOptions.GridLinePatternType);
                 listOfGridlines.Add(gl);
             }
 
             for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
             {
                 Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
-                CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X);
+                CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X, sDisplayOptions.GridLinePatternType);
                 listOfGridlines.Add(gl);
             }
 
@@ -5432,6 +5432,5 @@ namespace BaseClasses
                 }
             }
         }
-
     }
 }

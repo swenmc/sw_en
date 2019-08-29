@@ -3076,12 +3076,15 @@ namespace PFD
 
             sDisplayOptions.GridLineLabelTextColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.GridLineColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.GridLinePatternType = ELinePatternType.DASHDOTTED; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.SawCutTextColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.SawCutLineColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.SawCutLinePatternType = ELinePatternType.DOTTED; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.ControlJointTextColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.ControlJointLineColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.ControlJointLinePatternType = ELinePatternType.DIVIDE; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.FoundationTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.FloorSlabTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report

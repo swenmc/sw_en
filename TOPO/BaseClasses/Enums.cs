@@ -689,6 +689,15 @@
         Details_Floor = 14
     }
 
+    public enum ELinePatternType
+    {
+        CONTINUOUS = 0,
+        DASHED = 1,
+        DOTTED = 2,
+        DASHDOTTED = 3,
+        DIVIDE = 4
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions
@@ -795,12 +804,15 @@
         public System.Windows.Media.Color DimensionLineColor;
         public System.Windows.Media.Color GridLineLabelTextColor;
         public System.Windows.Media.Color GridLineColor;
+        public ELinePatternType GridLinePatternType;
 
         public System.Windows.Media.Color SawCutTextColor;
         public System.Windows.Media.Color SawCutLineColor;
+        public ELinePatternType SawCutLinePatternType;
 
         public System.Windows.Media.Color ControlJointTextColor;
         public System.Windows.Media.Color ControlJointLineColor;
+        public ELinePatternType ControlJointLinePatternType;
 
         public System.Windows.Media.Color FoundationTextColor;
         public System.Windows.Media.Color FloorSlabTextColor;

@@ -115,9 +115,9 @@ namespace BaseClasses
             };
         }
 
-        public GeometryModel3D GetControlJointModel(System.Windows.Media.Color color)
+        public Model3DGroup GetControlJointModel(System.Windows.Media.Color color, ELinePatternType linePatternType)
         {
-            GeometryModel3D model = new GeometryModel3D();
+            Model3DGroup model_gr = new Model3DGroup();
 
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu
 
@@ -125,7 +125,22 @@ namespace BaseClasses
             float fLineCylinderRadius = 0.005f; //0.005f * fLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
             // LCS - line in x-direction
-            model = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, fLineCylinderRadius, m_fLength, material, 0);
+            if (linePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
+                model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, fLineCylinderRadius, m_fLength, material, 0));
+            else // Iny typ ciary
+            {
+                // dashed, dotted, divide, ....
+
+                // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
+                CLine line = new CLine(linePatternType, new Point3D(0, 0, 0), new Point3D(m_fLength, 0, 0));
+
+                // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
+                for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
+                {
+                    float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
+                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], 13, fLineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                }
+            }
 
             // Spocitame priemety
             double dDeltaX = m_PointEnd.X - m_PointStart.X;
@@ -179,9 +194,9 @@ namespace BaseClasses
             TransformGr.Children.Add(rotateZ);
             TransformGr.Children.Add(translateOrigin); // Presun celej koty v ramci GCS
 
-            model.Transform = TransformGr;
+            model_gr.Transform = TransformGr;
 
-            return model;
+            return model_gr;
         }
     }
 }
