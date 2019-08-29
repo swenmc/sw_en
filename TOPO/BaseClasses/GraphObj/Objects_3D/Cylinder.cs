@@ -150,6 +150,7 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             return geomModel3D;
         }
+
         public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
         {
             Int32Collection wireFrameIndices = new Int32Collection();
@@ -195,6 +196,7 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             return wireFrameIndices;
         }
+
         // Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
         // Add in order 1,4,3,2
         protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,

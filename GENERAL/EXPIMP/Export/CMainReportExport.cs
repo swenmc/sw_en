@@ -188,6 +188,8 @@ namespace EXPIMP
             opts.bDisplaySawCutsDescription = false;
             opts.bDisplayControlJointsDescription = false;
 
+            opts.bDisplayGridlines = false;
+
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
             viewPort.UpdateLayout();
@@ -239,6 +241,8 @@ namespace EXPIMP
             //opts.bDisplayJoints = true;
             //opts.bDisplayPlates = true;
 
+            opts.bDisplayGridlines = false;
+
             // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
             // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
 
@@ -268,6 +272,10 @@ namespace EXPIMP
             opts.fDimensionTextFontSize = 14;
             opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
             opts.DimensionLineColor = System.Windows.Media.Colors.Black;
+
+            opts.fGridLineLabelTextFontSize = 30;
+            opts.GridLineLabelTextColor = System.Windows.Media.Colors.DarkGray;
+            opts.GridLineColor = System.Windows.Media.Colors.DarkGray;
 
             opts.fSawCutTextFontSize = 14;
             opts.SawCutTextColor = System.Windows.Media.Colors.DarkGoldenrod;
@@ -324,6 +332,7 @@ namespace EXPIMP
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
                     opts.bDisplayFloorSlabDescription = false;
+                    opts.bDisplayGridlines = true;
                 }
 
                 // Toto je len pokus ako to vyzera :)
@@ -332,6 +341,7 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+
                     //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
                 }
 
@@ -350,6 +360,7 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabDescription = false;
                     opts.bDisplayFoundationsDescription = true;
                     opts.bDisplayMemberDescription = false;
+                    opts.bDisplayGridlines = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -372,6 +383,7 @@ namespace EXPIMP
                     opts.bDisplaySawCutsDescription = true;
                     opts.bDisplayControlJoints = true;
                     opts.bDisplayControlJointsDescription = true;
+                    opts.bDisplayGridlines = true;
                 }
 
                 CModel filteredModel = null;
@@ -420,6 +432,8 @@ namespace EXPIMP
             opts.bDisplayNodes = false;
             opts.bDisplayNodesDescription = false;
             opts.bDisplayNodalSupports = false;
+
+            opts.bDisplayGridlines = false;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -523,6 +537,8 @@ namespace EXPIMP
             opts.bDisplayNodes = false;
             opts.bDisplayNodesDescription = false;
             opts.bDisplayNodalSupports = false;
+
+            opts.bDisplayGridlines = false;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -995,6 +1011,8 @@ namespace EXPIMP
             opts.bDisplayFloorSlabDescription = false;
             opts.bDisplaySawCutsDescription = false;
             opts.bDisplayControlJointsDescription = false;
+
+            opts.bDisplayGridlines = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);

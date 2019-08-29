@@ -136,7 +136,6 @@ namespace CRSC
             CrScPointsIn = Geom2D.GetCirclePointCoord_CW(m_fr_in, INoPointsIn);
         }
 
-                
         //----------------------------------------------------------------------------
         // Cross-section properties
         //----------------------------------------------------------------------------
@@ -228,7 +227,7 @@ namespace CRSC
         {
             // Triangle Indices CRSC No 26 and 28
             CCrSc_0_26 oTemp = new CCrSc_0_26();
-            oTemp.loadCrScIndices_26_28(INoPointsOut,0);            
+            oTemp.loadCrScIndices_26_28(INoPointsOut,0);
             TriangleIndices = oTemp.TriangleIndices;
         }
 

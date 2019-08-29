@@ -240,6 +240,8 @@ namespace BaseClasses
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
 
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
+
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
@@ -2595,6 +2597,49 @@ namespace BaseClasses
             //viewPort.UpdateLayout();
         }
 
+        // Draw Grid Line Label Text 3D
+        public static void DrawGridLineLabelText3D(CGridLine gridline, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = gridline.LabelText;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.5f;
+
+            tb.FontStretch = FontStretches.Normal;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Normal;
+            tb.Foreground = new SolidColorBrush(displayOptions.GridLineLabelTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // PODOBNE AKO U ZAKLADOV - FOUNDATION DESCRIPTION
+            // Nastavujeme pre GCS (rovina XY - text v smere Y)
+            // Vektor vzdy v horizontalnej rovine XY - zatial
+            // Vektor by sme mali nastavovat podla pohladu
+            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, gridline.PointLabelText, over, up); ;
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (gridline.TransformGr != null)
+            {
+                tr.Children.Add(gridline.TransformGr);
+
+                // Nechceme transofrmovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(gridline.PointLabelText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
         // Draw Saw Cut Text 3D
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -2848,6 +2893,21 @@ namespace BaseClasses
             foreach (CDimensionLinear3D dimension in dimensions)
             {
                 gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor));
+            }
+
+            return gr;
+        }
+
+        private static Model3DGroup CreateModelGridlines_Model3DGroup(List<CGridLine> gridLines, CModel model, DisplayOptions displayOptions)
+        {
+            if (gridLines == null || gridLines.Count == 0)
+                return null;
+
+            Model3DGroup gr = new Model3DGroup();
+
+            foreach (CGridLine gridLine in gridLines)
+            {
+                gr.Children.Add(gridLine.GetGridLineModel(/*displayOptions.GridLineColor*/ Colors.Coral));
             }
 
             return gr;
@@ -4417,8 +4477,6 @@ namespace BaseClasses
             return gm3D;
         }
 
-
-
         private static void DrawDimensionsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
         {
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5276,7 +5334,104 @@ namespace BaseClasses
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 
+        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        {
+            Model3DGroup gridlines3DGroup = null;
 
+            float fMarkCircleDiameter = 0.4f;
+            float fOffset = 0.5f;
+            float fOffsetBehind = 0.3f;
+            float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
+            float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
+
+            // Labels - Y-direction (edge and main frames)
+            List<char> labelsY = new List<char>();
+            for (char letter = 'A'; letter <= 'Z'; letter++)
+            {
+                labelsY.Add(letter);
+            }
+
+            // Left side
+            CMember[] membersLeftSide = null;
+            membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
+
+            List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
+            membersBaseNodes_LeftSide = new List<CNode>();
+
+            foreach (CMember m in membersLeftSide)
+            {
+                if (MathF.d_equal(m.NodeStart.Z, 0))
+                {
+
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_LeftSide.Add(m.NodeStart);
+                }
+
+                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_LeftSide.Add(m.NodeEnd);
+                }
+            }
+
+            if (membersBaseNodes_LeftSide != null)
+                membersBaseNodes_LeftSide = membersBaseNodes_LeftSide.OrderBy(n => n.Y).ToList();
+
+            // Front side
+            CMember[] membersFrontSide = null;
+            membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
+
+            List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
+            membersBaseNodes_FrontSide = new List<CNode>();
+
+            foreach (CMember m in membersFrontSide)
+            {
+                if (MathF.d_equal(m.NodeStart.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                        membersBaseNodes_FrontSide.Add(m.NodeStart);
+                }
+
+                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                        membersBaseNodes_FrontSide.Add(m.NodeEnd);
+                }
+            }
+
+            if (membersBaseNodes_FrontSide != null)
+                membersBaseNodes_FrontSide = membersBaseNodes_FrontSide.OrderBy(n => n.X).ToList();
+
+            // Create gridlines
+            List<CGridLine> listOfGridlines = new List<CGridLine>();
+
+            for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
+            {
+                Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
+                CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), (i+1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y);
+                listOfGridlines.Add(gl);
+            }
+
+            for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
+            {
+                Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
+                CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X);
+                listOfGridlines.Add(gl);
+            }
+
+            // Create gridlines models
+            if (sDisplayOptions.bDisplayGridlines) gridlines3DGroup = Drawing3D.CreateModelGridlines_Model3DGroup(listOfGridlines, model, sDisplayOptions);
+            if (gridlines3DGroup != null) gr.Children.Add(gridlines3DGroup);
+
+            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
+            if (gridlines3DGroup != null)
+            {
+                foreach (CGridLine gridLine in listOfGridlines)
+                {
+                    DrawGridLineLabelText3D(gridLine, _trackport.ViewPort, sDisplayOptions);
+                }
+            }
+        }
 
     }
 }

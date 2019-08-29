@@ -747,6 +747,7 @@
         public bool bDisplaySawCutsDescription;
         public bool bDisplayControlJointsDescription;
         public bool bDisplayDimensions;
+        public bool bDisplayGridlines;
 
         public bool bDisplayLoads;
         public bool bDisplayLoadsLabels;
@@ -782,6 +783,7 @@
         public int fNodeDescriptionTextFontSize;
         public int fMemberDescriptionTextFontSize;
         public int fDimensionTextFontSize;
+        public int fGridLineLabelTextFontSize;
         public int fSawCutTextFontSize;
         public int fControlJointTextFontSize;
         public int fFoundationTextFontSize;
@@ -791,6 +793,8 @@
         public System.Windows.Media.Color MemberDescriptionTextColor;
         public System.Windows.Media.Color DimensionTextColor;
         public System.Windows.Media.Color DimensionLineColor;
+        public System.Windows.Media.Color GridLineLabelTextColor;
+        public System.Windows.Media.Color GridLineColor;
 
         public System.Windows.Media.Color SawCutTextColor;
         public System.Windows.Media.Color SawCutLineColor;

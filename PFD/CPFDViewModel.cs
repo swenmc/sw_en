@@ -145,6 +145,7 @@ namespace PFD
         private bool MShowSawCutsDescription;
         private bool MShowControlJointsDescription;
         private bool MShowDimensions;
+        private bool MShowGridLines;
 
         private float MDisplayIn3DRatio;
 
@@ -2060,6 +2061,20 @@ namespace PFD
             }
         }
 
+        public bool ShowGridLines
+        {
+            get
+            {
+                return MShowGridLines;
+            }
+
+            set
+            {
+                MShowGridLines = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowGridLines");
+            }
+        }
+
         public bool TransformScreenLines3DToCylinders3D
         {
             get
@@ -2436,6 +2451,7 @@ namespace PFD
             ShowSawCutsDescription = false;
             ShowControlJointsDescription = false;
             ShowDimensions = true;
+            ShowGridLines = true;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
@@ -3010,6 +3026,7 @@ namespace PFD
             sDisplayOptions.bDisplaySawCutsDescription = ShowSawCutsDescription;
             sDisplayOptions.bDisplayControlJointsDescription = ShowControlJointsDescription;
             sDisplayOptions.bDisplayDimensions = ShowDimensions;
+            sDisplayOptions.bDisplayGridlines = ShowGridLines;
 
             sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
             sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
@@ -3044,6 +3061,7 @@ namespace PFD
             sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fDimensionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fGridLineLabelTextFontSize = 30; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.fSawCutTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fControlJointTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
@@ -3055,6 +3073,9 @@ namespace PFD
             sDisplayOptions.MemberDescriptionTextColor = Colors.Beige; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionTextColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionLineColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            sDisplayOptions.GridLineLabelTextColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.GridLineColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.SawCutTextColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.SawCutLineColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report

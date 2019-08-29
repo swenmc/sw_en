@@ -849,7 +849,6 @@ namespace BaseClasses.GraphObj
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, iTotNoPoints + i, iTotNoPoints + i + 1, i + 1);
                 else
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, iTotNoPoints + i, iTotNoPoints, 0); // Last Element
-
             }
 
             meshGeom3D.TriangleIndices = TriangleIndices;
