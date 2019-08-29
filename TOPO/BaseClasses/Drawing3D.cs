@@ -235,7 +235,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup nodes3DGroup = null;
-                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
+                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model, sDisplayOptions);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
@@ -460,7 +460,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup nodes3DGroup = null;
-                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
+                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model, sDisplayOptions);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 // Add WireFrame Model
@@ -637,7 +637,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup nodes3DGroup = null;
-                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model);
+                if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model, sDisplayOptions);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
                 // Pokus vyrobit lines 3D objekty
@@ -2534,8 +2534,6 @@ namespace BaseClasses
             }
             viewPort.Children.Add(textlabel);
 
-            Color dimensionColor = Colors.Red;
-
             // LINES
 
             float flineThickness = 4;
@@ -2567,17 +2565,17 @@ namespace BaseClasses
             ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
             wL1.Points.Add(dimension.PointStart);
             wL1.Points.Add(dimension.PointStartL2);
-            wL1.Color = dimensionColor;
+            wL1.Color = displayOptions.DimensionLineColor;
             wL1.Thickness = flineThickness;
 
             wL2.Points.Add(dimension.PointEnd);
             wL2.Points.Add(dimension.PointEndL2);
-            wL2.Color = dimensionColor;
+            wL2.Color = displayOptions.DimensionLineColor;
             wL2.Thickness = flineThickness;
 
             wMain.Points.Add(dimension.PointMainLine1);
             wMain.Points.Add(dimension.PointMainLine2);
-            wMain.Color = dimensionColor;
+            wMain.Color = displayOptions.DimensionLineColor;
             wMain.Thickness = flineThickness;
 
             if (centerModel)
@@ -2907,13 +2905,13 @@ namespace BaseClasses
 
             foreach (CGridLine gridLine in gridLines)
             {
-                gr.Children.Add(gridLine.GetGridLineModel(/*displayOptions.GridLineColor*/ Colors.Coral));
+                gr.Children.Add(gridLine.GetGridLineModel(displayOptions.GridLineColor));
             }
 
             return gr;
         }
 
-        private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model)
+        private static Model3DGroup CreateModelNodes_Model3DGroup(CModel model, DisplayOptions displayOptions)
         {
             double nodesSize = 0.01; // Polovica dlzky strany kocky alebo polomer gule
             Model3DGroup model3D_group = new Model3DGroup();
@@ -2932,7 +2930,7 @@ namespace BaseClasses
 
                         // Sphere
                         GraphObj.CVolume sphere = new GraphObj.CVolume();
-                        model3D_group.Children.Add(sphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(Colors.Cyan))));
+                        model3D_group.Children.Add(sphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(displayOptions.NodeColor))));
 
                         // Cube
                         //model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));

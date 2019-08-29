@@ -3069,6 +3069,7 @@ namespace PFD
             sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
+            sDisplayOptions.NodeColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report (neviem ci to budeme v reporte zobrazovat)
             sDisplayOptions.NodeDescriptionTextColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.MemberDescriptionTextColor = Colors.Beige; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.DimensionTextColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report

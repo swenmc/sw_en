@@ -798,6 +798,7 @@
         public int fFoundationTextFontSize;
         public int fFloorSlabTextFontSize;
 
+        public System.Windows.Media.Color NodeColor;
         public System.Windows.Media.Color NodeDescriptionTextColor;
         public System.Windows.Media.Color MemberDescriptionTextColor;
         public System.Windows.Media.Color DimensionTextColor;

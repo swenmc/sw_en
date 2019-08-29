@@ -241,6 +241,8 @@ namespace EXPIMP
             //opts.bDisplayJoints = true;
             //opts.bDisplayPlates = true;
 
+            opts.bDisplaySawCuts = false;
+            opts.bDisplayControlJoints = false;
             opts.bDisplayGridlines = false;
 
             // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
@@ -276,14 +278,17 @@ namespace EXPIMP
             opts.fGridLineLabelTextFontSize = 30;
             opts.GridLineLabelTextColor = System.Windows.Media.Colors.DarkGray;
             opts.GridLineColor = System.Windows.Media.Colors.DarkGray;
+            opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
 
             opts.fSawCutTextFontSize = 14;
-            opts.SawCutTextColor = System.Windows.Media.Colors.DarkGoldenrod;
-            opts.SawCutLineColor = System.Windows.Media.Colors.DarkGoldenrod;
+            opts.SawCutTextColor = System.Windows.Media.Colors.Black;
+            opts.SawCutLineColor = System.Windows.Media.Colors.Black;
+            opts.SawCutLinePatternType = ELinePatternType.DOTTED;
 
             opts.fControlJointTextFontSize = 14;
-            opts.ControlJointTextColor = System.Windows.Media.Colors.DarkMagenta;
-            opts.ControlJointLineColor = System.Windows.Media.Colors.DarkMagenta;
+            opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
+            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
+            opts.SawCutLinePatternType = ELinePatternType.DIVIDE;
 
             opts.fFoundationTextFontSize = 14;
             opts.FoundationTextColor = System.Windows.Media.Colors.Black;
