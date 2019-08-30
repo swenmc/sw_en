@@ -51,7 +51,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Point3D PointEnd_LCS
+        public Point3D PointLineEnd_LCS
         {
             get
             {

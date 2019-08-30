@@ -242,6 +242,8 @@ namespace BaseClasses
 
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
 
+                DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
+
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
@@ -2634,6 +2636,46 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
+        // Draw Section Symbol Label Text 3D
+        public static void DrawSectionSymbolLabelText3D(CSectionSymbol sectionSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = sectionSymbol.LabelText;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.5f;
+
+            tb.FontStretch = FontStretches.Normal;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Normal;
+            tb.Foreground = new SolidColorBrush(displayOptions.SectionSymbolLabelTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
+            Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sectionSymbol.iVectorUpFactor_LCS, 0);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sectionSymbol.PointLabelText, over, up);
+
+            if (centerModel)
+            {
+                Transform3DGroup tr = new Transform3DGroup();
+
+                //if (sectionSymbol.TransformGr == null)
+                //{
+                //    throw new Exception("");
+                //}
+
+                if (sectionSymbol.TransformGr != null)
+                {
+                    tr.Children.Add(sectionSymbol.TransformGr);
+                }
+                tr.Children.Add(centerModelTransGr);
+                textlabel.Transform = tr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
         // Draw Saw Cut Text 3D
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -2902,6 +2944,21 @@ namespace BaseClasses
             foreach (CGridLine gridLine in gridLines)
             {
                 gr.Children.Add(gridLine.GetGridLineModel(displayOptions.GridLineColor));
+            }
+
+            return gr;
+        }
+
+        private static Model3DGroup CreateModelSectionSymbols_Model3DGroup(List<CSectionSymbol> sectionSymbols, CModel model, DisplayOptions displayOptions)
+        {
+            if (sectionSymbols == null || sectionSymbols.Count == 0)
+                return null;
+
+            Model3DGroup gr = new Model3DGroup();
+
+            foreach (CSectionSymbol sectionSymbol in sectionSymbols)
+            {
+                gr.Children.Add(sectionSymbol.GetSectionSymbolModel(displayOptions.SectionSymbolColor));
             }
 
             return gr;
@@ -5423,6 +5480,35 @@ namespace BaseClasses
                 foreach (CGridLine gridLine in listOfGridlines)
                 {
                     DrawGridLineLabelText3D(gridLine, _trackport.ViewPort, sDisplayOptions);
+                }
+            }
+        }
+
+        private static void DrawSectionSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        {
+            Model3DGroup sectionSymbols3DGroup = null;
+
+            // Create section symbols
+            List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
+
+            CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true);
+            CSectionSymbol secSymbol2 = new CSectionSymbol(new Point3D(2, 0, 0), new Vector3D(-1, 0, 0), "B", -0.75f, 1.5f, true); // Left
+            CSectionSymbol secSymbol3 = new CSectionSymbol(new Point3D(2, model.fL_tot, 0), new Vector3D(-1, 0, 0), "B", 0.75f, 1.5f, false); // Right
+
+            listOfSectionSymbols.Add(secSymbol1);
+            listOfSectionSymbols.Add(secSymbol2);
+            listOfSectionSymbols.Add(secSymbol3);
+
+            // Create gridlines models
+            if (sDisplayOptions.bDisplaySectionSymbols) sectionSymbols3DGroup = Drawing3D.CreateModelSectionSymbols_Model3DGroup(listOfSectionSymbols, model, sDisplayOptions);
+            if (sectionSymbols3DGroup != null) gr.Children.Add(sectionSymbols3DGroup);
+
+            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
+            if (sectionSymbols3DGroup != null)
+            {
+                foreach (CSectionSymbol sectionSymbol in listOfSectionSymbols)
+                {
+                    DrawSectionSymbolLabelText3D(sectionSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
                 }
             }
         }
