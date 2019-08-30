@@ -1231,7 +1231,7 @@ namespace PFD
             set
             {
                 if (value < 0f || value > 50)
-                    throw new ArgumentException("Spacing of saw control joints be between 0 and 50 [m]");
+                    throw new ArgumentException("Spacing of saw control joints must be between 0 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionY = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
