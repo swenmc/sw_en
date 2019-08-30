@@ -368,7 +368,7 @@ namespace BaseClasses
             int iNumberOfBarsTop_y,
             int iNumberOfBarsBottom_x,
             int iNumberOfBarsBottom_y,
-            Color volColor,
+            //Color volColor,
             float fvolOpacity,
             bool bIsDisplayed,
             float fTime)
@@ -395,7 +395,7 @@ namespace BaseClasses
             m_Count_Top_Bars_y = iNumberOfBarsTop_y;
             m_Count_Bottom_Bars_x = iNumberOfBarsBottom_x;
             m_Count_Bottom_Bars_y = iNumberOfBarsBottom_y;
-            m_volColor_2 = volColor;
+            //m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
@@ -438,8 +438,9 @@ namespace BaseClasses
         //    return CreateGeomModel3D(new SolidColorBrush(colorBrush));
         //}
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(Color color, float fOpacity)
         {
+            m_volColor_2 = color;
             Visual_Object = CreateGeomModel3D(new SolidColorBrush(m_volColor_2), fOpacity);
             return Visual_Object;
         }
@@ -563,7 +564,7 @@ namespace BaseClasses
                         controlPoint,
                         referenceBar.m_fDim2, // Length
                         2 * referenceBar.m_fDim1, // Diameter
-                        referenceBar.m_volColor_2,
+                        //referenceBar.m_volColor_2,
                         referenceBar.m_fvolOpacity,
                         referenceBar.BIsDisplayed,
                         referenceBar.FTime));

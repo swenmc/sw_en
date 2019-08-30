@@ -810,7 +810,7 @@ namespace BaseClasses
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplayMembers)
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, null, null, null, egcs);
+                        sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections, null, null, null, sDisplayOptions.fMemberSolidModelOpacity, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -839,6 +839,7 @@ namespace BaseClasses
             SolidColorBrush front = null,
             SolidColorBrush shell = null,
             SolidColorBrush back = null,
+            float fOpacity = 0.3f,
             EGCS egcs = EGCS.eGCSLeftHanded)
         {
             if (front == null) front = new SolidColorBrush(Colors.Red); // Material color - Front Side
@@ -848,9 +849,9 @@ namespace BaseClasses
             if (bTranspartentModel)
             {
                 front.Opacity = back.Opacity = 0.6;
-                shell.Opacity = 0.2;
+                shell.Opacity = fOpacity;
             }
-            else front.Opacity = shell.Opacity = back.Opacity = 0.8f;
+            else front.Opacity = shell.Opacity = back.Opacity = fOpacity;
 
             Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
@@ -1196,9 +1197,6 @@ namespace BaseClasses
 
             if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
             {
-                //SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
-                float fbrushOpacity = 0.4f;
-
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
                 {
@@ -1217,7 +1215,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1231,7 +1229,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Top_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1245,7 +1243,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Bottom_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1259,7 +1257,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(/*brushReinforcement*/ /*TEMPORARY*/ cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Bottom_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1268,7 +1266,7 @@ namespace BaseClasses
 
                         //!!!!!!! POZOR PRIEHLADNOST ZAVISI NA PORADI VYKRESLOVANIA OBJEKTOV!!!!!!!!!
                         // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt zakladu
-                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
+                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(sDisplayOptions.FoundationColor, sDisplayOptions.fFoundationSolidModelOpacity);
                         model3D_group.Children.Add(model); // Add foundation to the model group
                     }
                 }
@@ -1285,8 +1283,6 @@ namespace BaseClasses
 
             if (cmodel.m_arrSlabs != null && sDisplayOptions.bDisplayFloorSlab)
             {
-                float fbrushOpacity = 0.3f;
-
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrSlabs.Count; i++)
                 {
@@ -1298,7 +1294,7 @@ namespace BaseClasses
 
                         //!!!!!!! POZOR PRIEHLADNOST ZAVISI NA PORADI VYKRESLOVANIA OBJEKTOV!!!!!!!!!
                         // Najprv vykreslit to co je "skryte vo vnutri - vyztuz" a az potom vonkajsi hlavny objekt betonovej dosky
-                        GeometryModel3D model = cmodel.m_arrSlabs[i].CreateGeomModel3D(/*brushFoundations*/ fbrushOpacity);
+                        GeometryModel3D model = cmodel.m_arrSlabs[i].CreateGeomModel3D(sDisplayOptions.FloorSlabColor, sDisplayOptions.fFloorSlabSolidModelOpacity);
                         model3D_group.Children.Add(model); // Add slab to the model group
 
                         if (cmodel.m_arrSlabs[i].SawCuts != null && sDisplayOptions.bDisplaySawCuts)
@@ -3606,7 +3602,7 @@ namespace BaseClasses
                         GeometryModel3D model3D = f.Visual_Object;
 
                         if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
-                            model3D = f.Visual_Object = f.CreateGeomModel3D(0.2f); // TODO zaviest opacity ako parameter
+                            model3D = f.Visual_Object = f.CreateGeomModel3D(Colors.Gray, 0.2f); // TODO zaviest opacity ako parameter
 
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
 
@@ -3723,7 +3719,7 @@ namespace BaseClasses
                         GeometryModel3D model3D = f.Visual_Object;
 
                         if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
-                            model3D = f.Visual_Object = f.CreateGeomModel3D(0.2f); // TODO zaviest opacity ako parameter
+                            model3D = f.Visual_Object = f.CreateGeomModel3D(Colors.Gray, 0.2f); // TODO zaviest opacity ako parameter
 
                         MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
 

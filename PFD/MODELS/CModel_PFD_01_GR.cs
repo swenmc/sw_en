@@ -170,7 +170,7 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.eGirtWall].CSColor = Colors.Orange;            // Girt - Wall
             m_arrCrSc[(int)EMemberGroupNames.ePurlin].CSColor = Colors.SlateBlue;           // Purlin
             m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].CSColor = Colors.BlueViolet;     // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor = Colors.BlueViolet;     // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn].CSColor = Colors.BlueViolet;      // Back Column
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].CSColor = Colors.Brown;            // Front Girt
             m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // Back Girt
 
@@ -2297,7 +2297,7 @@ namespace PFD
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
                     string sDescriptionText = "PAD TYPE A [MC]";
-                    Color color = Colors.LightSkyBlue;
+                    //Color color = Colors.LightSkyBlue;
 
                     if (i == 0 || i == (iFrameNo - 1)) // First or last frame
                     {
@@ -2311,7 +2311,7 @@ namespace PFD
                         if (i == (iFrameNo - 1)) // Back side edge frame columns
                             fMainColumnFooting_Eccentricity_x *= -1;
 
-                        color = Colors.LightSteelBlue;
+                        //color = Colors.LightSteelBlue;
                     }
 
                     // Left
@@ -2337,7 +2337,7 @@ namespace PFD
                         iMainColumnFootingNumberOfBarsTop_y,
                         iMainColumnFootingNumberOfBarsBottom_x,
                         iMainColumnFootingNumberOfBarsBottom_y,
-                        color,
+                        //color,
                         0.5f,
                         true,
                         0));
@@ -2365,7 +2365,7 @@ namespace PFD
                         iMainColumnFootingNumberOfBarsTop_y,
                         iMainColumnFootingNumberOfBarsBottom_x,
                         iMainColumnFootingNumberOfBarsBottom_y,
-                        color,
+                        //color,
                         0.5f,
                         true,
                         0));
@@ -2443,7 +2443,7 @@ namespace PFD
                             iFrontColumnFootingNumberOfBarsTop_y,
                             iFrontColumnFootingNumberOfBarsBottom_x,
                             iFrontColumnFootingNumberOfBarsBottom_y,
-                            Colors.LightSeaGreen,
+                            //Colors.LightSeaGreen,
                             0.5f,
                             true,
                             0));
@@ -2521,7 +2521,7 @@ namespace PFD
                             iBackColumnFootingNumberOfBarsTop_y,
                             iBackColumnFootingNumberOfBarsBottom_x,
                             iBackColumnFootingNumberOfBarsBottom_y,
-                            Colors.Coral,
+                            //Colors.Coral,
                             0.5f,
                             true,
                             0));
@@ -2624,7 +2624,7 @@ namespace PFD
                             //iBackColumnFootingNumberOfBarsTop_y,
                             //iBackColumnFootingNumberOfBarsBottom_x,
                             //iBackColumnFootingNumberOfBarsBottom_y,
-                            Colors.LightGray,
+                            //Colors.LightGray,
                             0.3f,
                             true,
                             0));
@@ -2673,10 +2673,10 @@ namespace PFD
             Point3D cp_Bottom_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
             Point3D cp_Bottom_y = new Point3D(fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
 
-            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, Colors.CadetBlue, 0.5f, true, 0);
-            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, Colors.Coral, 0.5f, true, 0);
-            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, Colors.YellowGreen, 0.5f, true, 0);
-            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, Colors.Purple, 0.5f, true, 0);
+            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, 0);
+            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, true, 0);
+            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, true, 0);
+            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, true, 0);
         }
     }
 }

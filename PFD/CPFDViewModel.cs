@@ -2875,7 +2875,7 @@ namespace PFD
             data.frameModels = frameModels;
 
             data.JointsDict = JointsVM.DictJoints;
-            data.FootingsDict = FootingVM.DictFootings;        
+            data.FootingsDict = FootingVM.DictFootings;
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();
@@ -3089,6 +3089,25 @@ namespace PFD
 
             sDisplayOptions.FoundationTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.FloorSlabTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            sDisplayOptions.FoundationColor = Colors.DarkGray; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.FloorSlabColor = Colors.LightGray;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+
+            if (FootingVM != null)
+            {
+                sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
+                sDisplayOptions.ReinforcementBarColor_Top_y = FootingVM.LongReinTop_y_Color;
+                sDisplayOptions.ReinforcementBarColor_Bottom_x = FootingVM.LongReinBottom_x_Color;
+                sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
+            }
+
+            sDisplayOptions.fMemberSolidModelOpacity = 0.8f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fPlateSolidModelOpacity = 0.5f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fScrewSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fAnchorSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fFoundationSolidModelOpacity = 0.2f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fReinforcementBarSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fFloorSlabSolidModelOpacity = 0.2f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

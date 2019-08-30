@@ -40,6 +40,13 @@ namespace PFD
             // Clear all lists
             DeleteAllLists();
 
+
+            if (model is CModel_PFD_01_GR) // !!! Docasna vynimka - neviem ci je nieco zle alebo to tu spadlo z dovodu inej chyby alebo vynimky
+            {
+                CModel_PFD_01_GR m = (CModel_PFD_01_GR)model;
+                if(m.m_arrLoadCombs == null) return; // TO Ondrej - tu mi to spadlo s tym ze zoznam kombinacii je null
+            }
+
             // For each load combination add one row
             for (int i = 0; i < model.m_arrLoadCombs.Length; i++)
             {

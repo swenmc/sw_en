@@ -276,8 +276,8 @@ namespace EXPIMP
             opts.DimensionLineColor = System.Windows.Media.Colors.Black;
 
             opts.fGridLineLabelTextFontSize = 30;
-            opts.GridLineLabelTextColor = System.Windows.Media.Colors.DarkGray;
-            opts.GridLineColor = System.Windows.Media.Colors.DarkGray;
+            opts.GridLineLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.GridLineColor = System.Windows.Media.Colors.Black;
             opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
 
             opts.fSawCutTextFontSize = 14;
@@ -288,13 +288,24 @@ namespace EXPIMP
             opts.fControlJointTextFontSize = 14;
             opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
             opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
-            opts.SawCutLinePatternType = ELinePatternType.DIVIDE;
+            opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
 
             opts.fFoundationTextFontSize = 14;
+            opts.FoundationColor = System.Windows.Media.Colors.White;
             opts.FoundationTextColor = System.Windows.Media.Colors.Black;
 
             opts.fFloorSlabTextFontSize = 14;
+            opts.FloorSlabColor = System.Windows.Media.Colors.White;
             opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
+
+            opts.ReinforcementBarColor_Top_x = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Top_y = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Bottom_y = System.Windows.Media.Colors.Black;
+
+            opts.fFoundationSolidModelOpacity = 0;
+            opts.fFloorSlabSolidModelOpacity = 0;
+            opts.fReinforcementBarSolidModelOpacity = 1;
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};

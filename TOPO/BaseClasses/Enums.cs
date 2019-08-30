@@ -817,6 +817,21 @@
 
         public System.Windows.Media.Color FoundationTextColor;
         public System.Windows.Media.Color FloorSlabTextColor;
+
+        public System.Windows.Media.Color FoundationColor;
+        public System.Windows.Media.Color FloorSlabColor;
+        public System.Windows.Media.Color ReinforcementBarColor_Top_x;
+        public System.Windows.Media.Color ReinforcementBarColor_Top_y;
+        public System.Windows.Media.Color ReinforcementBarColor_Bottom_x;
+        public System.Windows.Media.Color ReinforcementBarColor_Bottom_y;
+
+        public float fMemberSolidModelOpacity;
+        public float fPlateSolidModelOpacity;
+        public float fScrewSolidModelOpacity;
+        public float fAnchorSolidModelOpacity;
+        public float fFoundationSolidModelOpacity;
+        public float fReinforcementBarSolidModelOpacity;
+        public float fFloorSlabSolidModelOpacity;
     }
 
     public struct BuildingDataInput

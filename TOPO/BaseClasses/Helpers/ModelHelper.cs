@@ -288,7 +288,7 @@ namespace BaseClasses.Helpers
                     GeometryModel3D model3D = f.Visual_Object;
 
                     if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
-                        model3D = f.Visual_Object = f.CreateGeomModel3D(0.2f); // TODO zaviest opacity ako parameter
+                        model3D = f.Visual_Object = f.CreateGeomModel3D(System.Windows.Media.Colors.Gray, 0.2f); // TODO zaviest opacity ako parameter
 
                     MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
 

@@ -128,7 +128,7 @@ namespace BaseClasses
         */
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
             Name = barName;
@@ -138,7 +138,7 @@ namespace BaseClasses
             //m_EndPoint - závisi od pootocenia
             m_fDim1 = 0.5f * fDiameter;
             m_fDim2 = fLength;
-            m_volColor_2 = volColor;
+            //m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
@@ -169,14 +169,20 @@ namespace BaseClasses
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(Transform3DGroup temp)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity, Transform3DGroup temp)
         {
-            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2), temp);
+            SolidColorBrush brush = new SolidColorBrush(m_volColor_2);
+            brush.Opacity = fOpacity;
+
+            return CreateGeomModel3D(brush, temp);
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush, Transform3DGroup temp)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush, float fOpacity, Transform3DGroup temp)
         {
-            return CreateGeomModel3D(new SolidColorBrush(colorBrush), temp);
+            SolidColorBrush brush = new SolidColorBrush(colorBrush);
+            brush.Opacity = fOpacity;
+
+            return CreateGeomModel3D(brush, temp);
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, Transform3DGroup temp)

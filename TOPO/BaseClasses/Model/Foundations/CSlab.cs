@@ -484,7 +484,7 @@ namespace BaseClasses
             //int iNumberOfBarsTop_y,
             //int iNumberOfBarsBottom_x,
             //int iNumberOfBarsBottom_y,
-            Color volColor,
+            //Color volColor,
             float fvolOpacity,
             bool bIsDisplayed,
             float fTime)
@@ -520,7 +520,7 @@ namespace BaseClasses
             //m_Count_Top_Bars_y = iNumberOfBarsTop_y;
             //m_Count_Bottom_Bars_x = iNumberOfBarsBottom_x;
             //m_Count_Bottom_Bars_y = iNumberOfBarsBottom_y;
-            m_volColor_2 = volColor;
+            //m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
@@ -549,21 +549,22 @@ namespace BaseClasses
             };
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity)
+        public /*override*/ GeometryModel3D CreateGeomModel3D(Color color, float fOpacity)
         {
+            m_volColor_2 = color;
             Visual_Object = CreateGeomModel3D(new SolidColorBrush(m_volColor_2), fOpacity);
             return Visual_Object;
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, float fOpacity)
         {
-            brush.Opacity = fOpacity; // Set brush opacity // TODO - mozeme nejako vypesit a prepojit s GUI, aby to bol piamo parameter zadavany spolu s farbou zakladu
+            brush.Opacity = fOpacity; // Set brush opacity // TODO - mozeme nejako vylepsit a prepojit s GUI, aby to bol piamo parameter zadavany spolu s farbou zakladu
 
             GeometryModel3D model = new GeometryModel3D();
 
             // TODO - pohrat sa s nastavenim farieb
             DiffuseMaterial qDiffTrans = new DiffuseMaterial(brush);
-            SpecularMaterial qSpecTrans = new SpecularMaterial(brush/*new SolidColorBrush(Color.FromArgb(210, 210, 210, 210))*/, 90.0);
+            SpecularMaterial qSpecTrans = new SpecularMaterial(brush, 90.0);
 
             MaterialGroup qOuterMaterial = new MaterialGroup();
             qOuterMaterial.Children.Add(qDiffTrans);
