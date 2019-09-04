@@ -833,9 +833,9 @@ namespace PFD
             }
             if (vm.RecreateFloorSlab)
             {
-                vm.IsSetFromCode = true;
+                vm.FootingVM.IsSetFromCode = true;
                 vm.FootingVM.UpdateFloorSlab();
-                vm.IsSetFromCode = false;
+                vm.FootingVM.IsSetFromCode = false;
             }
         }
 

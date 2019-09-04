@@ -1998,15 +1998,15 @@ namespace PFD
 
             // Predpoklada sa, ze posledny saw cut je rovnako vzdialeny od konca ako prvy od zaciatku
             if (m_NumberOfSawCutsInDirectionX >= 1)
-                m_SawCutsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
+                SawCutsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstSawCutPositionInDirectionX) / (m_NumberOfSawCutsInDirectionX - 1);
             if (m_NumberOfSawCutsInDirectionY >= 1)
-                m_SawCutsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstSawCutPositionInDirectionY) / (m_NumberOfSawCutsInDirectionY - 1);
+                SawCutsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstSawCutPositionInDirectionY) / (m_NumberOfSawCutsInDirectionY - 1);
 
             // Predpoklada sa, ze posledny control joint je rovnako vzdialeny od konca ako prvy od zaciatku
             if (m_NumberOfControlJointsInDirectionX >= 1)
-                m_ControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstControlJointPositionInDirectionX) / (m_NumberOfControlJointsInDirectionX - 1);
+                ControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstControlJointPositionInDirectionX) / (m_NumberOfControlJointsInDirectionX - 1);
             if (m_NumberOfControlJointsInDirectionY >= 1)
-                m_ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
+                ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
 
             if(m_SawCutsSpacingInDirectionX > 10 || m_SawCutsSpacingInDirectionY > 10)
             {
