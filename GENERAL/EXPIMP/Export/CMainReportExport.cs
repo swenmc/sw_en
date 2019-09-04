@@ -59,38 +59,6 @@ namespace EXPIMP
                                        "cold-formed steel" + ", " +
                                        "portal frame";
 
-            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            //DrawLogo(gfx);
-            //DrawProjectInfo(gfx,GetProjectInfo());
-
-            // TODO Ondrej - toto ma byt dynamicke - to znamena ze by sme do tohto zoznamu mali pridavat polozky pocas generovania stranok a az na konci vlozit tabulku na prvu stranku podla toho co sme vygenerovali
-            // Podobne ako ked sa vytvaraju obsahy v dokumentoch
-
-            // Tabulka so zoznamom vykresov
-            // TODO
-            // TO Ondrej - vyrobil by som nejaku triedu s nazvom pageDetails alebo layoutDetails
-            // Vyrobil by som nejaky enum s moznymi nazvami vykresov
-            // To tej triedy by som daj ako property ten enum, nazov vykresu, mozno enum pre filter pre vykresy ktore sa tvoria z 3D pohladu filtra
-            // A potom by som podla enumu pre nazov layoutu alebo enumu pre nazov view vkladal riadky do zoznamu pre tabulku na prvej stranke
-            // fs01-fs12 by sa mali generovat automaticky podla toho kolko stranok vygenerujem
-
-            //string[] row1 = new string[2] { "fs01", "Isometric View" };
-            //string[] row2 = new string[2] { "fs02", "Front Elevation" };
-            //string[] row3 = new string[2] { "fs03", "Back Elevation" };
-            //string[] row4 = new string[2] { "fs04", "Left Elevation" };
-            //string[] row5 = new string[2] { "fs05", "Right Elevation" };
-            //string[] row6 = new string[2] { "fs06", "Roof Layout" };
-            //string[] row7 = new string[2] { "fs07", "Middle Frame" };
-            //string[] row8 = new string[2] { "fs08", "Columns" };
-            //string[] row9 = new string[2] { "fs09", "Foundation Pads" };
-            //string[] row10 = new string[2] { "fs10", "Floor Plan" };
-            //string[] row11 = new string[2] { "fs11", "Details - Standard 1" };
-            //string[] row12 = new string[2] { "fs12", "Details - Standard 2" };
-            //string[] row13 = new string[2] { "fs13", "Details - Joints" };
-            //string[] row14 = new string[2] { "fs14", "Details - Footing Pads" };
-
-            //List<string[]> tableParams = new List<string[]>() { row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14 };
-
             contents = new List<string[]>();
 
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
@@ -901,13 +869,16 @@ namespace EXPIMP
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
-            float fPerimeterDepth = 0.55f;
-            float fPerimeterBottomWidth = 0.25f;
-            float fMeshAndStartersOverlapping = 0.6f;
+            // TODO - zapracovat pre lavu/pravu stranu a potom samostatne prednu a zadnu PerimeterBeams by malo obsahovat 4 objekty
+            float fPerimeterDepth = data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().PerimeterDepth;
+            float fPerimeterBottomWidth = data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().PerimeterWidth;
+            float fMeshAndStartersOverlapping = data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().StartersLapLength;
+            float fStartersDiameter = data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().Starters_Phi;
+            float fStartersSpacing = data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().StartersSpacing;
 
             CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
             float fFloorSlabTopCover = slab.ConcreteCover;
-            CFoundation f = data.Model.m_arrFoundations.FirstOrDefault(); // ???? Budeme zadavat samostatne pre perimeter, vytvorit objekt perimeter ????
+            CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
             float fPerimeterCover = f.ConcreteCover;
 
             float fStarterTopPosition = fFloorSlabTopCover + 0.02f; // Mesh position + 20 mm
@@ -921,8 +892,8 @@ namespace EXPIMP
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
             string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP7 = "HD12 Starters";
-            string sTextP8 = "600 mm crs";
+            string sTextP7 = "HD"+ (fStartersDiameter * 1000).ToString("F0") + " Starters";
+            string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
 
             // IN WORK 26.8.2019
             // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
@@ -966,10 +937,14 @@ namespace EXPIMP
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
-                    float fPerimeterDepthRebate = fPerimeterDepth - 0.02f; // 10 + 10 mm
+                    // TODO - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
+                    float fRebateEdgeDepth = 0.02f; //  data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().SlabRebates.First().RebateDepth_Edge;
+
+                    float fPerimeterDepthRebate = fPerimeterDepth - fRebateEdgeDepth; // Default - 10 + 10 mm
                     sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
 
-                    float fRollerDoorRebate = 0.5f;
+                    // TODO - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
+                    float fRollerDoorRebate = 0.5f; // data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().SlabRebates.First().RebateWidth;
                     sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
 
                     gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);

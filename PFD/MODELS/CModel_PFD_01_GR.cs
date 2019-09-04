@@ -2593,6 +2593,23 @@ namespace PFD
                 float fControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * fFirstControlJointPositionInDirectionX) / (iNumberOfControlJointsInDirectionX - 1);
                 float fControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * fFirstControlJointPositionInDirectionY) / (iNumberOfControlJointsInDirectionY - 1);
 
+                float fPerimeterDepth_LRSide = 0.55f;
+                float fPerimeterWidth_LRSide = 0.25f;
+                float fStartersLapLength_LRSide = 0.6f;
+                float fStartersSpacing_LRSide = 0.6f;
+                float fStarters_Phi_LRSide = 0.012f;
+                float fLongitud_Reinf_TopAndBotom_Phi_LRSide = 0.016f;
+                float fLongitud_Reinf_Intermediate_Phi_LRSide = 0.012f;
+                int fLongitud_Reinf_Intermediate_Count_LRSide = 1;
+                float fPerimeterDepth_FBSide = 0.55f;
+                float fPerimeterWidth_FBSide = 0.25f;
+                float fStartersLapLength_FBSide = 0.6f;
+                float fStartersSpacing_FBSide = 0.6f;
+                float fStarters_Phi_FBSide = 0.012f;
+                float fLongitud_Reinf_TopAndBotom_Phi_FBSide = 0.016f;
+                float fLongitud_Reinf_Intermediate_Phi_FBSide = 0.012f;
+                int fLongitud_Reinf_Intermediate_Count_FBSide = 1;
+
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
                             materialConcrete,
@@ -2615,7 +2632,22 @@ namespace PFD
                             fFirstControlJointPositionInDirectionY,
                             fControlJointsSpacingInDirectionX,
                             fControlJointsSpacingInDirectionY,
-
+                            fPerimeterDepth_LRSide,
+                            fPerimeterWidth_LRSide,
+                            fStartersLapLength_LRSide,
+                            fStartersSpacing_LRSide,
+                            fStarters_Phi_LRSide,
+                            fLongitud_Reinf_TopAndBotom_Phi_LRSide,
+                            fLongitud_Reinf_Intermediate_Phi_LRSide,
+                            fLongitud_Reinf_Intermediate_Count_LRSide,
+                            fPerimeterDepth_FBSide,
+                            fPerimeterWidth_FBSide,
+                            fStartersLapLength_FBSide,
+                            fStartersSpacing_FBSide,
+                            fStarters_Phi_FBSide,
+                            fLongitud_Reinf_TopAndBotom_Phi_FBSide,
+                            fLongitud_Reinf_Intermediate_Phi_FBSide,
+                            fLongitud_Reinf_Intermediate_Count_FBSide,
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
                             //BackColumnFootingReference_Bottom_Bar_x,

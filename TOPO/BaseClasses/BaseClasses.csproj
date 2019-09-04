@@ -103,9 +103,11 @@
     <Compile Include="GraphObj\CSectionSymbol.cs" />
     <Compile Include="GraphObj\Objects_3D\CHollowCylinder.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
-    <Compile Include="Model\CControlJoint.cs" />
+    <Compile Include="Model\Foundations\CSlabRebate.cs" />
+    <Compile Include="Model\Foundations\CSlabPerimeter.cs" />
+    <Compile Include="Model\Foundations\CControlJoint.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CDowel.cs" />
-    <Compile Include="Model\CSawCut.cs" />
+    <Compile Include="Model\Foundations\CSawCut.cs" />
     <Compile Include="Model\CTrapezoidalSheetingMember.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GlobalConstants.cs" />

@@ -58,6 +58,26 @@ namespace BaseClasses
 
         private List<CControlJoint> m_ControlJoints;
 
+        private float m_PerimeterDepth_LRSide;
+        private float m_PerimeterWidth_LRSide;
+        private float m_StartersLapLength_LRSide;
+        private float m_StartersSpacing_LRSide;
+        private float m_Starters_Phi_LRSide;
+        private float m_Longitud_Reinf_TopAndBotom_Phi_LRSide;
+        private float m_Longitud_Reinf_Intermediate_Phi_LRSide;
+        private int m_Longitud_Reinf_Intermediate_Count_LRSide;
+
+        private float m_PerimeterDepth_FBSide;
+        private float m_PerimeterWidth_FBSide;
+        private float m_StartersLapLength_FBSide;
+        private float m_StartersSpacing_FBSide;
+        private float m_Starters_Phi_FBSide;
+        private float m_Longitud_Reinf_TopAndBotom_Phi_FBSide;
+        private float m_Longitud_Reinf_Intermediate_Phi_FBSide;
+        private int m_Longitud_Reinf_Intermediate_Count_FBSide;
+
+        private List<CSlabPerimeter> m_PerimeterBeams;
+
         private List<Point3D> MWireFramePoints;
 
         private CJointDesignDetails m_DesignDetails;
@@ -447,6 +467,238 @@ namespace BaseClasses
             set { m_ControlJoints = value; }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float PerimeterDepth_LRSide
+        {
+            get
+            {
+                return m_PerimeterDepth_LRSide;
+            }
+
+            set
+            {
+                m_PerimeterDepth_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float PerimeterWidth_LRSide
+        {
+            get
+            {
+                return m_PerimeterWidth_LRSide;
+            }
+
+            set
+            {
+                m_PerimeterWidth_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float StartersLapLength_LRSide
+        {
+            get
+            {
+                return m_StartersLapLength_LRSide;
+            }
+
+            set
+            {
+                m_StartersLapLength_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float StartersSpacing_LRSide
+        {
+            get
+            {
+                return m_StartersSpacing_LRSide;
+            }
+
+            set
+            {
+                m_StartersSpacing_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Starters_Phi_LRSide
+        {
+            get
+            {
+                return m_Starters_Phi_LRSide;
+            }
+
+            set
+            {
+                m_Starters_Phi_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Longitud_Reinf_TopAndBotom_Phi_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_TopAndBotom_Phi_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_TopAndBotom_Phi_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Longitud_Reinf_Intermediate_Phi_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Phi_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Phi_LRSide = value;
+            }
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Longitud_Reinf_Intermediate_Count_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Count_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Count_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float PerimeterDepth_FBSide
+        {
+            get
+            {
+                return m_PerimeterDepth_FBSide;
+            }
+
+            set
+            {
+                m_PerimeterDepth_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float PerimeterWidth_FBSide
+        {
+            get
+            {
+                return m_PerimeterWidth_FBSide;
+            }
+
+            set
+            {
+                m_PerimeterWidth_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float StartersLapLength_FBSide
+        {
+            get
+            {
+                return m_StartersLapLength_FBSide;
+            }
+
+            set
+            {
+                m_StartersLapLength_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float StartersSpacing_FBSide
+        {
+            get
+            {
+                return m_StartersSpacing_FBSide;
+            }
+
+            set
+            {
+                m_StartersSpacing_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Starters_Phi_FBSide
+        {
+            get
+            {
+                return m_Starters_Phi_FBSide;
+            }
+
+            set
+            {
+                m_Starters_Phi_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Longitud_Reinf_TopAndBotom_Phi_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_TopAndBotom_Phi_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_TopAndBotom_Phi_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Longitud_Reinf_Intermediate_Phi_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Phi_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Phi_FBSide = value;
+            }
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Longitud_Reinf_Intermediate_Count_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Count_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Count_FBSide = value;
+            }
+        }
+
+        public List<CSlabPerimeter> PerimeterBeams
+        {
+            get { return m_PerimeterBeams; }
+            set { m_PerimeterBeams = value; }
+        }
+
         private float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stlpy aby bolo vidno ich obrys
 
         public CSlab()
@@ -476,16 +728,33 @@ namespace BaseClasses
             float fFirstControlJointPositionInDirectionY,
             float fControlJointsSpacingInDirectionX,
             float fControlJointsSpacingInDirectionY,
-            //CReinforcementBar refTopBar_x,
-            //CReinforcementBar refTopBar_y,
-            //CReinforcementBar refBottomBar_x,
-            //CReinforcementBar refBottomBar_y,
-            //int iNumberOfBarsTop_x,
-            //int iNumberOfBarsTop_y,
-            //int iNumberOfBarsBottom_x,
-            //int iNumberOfBarsBottom_y,
-            //Color volColor,
-            float fvolOpacity,
+            float fPerimeterDepth_LRSide,
+            float fPerimeterWidth_LRSide,
+            float fStartersLapLength_LRSide,
+            float fStartersSpacing_LRSide,
+            float fStarters_Phi_LRSide,
+            float fLongitud_Reinf_TopAndBotom_Phi_LRSide,
+            float fLongitud_Reinf_Intermediate_Phi_LRSide,
+            int   iLongitud_Reinf_Intermediate_Count_LRSide,
+            float fPerimeterDepth_FBSide,
+            float fPerimeterWidth_FBSide,
+            float fStartersLapLength_FBSide,
+            float fStartersSpacing_FBSide,
+            float fStarters_Phi_FBSide,
+            float fLongitud_Reinf_TopAndBotom_Phi_FBSide,
+            float fLongitud_Reinf_Intermediate_Phi_FBSide,
+            int   iLongitud_Reinf_Intermediate_Count_FBSide,
+
+        //CReinforcementBar refTopBar_x,
+        //CReinforcementBar refTopBar_y,
+        //CReinforcementBar refBottomBar_x,
+        //CReinforcementBar refBottomBar_y,
+        //int iNumberOfBarsTop_x,
+        //int iNumberOfBarsTop_y,
+        //int iNumberOfBarsBottom_x,
+        //int iNumberOfBarsBottom_y,
+        //Color volColor,
+        float fvolOpacity,
             bool bIsDisplayed,
             float fTime)
         {
@@ -511,6 +780,22 @@ namespace BaseClasses
             m_FirstControlJointPositionInDirectionY = fFirstControlJointPositionInDirectionY;
             m_ControlJointsSpacingInDirectionX = fControlJointsSpacingInDirectionX;
             m_ControlJointsSpacingInDirectionY = fControlJointsSpacingInDirectionY;
+            m_PerimeterDepth_LRSide = fPerimeterDepth_LRSide;
+            m_PerimeterWidth_LRSide = fPerimeterWidth_LRSide;
+            m_StartersLapLength_LRSide = fStartersLapLength_LRSide;
+            m_StartersSpacing_LRSide = fStartersSpacing_LRSide;
+            m_Starters_Phi_LRSide = fStarters_Phi_LRSide;
+            m_Longitud_Reinf_TopAndBotom_Phi_LRSide = fLongitud_Reinf_TopAndBotom_Phi_LRSide;
+            m_Longitud_Reinf_Intermediate_Phi_LRSide = fLongitud_Reinf_Intermediate_Phi_LRSide;
+            m_Longitud_Reinf_Intermediate_Count_LRSide = iLongitud_Reinf_Intermediate_Count_LRSide;
+            m_PerimeterDepth_FBSide = fPerimeterDepth_FBSide;
+            m_PerimeterWidth_FBSide = fPerimeterWidth_FBSide;
+            m_StartersLapLength_FBSide = fStartersLapLength_FBSide;
+            m_StartersSpacing_FBSide = fStartersSpacing_FBSide;
+            m_Starters_Phi_FBSide = fStarters_Phi_FBSide;
+            m_Longitud_Reinf_TopAndBotom_Phi_FBSide = fLongitud_Reinf_TopAndBotom_Phi_FBSide;
+            m_Longitud_Reinf_Intermediate_Phi_FBSide = fLongitud_Reinf_Intermediate_Phi_FBSide;
+            m_Longitud_Reinf_Intermediate_Count_FBSide = iLongitud_Reinf_Intermediate_Count_FBSide;
 
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
@@ -529,6 +814,7 @@ namespace BaseClasses
             SetTextPoint();
             CreateSawCuts();
             CreateControlJoints();
+            CreatePerimeters();
             SetDescriptionText();
         }
 
@@ -726,6 +1012,69 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        public void CreatePerimeters()
+        {
+            m_PerimeterBeams = new List<CSlabPerimeter>(); // Jeden zakladovy prvok na kazdej strane podlahy
+
+            // TODO - potrebujeme sem dostat vsetky vytvorene roller doors, stranu na ktorej sa nachadzaju, ich pozicie na strane, rozmer roller door trimmer
+            // z toho urcime cistu sirku dveri a zaciatok floor slab rebate (vyrez do dosky v mieste dveri)
+            // TODO - vytvorime list rebates, ktory priradime CSlabPerimeter ako posledny parameters
+
+            // TODO - potrebujeme se dostat vysku zakladovych patiek na kazdej strane budovy aby sme nastavili default, resp. perimeter depth z GUI
+
+            m_PerimeterBeams.Add(new CSlabPerimeter(1,
+                "Left",
+                m_PerimeterDepth_LRSide,
+                m_PerimeterWidth_LRSide,
+                m_StartersLapLength_LRSide,
+                m_StartersSpacing_LRSide,
+                m_Starters_Phi_LRSide,
+                m_Longitud_Reinf_TopAndBotom_Phi_LRSide,
+                m_Longitud_Reinf_Intermediate_Phi_LRSide,
+                m_Longitud_Reinf_Intermediate_Count_LRSide,
+                true,
+                0));
+
+            m_PerimeterBeams.Add(new CSlabPerimeter(2,
+                "Right",
+                m_PerimeterDepth_LRSide,
+                m_PerimeterWidth_LRSide,
+                m_StartersLapLength_LRSide,
+                m_StartersSpacing_LRSide,
+                m_Starters_Phi_LRSide,
+                m_Longitud_Reinf_TopAndBotom_Phi_LRSide,
+                m_Longitud_Reinf_Intermediate_Phi_LRSide,
+                m_Longitud_Reinf_Intermediate_Count_LRSide,
+                true,
+                0));
+
+            m_PerimeterBeams.Add(new CSlabPerimeter(3,
+                "Front",
+                m_PerimeterDepth_FBSide,
+                m_PerimeterWidth_FBSide,
+                m_StartersLapLength_FBSide,
+                m_StartersSpacing_FBSide,
+                m_Starters_Phi_FBSide,
+                m_Longitud_Reinf_TopAndBotom_Phi_FBSide,
+                m_Longitud_Reinf_Intermediate_Phi_FBSide,
+                m_Longitud_Reinf_Intermediate_Count_FBSide,
+                true,
+                0));
+
+            m_PerimeterBeams.Add(new CSlabPerimeter(4,
+                "Back",
+                m_PerimeterDepth_FBSide,
+                m_PerimeterWidth_FBSide,
+                m_StartersLapLength_FBSide,
+                m_StartersSpacing_FBSide,
+                m_Starters_Phi_FBSide,
+                m_Longitud_Reinf_TopAndBotom_Phi_FBSide,
+                m_Longitud_Reinf_Intermediate_Phi_FBSide,
+                m_Longitud_Reinf_Intermediate_Count_FBSide,
+                true,
+                0));
         }
 
         public void SetDescriptionText()

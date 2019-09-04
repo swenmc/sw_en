@@ -131,7 +131,21 @@ namespace PFD
                 e.PropertyName == "FirstControlJointPositionInDirectionX" ||
                 e.PropertyName == "FirstControlJointPositionInDirectionY" ||
                 e.PropertyName == "ControlJointsSpacingInDirectionX" ||
-                e.PropertyName == "ControlJointsSpacingInDirectionY"
+                e.PropertyName == "ControlJointsSpacingInDirectionY" ||
+
+                e.PropertyName == "PerimeterDepth_LRSide" ||
+                e.PropertyName == "PerimeterWidth_LRSide" ||
+                e.PropertyName == "StartersLapLength_LRSide" ||
+                e.PropertyName == "StartersSpacing_LRSide" ||
+                e.PropertyName == "Starters_Phi_LRSide" ||
+                e.PropertyName == "RebateWidth_LRSide" ||
+
+                e.PropertyName == "PerimeterDepth_FBSide" ||
+                e.PropertyName == "PerimeterWidth_FBSide" ||
+                e.PropertyName == "StartersLapLength_FBSide" ||
+                e.PropertyName == "StartersSpacing_FBSide" ||
+                e.PropertyName == "Starters_Phi_FBSide" ||
+                e.PropertyName == "RebateWidth_FBSide"
                 )
             {
                 UpdateModelProperties();
@@ -163,11 +177,54 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = vm.ControlJointsSpacingInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = vm.ControlJointsSpacingInDirectionY;
 
+
+
+                // Perimeters
+                // TODO - nemuseli by sa pouzivat indexy, ale dalo by sa vyhladavat left, right, front, back podla 
+                // parametra m_BuildingSide v objekte CSlabPerimeter
+
+                // Index 0 / first - lava strana
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().PerimeterDepth = vm.PerimeterDepth_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().PerimeterWidth = vm.PerimeterWidth_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().StartersLapLength = vm.StartersLapLength_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().StartersSpacing = vm.StartersSpacing_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().Starters_Phi = float.Parse(vm.Starters_Phi_LRSide) / 1000f;
+
+                // Len ak existuju roller doors, resp. rebate na lavej alebo pravej strane floor slab
+                if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().SlabRebates != null)
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().SlabRebates.First().RebateWidth = vm.RebateWidth_LRSide / 1000f;
+                else if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[1].SlabRebates != null)
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[1].SlabRebates.First().RebateWidth = vm.RebateWidth_LRSide / 1000f;
+                else
+                {
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[0].SlabRebates = null;
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[1].SlabRebates = null;
+                }
+
+                // Index 2 - predna strana
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].PerimeterDepth = vm.PerimeterDepth_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].PerimeterWidth = vm.PerimeterWidth_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].StartersLapLength = vm.StartersLapLength_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].StartersSpacing = vm.StartersSpacing_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].Starters_Phi = float.Parse(vm.Starters_Phi_FBSide) / 1000f;
+
+                // Len ak existuju roller doors, resp. rebate na prednej alebo zadnej strane floor slab
+                if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].SlabRebates != null)
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].SlabRebates.First().RebateWidth = vm.RebateWidth_FBSide / 1000f;
+                else if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[3].SlabRebates != null)
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[3].SlabRebates.First().RebateWidth = vm.RebateWidth_FBSide / 1000f;
+                else
+                {
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].SlabRebates = null;
+                    _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[3].SlabRebates = null;
+                }
+
                 // Update floor slab - methods
                 _pfdVM.Model.m_arrSlabs.First().SetControlPoint();
                 _pfdVM.Model.m_arrSlabs.First().SetTextPoint();
                 _pfdVM.Model.m_arrSlabs.First().CreateSawCuts();
                 _pfdVM.Model.m_arrSlabs.First().CreateControlJoints();
+                _pfdVM.Model.m_arrSlabs.First().CreatePerimeters();
                 _pfdVM.Model.m_arrSlabs.First().SetDescriptionText();
 
                 //TODO Mato - je potrebne updatovat property v Modeli ak sa zmenia property vo view modeli v GUI (vid vyssie)
