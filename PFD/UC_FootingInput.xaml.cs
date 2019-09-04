@@ -139,13 +139,19 @@ namespace PFD
                 e.PropertyName == "StartersSpacing_LRSide" ||
                 e.PropertyName == "Starters_Phi_LRSide" ||
                 e.PropertyName == "RebateWidth_LRSide" ||
+                e.PropertyName == "Longitud_Reinf_TopAndBotom_Phi_LRSide" ||
+                e.PropertyName == "Longitud_Reinf_Intermediate_Phi_LRSide" ||
+                e.PropertyName == "Longitud_Reinf_Intermediate_Count_LRSide" ||
 
                 e.PropertyName == "PerimeterDepth_FBSide" ||
                 e.PropertyName == "PerimeterWidth_FBSide" ||
                 e.PropertyName == "StartersLapLength_FBSide" ||
                 e.PropertyName == "StartersSpacing_FBSide" ||
                 e.PropertyName == "Starters_Phi_FBSide" ||
-                e.PropertyName == "RebateWidth_FBSide"
+                e.PropertyName == "RebateWidth_FBSide" ||
+                e.PropertyName == "Longitud_Reinf_TopAndBotom_Phi_FBSide" ||
+                e.PropertyName == "Longitud_Reinf_Intermediate_Phi_FBSide" ||
+                e.PropertyName == "Longitud_Reinf_Intermediate_Count_FBSide"
                 )
             {
                 UpdateModelProperties();
@@ -177,12 +183,29 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = vm.ControlJointsSpacingInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = vm.ControlJointsSpacingInDirectionY;
 
+                _pfdVM.Model.m_arrSlabs.First().PerimeterDepth_LRSide = vm.PerimeterDepth_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterWidth_LRSide = vm.PerimeterWidth_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().StartersLapLength_LRSide = vm.StartersLapLength_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().StartersSpacing_LRSide = vm.StartersSpacing_LRSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Starters_Phi_LRSide = float.Parse(vm.Starters_Phi_LRSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_LRSide = float.Parse(vm.Longitud_Reinf_TopAndBotom_Phi_LRSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_LRSide = float.Parse(vm.Longitud_Reinf_Intermediate_Phi_LRSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_LRSide = vm.Longitud_Reinf_Intermediate_Count_LRSide;
 
+                _pfdVM.Model.m_arrSlabs.First().PerimeterDepth_FBSide = vm.PerimeterDepth_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().PerimeterWidth_FBSide = vm.PerimeterWidth_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().StartersLapLength_FBSide = vm.StartersLapLength_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().StartersSpacing_FBSide = vm.StartersSpacing_FBSide / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Starters_Phi_FBSide = float.Parse(vm.Starters_Phi_FBSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_FBSide = float.Parse(vm.Longitud_Reinf_TopAndBotom_Phi_FBSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_FBSide = float.Parse(vm.Longitud_Reinf_Intermediate_Phi_FBSide) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_FBSide = vm.Longitud_Reinf_Intermediate_Count_FBSide;
 
+                // TOTO ASI NIE JE POTREBNE, VYTVORIME PERIMETERS NANOVO PODLA VYSSIE NASTAVENYCH HODNOT, ALE NECHAVAM TO ZATIAL TU, MOZNO SA TO ESTE BUDE HODIT
                 // Perimeters
                 // TODO - nemuseli by sa pouzivat indexy, ale dalo by sa vyhladavat left, right, front, back podla 
                 // parametra m_BuildingSide v objekte CSlabPerimeter
-
+                /*
                 // Index 0 / first - lava strana
                 _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().PerimeterDepth = vm.PerimeterDepth_LRSide / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().PerimeterWidth = vm.PerimeterWidth_LRSide / 1000f;
@@ -218,6 +241,7 @@ namespace PFD
                     _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].SlabRebates = null;
                     _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[3].SlabRebates = null;
                 }
+                */
 
                 // Update floor slab - methods
                 _pfdVM.Model.m_arrSlabs.First().SetControlPoint();

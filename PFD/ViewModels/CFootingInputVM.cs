@@ -114,6 +114,9 @@ namespace PFD
         private float m_StartersSpacing_LRSide;
         private string m_Starters_Phi_LRSide;
         private float m_RebateWidth_LRSide;
+        private string m_Longitud_Reinf_TopAndBotom_Phi_LRSide;
+        private string m_Longitud_Reinf_Intermediate_Phi_LRSide;
+        private int m_Longitud_Reinf_Intermediate_Count_LRSide;
 
         private float m_PerimeterDepth_FBSide;
         private float m_PerimeterWidth_FBSide;
@@ -121,6 +124,9 @@ namespace PFD
         private float m_StartersSpacing_FBSide;
         private string m_Starters_Phi_FBSide;
         private float m_RebateWidth_FBSide;
+        private string m_Longitud_Reinf_TopAndBotom_Phi_FBSide;
+        private string m_Longitud_Reinf_Intermediate_Phi_FBSide;
+        private int m_Longitud_Reinf_Intermediate_Count_FBSide;
 
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;
@@ -1464,6 +1470,51 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public string Longitud_Reinf_TopAndBotom_Phi_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_TopAndBotom_Phi_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_TopAndBotom_Phi_LRSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_TopAndBotom_Phi_LRSide");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string Longitud_Reinf_Intermediate_Phi_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Phi_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Phi_LRSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_Intermediate_Phi_LRSide");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Longitud_Reinf_Intermediate_Count_LRSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Count_LRSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Count_LRSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_Intermediate_Count_LRSide");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float PerimeterDepth_FBSide
         {
             get
@@ -1534,7 +1585,6 @@ namespace PFD
             set
             {
                 m_Starters_Phi_FBSide = value;
-
                 NotifyPropertyChanged("Starters_Phi_FBSide");
             }
         }
@@ -1551,6 +1601,52 @@ namespace PFD
             {
                 m_RebateWidth_FBSide = value;
                 NotifyPropertyChanged("RebateWidth_FBSide");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string Longitud_Reinf_TopAndBotom_Phi_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_TopAndBotom_Phi_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_TopAndBotom_Phi_FBSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_TopAndBotom_Phi_FBSide");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string Longitud_Reinf_Intermediate_Phi_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Phi_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Phi_FBSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_Intermediate_Phi_FBSide");
+            }
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int Longitud_Reinf_Intermediate_Count_FBSide
+        {
+            get
+            {
+                return m_Longitud_Reinf_Intermediate_Count_FBSide;
+            }
+
+            set
+            {
+                m_Longitud_Reinf_Intermediate_Count_FBSide = value;
+                NotifyPropertyChanged("Longitud_Reinf_Intermediate_Count_FBSide");
             }
         }
 
@@ -1906,6 +2002,9 @@ namespace PFD
             StartersLapLength_LRSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().StartersLapLength * 1000;
             StartersSpacing_LRSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().StartersSpacing * 1000;
             Starters_Phi_LRSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().Starters_Phi * 1000).ToString("F0");
+            Longitud_Reinf_TopAndBotom_Phi_LRSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().Longitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
+            Longitud_Reinf_Intermediate_Phi_LRSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().Longitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+            Longitud_Reinf_Intermediate_Count_LRSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().Longitud_Reinf_Intermediate_Count;
 
             // Len ak existuju roller doors, resp. rebate na lavej alebo pravej strane floor slab
             if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams.First().SlabRebates != null)
@@ -1921,6 +2020,9 @@ namespace PFD
             StartersLapLength_FBSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].StartersLapLength * 1000;
             StartersSpacing_FBSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].StartersSpacing * 1000;
             Starters_Phi_FBSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].Starters_Phi * 1000).ToString("F0");
+            Longitud_Reinf_TopAndBotom_Phi_FBSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].Longitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
+            Longitud_Reinf_Intermediate_Phi_FBSide = (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].Longitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+            Longitud_Reinf_Intermediate_Count_FBSide = _pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].Longitud_Reinf_Intermediate_Count;
 
             // Len ak existuju roller doors, resp. rebate na prednej alebo zadnej strane floor slab
             if (_pfdVM.Model.m_arrSlabs.First().PerimeterBeams[2].SlabRebates != null)

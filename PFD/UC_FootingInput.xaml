@@ -244,9 +244,12 @@
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Margin="5,5,5,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="210"/>
                         <ColumnDefinition Width="90"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="115"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -393,6 +396,19 @@
                   Text="{Binding Path=RebateWidth_LRSide, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="22" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
+                    <TextBlock Grid.Row="16" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Longitudinal Reinforcement" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBlock Grid.Row="17" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Top / Bottom Ø:" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox Grid.Row="17" Grid.Column="4" Name ="ComboBox_Longitud_Reinf_TopAndBotom_Phi_LRSide" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
+                  ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=Longitud_Reinf_TopAndBotom_Phi_LRSide, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="18" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Intermediate Ø:" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox Grid.Row="18" Grid.Column="4" Name ="ComboBox_Longitud_Reinf_Intermediate_Phi_LRSide" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
+                  ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=Longitud_Reinf_Intermediate_Phi_LRSide, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                    <TextBlock Grid.Row="19" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Intermediate Bars No:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="19" Grid.Column="4" Name="TextBoxLongitud_Reinf_Intermediate_Count_LRSide" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=Longitud_Reinf_Intermediate_Count_LRSide, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="35" Grid.ColumnSpan="2"/>
+
                     <!-- Front and back side of building - do buducna mozno rozdelit samostatne na prednu a zadnu stranu -->
                     <TextBlock Grid.Row="23" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Front / Back Side" VerticalAlignment="Top" Width="120"/>
 
@@ -424,6 +440,19 @@
                     <TextBox Grid.Row="29" Grid.Column="1" Name="TextBoxRebateWidth_FBSide" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                   Text="{Binding Path=RebateWidth_FBSide, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="29" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
+
+                    <TextBlock Grid.Row="23" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Longitudinal Reinforcement" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                    <TextBlock Grid.Row="24" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Top / Bottom Ø:" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox Grid.Row="24" Grid.Column="4" Name ="ComboBox_Longitud_Reinf_TopAndBotom_Phi_FBSide" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
+                  ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=Longitud_Reinf_TopAndBotom_Phi_FBSide, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Intermediate Ø:" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox Grid.Row="25" Grid.Column="4" Name ="ComboBox_Longitud_Reinf_Intermediate_Phi_FBSide" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
+                  ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=Longitud_Reinf_Intermediate_Phi_FBSide, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                    <TextBlock Grid.Row="26" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Intermediate Bars No:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="26" Grid.Column="4" Name="TextBoxLongitud_Reinf_Intermediate_Count_FBSide" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=Longitud_Reinf_Intermediate_Count_FBSide, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="26" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="35" Grid.ColumnSpan="2"/>
                 </Grid>
             </ScrollViewer>
         </TabItem>

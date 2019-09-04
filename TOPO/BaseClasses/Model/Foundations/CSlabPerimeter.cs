@@ -21,7 +21,7 @@ namespace BaseClasses
 
         private float m_Longitud_Reinf_TopAndBotom_Phi;
         private float m_Longitud_Reinf_Intermediate_Phi;
-        private float m_Longitud_Reinf_Intermediate_Count;
+        private int m_Longitud_Reinf_Intermediate_Count;
 
         private List<CSlabRebate> m_SlabRebates;
 
@@ -139,7 +139,7 @@ namespace BaseClasses
 
 
         //-------------------------------------------------------------------------------------------------------------
-        public float Longitud_Reinf_Intermediate_Count
+        public int Longitud_Reinf_Intermediate_Count
         {
             get
             {
@@ -175,7 +175,7 @@ namespace BaseClasses
            float starters_Phi,
            float longitud_Reinf_TopAndBotom_Phi,
            float longitud_Reinf_Intermediate_Phi,
-           float longitud_Reinf_Intermediate_Count,
+           int longitud_Reinf_Intermediate_Count,
            bool bIsDiplayed_temp,
            int fTime,
            List<CSlabRebate> slabRebates = null)
