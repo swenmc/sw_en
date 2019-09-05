@@ -5583,8 +5583,10 @@ namespace BaseClasses
             float fOffsetLineLength = 0.2f;
 
             // TODO Ondrej - toto je na ukazku, potrebujeme sem dostat suradnice jointNode, tj. uzol na ktorom je spoj ktory je zobrazeny v pdf ako joint details.
-            // Tento ako  uzol sa nastavi controlPoint do CDetailSymbol
+            // V nejakom cykle potrebujeme vykreslit v pdf tieto znacky na jednotlivych uzloch jointNode, pre spoje ktore zobrazujeme v detailoch, a v joint details urobit popis Detail 01, Detail 02, ... (alebo len cisla ak nebude miesto, v predlohe su len cisla)
+            // Tento uzol sa nastavi controlPoint do CDetailSymbol
             // Potrebujeme to rozriedit tak ze v jednotlivych 2D pohladoch v PDF budeme mat zobrazene iba niektore znacky aby to bolo citatelne
+            // Roztriedil by som to podla hodnoty suradnice, ktora smeruje kolko z podladu, napriklad ak je jointNode.Y = ako Y pre front view, teda 0, tak sa vo front view zobrazia znacky joint ktore lezia v Y = 0
             // Nechcem to robit ako je v predlohe fs08 do 3D pohladu, pride mi to komplikovane, museli by sme znacky a texty transformovat podla toho ako je natoceny pohlad
 
             CDetailSymbol detSymbol1 = new CDetailSymbol(new Point3D(0, 0, 1), new Vector3D(0, 0, -1), "D-01", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
