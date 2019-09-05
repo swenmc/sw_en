@@ -244,6 +244,8 @@ namespace BaseClasses
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
+                DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
+
                 // Pokus vyrobit lines 3D objekty
                 // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
@@ -2676,6 +2678,48 @@ namespace BaseClasses
             viewPort.Children.Add(textlabel);
         }
 
+        // Draw Detail Symbol Label Text 3D
+        public static void DrawDetailSymbolLabelText3D(CDetailSymbol detailSymbol, Viewport3D viewPort, DisplayOptions displayOptions)
+        {
+            TextBlock tb = new TextBlock();
+            tb.Text = detailSymbol.LabelText;
+            tb.FontFamily = new FontFamily("Arial");
+            float fTextBlockVerticalSize = displayOptions.fDetailSymbolLabelTextFontSize / 100f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.5f;
+
+            tb.FontStretch = FontStretches.Normal;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Normal;
+            tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
+            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+
+            // PODOBNE AKO U ZAKLADOV - FOUNDATION DESCRIPTION
+            // Vektor by sme mali nastavovat horizontalne podla roviny pohladu
+            // Teraz fixne nastavene na rovinu XZ
+            Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            // Create text
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up); ;
+            Transform3DGroup tr = new Transform3DGroup();
+
+            if (detailSymbol.TransformGr != null)
+            {
+                tr.Children.Add(detailSymbol.TransformGr);
+
+                // Nechceme transofrmovat cely text label len vkladaci bod
+                Point3D pTransformed = tr.Transform(detailSymbol.PointLabelText);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+            }
+
+            if (centerModel)
+            {
+                textlabel.Transform = centerModelTransGr;
+            }
+            viewPort.Children.Add(textlabel);
+        }
+
         // Draw Saw Cut Text 3D
         public static void DrawSawCutText3D(CSawCut sawcut, Viewport3D viewPort, DisplayOptions displayOptions)
         {
@@ -2959,6 +3003,21 @@ namespace BaseClasses
             foreach (CSectionSymbol sectionSymbol in sectionSymbols)
             {
                 gr.Children.Add(sectionSymbol.GetSectionSymbolModel(displayOptions.SectionSymbolColor));
+            }
+
+            return gr;
+        }
+
+        private static Model3DGroup CreateModelDetailSymbols_Model3DGroup(List<CDetailSymbol> detailSymbols, CModel model, DisplayOptions displayOptions)
+        {
+            if (detailSymbols == null || detailSymbols.Count == 0)
+                return null;
+
+            Model3DGroup gr = new Model3DGroup();
+
+            foreach (CDetailSymbol detailSymbol in detailSymbols)
+            {
+                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor));
             }
 
             return gr;
@@ -5509,6 +5568,43 @@ namespace BaseClasses
                 foreach (CSectionSymbol sectionSymbol in listOfSectionSymbols)
                 {
                     DrawSectionSymbolLabelText3D(sectionSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
+                }
+            }
+        }
+
+        private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        {
+            Model3DGroup detailSymbols3DGroup = null;
+
+            // Create detail symbols
+            List<CDetailSymbol> listOfDetailSymbols = new List<CDetailSymbol>();
+
+            float fMarkCircleDiameter = 0.6f;
+            float fOffsetLineLength = 0.2f;
+
+            // TODO Ondrej - toto je na ukazku, potrebujeme sem dostat suradnice jointNode, tj. uzol na ktorom je spoj ktory je zobrazeny v pdf ako joint details.
+            // Tento ako  uzol sa nastavi controlPoint do CDetailSymbol
+            // Potrebujeme to rozriedit tak ze v jednotlivych 2D pohladoch v PDF budeme mat zobrazene iba niektore znacky aby to bolo citatelne
+            // Nechcem to robit ako je v predlohe fs08 do 3D pohladu, pride mi to komplikovane, museli by sme znacky a texty transformovat podla toho ako je natoceny pohlad
+
+            CDetailSymbol detSymbol1 = new CDetailSymbol(new Point3D(0, 0, 1), new Vector3D(0, 0, -1), "D-01", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+            CDetailSymbol detSymbol2 = new CDetailSymbol(new Point3D(2, 0, 2.2), new Vector3D(0, 0, -1), "D-02", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+            CDetailSymbol detSymbol3 = new CDetailSymbol(new Point3D(4, /*model.fL_tot*/0, 0.8), new Vector3D(0, 0, -1), "D-03", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+
+            listOfDetailSymbols.Add(detSymbol1);
+            listOfDetailSymbols.Add(detSymbol2);
+            listOfDetailSymbols.Add(detSymbol3);
+
+            // Create detail symbol models
+            if (sDisplayOptions.bDisplayDetailSymbols) detailSymbols3DGroup = Drawing3D.CreateModelDetailSymbols_Model3DGroup(listOfDetailSymbols, model, sDisplayOptions);
+            if (detailSymbols3DGroup != null) gr.Children.Add(detailSymbols3DGroup);
+
+            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
+            if (detailSymbols3DGroup != null)
+            {
+                foreach (CDetailSymbol detailSymbol in listOfDetailSymbols)
+                {
+                    DrawDetailSymbolLabelText3D(detailSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
                 }
             }
         }

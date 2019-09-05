@@ -301,6 +301,7 @@
                             <CheckBox Name="chbDisplayDimensions" IsChecked="{Binding Path=ShowDimensions}">Display Dimensions</CheckBox>
                             <CheckBox Name="chbDisplayGridLines" IsChecked="{Binding Path=ShowGridLines}">Display Gridlines</CheckBox>
                             <CheckBox Name="chbDisplaySectionSymbols" IsChecked="{Binding Path=ShowSectionSymbols}">Display Section Symbols</CheckBox>
+                            <CheckBox Name="chbDisplayDetailSymbols" IsChecked="{Binding Path=ShowDetailSymbols}">Display Detail Symbols</CheckBox>
                         </StackPanel>
 
                         <StackPanel Grid.Row="10" Grid.Column="3" Grid.RowSpan="5">

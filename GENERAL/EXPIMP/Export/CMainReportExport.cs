@@ -158,6 +158,7 @@ namespace EXPIMP
 
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
@@ -214,6 +215,7 @@ namespace EXPIMP
             opts.bDisplayControlJoints = false;
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
 
             // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
             // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
@@ -250,10 +252,6 @@ namespace EXPIMP
             opts.GridLineColor = System.Windows.Media.Colors.Black;
             opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
 
-            opts.fSectionSymbolLabelTextFontSize = 30;
-            opts.SectionSymbolLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.SectionSymbolColor = System.Windows.Media.Colors.Black;
-
             opts.fSawCutTextFontSize = 14;
             opts.SawCutTextColor = System.Windows.Media.Colors.Black;
             opts.SawCutLineColor = System.Windows.Media.Colors.Black;
@@ -268,6 +266,11 @@ namespace EXPIMP
             opts.SectionSymbolLabelTextColor = System.Windows.Media.Colors.Black;
             opts.SectionSymbolColor = System.Windows.Media.Colors.Black;
             //opts.SectionSymbolLinePatternType = ELinePatternType.DASHDOTTED;
+
+            opts.fDetailSymbolLabelTextFontSize = 30;
+            opts.DetailSymbolLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.DetailSymbolColor = System.Windows.Media.Colors.Black;
+            //opts.DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
 
             opts.fFoundationTextFontSize = 14;
             opts.FoundationColor = System.Windows.Media.Colors.White;
@@ -433,6 +436,7 @@ namespace EXPIMP
 
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -539,6 +543,7 @@ namespace EXPIMP
 
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
@@ -1052,6 +1057,7 @@ namespace EXPIMP
 
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);

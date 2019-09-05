@@ -99,6 +99,7 @@
     <Compile Include="CProjectInfo.cs" />
     <Compile Include="CProductionInfo.cs" />
     <Compile Include="GraphObj\CDimensionLinear3D.cs" />
+    <Compile Include="GraphObj\CDetailSymbol.cs" />
     <Compile Include="GraphObj\CGridLine.cs" />
     <Compile Include="GraphObj\CSectionSymbol.cs" />
     <Compile Include="GraphObj\Objects_3D\CHollowCylinder.cs" />
