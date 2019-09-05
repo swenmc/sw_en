@@ -318,6 +318,67 @@ namespace EXPIMP
                 opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
 
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
+
+                // TO Ondrej - tu je trosku problem ze mame jedny 
+                // DisplayOptions opts pre vsetky pohlady a podorysy (mame to nazvane a pouzivame to ako filters), takze ked nieco zobrazim v jednom pohlade a nechcem to v inych ,tak to musim vsade inde povypinat
+                // To moze byt dost komplikovane na spravu, mozno by bolo lepsie mat pre export - pre kazdy pohlad/podorys/elevation/floor plan/layout samostatne display options
+                // a zapnut v nich na true len to co chcem vidiet v danom pohlade nezavisle na ostatnych pohladoch
+                /*
+                All = 0,
+                FRONT = 1,
+                BACK = 2,
+                LEFT = 3,
+                RIGHT = 4,
+                ROOF = 5,
+                MIDDLE_FRAME = 6,
+                COLUMNS = 7,
+                FOUNDATIONS = 8,
+                FLOOR = 9
+                */
+
+                if (viewMembers == EViewModelMemberFilters.FRONT)
+                {
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = true; // Pokus -zobrazenie znaciek detailov
+                }
+
+                if (viewMembers == EViewModelMemberFilters.BACK)
+                {
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = false;
+                }
+
+                if (viewMembers == EViewModelMemberFilters.LEFT)
+                {
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = false;
+                }
+
+                if (viewMembers == EViewModelMemberFilters.RIGHT)
+                {
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = false;
+                }
+
+                if (viewMembers == EViewModelMemberFilters.ROOF)
+                {
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = false;
+                }
+
+                // Toto je len pokus ako to vyzera :)
+                if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
+                {
+                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
+                    opts.bDisplayWireFrameModel = true;
+                    opts.bTransformScreenLines3DToCylinders3D = true;
+
+                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
+
+                    opts.bDisplaySectionSymbols = false;
+                    opts.bDisplayDetailSymbols = false;
+                }
+
                 if (viewMembers == EViewModelMemberFilters.COLUMNS)
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
@@ -332,16 +393,7 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabDescription = false;
                     opts.bDisplayGridlines = true;
                     opts.bDisplaySectionSymbols = true;
-                }
-
-                // Toto je len pokus ako to vyzera :)
-                if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
-                {
-                    // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    opts.bDisplayWireFrameModel = true;
-                    opts.bTransformScreenLines3DToCylinders3D = true;
-
-                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
+                    opts.bDisplayDetailSymbols = false;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -361,6 +413,7 @@ namespace EXPIMP
                     opts.bDisplayMemberDescription = false;
                     opts.bDisplayGridlines = true;
                     opts.bDisplaySectionSymbols = true;
+                    opts.bDisplayDetailSymbols = false;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -385,6 +438,7 @@ namespace EXPIMP
                     opts.bDisplayControlJointsDescription = true;
                     opts.bDisplayGridlines = true;
                     opts.bDisplaySectionSymbols = true;
+                    opts.bDisplayDetailSymbols = false;
                 }
 
                 CModel filteredModel = null;
