@@ -317,6 +317,16 @@
                  Text="{Binding Path=SawCutsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
+                    <TextBlock Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cut Width:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="0" Grid.Column="4" Name="TextBoxSawCutWidth" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=CutWidth, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="35" Grid.ColumnSpan="2"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Saw Cut Depth:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="1" Grid.Column="4" Name="TextBoxSawCutDepth" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=CutDepth, StringFormat=F0, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="35" Grid.ColumnSpan="2"/>
+
                     <!-- Control Joints -->
                     <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Control Joint Count X-direction:" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <TextBox Grid.Row="6" Grid.Column="1" Name="TextBoxNumberOfControlJointsInDirectionX" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
@@ -347,6 +357,21 @@
                     <TextBox Grid.Row="11" Grid.Column="1" Name="TextBoxControlJointsSpacingInDirectionY" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsEnabled="False"
                  Text="{Binding Path=ControlJointsSpacingInDirectionY, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dowel Diameter:" VerticalAlignment="Top" Width="120"/>
+                    <ComboBox Grid.Row="6" Grid.Column="4" Name ="ComboBox_DowelDiameter" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"
+                  ItemsSource="{Binding Path=ReinforcementBarsList}" SelectedValue="{Binding Path=DowelDiameter, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="35"/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dowel Length:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="7" Grid.Column="4" Name="TextBoxDowelLength" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=DowelLength, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="35"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dowel Spacing:" VerticalAlignment="Top"  Grid.ColumnSpan="3"/>
+                    <TextBox Grid.Row="8" Grid.Column="4" Name="TextBoxDowelSpacing" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
+                 Text="{Binding Path=DowelSpacing, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                    <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="35"/>
 
                     <!-- Floor Slab Mesh -->
                     <TextBlock Grid.Row="13" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mesh Top Cover mc:" VerticalAlignment="Top" Width="110" Grid.ColumnSpan="3"/>

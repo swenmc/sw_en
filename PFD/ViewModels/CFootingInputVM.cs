@@ -90,6 +90,8 @@ namespace PFD
         private float m_FirstSawCutPositionInDirectionY;
         private float m_SawCutsSpacingInDirectionX;
         private float m_SawCutsSpacingInDirectionY;
+        private float m_CutWidth;
+        private float m_CutDepth;
 
         private int m_NumberOfControlJointsInDirectionX;
         private int m_NumberOfControlJointsInDirectionY;
@@ -97,6 +99,9 @@ namespace PFD
         private float m_FirstControlJointPositionInDirectionY;
         private float m_ControlJointsSpacingInDirectionX;
         private float m_ControlJointsSpacingInDirectionY;
+        private string m_DowelDiameter; // TODO - zapracovat databazu dowels a vyberat konkretny kolik z databazy
+        private float m_DowelLength;
+        private float m_DowelSpacing;
 
         private bool m_IsEnabledFirstSawCutPositionInDirectionX;
         private bool m_IsEnabledFirstSawCutPositionInDirectionY;
@@ -1127,6 +1132,34 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float CutWidth
+        {
+            get
+            {
+                return m_CutWidth;
+            }
+            set
+            {
+                m_CutWidth = value;
+                NotifyPropertyChanged("CutWidth");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float CutDepth
+        {
+            get
+            {
+                return m_CutDepth;
+            }
+            set
+            {
+                m_CutDepth = value;
+                NotifyPropertyChanged("CutDepth");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int NumberOfControlJointsInDirectionX
         {
             get
@@ -1256,6 +1289,48 @@ namespace PFD
                 m_ControlJointsSpacingInDirectionY = value;
                 if (IsSetFromCode == false) UpdateValuesInGUI();
                 NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public string DowelDiameter
+        {
+            get
+            {
+                return m_DowelDiameter;
+            }
+            set
+            {
+                m_DowelDiameter = value;
+                NotifyPropertyChanged("DowelDiameter");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DowelLength
+        {
+            get
+            {
+                return m_DowelLength;
+            }
+            set
+            {
+                m_DowelLength = value;
+                NotifyPropertyChanged("DowelLength");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DowelSpacing
+        {
+            get
+            {
+                return m_DowelSpacing;
+            }
+            set
+            {
+                m_DowelSpacing = value;
+                NotifyPropertyChanged("DowelSpacing");
             }
         }
 
@@ -1983,6 +2058,8 @@ namespace PFD
             NumberOfSawCutsInDirectionY = _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionY;
             SawCutsSpacingInDirectionX = _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionX;
             SawCutsSpacingInDirectionY = _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionY;
+            CutWidth = _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutWidth * 1000;
+            CutDepth = _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutDepth * 1000;
 
             // Control Joints
             FirstControlJointPositionInDirectionX = _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX;
@@ -1991,6 +2068,9 @@ namespace PFD
             NumberOfControlJointsInDirectionY = _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY;
             ControlJointsSpacingInDirectionX = _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX;
             ControlJointsSpacingInDirectionY = _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY;
+            DowelDiameter = (_pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0");
+            DowelLength = _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Length * 1000;
+            DowelSpacing = _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.DowelSpacing * 1000;
 
             // Perimeters
             // TODO - nemuseli by sa pouzivat indexy, ale dalo by sa vyhladavat left, right, front, back podla 

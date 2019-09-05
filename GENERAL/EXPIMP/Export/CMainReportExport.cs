@@ -800,6 +800,9 @@ namespace EXPIMP
             double dImagePosition_y = 2;
             double dRowPosition = 0;
 
+            // TODO Ondrej - tu by sa to mohlo upravit tak ze ak neexistuje ziaden saw cut alebo ziaden control joint tak ten detail sa nezobrazi, je treba poriesit ze ak nie je zobrazeny detail pre saw cut, 
+            // tak control joint sa zobrazi ako prvy obrazok
+
             // 1st row
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
             double imageWidthOriginal = image.PixelWidth;
@@ -817,12 +820,12 @@ namespace EXPIMP
 
             if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
             {
-                if (data.Model.m_arrSlabs.FirstOrDefault().SawCuts != null && data.Model.m_arrSlabs.FirstOrDefault().SawCuts.Count > 0)
+                if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
                 {
-                    string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().SawCuts.FirstOrDefault().CutWidth * 1000).ToString("F0");
+                    string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
                     gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
 
-                    string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().SawCuts.FirstOrDefault().CutDepth * 1000).ToString("F0");
+                    string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
                     gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
                 }
             }
@@ -837,7 +840,7 @@ namespace EXPIMP
 
             if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
             {
-                if (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints != null && data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.Count > 0)
+                if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
                 {
                     /*
                     string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
@@ -845,9 +848,9 @@ namespace EXPIMP
                         (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
                     */
 
-                    string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
-                    string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
-                        (data.Model.m_arrSlabs.FirstOrDefault().ControlJoints.FirstOrDefault().DowelSpacing * 1000).ToString("F0") + " CENTRES";
+                    string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
+                    string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
+                        (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
                     string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
 
                     gfx.DrawString(sText1, fontNote, brushNote, 315, 125);

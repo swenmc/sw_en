@@ -125,6 +125,8 @@ namespace PFD
                 e.PropertyName == "FirstSawCutPositionInDirectionY" ||
                 e.PropertyName == "SawCutsSpacingInDirectionX" ||
                 e.PropertyName == "SawCutsSpacingInDirectionY" ||
+                e.PropertyName == "CutWidth" ||
+                e.PropertyName == "CutDepth" ||
 
                 e.PropertyName == "NumberOfControlJointsInDirectionX" ||
                 e.PropertyName == "NumberOfControlJointsInDirectionY" ||
@@ -132,6 +134,10 @@ namespace PFD
                 e.PropertyName == "FirstControlJointPositionInDirectionY" ||
                 e.PropertyName == "ControlJointsSpacingInDirectionX" ||
                 e.PropertyName == "ControlJointsSpacingInDirectionY" ||
+
+                e.PropertyName == "DowelDiameter" ||
+                e.PropertyName == "DowelLength" ||
+                e.PropertyName == "DowelSpacing" ||
 
                 e.PropertyName == "PerimeterDepth_LRSide" ||
                 e.PropertyName == "PerimeterWidth_LRSide" ||
@@ -176,12 +182,18 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = vm.FirstSawCutPositionInDirectionY;
                 _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionX = vm.SawCutsSpacingInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionY = vm.SawCutsSpacingInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutWidth = vm.CutWidth / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutDepth = vm.CutDepth / 1000f;
+
                 _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = vm.NumberOfControlJointsInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = vm.NumberOfControlJointsInDirectionY;
                 _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = vm.FirstControlJointPositionInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = vm.FirstControlJointPositionInDirectionY;
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = vm.ControlJointsSpacingInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = vm.ControlJointsSpacingInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Diameter_shank = float.Parse(vm.DowelDiameter) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Length = vm.DowelLength / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.DowelSpacing = vm.DowelSpacing / 1000f;
 
                 _pfdVM.Model.m_arrSlabs.First().PerimeterDepth_LRSide = vm.PerimeterDepth_LRSide / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().PerimeterWidth_LRSide = vm.PerimeterWidth_LRSide / 1000f;

@@ -2565,6 +2565,8 @@ namespace PFD
                 string sMeshGradeName = "SE92DE";
 
                 // Saw Cuts
+                CSawCut refSawCut = new CSawCut(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), 0.01f, 0.03f, true, 0);
+
                 // Create raster of lines in XY-plane
                 float fFirstSawCutPositionInDirectionX = 0;
                 float fFirstSawCutPositionInDirectionY = 0;
@@ -2593,6 +2595,8 @@ namespace PFD
                 }
 
                 // ControlJoints
+                CDowel refDowel = new CDowel(new Point3D(0, 0, 0), 0.016f, 0.6f, 0.947f, true);
+                CControlJoint refControlJoint = new CControlJoint(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), refDowel,0.4f, true, 0);
                 // Create raster of lines in XY-plane
                 float fControlJointMaximumDistance = Math.Min(24, 0.5f * fFloorSlab_bY); // 24 m alebo polovica budovy (vzdy aspon jeden joint v strede)
 
@@ -2652,12 +2656,14 @@ namespace PFD
                             fFirstSawCutPositionInDirectionY,
                             fSawCutsSpacingInDirectionX,
                             fSawCutsSpacingInDirectionY,
+                            refSawCut,
                             iNumberOfControlJointsInDirectionX,
                             iNumberOfControlJointsInDirectionY,
                             fFirstControlJointPositionInDirectionX,
                             fFirstControlJointPositionInDirectionY,
                             fControlJointsSpacingInDirectionX,
                             fControlJointsSpacingInDirectionY,
+                            refControlJoint,
                             fPerimeterDepth_LRSide,
                             fPerimeterWidth_LRSide,
                             fStartersLapLength_LRSide,
