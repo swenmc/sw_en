@@ -181,18 +181,22 @@ namespace PFD
                                                                            // See UC component list
 
             // TODO - nastavovat v GUI - zaviest databazu pre rozne typy prutov a typy load combinations
-            int iLimitFractionDenominator_PermanentLoad = 300;
+            int iLimitFractionDenominator_PermanentLoad = 250;
             int iLimitFractionDenominator_Total = 150;
-            int iLimitFractionDenominator_Total_Frame = 250;
 
-            float fLimitPermanentLoad = 1f / 300f;
+            int iLimitFractionDenominator_Total_FrameColumn = 150;
+            int iLimitFractionDenominator_Total_FrameRafter = 250;
+
+            float fLimitPermanentLoad = 1f / 250f;
             float fLimitTotal = 1 / 150f;
-            float fLimitTotal_Frame = 1f / 250f;
 
-            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_Frame, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_Frame, 0));
+            float fLimitTotal_FrameColumn = 1f / 150f;
+            float fLimitTotal_FrameRafter = 1f / 250f;
+
+            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameColumn, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameRafter, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameColumn, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameRafter, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, EMemberType_FS.eP, EMemberType_FS_Position.Purlin, m_arrCrSc[(int)EMemberGroupNames.ePurlin], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
