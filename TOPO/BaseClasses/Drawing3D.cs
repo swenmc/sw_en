@@ -4378,7 +4378,7 @@ namespace BaseClasses
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
-                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers); // TODO - preberat do modelu vzdy alebo len aj je zobrazene bDisplayJoints
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
@@ -5583,42 +5583,102 @@ namespace BaseClasses
             float fMarkCircleDiameter = 0.6f;
             float fOffsetLineLength = 0.2f;
 
-            // TODO Ondrej - toto je na ukazku, potrebujeme sem dostat suradnice jointNode, tj. uzol na ktorom je spoj ktory je zobrazeny v pdf ako joint details.
-            // V nejakom cykle potrebujeme vykreslit v pdf tieto znacky na jednotlivych uzloch jointNode, pre spoje ktore zobrazujeme v detailoch, a v joint details urobit popis Detail 01, Detail 02, ... (alebo len cisla ak nebude miesto, v predlohe su len cisla)
-            // Tento uzol sa nastavi controlPoint do CDetailSymbol
-            // Potrebujeme to rozriedit tak ze v jednotlivych 2D pohladoch v PDF budeme mat zobrazene iba niektore znacky aby to bolo citatelne
-            // Roztriedil by som to podla hodnoty suradnice, ktora smeruje kolko z podladu, napriklad ak je jointNode.Y = ako Y pre front view, teda 0, tak sa vo front view zobrazia znacky joint ktore lezia v Y = 0
-            // Nechcem to robit ako je v predlohe fs08 do 3D pohladu, pride mi to komplikovane, museli by sme znacky a texty transformovat podla toho ako je natoceny pohlad
-
-            Point3D jointPoint_1 = new Point3D();
-            Point3D jointPoint_2 = new Point3D();
-            Point3D jointPoint_3 = new Point3D();
-
-            foreach (CConnectionJointTypes j in model.m_arrConnectionJoints)
+            // TODO - doriesit ci musi byt zapnute sDisplayOptions.bDisplayJoints aj sDisplayOptions.bDisplayDetailSymbols
+            // alebo zobrazime symbol detailu aj ked v pohlade samotny spoj nebude zobrazeny
+            if (model.m_arrConnectionJoints != null) // Display detail symbols of joints only if some joints exists in the filtered model
             {
+                // TODO Ondrej - toto je na ukazku, potrebujeme sem dostat suradnice jointNode, tj. uzol na ktorom je spoj ktory je zobrazeny v pdf ako joint details.
+                // V nejakom cykle potrebujeme vykreslit v pdf tieto znacky na jednotlivych uzloch jointNode, pre spoje ktore zobrazujeme v detailoch, a v joint details urobit popis Detail 01, Detail 02, ... (alebo len cisla ak nebude miesto, v predlohe su len cisla)
+                // Tento uzol sa nastavi controlPoint do CDetailSymbol
+                // Potrebujeme to rozriedit tak ze v jednotlivych 2D pohladoch v PDF budeme mat zobrazene iba niektore znacky aby to bolo citatelne
+                // Roztriedil by som to podla hodnoty suradnice, ktora smeruje kolko z podladu, napriklad ak je jointNode.Y = ako Y pre front view, teda 0, tak sa vo front view zobrazia znacky joint ktore lezia v Y = 0
+                // Nechcem to robit ako je v predlohe fs08 do 3D pohladu, pride mi to komplikovane, museli by sme znacky a texty transformovat podla toho ako je natoceny pohlad
+
+                List<Point3D> jointDetailsPointsInView = new List<Point3D>();
+
+                // TODO - nastavovat smer podla pohladu
+                int iCodeCoordinatePerpendicularToView = 1; // 0-X, 1-Y, 2-Z
+                float fCoordinateValue = 0; // napojit na suradnicu pohladu
+
                 // TODO
                 // Tu by sme mali urcit body pre jednotlive typy spojov v zavislosti na type spajanych members a roztriedit ich podla toho aku maju suradnicu vzhladom k rovine pohladu (suradnica v smere pohladu)
                 // aby sa v kazdom pohlade vyznacilo len to co je v danej oblasti, suradnica v osi kolmej na rovinu pohladu
-                if (j is CConnectionJoint_TA01) // TODO - Rozlisovat podla triedy a typu main a secondary member - vid joint preview
-                    jointPoint_1 = ConvertNodetoPoint3D(j.m_Node);
 
-                if (j is CConnectionJoint_T001)
-                    jointPoint_2 = ConvertNodetoPoint3D(j.m_Node);
+                // TODO - Rozlisovat podla triedy a typu spoja - main a secondary member - vid joint preview EJointType + podla suradnic
+                // TODO - teraz sa berie posledny objekt daneho spoja v rovine pohladu, lepsie by bolo uvazovat prvy spoj daneho typu v rovine pohladu
 
-                if (j is CConnectionJoint_T003)
-                    jointPoint_3 = ConvertNodetoPoint3D(j.m_Node);
+                // Ak mame v hlavnom modeli napriklad 40 typov spojov, tak by sme mali vyrobit dokopy minimalne 40 znaciek
+                // s tym ze v prednom pohlade (filter) moze byt napriklad 10, vzadu 5, vlavo 5, vpravo 5, roof 15
+
+                // TO Ondrej - Tu je otazka ci zobrazime v kazdom pohlade vsetky znacky ktore mozeme, alebo zobrazime kazdu znacku len raz, takze uz nebude v inom pohlade
+
+                // TO Ondrej - Tu by sa malo pridavat z daneho typu a typov spajanych prutov (main a secondary - EJointType) vzdy len po jeden - prvy spoj
+                // Nechceme oznacit vsetky spoje daneho typu v rovine pohladu ale len jeden
+
+                // TO Ondrej - snazim sa najst prvy spoj daneho typu a skontrolovat ci lezi v rovine pohladu, este treba pridat rozlisenie podla typu spoja, resp. main a secondary member EJointType
+                // Pridal som zopar prikladov pre front view pre specifikaciu spoja podla typu
+
+                CConnectionJointTypes j;
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_EdgeColumn);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView)) // Uzol spoja nie je null a je v rovine pohladu
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eKnee_EgdeRafter_Column);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eApex_Edge_Rafters);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_WindPost_Front);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView) )
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_DoorTrimmer);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_DoorFrame);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_WindPost_Front);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_EdgeColumn_Front);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+             
+                // TODO - ked vyberiem prvy z daneho typu tak su takmer vsetky kruzky v lavom dolnom rohu a prekryvaju sa, chcelo by to vymysliet nejake pravidlo, aby boli kruzky krajsie rozmiestnene
+                // takze nebrat u vsetkych typov spojov hned prvy objekt
+
+                /*
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_DoorTrimmer_Front);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.ePurlin_EdgeRafter);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+
+                j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.ePurlin_EdgeRafter_FlyBracing);
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
+                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                */
+
+                // TODO - zaviest automaticke cislovanie "D-01" tak aby korespondovalo s oznacenim v layout joint details
+                // TODO - vektor by mal zaviest od pohladu, pre pohlady zboku je to new Vector3D(0, 0, -1), pre pohlad zhora na strechu / roof alebo stlpy / columns je Vector3D(1, 0, 0)
+
+                // Create symbols for each detail point
+                for (int i = 0; i < jointDetailsPointsInView.Count; i++)
+                {
+                    // TODO Vektor by sa mal nastavovat podla pohladu
+                    listOfDetailSymbols.Add(new CDetailSymbol(jointDetailsPointsInView[i], new Vector3D(0, 0, -1), "D-" + (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+                }
             }
-
-            // TODO - zaviest akutomaticke cislovanie "D-01" tak aby korespondovalo s oznacenim v layout joint details
-            // TODO - vektor by mal zaviest od pohladu, pre pohlady zboku je to new Vector3D(0, 0, -1), pre pohlad zhora na strechu / roof alebo stlpy / columns je Vector3D(1, 0, 0)
-
-            CDetailSymbol detSymbol1 = new CDetailSymbol(jointPoint_1, new Vector3D(0, 0, -1), "D-01", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
-            CDetailSymbol detSymbol2 = new CDetailSymbol(jointPoint_2, new Vector3D(0, 0, -1), "D-02", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
-            CDetailSymbol detSymbol3 = new CDetailSymbol(jointPoint_3, new Vector3D(0, 0, -1), "D-03", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
-
-            listOfDetailSymbols.Add(detSymbol1);
-            listOfDetailSymbols.Add(detSymbol2);
-            listOfDetailSymbols.Add(detSymbol3);
 
             // Create detail symbol models
             if (sDisplayOptions.bDisplayDetailSymbols) detailSymbols3DGroup = Drawing3D.CreateModelDetailSymbols_Model3DGroup(listOfDetailSymbols, model, sDisplayOptions);
@@ -5637,6 +5697,30 @@ namespace BaseClasses
         private static Point3D ConvertNodetoPoint3D(CNode n)
         {
             return new Point3D(n.X, n.Y, n.Z);
+        }
+
+        private static bool IsPoint3DCoordinateForSpecificDirectionSameAsGivenValue(Point3D p, float fCoordinateValue, int iDirectionCode)
+        {
+            if (iDirectionCode == 0)
+                return MathF.d_equal(p.X, fCoordinateValue);
+            else if (iDirectionCode == 1)
+                return MathF.d_equal(p.Y, fCoordinateValue);
+            else if (iDirectionCode == 2)
+                return MathF.d_equal(p.Z, fCoordinateValue);
+            else
+                return false; // Exception
+        }
+
+        private static bool IsNodeCoordinateForSpecificDirectionSameAsGivenValue(CNode n, float fCoordinateValue, int iDirectionCode)
+        {
+            if (iDirectionCode == 0)
+                return MathF.d_equal(n.X, fCoordinateValue);
+            else if (iDirectionCode == 1)
+                return MathF.d_equal(n.Y, fCoordinateValue);
+            else if (iDirectionCode == 2)
+                return MathF.d_equal(n.Z, fCoordinateValue);
+            else
+                return false; // Exception
         }
     }
 }

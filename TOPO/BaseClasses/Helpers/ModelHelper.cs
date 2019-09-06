@@ -360,15 +360,18 @@ namespace BaseClasses.Helpers
             // Este by bolo dobre vylepsit to tak ze vieme urcit presne suradnicu uzla spoja, aby sme vybrali len spoje v rovine pohladu pre ktore chceme teoreticky zobrazit znacky detailov
             List<CConnectionJointTypes> joints = new List<CConnectionJointTypes>();
 
-            List<CMember> membersList = new List<CMember>(members);
+            List<CMember> membersList = new List<CMember>(members); // Konvertujeme z pola na list, aby sme mohli v zozname vyhladavat
 
             // Najdi vsetky spoje na prutoch modelu
             foreach(CConnectionJointTypes j in model.m_arrConnectionJoints)
             {
                 foreach(CMember m in membersList)
                 {
+                    // uzol spoja je zaciatocny alebo koncovy uzol niektoreho z prutov
+                    // main member spoja je v zozname prutov, secondary member spoja je v zozname prutov
                     if ((j.m_Node == m.NodeStart || j.m_Node == m.NodeEnd) &&
-                        (membersList.Contains(j.m_MainMember) /*&& (j.m_SecondaryMembers != null  )*/))
+                        (membersList.Contains(j.m_MainMember) &&
+                        (j.m_SecondaryMembers == null || (j.m_SecondaryMembers != null && membersList.Contains(j.m_SecondaryMembers[0])))))
                     {
                         if(!joints.Contains(j))
                             joints.Add(j); // Nepridavat uz pridane spoje, spoj musi byt v zozname len raz

@@ -338,7 +338,7 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
-                    opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje
+                    // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true; // Pokus -zobrazenie znaciek detailov
                 }
