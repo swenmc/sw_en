@@ -4378,6 +4378,7 @@ namespace BaseClasses
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
@@ -5589,9 +5590,31 @@ namespace BaseClasses
             // Roztriedil by som to podla hodnoty suradnice, ktora smeruje kolko z podladu, napriklad ak je jointNode.Y = ako Y pre front view, teda 0, tak sa vo front view zobrazia znacky joint ktore lezia v Y = 0
             // Nechcem to robit ako je v predlohe fs08 do 3D pohladu, pride mi to komplikovane, museli by sme znacky a texty transformovat podla toho ako je natoceny pohlad
 
-            CDetailSymbol detSymbol1 = new CDetailSymbol(new Point3D(0, 0, 1), new Vector3D(0, 0, -1), "D-01", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
-            CDetailSymbol detSymbol2 = new CDetailSymbol(new Point3D(2, 0, 2.2), new Vector3D(0, 0, -1), "D-02", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
-            CDetailSymbol detSymbol3 = new CDetailSymbol(new Point3D(4, /*model.fL_tot*/0, 0.8), new Vector3D(0, 0, -1), "D-03", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+            Point3D jointPoint_1 = new Point3D();
+            Point3D jointPoint_2 = new Point3D();
+            Point3D jointPoint_3 = new Point3D();
+
+            foreach (CConnectionJointTypes j in model.m_arrConnectionJoints)
+            {
+                // TODO
+                // Tu by sme mali urcit body pre jednotlive typy spojov v zavislosti na type spajanych members a roztriedit ich podla toho aku maju suradnicu vzhladom k rovine pohladu (suradnica v smere pohladu)
+                // aby sa v kazdom pohlade vyznacilo len to co je v danej oblasti, suradnica v osi kolmej na rovinu pohladu
+                if (j is CConnectionJoint_TA01) // TODO - Rozlisovat podla triedy a typu main a secondary member - vid joint preview
+                    jointPoint_1 = ConvertNodetoPoint3D(j.m_Node);
+
+                if (j is CConnectionJoint_T001)
+                    jointPoint_2 = ConvertNodetoPoint3D(j.m_Node);
+
+                if (j is CConnectionJoint_T003)
+                    jointPoint_3 = ConvertNodetoPoint3D(j.m_Node);
+            }
+
+            // TODO - zaviest akutomaticke cislovanie "D-01" tak aby korespondovalo s oznacenim v layout joint details
+            // TODO - vektor by mal zaviest od pohladu, pre pohlady zboku je to new Vector3D(0, 0, -1), pre pohlad zhora na strechu / roof alebo stlpy / columns je Vector3D(1, 0, 0)
+
+            CDetailSymbol detSymbol1 = new CDetailSymbol(jointPoint_1, new Vector3D(0, 0, -1), "D-01", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+            CDetailSymbol detSymbol2 = new CDetailSymbol(jointPoint_2, new Vector3D(0, 0, -1), "D-02", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
+            CDetailSymbol detSymbol3 = new CDetailSymbol(jointPoint_3, new Vector3D(0, 0, -1), "D-03", fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS);
 
             listOfDetailSymbols.Add(detSymbol1);
             listOfDetailSymbols.Add(detSymbol2);
@@ -5609,6 +5632,11 @@ namespace BaseClasses
                     DrawDetailSymbolLabelText3D(detailSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
                 }
             }
+        }
+
+        private static Point3D ConvertNodetoPoint3D(CNode n)
+        {
+            return new Point3D(n.X, n.Y, n.Z);
         }
     }
 }

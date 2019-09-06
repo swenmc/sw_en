@@ -354,6 +354,31 @@ namespace BaseClasses.Helpers
             return points;
         }
 
+        public static List<CConnectionJointTypes> GetRelatedJoints(CModel model, CMember [] members)
+        {
+            // TODO Ondrej - potrebujeme najst v globalnom modeli vsetky spoje ktore prisluchaju zvolenym prutom pre filter
+            // Este by bolo dobre vylepsit to tak ze vieme urcit presne suradnicu uzla spoja, aby sme vybrali len spoje v rovine pohladu pre ktore chceme teoreticky zobrazit znacky detailov
+            List<CConnectionJointTypes> joints = new List<CConnectionJointTypes>();
+
+            List<CMember> membersList = new List<CMember>(members);
+
+            // Najdi vsetky spoje na prutoch modelu
+            foreach(CConnectionJointTypes j in model.m_arrConnectionJoints)
+            {
+                foreach(CMember m in membersList)
+                {
+                    if ((j.m_Node == m.NodeStart || j.m_Node == m.NodeEnd) &&
+                        (membersList.Contains(j.m_MainMember) /*&& (j.m_SecondaryMembers != null  )*/))
+                    {
+                        if(!joints.Contains(j))
+                            joints.Add(j); // Nepridavat uz pridane spoje, spoj musi byt v zozname len raz
+                    }
+                }
+            }
+
+            return joints;
+        }
+
         private static float SetNodeCoordinateForSpecificDirection(CNode n, int iDirectionCode)
         {
             // Funckia vrati suradnicu uzla pre specificky smer GCS ktory chceme uvazovat
