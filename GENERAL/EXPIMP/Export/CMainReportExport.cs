@@ -105,6 +105,8 @@ namespace EXPIMP
             string fileName = GetReportPDFName();
             // Save the s_document...
             s_document.Save(fileName);
+
+            s_document.Dispose();
             // ...and start a viewer
             Process.Start(fileName);
         }
@@ -1047,6 +1049,7 @@ namespace EXPIMP
                     gfx.DrawString(sTextP11, fontNote, brushNote, iPictureTextOffset + 100, 350);
                 }
             }
+            gfx.Dispose();
         }
 
         private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
@@ -1726,6 +1729,7 @@ namespace EXPIMP
             double width = 300;
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
+            gfx.Dispose();
         }
 
         private static Table GetTitlePageTable(Document document, List<string[]> tableParams)
