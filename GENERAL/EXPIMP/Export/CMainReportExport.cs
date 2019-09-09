@@ -61,51 +61,26 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); // To Ondrej - vykreslit titulnu stranku so zoznamom vykresov, asi sa musi generovat az na konci podobne ako obsah
+            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); 
 
-            DrawModel3D(s_document, modelData);
+            //DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            //DrawModelViews(s_document, modelData);
 
             DrawJointTypes(s_document, modelData);
 
-            DrawFootingTypes(s_document, modelData);
+            //DrawFootingTypes(s_document, modelData);
 
-            DrawFloorDetails(s_document, modelData);
+            //DrawFloorDetails(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
+            //DrawStandardDetails(s_document, modelData); // To Ondrej - for review
 
-
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
-
-            //page = s_document.AddPage();
-            //gfx = XGraphics.FromPdfPage(page);
-            //DrawBasicGeometry(gfx, modelData);
-
-            //page = s_document.AddPage();
-            //gfx = XGraphics.FromPdfPage(page);
-            //AddBasicGeometryToDocument(gfx, modelData, 10);
-
-            //DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
-
-            //double height = DrawCanvasImage(gfx, canvas);
-            //DrawImage(gfx);
-
-            // Create demonstration pages
-            //new LinesAndCurves().DrawPage(s_document.AddPage());
-            //new Shapes().DrawPage(s_document.AddPage());
-            //new Paths().DrawPage(s_document.AddPage());
-            //new Text().DrawPage(s_document.AddPage());
-            //new Images().DrawPage(s_document.AddPage());
-
-            //PdfPage page2 = s_document.AddPage();
-            //XGraphics gfx2 = XGraphics.FromPdfPage(page2);
-            //AddTableToDocument(gfx2, 50, tableParams);
+            
+            
 
             string fileName = GetReportPDFName();
             // Save the s_document...
             s_document.Save(fileName);
-
             s_document.Dispose();
             // ...and start a viewer
             Process.Start(fileName);
@@ -511,7 +486,9 @@ namespace EXPIMP
             //XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             //gfx.DrawString("JDetails - Joints:", fontBold, XBrushes.Black, 20, 20);
 
-            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);            
+            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+            XFont font2 = new XFont(fontFamily, 18, XFontStyle.Bold, options);
+            XPen pen = new XPen(XColors.Black, 2);
 
             double moveX = 5; // Odsadenie od laveho okraja vykresu
             double moveY = 40;
@@ -524,6 +501,10 @@ namespace EXPIMP
             XStringFormat format = new XStringFormat();
             format.LineAlignment = XLineAlignment.Near;
             format.Alignment = XStringAlignment.Near;
+            XStringFormat formatCenter = new XStringFormat();
+            formatCenter.LineAlignment = XLineAlignment.Center;
+            formatCenter.Alignment = XStringAlignment.Center;
+            int counter = 1;
 
             foreach (KeyValuePair<CConnectionDescription, CConnectionJointTypes> kvp in data.JointsDict)
             {
@@ -559,7 +540,10 @@ namespace EXPIMP
                 double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
-                tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 10, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
+                tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 35, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
+                gfx.DrawEllipse(pen, new Rect(moveX, moveY - 30, 30, 30));
+                gfx.DrawString($"{counter++}", font2, XBrushes.Black, moveX + (counter > 10 ? 5: 10), moveY - 9);
+                
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
 

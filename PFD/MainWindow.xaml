@@ -286,7 +286,7 @@
                             <CheckBox Name="chbDisplayNodalSupports" IsChecked="{Binding Path=DisplayNodalSupports}">Nodal Supports</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="4" Grid.Column="4" Grid.RowSpan="6">
+                        <StackPanel Grid.Row="4" Grid.Column="4" Grid.RowSpan="7">
                             <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
                             <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
                             <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
@@ -303,8 +303,9 @@
                             <CheckBox Name="chbDisplaySectionSymbols" IsChecked="{Binding Path=ShowSectionSymbols}">Display Section Symbols</CheckBox>
                             <CheckBox Name="chbDisplayDetailSymbols" IsChecked="{Binding Path=ShowDetailSymbols}">Display Detail Symbols</CheckBox>
                         </StackPanel>
+                        
 
-                        <StackPanel Grid.Row="10" Grid.Column="3" Grid.RowSpan="5">
+                        <StackPanel Grid.Row="11" Grid.Column="3" Grid.RowSpan="5">
                             <CheckBox Name="chbDisplayMembersCenterLines" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>
                             <CheckBox Name="chbDisplaySolidModel"  IsChecked="{Binding Path=DisplaySolidModel}">Display Solid Model</CheckBox>
                             <CheckBox Name="chbDisplayWireFrameModel" IsChecked="{Binding Path=DisplayWireFrameModel}">Display Wireframe Model</CheckBox>
@@ -319,7 +320,7 @@
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="10" Grid.Column="4" Grid.RowSpan="3">
+                        <StackPanel Grid.Row="11" Grid.Column="4" Grid.RowSpan="3">
                             <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Color Members</CheckBox>
                             <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
 
