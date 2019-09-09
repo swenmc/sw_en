@@ -65,7 +65,7 @@ namespace EXPIMP
 
             //DrawModel3D(s_document, modelData);
 
-            //DrawModelViews(s_document, modelData);
+            DrawModelViews(s_document, modelData);
 
             DrawJointTypes(s_document, modelData);
 
@@ -168,103 +168,7 @@ namespace EXPIMP
             XGraphics gfx;
             PdfPage page;
             double scale = 1;
-            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = true;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bTransformScreenLines3DToCylinders3D = true;
-
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayMembers = true;
-            //opts.bDisplayJoints = true;
-            //opts.bDisplayPlates = true;
-
-            opts.bDisplaySawCuts = false;
-            opts.bDisplayControlJoints = false;
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
-
-            // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
-            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
-
-            /*
-            7 PT    9 PX    2.5 MM  0.6 EM   60 %
-            7 PT    10 PX   2.5 MM  0.6 EM   60 %
-            8 PT    11 PX   2.8 MM  0.7 EM   70 %
-            9 PT    12 PX   3.4 MM  0.8 EM   80 %
-            9 PT    13 PX   3.4 MM  0.8 EM   80 %
-            10 PT   13 PX   3.4 MM  0.8 EM   80 %
-            10.5 PT 14 PX   3.6 MM  0.85 EM  85 %
-            11 PT   15 PX   3.9 MM  0.95 EM  95 %
-            12 PT   16 PX   4.2 MM  1.05 EM 105 %
-            12 PT   17 PX   4.2 MM  1.05 EM 105 %
-            13 PT   17 PX   4.2 MM  1.1 EM  110 %
-            13 PT   18 PX   4.8 MM  1.1 EM  110 %
-            14 PT   19 PX   5 MM    1.2 EM  120 %
-            15 PT   20 PX   5.4 MM  1.33 EM 133 %
-            16 PT   21 PX   5.8 MM  1.4 EM  140 %
-            16 PT   22 PX   5.8 MM  1.4 EM  140 %
-            17 PT   23 PX   6.2 MM  1.5 EM  150 %
-            */
-
-            opts.fMemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
-            opts.MemberDescriptionTextColor = System.Windows.Media.Colors.DarkGreen;
-
-            opts.fDimensionTextFontSize = 14;
-            opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
-            opts.DimensionLineColor = System.Windows.Media.Colors.Black;
-
-            opts.fGridLineLabelTextFontSize = 30;
-            opts.GridLineLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.GridLineColor = System.Windows.Media.Colors.Black;
-            opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
-
-            opts.fSawCutTextFontSize = 14;
-            opts.SawCutTextColor = System.Windows.Media.Colors.Black;
-            opts.SawCutLineColor = System.Windows.Media.Colors.Black;
-            opts.SawCutLinePatternType = ELinePatternType.DOTTED;
-
-            opts.fControlJointTextFontSize = 14;
-            opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
-
-            opts.fSectionSymbolLabelTextFontSize = 30;
-            opts.SectionSymbolLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.SectionSymbolColor = System.Windows.Media.Colors.Black;
-            //opts.SectionSymbolLinePatternType = ELinePatternType.DASHDOTTED;
-
-            opts.fDetailSymbolLabelTextFontSize = 30;
-            opts.DetailSymbolLabelTextColor = System.Windows.Media.Colors.Black;
-            opts.DetailSymbolColor = System.Windows.Media.Colors.Black;
-            //opts.DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
-
-            opts.fFoundationTextFontSize = 14;
-            opts.FoundationColor = System.Windows.Media.Colors.White;
-            opts.FoundationTextColor = System.Windows.Media.Colors.Black;
-
-            opts.fFloorSlabTextFontSize = 14;
-            opts.FloorSlabColor = System.Windows.Media.Colors.White;
-            opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
-
-            opts.ReinforcementBarColor_Top_x = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Top_y = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
-            opts.ReinforcementBarColor_Bottom_y = System.Windows.Media.Colors.Black;
-
-            opts.fFoundationSolidModelOpacity = 0;
-            opts.fFloorSlabSolidModelOpacity = 0;
-            opts.fReinforcementBarSolidModelOpacity = 1;
+            DisplayOptions opts = GetModelViewsDisplayOptions(data);
 
             List<EViewModelMemberFilters> list_views = new List<EViewModelMemberFilters>()
              { EViewModelMemberFilters.FRONT, EViewModelMemberFilters.BACK, EViewModelMemberFilters.LEFT, EViewModelMemberFilters.RIGHT, EViewModelMemberFilters.ROOF, /*EViewModelMemberFilters.BOTTOM,*/ EViewModelMemberFilters.MIDDLE_FRAME, EViewModelMemberFilters.COLUMNS, EViewModelMemberFilters.FOUNDATIONS, EViewModelMemberFilters.FLOOR};
@@ -441,43 +345,115 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawJointTypes(PdfDocument s_document, CModelData data)
-        {
-            XGraphics gfx;
-            PdfPage page;
-            double scale = 1;
-            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = false;
+        private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
+        {  
+            DisplayOptions opts = data.DisplayOptions;
+            opts.bUseOrtographicCamera = true;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
-
             opts.bDisplayGlobalAxis = false;
             opts.bDisplaySolidModel = true;
             opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
-            opts.bDisplayMemberDescription = false;
+            opts.bDisplayWireFrameModel = false;   //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.bTransformScreenLines3DToCylinders3D = true;
 
-            opts.bDisplayMembers = true;
-            opts.bDisplayJoints = true;
-            opts.bDisplayPlates = true;
-            opts.bDisplayConnectors = true;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
 
             opts.bDisplayNodes = false;
             opts.bDisplayNodesDescription = false;
             opts.bDisplayNodalSupports = false;
 
+            opts.bDisplayMembers = true;
+            //opts.bDisplayJoints = true;
+            //opts.bDisplayPlates = true;
+
+            opts.bDisplaySawCuts = false;
+            opts.bDisplayControlJoints = false;
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
             opts.bDisplayDetailSymbols = false;
 
-            // Do dokumentu exporujeme aj s wireframe
-            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.fWireFrameLineThickness = 2;
-            opts.bTransformScreenLines3DToCylinders3D = false;
-            opts.bDisplayJointsWireFrame = true;
-            opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayConnectorsWireFrame = false;
-            opts.wireFrameColor = System.Windows.Media.Colors.Black;
+            // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aka ma byt vyska textu v jednotlivych pohladoch, na papieri by to malo byt cca - 2-2.5 mm, pripadne do 3 mm (6 - 8 PT)
+            // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
+
+            /*
+            7 PT    9 PX    2.5 MM  0.6 EM   60 %
+            7 PT    10 PX   2.5 MM  0.6 EM   60 %
+            8 PT    11 PX   2.8 MM  0.7 EM   70 %
+            9 PT    12 PX   3.4 MM  0.8 EM   80 %
+            9 PT    13 PX   3.4 MM  0.8 EM   80 %
+            10 PT   13 PX   3.4 MM  0.8 EM   80 %
+            10.5 PT 14 PX   3.6 MM  0.85 EM  85 %
+            11 PT   15 PX   3.9 MM  0.95 EM  95 %
+            12 PT   16 PX   4.2 MM  1.05 EM 105 %
+            12 PT   17 PX   4.2 MM  1.05 EM 105 %
+            13 PT   17 PX   4.2 MM  1.1 EM  110 %
+            13 PT   18 PX   4.8 MM  1.1 EM  110 %
+            14 PT   19 PX   5 MM    1.2 EM  120 %
+            15 PT   20 PX   5.4 MM  1.33 EM 133 %
+            16 PT   21 PX   5.8 MM  1.4 EM  140 %
+            16 PT   22 PX   5.8 MM  1.4 EM  140 %
+            17 PT   23 PX   6.2 MM  1.5 EM  150 %
+            */
+
+            opts.fMemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
+            opts.MemberDescriptionTextColor = System.Windows.Media.Colors.DarkGreen;
+
+            opts.fDimensionTextFontSize = 14;
+            opts.DimensionTextColor = System.Windows.Media.Colors.DarkBlue;
+            opts.DimensionLineColor = System.Windows.Media.Colors.Black;
+
+            opts.fGridLineLabelTextFontSize = 30;
+            opts.GridLineLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.GridLineColor = System.Windows.Media.Colors.Black;
+            opts.GridLinePatternType = ELinePatternType.DASHDOTTED;
+
+            opts.fSawCutTextFontSize = 14;
+            opts.SawCutTextColor = System.Windows.Media.Colors.Black;
+            opts.SawCutLineColor = System.Windows.Media.Colors.Black;
+            opts.SawCutLinePatternType = ELinePatternType.DOTTED;
+
+            opts.fControlJointTextFontSize = 14;
+            opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
+            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
+            opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
+
+            opts.fSectionSymbolLabelTextFontSize = 30;
+            opts.SectionSymbolLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.SectionSymbolColor = System.Windows.Media.Colors.Black;
+            //opts.SectionSymbolLinePatternType = ELinePatternType.DASHDOTTED;
+
+            opts.fDetailSymbolLabelTextFontSize = 30;
+            opts.DetailSymbolLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.DetailSymbolColor = System.Windows.Media.Colors.Black;
+            //opts.DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
+
+            opts.fFoundationTextFontSize = 14;
+            opts.FoundationColor = System.Windows.Media.Colors.White;
+            opts.FoundationTextColor = System.Windows.Media.Colors.Black;
+
+            opts.fFloorSlabTextFontSize = 14;
+            opts.FloorSlabColor = System.Windows.Media.Colors.White;
+            opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
+
+            opts.ReinforcementBarColor_Top_x = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Top_y = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
+            opts.ReinforcementBarColor_Bottom_y = System.Windows.Media.Colors.Black;
+
+            opts.fFoundationSolidModelOpacity = 0;
+            opts.fFloorSlabSolidModelOpacity = 0;
+            opts.fReinforcementBarSolidModelOpacity = 1;
+            
+            return opts;
+        }
+
+        private static void DrawJointTypes(PdfDocument s_document, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            double scale = 1;
+            DisplayOptions opts = GetJointTypesDisplayOptions(data);
 
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
@@ -557,12 +533,9 @@ namespace EXPIMP
             gfx.Dispose();
         }
 
-        private static void DrawFootingTypes(PdfDocument s_document, CModelData data)
+        private static DisplayOptions GetJointTypesDisplayOptions(CModelData data)
         {
-            XGraphics gfx;
-            PdfPage page;
-            double scale = 1;
-            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            DisplayOptions opts = data.DisplayOptions;
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
             opts.bColorsAccordingToSections = true;
@@ -595,15 +568,16 @@ namespace EXPIMP
             opts.bDisplayConnectorsWireFrame = false;
             opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
-            // Foundations
-            opts.bDisplayFoundations = true;
-            opts.bDisplayReinforcementBars = true;
-            opts.bDisplayFoundationsWireFrame = true;
-            opts.bDisplayReinforcementBarsWireFrame = true;
-            opts.RotateModelX = -80;
-            opts.RotateModelY = 45;
-            opts.RotateModelZ = 5;
+            return opts;
+        }
 
+        private static void DrawFootingTypes(PdfDocument s_document, CModelData data)
+        {
+            XGraphics gfx;
+            PdfPage page;
+            double scale = 1;
+            DisplayOptions opts = GetFootingTypesDisplayOptions(data);
+              
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
@@ -671,6 +645,53 @@ namespace EXPIMP
             }
 
             gfx.Dispose();
+        }
+
+        private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
+        {            
+            DisplayOptions opts = data.DisplayOptions;
+            opts.bUseOrtographicCamera = false;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+
+            opts.bDisplayGlobalAxis = false;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
+            opts.bDisplayMemberID = false; // V Defaulte nezobrazujeme unikatne cislo pruta
+            opts.bDisplayMemberDescription = false;
+
+            opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayPlates = true;
+            opts.bDisplayConnectors = true;
+
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
+
+            opts.bDisplayGridlines = false;
+            opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
+
+            // Do dokumentu exporujeme aj s wireframe
+            opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.fWireFrameLineThickness = 2;
+            opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.bDisplayJointsWireFrame = true;
+            opts.bDisplayPlatesWireFrame = true;
+            opts.bDisplayConnectorsWireFrame = false;
+            opts.wireFrameColor = System.Windows.Media.Colors.Black;
+
+            // Foundations
+            opts.bDisplayFoundations = true;
+            opts.bDisplayReinforcementBars = true;
+            opts.bDisplayFoundationsWireFrame = true;
+            opts.bDisplayReinforcementBarsWireFrame = true;
+            opts.RotateModelX = -80;
+            opts.RotateModelY = 45;
+            opts.RotateModelZ = 5;
+
+            return opts;
         }
 
         private static void AddPageToDocument(PdfDocument s_document, CProjectInfo projectInfo, out PdfPage page, out XGraphics gfx, string pageDetails)
