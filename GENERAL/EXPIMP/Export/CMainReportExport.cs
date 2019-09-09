@@ -183,7 +183,6 @@ namespace EXPIMP
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
                 gfx = XGraphics.FromPdfPage(page);
-                //DrawImage(gfx, ConfigurationManager.AppSettings["logoAndDetails"], 0, (int)page.Height.Point - 80, 320, 75);
                 DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
                 DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
@@ -227,13 +226,13 @@ namespace EXPIMP
                 if (viewMembers == EViewModelMemberFilters.BACK)
                 {
                     opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
+                    opts.bDisplayDetailSymbols = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.LEFT)
                 {
                     opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
+                    opts.bDisplayDetailSymbols = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.RIGHT)

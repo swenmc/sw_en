@@ -247,7 +247,6 @@ namespace BaseClasses
                 DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
                 // Pokus vyrobit lines 3D objekty
-                // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
                 // Members
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
@@ -326,28 +325,7 @@ namespace BaseClasses
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
-                //{
-                //    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                //    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions);
-                //}
-                //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations)
-                //{
-                //    Model3DGroup lines;
-                //    if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
-                //    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab)
-                //{
-                //    Model3DGroup lines;
-                //    if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
-                //    Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-
+                
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
@@ -5622,35 +5600,35 @@ namespace BaseClasses
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_EdgeColumn);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView)) // Uzol spoja nie je null a je v rovine pohladu
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eKnee_EgdeRafter_Column);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eApex_Edge_Rafters);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_WindPost_Front);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView) )
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_DoorTrimmer);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_DoorFrame);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_WindPost_Front);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_EdgeColumn_Front);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
-                    jointDetailsPointsInView.Add(ConvertNodetoPoint3D(j.m_Node));
+                    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
              
                 // TODO - ked vyberiem prvy z daneho typu tak su takmer vsetky kruzky v lavom dolnom rohu a prekryvaju sa, chcelo by to vymysliet nejake pravidlo, aby boli kruzky krajsie rozmiestnene
                 // takze nebrat u vsetkych typov spojov hned prvy objekt
@@ -5694,10 +5672,7 @@ namespace BaseClasses
             }
         }
 
-        private static Point3D ConvertNodetoPoint3D(CNode n)
-        {
-            return new Point3D(n.X, n.Y, n.Z);
-        }
+        
 
         private static bool IsPoint3DCoordinateForSpecificDirectionSameAsGivenValue(Point3D p, float fCoordinateValue, int iDirectionCode)
         {
