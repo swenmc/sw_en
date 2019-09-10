@@ -159,7 +159,7 @@ namespace BaseClasses
             }
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase, List<CDetailSymbol> detailSymbols)
         {
             CModel model = null;
             //DateTime start = DateTime.Now;
@@ -243,8 +243,9 @@ namespace BaseClasses
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
-
-                DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
+                
+                detailSymbols = GetTestDetailSymbols(model);
+                DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, detailSymbols, gr);
 
                 // Pokus vyrobit lines 3D objekty
                 // Add WireFrame Model
@@ -5551,14 +5552,30 @@ namespace BaseClasses
             }
         }
 
-        private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, List<CDetailSymbol> listOfDetailSymbols, Model3DGroup gr)
         {
             Model3DGroup detailSymbols3DGroup = null;
 
+            // Create detail symbol models
+            if (sDisplayOptions.bDisplayDetailSymbols) detailSymbols3DGroup = Drawing3D.CreateModelDetailSymbols_Model3DGroup(listOfDetailSymbols, model, sDisplayOptions);
+            if (detailSymbols3DGroup != null) gr.Children.Add(detailSymbols3DGroup);
+
+            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
+            if (detailSymbols3DGroup != null)
+            {
+                foreach (CDetailSymbol detailSymbol in listOfDetailSymbols)
+                {
+                    DrawDetailSymbolLabelText3D(detailSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
+                }
+            }
+        }
+
+        private static List<CDetailSymbol> GetTestDetailSymbols(CModel model)
+        {
             // Create detail symbols
             List<CDetailSymbol> listOfDetailSymbols = new List<CDetailSymbol>();
 
-            float fMarkCircleDiameter = 0.6f;
+            float fMarkCircleDiameter = 0.5f;
             float fOffsetLineLength = 0.2f;
 
             // TODO - doriesit ci musi byt zapnute sDisplayOptions.bDisplayJoints aj sDisplayOptions.bDisplayDetailSymbols
@@ -5611,7 +5628,7 @@ namespace BaseClasses
                     jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_WindPost_Front);
-                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView) )
+                if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
                     jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
 
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eBase_DoorTrimmer);
@@ -5629,7 +5646,7 @@ namespace BaseClasses
                 j = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == EJointType.eGirt_EdgeColumn_Front);
                 if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView))
                     jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
-             
+
                 // TODO - ked vyberiem prvy z daneho typu tak su takmer vsetky kruzky v lavom dolnom rohu a prekryvaju sa, chcelo by to vymysliet nejake pravidlo, aby boli kruzky krajsie rozmiestnene
                 // takze nebrat u vsetkych typov spojov hned prvy objekt
 
@@ -5657,22 +5674,10 @@ namespace BaseClasses
                     listOfDetailSymbols.Add(new CDetailSymbol(jointDetailsPointsInView[i], new Vector3D(0, 0, -1), "D-" + (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
                 }
             }
-
-            // Create detail symbol models
-            if (sDisplayOptions.bDisplayDetailSymbols) detailSymbols3DGroup = Drawing3D.CreateModelDetailSymbols_Model3DGroup(listOfDetailSymbols, model, sDisplayOptions);
-            if (detailSymbols3DGroup != null) gr.Children.Add(detailSymbols3DGroup);
-
-            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
-            if (detailSymbols3DGroup != null)
-            {
-                foreach (CDetailSymbol detailSymbol in listOfDetailSymbols)
-                {
-                    DrawDetailSymbolLabelText3D(detailSymbol, _trackport.ViewPort, sDisplayOptions); // TODO
-                }
-            }
+            return listOfDetailSymbols;
         }
 
-        
+
 
         private static bool IsPoint3DCoordinateForSpecificDirectionSameAsGivenValue(Point3D p, float fCoordinateValue, int iDirectionCode)
         {

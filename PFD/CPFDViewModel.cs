@@ -2480,10 +2480,10 @@ namespace PFD
             ShowFoundationsDescription = false;
             ShowSawCutsDescription = false;
             ShowControlJointsDescription = false;
-            ShowDimensions = true;
-            ShowGridLines = true;
+            ShowDimensions = false;
+            ShowGridLines = false;
             ShowSectionSymbols = false;
-            ShowDetailSymbols = false;
+            ShowDetailSymbols = true;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;

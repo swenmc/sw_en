@@ -1509,7 +1509,7 @@ namespace EXPIMP
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
 
-            filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+            filteredModel = Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
 
             return _trackport.ViewPort;
         }

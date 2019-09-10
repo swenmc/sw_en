@@ -27,7 +27,7 @@ namespace PFD
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase);
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, null);
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
@@ -40,7 +40,7 @@ namespace PFD
             else if(modelType == EModelType.eFooting)
                 Drawing3D.DrawFootingToTrackPort(_trackport, model, sDisplayOptions);
             else
-                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null);
+                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
 
         }
 

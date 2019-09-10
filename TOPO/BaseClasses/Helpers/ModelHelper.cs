@@ -354,7 +354,7 @@ namespace BaseClasses.Helpers
             return points;
         }
 
-        public static List<CConnectionJointTypes> GetRelatedJoints(CModel model, CMember [] members)
+        public static List<CConnectionJointTypes> GetRelatedJoints(CModel model, CMember[] members)
         {
             // TODO Ondrej - potrebujeme najst v globalnom modeli vsetky spoje ktore prisluchaju zvolenym prutom pre filter
             // Este by bolo dobre vylepsit to tak ze vieme urcit presne suradnicu uzla spoja, aby sme vybrali len spoje v rovine pohladu pre ktore chceme teoreticky zobrazit znacky detailov

@@ -69,7 +69,7 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null);
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null, null);
         }
 
         public Window2(CModel cmodel, DisplayOptions sDisplayOptions_temp, CLoadCase loadCaseToDisplay, bool bDebugging_temp)
@@ -79,7 +79,7 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, loadCaseToDisplay);
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, loadCaseToDisplay, null);
         }
     }
 }
