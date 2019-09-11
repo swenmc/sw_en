@@ -1,6 +1,7 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
 using BaseClasses.Helpers;
+using DATABASE.DTO;
 using HelixToolkit.Wpf;
 using MATH;
 using Petzold.Media3D;
@@ -159,7 +160,16 @@ namespace BaseClasses
             }
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase, List<CDetailSymbol> detailSymbols)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions)
+        {
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions, null, null);
+        }
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        {
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions, loadcase, null);
+        }
+
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             CModel model = null;
             //DateTime start = DateTime.Now;
@@ -243,8 +253,9 @@ namespace BaseClasses
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
-                
-                detailSymbols = GetTestDetailSymbols(model);
+
+                //                List<CDetailSymbol> detailSymbols = GetTestDetailSymbols(model);
+                List<CDetailSymbol> detailSymbols = GetDetailSymbols(model, jointsDict);
                 DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, detailSymbols, gr);
 
                 // Pokus vyrobit lines 3D objekty
@@ -372,6 +383,104 @@ namespace BaseClasses
 
             _trackport.SetupScene();
             return model;
+        }
+
+
+        private static List<CDetailSymbol> GetDetailSymbols(CModel model, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
+        {
+            List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
+            float fMarkCircleDiameter = 0.5f;
+            float fOffsetLineLength = 0.2f;
+            // TODO - nastavovat smer podla pohladu
+            int iCodeCoordinatePerpendicularToView = 1; // 0-X, 1-Y, 2-Z
+            float fCoordinateValue = 0; // napojit na suradnicu pohladu
+
+            //CConnectionJointTypes joint;
+            int counter = 0;
+
+            List<Point3D> symbolsPoints = new List<Point3D>();
+            double minDist = fMarkCircleDiameter;
+            foreach (KeyValuePair<CConnectionDescription, CConnectionJointTypes> kvp in jointsDict)
+            {
+                List<CConnectionJointTypes> joints = model.m_arrConnectionJoints.FindAll(x => x.JointType == kvp.Value.JointType);
+                if (joints.Count == 0) continue;
+
+                CConnectionJointTypes notOverlapingJoint = FindNotOverlapingJoint(symbolsPoints, joints, minDist);
+                if (notOverlapingJoint == null) //not found
+                {
+                    CConnectionJointTypes joint = joints.FirstOrDefault();
+                    int index = GetOverlapingSymbolIndex(symbolsPoints, joint.m_Node.GetPoint3D(), fMarkCircleDiameter);
+                    symbolsPoints.Add(joint.m_Node.GetPoint3D()); //add point from this joint
+
+                    //try to change first overlaping symbol
+                    CConnectionJointTypes overlapingJoint = jointsDict.Values.ElementAt(index);
+                    joints = model.m_arrConnectionJoints.FindAll(x => x.JointType == overlapingJoint.JointType);
+
+                    notOverlapingJoint = FindNotOverlapingJoint(symbolsPoints, joints, minDist);
+                    if (notOverlapingJoint != null)
+                    {
+                        System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {index}");
+                        System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {joint.Name} -> {notOverlapingJoint.Name}");
+                        symbolsPoints[index] = notOverlapingJoint.m_Node.GetPoint3D();
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Trace.WriteLine($"Not overlaping: {notOverlapingJoint.Name}");
+                    symbolsPoints.Add(notOverlapingJoint.m_Node.GetPoint3D());
+                }
+
+
+                //joint = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == kvp.Value.JointType);
+                //if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView)) // Uzol spoja nie je null a je v rovine pohladu
+                //    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
+
+                //Point3D p = joint.m_Node.GetPoint3D();
+                ////int index = GetOverlapingSymbolIndex(symbolsPoints, p, fMarkCircleDiameter);
+                //System.Diagnostics.Trace.WriteLine($"Overlaping index: {index}");
+                //if (index != -1)
+                //{
+                //    List<CConnectionJointTypes> joints = model.m_arrConnectionJoints.FindAll(x => x.JointType == kvp.Value.JointType);
+
+                //}
+
+
+
+
+            }
+
+            foreach (Point3D point in symbolsPoints)
+            {
+                // TODO Vektor by sa mal nastavovat podla pohladu
+                detailSymbols.Add(new CDetailSymbol(point, new Vector3D(0, 0, -1), "D-" + (++counter), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+            }
+            return detailSymbols;
+        }
+
+        private static bool CheckSymbolsOverlaps(List<Point3D> points, Point3D p, double minDist)
+        {
+            foreach (Point3D p1 in points)
+            {
+                if (p1.DistanceTo(p) < minDist) return true;
+            }
+            return false;
+        }
+        private static int GetOverlapingSymbolIndex(List<Point3D> points, Point3D p, double minDist)
+        {
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (points[i].DistanceTo(p) < minDist) return i;
+            }
+            return -1;
+        }
+        private static CConnectionJointTypes FindNotOverlapingJoint(List<Point3D> points, List<CConnectionJointTypes> joints, double minDist)
+        {
+            foreach (CConnectionJointTypes joint in joints)
+            {
+                if (!CheckSymbolsOverlaps(points, joint.m_Node.GetPoint3D(), minDist)) return joint;
+            }
+            
+            return null;
         }
 
         public static void DrawJointToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)

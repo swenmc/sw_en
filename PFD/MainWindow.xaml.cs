@@ -792,8 +792,8 @@ namespace PFD
                 // Create 3D window
                 //UpdateDisplayOptions();
                 sDisplayOptions = vm.GetDisplayOptions();
-
-                Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
+                
+                Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
 
                 // Display model in 3D preview frame
                 Frame1.Content = page1;

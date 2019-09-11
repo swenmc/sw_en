@@ -7,6 +7,8 @@ using CRSC;
 using System.IO;
 using System;
 using System.Windows;
+using System.Collections.Generic;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -21,13 +23,13 @@ namespace PFD
         public EGCS eGCS = EGCS.eGCSLeftHanded;
         //EGCS eGCS = EGCS.eGCSRightHanded;
 
-        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase)
-        {
+        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
+        {            
             sDisplayOptions = sDisplayOptions_temp;
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, null);
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {

@@ -119,8 +119,8 @@
     <Compile Include="Helpers\CComboColor.cs" />
     <Compile Include="Helpers\CJointHelper.cs" />
     <Compile Include="Helpers\ModelValidationError.cs" />
-    <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="Helpers\GeometryHelper.cs" />
+    <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="Helpers\R3.cs" />
     <Compile Include="Helpers\ValueDisplayHelper.cs" />
     <Compile Include="Helpers\CrScFactory.cs" />
