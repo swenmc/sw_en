@@ -254,8 +254,8 @@ namespace BaseClasses
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
-                //                List<CDetailSymbol> detailSymbols = GetTestDetailSymbols(model);
-                List<CDetailSymbol> detailSymbols = GetDetailSymbols(model, jointsDict);
+                //                List<CDetailSymbol> detailSymbols = GetTestDetailSymbols(model);                
+                List<CDetailSymbol> detailSymbols = GetDetailSymbols(model, jointsDict, sDisplayOptions);
                 DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, detailSymbols, gr);
 
                 // Pokus vyrobit lines 3D objekty
@@ -386,7 +386,7 @@ namespace BaseClasses
         }
 
 
-        private static List<CDetailSymbol> GetDetailSymbols(CModel model, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
+        private static List<CDetailSymbol> GetDetailSymbols(CModel model, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict, DisplayOptions opts)
         {
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
             if (model.m_arrConnectionJoints == null) return detailSymbols;
@@ -431,11 +431,12 @@ namespace BaseClasses
                 }                
             }
 
+            Vector3D vector = GetDetailsSymbolVectorAccordingToView(opts);
             for (int i = 0; i < symbolsPoints.Count; i++)
             {
                 if (symbolsPoints[i] == null) continue;
-                // TODO Vektor by sa mal nastavovat podla pohladu
-                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], new Vector3D(0, 0, -1), (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+                
+                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], vector, (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
             }
             return detailSymbols;
         }
@@ -4523,6 +4524,50 @@ namespace BaseClasses
             }
 
             return _model;
+        }
+
+        public static Vector3D GetDetailsSymbolVectorAccordingToView(DisplayOptions sDisplayOptions)
+        {
+            Vector3D vector = new Vector3D(0, 0, -1);
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            {
+                vector = new Vector3D(0, 0, -1);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            {
+                vector = new Vector3D(0, 0, -1);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            {
+                vector = new Vector3D(-1, 0, 1);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            {
+                vector = new Vector3D(0, -1, 1);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            {
+                vector = new Vector3D(0, 1, 1);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            {
+                vector = new Vector3D(1, 0, 0);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            {                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            {                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            {                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            {
+                vector = new Vector3D(-1, 0, 0);
+            }
+
+            return vector;
         }
 
         private static void SetLabelsUpAndOverVectors(DisplayOptions sDisplayOptions, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, out Vector3D over, out Vector3D up)
