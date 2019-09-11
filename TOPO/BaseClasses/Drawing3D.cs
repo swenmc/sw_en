@@ -2369,6 +2369,7 @@ namespace BaseClasses
                             over_LCS = new Vector3D(1, 0, 0); // ??? doriesit opacny smer textu
                             up_LCS = new Vector3D(0, 0, 1);
 
+
                             // Ak smeruje lokalna osa x v smere zapornej osi Z potrebujeme text otocit aby sa vykreslil zhora dole
                             if (model.m_arrMembers[i].Delta_X == 0 && model.m_arrMembers[i].Delta_Y == 0 && model.m_arrMembers[i].Delta_Z < 0)
                             {
@@ -2773,6 +2774,21 @@ namespace BaseClasses
             // Teraz fixne nastavene na rovinu XZ
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
+
+            ////xz
+            //over_LCS = new Vector3D(1, 0, 0); // ??? doriesit opacny smer textu
+            //up_LCS = new Vector3D(0, 0, 1);
+
+            ////yz
+            //over_LCS = new Vector3D(0, 1, 0);
+            //up_LCS = new Vector3D(0, 0, 1);
+
+            /////xy
+            //over_LCS = new Vector3D(1, 0, 0); // Text v smere kladnej osi x 
+            //up_LCS = new Vector3D(0, 1, 0);
+
 
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up); ;
@@ -4568,6 +4584,51 @@ namespace BaseClasses
             }
 
             return vector;
+        }
+        public static void GetTextVectorsAccordingToView(DisplayOptions sDisplayOptions, out Vector3D up, out Vector3D over, float fTextBlockVerticalSizeFactor = 0.8f, float fTextBlockHorizontalSizeFactor = 0.5f)
+        {
+            over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
+            up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            {
+                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            {
+                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            {
+                
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
+            {
+                over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
+            {
+                over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            {
+                up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);                
+                over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
+            {
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
+            {
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FOUNDATIONS)
+            {
+            }
+            else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
+            {
+                up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+                over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
+            }
         }
 
         private static void SetLabelsUpAndOverVectors(DisplayOptions sDisplayOptions, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, out Vector3D over, out Vector3D up)
