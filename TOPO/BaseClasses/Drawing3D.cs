@@ -389,21 +389,21 @@ namespace BaseClasses
         private static List<CDetailSymbol> GetDetailSymbols(CModel model, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
+            if (model.m_arrConnectionJoints == null) return detailSymbols;
+
             float fMarkCircleDiameter = 0.5f;
             float fOffsetLineLength = 0.2f;
             // TODO - nastavovat smer podla pohladu
             int iCodeCoordinatePerpendicularToView = 1; // 0-X, 1-Y, 2-Z
             float fCoordinateValue = 0; // napojit na suradnicu pohladu
 
-            //CConnectionJointTypes joint;
-            int counter = 0;
+            List<Point3D?> symbolsPoints = new List<Point3D?>(jointsDict.Values.Count);
+            double minDist = fMarkCircleDiameter;            
 
-            List<Point3D> symbolsPoints = new List<Point3D>();
-            double minDist = fMarkCircleDiameter;
             foreach (KeyValuePair<CConnectionDescription, CConnectionJointTypes> kvp in jointsDict)
             {
                 List<CConnectionJointTypes> joints = model.m_arrConnectionJoints.FindAll(x => x.JointType == kvp.Value.JointType);
-                if (joints.Count == 0) continue;
+                if (joints.Count == 0) { symbolsPoints.Add(null); continue; }
 
                 CConnectionJointTypes notOverlapingJoint = FindNotOverlapingJoint(symbolsPoints, joints, minDist);
                 if (notOverlapingJoint == null) //not found
@@ -431,31 +431,34 @@ namespace BaseClasses
                 }                
             }
 
-            foreach (Point3D point in symbolsPoints)
+            for (int i = 0; i < symbolsPoints.Count; i++)
             {
+                if (symbolsPoints[i] == null) continue;
                 // TODO Vektor by sa mal nastavovat podla pohladu
-                detailSymbols.Add(new CDetailSymbol(point, new Vector3D(0, 0, -1), (++counter).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], new Vector3D(0, 0, -1), (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
             }
             return detailSymbols;
         }
 
-        private static bool CheckSymbolsOverlaps(List<Point3D> points, Point3D p, double minDist)
+        private static bool CheckSymbolsOverlaps(List<Point3D?> points, Point3D p, double minDist)
         {
-            foreach (Point3D p1 in points)
+            foreach (var p1 in points)
             {
-                if (p1.DistanceTo(p) < minDist) return true;
+                if (p1 == null) continue;
+                if (((Point3D)p1).DistanceTo(p) < minDist) return true;
             }
             return false;
         }
-        private static int GetOverlapingSymbolIndex(List<Point3D> points, Point3D p, double minDist)
+        private static int GetOverlapingSymbolIndex(List<Point3D?> points, Point3D p, double minDist)
         {
             for (int i = 0; i < points.Count; i++)
             {
-                if (points[i].DistanceTo(p) < minDist) return i;
+                if (points[i] == null) continue;
+                if (((Point3D)points[i]).DistanceTo(p) < minDist) return i;
             }
             return -1;
         }
-        private static CConnectionJointTypes FindNotOverlapingJoint(List<Point3D> points, List<CConnectionJointTypes> joints, double minDist)
+        private static CConnectionJointTypes FindNotOverlapingJoint(List<Point3D?> points, List<CConnectionJointTypes> joints, double minDist)
         {
             foreach (CConnectionJointTypes joint in joints)
             {
@@ -4448,32 +4451,37 @@ namespace BaseClasses
             {
                 _model.m_arrMembers = ModelHelper.GetFrontViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetFrontViewNodes(model);
-                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers); // TODO - preberat do modelu vzdy alebo len aj je zobrazene bDisplayJoints
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
             {
                 _model.m_arrMembers = ModelHelper.GetBackViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetBackViewNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 _model.m_arrMembers = ModelHelper.GetLeftViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetLeftViewNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 _model.m_arrMembers = ModelHelper.GetRightViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetRightViewNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
                 _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model);
                 _model.m_arrNodes = ModelHelper.GetRoofViewNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)
             {
                 _model.m_arrMembers = ModelHelper.GetMiddleFrameMembers(model);
                 _model.m_arrNodes = ModelHelper.GetMiddleFrameNodes(model);
+                _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {

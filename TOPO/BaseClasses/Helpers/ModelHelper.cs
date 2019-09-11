@@ -367,15 +367,21 @@ namespace BaseClasses.Helpers
             {
                 foreach(CMember m in membersList)
                 {
-                    // uzol spoja je zaciatocny alebo koncovy uzol niektoreho z prutov
-                    // main member spoja je v zozname prutov, secondary member spoja je v zozname prutov
-                    if ((j.m_Node == m.NodeStart || j.m_Node == m.NodeEnd) &&
-                        (membersList.Contains(j.m_MainMember) &&
-                        (j.m_SecondaryMembers == null || (j.m_SecondaryMembers != null && membersList.Contains(j.m_SecondaryMembers[0])))))
+                    if (j.m_Node.ID == m.NodeStart.ID || j.m_Node.ID == m.NodeEnd.ID)
                     {
-                        if(!joints.Contains(j))
+                        if (!joints.Contains(j))
                             joints.Add(j); // Nepridavat uz pridane spoje, spoj musi byt v zozname len raz
                     }
+
+                    //// uzol spoja je zaciatocny alebo koncovy uzol niektoreho z prutov
+                    //// main member spoja je v zozname prutov, secondary member spoja je v zozname prutov
+                    //if ((j.m_Node == m.NodeStart || j.m_Node == m.NodeEnd) &&
+                    //    (membersList.Contains(j.m_MainMember) &&
+                    //    (j.m_SecondaryMembers == null || (j.m_SecondaryMembers != null && membersList.Contains(j.m_SecondaryMembers[0])))))
+                    //{
+                    //    if(!joints.Contains(j))
+                    //        joints.Add(j); // Nepridavat uz pridane spoje, spoj musi byt v zozname len raz
+                    //}
                 }
             }
 

@@ -138,7 +138,7 @@ namespace EXPIMP
             opts.bDisplayDetailSymbols = false;
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -323,7 +323,7 @@ namespace EXPIMP
                 }
 
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
                 viewPort.UpdateLayout();
 
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
@@ -1122,7 +1122,7 @@ namespace EXPIMP
             opts.bDisplayDetailSymbols = false;
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data.Model, out filteredModel);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
