@@ -428,31 +428,13 @@ namespace BaseClasses
                 {
                     System.Diagnostics.Trace.WriteLine($"Not overlaping: {notOverlapingJoint.Name}");
                     symbolsPoints.Add(notOverlapingJoint.m_Node.GetPoint3D());
-                }
-
-
-                //joint = model.m_arrConnectionJoints.FirstOrDefault(x => x.JointType == kvp.Value.JointType);
-                //if (j != null && IsNodeCoordinateForSpecificDirectionSameAsGivenValue(j.m_Node, fCoordinateValue, iCodeCoordinatePerpendicularToView)) // Uzol spoja nie je null a je v rovine pohladu
-                //    jointDetailsPointsInView.Add(j.m_Node.GetPoint3D());
-
-                //Point3D p = joint.m_Node.GetPoint3D();
-                ////int index = GetOverlapingSymbolIndex(symbolsPoints, p, fMarkCircleDiameter);
-                //System.Diagnostics.Trace.WriteLine($"Overlaping index: {index}");
-                //if (index != -1)
-                //{
-                //    List<CConnectionJointTypes> joints = model.m_arrConnectionJoints.FindAll(x => x.JointType == kvp.Value.JointType);
-
-                //}
-
-
-
-
+                }                
             }
 
             foreach (Point3D point in symbolsPoints)
             {
                 // TODO Vektor by sa mal nastavovat podla pohladu
-                detailSymbols.Add(new CDetailSymbol(point, new Vector3D(0, 0, -1), "D-" + (++counter), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+                detailSymbols.Add(new CDetailSymbol(point, new Vector3D(0, 0, -1), (++counter).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
             }
             return detailSymbols;
         }
@@ -3105,7 +3087,7 @@ namespace BaseClasses
 
             foreach (CDetailSymbol detailSymbol in detailSymbols)
             {
-                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor));
+                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor, false));
             }
 
             return gr;

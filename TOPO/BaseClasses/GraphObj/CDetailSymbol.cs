@@ -184,10 +184,11 @@ namespace BaseClasses.GraphObj
 
             float offset_x = 0.4f; // Umoznit Nastavovat podla velkosti text label ???
             float offset_y = -0.01f; // Default 0.0 (stred textu na stred ciary)
-            m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + offset_x, 0 + offset_y, -m_LineCylinderRadius);
+            //m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + offset_x, 0 + offset_y, -m_LineCylinderRadius);
+            m_PointLabelText = new Point3D(0,0,0);
         }
 
-        public Model3DGroup GetDetailSymbolModel(System.Windows.Media.Color color)
+        public Model3DGroup GetDetailSymbolModel(System.Windows.Media.Color color, bool drawLine)
         {
             Model3DGroup model_gr = new Model3DGroup();
 
@@ -199,23 +200,26 @@ namespace BaseClasses.GraphObj
             short NumberOfCirclePointsMark = 32 + 1;//32 + 1;
             model_gr.Children.Add(new CHollowCylinder(NumberOfCirclePointsMark, (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material).CreateM_G_M_3D_Volume(new Point3D(0,0, -m_LineCylinderRadius), (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material, 2));
 
-            // Line
-            short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
-
-            if(m_LinePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
-               model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, 0, false, false));
-            else // Iny typ ciary
+            if (drawLine)
             {
-                // dashed, dotted, divide, ....
+                // Line
+                short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
 
-                // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS);
-
-                // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
-                for(int i = 0; i < line.PointsCollection.Count; i+=2) // Ako zaciatok berieme kazdy druhy bod
+                if (m_LinePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
+                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, 0, false, false));
+                else // Iny typ ciary
                 {
-                    float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
-                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, m_LineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                    // dashed, dotted, divide, ....
+
+                    // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
+                    CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS);
+
+                    // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
+                    for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
+                    {
+                        float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
+                        model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, m_LineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                    }
                 }
             }
 
