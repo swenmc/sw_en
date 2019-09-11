@@ -2768,27 +2768,10 @@ namespace BaseClasses
             tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-
-            // PODOBNE AKO U ZAKLADOV - FOUNDATION DESCRIPTION
-            // Vektor by sme mali nastavovat horizontalne podla roviny pohladu
-            // Teraz fixne nastavene na rovinu XZ
+            
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
-
             GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
-
-            ////xz
-            //over_LCS = new Vector3D(1, 0, 0); // ??? doriesit opacny smer textu
-            //up_LCS = new Vector3D(0, 0, 1);
-
-            ////yz
-            //over_LCS = new Vector3D(0, 1, 0);
-            //up_LCS = new Vector3D(0, 0, 1);
-
-            /////xy
-            //over_LCS = new Vector3D(1, 0, 0); // Text v smere kladnej osi x 
-            //up_LCS = new Vector3D(0, 1, 0);
-
 
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up); ;

@@ -238,13 +238,13 @@ namespace EXPIMP
                 if (viewMembers == EViewModelMemberFilters.RIGHT)
                 {
                     opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
+                    opts.bDisplayDetailSymbols = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.ROOF)
                 {
                     opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = false;
+                    opts.bDisplayDetailSymbols = true;
                 }
 
                 // Toto je len pokus ako to vyzera :)
