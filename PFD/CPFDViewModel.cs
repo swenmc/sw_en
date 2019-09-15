@@ -27,7 +27,7 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;
-        private readonly BackgroundWorker _worker = new BackgroundWorker();
+        private readonly BackgroundWorker _worker = new BackgroundWorker();        
 
         public MainWindow PFDMainWindow;
         public Solver SolverWindow;
@@ -2526,6 +2526,7 @@ namespace PFD
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
+
         }
 
         private void _jointsVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2571,12 +2572,12 @@ namespace PFD
         {
             if (!_worker.IsBusy) _worker.RunWorkerAsync();
         }
-
+        
         private void CalculateInternalForces(object sender, DoWorkEventArgs e)
         {
             Calculate();
         }
-
+        
         public void GenerateMemberLoadsIfNotGenerated()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
@@ -3157,5 +3158,7 @@ namespace PFD
 
             return sDisplayOptions;
         }
+
+        
     }
 }

@@ -23,6 +23,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace EXPIMP
 {
@@ -64,10 +65,15 @@ namespace EXPIMP
             //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); 
 
             //DrawModel3D(s_document, modelData);
+            
+            
+            
+            CMainReportExport.DrawModelViews(s_document, modelData);
+            CMainReportExport.DrawJointTypes(s_document, modelData);
+            
+            
 
-            DrawModelViews(s_document, modelData);
-
-            DrawJointTypes(s_document, modelData);
+            
 
             //DrawFootingTypes(s_document, modelData);
 

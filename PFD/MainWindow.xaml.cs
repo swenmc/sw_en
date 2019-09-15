@@ -90,7 +90,7 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
-        private CProjectInfoVM projectInfoVM;
+        private CProjectInfoVM projectInfoVM;        
 
         public MainWindow()
         {
@@ -1082,6 +1082,7 @@ namespace PFD
                 MessageBox.Show(text);
             });
         }
+        
 
         public void UpdateResults()
         {
@@ -1700,11 +1701,14 @@ namespace PFD
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
             WaitWindow ww = new WaitWindow("PDF");
+            ww.ContentRendered += Ww_ContentRendered;
             ww.Show();
-
+        }
+        private void Ww_ContentRendered(object sender, EventArgs e)
+        {
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
             CModelData modelData = vmPFD.GetModelData();
-            
+
             try
             {
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
@@ -1716,8 +1720,14 @@ namespace PFD
             }
             finally
             {
-                ww.Close();
+                WaitWindow ww = sender as WaitWindow;
+                if(ww != null) ww.Close();
             }
+        }
+
+        private void Ww_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)

@@ -3,15 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Title="Please wait..." WindowStartupLocation="CenterScreen" WindowStyle="None" Height="400" Width="400">
     <!--<Grid Background="Black">-->
     <Grid>
+        <Grid.ColumnDefinitions>            
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>            
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <!--<Image Name="WaitImage" Width="400" Height="400" gif:ImageBehavior.AnimatedSource="spin.gif" />-->
-
-        <Image Name="WaitImage" Width="400" Height="400"/>
+        <Image Grid.Row="0" Name="WaitImage" Width="400" Height="400"/>
         <!--<Image Name="WaitImagePDF" Source ="/Resources/PDFfilelogo.png" Width="400" Height="400"/>-->
         <!--<Image Name="WaitImageDOC" Source ="/Resources/DOCfilelogo.png" Width="400" Height="400"/>-->
         <!--<Image Name="WaitImageXLS" Source ="/Resources/XLSfilelogo.png" Width="400" Height="400"/>-->

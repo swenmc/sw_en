@@ -25,11 +25,14 @@ namespace PFD
 
             // Set icon depending on type of exported file
             if (fileType == "DOC")
-                WaitImage.Source = new BitmapImage(new Uri("Resources/DOCfilelogo.png", UriKind.Relative));
+                //WaitImage.Source = new BitmapImage(new Uri("./Resources/DOCfilelogo.png", UriKind.Relative));
+                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/DOCfilelogo.png"));
             else if (fileType == "XLS")
-                WaitImage.Source = new BitmapImage(new Uri("Resources/XLSfilelogo.png", UriKind.Relative));
+                //WaitImage.Source = new BitmapImage(new Uri("./Resources/XLSfilelogo.png", UriKind.Relative));
+                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/XLSfilelogo.png"));
             else if (fileType == "PDF")
-                WaitImage.Source = new BitmapImage(new Uri("Resources/PDFfilelogo.png", UriKind.Relative));
+                //WaitImage.Source = new BitmapImage(new Uri("./Resources/PDFfilelogo.png", UriKind.Relative));
+                WaitImage.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/PDFfilelogo.png"));                
             else
             {
                 throw new Exception("Not defined file type icon.");
