@@ -346,6 +346,7 @@ namespace EXPIMP
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
                 viewPort = null;
+
                 gfx.Dispose();
             }
         }
