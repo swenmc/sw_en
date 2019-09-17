@@ -75,7 +75,7 @@
 
                     <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Concrete Density:" VerticalAlignment="Top" Width="120"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Name="TextBoxConcreteDensity" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-                 Text="{Binding Path=ConcreteDensity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                 Text="{Binding Path=ConcreteDensity, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[kg/m³]" VerticalAlignment="Top" Width="50" Grid.ColumnSpan="2"/>
 
                     <TextBlock Grid.Row="4" Grid.Column="0" Text="Reinforcement Grade:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -84,18 +84,18 @@
                     <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Soil Capacity" VerticalAlignment="Top" Width="100"/>
                     <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Reduction Factor Ф:" VerticalAlignment="Top" Width="120"/>
                     <TextBox Grid.Row="6" Grid.Column="1" Name="TextBoxSoilReductionFactor" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=SoilReductionFactor_Phi, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=SoilReductionFactor_Phi, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Reduction Factor - EQ Ф EQ:" VerticalAlignment="Top" Width="150"/>
                     <TextBox Grid.Row="7" Grid.Column="1" Name="TextBoxSoilReductionFactorEQ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=SoilReductionFactorEQ_Phi, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=SoilReductionFactorEQ_Phi, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Bearing Capacity c s:" VerticalAlignment="Top" Width="120"/>
                     <TextBox Grid.Row="8" Grid.Column="1" Name="TextBoxSoilBearingCapacity" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=SoilBearingCapacity, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=SoilBearingCapacity, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[kPa]" VerticalAlignment="Top" Width="30"/>
 
                     <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Cover c:" VerticalAlignment="Top" Width="120"/>
                     <TextBox Grid.Row="9" Grid.Column="1" Name="TextBoxConcreteCover" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
-            Text="{Binding Path=ConcreteCover, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            Text="{Binding Path=ConcreteCover, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                     <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="30"/>
 
                     <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Dimensions" VerticalAlignment="Top" Width="100"/>

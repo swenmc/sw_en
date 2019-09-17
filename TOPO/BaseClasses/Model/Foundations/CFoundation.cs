@@ -401,14 +401,17 @@ namespace BaseClasses
             FTime = fTime;
 
             // Set control point coordinates - joint node [0,0,0]
-            m_pControlPoint.X = -0.5 * fX + ex;
-            m_pControlPoint.Y = -0.5 * fY + ey;
-            m_pControlPoint.Z = -fZ;
+            //m_pControlPoint.X = -0.5 * fX + ex;
+            //m_pControlPoint.Y = -0.5 * fY + ey;
+            //m_pControlPoint.Z = -fZ;
+            SetControlPoint();
 
             CreateReinforcementBars();
 
             SetTextPoint();
         }
+
+
 
         public void SetTextPoint()
         {
@@ -425,6 +428,16 @@ namespace BaseClasses
                 X = fOffsetX,
                 Y = fOffsetY,
                 Z = fOffsetFromPlane
+            };
+        }
+
+        public void SetControlPoint()
+        {
+            m_pControlPoint = new Point3D()
+            {
+                X = -0.5 * m_fDim1 + m_Eccentricity_x,
+                Y = -0.5 * m_fDim2 + m_Eccentricity_y,
+                Z = -m_fDim3
             };
         }
 
@@ -480,9 +493,7 @@ namespace BaseClasses
                 throw new NotImplementedException();
             }
             Visual_Object = model;
-
-
-
+            
             return model;
         }
 

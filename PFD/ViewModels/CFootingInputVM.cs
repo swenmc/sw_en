@@ -314,6 +314,11 @@ namespace PFD
             set
             {
                 m_FootingPadMemberTypeIndex = value;
+
+                IsSetFromCode = true;
+                UpdateValuesInGUIFromSelectedFootingPad();
+                IsSetFromCode = false;
+
                 NotifyPropertyChanged("FootingPadMemberTypeIndex");
             }
         }
@@ -362,6 +367,7 @@ namespace PFD
                     throw new ArgumentException("Concrete density must be between 1800 and 2800 [kg/m³]");
 
                 m_ConcreteDensity = value;
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("ConcreteDensity");
             }
         }
@@ -416,7 +422,7 @@ namespace PFD
                     else
                         pad.Count_Top_Bars_x = Int32.Parse(LongReinTop_x_No);
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_x_No");
             }
@@ -439,7 +445,7 @@ namespace PFD
                     // Dim 1 je polomer valca
                     pad.Reference_Top_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinTop_x_Phi) / 1000f;
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_x_Phi");
             }
@@ -457,7 +463,7 @@ namespace PFD
             {
                 m_LongReinTop_x_distance_s_y = value;
 
-                if (IsSetFromCode == false) UpdateValuesInGUI(); // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI(); // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
 
                 NotifyPropertyChanged("LongReinTop_x_distance_s_y");
             }
@@ -484,7 +490,7 @@ namespace PFD
                     pad.Reference_Top_Bar_x.m_volColor_2 = LongReinTop_x_Color;
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_x_ColorIndex");
             }
@@ -510,7 +516,7 @@ namespace PFD
                         pad.Count_Top_Bars_y = Int32.Parse(LongReinTop_y_No);
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_y_No");
             }
@@ -533,7 +539,7 @@ namespace PFD
                     // Dim 1 je polomer valca
                     pad.Reference_Top_Bar_y.m_fDim1 = 0.5f * float.Parse(LongReinTop_y_Phi) / 1000f;
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_y_Phi");
             }
@@ -550,7 +556,7 @@ namespace PFD
             set
             {
                 m_LongReinTop_y_distance_s_x = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI(); // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI(); // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
                 NotifyPropertyChanged("LongReinTop_y_distance_s_x");
             }
         }
@@ -576,7 +582,7 @@ namespace PFD
                     pad.Reference_Top_Bar_y.m_volColor_2 = LongReinTop_y_Color;
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinTop_y_ColorIndex");
             }
@@ -602,7 +608,7 @@ namespace PFD
                         pad.Count_Bottom_Bars_x = Int32.Parse(LongReinBottom_x_No);
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_x_No");
             }
@@ -625,7 +631,7 @@ namespace PFD
                     // Dim 1 je polomer valca
                     pad.Reference_Bottom_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinBottom_x_Phi) / 1000f;
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_x_Phi");
             }
@@ -642,7 +648,7 @@ namespace PFD
             set
             {
                 m_LongReinBottom_x_distance_s_y = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();  // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();  // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
                 NotifyPropertyChanged("LongReinBottom_x_distance_s_y");
             }
         }
@@ -668,7 +674,7 @@ namespace PFD
                     pad.Reference_Bottom_Bar_x.m_volColor_2 = LongReinBottom_x_Color;
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_x_ColorIndex");
             }
@@ -695,7 +701,7 @@ namespace PFD
                         pad.Count_Bottom_Bars_y = Int32.Parse(LongReinBottom_y_No);
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_y_No");
             }
@@ -718,7 +724,7 @@ namespace PFD
                     // Dim 1 je polomer valca
                     pad.Reference_Bottom_Bar_y.m_fDim1 = 0.5f * float.Parse(LongReinBottom_y_Phi) / 1000f;
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_y_Phi");
             }
@@ -735,7 +741,7 @@ namespace PFD
             set
             {
                 m_LongReinBottom_y_distance_s_x = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();  // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();  // Toto som tu dal asi zbytocne, ked sa zmeni pocet tyci zmeni sa automaticky aj vzdialenost medzi nimi a updatuje sa grafika
                 NotifyPropertyChanged("LongReinBottom_y_distance_s_x");
             }
         }
@@ -761,7 +767,7 @@ namespace PFD
                     pad.Reference_Bottom_Bar_y.m_volColor_2 = LongReinBottom_y_Color;
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("LongReinBottom_y_ColorIndex");
             }
@@ -785,9 +791,10 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim1 = FootingPadSize_x_Or_a;
+                    pad.SetControlPoint();
                 }
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_x_Or_a");
             }
         }
@@ -809,8 +816,9 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim2 = FootingPadSize_y_Or_b;
+                    pad.SetControlPoint();
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_y_Or_b");
             }
         }
@@ -832,8 +840,9 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim3 = FootingPadSize_z_Or_h;
+                    pad.SetControlPoint();
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_z_Or_h");
             }
         }
@@ -853,7 +862,7 @@ namespace PFD
                                                                           "and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
 
                 m_Eccentricity_ex = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("Eccentricity_ex");
             }
         }
@@ -873,7 +882,7 @@ namespace PFD
                                                                           "and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
 
                 m_Eccentricity_ey = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("Eccentricity_ey");
             }
         }
@@ -951,7 +960,7 @@ namespace PFD
                 {
                     pad.ConcreteCover = ConcreteCover / 1000f;
                 }
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("ConcreteCover");
             }
@@ -1020,7 +1029,7 @@ namespace PFD
 
                 SetIsEnabledFirstSawCutPositionInDirectionX();
                 //SetIsEnabledSawCutsSpacingInDirectionX();
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
             }
         }
@@ -1048,7 +1057,7 @@ namespace PFD
 
                 SetIsEnabledFirstSawCutPositionInDirectionY();
                 //SetIsEnabledSawCutsSpacingInDirectionY();
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
             }
         }
@@ -1067,7 +1076,7 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.2 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionX = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
             }
         }
@@ -1086,7 +1095,7 @@ namespace PFD
                     throw new ArgumentException("Position of saw cut must be between 0.0 and 10 [m]");
 
                 m_FirstSawCutPositionInDirectionY = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
             }
         }
@@ -1106,7 +1115,7 @@ namespace PFD
 
                 m_SawCutsSpacingInDirectionX = value;
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("SawCutsSpacingInDirectionX");
             }
         }
@@ -1126,7 +1135,7 @@ namespace PFD
 
                 m_SawCutsSpacingInDirectionY = value;
 
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("SawCutsSpacingInDirectionY");
             }
         }
@@ -1182,7 +1191,7 @@ namespace PFD
 
                 SetIsEnabledFirstControlJointPositionInDirectionX();
                 //SetIsEnabledControlJointsSpacingInDirectionX();
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
             }
         }
@@ -1211,7 +1220,7 @@ namespace PFD
 
                 SetIsEnabledFirstControlJointPositionInDirectionY();
                 //SetIsEnabledControlJointsSpacingInDirectionY();
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
             }
         }
@@ -1230,7 +1239,7 @@ namespace PFD
                     throw new ArgumentException("Position of control joint must be between 0 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionX = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
             }
         }
@@ -1249,7 +1258,7 @@ namespace PFD
                     throw new ArgumentException("Position of control joint must be between 0 and 50 [m]");
 
                 m_FirstControlJointPositionInDirectionY = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
             }
         }
@@ -1268,7 +1277,7 @@ namespace PFD
                     throw new ArgumentException("Spacing of control joints must be between 0 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionX = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
             }
         }
@@ -1287,7 +1296,7 @@ namespace PFD
                     throw new ArgumentException("Spacing of saw control joints must be between 0 and 50 [m]");
 
                 m_ControlJointsSpacingInDirectionY = value;
-                if (IsSetFromCode == false) UpdateValuesInGUI();
+                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
             }
         }
@@ -1789,7 +1798,7 @@ namespace PFD
 
             // Set default GUI
             FootingPadMemberTypeIndex = 1;
-
+            
             ConcreteGrade = "30"; // MPa
             AggregateSize = "20"; // mm
 
@@ -1808,10 +1817,15 @@ namespace PFD
 
             UpdateFloorSlab();
 
-            CFoundation pad = GetSelectedFootingPad();
-            FootingPadSize_x_Or_a = pad.m_fDim1;
-            FootingPadSize_y_Or_b = pad.m_fDim2;
-            FootingPadSize_z_Or_h = pad.m_fDim3;
+
+
+
+            //CFoundation pad = GetSelectedFootingPad();
+            //FootingPadSize_x_Or_a = pad.m_fDim1;
+            //FootingPadSize_y_Or_b = pad.m_fDim2;
+            //FootingPadSize_z_Or_h = pad.m_fDim3;
+
+
 
             // TO ONDREJ S tymito excentricitami je trosku problem
             // Pre rovnaky typ patiek sa im pri vyslednom zobrazeni meni sa im znamienko podla toho ako je otocena patka
@@ -1822,42 +1836,8 @@ namespace PFD
             Eccentricity_ex = 0; // m
             Eccentricity_ey = 0; // m
 
-            // To Ondrej - doriesit zadavacie a vypoctove jednotky mm a m
-            ConcreteCover = pad.ConcreteCover * 1000; // mm
-
-            LongReinTop_x_distance_s_y = 0;
-            LongReinTop_y_distance_s_x = 0;
-            LongReinBottom_x_distance_s_y = 0;
-            LongReinBottom_y_distance_s_x = 0;
-
-            LongReinTop_x_No = pad.Count_Top_Bars_x == 0 ? "None" : pad.Count_Top_Bars_x.ToString();
-            LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fDim1 * 2f * 1000f).ToString();
-
-            if (LongReinTop_x_No != "None")
-                LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f);
-
-            LongReinTop_y_No = pad.Count_Top_Bars_y == 0 ? "None" : pad.Count_Top_Bars_y.ToString();
-            LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fDim1 * 2f * 1000f).ToString();
-
-            if (LongReinTop_y_No != "None")
-                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f);
-
-            LongReinBottom_x_No = pad.Count_Bottom_Bars_x == 0 ? "None" : pad.Count_Bottom_Bars_x.ToString();
-            LongReinBottom_x_Phi = (pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
-
-            if (LongReinBottom_x_No != "None")
-                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f);
-
-            LongReinBottom_y_No = pad.Count_Bottom_Bars_y == 0 ? "None" : pad.Count_Bottom_Bars_y.ToString();
-            LongReinBottom_y_Phi = (pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
-
-            if (LongReinBottom_y_No != "None")
-                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f);
-
-            LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-            LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
-            LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
-            LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
+            
+            
 
             IsSetFromCode = false;
         }
@@ -2016,23 +1996,7 @@ namespace PFD
             return list;
         }
 
-        //private void SetDefaultFootingPadSize()
-        //{
-        //    // Dimensions of footing pad in meters
-        //    //FootingPadSize_x_Or_a = 1.0f;
-        //    //FootingPadSize_y_Or_b = 1.0f;
-        //    //FootingPadSize_z_Or_h = 0.4f;
-
-        //    // Default size of footing pad
-        //    float faX, fbY, fhZ;
-        //    GetDefaultFootingPadSize(out faX, out fbY, out fhZ);
-
-        //    FootingPadSize_x_Or_a = faX;
-        //    FootingPadSize_y_Or_b = fbY;
-        //    FootingPadSize_z_Or_h = fhZ;
-
-        //    UpdateValuesInGUI();
-        //}
+        
 
         private void UpdateModelFootingPads()
         {
@@ -2113,7 +2077,91 @@ namespace PFD
                 RebateWidth_FBSide = 0;
         }
 
-        private void UpdateValuesInGUI()
+        //vyrobil som novu metodu, lebo toto podla mna mala robit metoda, ktoru sme mali nizsie UpdateValuesInGUI
+        //ak zmenim index pre Footing Pad type sa musia v GUI prestavit vsetky hodnoty podla toho co ma dany objekt v modeli
+        //metoda sluzi na nastavenie prvkov v GUI podla Foooting pad v modeli
+        private void UpdateValuesInGUIFromSelectedFootingPad()
+        {
+            CFoundation pad = GetSelectedFootingPad();
+
+            //toto vsetko treba nastavit z objektu CFoundation pad do GUI
+
+            //TODO- Mato skontrolovat a nastavit
+            //Concrete Grade
+            //Max. Aggregate Size
+            //ConcreteDensity
+            //Reinforcement Grade
+            //SoilReductionFactor_Phi = pad.SoilReductionFactor_Phi;
+            //SoilReductionFactorEQ_Phi = pad.SoilReductionFactorEQ_Phi;
+            //SoilBearingCapacity = pad.SoilBearingCapacity;
+            ConcreteCover = pad.ConcreteCover * 1000; // mm
+
+            FootingPadSize_x_Or_a = pad.m_fDim1;
+            FootingPadSize_y_Or_b = pad.m_fDim2;
+            FootingPadSize_z_Or_h = pad.m_fDim3;
+
+            //Eccentricity_ex
+            //Eccentricity_ey
+            //LongReinTop_x_No
+            //LongReinTop_x_Phi
+            //LongReinTop_x_distance_s_y
+            //LongReinTop_x_ColorIndex
+            //LongReinTop_y_No
+            //LongReinTop_y_Phi
+            //LongReinTop_y_distance_s_x
+            //LongReinTop_y_ColorIndex
+
+            //LongReinBottom_x_No
+            //LongReinBottom_x_Phi
+            //LongReinBottom_x_distance_s_y
+            //LongReinBottom_x_ColorIndex
+
+            //LongReinBottom_y_No
+            //LongReinBottom_y_Phi
+            //LongReinBottom_y_distance_s_x
+            //LongReinBottom_y_ColorIndex
+
+            
+            //to co bolo             
+            LongReinTop_x_distance_s_y = 0;
+            LongReinTop_y_distance_s_x = 0;
+            LongReinBottom_x_distance_s_y = 0;
+            LongReinBottom_y_distance_s_x = 0;
+
+            LongReinTop_x_No = pad.Count_Top_Bars_x == 0 ? "None" : pad.Count_Top_Bars_x.ToString();
+            LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fDim1 * 2f * 1000f).ToString();
+
+            if (LongReinTop_x_No != "None")
+                LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinTop_y_No = pad.Count_Top_Bars_y == 0 ? "None" : pad.Count_Top_Bars_y.ToString();
+            LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fDim1 * 2f * 1000f).ToString();
+
+            if (LongReinTop_y_No != "None")
+                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinBottom_x_No = pad.Count_Bottom_Bars_x == 0 ? "None" : pad.Count_Bottom_Bars_x.ToString();
+            LongReinBottom_x_Phi = (pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
+
+            if (LongReinBottom_x_No != "None")
+                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinBottom_y_No = pad.Count_Bottom_Bars_y == 0 ? "None" : pad.Count_Bottom_Bars_y.ToString();
+            LongReinBottom_y_Phi = (pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
+
+            if (LongReinBottom_y_No != "None")
+                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, ConcreteCover * 0.001f);
+
+            LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+            LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+            LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
+            LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
+        }
+
+
+        //tato metoda ma sluzit na nastavenie vlastnosti oznaceneho Footing pad podla hodnot z GUI
+        //volat by sa mala po zmene v GUI
+        private void UpdateSelectedFootingPadsValuesFromGUI()
         {
             IsSetFromCode = true;
 
@@ -2173,7 +2221,8 @@ namespace PFD
                 // Create sets of reinforcement bars
                 pad.CreateReinforcementBars();
             }
-
+            
+            //Floor slab by som riesil v inej metode
             // Floor Slab
             float fFloorSlab_aX = _pfdVM.Model.m_arrSlabs.First().m_fDim1; // _pfdVM.GableWidth; // Tu by sme potrebovali dostat rozmery floor slab
             float fFloorSlab_bY = _pfdVM.Model.m_arrSlabs.First().m_fDim2; // _pfdVM.Length;
@@ -2189,6 +2238,7 @@ namespace PFD
                 ControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstControlJointPositionInDirectionX) / (m_NumberOfControlJointsInDirectionX - 1);
             if (m_NumberOfControlJointsInDirectionY >= 1)
                 ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
+                        
 
             IsSetFromCode = false;
         }
@@ -2199,40 +2249,40 @@ namespace PFD
             return (footingPadWidth - 2 * fConcreteCover - /*3 **/ fBarDiameter) / (iNumberOfBarsPerSection - 1);
         }
 
-        private void GetDefaultFootingPadSize(out float faX, out float fbY, out float fhZ)
-        {
-            if (FootingPadMemberTypeIndex <= 1)
-            {
-                // Main or edge frame column (0 and 1)
-                faX = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.08f, _pfdVM.fL1 * 0.40f)), 1);
-                fbY = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.07f, _pfdVM.fL1 * 0.35f)), 1);
-                fhZ = 0.4f;
-            }
-            else // Front a back side wind posts (2 and 3)
-            {
-                float fDist_Column;
+        //private void GetDefaultFootingPadSize(out float faX, out float fbY, out float fhZ)
+        //{
+        //    if (FootingPadMemberTypeIndex <= 1)
+        //    {
+        //        // Main or edge frame column (0 and 1)
+        //        faX = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.08f, _pfdVM.fL1 * 0.40f)), 1);
+        //        fbY = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.07f, _pfdVM.fL1 * 0.35f)), 1);
+        //        fhZ = 0.4f;
+        //    }
+        //    else // Front a back side wind posts (2 and 3)
+        //    {
+        //        float fDist_Column;
 
-                // Pripravene pre rozne rozostupy wind post na prednej a zadnej strane budovy
-                if (FootingPadMemberTypeIndex == 2) // Front Side
-                    fDist_Column = _pfdVM.ColumnDistance;
-                else // Back Side
-                    fDist_Column = _pfdVM.ColumnDistance;
+        //        // Pripravene pre rozne rozostupy wind post na prednej a zadnej strane budovy
+        //        if (FootingPadMemberTypeIndex == 2) // Front Side
+        //            fDist_Column = _pfdVM.ColumnDistance;
+        //        else // Back Side
+        //            fDist_Column = _pfdVM.ColumnDistance;
 
-                // Front or back side - wind posts
-                faX = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
-                fbY = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
-                fhZ = 0.4f;
-            }
-        }
+        //        // Front or back side - wind posts
+        //        faX = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
+        //        fbY = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
+        //        fhZ = 0.4f;
+        //    }
+        //}
 
-        private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
-        {
-            // Pre priblizne urcenie poctu vyztuznych prutov pouzijeme ich defaultnu vzdialenost 150 mm medzi stredmi tyci
-            float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
+        //private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
+        //{
+        //    // Pre priblizne urcenie poctu vyztuznych prutov pouzijeme ich defaultnu vzdialenost 150 mm medzi stredmi tyci
+        //    float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
 
-            // Number of spacings + 1
-            return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
-        }
+        //    // Number of spacings + 1
+        //    return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
+        //}
 
         public CalculationSettingsFoundation GetCalcSettings()
         {
