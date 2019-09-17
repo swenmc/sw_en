@@ -109,31 +109,6 @@ namespace PFD
                     listJointTypes.Add(c);
                     vm.DictJoints.Add(c, listFoundJointTypes.FirstOrDefault());
                 }
-
-                //----------------------------------------------------------------------------------------------------------------------------
-                // TO Ondrej - pozri prosim na toto
-                // Skusal som nastavovat uhly ale zistil som ze vobec nesedia indexy typov s tym co je v comboboxe
-                // Ocakava sa ze typy v jointsDict a vm.JointTypes si koresponduju
-                // Tu to vyzera tak ze sa zoznam zacne naplnat spravne, ale pri vystupe je to uz inak
-                // prepisuju sa typy, napriklad TA001 je typ ktory ma edge column aj main colum,
-                // Najprv sa pre index 1 zapise main column ale pre index 4 sa nastavi edge column a prepise sa aj typ s indexom 1
-                // nesedia potom indexy typov v joint.Helper
-
-                // TO Ondrej - kedze sme to vyriesili tak neviem ci chces tuto validaciu nechat aktivnu alebo si ju niekde presunut / "odlozit" pokial by sa to este v buducnosti hodilo
-
-                //To Mato - ja tuto validaciu nepotrebujem - zakomentuvavam
-                //// Validation - pokus odchytit zmenu v uz zapisanych zaznamoch
-                //EJointType type = EJointType.eBase_MainColumn; // Hladany typ spoja, ktoreho zmenu sledujeme
-
-                //List<CConnectionJointTypes> list = new List<CConnectionJointTypes>();
-                //list = jointsDict[(int)type];
-
-                //if (list[0].JointType != type) // Porovname typ prveho spoja ktory je zapisany v zozname dictionary so sledovanym typom
-                //{
-                //    throw new Exception("Original type: " + type + ", index No. " + (int)type + "\n"+
-                //                        "New type: " + vm.JointTypes[c.ID-1].Name + " description ID: " + c.ID + ", object type: " + vm.JointTypes[c.ID - 1].JoinType);
-                //}
-                //----------------------------------------------------------------------------------------------------------------------------
             }
 
             //validacia podla tasku 323
@@ -785,6 +760,7 @@ namespace PFD
 
         private CConnectionJointTypes GetSelectedJoint()
         {
+            if (vm.JointTypeIndex == -1) return null;
             CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
             list_joints = jointsDict[con.ID];
             //all joints in list should be the same!

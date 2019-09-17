@@ -45,6 +45,7 @@ namespace PFD
             set
             {
                 m_JointTypeIndex = value;
+                //if (m_JointTypeIndex == -1) m_JointTypeIndex = 0;
                 NotifyPropertyChanged("JointTypeIndex");
             }
         }
