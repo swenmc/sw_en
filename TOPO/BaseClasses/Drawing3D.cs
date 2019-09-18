@@ -261,7 +261,7 @@ namespace BaseClasses
                 // Pokus vyrobit lines 3D objekty
                 // Add WireFrame Model
                 // Members
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembersWireFrame)
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
@@ -271,7 +271,7 @@ namespace BaseClasses
                 }
 
                 // Joints
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints && sDisplayOptions.bDisplayJointsWireFrame)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJointsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
@@ -281,7 +281,7 @@ namespace BaseClasses
                 }
 
                 // Foundations
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundations && sDisplayOptions.bDisplayFoundationsWireFrame)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFoundationsWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
@@ -291,7 +291,7 @@ namespace BaseClasses
                 }
 
                 // Slabs
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayFloorSlabWireFrame)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayFloorSlabWireFrame)
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
