@@ -280,7 +280,7 @@ namespace PFD
                 RoofCladdingColorIndex = 22;
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
-                SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
+                SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
                 WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
                 BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
                 ModelCalculatedResultsValid = false;

@@ -86,7 +86,8 @@ namespace _3DTools
         {
             MaterialGroup unlitMaterial = new MaterialGroup();
             unlitMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Black)));
-            unlitMaterial.Children.Add(new EmissiveMaterial(new SolidColorBrush(color)));
+            unlitMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(color)));
+            //unlitMaterial.Children.Add(new EmissiveMaterial(new SolidColorBrush(color)));
             unlitMaterial.Freeze();
 
             _model.Material = unlitMaterial;

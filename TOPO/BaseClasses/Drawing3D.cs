@@ -1993,8 +1993,9 @@ namespace BaseClasses
             if (useScreenSpaceLines)
             {
                 //ScreenSpaceLines are much slower = performance issue                                        
-                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(opts.wireFrameColor, opts.fWireFrameLineThickness); // Just one collection for all members
+                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(opts.wireFrameColor, opts.fWireFrameLineThickness); // Just one collection for all members                
                 line_3D.Points = new Point3DCollection(points);
+                line_3D.Color = opts.wireFrameColor;                
                 if (centerModel) { line_3D.Transform = centerModelTransGr; }
                 viewPort.Children.Add(line_3D);
             }
