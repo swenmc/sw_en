@@ -2327,7 +2327,7 @@ namespace BaseClasses
         {
             Model3DGroup model3D_group = new Model3DGroup();
 
-            if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
+            if (cmodel.m_arrFoundations != null)
             {
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrFoundations.Count; i++)
@@ -2336,7 +2336,7 @@ namespace BaseClasses
                         cmodel.m_arrFoundations[i].m_pControlPoint != null &&
                         cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
-                        if (sDisplayOptions.bDisplayReinforcementBars)
+                        if (sDisplayOptions.bDisplayReinforcementBars || sDisplayOptions.bDisplayReinforcementBarsWireFrame)
                         {
                             // TODO - Ondrej - vykreslujeme vystuz hore a dole v smere x a y, takze su to 4 zoznamy, asi by sa do dalo refaktorovat
                             // Top layer - x
@@ -3068,6 +3068,14 @@ namespace BaseClasses
                     {
                         wireFramePoints.AddRange(model.m_arrFoundations[i].WireFramePoints);
                     }
+
+                    if (sDisplayOptions.bDisplayReinforcementBarsWireFrame)
+                    {
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_x));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_y));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_x));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_y));
+                    }
                 }
 
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
@@ -3084,6 +3092,21 @@ namespace BaseClasses
                     AddLineToViewPort(wireFramePoints, sDisplayOptions, viewPort);
                 }
             }
+        }
+
+        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBar> bars)
+        {
+            List<Point3D> wireFramePoints = new List<Point3D>();
+            if (bars != null && bars.Count > 0)
+            {
+                for (int m = 0; m < bars.Count; m++)
+                {
+                    GeometryModel3D geom = bars[m].Visual_Object;
+                    List<Point3D> points = bars[m].GetWireFramePoints_Volume_8Edges(geom);
+                    wireFramePoints.AddRange(points);
+                }
+            }
+            return wireFramePoints;
         }
 
         // Add all slabs in one wireframe collection of ScreenSpaceLines3D

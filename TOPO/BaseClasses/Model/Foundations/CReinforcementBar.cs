@@ -181,8 +181,8 @@ namespace BaseClasses
         {
             SolidColorBrush brush = new SolidColorBrush(colorBrush);
             brush.Opacity = fOpacity;
-
-            return CreateGeomModel3D(brush, temp);
+            Visual_Object = CreateGeomModel3D(brush, temp);
+            return Visual_Object;
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, Transform3DGroup temp)
