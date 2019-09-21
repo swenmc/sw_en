@@ -5344,7 +5344,7 @@ namespace BaseClasses
             return jointModel;
         }
 
-        private static void UpdateWireFramePoints(CModel jointModel, DisplayOptions sDisplayOptions)
+        public static void UpdateWireFramePoints(CModel jointModel, DisplayOptions sDisplayOptions)
         {
             Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, true, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
                     sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);

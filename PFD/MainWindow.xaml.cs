@@ -1701,10 +1701,10 @@ namespace PFD
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
         {
             WaitWindow ww = new WaitWindow("PDF");
-            ww.ContentRendered += Ww_ContentRendered;
+            ww.ContentRendered += PDF_WaitWindow_ContentRendered;
             ww.Show();
         }
-        private void Ww_ContentRendered(object sender, EventArgs e)
+        private void PDF_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
             CModelData modelData = vmPFD.GetModelData();
@@ -1725,10 +1725,7 @@ namespace PFD
             }
         }
 
-        private void Ww_Loaded(object sender, RoutedEventArgs e)
-        {
-           
-        }
+       
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
@@ -1738,43 +1735,22 @@ namespace PFD
             //if (!vmPFD.ModelCalculatedResultsValid) { MessageBox.Show("Please click Calculate to get valid results for report."); return; }
 
             WaitWindow ww = new WaitWindow("DOC");
+            ww.ContentRendered += DOC_WaitWindow_ContentRendered;
             ww.Show();
 
+            
+        }
+        private void DOC_WaitWindow_ContentRendered(object sender, EventArgs e)
+        {
+            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
 
             try
             {
                 CModelData modelData = vmPFD.GetModelData();
 
-                //Robil som tu pokusy ako by sa to dalo updatovat,resp. vykreslit pred exportom, ale volajako nic z toho nefungovalo :-)
-                //Viewport3D viewPort = null;
-                //if (!(Frame1.Content is Page3Dmodel))
-                //{
-                //    Dispatcher.Invoke(() =>
-                //    {
-                //        sDisplayOptions = vm.GetDisplayOptions();
-                //        Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
-                //        // Display model in 3D preview frame
-                //        Frame1.Content = page1;
-                //        Frame1.UpdateLayout();
-                //    });
-                //}
-                //else
-                //{
-                //    //sDisplayOptions = vm.GetDisplayOptions();
-                //    //Page3Dmodel Model_3D = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
-                //    //Model_3D.RenderSize = new Size(Frame1.ActualWidth, Frame1.ActualHeight);
-                //    //Model_3D.UpdateLayout();
-                //    //viewPort = Model_3D._trackport.ViewPort;
-                //    //viewPort.RenderSize = new Size(Frame1.ActualWidth, Frame1.ActualHeight);
-                //    //viewPort.UpdateLayout();
+                //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
 
-                //    //Frame1.Content = page1;
-                //    //Frame1.UpdateLayout();
-                //}
-
-                Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
-
-                ExportToWordDocument.ReportAllDataToWordDoc(viewPort, modelData);
+                ExportToWordDocument.ReportAllDataToWordDoc(modelData);
             }
             catch (Exception ex)
             {
@@ -1782,7 +1758,8 @@ namespace PFD
             }
             finally
             {
-                ww.Close();
+                WaitWindow ww = sender as WaitWindow;
+                if (ww != null) ww.Close();
             }
         }
 

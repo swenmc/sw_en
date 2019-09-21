@@ -1170,31 +1170,12 @@ namespace EXPIMP
             }
             jointModel.m_arrNodes = nodeList.ToArray();
 
-            //--------------------------------------------------------------------------------------------------------------------------------------
-            // TO Ondrej - ked das zobrazit v preview joints wireframe, ak sa beru body este z povodnych celych prutov, niekde to treba updatovat, ale neviem kde :)))))
-            // Tu je nejaky pokus
-            // Prutom musime niekde updatetovat wire frame positions, neviem ci prave tu alebo to bude lepsie inde
-            // Tu som docasne vyrobil 3D model prutov
-            Model3DGroup membersModel = Drawing3D.CreateMembersModel3D(jointModel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
-                sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-
-            // Tu sa snazim nastavit prutom Wireframe indices podla aktualnej geometrie
-            for (int i = 0; i < jointModel.m_arrMembers.Length; i++)
+            // Prutom musime niekde updatetovat wire frame positions
+            if (sDisplayOptions.bDisplayWireFrameModel)
             {
-                CMember m = jointModel.m_arrMembers[i];
-                m.WireFramePoints.Clear();
-
-                GeometryModel3D gm3d = membersModel.Children[i] as GeometryModel3D;
-                MeshGeometry3D mesh = gm3d.Geometry as MeshGeometry3D;
-
-                if (m.CrScStart.WireFrameIndices != null) // Validation of cross-section wireframe data
-                {
-                    foreach (int n in m.CrScStart.WireFrameIndices)
-                    {
-                        m.WireFramePoints.Add(mesh.Positions[n]);
-                    }
-                }
+                Drawing3D.UpdateWireFramePoints(jointModel, sDisplayOptions);
             }
+
             //--------------------------------------------------------------------------------------------------------------------------------------
             jointClone = firstSameJoint.RecreateJoint();
             jointClone.m_arrPlates = firstSameJoint.m_arrPlates;
@@ -1512,6 +1493,47 @@ namespace EXPIMP
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, sDisplayOptions, null, modelData.JointsDict);
 
             return _trackport.ViewPort;
+        }
+
+
+        public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data)
+        {
+            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
+            opts.bUseOrtographicCamera = false;
+            opts.bColorsAccordingToMembers = false;
+            opts.bColorsAccordingToSections = true;
+            opts.bDisplayGlobalAxis = false;
+            opts.bDisplayMemberDescription = false;
+            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
+            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.bDisplaySolidModel = true;
+            opts.bDisplayMembersCenterLines = false;
+            opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
+            opts.bTransformScreenLines3DToCylinders3D = true;
+
+            opts.bDisplayMembers = true;
+            opts.bDisplayJoints = true;
+            opts.bDisplayPlates = true;
+
+            opts.bDisplayNodes = false;
+            opts.bDisplayNodesDescription = false;
+            opts.bDisplayNodalSupports = false;
+
+            opts.bDisplayFoundations = false;
+            opts.bDisplayFloorSlab = false;
+            opts.bDisplaySawCuts = false;
+            opts.bDisplayControlJoints = false;
+
+            opts.bDisplayFoundationsDescription = false;
+            opts.bDisplayFloorSlabDescription = false;
+            opts.bDisplaySawCutsDescription = false;
+            opts.bDisplayControlJointsDescription = false;
+
+            opts.bDisplayGridlines = false;
+            opts.bDisplaySectionSymbols = false;
+            opts.bDisplayDetailSymbols = false;
+
+            return opts;
         }
 
     }

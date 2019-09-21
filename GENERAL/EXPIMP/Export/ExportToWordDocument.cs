@@ -24,7 +24,7 @@ namespace EXPIMP
         private const double fontSizeInTable = 8;
         private const int imageMaxWidth = 720;
 
-        public static void ReportAllDataToWordDoc(Viewport3D viewPort, CModelData modelData)
+        public static void ReportAllDataToWordDoc(CModelData modelData)
         {
             string fileName = GetReportName();
             // Create a new document.
@@ -35,7 +35,8 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
-                DrawModel3DToDoc(document, viewPort);
+                //DrawModel3DToDoc(document, viewPort);
+                DrawModel3DToDoc(document, modelData);
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
                 DrawMaterial(document, modelData);
@@ -575,12 +576,20 @@ namespace EXPIMP
             p.AppendPicture(picture);
             p.InsertPageBreakAfterSelf();
         }
-
-        private static void DrawModel3DToDoc(DocX document, Viewport3D viewPort)
+        
+        private static void DrawModel3DToDoc(DocX document, CModelData data)
         {
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
+
+            CModel filteredModel = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+            viewPort.UpdateLayout();
+
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
 
-            ExportHelper.SaveViewPortContentAsImage(viewPort);
+            //ExportHelper.SaveViewPortContentAsImage(viewPort);
+            ExportHelper.SaveBitmapImage(ExportHelper.RenderVisual(viewPort), "ViewPort.png");
+
             double ratio = imageMaxWidth / viewPort.ActualWidth;
 
             // Add a simple image from disk.

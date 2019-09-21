@@ -62,27 +62,21 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData); 
+            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            //DrawModel3D(s_document, modelData);
-            
-            
-            
-            CMainReportExport.DrawModelViews(s_document, modelData);
-            CMainReportExport.DrawJointTypes(s_document, modelData);
-            
-            
+            DrawModel3D(s_document, modelData);
 
+            DrawModelViews(s_document, modelData);
+
+            DrawJointTypes(s_document, modelData);
             
+            DrawFootingTypes(s_document, modelData);
 
-            //DrawFootingTypes(s_document, modelData);
+            DrawFloorDetails(s_document, modelData);
 
-            //DrawFloorDetails(s_document, modelData);
+            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
 
-            //DrawStandardDetails(s_document, modelData); // To Ondrej - for review
-
-            
-            
+            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -108,40 +102,7 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
-            opts.bUseOrtographicCamera = false;
-            opts.bColorsAccordingToMembers = false;
-            opts.bColorsAccordingToSections = true;
-            opts.bDisplayGlobalAxis = false;
-            opts.bDisplayMemberDescription = false;
-            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
-            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
-            opts.bDisplaySolidModel = true;
-            opts.bDisplayMembersCenterLines = false;
-            opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
-            opts.bTransformScreenLines3DToCylinders3D = true;
-
-            opts.bDisplayMembers = true;
-            opts.bDisplayJoints = true;
-            opts.bDisplayPlates = true;
-
-            opts.bDisplayNodes = false;
-            opts.bDisplayNodesDescription = false;
-            opts.bDisplayNodalSupports = false;
-
-            opts.bDisplayFoundations = false;
-            opts.bDisplayFloorSlab = false;
-            opts.bDisplaySawCuts = false;
-            opts.bDisplayControlJoints = false;
-
-            opts.bDisplayFoundationsDescription = false;
-            opts.bDisplayFloorSlabDescription = false;
-            opts.bDisplaySawCutsDescription = false;
-            opts.bDisplayControlJointsDescription = false;
-
-            opts.bDisplayGridlines = false;
-            opts.bDisplaySectionSymbols = false;
-            opts.bDisplayDetailSymbols = false;
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
 
             CModel filteredModel = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
