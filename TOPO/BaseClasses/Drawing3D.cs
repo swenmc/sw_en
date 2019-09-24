@@ -120,9 +120,11 @@ namespace BaseClasses
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
-                //                List<CDetailSymbol> detailSymbols = GetTestDetailSymbols(model);                
-                List<CDetailSymbol> detailSymbols = GetDetailSymbols(model, jointsDict, sDisplayOptions);
-                DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, detailSymbols, gr);
+                if (sDisplayOptions.bDisplayDetailSymbols)
+                {
+                    List<CDetailSymbol> detailSymbols = GetDetailSymbols(model, jointsDict, sDisplayOptions);
+                    DrawDetailSymbolsToTrackport(_trackport, sDisplayOptions, model, detailSymbols, gr);
+                }
 
                 // Pokus vyrobit lines 3D objekty
                 // Add WireFrame Model

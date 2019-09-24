@@ -1092,6 +1092,8 @@ namespace PFD
             // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
+            sDisplayOptions.bDisplayNodes = false;
+            sDisplayOptions.bDisplayNodesDescription = false;
 
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;

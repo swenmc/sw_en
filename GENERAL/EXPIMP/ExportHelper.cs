@@ -95,14 +95,14 @@ namespace EXPIMP
 
             //foreach (ModelVisual3D line in ((Viewport3D)elt).Children)
             //{
-            //    if(line is ScreenSpaceLines3D) ((ScreenSpaceLines3D)line).Rescale();
+            //    if (line is ScreenSpaceLines3D) ((ScreenSpaceLines3D)line).Rescale();
             //}
             //elt.UpdateLayout();
 
             var bitmap = new RenderTargetBitmap(
                 (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Default);
-                        
-            bitmap.Render(elt);
+            
+            bitmap.Render(elt);            
             return bitmap;
         }
 
@@ -1474,16 +1474,16 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, out CModel filteredModel)
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, out CModel filteredModel, double width = 1400, double height = 1000)
         {
             Trackport3D _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             //_trackport.Width = 2800;
             //_trackport.Height = 2000;
             //_trackport.ViewPort.RenderSize = new Size(2800, 2000);
-            _trackport.Width = 1400;
-            _trackport.Height = 1000;
-            _trackport.ViewPort.RenderSize = new Size(1400, 1000);
+            _trackport.Width = width;
+            _trackport.Height = height;
+            _trackport.ViewPort.RenderSize = new Size(width, height);
 
             //Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
             //_trackport.ViewPort.Measure(size);

@@ -66,10 +66,14 @@ namespace EXPIMP
 
             DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            try
+            {
+                DrawModelViews(s_document, modelData);
+            }
+            catch (Exception ex) { }
 
             DrawJointTypes(s_document, modelData);
-            
+
             DrawFootingTypes(s_document, modelData);
 
             DrawFloorDetails(s_document, modelData);
@@ -110,7 +114,7 @@ namespace EXPIMP
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
             gfx.DrawString("Model in 3D environment: ", fontBold, XBrushes.Black, 20, 20);
-                        
+
             DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Isometric_View.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Isometric_View.GetFriendlyName() });
 
@@ -126,8 +130,10 @@ namespace EXPIMP
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
             image.Dispose();
-            viewPort = null;            
+            viewPort = null;
             gfx.Dispose();
+            page.Close();
+
         }
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
@@ -146,6 +152,7 @@ namespace EXPIMP
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
                 sheetNo++;
+                Trace.WriteLine(sheetNo + ". " + viewMembers.ToString());
                 page = s_document.AddPage();
                 page.Size = PageSize.A3;
                 page.Orientation = PdfSharp.PageOrientation.Landscape;
@@ -290,9 +297,8 @@ namespace EXPIMP
                 }
 
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, 700, 500);
                 viewPort.UpdateLayout();
-
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -308,12 +314,14 @@ namespace EXPIMP
                 image.Dispose();
                 viewPort = null;
 
+
                 gfx.Dispose();
+                page.Close();
             }
         }
 
         private static DisplayOptions GetModelViewsDisplayOptions(CModelData data)
-        {  
+        {
             DisplayOptions opts = data.DisplayOptions;
             opts.bUseOrtographicCamera = true;
             opts.bColorsAccordingToMembers = false;
@@ -411,7 +419,7 @@ namespace EXPIMP
             opts.fFoundationSolidModelOpacity = 0;
             opts.fFloorSlabSolidModelOpacity = 0;
             opts.fReinforcementBarSolidModelOpacity = 1;
-            
+
             return opts;
         }
 
@@ -457,6 +465,7 @@ namespace EXPIMP
                     numInColumn = 0;
                     moveY = 40;
                     gfx.Dispose();
+                    page.Close();
 
                     sheetNo++;
                     AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Joints.GetFriendlyName());
@@ -470,7 +479,7 @@ namespace EXPIMP
                 Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
-                    if(obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
+                    if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
                 }
                 viewPort.UpdateLayout();
 
@@ -485,19 +494,20 @@ namespace EXPIMP
 
                 tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 35, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
                 gfx.DrawEllipse(pen, new Rect(moveX, moveY - 30, 30, 30));
-                gfx.DrawString($"{counter++}", font2, XBrushes.Black, moveX + (counter > 10 ? 5: 10), moveY - 9);
-                
+                gfx.DrawString($"{counter++}", font2, XBrushes.Black, moveX + (counter > 10 ? 5 : 10), moveY - 9);
+
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
 
                 DrawJointTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, joint);
 
                 moveX += scaledImageWidth;
-                
+
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 5; moveY += scaledImageHeight + 130; numInColumn++; }
             }
-            
+
             gfx.Dispose();
+            page.Close();
         }
 
         private static DisplayOptions GetJointTypesDisplayOptions(CModelData data)
@@ -544,7 +554,7 @@ namespace EXPIMP
             PdfPage page;
             double scale = 1;
             DisplayOptions opts = GetFootingTypesDisplayOptions(data);
-              
+
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
@@ -573,6 +583,7 @@ namespace EXPIMP
                     numInColumn = 0;
                     moveY = 40;
                     gfx.Dispose();
+                    page.Close();
 
                     sheetNo++;
                     AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
@@ -590,8 +601,8 @@ namespace EXPIMP
                 }
                 viewPort.UpdateLayout();
 
-                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));                
-                
+                XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
+
                 //double scaleFactor = (gfx.PageSize.Width) / image.PointWidth / maxInRow;
                 //double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 //double scaledImageHeight = image.PointHeight * scaleFactor;
@@ -599,7 +610,7 @@ namespace EXPIMP
                 double scaleFactor = 430 / image.PointWidth;
                 double scaledImageWidth = 430;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
-                
+
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
@@ -612,10 +623,11 @@ namespace EXPIMP
             }
 
             gfx.Dispose();
+            page.Close();
         }
 
         private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
-        {            
+        {
             DisplayOptions opts = data.DisplayOptions;
             opts.bUseOrtographicCamera = false;
             opts.bColorsAccordingToMembers = false;
@@ -686,7 +698,7 @@ namespace EXPIMP
             DrawPDFLogo(gfx, 0, (int)page.Height.Point - 90);
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
-            sheetNo++;            
+            sheetNo++;
             DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Standard_1.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Standard_1.GetFriendlyName() });
 
@@ -754,6 +766,9 @@ namespace EXPIMP
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition3 + dImagePosition_y + imageHeightOriginal * scale);
 
+            gfx.Dispose();
+            page.Close();
+
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
                 bool bAddRollerDoorDetail = false;
@@ -809,6 +824,8 @@ namespace EXPIMP
                     dImagePosition_x += imageWidthOriginal * scale;
                     dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
                 }
+                gfx2.Dispose();
+                page2.Close();
             }
         }
 
@@ -825,7 +842,7 @@ namespace EXPIMP
             DrawCopyRightNote(gfx, 400, (int)page.Height.Point - 15);
 
             sheetNo++;
-            
+
             DrawTitleBlock(gfx, data.ProjectInfo, EPDFPageContentType.Details_Floor.GetFriendlyName(), sheetNo, 0);
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Floor.GetFriendlyName() });
 
@@ -934,11 +951,11 @@ namespace EXPIMP
             string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
             string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP7 = "HD"+ (fStartersDiameter * 1000).ToString("F0") + " Starters";
+            string sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
             string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
 
             string sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
-            string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x"+ "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+            string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
             string sTextP11 = sTextP9;
 
             // IN WORK 26.8.2019
@@ -989,7 +1006,7 @@ namespace EXPIMP
                     dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
                     // TODO Ondrej - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
-                    if(perimeter.SlabRebates != null)
+                    if (perimeter.SlabRebates != null)
                     {
                         // Tu by sa mali nacitat data pre rebate, v pripade ze su v perimeter viacere rebates s roznymi parametrami mal by sa pridat detail pre kazdy z nich, to sa ale nestane
                         // Neumoznujeme, aby mal kazdy rebate v jednom perimeter inu sirku alebo sklon
@@ -1022,9 +1039,10 @@ namespace EXPIMP
                 }
             }
             gfx.Dispose();
+            page.Close();
         }
 
-        private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data) // TODO Ondrej - Titulna stranka s dynamickou tabulkou, v ktorej je zoznam vykresov (mozno sa musi vlozit az uplne posledna, podobne ako vkladame obsah
+        private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data)
         {
             PdfPage page = s_document.AddPage();
             page.Size = PageSize.A3;
@@ -1102,7 +1120,7 @@ namespace EXPIMP
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
             imageModel.Dispose();
 
-            
+
 
             // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
@@ -1702,6 +1720,7 @@ namespace EXPIMP
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
             gfx.Dispose();
+            if (gfx.PdfPage != null) gfx.PdfPage.Close();
         }
 
         private static Table GetTitlePageTable(Document document, List<string[]> tableParams)
@@ -1853,7 +1872,7 @@ namespace EXPIMP
 
             List<string[]> tableParams = new List<string[]>();
             //tableParams.Add(new string[2] { "ID", joint.ID.ToString() });
-            if(joint.m_MainMember != null)
+            if (joint.m_MainMember != null)
                 tableParams.Add(new string[2] { "Main Member", joint.m_MainMember.Prefix + " - " + joint.m_MainMember.EMemberTypePosition.GetFriendlyName() });
             if (joint.m_SecondaryMembers != null && joint.m_SecondaryMembers.Length > 0)
                 tableParams.Add(new string[2] { "Secondary Member", joint.m_SecondaryMembers[0].Prefix + " - " + joint.m_SecondaryMembers[0].EMemberTypePosition.GetFriendlyName() });
@@ -1877,11 +1896,11 @@ namespace EXPIMP
                     if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence)
                     {
                         CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
-                        tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]"  });
+                        tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]" });
                     }
                 }
 
-                if(joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic) // Base plate
+                if (joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic) // Base plate
                 {
                     CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
                     CAnchorArrangement anchorArrangement = plate.AnchorArrangement;
