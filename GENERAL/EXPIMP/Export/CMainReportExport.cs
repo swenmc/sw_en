@@ -85,7 +85,9 @@ namespace EXPIMP
             string fileName = GetReportPDFName();
             // Save the s_document...
             s_document.Save(fileName);
+            s_document.Close();
             s_document.Dispose();
+            
             // ...and start a viewer
             Process.Start(fileName);
         }
@@ -297,9 +299,10 @@ namespace EXPIMP
                 }
 
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, 700, 500);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
                 viewPort.UpdateLayout();
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
+                filteredModel = null;
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
                 gfx.DrawString($"{(viewMembers).ToString()}:", fontBold, XBrushes.Black, 20, 20);

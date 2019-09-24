@@ -86,7 +86,7 @@ namespace EXPIMP
             bitmap.Render(elt);
             return bitmap;
         }
-        public static RenderTargetBitmap RenderVisual(UIElement elt, double scale)
+        public static BitmapImage RenderVisual(UIElement elt, double scale)
         {
             Size size = new Size(elt.RenderSize.Width, elt.RenderSize.Height);
             elt.Measure(size);
@@ -102,8 +102,29 @@ namespace EXPIMP
             var bitmap = new RenderTargetBitmap(
                 (int)(size.Width * scale), (int)(size.Height * scale), 96 * scale, 96 * scale, PixelFormats.Default);
             
-            bitmap.Render(elt);            
-            return bitmap;
+            bitmap.Render(elt);
+            elt = null;
+
+            //temp
+            var bitmapImage = new BitmapImage();
+            var bitmapEncoder = new PngBitmapEncoder();
+            bitmapEncoder.Frames.Add(BitmapFrame.Create(bitmap));
+
+            using (var stream = new MemoryStream())
+            {
+                bitmapEncoder.Save(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+            }
+            SaveBitmapImage(bitmap, DateTime.Now.Ticks + ".png");
+            return bitmapImage;
+            //end temp
+            //return bitmap;
         }
 
         // lcomb - Kombinacia ktorej vysledky chceme zobrazit
@@ -1492,7 +1513,17 @@ namespace EXPIMP
 
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, sDisplayOptions, null, modelData.JointsDict);
 
-            return _trackport.ViewPort;
+            Viewport3D viewPort = _trackport.ViewPort;
+
+            //TODO
+            //sice to nefunguje...ale aspon viem,ze tuna je problem...stale treba vsetko zmazat, chidren.Clear() kde sa len da...lebo inak Memory Leakage
+            //todo skusit refaktorovat Trackport3D a vyrobit mu nejaku dispose metodu na uvolennei pamate
+            //pripadne skusit stale pouzivat jeden Trackport napriec celym exportom a len mu mazat model a viewport
+            ((Model3DGroup)(_trackport.Model)).Children.Clear();
+            _trackport.Model = null;
+            _trackport.Trackball = null;
+            _trackport = null;
+            return viewPort;
         }
 
 
