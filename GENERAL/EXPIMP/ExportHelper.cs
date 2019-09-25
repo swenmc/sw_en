@@ -991,7 +991,7 @@ namespace EXPIMP
             return joint;
         }
         
-        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model, double width = 570, double height = 430)
+        public static Viewport3D GetJointViewPort(CConnectionJointTypes joint, DisplayOptions sDisplayOptions, CModel model, out Trackport3D _trackport, double width = 570, double height = 430)
         {
             CConnectionJointTypes firstSameJoint = GetFirstSameJointFromModel(joint, model);
             
@@ -1203,7 +1203,7 @@ namespace EXPIMP
             
             jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             
-            Trackport3D _trackport = new Trackport3D();
+            _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             _trackport.Width = width;
             _trackport.Height = height;
@@ -1219,7 +1219,7 @@ namespace EXPIMP
         }
 
 
-        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, double width = 570, double height = 430)
+        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, out Trackport3D _trackport, double width = 570, double height = 430)
         {
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
@@ -1481,7 +1481,7 @@ namespace EXPIMP
                 jointModel.m_arrFoundations.Add(padClone);
             }
 
-            Trackport3D _trackport = new Trackport3D();
+            _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             _trackport.Width = width;
             _trackport.Height = height;
@@ -1495,9 +1495,9 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, out CModel filteredModel, double width = 1400, double height = 1000)
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, out CModel filteredModel, out Trackport3D _trackport, double width = 1400, double height = 1000)
         {
-            Trackport3D _trackport = new Trackport3D();
+            _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
             //_trackport.Width = 2800;
             //_trackport.Height = 2000;
@@ -1513,17 +1513,10 @@ namespace EXPIMP
 
             filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, sDisplayOptions, null, modelData.JointsDict);
 
-            Viewport3D viewPort = _trackport.ViewPort;
-
-            //TODO
-            //sice to nefunguje...ale aspon viem,ze tuna je problem...stale treba vsetko zmazat, chidren.Clear() kde sa len da...lebo inak Memory Leakage
             //todo skusit refaktorovat Trackport3D a vyrobit mu nejaku dispose metodu na uvolennei pamate
             //pripadne skusit stale pouzivat jeden Trackport napriec celym exportom a len mu mazat model a viewport
-            ((Model3DGroup)(_trackport.Model)).Children.Clear();
-            _trackport.Model = null;
-            _trackport.Trackball = null;
-            _trackport = null;
-            return viewPort;
+
+            return _trackport.ViewPort;
         }
 
 

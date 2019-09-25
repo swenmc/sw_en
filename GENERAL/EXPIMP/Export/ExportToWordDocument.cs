@@ -1,4 +1,5 @@
-﻿using BaseClasses;
+﻿using _3DTools;
+using BaseClasses;
 using BaseClasses.Helpers;
 using DATABASE;
 using DATABASE.DTO;
@@ -582,13 +583,16 @@ namespace EXPIMP
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+            Trackport3D trackport = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
 
             //ExportHelper.SaveViewPortContentAsImage(viewPort);
-            ExportHelper.SaveBitmapImage(ExportHelper.RenderVisual(viewPort), "ViewPort.png");
+            RenderTargetBitmap bmp = ExportHelper.RenderVisual(viewPort);
+            ExportHelper.SaveBitmapImage(bmp, "ViewPort.png");
+            bmp = null;
 
             double ratio = imageMaxWidth / viewPort.ActualWidth;
 
@@ -600,6 +604,7 @@ namespace EXPIMP
             par.RemoveText(0);
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
+            picture = null;
         }
 
         private static void DrawLoadCases(DocX document, CModelData data)
@@ -1010,9 +1015,12 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model);
+
+                    Trackport3D trackport = null;
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
                     Table t = GetTable(document, dt);
@@ -1036,9 +1044,11 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model);
+                    Trackport3D trackport = null;
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
                     Table t = GetTable(document, dt);
@@ -1121,9 +1131,11 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
-                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions);
+                    Trackport3D trackport = null;
+                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetFootingDesignResultsInDataTable(calcul);
                     Table t = GetTable(document, dt);

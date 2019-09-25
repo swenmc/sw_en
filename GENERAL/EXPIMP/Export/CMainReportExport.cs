@@ -65,13 +65,9 @@ namespace EXPIMP
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
             DrawModel3D(s_document, modelData);
-
-            try
-            {
-                DrawModelViews(s_document, modelData);
-            }
-            catch (Exception ex) { }
-
+                        
+            DrawModelViews(s_document, modelData);
+            
             DrawJointTypes(s_document, modelData);
 
             DrawFootingTypes(s_document, modelData);
@@ -111,7 +107,8 @@ namespace EXPIMP
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+            Trackport3D trackport = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -133,6 +130,7 @@ namespace EXPIMP
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
             image.Dispose();
             viewPort = null;
+            trackport.Dispose();
             gfx.Dispose();
             page.Close();
 
@@ -299,7 +297,8 @@ namespace EXPIMP
                 }
 
                 CModel filteredModel = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+                Trackport3D trackport = null;
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
                 viewPort.UpdateLayout();
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
                 filteredModel = null;
@@ -316,8 +315,7 @@ namespace EXPIMP
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
                 viewPort = null;
-
-
+                trackport.Dispose();
                 gfx.Dispose();
                 page.Close();
             }
@@ -479,7 +477,8 @@ namespace EXPIMP
                 numInRow++;
                 CConnectionJointTypes joint = kvp.Value;
 
-                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model);
+                Trackport3D trackport = null;
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model, out trackport);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -490,6 +489,7 @@ namespace EXPIMP
 
                 viewPort.Children.Clear();
                 viewPort = null;
+                trackport.Dispose();
 
                 double scaleFactor = (gfx.PageSize.Width) / (image.PointWidth) / maxInRow;
                 double scaledImageWidth = gfx.PageSize.Width / maxInRow;
@@ -597,7 +597,8 @@ namespace EXPIMP
                 CFoundation pad = kvp.Value.Item1;
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, 1140, 800);
+                Trackport3D trackport = null;
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, out trackport, 1140, 800);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -618,6 +619,7 @@ namespace EXPIMP
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
                 viewPort = null;
+                trackport.Dispose();
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
                 DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 30, moveY, pad);
 
@@ -1111,7 +1113,8 @@ namespace EXPIMP
             opts.bDisplayDetailSymbols = false;
 
             CModel filteredModel = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel);
+            Trackport3D trackport = null;
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
@@ -1122,14 +1125,13 @@ namespace EXPIMP
 
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
             imageModel.Dispose();
+            viewPort = null;
+            trackport.Dispose();
 
-
-
-            // Logo
+            // Logo            
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
             gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
-            image.Dispose();
-            viewPort = null;
+            image.Dispose();            
 
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);

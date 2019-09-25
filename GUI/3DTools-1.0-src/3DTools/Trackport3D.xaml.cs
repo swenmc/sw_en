@@ -154,5 +154,24 @@ namespace _3DTools
             get { return _model; }
             set { _model = value; }
         }
+
+        public void Dispose()
+        {
+            if (_model != null)
+            {
+                if (_model is Model3DGroup) ((Model3DGroup)_model).Children.Clear();
+                _model = null;
+            }
+            if (Viewport != null)
+            {
+                Viewport.Children.Clear();
+                Viewport = null;
+            }
+            this.Trackball = null;
+            this.Headlight = null;
+            this.Root = null;
+            this.AmbientLight = null;
+            this.Camera = null;
+        }
     }
 }
