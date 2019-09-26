@@ -64,11 +64,11 @@ namespace EXPIMP
 
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            DrawModel3D(s_document, modelData);
+            //DrawModel3D(s_document, modelData);
                         
-            DrawModelViews(s_document, modelData);
+            //DrawModelViews(s_document, modelData);
             
-            DrawJointTypes(s_document, modelData);
+            //DrawJointTypes(s_document, modelData);
 
             DrawFootingTypes(s_document, modelData);
 
