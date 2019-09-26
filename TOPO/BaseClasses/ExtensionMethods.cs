@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
@@ -14,15 +15,23 @@ namespace BaseClasses
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = Formatting.Indented
             };
-            
+
             var serialized = JsonConvert.SerializeObject(source, settings);
             return JsonConvert.DeserializeObject<T>(serialized, settings);
         }
 
-        
+        public static void Dispose(this Viewport3D viewPort)
+        {
+            if (viewPort == null) return;
+            if (viewPort.Children != null) viewPort.Children.Clear();
+            viewPort.Camera = null;
+            viewPort = null;
+        }
+
+
 
         public static string GetFriendlyName(this EMemberType_FS_Position pos)
-        {   
+        {
             switch (pos)
             {
                 case EMemberType_FS_Position.EdgeColumn: return "Edge Column";
@@ -86,7 +95,7 @@ namespace BaseClasses
                 case ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus: return "Wind load Wu - Cpe,max - Rear - Y-";
                 case ELCName.eEQ_Eu_Left_X_Plus: return "Earthquake load Eu - X";
                 case ELCName.eEQ_Eu_Front_Y_Plus: return "Earthquake load Eu - Y";
-                case ELCName.eSL_Ss_Full: return "Snow load Ss - full"; 
+                case ELCName.eSL_Ss_Full: return "Snow load Ss - full";
                 case ELCName.eSL_Ss_Left: return "Snow load Ss - left";
                 case ELCName.eSL_Ss_Right: return "Snow load Ss - right";
                 case ELCName.eWL_Ws_Cpi_min_Left_X_Plus: return "Wind load Ws - Cpi,min - Left - X+";
@@ -141,7 +150,7 @@ namespace BaseClasses
                 case EPDFPageContentType.Details_Joints: return "Details - Joints";
                 case EPDFPageContentType.Details_Footing_Pads: return "Details - Footing Pads";
                 case EPDFPageContentType.Details_Floor: return "Details - Floor";
-                    
+
 
             }
             return "Unknown EPDFPageContentType";

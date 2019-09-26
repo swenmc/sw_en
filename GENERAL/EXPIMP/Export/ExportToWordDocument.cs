@@ -605,6 +605,8 @@ namespace EXPIMP
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
             picture = null;
+            viewPort.Dispose();
+            trackport.Dispose();
         }
 
         private static void DrawLoadCases(DocX document, CModelData data)
@@ -987,7 +989,7 @@ namespace EXPIMP
             sDisplayOptions.bDisplayMembersWireFrame = true;
             sDisplayOptions.bDisplayJointsWireFrame = true;
             sDisplayOptions.bDisplayPlatesWireFrame = true;
-            sDisplayOptions.bDisplayConnectorsWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = false;
 
             sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
@@ -1020,6 +1022,7 @@ namespace EXPIMP
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    viewPort.Dispose();
                     trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
@@ -1048,6 +1051,7 @@ namespace EXPIMP
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    viewPort.Dispose();
                     trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetDesignResultsInDataTable(calcul);
@@ -1081,7 +1085,7 @@ namespace EXPIMP
             sDisplayOptions.bDisplayMembersWireFrame = true;
             sDisplayOptions.bDisplayJointsWireFrame = true;
             sDisplayOptions.bDisplayPlatesWireFrame = true;
-            sDisplayOptions.bDisplayConnectorsWireFrame = true;
+            sDisplayOptions.bDisplayConnectorsWireFrame = false;
 
             sDisplayOptions.wireFrameColor = System.Windows.Media.Colors.Black; // Farba linii pre export, moze sa urobit nastavitelna samostatne pre 3D preview a export
 
@@ -1135,6 +1139,7 @@ namespace EXPIMP
                     Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
+                    viewPort.Dispose();
                     trackport.Dispose();
 
                     DataTable dt = DataGridHelper.GetFootingDesignResultsInDataTable(calcul);

@@ -64,11 +64,11 @@ namespace EXPIMP
 
             XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            //DrawModel3D(s_document, modelData);
-                        
-            //DrawModelViews(s_document, modelData);
-            
-            //DrawJointTypes(s_document, modelData);
+            DrawModel3D(s_document, modelData);
+
+            DrawModelViews(s_document, modelData);
+
+            DrawJointTypes(s_document, modelData);
 
             DrawFootingTypes(s_document, modelData);
 
@@ -129,7 +129,7 @@ namespace EXPIMP
 
             gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
             image.Dispose();
-            viewPort = null;
+            viewPort.Dispose();
             trackport.Dispose();
             gfx.Dispose();
             page.Close();
@@ -314,7 +314,7 @@ namespace EXPIMP
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
-                viewPort = null;
+                viewPort.Dispose();
                 trackport.Dispose();
                 gfx.Dispose();
                 page.Close();
@@ -487,8 +487,7 @@ namespace EXPIMP
 
                 XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort, scale));
 
-                viewPort.Children.Clear();
-                viewPort = null;
+                viewPort.Dispose();
                 trackport.Dispose();
 
                 double scaleFactor = (gfx.PageSize.Width) / (image.PointWidth) / maxInRow;
@@ -618,7 +617,7 @@ namespace EXPIMP
                 gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
-                viewPort = null;
+                viewPort.Dispose();
                 trackport.Dispose();
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
                 DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 30, moveY, pad);
@@ -1125,7 +1124,7 @@ namespace EXPIMP
 
             gfx.DrawImage(imageModel, gfx.PageSize.Width / 4, gfx.PageSize.Height / 4 - 100, scaledImageWidth, scaledImageHeight);
             imageModel.Dispose();
-            viewPort = null;
+            viewPort.Dispose();
             trackport.Dispose();
 
             // Logo            
