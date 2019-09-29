@@ -62,21 +62,21 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            DrawModel3D(s_document, modelData);
+            //DrawModel3D(s_document, modelData);
 
             DrawModelViews(s_document, modelData);
 
-            DrawJointTypes(s_document, modelData);
+            //DrawJointTypes(s_document, modelData);
 
-            DrawFootingTypes(s_document, modelData);
+            //DrawFootingTypes(s_document, modelData);
 
-            DrawFloorDetails(s_document, modelData);
+            //DrawFloorDetails(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData); // To Ondrej - for review
+            //DrawStandardDetails(s_document, modelData); // To Ondrej - for review
 
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            //AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...

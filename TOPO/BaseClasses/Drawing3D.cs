@@ -1587,7 +1587,7 @@ namespace BaseClasses
             }
         }
         #endregion
-        
+
         #region detail symbols
         private static List<CDetailSymbol> GetDetailSymbols(CModel model, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict, DisplayOptions opts)
         {
@@ -1671,10 +1671,10 @@ namespace BaseClasses
             return null;
         }
 
-        
+
 
         #endregion
-        
+
         #region model center, camera position
         // Get model centre
         public static Point3D GetModelCentre(CModel model)
@@ -2004,7 +2004,7 @@ namespace BaseClasses
         }
 
         #endregion
-        
+
         #region Create Model3D methods
 
         // Create Members Model3D
@@ -2083,7 +2083,7 @@ namespace BaseClasses
             return model3D;
         }
 
-        
+
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
@@ -3182,7 +3182,7 @@ namespace BaseClasses
             }
         }
 
-        
+
         // Draw Members Wire Frame
         public static void DrawMemberWireFrame(CMember member, Viewport3D viewPort, float memberLength)
         {
@@ -3338,6 +3338,15 @@ namespace BaseClasses
             if (model.m_arrMembers != null)
             {
                 ModelVisual3D textlabel = null;
+                float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;
+
+                GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
+                float fTextBlockVerticalSizeFactor = fModel_Length_X / 10;
+                float fTextBlockHorizontalSizeFactor = fModel_Length_Z / 11;
+                //float fTextBlockVerticalSizeFactor = 0.8f;
+                //float fTextBlockHorizontalSizeFactor = 0.3f;
+
 
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
                 {
@@ -3355,9 +3364,8 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;
-                        float fTextBlockVerticalSizeFactor = 0.8f;
-                        float fTextBlockHorizontalSizeFactor = 0.3f;
+
+
 
                         // Tieto nastavenia sa nepouziju
                         tb.FontStretch = FontStretches.UltraCondensed;
@@ -4950,7 +4958,7 @@ namespace BaseClasses
 
             return transPoints;
         }
-        
+
 
         #region Point and Plane methods
         //    'call with 3 points p1, p2, p3 that form plane and another point (x,y)
@@ -5091,7 +5099,7 @@ namespace BaseClasses
 
         #endregion
 
-        
+
         public static CModel GetJointPreviewModel(CConnectionJointTypes joint, CFoundation pad, ref DisplayOptions sDisplayOptions)
         {
             CConnectionJointTypes jointClone = joint.Clone();
@@ -5317,7 +5325,7 @@ namespace BaseClasses
                 {
                     UpdateWireFramePoints(jointModel, sDisplayOptions);
                 }
-                
+
                 //--------------------------------------------------------------------------------------------------------------------------------------
                 //Toto som pravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
                 //rovnako sa pregeneruju na novo m_arrPlates
@@ -5687,9 +5695,9 @@ namespace BaseClasses
 
             return gm3D;
         }
-        
 
-        
+
+
 
 
         #region not used methods
