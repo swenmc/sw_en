@@ -3338,15 +3338,56 @@ namespace BaseClasses
             if (model.m_arrMembers != null)
             {
                 ModelVisual3D textlabel = null;
-                float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;
+                //float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;                
 
                 GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
+                float fTextBlockVerticalSize = fModel_Length_Z / 30f;
                 float fTextBlockVerticalSizeFactor = fModel_Length_X / 10;
                 float fTextBlockHorizontalSizeFactor = fModel_Length_Z / 11;
                 //float fTextBlockVerticalSizeFactor = 0.8f;
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
 
+                // VIEW AXIS
+                Vector3D viewVector;
+                Vector3D viewHorizontalVector;
+                Vector3D viewVerticalVector;
+
+                if (displayOptions.ModelView == (int)EModelViews.BACK)
+                {
+                    viewVector = new Vector3D(0, -1, 0);
+                    viewHorizontalVector = new Vector3D(-1, 0, 0);
+                    viewVerticalVector = new Vector3D(0, 0, 1);
+                }
+                else if (displayOptions.ModelView == (int)EModelViews.LEFT)
+                {
+                    viewVector = new Vector3D(1, 0, 0);
+                    viewHorizontalVector = new Vector3D(0, -1, 0);
+                    viewVerticalVector = new Vector3D(0, 0, 1);
+                    fTextBlockVerticalSizeFactor = fModel_Length_Y / 10;
+                }
+                else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
+                {
+                    viewVector = new Vector3D(-1, 0, 0);
+                    viewHorizontalVector = new Vector3D(0, 1, 0);
+                    viewVerticalVector = new Vector3D(0, 0, 1);
+                    fTextBlockVerticalSizeFactor = fModel_Length_Y / 10;
+                }
+                else if (displayOptions.ModelView == (int)EModelViews.TOP)
+                {
+                    viewVector = new Vector3D(0, 0, -1);
+                    viewHorizontalVector = new Vector3D(0, 1, 0);
+                    viewVerticalVector = new Vector3D(-1, 0, 0);
+                    fTextBlockVerticalSize = fModel_Length_X / 70;
+                    fTextBlockVerticalSizeFactor = 0.8f;
+                    fTextBlockHorizontalSizeFactor = 0.3f;
+                }
+                else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
+                {
+                    viewVector = new Vector3D(0, 1, 0);
+                    viewHorizontalVector = new Vector3D(1, 0, 0);
+                    viewVerticalVector = new Vector3D(0, 0, 1);
+                }
 
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
                 {
@@ -3364,8 +3405,6 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-
-
 
                         // Tieto nastavenia sa nepouziju
                         tb.FontStretch = FontStretches.UltraCondensed;
@@ -3386,41 +3425,7 @@ namespace BaseClasses
                         // Zistime v akej vzajomnej pozicii su voci sebe osovy system pruta v LCS a pohlad
                         // Podla toho urcime ci vykreslujeme text pruta pre LCS pohlad x, y alebo z
 
-                        // VIEW AXIS
-                        Vector3D viewVector;
-                        Vector3D viewHorizontalVector;
-                        Vector3D viewVerticalVector;
-
-                        if (displayOptions.ModelView == (int)EModelViews.BACK)
-                        {
-                            viewVector = new Vector3D(0, -1, 0);
-                            viewHorizontalVector = new Vector3D(-1, 0, 0);
-                            viewVerticalVector = new Vector3D(0, 0, 1);
-                        }
-                        else if (displayOptions.ModelView == (int)EModelViews.LEFT)
-                        {
-                            viewVector = new Vector3D(1, 0, 0);
-                            viewHorizontalVector = new Vector3D(0, -1, 0);
-                            viewVerticalVector = new Vector3D(0, 0, 1);
-                        }
-                        else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
-                        {
-                            viewVector = new Vector3D(-1, 0, 0);
-                            viewHorizontalVector = new Vector3D(0, 1, 0);
-                            viewVerticalVector = new Vector3D(0, 0, 1);
-                        }
-                        else if (displayOptions.ModelView == (int)EModelViews.TOP)
-                        {
-                            viewVector = new Vector3D(0, 0, -1);
-                            viewHorizontalVector = new Vector3D(0, 1, 0);
-                            viewVerticalVector = new Vector3D(-1, 0, 0);
-                        }
-                        else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
-                        {
-                            viewVector = new Vector3D(0, 1, 0);
-                            viewHorizontalVector = new Vector3D(1, 0, 0);
-                            viewVerticalVector = new Vector3D(0, 0, 1);
-                        }
+                        
 
                         // Ziskame transformaciu pruta z LCS do GCS
                         // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
