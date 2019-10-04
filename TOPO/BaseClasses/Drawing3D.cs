@@ -3334,6 +3334,7 @@ namespace BaseClasses
 
         public static void CreateMembersDescriptionModel3D_POKUS_MC(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
+            double descriptionTextWidthScaleFactor = 0.3;
             // Members
             if (model.m_arrMembers != null)
             {
@@ -3342,11 +3343,15 @@ namespace BaseClasses
 
                 GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
-                float fTextBlockVerticalSize = fModel_Length_Z / 30f;
-                float fTextBlockVerticalSizeFactor = fModel_Length_X / 10;
-                float fTextBlockHorizontalSizeFactor = fModel_Length_Z / 11;
+                //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
+
+                //float fTextBlockVerticalSizeFactor = fModel_Length_X / 10;
+                //float fTextBlockHorizontalSizeFactor = fModel_Length_Z / 11;
                 //float fTextBlockVerticalSizeFactor = 0.8f;
                 //float fTextBlockHorizontalSizeFactor = 0.3f;
+                float fTextBlockVerticalSizeFactor = 1f;
+                float fTextBlockHorizontalSizeFactor = 1f;
 
                 // VIEW AXIS
                 Vector3D viewVector;
@@ -3363,24 +3368,19 @@ namespace BaseClasses
                 {
                     viewVector = new Vector3D(1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, -1, 0);
-                    viewVerticalVector = new Vector3D(0, 0, 1);
-                    fTextBlockVerticalSizeFactor = fModel_Length_Y / 10;
+                    viewVerticalVector = new Vector3D(0, 0, 1);                    
                 }
                 else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
                 {
                     viewVector = new Vector3D(-1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
-                    viewVerticalVector = new Vector3D(0, 0, 1);
-                    fTextBlockVerticalSizeFactor = fModel_Length_Y / 10;
+                    viewVerticalVector = new Vector3D(0, 0, 1);                    
                 }
                 else if (displayOptions.ModelView == (int)EModelViews.TOP)
                 {
                     viewVector = new Vector3D(0, 0, -1);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
-                    viewVerticalVector = new Vector3D(-1, 0, 0);
-                    fTextBlockVerticalSize = fModel_Length_X / 70;
-                    fTextBlockVerticalSizeFactor = 0.8f;
-                    fTextBlockHorizontalSizeFactor = 0.3f;
+                    viewVerticalVector = new Vector3D(-1, 0, 0);                    
                 }
                 else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
                 {
@@ -3650,9 +3650,9 @@ namespace BaseClasses
 
                         // Transformujeme suradnice riadiaceho bodu z LCS do GCS
                         pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
-
+                        
                         // Create text
-                        textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up);
+                        textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up, descriptionTextWidthScaleFactor);
 
                         if (centerModel)
                         {
@@ -4795,7 +4795,8 @@ namespace BaseClasses
             double height,
             Point3D center,
             Vector3D over,
-            Vector3D up)
+            Vector3D up,
+            double widthScaleFactor = 1.0)
         {
             // First we need a textblock containing the text of our label
             TextBlock tb = new TextBlock(new Run(text));
@@ -4807,7 +4808,7 @@ namespace BaseClasses
             mat.Brush = new VisualBrush(tb);
 
             // We just assume the characters are square
-            double width = text.Length * height;
+            double width = text.Length * height * widthScaleFactor;
 
             // Since the parameter coming in was the center of the label,
             // we need to find the four corners
@@ -4884,9 +4885,9 @@ namespace BaseClasses
             double height,
             Point3D center,
             Vector3D over,
-            Vector3D up)
+            Vector3D up, double widthScaleFactor = 1.0)
         {
-            return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
+            return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up, widthScaleFactor);
         }
 
         #endregion
