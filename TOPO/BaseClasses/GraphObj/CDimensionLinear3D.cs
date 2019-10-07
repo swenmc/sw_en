@@ -545,7 +545,7 @@ namespace BaseClasses.GraphObj
             return model_gr;
         }
 
-        public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color)
+        public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color, float fLineCylinderRadius)
         {
             // Zakladny model koty - hlavna kotovacia ciara - smer X, vynasacie ciary - smer Y
             // TEXT by som kreslil v LCS koty do roviny XY a potom ho otacal s kotou (system potom mozeme pouzit aj pre popisy prutov, staci vyplnut zobrazenie koty a ostane len text)
@@ -555,8 +555,8 @@ namespace BaseClasses.GraphObj
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu kotovacich ciar (Okno options pre zobrazenie v GUI a pre Export)
 
             float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
-            float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
-            float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
+            //float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
+            //float fLineCylinderRadius = 0.005f; //0.005f * fMainLineLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
 
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line

@@ -2588,6 +2588,8 @@ namespace BaseClasses
             if (dimensions == null || dimensions.Count == 0)
                 return null;
 
+            float fLineRadius = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 1500;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
 
@@ -2595,7 +2597,7 @@ namespace BaseClasses
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
-                gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor));
+                gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor, fLineRadius));
             }
 
             return gr;
