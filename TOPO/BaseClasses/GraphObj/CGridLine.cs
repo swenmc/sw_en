@@ -209,7 +209,9 @@ namespace BaseClasses.GraphObj
             m_LineLength = length;
             m_LinePatternType = linePatternType;
 
-            m_LineCylinderRadius = 0.005f; // TODO napojit - polomer valca
+            //m_LineCylinderRadius = 0.005f; // TODO napojit - polomer valca
+            m_LineCylinderRadius = (float)markObjectSize / 50;
+            
             m_PointMarkObjectCenter_LCS = new Point3D(-m_OffsetFromPoint - m_MarkObjectSize / 2f, 0, -m_LineCylinderRadius);
             m_PointLabelText = m_PointMarkObjectCenter_LCS; // Defaultne su rovnake
         }
@@ -223,7 +225,7 @@ namespace BaseClasses.GraphObj
             // Vytvorime model gridline v LCS, [0,0,0] je uvazovana v bode m_ControlPoint, gridline smeruje v kladnom smere x a znacka s label text je v rovine xy
 
             // Mark (circle or square, rhombus)
-            short NumberOfCirclePointsMark = 32 + 1;//32 + 1;
+            short NumberOfCirclePointsMark = 64 + 1;//32 + 1;
             model_gr.Children.Add(new CHollowCylinder(NumberOfCirclePointsMark, (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material).CreateM_G_M_3D_Volume(m_PointMarkObjectCenter_LCS, (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material, 2));
 
             // Line
@@ -238,7 +240,7 @@ namespace BaseClasses.GraphObj
                 // dashed, dotted, divide, ....
 
                 // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS);
+                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS, m_MarkObjectSize / 3);
 
                 // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
                 for(int i = 0; i < line.PointsCollection.Count; i+=2) // Ako zaciatok berieme kazdy druhy bod

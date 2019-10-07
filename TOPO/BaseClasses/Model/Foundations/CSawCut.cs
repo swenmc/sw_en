@@ -122,7 +122,8 @@ namespace BaseClasses
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu
 
             float fLineThickness = 0.002f; // hrubka = priemer pre export do 2D (2 x polomer valca)
-            float fLineCylinderRadius = 0.005f; //0.005f * fLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
+            //float fLineCylinderRadius = 0.005f; //0.005f * fLength; // Nastavovat ! polomer valca, co najmensi ale viditelny - 3D
+            float fLineCylinderRadius = m_fLength / 50;
 
             // LCS - line in x-direction
             if (linePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
@@ -132,7 +133,7 @@ namespace BaseClasses
                 // dashed, dotted, divide, ....
 
                 // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                CLine line = new CLine(linePatternType, new Point3D(0, 0, 0), new Point3D(m_fLength, 0, 0));
+                CLine line = new CLine(linePatternType, new Point3D(0, 0, 0), new Point3D(m_fLength, 0, 0), m_fLength / 3);
 
                 // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
                 for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod

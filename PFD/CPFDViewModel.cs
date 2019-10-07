@@ -2435,28 +2435,27 @@ namespace PFD
             LightAmbient = true;
             MaterialDiffuse = true;
             MaterialEmissive = false;
-            DisplayMembers = true;
+            DisplayMembers = false;
             DisplayJoints = false;
             DisplayPlates = false;
             DisplayConnectors = false;
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayReinforcementBars = false;
-            DisplayFloorSlab = false;
-            DisplaySawCuts = false;
-            DisplayControlJoints = false;
+            DisplayFloorSlab = true;
+            DisplaySawCuts = true;
+            DisplayControlJoints = true;
 
-            DisplayMembersWireFrame = true;
+            DisplayMembersWireFrame = false;
             DisplayJointsWireFrame = false;
             DisplayPlatesWireFrame = false;
             DisplayConnectorsWireFrame = false;
             DisplayNodesWireFrame = false;
             DisplayFoundationsWireFrame = false;
-            DisplayReinforcementBarsWireFrame = false;
-            DisplayFloorSlab = false;
+            DisplayReinforcementBarsWireFrame = false;            
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
-            DisplaySolidModel = true;
+            DisplaySolidModel = false;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
@@ -2470,7 +2469,7 @@ namespace PFD
             ShowMemberID = true;
 
             ShowNodesDescription = false;
-            ShowMemberDescription = true;
+            ShowMemberDescription = false;
             ShowMemberID = true;
             ShowMemberPrefix = true;
             ShowMemberRealLength = true;
@@ -2478,11 +2477,11 @@ namespace PFD
             ShowMemberRealLengthUnit = false;
             ShowMemberCrossSectionStartName = false;
             ShowFoundationsDescription = false;
-            ShowSawCutsDescription = false;
-            ShowControlJointsDescription = false;
-            ShowDimensions = false;
-            ShowGridLines = false;
-            ShowSectionSymbols = false;
+            ShowSawCutsDescription = true;
+            ShowControlJointsDescription = true;
+            ShowDimensions = true;
+            ShowGridLines = true;
+            ShowSectionSymbols = true;
             ShowDetailSymbols = true;
 
             ShowLoads = false;

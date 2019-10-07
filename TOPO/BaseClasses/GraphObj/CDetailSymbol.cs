@@ -215,7 +215,7 @@ namespace BaseClasses.GraphObj
                     // dashed, dotted, divide, ....
 
                     // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                    CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS);
+                    CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS, m_MarkObjectSize / 3);
 
                     // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
                     for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod

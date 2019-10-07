@@ -1444,8 +1444,10 @@ namespace BaseClasses
         private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
         {
             Model3DGroup gridlines3DGroup = null;
-
-            float fMarkCircleDiameter = 0.4f;
+            
+            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
+            
+            //float fMarkCircleDiameter = 0.4f;
             float fOffset = 0.5f;
             float fOffsetBehind = 0.3f;
             float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
@@ -3259,73 +3261,73 @@ namespace BaseClasses
         }
 
 
+        ////Tu vyzera, ze tuto metodu vobec nepouzivame,takze ju zakomentovavam....
+        //// Draw Text in 3D
+        //public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    // Members
+        //    if (model.m_arrMembers != null)
+        //    {
+        //        ModelVisual3D textlabel = null;
 
-        // Draw Text in 3D
-        public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            // Members
-            if (model.m_arrMembers != null)
-            {
-                ModelVisual3D textlabel = null;
+        //        for (int i = 0; i < model.m_arrMembers.Length; i++)
+        //        {
+        //            if (model.m_arrMembers[i] != null &&
+        //                model.m_arrMembers[i].NodeStart != null &&
+        //                model.m_arrMembers[i].NodeEnd != null &&
+        //                model.m_arrMembers[i].CrScStart != null &&
+        //                model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+        //            {
+        //                Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
+        //                Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
 
-                for (int i = 0; i < model.m_arrMembers.Length; i++)
-                {
-                    if (model.m_arrMembers[i] != null &&
-                        model.m_arrMembers[i].NodeStart != null &&
-                        model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null &&
-                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
-                    {
-                        Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
-                        Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+        //                string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
 
-                        string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
+        //                TextBlock tb = new TextBlock();
+        //                tb.Text = sTextToDisplay;
+        //                tb.FontFamily = new FontFamily("Arial");
+        //                float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; //  0.1f; // To Ondrej - da sa velkost textu nejako prepojit s velkostou realne textu v 3D, napriklad vyska fontu 12 by bola 0.12 metra ???
+        //                float fTextBlockVerticalSizeFactor = 0.8f;
+        //                float fTextBlockHorizontalSizeFactor = 0.3f;
 
-                        TextBlock tb = new TextBlock();
-                        tb.Text = sTextToDisplay;
-                        tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f; //  0.1f; // To Ondrej - da sa velkost textu nejako prepojit s velkostou realne textu v 3D, napriklad vyska fontu 12 by bola 0.12 metra ???
-                        float fTextBlockVerticalSizeFactor = 0.8f;
-                        float fTextBlockHorizontalSizeFactor = 0.3f;
+        //                // Tieto nastavenia sa nepouziju
+        //                tb.FontStretch = FontStretches.UltraCondensed;
+        //                tb.FontStyle = FontStyles.Normal;
+        //                tb.FontWeight = FontWeights.Thin;
+        //                tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor);
+        //                tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
-                        // Tieto nastavenia sa nepouziju
-                        tb.FontStretch = FontStretches.UltraCondensed;
-                        tb.FontStyle = FontStyles.Normal;
-                        tb.FontWeight = FontWeights.Thin;
-                        tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor);
-                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+        //                float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
 
-                        float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
+        //                // TODO Ondrej - vylepsit vykreslovanie a odsadenie
+        //                // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
+        //                // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
+        //                // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
+        //                // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
+        //                // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
 
-                        // TODO Ondrej - vylepsit vykreslovanie a odsadenie
-                        // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
-                        // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
-                        // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
-                        // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
-                        // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
+        //                float fOffsetZ = 0.07f;
+        //                Point3D pTextPosition = new Point3D();
+        //                pTextPosition.X = pNodeStart.X + fRelativePositionFactor * model.m_arrMembers[i].Delta_X;
+        //                pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
+        //                pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
 
-                        float fOffsetZ = 0.07f;
-                        Point3D pTextPosition = new Point3D();
-                        pTextPosition.X = pNodeStart.X + fRelativePositionFactor * model.m_arrMembers[i].Delta_X;
-                        pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
-                        pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
+        //                Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //                Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
-                        Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-                        Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+        //                SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+        //                // Create text
+        //                textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPosition, over, up);
 
-                        SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
-                        // Create text
-                        textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPosition, over, up);
-
-                        if (centerModel)
-                        {
-                            textlabel.Transform = centerModelTransGr;
-                        }
-                        viewPort.Children.Add(textlabel);
-                    }
-                }
-            }
-        }
+        //                if (centerModel)
+        //                {
+        //                    textlabel.Transform = centerModelTransGr;
+        //                }
+        //                viewPort.Children.Add(textlabel);
+        //            }
+        //        }
+        //    }
+        //}
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3341,17 +3343,13 @@ namespace BaseClasses
             if (model.m_arrMembers != null)
             {
                 ModelVisual3D textlabel = null;
-                //float fTextBlockVerticalSize = displayOptions.fMemberDescriptionTextFontSize / 100f;                
 
-                GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                //toto podla mna netreba robit, lebo pri vykresleni sa stale najprv urcia velkosti modelu a potom sa nieco dalej vykresluje...
+                //GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
-
-                //float fTextBlockVerticalSizeFactor = fModel_Length_X / 10;
-                //float fTextBlockHorizontalSizeFactor = fModel_Length_Z / 11;
-                //float fTextBlockVerticalSizeFactor = 0.8f;
-                //float fTextBlockHorizontalSizeFactor = 0.3f;
+                //displayOptions.fMemberDescriptionTextFontSize je potrebne prerobit na pomer k velkosti modelu, cize nieco ako displayOptions.fMemberDescriptionTextFontSizeScale = 60f;
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;                                
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3682,6 +3680,16 @@ namespace BaseClasses
             {
                 ModelVisual3D textlabel = null;
 
+                //float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f;
+                //float fTextBlockVerticalSizeFactor = 0.8f;
+                //float fTextBlockHorizontalSizeFactor = 0.3f;
+
+                //To Mato - displayOptions.fNodeDescriptionTextFontSize by sme mali mat asi nieco ako displayOptions.fNodeDescriptionTextSizeScaleFactor = 80f
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+                float fTextBlockVerticalSizeFactor = 1f;
+                float fTextBlockHorizontalSizeFactor = 1f;
+
+
                 for (int i = 0; i < model.m_arrNodes.Length; i++)
                 {
                     if (model.m_arrNodes[i] != null) // Node object is valid (not empty)
@@ -3692,10 +3700,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        float fTextBlockVerticalSize = displayOptions.fNodeDescriptionTextFontSize / 100f;
-                        float fTextBlockVerticalSizeFactor = 0.8f;
-                        float fTextBlockHorizontalSizeFactor = 0.3f;
-
+                        
                         // Tieto nastavenia sa nepouziju
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
@@ -3712,7 +3717,7 @@ namespace BaseClasses
 
                         // Create text
                         textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-
+                        
                         if (centerModel)
                         {
                             textlabel.Transform = centerModelTransGr;
@@ -3729,10 +3734,13 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = dimension.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fDimensionTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.3f;
-
+            //float fTextBlockVerticalSize = displayOptions.fDimensionTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+            
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
@@ -3778,9 +3786,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = dimension.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = 0.1f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.3f;
+            //float fTextBlockVerticalSize = 0.1f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
@@ -3867,9 +3878,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = gridline.LabelText;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.5f;
+            //float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.5f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.Normal;
             tb.FontStyle = FontStyles.Normal;
@@ -3910,9 +3924,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = sectionSymbol.LabelText;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.5f;
+            //float fTextBlockVerticalSize = displayOptions.fSectionSymbolLabelTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.5f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.Normal;
             tb.FontStyle = FontStyles.Normal;
@@ -3992,9 +4009,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = sawcut.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.3f;
+            //float fTextBlockVerticalSize = displayOptions.fSawCutTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
@@ -4013,7 +4033,8 @@ namespace BaseClasses
 
                 if (sawcut.TransformGr == null)
                 {
-                    throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
+                    //tu mi vyhadzuje vynimku...naozaj ju treba vyhadzovat???
+                    //throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
                 }
 
                 if (sawcut.TransformGr != null)
@@ -4052,9 +4073,13 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = controlJoint.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.3f;
+            //float fTextBlockVerticalSize = displayOptions.fControlJointTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
@@ -4073,7 +4098,9 @@ namespace BaseClasses
 
                 if (controlJoint.TransformGr == null)
                 {
-                    throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
+                    //tu mi vyhadzju  vynimku naozaj ju treba vyhadzovat???
+
+                    //throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
                 }
 
                 if (controlJoint.TransformGr != null)
@@ -4112,9 +4139,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = foundation.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.3f;
+            //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
@@ -4171,10 +4201,15 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = slab.Text;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fFloorSlabTextFontSize / 100f;
-            int iNumberOfRowsInTexBlock = 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
-            float fTextBlockVerticalSizeFactor = 0.8f * iNumberOfRowsInTexBlock;
-            float fTextBlockHorizontalSizeFactor = 0.3f / iNumberOfRowsInTexBlock;
+            //float fTextBlockVerticalSize = displayOptions.fFloorSlabTextFontSize / 100f;
+            //int iNumberOfRowsInTexBlock = 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
+            //float fTextBlockVerticalSizeFactor = 0.8f * iNumberOfRowsInTexBlock;
+            //float fTextBlockHorizontalSizeFactor = 0.3f / iNumberOfRowsInTexBlock;
+
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
+
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;

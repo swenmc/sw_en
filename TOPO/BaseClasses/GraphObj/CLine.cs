@@ -22,11 +22,7 @@ namespace BaseClasses.GraphObj
             FTime = fTime;
         }
 
-
-
-
-
-
+        
 
         // 3D
 
@@ -103,18 +99,62 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private double segmentSpacing = 0.05f;
-        private double dashSegmentLength = 0.1f;
-        private double dotSegmentLength = 0.02f;
+        private double m_segmentSpacing = 0.05;
+        private double m_dashSegmentLength = 0.1;
+        private double m_dotSegmentLength = 0.02;
+        public double SegmentSpacing
+        {
+            get
+            {
+                return m_segmentSpacing;
+            }
+
+            set
+            {
+                m_segmentSpacing = value;
+            }
+        }
+
+        public double DashSegmentLength
+        {
+            get
+            {
+                return m_dashSegmentLength;
+            }
+
+            set
+            {
+                m_dashSegmentLength = value;
+            }
+        }
+
+        public double DotSegmentLength
+        {
+            get
+            {
+                return m_dotSegmentLength;
+            }
+
+            set
+            {
+                m_dotSegmentLength = value;
+            }
+        }
+        
+
         private int iNumberOfSegmentsInSequence;
         private double sequenceLength;
         private Point3DCollection SequencePoints;
 
-        public CLine(ELinePatternType patternType, Point3D start, Point3D end)
+        public CLine(ELinePatternType patternType, Point3D start, Point3D end, double dashSegmentLength)
         {
             m_patternType = patternType;
             m_Start = start;
             m_End = end;
+            
+            m_dashSegmentLength = dashSegmentLength;
+            m_segmentSpacing = dashSegmentLength / 2;
+            m_dotSegmentLength = dashSegmentLength / 5;
 
             // Straight line length
             Length = (float)Math.Sqrt((float)Math.Pow(m_End.X - m_Start.X, 2f) + (float)Math.Pow(m_End.Y - m_Start.Y, 2f) + (float)Math.Pow(m_End.Z - m_Start.Z, 2f));
@@ -143,7 +183,7 @@ namespace BaseClasses.GraphObj
                             PointsCollection.Add(p);
                     }
 
-                    sequenceStart += (sequenceLength + segmentSpacing); // Pripocitame dlzku sekvencie a dlzku medzery, aby sme dostali zaciatok x novej sekvencie
+                    sequenceStart += (sequenceLength + SegmentSpacing); // Pripocitame dlzku sekvencie a dlzku medzery, aby sme dostali zaciatok x novej sekvencie
                 }
                 while
                 (sequenceStart < (m_Start.X + m_Length)); // Pokracujeme kym je zaciatok sekvencie  mensi nez dlzka
@@ -171,7 +211,7 @@ namespace BaseClasses.GraphObj
                         SequencePoints = new Point3DCollection(2 * iNumberOfSegmentsInSequence);
 
                         SequencePoints.Add(new Point3D(0, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength, 0, 0));
                         break;
                     }
                 case ELinePatternType.DOTTED:
@@ -180,7 +220,7 @@ namespace BaseClasses.GraphObj
                         SequencePoints = new Point3DCollection(2 * iNumberOfSegmentsInSequence);
 
                         SequencePoints.Add(new Point3D(0, 0, 0));
-                        SequencePoints.Add(new Point3D(dotSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DotSegmentLength, 0, 0));
                         break;
                     }
                 case ELinePatternType.DASHDOTTED:
@@ -189,10 +229,10 @@ namespace BaseClasses.GraphObj
                         SequencePoints = new Point3DCollection(2 * iNumberOfSegmentsInSequence);
 
                         SequencePoints.Add(new Point3D(0, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength, 0, 0));
 
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing + dotSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing + DotSegmentLength, 0, 0));
                         break;
                     }
                 case ELinePatternType.DIVIDE:
@@ -201,13 +241,13 @@ namespace BaseClasses.GraphObj
                         SequencePoints = new Point3DCollection(2 * iNumberOfSegmentsInSequence);
 
                         SequencePoints.Add(new Point3D(0, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength, 0, 0));
 
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing + dotSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing + DotSegmentLength, 0, 0));
 
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing + dotSegmentLength + segmentSpacing, 0, 0));
-                        SequencePoints.Add(new Point3D(dashSegmentLength + segmentSpacing + dotSegmentLength + segmentSpacing + dotSegmentLength, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing + DotSegmentLength + SegmentSpacing, 0, 0));
+                        SequencePoints.Add(new Point3D(DashSegmentLength + SegmentSpacing + DotSegmentLength + SegmentSpacing + DotSegmentLength, 0, 0));
                         break;
                     }
                 case ELinePatternType.CONTINUOUS:
@@ -215,7 +255,7 @@ namespace BaseClasses.GraphObj
                     {
                         iNumberOfSegmentsInSequence = 1;
                         SequencePoints = new Point3DCollection(2 * iNumberOfSegmentsInSequence);
-                        segmentSpacing = 0;
+                        SegmentSpacing = 0;
 
                         SequencePoints.Add(new Point3D(0, 0, 0));
                         SequencePoints.Add(new Point3D(m_Length, 0, 0));

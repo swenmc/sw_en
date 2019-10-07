@@ -185,7 +185,7 @@ namespace BaseClasses.GraphObj
             // Sipka smeruje v smere LCS y
 
             float fLineCylinderRadius = 0.015f; // Nastavovat ! polomer valca, malo by to byt zhruba 0.7 mm hrube na vykrese (zhruba 3x taka hrubka ako maju ostatne ciary)
-
+            
             // Line
             short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
 
@@ -196,7 +196,7 @@ namespace BaseClasses.GraphObj
                 // dashed, dotted, divide, ....
 
                 // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS);
+                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS, fLineCylinderRadius * 7);
 
                 // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
                 for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
