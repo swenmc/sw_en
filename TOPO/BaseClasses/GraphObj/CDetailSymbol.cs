@@ -177,7 +177,9 @@ namespace BaseClasses.GraphObj
             m_LineLength = lineLength;
             m_LinePatternType = linePatternType;
 
-            m_LineCylinderRadius = 0.005f; // TODO napojit - polomer valca
+            // TODO napojit - polomer valca
+            //m_LineCylinderRadius = 0.005f;
+            m_LineCylinderRadius = (float)markObjectSize / 50;
 
             m_PointLineStart_LCS = new Point3D((float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 0, 0);
             m_PointLineEnd_LCS = new Point3D((float)m_MarkObjectSize / 2f + m_LineCylinderRadius + m_LineLength, 0, 0);
@@ -197,7 +199,8 @@ namespace BaseClasses.GraphObj
             // Vytvorime model v LCS [0,0,0] je uvazovana v bode m_ControlPoint, line smeruje v kladnom smere x a znacka s label text je v rovine xy
 
             // Mark (circle or square, rhombus)
-            short NumberOfCirclePointsMark = 32 + 1;//32 + 1;
+            //short NumberOfCirclePointsMark = 32 + 1;//32 + 1;
+            short NumberOfCirclePointsMark = 128 + 1;//32 + 1;
             model_gr.Children.Add(new CHollowCylinder(NumberOfCirclePointsMark, (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material).CreateM_G_M_3D_Volume(new Point3D(0,0, -m_LineCylinderRadius), (float)m_MarkObjectSize / 2f - m_LineCylinderRadius, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 2 * m_LineCylinderRadius, material, 2));
 
             if (drawLine)

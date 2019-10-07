@@ -1593,8 +1593,10 @@ namespace BaseClasses
         {
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
             if (model.m_arrConnectionJoints == null) return detailSymbols;
+            
+            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;
+            //float fMarkCircleDiameter = 0.5f;
 
-            float fMarkCircleDiameter = 0.5f;
             float fOffsetLineLength = 0.2f;
             // TODO - nastavovat smer podla pohladu
             int iCodeCoordinatePerpendicularToView = 1; // 0-X, 1-Y, 2-Z
@@ -1622,14 +1624,14 @@ namespace BaseClasses
                     notOverlapingJoint = FindNotOverlapingJoint(symbolsPoints, joints, minDist);
                     if (notOverlapingJoint != null)
                     {
-                        System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {index}");
-                        System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {joint.Name} -> {notOverlapingJoint.Name}");
+                        //System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {index}");
+                        //System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {joint.Name} -> {notOverlapingJoint.Name}");
                         symbolsPoints[index] = notOverlapingJoint.m_Node.GetPoint3D();
                     }
                 }
                 else
                 {
-                    System.Diagnostics.Trace.WriteLine($"Not overlaping: {notOverlapingJoint.Name}");
+                    //System.Diagnostics.Trace.WriteLine($"Not overlaping: {notOverlapingJoint.Name}");
                     symbolsPoints.Add(notOverlapingJoint.m_Node.GetPoint3D());
                 }
             }
@@ -3948,9 +3950,12 @@ namespace BaseClasses
             TextBlock tb = new TextBlock();
             tb.Text = detailSymbol.LabelText;
             tb.FontFamily = new FontFamily("Arial");
-            float fTextBlockVerticalSize = displayOptions.fDetailSymbolLabelTextFontSize / 100f;
-            float fTextBlockVerticalSizeFactor = 0.8f;
-            float fTextBlockHorizontalSizeFactor = 0.5f;
+            //float fTextBlockVerticalSize = displayOptions.fDetailSymbolLabelTextFontSize / 100f;
+            //float fTextBlockVerticalSizeFactor = 0.8f;
+            //float fTextBlockHorizontalSizeFactor = 0.5f;
+            float fTextBlockVerticalSize = detailSymbol.LineCylinderRadius * 30;
+            float fTextBlockVerticalSizeFactor = 1f;
+            float fTextBlockHorizontalSizeFactor = 1f;
 
             tb.FontStretch = FontStretches.Normal;
             tb.FontStyle = FontStyles.Normal;
@@ -3962,18 +3967,17 @@ namespace BaseClasses
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
             GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
 
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up); ;
+            // Create text            
             Transform3DGroup tr = new Transform3DGroup();
 
             if (detailSymbol.TransformGr != null)
             {
                 tr.Children.Add(detailSymbol.TransformGr);
 
-                // Nechceme transofrmovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(detailSymbol.PointLabelText);
-                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+                detailSymbol.PointLabelText = pTransformed;
             }
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, detailSymbol.PointLabelText, over, up, 0.6);
 
             if (centerModel)
             {
