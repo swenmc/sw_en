@@ -2421,6 +2421,8 @@ namespace BaseClasses
 
             if (cmodel.m_arrSlabs != null && sDisplayOptions.bDisplayFloorSlab)
             {
+                float lineRadius = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 2000;
+
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrSlabs.Count; i++)
                 {
@@ -2444,7 +2446,7 @@ namespace BaseClasses
                                     cmodel.m_arrSlabs[i].SawCuts[j].m_pControlPoint != null &&
                                     cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                                 {
-                                    Model3DGroup modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(sDisplayOptions.SawCutLineColor, sDisplayOptions.SawCutLinePatternType);
+                                    Model3DGroup modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(sDisplayOptions.SawCutLineColor, sDisplayOptions.SawCutLinePatternType, lineRadius);
                                     model3D_group.Children.Add(modelsc); // Add saw cut to the model group
                                 }
                             }
@@ -2459,7 +2461,7 @@ namespace BaseClasses
                                     cmodel.m_arrSlabs[i].ControlJoints[j].m_pControlPoint != null &&
                                     cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                                 {
-                                    Model3DGroup modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(sDisplayOptions.ControlJointLineColor, sDisplayOptions.ControlJointLinePatternType);
+                                    Model3DGroup modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(sDisplayOptions.ControlJointLineColor, sDisplayOptions.ControlJointLinePatternType, lineRadius);
                                     model3D_group.Children.Add(modelcj); // Add saw cut to the model group
                                 }
                             }
@@ -3881,7 +3883,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fGridLineLabelTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.5f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 70f;
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3899,17 +3901,16 @@ namespace BaseClasses
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, gridline.PointLabelText, over, up); ;
             Transform3DGroup tr = new Transform3DGroup();
-
             if (gridline.TransformGr != null)
             {
                 tr.Children.Add(gridline.TransformGr);
 
                 // Nechceme transofrmovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(gridline.PointLabelText);
-                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+                gridline.PointLabelText = pTransformed;                
             }
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, gridline.PointLabelText, over, up, 0.8);
 
             if (centerModel)
             {
@@ -4142,7 +4143,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fFoundationTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 90f;
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 

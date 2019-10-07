@@ -391,7 +391,7 @@ namespace EXPIMP
 
             opts.fControlJointTextFontSize = 14;
             opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
+            opts.ControlJointLineColor = System.Windows.Media.Colors.Green;
             opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
 
             opts.fSectionSymbolLabelTextFontSize = 30;
