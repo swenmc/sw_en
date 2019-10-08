@@ -220,11 +220,13 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplaySawCuts && sDisplayOptions.bDisplaySawCutsDescription)
                 {
+                    if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                     Drawing3D.CreateSawCutDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
                 if (sDisplayOptions.bDisplayFloorSlab && sDisplayOptions.bDisplayControlJoints && sDisplayOptions.bDisplayControlJointsDescription)
                 {
+                    if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
                     Drawing3D.CreateControlJointDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                 }
 
@@ -4036,8 +4038,7 @@ namespace BaseClasses
 
                 if (sawcut.TransformGr == null)
                 {
-                    //tu mi vyhadzuje vynimku...naozaj ju treba vyhadzovat???
-                    //throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
+                    throw new Exception("Saw cut in local coordinate system! \nTransformation object is null! \nText label is probably created before saw cut model exists!");
                 }
 
                 if (sawcut.TransformGr != null)
@@ -4101,9 +4102,7 @@ namespace BaseClasses
 
                 if (controlJoint.TransformGr == null)
                 {
-                    //tu mi vyhadzju  vynimku naozaj ju treba vyhadzovat???
-
-                    //throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
+                    throw new Exception("Control joint in local coordinate system! \nTransformation object is null! \nText label is probably created before control joint model exists!");
                 }
 
                 if (controlJoint.TransformGr != null)
