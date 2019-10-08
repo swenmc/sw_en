@@ -64,7 +64,7 @@ namespace PFD
 
             if (model != null)
             {
-                Drawing3D.CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimitsWithoutCrsc(model, new DisplayOptions(), out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
@@ -206,7 +206,7 @@ namespace PFD
 
             if (model != null)
             {
-                Drawing3D.CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimitsWithoutCrsc(model, new DisplayOptions(), out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
@@ -347,7 +347,7 @@ namespace PFD
 
             if (model != null)
             {
-                Drawing3D.CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimitsWithoutCrsc(model, new DisplayOptions(), out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
@@ -489,7 +489,7 @@ namespace PFD
 
             if (model != null)
             {
-                Drawing3D.CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimitsWithoutCrsc(model, new DisplayOptions(), out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
@@ -631,7 +631,7 @@ namespace PFD
 
             if (model != null)
             {
-                Drawing3D.CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimitsWithoutCrsc(model, new DisplayOptions(), out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;

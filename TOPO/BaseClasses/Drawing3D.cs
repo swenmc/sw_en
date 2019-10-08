@@ -51,7 +51,7 @@ namespace BaseClasses
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
                 if (centerModel)
                 {
                     centerModelTransGr = new Transform3DGroup();
@@ -59,8 +59,6 @@ namespace BaseClasses
 
                     //model rotation for the VIEW
                     centerModelTransGr.Children.Add(GetModelRotationAccordingToView(sDisplayOptions));
-                    //AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90);
-                    //centerModelTransGr.Children.Add(new RotateTransform3D(Rotation_LCS_x));
                 }
 
                 // Global coordinate system - axis
@@ -195,7 +193,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z, sDisplayOptions);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 }
@@ -208,7 +206,6 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
                     Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
@@ -268,12 +265,12 @@ namespace BaseClasses
                 float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
                 if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                    CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                    CalculateModelLimitsWithCrsc(model, sDisplayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
@@ -364,7 +361,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z, sDisplayOptions);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 }
@@ -374,23 +371,6 @@ namespace BaseClasses
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //// Add WireFrame Model
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
-                //{
-                //    Model3DGroup lines;
-                //    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                //    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-                ////System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
-                //{
-                //    Model3DGroup lines;
-                //    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                //    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-                //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
@@ -423,23 +403,21 @@ namespace BaseClasses
 
         public static void DrawFootingToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)
         {
-            //DateTime start = DateTime.Now;
-
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
             centerModel = true;
-            //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+
             if (model != null)
             {
                 float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
                 if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                    CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                    CalculateModelLimitsWithCrsc(model, sDisplayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 fModel_Length_X = 0;
                 fModel_Length_Y = 0;
                 fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentreWithCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
 
                 centerModelTransGr = new Transform3DGroup();
                 centerModelTransGr.Children.Add(new TranslateTransform3D(-fTempMin_X, -fTempMin_Y, -fTempMin_Z));
@@ -473,12 +451,10 @@ namespace BaseClasses
                     membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial,
                         sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
-                //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup jointsModel3DGroup = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
-                //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup foundationsModel3DGroup = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayFoundations) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
@@ -488,14 +464,11 @@ namespace BaseClasses
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
-                //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup nodes3DGroup = null;
                 if (sDisplayOptions.bDisplayNodes) nodes3DGroup = Drawing3D.CreateModelNodes_Model3DGroup(model, sDisplayOptions);
                 if (nodes3DGroup != null) gr.Children.Add(nodes3DGroup);
 
-                // Pokus vyrobit lines 3D objekty
-                // TO Ondrej - treba to nejako rozumne oddelit, aby sa wireframe nevytvaral a nepridaval 2x
                 // Add WireFrame Model
                 // Members
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMembersWireFrame)
@@ -543,7 +516,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z, sDisplayOptions);
                     _trackport.PerspectiveCamera.Position = cameraPosition;
                     _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 }
@@ -552,30 +525,10 @@ namespace BaseClasses
 
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
-                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //// Add WireFrame Model
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
-                //{
-                //    Model3DGroup lines;
-                //    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                //    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-                ////System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
-
-                //if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
-                //{
-                //    Model3DGroup lines;
-                //    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                //    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
-                //}
-                //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    //Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
-                    Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions); // To Ondrej POKUS 17.8.2019
-                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+                    Drawing3D.CreateMembersDescriptionModel3D_POKUS_MC(model, _trackport.ViewPort, sDisplayOptions);
                 }
                 if (sDisplayOptions.bDisplayNodesDescription)
                 {
@@ -1446,10 +1399,9 @@ namespace BaseClasses
         private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
         {
             Model3DGroup gridlines3DGroup = null;
-            
+
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
-            
-            //float fMarkCircleDiameter = 0.4f;
+
             float fOffset = 0.5f;
             float fOffsetBehind = 0.3f;
             float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
@@ -1473,7 +1425,6 @@ namespace BaseClasses
             {
                 if (MathF.d_equal(m.NodeStart.Z, 0))
                 {
-
                     if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
                         membersBaseNodes_LeftSide.Add(m.NodeStart);
                 }
@@ -1597,14 +1548,10 @@ namespace BaseClasses
         {
             List<CDetailSymbol> detailSymbols = new List<CDetailSymbol>();
             if (model.m_arrConnectionJoints == null) return detailSymbols;
-            
+
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;
             //float fMarkCircleDiameter = 0.5f;
-
             float fOffsetLineLength = 0.2f;
-            // TODO - nastavovat smer podla pohladu
-            int iCodeCoordinatePerpendicularToView = 1; // 0-X, 1-Y, 2-Z
-            float fCoordinateValue = 0; // napojit na suradnicu pohladu
 
             List<Point3D?> symbolsPoints = new List<Point3D?>(jointsDict.Values.Count);
             double minDist = fMarkCircleDiameter;
@@ -1628,14 +1575,11 @@ namespace BaseClasses
                     notOverlapingJoint = FindNotOverlapingJoint(symbolsPoints, joints, minDist);
                     if (notOverlapingJoint != null)
                     {
-                        //System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {index}");
-                        //System.Diagnostics.Trace.WriteLine($"Changed overlaping index: {joint.Name} -> {notOverlapingJoint.Name}");
                         symbolsPoints[index] = notOverlapingJoint.m_Node.GetPoint3D();
                     }
                 }
                 else
                 {
-                    //System.Diagnostics.Trace.WriteLine($"Not overlaping: {notOverlapingJoint.Name}");
                     symbolsPoints.Add(notOverlapingJoint.m_Node.GetPoint3D());
                 }
             }
@@ -1677,17 +1621,15 @@ namespace BaseClasses
             return null;
         }
 
-
-
         #endregion
 
         #region model center, camera position
         // Get model centre
-        public static Point3D GetModelCentre(CModel model)
+        public static Point3D GetModelCentre(CModel model, DisplayOptions displayOptions)
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
-            CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+            CalculateModelLimitsWithoutCrsc(model, displayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             float fModel_Length_X = fTempMax_X - fTempMin_X;
             float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -1707,11 +1649,11 @@ namespace BaseClasses
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }
-        public static Point3D GetModelCentreWithoutCrsc(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
+        public static Point3D GetModelCentreWithoutCrsc(CModel model, DisplayOptions sDisplayOptions, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
-            CalculateModelLimitsWithoutCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+            CalculateModelLimitsWithoutCrsc(model, sDisplayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             fModel_Length_X = fTempMax_X - fTempMin_X;
             fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -1719,12 +1661,12 @@ namespace BaseClasses
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }
-        public static Point3D GetModelCentreWithCrsc(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
+        public static Point3D GetModelCentreWithCrsc(CModel model, DisplayOptions displayOptions, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
             float fTempMax_X = 0f, fTempMin_X = 0f, fTempMax_Y = 0f, fTempMin_Y = 0f, fTempMax_Z = 0f, fTempMin_Z = 0f;
 
             if (model.m_arrMembers != null || model.m_arrGOPoints != null) // Some members or points must be defined in the model
-                CalculateModelLimitsWithCrsc(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                CalculateModelLimitsWithCrsc(model, displayOptions, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             fModel_Length_X = fTempMax_X - fTempMin_X;
             fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -1739,9 +1681,9 @@ namespace BaseClasses
             return lookDirection;
         }
         // Get model camera position
-        public static Point3D GetModelCameraPosition(CModel model, double x, double y, double z)
+        public static Point3D GetModelCameraPosition(CModel model, double x, double y, double z, DisplayOptions displayOptions)
         {
-            Point3D center = GetModelCentre(model);
+            Point3D center = GetModelCentre(model, displayOptions);
             return new Point3D(center.X + x, center.Y + y, center.Z + z);
         }
         public static Point3D GetModelCameraPosition(Point3D centerPoint, double x, double y, double z)
@@ -1762,7 +1704,7 @@ namespace BaseClasses
         // TODO - upravit funkcie tak aby uvazovali maximum z node, members, GOpoints, GOvolumes, pripadne inych objektov
         // TODO - upravit tak, aby sa do vysledneho rozmeru ratal cely box opisany vsetkymi objektami rozneho typu
 
-        public static void CalculateModelLimitsWithoutCrsc(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        public static void CalculateModelLimitsWithoutCrsc(CModel cmodel, DisplayOptions opts, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
             fMin_X = float.MaxValue;
@@ -1795,49 +1737,8 @@ namespace BaseClasses
 
             if (cmodel.m_arrFoundations != null) // Some volumes / foundations exist
             {
-                // Each foundation in model
-                Point3DCollection allFoundationPoints = new Point3DCollection();
-
-                // TO Ondrej - refaktorovat s riadkom 2400
-
-                if (cmodel.m_arrFoundations != null) // Some members must exist
-                {
-                    foreach (CFoundation f in cmodel.m_arrFoundations)
-                    {
-                        Point3DCollection foundationPoints = new Point3DCollection();
-
-                        GeometryModel3D model3D = f.Visual_Object;
-
-                        if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
-                            model3D = f.Visual_Object = f.CreateGeomModel3D(Colors.Gray, 0.2f); // TODO zaviest opacity ako parameter
-
-                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
-
-                        foreach (Point3D point3D in mesh3D.Positions)
-                        {
-                            // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
-                            // 1
-                            Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
-
-                            // 2
-                            //Transform3DGroup trans = new Transform3DGroup();
-                            //trans.Children.Add(model3D.Transform);
-
-                            Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
-                            foundationPoints.Add(p);
-                        }
-
-                        // Add member points to the main collection of all members
-                        if (foundationPoints != null)
-                        {
-                            foreach (Point3D p in foundationPoints)
-                            {
-                                allFoundationPoints.Add(p);
-                            }
-                        }
-                    }
-                }
-
+                List<Point3D> allFoundationPoints = GetFoundationPoints(cmodel, opts);
+                
                 fMax_X = Math.Max(fMax_X, (float)allFoundationPoints.Max(p => p.X));
                 fMin_X = Math.Min(fMin_X, (float)allFoundationPoints.Min(p => p.X));
                 fMax_Y = Math.Max(fMax_Y, (float)allFoundationPoints.Max(p => p.Y));
@@ -1858,7 +1759,7 @@ namespace BaseClasses
             }
         }
 
-        public static void CalculateModelLimitsWithCrsc(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        public static void CalculateModelLimitsWithCrsc(CModel cmodel, DisplayOptions opts, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
             fMin_X = float.MaxValue;
@@ -1913,47 +1814,7 @@ namespace BaseClasses
             if (cmodel.m_arrFoundations != null) // Some volumes / foundations exist
             {
                 // Each foundation in model
-                Point3DCollection allFoundationPoints = new Point3DCollection();
-
-                // TO Ondrej - refaktorovat s riadkom 2400
-
-                if (cmodel.m_arrFoundations != null) // Some members must exist
-                {
-                    foreach (CFoundation f in cmodel.m_arrFoundations)
-                    {
-                        Point3DCollection foundationPoints = new Point3DCollection();
-
-                        GeometryModel3D model3D = f.Visual_Object;
-
-                        if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
-                            model3D = f.Visual_Object = f.CreateGeomModel3D(Colors.Gray, 0.2f); // TODO zaviest opacity ako parameter
-
-                        MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
-
-                        foreach (Point3D point3D in mesh3D.Positions)
-                        {
-                            // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
-                            // 1
-                            Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
-
-                            // 2
-                            //Transform3DGroup trans = new Transform3DGroup();
-                            //trans.Children.Add(model3D.Transform);
-
-                            Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
-                            foundationPoints.Add(p);
-                        }
-
-                        // Add member points to the main collection of all members
-                        if (foundationPoints != null)
-                        {
-                            foreach (Point3D p in foundationPoints)
-                            {
-                                allFoundationPoints.Add(p);
-                            }
-                        }
-                    }
-                }
+                List<Point3D> allFoundationPoints = GetFoundationPoints(cmodel, opts);
 
                 fMax_X = Math.Max(fMax_X, (float)allFoundationPoints.Max(p => p.X));
                 fMin_X = Math.Min(fMin_X, (float)allFoundationPoints.Min(p => p.X));
@@ -1973,6 +1834,40 @@ namespace BaseClasses
                 // Exception - no definition nodes or points
                 throw new Exception("Exception - no definition nodes or points");
             }
+        }
+
+        private static List<Point3D> GetFoundationPoints(CModel cmodel, DisplayOptions opts)
+        {
+            List<Point3D> allFoundationPoints = new List<Point3D>();            
+            foreach (CFoundation f in cmodel.m_arrFoundations)
+            {
+                List<Point3D> foundationPoints = new List<Point3D>();
+
+                GeometryModel3D model3D = f.Visual_Object;
+
+                if (f.Visual_Object == null) // In case that foundation exist but geometry is not generated
+                    model3D = f.Visual_Object = f.CreateGeomModel3D(opts.FoundationColor, opts.fFoundationSolidModelOpacity); // TODO zaviest opacity ako parameter Colors.Gray, 0.2f
+
+                MeshGeometry3D mesh3D = (MeshGeometry3D)model3D.Geometry; // TO Ondrej - toto su podla mna uplne zakladna mesh a body geometrie zakladu, nemali by sme pracovat uz s transformovanymi ????
+
+                foreach (Point3D point3D in mesh3D.Positions)
+                {
+                    // TO Ondrej - dve moznosti ako ziskat transformaciu zakladu
+                    // 1
+                    Transform3DGroup trans = f.GetFoundationTransformGroup_Complete();
+
+                    // 2
+                    //Transform3DGroup trans = new Transform3DGroup();
+                    //trans.Children.Add(model3D.Transform);
+
+                    Point3D p = trans.Transform(point3D); // Transformujeme povodny bod
+                    foundationPoints.Add(p);
+                }
+
+                // Add member points to the main collection of all members
+                allFoundationPoints.AddRange(foundationPoints);
+            }
+            return allFoundationPoints;
         }
 
         public static void CalculateModelSizes(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
@@ -3355,7 +3250,7 @@ namespace BaseClasses
 
                 //To Mato - na tomto mieste sa pripadne da dorobit aj nejaka podmienka a mat vacsie texty ak velkost modelu prekroci nejaku hranicu atd
                 //displayOptions.fMemberDescriptionTextFontSize je potrebne prerobit na pomer k velkosti modelu, cize nieco ako displayOptions.fMemberDescriptionTextFontSizeScale = 60f;
-                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;                                
+                float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 60f;
                 float fTextBlockVerticalSizeFactor = 1f;
                 float fTextBlockHorizontalSizeFactor = 1f;
 
@@ -3374,19 +3269,19 @@ namespace BaseClasses
                 {
                     viewVector = new Vector3D(1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, -1, 0);
-                    viewVerticalVector = new Vector3D(0, 0, 1);                    
+                    viewVerticalVector = new Vector3D(0, 0, 1);
                 }
                 else if (displayOptions.ModelView == (int)EModelViews.RIGHT)
                 {
                     viewVector = new Vector3D(-1, 0, 0);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
-                    viewVerticalVector = new Vector3D(0, 0, 1);                    
+                    viewVerticalVector = new Vector3D(0, 0, 1);
                 }
                 else if (displayOptions.ModelView == (int)EModelViews.TOP)
                 {
                     viewVector = new Vector3D(0, 0, -1);
                     viewHorizontalVector = new Vector3D(0, 1, 0);
-                    viewVerticalVector = new Vector3D(-1, 0, 0);                    
+                    viewVerticalVector = new Vector3D(-1, 0, 0);
                 }
                 else //if (displayOptions.ModelView == (int)EModelViews.FRONT) // Front or default view
                 {
@@ -3431,7 +3326,7 @@ namespace BaseClasses
                         // Zistime v akej vzajomnej pozicii su voci sebe osovy system pruta v LCS a pohlad
                         // Podla toho urcime ci vykreslujeme text pruta pre LCS pohlad x, y alebo z
 
-                        
+
 
                         // Ziskame transformaciu pruta z LCS do GCS
                         // Neviem ci tato funkcia vracia spravne hodnoty, este by sa to dalo ziskat z transformacie 3D modelu pruta
@@ -3656,7 +3551,7 @@ namespace BaseClasses
 
                         // Transformujeme suradnice riadiaceho bodu z LCS do GCS
                         pTextPositionInGCS = transform.Transform(pTextPositionInGCS);
-                        
+
                         // Create text
                         textlabel = CreateTextLabel3D(tb, false, fTextBlockVerticalSize, pTextPositionInGCS, over, up, descriptionTextWidthScaleFactor);
 
@@ -3706,7 +3601,7 @@ namespace BaseClasses
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
                         tb.FontFamily = new FontFamily("Arial");
-                        
+
                         // Tieto nastavenia sa nepouziju
                         tb.FontStretch = FontStretches.UltraCondensed;
                         tb.FontStyle = FontStyles.Normal;
@@ -3723,7 +3618,7 @@ namespace BaseClasses
 
                         // Create text
                         textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                        
+
                         if (centerModel)
                         {
                             textlabel.Transform = centerModelTransGr;
@@ -3746,7 +3641,7 @@ namespace BaseClasses
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
-            
+
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
@@ -3912,7 +3807,7 @@ namespace BaseClasses
 
                 // Nechceme transofrmovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(gridline.PointLabelText);
-                gridline.PointLabelText = pTransformed;                
+                gridline.PointLabelText = pTransformed;
             }
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, gridline.PointLabelText, over, up, 0.8);
 
