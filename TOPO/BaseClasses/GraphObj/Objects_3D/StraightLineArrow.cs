@@ -32,10 +32,10 @@ namespace BaseClasses.GraphObj.Objects_3D
             iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
             bArrowAtBothEnds = bArrowAtBothEnds_temp;
 
-            fConeHeight = 50 * fCylinderRadius; /// ???
+            fConeHeight = 30 * fCylinderRadius; /// ???
             fCylinderHeight = fTotalHeight - fConeHeight;
 
-            AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???
+            AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???  nerozumiem co to je
 
             ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
 

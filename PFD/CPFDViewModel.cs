@@ -2442,9 +2442,9 @@ namespace PFD
             DisplayNodes = false;
             DisplayFoundations = false;
             DisplayReinforcementBars = false;
-            DisplayFloorSlab = true;
-            DisplaySawCuts = true;
-            DisplayControlJoints = true;
+            DisplayFloorSlab = false;
+            DisplaySawCuts = false;
+            DisplayControlJoints = false;
 
             DisplayMembersWireFrame = false;
             DisplayJointsWireFrame = false;
@@ -2455,15 +2455,15 @@ namespace PFD
             DisplayReinforcementBarsWireFrame = false;            
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = false;
-            DisplaySolidModel = false;
+            DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
             ColorsAccordingToMembers = false;
             ColorsAccordingToSections = true;
             RecreateModel = true;
-            ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
-            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
+            ViewIndex = (int)EModelViews.FRONT;
+            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.MIDDLE_FRAME;
             TransformScreenLines3DToCylinders3D = false;            
 
             ShowMemberID = true;
@@ -2477,12 +2477,12 @@ namespace PFD
             ShowMemberRealLengthUnit = false;
             ShowMemberCrossSectionStartName = false;
             ShowFoundationsDescription = false;
-            ShowSawCutsDescription = true;
-            ShowControlJointsDescription = true;
+            ShowSawCutsDescription = false;
+            ShowControlJointsDescription = false;
             ShowDimensions = true;
-            ShowGridLines = true;
-            ShowSectionSymbols = true;
-            ShowDetailSymbols = true;
+            ShowGridLines = false;
+            ShowSectionSymbols = false;
+            ShowDetailSymbols = false;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
