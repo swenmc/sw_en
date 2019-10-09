@@ -32,7 +32,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
             bArrowAtBothEnds = bArrowAtBothEnds_temp;
 
-            fConeHeight = 30 * fCylinderRadius; /// ???
+            fConeHeight = 20 * fCylinderRadius; /// ???
             fCylinderHeight = fTotalHeight - fConeHeight;
 
             AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???  nerozumiem co to je

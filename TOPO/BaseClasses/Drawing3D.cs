@@ -2485,7 +2485,10 @@ namespace BaseClasses
             if (dimensions == null || dimensions.Count == 0)
                 return null;
 
-            float fLineRadius = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 3000;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fLineRadius =  maxModelLength / 1500;  //velkost podla modelu, ale to cislo "1500" je potrebne data do DisplayOptions
+
+            float scale = maxModelLength / 10;
 
             // ZATIAL POKUS VYKRESLIT KOTU INDIVIDUALNE, NIE VSETKY KOTY NARAZ Z CELEHO MODELU
             // Draw 3D objects (cylinder as a line)
@@ -2494,6 +2497,11 @@ namespace BaseClasses
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
+                dimension.DimensionLinesLength *= scale;
+                dimension.DimensionMainLineDistance *= scale;
+                dimension.DimensionMainLinePositionIncludingOffset *= scale;
+                dimension.OffSetFromPoint *= scale;
+                dimension.PointText = new Point3D(dimension.PointText.X, dimension.PointText.Y * scale, dimension.PointText.Z);
                 gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor, fLineRadius));
             }
 
@@ -3638,7 +3646,7 @@ namespace BaseClasses
             //float fTextBlockVerticalSize = displayOptions.fDimensionTextFontSize / 100f;
             //float fTextBlockVerticalSizeFactor = 0.8f;
             //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 100f;
             float fTextBlockVerticalSizeFactor = 1f;
             float fTextBlockHorizontalSizeFactor = 1f;
 
