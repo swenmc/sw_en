@@ -266,9 +266,9 @@ namespace BaseClasses.GraphObj
             double fOffsetFromPoint,
             string text)
         {
-            // TO Ondrej
             // Nazvy - main dimension line (hlavna kotovacia ciara) (ta hlavna dlha ciara na ktoru sa pise text)
-            // extension line (vynasacia ciara) (tie kratke ciarky smerujuce od kotovaneho bodu ku koncom hlavnej ciary), moze mat fixnu dlzku alebo moze mat fixny odstup od kotovaneho bodu, moze mat aj presah, tj konci az za hlavnou ciarou
+            // extension line (vynasacia ciara) (tie kratke ciarky smerujuce od kotovaneho bodu ku koncom hlavnej ciary), moze mat fixnu dlzku alebo moze mat fixny odstup od kotovaneho bodu, 
+            // moze mat aj presah, tj konci az za hlavnou ciarou
 
             m_PointStart = pointStart;
             m_PointEnd = pointEnd;
@@ -572,7 +572,7 @@ namespace BaseClasses.GraphObj
             model_gr.Children.Add(model);  // Add straight arrow
 
             // Add other lines
-            //TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
+            // TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
             short NumberOfCirclePoints = 16 + 1; // Toto by malo byt rovnake ako u arrow, je potrebne to zjednotit, pridany jeden bod pre stred
 
             // TO Ondrej - toto treba prerobit, ja kreslim tuto kotu v rovine XY a potom ju chcem otacat a presuvat podla potreby

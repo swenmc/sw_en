@@ -477,7 +477,6 @@ namespace PFD
             }
 
             CanvasSection2D = canvasForImage;
-
         }
 
         public void DrawBackView_ModelToCanvas(CModel_PFD model)
