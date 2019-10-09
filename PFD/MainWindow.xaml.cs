@@ -658,65 +658,7 @@ namespace PFD
                 crsc.i_yz_rg = Math.Sqrt(crsc.I_yz / crsc.A_g);
             }
         }
-
-
-
-        //private void UpdateDisplayOptions()
-        //{
-        //    // Get display options from GUI
-        //    sDisplayOptions.bUseLightDirectional = vm.LightDirectional;
-        //    sDisplayOptions.bUseLightPoint = vm.LightPoint;
-        //    sDisplayOptions.bUseLightSpot = vm.LightSpot;
-        //    sDisplayOptions.bUseLightAmbient = vm.LightAmbient;
-
-        //    sDisplayOptions.bUseDiffuseMaterial = vm.MaterialDiffuse;
-        //    sDisplayOptions.bUseEmissiveMaterial = vm.MaterialEmissive;
-
-        //    sDisplayOptions.bDisplayMembers = vm.DisplayMembers;
-        //    sDisplayOptions.bDisplayJoints = vm.DisplayJoints;
-        //    sDisplayOptions.bDisplayPlates = vm.DisplayPlates;
-        //    sDisplayOptions.bDisplayConnectors = vm.DisplayConnectors;
-        //    sDisplayOptions.bDisplayNodes = vm.DisplayNodes;
-
-        //    sDisplayOptions.bDisplayFoundations = vm.DisplayFoundations;
-        //    sDisplayOptions.bDisplayFloorSlab = vm.DisplayFloorSlab;
-        //    sDisplayOptions.bDisplayNodalSupports = vm.DisplayNodalSupports;
-
-        //    sDisplayOptions.bDisplayMemberDescription = vm.ShowMemberDescription;
-        //    sDisplayOptions.bDisplayMemberID = vm.ShowMemberID;
-        //    sDisplayOptions.bDisplayMemberPrefix = vm.ShowMemberPrefix;
-        //    sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
-        //    sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
-        //    sDisplayOptions.bDisplayNodesDescription = vm.ShowNodesDescription;
-
-        //    sDisplayOptions.bDisplayMembersCenterLines = vm.DisplayMembersCenterLines;
-        //    sDisplayOptions.bDisplaySolidModel = vm.DisplaySolidModel;
-        //    sDisplayOptions.bDisplayWireFrameModel = vm.DisplayWireFrameModel;
-
-        //    sDisplayOptions.bDistinguishedColor = vm.DisplayDistinguishedColorMember;
-        //    sDisplayOptions.bTransparentMemberModel = vm.DisplayTransparentModelMember;
-
-        //    sDisplayOptions.bDisplayGlobalAxis = vm.ShowGlobalAxis;
-        //    sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
-        //    sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
-
-        //    sDisplayOptions.bDisplayLoads = vm.ShowLoads;
-        //    sDisplayOptions.bDisplayNodalLoads = vm.ShowNodalLoads;
-        //    sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
-        //    sDisplayOptions.bDisplayMemberLoads_Girts = vm.ShowLoadsOnGirts;
-        //    sDisplayOptions.bDisplayMemberLoads_Purlins = vm.ShowLoadsOnPurlins;
-        //    sDisplayOptions.bDisplayMemberLoads_Columns = vm.ShowLoadsOnColumns;
-        //    sDisplayOptions.bDisplayMemberLoads_Frames = vm.ShowLoadsOnFrameMembers;
-        //    sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
-
-        //    sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
-        //    sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
-
-        //    sDisplayOptions.DisplayIn3DRatio = vm.DisplayIn3DRatio;
-        //    sDisplayOptions.bColorsAccordingToMembers = vm.ColorsAccordingToMembers;
-        //    sDisplayOptions.bColorsAccordingToSections = vm.ColorsAccordingToSections;
-        //}
-
+        
         private void UpdateAll(bool programStart = false)
         {
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
@@ -1906,6 +1848,12 @@ namespace PFD
         private void FrameDoorWindowPreview3D_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayOptionsWindow w = new DisplayOptionsWindow(vm);
+            w.ShowDialog();
         }
     }
 }

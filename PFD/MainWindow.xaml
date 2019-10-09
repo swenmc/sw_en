@@ -251,6 +251,9 @@
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project details" Width="20" Height="20" Click="btnProjectInfo_Click">
+                            <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>                            
+                        </Button>
+                        <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Display Options" Margin="30 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
                             <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                         </Button>
 
