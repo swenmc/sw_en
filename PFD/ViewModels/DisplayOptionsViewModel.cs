@@ -1034,6 +1034,25 @@ namespace PFD
             }
         }
 
+        public List<CComboColor> ColorList
+        {
+            get
+            {
+                return CComboBoxHelper.ColorList;
+            }
+        }
+        public List<ComboItem> LinePatternTypes
+        {
+            get
+            {
+                return new List<ComboItem>() { new ComboItem((int)ELinePatternType.CONTINUOUS, "Continuous"),
+                    new ComboItem((int)ELinePatternType.DASHED, "Dashed"),
+                    new ComboItem((int)ELinePatternType.DOTTED, "Dotted"),
+                    new ComboItem((int)ELinePatternType.DASHDOTTED, "Dashdotted"),
+                    new ComboItem((int)ELinePatternType.DIVIDE, "divide")
+                };
+            }
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -1044,11 +1063,12 @@ namespace PFD
             IsSetFromCode = true;
             _pfdVM = pfdVM;
 
+            
             WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             WireFrameLineThickness = 2;
 
 
-        //    NodeDescriptionTextFontSize = 12;
+        //NodeDescriptionTextFontSize = 12;
         //MemberDescriptionTextFontSize = 12;
         //DimensionTextFontSize = 12; 
         //GridLineLabelTextFontSize = 30;

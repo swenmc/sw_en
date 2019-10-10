@@ -7,60 +7,51 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options"  Height="1250" Width="950">
+        Title="Display Options" Height="800">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Name="WindLoadParamsGrid" Margin="5,10,5,5">
+        <Grid Name="GridDisplayOptions" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>                
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>                
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -71,26 +62,336 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             
-            
-
             <TextBlock Grid.Row="1" Grid.Column="0" Text="WireFrameLineThickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="1" Grid.Column="1" Name ="WireFrameLineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/> -->
+                         Text="{Binding Path=WireFrameLineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <!--<TextBlock Grid.Row="2" Grid.Column="0" Text="Annual Probability ULS Wind:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS_Wind" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AnnualProbabilityULS_Wind, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Node Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_NodeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=NodeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability SLS:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>-->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Node Description Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" Name ="Combobox_NodeDescriptionTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=NodeDescriptionTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Member Description Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_MemberDescriptionTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=MemberDescriptionTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Dimension TextColor:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="5" Grid.Column="1" Name ="Combobox_DimensionTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DimensionTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Dimension Line Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="6" Grid.Column="1" Name ="Combobox_DimensionLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DimensionLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="GridLine Label Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_GridLineLabelTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=GridLineLabelTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Grid Line Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_GridLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=GridLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Grid Line Pattern Type:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_GridLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=GridLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="Section Symbol Label Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="10" Grid.Column="1" Name ="Combobox_SectionSymbolLabelTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=SectionSymbolLabelTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="11" Grid.Column="0" Text="Section Symbol Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_SectionSymbolColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=SectionSymbolColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="12" Grid.Column="0" Text="Detail Symbol Label Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_DetailSymbolLabelTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DetailSymbolLabelTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="13" Grid.Column="0" Text="Detail Symbol Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_DetailSymbolColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=DetailSymbolColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="14" Grid.Column="0" Text="Saw Cut Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_SawCutTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=SawCutTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Saw Cut Line Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_SawCutLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=SawCutLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="16" Grid.Column="0" Text="Saw Cut Line Pattern Type:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SawCutLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SawCutLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="17" Grid.Column="0" Text="Control Joint Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_ControlJointTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=ControlJointTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="Control Joint Line Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_ControlJointLineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=ControlJointLineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="Control Joint Line Pattern Type:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_ControlJointLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ControlJointLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
 
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Foundation Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_FoundationTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=FoundationTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             
+            <TextBlock Grid.Row="21" Grid.Column="0" Text="Floor Slab Text Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_FloorSlabTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=FloorSlabTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="22" Grid.Column="0" Text="FoundationColor Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_FoundationColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=FoundationColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <TextBlock Grid.Row="23" Grid.Column="0" Text="Floor Slab Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_FloorSlabColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=FloorSlabColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Member Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="0" Grid.Column="3" Name ="MemberSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=MemberSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="PlateSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="1" Grid.Column="3" Name ="PlateSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=PlateSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="ScrewSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="2" Grid.Column="3" Name ="ScrewSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ScrewSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="AnchorSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="3" Grid.Column="3" Name ="AnchorSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=AnchorSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="2" Text="FoundationSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="4" Grid.Column="3" Name ="FoundationSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=FoundationSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="2" Text="ReinforcementBarSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="5" Grid.Column="3" Name ="ReinforcementBarSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ReinforcementBarSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="2" Text="FloorSlabSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="6" Grid.Column="3" Name ="FloorSlabSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=FloorSlabSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <StackPanel Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
+                <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
+                <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+            </StackPanel>
+
+
         </Grid>
     </ScrollViewer>
 </Window>

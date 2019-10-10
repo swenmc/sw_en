@@ -16,9 +16,6 @@ using MATH;
 
 namespace PFD
 {
-    /// <summary>
-    /// Interaction logic for WindPressureCalculator.xaml
-    /// </summary>
     public partial class DisplayOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
@@ -44,8 +41,19 @@ namespace PFD
             }
         }
 
-        
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
 
-       
+        }
+
+        private void BtnLoad_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnOK_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
