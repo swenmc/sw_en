@@ -2407,13 +2407,14 @@ namespace PFD
         private CProjectInfoVM _projectInfoVM;
         private CJointsVM _jointsVM;
         private CFootingInputVM _footingVM;
+        private DisplayOptionsViewModel _displayOptionsVM;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
-            CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
+            CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM, DisplayOptionsViewModel displayOptionsVM)
         {
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -2428,6 +2429,7 @@ namespace PFD
             _loadInput.PropertyChanged += _loadInput_PropertyChanged;
             
             _projectInfoVM = projectInfoVM;
+            _displayOptionsVM = displayOptionsVM;
 
             LightDirectional = false;
             LightPoint = false;
@@ -3089,8 +3091,9 @@ namespace PFD
             sDisplayOptions.bColorsAccordingToMembers = ColorsAccordingToMembers;
             sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
 
-            sDisplayOptions.wireFrameColor = WireframeColor;
-            sDisplayOptions.fWireFrameLineThickness = 2; // TODO dopracovat nastavitelne v GUI
+            //sDisplayOptions.wireFrameColor = WireframeColor;
+            sDisplayOptions.wireFrameColor = _displayOptionsVM.WireframeColor;
+            sDisplayOptions.fWireFrameLineThickness = _displayOptionsVM.WireFrameLineThickness; 
 
             sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
@@ -3105,35 +3108,35 @@ namespace PFD
             sDisplayOptions.fFoundationTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fFloorSlabTextFontSize = 12;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
 
-            sDisplayOptions.NodeColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report (neviem ci to budeme v reporte zobrazovat)
-            sDisplayOptions.NodeDescriptionTextColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.MemberDescriptionTextColor = Colors.Beige; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.DimensionTextColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.DimensionLineColor = Colors.LightGreen; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.NodeColor = _displayOptionsVM.NodeColor;
+            sDisplayOptions.NodeDescriptionTextColor = _displayOptionsVM.NodeDescriptionTextColor;
+            sDisplayOptions.MemberDescriptionTextColor = _displayOptionsVM.MemberDescriptionTextColor;
+            sDisplayOptions.DimensionTextColor = _displayOptionsVM.DimensionTextColor;
+            sDisplayOptions.DimensionLineColor = _displayOptionsVM.DimensionLineColor;
 
-            sDisplayOptions.GridLineLabelTextColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.GridLineColor = Colors.Coral; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.GridLinePatternType = ELinePatternType.DASHDOTTED; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.GridLineLabelTextColor = _displayOptionsVM.GridLineLabelTextColor;
+            sDisplayOptions.GridLineColor = _displayOptionsVM.GridLineColor;
+            sDisplayOptions.GridLinePatternType = (ELinePatternType)_displayOptionsVM.GridLinePatternType;
 
-            sDisplayOptions.SectionSymbolLabelTextColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.SectionSymbolColor = Colors.Cyan; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.SectionSymbolLabelTextColor = _displayOptionsVM.SectionSymbolLabelTextColor;
+            sDisplayOptions.SectionSymbolColor = _displayOptionsVM.SectionSymbolColor;
 
-            sDisplayOptions.DetailSymbolLabelTextColor = Colors.LightPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.DetailSymbolColor = Colors.LightPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.DetailSymbolLabelTextColor = _displayOptionsVM.DetailSymbolLabelTextColor;
+            sDisplayOptions.DetailSymbolColor = _displayOptionsVM.DetailSymbolColor;
 
-            sDisplayOptions.SawCutTextColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.SawCutLineColor = Colors.Goldenrod; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.SawCutLinePatternType = ELinePatternType.DOTTED; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.SawCutTextColor = _displayOptionsVM.SawCutTextColor;
+            sDisplayOptions.SawCutLineColor = _displayOptionsVM.SawCutLineColor;
+            sDisplayOptions.SawCutLinePatternType = (ELinePatternType)_displayOptionsVM.SawCutLinePatternType;
 
-            sDisplayOptions.ControlJointTextColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.ControlJointLineColor = Colors.BlueViolet; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.ControlJointLinePatternType = ELinePatternType.DIVIDE; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.ControlJointTextColor = _displayOptionsVM.ControlJointTextColor;
+            sDisplayOptions.ControlJointLineColor = _displayOptionsVM.ControlJointLineColor;
+            sDisplayOptions.ControlJointLinePatternType = (ELinePatternType)_displayOptionsVM.ControlJointLinePatternType;
 
-            sDisplayOptions.FoundationTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.FloorSlabTextColor = Colors.HotPink; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.FoundationTextColor = _displayOptionsVM.FoundationTextColor;
+            sDisplayOptions.FloorSlabTextColor = _displayOptionsVM.FloorSlabTextColor;
 
-            sDisplayOptions.FoundationColor = Colors.DarkGray; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.FloorSlabColor = Colors.LightGray;  // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.FoundationColor = _displayOptionsVM.FoundationColor;
+            sDisplayOptions.FloorSlabColor = _displayOptionsVM.FloorSlabColor;
 
             if (FootingVM != null)
             {
@@ -3143,13 +3146,13 @@ namespace PFD
                 sDisplayOptions.ReinforcementBarColor_Bottom_y = FootingVM.LongReinBottom_y_Color;
             }
 
-            sDisplayOptions.fMemberSolidModelOpacity = 0.8f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fPlateSolidModelOpacity = 0.5f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fScrewSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fAnchorSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fFoundationSolidModelOpacity = 0.2f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fReinforcementBarSolidModelOpacity = 0.9f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
-            sDisplayOptions.fFloorSlabSolidModelOpacity = 0.2f; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
+            sDisplayOptions.fMemberSolidModelOpacity = _displayOptionsVM.MemberSolidModelOpacity;
+            sDisplayOptions.fPlateSolidModelOpacity = _displayOptionsVM.PlateSolidModelOpacity;
+            sDisplayOptions.fScrewSolidModelOpacity = _displayOptionsVM.ScrewSolidModelOpacity;
+            sDisplayOptions.fAnchorSolidModelOpacity = _displayOptionsVM.AnchorSolidModelOpacity;
+            sDisplayOptions.fFoundationSolidModelOpacity = _displayOptionsVM.FoundationSolidModelOpacity;
+            sDisplayOptions.fReinforcementBarSolidModelOpacity = _displayOptionsVM.ReinforcementBarSolidModelOpacity;
+            sDisplayOptions.fFloorSlabSolidModelOpacity = _displayOptionsVM.FloorSlabSolidModelOpacity;
 
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

@@ -90,7 +90,8 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
-        private CProjectInfoVM projectInfoVM;        
+        private CProjectInfoVM projectInfoVM;
+        private DisplayOptionsViewModel displayOptionsVM;
 
         public MainWindow()
         {
@@ -113,9 +114,10 @@ namespace PFD
             SetLoadInput();
 
             projectInfoVM = new CProjectInfoVM();
+            displayOptionsVM = new DisplayOptionsViewModel();
 
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;

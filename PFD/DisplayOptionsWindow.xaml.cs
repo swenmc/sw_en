@@ -19,14 +19,16 @@ namespace PFD
     public partial class DisplayOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-
+        private bool DisplayOptionsChanged = false;
         public DisplayOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            DisplayOptionsViewModel vm = new DisplayOptionsViewModel(pfdVM);
+            DisplayOptionsChanged = false;
+
+            DisplayOptionsViewModel vm = new DisplayOptionsViewModel();
             vm.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
             this.DataContext = vm;
         }
@@ -37,7 +39,7 @@ namespace PFD
             if (sender == null) return;
             if (sender is DisplayOptionsViewModel)
             {
-               
+                DisplayOptionsChanged = true;
             }
         }
 
@@ -48,11 +50,12 @@ namespace PFD
 
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
-
+            DisplayOptionsChanged = true;
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (DisplayOptionsChanged) _pfdVM.RecreateModel = true;
             this.Close();
         }
     }

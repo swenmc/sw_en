@@ -18,8 +18,7 @@ namespace PFD
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
-
-
+        
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private Color m_WireframeColor;
@@ -99,25 +98,7 @@ namespace PFD
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
-        
-
         //-------------------------------------------------------------------------------------------------------------
-        //public float CutWidth
-        //{
-        //    get
-        //    {
-        //        return m_CutWidth;
-        //    }
-        //    set
-        //    {
-        //        m_CutWidth = value;
-        //        NotifyPropertyChanged("CutWidth");
-        //    }
-        //}
-
-        //-------------------------------------------------------------------------------------------------------------
-        CPFDViewModel _pfdVM;
-
         
         public Color WireframeColor
         {
@@ -702,10 +683,8 @@ namespace PFD
             set
             {
                 m_WireframeColorIndex = value;
-
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_WireframeColorIndex].Color;
+                
+                WireframeColor = CComboBoxHelper.ColorList[m_WireframeColorIndex].Color;
 
                 NotifyPropertyChanged("WireframeColorIndex");
             }
@@ -720,9 +699,8 @@ namespace PFD
             set
             {
                 m_NodeColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_NodeColorIndex].Color;
+                
+                NodeColor = CComboBoxHelper.ColorList[m_NodeColorIndex].Color;
 
                 NotifyPropertyChanged("NodeColorIndex");
             }
@@ -738,9 +716,8 @@ namespace PFD
             set
             {
                 m_NodeDescriptionTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_NodeDescriptionTextColorIndex].Color;
+                
+                NodeDescriptionTextColor = CComboBoxHelper.ColorList[m_NodeDescriptionTextColorIndex].Color;
 
                 NotifyPropertyChanged("NodeDescriptionTextColorIndex");
             }
@@ -756,9 +733,8 @@ namespace PFD
             set
             {
                 m_MemberDescriptionTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_MemberDescriptionTextColorIndex].Color;
+                MemberDescriptionTextColor = CComboBoxHelper.ColorList[m_MemberDescriptionTextColorIndex].Color;
 
                 NotifyPropertyChanged("MemberDescriptionTextColorIndex");
             }
@@ -774,9 +750,8 @@ namespace PFD
             set
             {
                 m_DimensionTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_DimensionTextColorIndex].Color;
+                DimensionTextColor = CComboBoxHelper.ColorList[m_DimensionTextColorIndex].Color;
 
                 NotifyPropertyChanged("DimensionTextColorIndex");
             }
@@ -792,9 +767,8 @@ namespace PFD
             set
             {
                 m_DimensionLineColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_DimensionLineColorIndex].Color;
+                DimensionLineColor = CComboBoxHelper.ColorList[m_DimensionLineColorIndex].Color;
 
                 NotifyPropertyChanged("DimensionLineColorIndex");
             }
@@ -810,9 +784,8 @@ namespace PFD
             set
             {
                 m_GridLineLabelTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_GridLineLabelTextColorIndex].Color;
+                GridLineLabelTextColor = CComboBoxHelper.ColorList[m_GridLineLabelTextColorIndex].Color;
 
                 NotifyPropertyChanged("GridLineLabelTextColorIndex");
             }
@@ -828,14 +801,27 @@ namespace PFD
             set
             {
                 m_GridLineColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_GridLineColorIndex].Color;
+                
+                GridLineColor = CComboBoxHelper.ColorList[m_GridLineColorIndex].Color;
 
                 NotifyPropertyChanged("GridLineColorIndex");
             }
         }
+        public int SectionSymbolLabelTextColorIndex
+        {
+            get
+            {
+                return m_SectionSymbolLabelTextColorIndex;
+            }
 
+            set
+            {
+                m_SectionSymbolLabelTextColorIndex = value;
+                SectionSymbolLabelTextColor = CComboBoxHelper.ColorList[m_SectionSymbolLabelTextColorIndex].Color;
+
+                NotifyPropertyChanged("SectionSymbolLabelTextColorIndex");
+            }
+        }
         public int SectionSymbolColorIndex
         {
             get
@@ -846,9 +832,8 @@ namespace PFD
             set
             {
                 m_SectionSymbolColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_SectionSymbolColorIndex].Color;
+                
+                SectionSymbolColor = CComboBoxHelper.ColorList[m_SectionSymbolColorIndex].Color;
 
                 NotifyPropertyChanged("SectionSymbolColorIndex");
             }
@@ -864,9 +849,8 @@ namespace PFD
             set
             {
                 m_DetailSymbolLabelTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_DetailSymbolLabelTextColorIndex].Color;
+                
+                DetailSymbolLabelTextColor = CComboBoxHelper.ColorList[m_DetailSymbolLabelTextColorIndex].Color;
 
                 NotifyPropertyChanged("DetailSymbolLabelTextColorIndex");
             }
@@ -882,9 +866,8 @@ namespace PFD
             set
             {
                 m_DetailSymbolColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_DetailSymbolColorIndex].Color;
+                DetailSymbolColor = CComboBoxHelper.ColorList[m_DetailSymbolColorIndex].Color;
 
                 NotifyPropertyChanged("DetailSymbolColorIndex");
             }
@@ -900,9 +883,8 @@ namespace PFD
             set
             {
                 m_SawCutTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_SawCutTextColorIndex].Color;
+                
+                SawCutTextColor = CComboBoxHelper.ColorList[m_SawCutTextColorIndex].Color;
 
                 NotifyPropertyChanged("SawCutTextColorIndex");
             }
@@ -918,9 +900,8 @@ namespace PFD
             set
             {
                 m_SawCutLineColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_SawCutLineColorIndex].Color;
+                SawCutLineColor = CComboBoxHelper.ColorList[m_SawCutLineColorIndex].Color;
 
                 NotifyPropertyChanged("SawCutLineColorIndex");
             }
@@ -936,9 +917,8 @@ namespace PFD
             set
             {
                 m_ControlJointTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_ControlJointTextColorIndex].Color;
+                ControlJointTextColor = CComboBoxHelper.ColorList[m_ControlJointTextColorIndex].Color;
 
                 NotifyPropertyChanged("ControlJointTextColorIndex");
             }
@@ -954,9 +934,8 @@ namespace PFD
             set
             {
                 m_ControlJointLineColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_ControlJointLineColorIndex].Color;
+                ControlJointLineColor = CComboBoxHelper.ColorList[m_ControlJointLineColorIndex].Color;
 
                 NotifyPropertyChanged("ControlJointLineColorIndex");
             }
@@ -972,9 +951,8 @@ namespace PFD
             set
             {
                 m_FoundationTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_FoundationTextColorIndex].Color;
+                FoundationTextColor = CComboBoxHelper.ColorList[m_FoundationTextColorIndex].Color;
 
                 NotifyPropertyChanged("FoundationTextColorIndex");
             }
@@ -990,9 +968,8 @@ namespace PFD
             set
             {
                 m_FloorSlabTextColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_FloorSlabTextColorIndex].Color;
+                
+                FloorSlabTextColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color;
 
                 NotifyPropertyChanged("FloorSlabTextColorIndex");
             }
@@ -1008,9 +985,8 @@ namespace PFD
             set
             {
                 m_FoundationColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[m_FoundationColorIndex].Color;
+                FoundationColor = CComboBoxHelper.ColorList[m_FoundationColorIndex].Color;
 
                 NotifyPropertyChanged("FoundationColorIndex");
             }
@@ -1026,9 +1002,8 @@ namespace PFD
             set
             {
                 m_FloorSlabColorIndex = value;
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
-
-                WireframeColor = listOfMediaColours[m_FloorSlabColorIndex].Color;
+                
+                FloorSlabColor = CComboBoxHelper.ColorList[m_FloorSlabColorIndex].Color;
 
                 NotifyPropertyChanged("FloorSlabColorIndex");
             }
@@ -1054,72 +1029,71 @@ namespace PFD
             }
         }
 
+        
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public DisplayOptionsViewModel(CPFDViewModel pfdVM)
+        public DisplayOptionsViewModel()
         {
             IsSetFromCode = true;
-            _pfdVM = pfdVM;
-
             
             WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             WireFrameLineThickness = 2;
 
+            NodeDescriptionTextFontSize = 12;
+            MemberDescriptionTextFontSize = 12;
+            DimensionTextFontSize = 12;
+            GridLineLabelTextFontSize = 30;
+            SectionSymbolLabelTextFontSize = 30;
+            DetailSymbolLabelTextFontSize = 30;
 
-        //NodeDescriptionTextFontSize = 12;
-        //MemberDescriptionTextFontSize = 12;
-        //DimensionTextFontSize = 12; 
-        //GridLineLabelTextFontSize = 30;
-        //SectionSymbolLabelTextFontSize = 30;
-        //DetailSymbolLabelTextFontSize = 30;
+            SawCutTextFontSize = 12;
+            ControlJointTextFontSize = 12;
 
-        //SawCutTextFontSize = 12;
-        //ControlJointTextFontSize = 12;
+            FoundationTextFontSize = 12;
+            FloorSlabTextFontSize = 12;
 
-        //FoundationTextFontSize = 12;
-        //FloorSlabTextFontSize = 12; 
+            NodeColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+            NodeDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+            MemberDescriptionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Beige);
+            DimensionTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
+            DimensionLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGreen);
 
-        //NodeColor = Colors.Cyan;
-        //NodeDescriptionTextColor = Colors.Cyan;
-        //MemberDescriptionTextColor = Colors.Beige;
-        //DimensionTextColor = Colors.LightGreen;
-        //DimensionLineColor = Colors.LightGreen;
+            GridLineLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+            GridLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
+            GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
 
-        //GridLineLabelTextColor = Colors.Coral;
-        //GridLineColor = Colors.Coral;
-        //GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
+            SectionSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
+            SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
-        //SectionSymbolLabelTextColor = Colors.Cyan;
-        //SectionSymbolColor = Colors.Cyan;
+            DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+            DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
-        //DetailSymbolLabelTextColor = Colors.LightPink;
-        //DetailSymbolColor = Colors.LightPink;
+            SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
+            SawCutLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);
+            SawCutLinePatternType = (int)ELinePatternType.DOTTED;
 
-        //SawCutTextColor = Colors.Goldenrod;
-        //SawCutLineColor = Colors.Goldenrod;
-        //SawCutLinePatternType = (int)ELinePatternType.DOTTED;
+            ControlJointTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
+            ControlJointLineColorIndex = CComboBoxHelper.GetColorIndex(Colors.BlueViolet);
+            ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
 
-        //ControlJointTextColor = Colors.BlueViolet;
-        //ControlJointLineColor = Colors.BlueViolet;
-        //ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
+            FoundationTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
+            FloorSlabTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.HotPink);
 
-        //FoundationTextColor = Colors.HotPink;
-        //FloorSlabTextColor = Colors.HotPink;
+            FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
+            FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
 
-        //FoundationColor = Colors.DarkGray;
-        //FloorSlabColor = Colors.LightGray; 
+            MemberSolidModelOpacity = 0.8f;
+            PlateSolidModelOpacity = 0.5f;
+            ScrewSolidModelOpacity = 0.9f;
+            AnchorSolidModelOpacity = 0.9f;
+            FoundationSolidModelOpacity = 0.2f;
+            ReinforcementBarSolidModelOpacity = 0.9f;
+            FloorSlabSolidModelOpacity = 0.2f;
 
-        //MemberSolidModelOpacity = 0.8f;
-        //PlateSolidModelOpacity = 0.5f;
-        //ScrewSolidModelOpacity = 0.9f;
-        //AnchorSolidModelOpacity = 0.9f;
-        //FoundationSolidModelOpacity = 0.2f;
-        //ReinforcementBarSolidModelOpacity = 0.9f;
-        //FloorSlabSolidModelOpacity = 0.2f;
-
-        IsSetFromCode = false;
+            IsSetFromCode = false;
         }
 
         //-------------------------------------------------------------------------------------------------------------
