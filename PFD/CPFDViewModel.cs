@@ -56,8 +56,8 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
-        private int MWireframeColorIndex;
-        public Color WireframeColor;
+        //private int MWireframeColorIndex;
+        //public Color WireframeColor;
         private int MBackgroundColorIndex;
         public Color BackgroundColor;
         private int MViewIndex;
@@ -281,7 +281,7 @@ namespace PFD
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 22;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
-                WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+                //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
                 BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
                 ModelCalculatedResultsValid = false;
 
@@ -713,26 +713,27 @@ namespace PFD
             }
         }
 
+        //premiestnene do DisplayOptions Window
         //-------------------------------------------------------------------------------------------------------------
-        public int WireframeColorIndex
-        {
-            get
-            {
-                return MWireframeColorIndex;
-            }
+        //public int WireframeColorIndex
+        //{
+        //    get
+        //    {
+        //        return MWireframeColorIndex;
+        //    }
 
-            set
-            {
-                MWireframeColorIndex = value;
+        //    set
+        //    {
+        //        MWireframeColorIndex = value;
                 
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                WireframeColor = listOfMediaColours[MWireframeColorIndex].Color;
+        //        WireframeColor = listOfMediaColours[MWireframeColorIndex].Color;
 
-                RecreateModel = true;
-                NotifyPropertyChanged("WireframeColorIndex");
-            }
-        }
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("WireframeColorIndex");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int BackgroundColorIndex
@@ -2407,7 +2408,7 @@ namespace PFD
         private CProjectInfoVM _projectInfoVM;
         private CJointsVM _jointsVM;
         private CFootingInputVM _footingVM;
-        private DisplayOptionsViewModel _displayOptionsVM;
+        public DisplayOptionsViewModel _displayOptionsVM;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------

@@ -217,7 +217,7 @@
                         <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <!--<TextBlock Grid.Row="19" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
@@ -228,7 +228,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        </ComboBox>-->
 
                         <TextBlock Grid.Row="20" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"

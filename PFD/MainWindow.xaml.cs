@@ -1635,8 +1635,8 @@ namespace PFD
             Combobox_SupportType.Items.Add("Pinned");
             Combobox_SupportType.SelectedIndex = 1;
 
-            CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
-            Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
+            //CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
+            //Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
 
             CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
             Combobox_BackgroundColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.Black);

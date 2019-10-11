@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="800">
+        Title="Display Options" Height="800" Width="800">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -166,7 +166,7 @@
             </ComboBox>
             
             <TextBlock Grid.Row="9" Grid.Column="0" Text="Grid Line Pattern Type:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_GridLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+            <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_GridLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=GridLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
@@ -256,7 +256,7 @@
             </ComboBox>
             
             <TextBlock Grid.Row="16" Grid.Column="0" Text="Saw Cut Line Pattern Type:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SawCutLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+            <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SawCutLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SawCutLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
@@ -289,7 +289,7 @@
             </ComboBox>
             
             <TextBlock Grid.Row="19" Grid.Column="0" Text="Control Joint Line Pattern Type:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_ControlJointLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+            <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_ControlJointLinePatternType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=LinePatternTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=ControlJointLinePatternType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             

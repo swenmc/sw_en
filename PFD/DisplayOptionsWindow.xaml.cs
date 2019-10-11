@@ -27,10 +27,9 @@ namespace PFD
             _pfdVM = pfdVM;
 
             DisplayOptionsChanged = false;
-
-            DisplayOptionsViewModel vm = new DisplayOptionsViewModel();
-            vm.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            this.DataContext = vm;
+            
+            pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
+            this.DataContext = pfdVM._displayOptionsVM;
         }
 
         
@@ -55,7 +54,7 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (DisplayOptionsChanged) _pfdVM.RecreateModel = true;
+            if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
             this.Close();
         }
     }

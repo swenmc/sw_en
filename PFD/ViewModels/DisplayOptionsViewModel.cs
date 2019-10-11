@@ -1024,7 +1024,7 @@ namespace PFD
                     new ComboItem((int)ELinePatternType.DASHED, "Dashed"),
                     new ComboItem((int)ELinePatternType.DOTTED, "Dotted"),
                     new ComboItem((int)ELinePatternType.DASHDOTTED, "Dashdotted"),
-                    new ComboItem((int)ELinePatternType.DIVIDE, "divide")
+                    new ComboItem((int)ELinePatternType.DIVIDE, "Divide")
                 };
             }
         }
