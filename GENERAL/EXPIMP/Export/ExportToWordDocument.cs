@@ -977,6 +977,9 @@ namespace EXPIMP
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
 
+            sDisplayOptions.bDisplayNodes = false;
+            sDisplayOptions.bDisplayNodesDescription = false;
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
@@ -1073,13 +1076,16 @@ namespace EXPIMP
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
 
+            sDisplayOptions.bDisplayNodes = false;
+            sDisplayOptions.bDisplayNodesDescription = false;
+
             sDisplayOptions.bUseOrtographicCamera = false;
             sDisplayOptions.bDisplayGlobalAxis = false;
             sDisplayOptions.bDisplayMemberDescription = false;
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.fWireFrameLineThickness = 0.003f; // zavisi od zoomu !!!
+            sDisplayOptions.fWireFrameLineThickness = 0.003f; // TODO - zavisi od zoomu !!!
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
 
             sDisplayOptions.bDisplayMembersWireFrame = true;
