@@ -4337,9 +4337,13 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 0.3f / iNumberOfRowsInTexBlock;
 
             float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+            //float fTextBlockVerticalSizeFactor = 1f;
+            //float fTextBlockHorizontalSizeFactor = 1f;
 
+            // To Ondrej - Tu som upravil pomer a faktory, ak je text viacriadkovy. Nastavil si tam jednotky a bolo to roztiahnute, moze to byt teda nejako takto ????
+            int iNumberOfRowsInTexBlock = 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
+            float fTextBlockVerticalSizeFactor = 1.2f * iNumberOfRowsInTexBlock;
+            float fTextBlockHorizontalSizeFactor = 0.5f / iNumberOfRowsInTexBlock;
 
             tb.FontStretch = FontStretches.UltraCondensed;
             tb.FontStyle = FontStyles.Normal;
@@ -4351,7 +4355,6 @@ namespace BaseClasses
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
-            // Create text
             // Create text
             ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up); ;
             Transform3DGroup tr = new Transform3DGroup();

@@ -833,8 +833,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.1f || value > 2f)
-                    throw new ArgumentException("Footing pad size must be between 0.1 and 2 [m]");
+                if (value < 0.45f || value > 2f)
+                    throw new ArgumentException("AS 2870 - Footing pad size must be between 0.45 and 2 [m]"); // TODO napojit na tabulku normy
 
                 m_FootingPadSize_z_Or_h = value;
                 foreach (CFoundation pad in listOfSelectedTypePads)
@@ -1473,6 +1473,9 @@ namespace PFD
 
             set
             {
+                if (value < 450 || value > 1000)
+                    throw new ArgumentException("AS 2870 - Perimeter depth must be between 450 and 1000 [mm]"); // TODO napojit na tabulku normy
+
                 m_PerimeterDepth_LRSide = value;
                 NotifyPropertyChanged("PerimeterDepth_LRSide");
             }
@@ -1608,6 +1611,9 @@ namespace PFD
 
             set
             {
+                if (value < 450 || value > 1000)
+                    throw new ArgumentException("AS 2870 - Perimeter depth must be between 450 and 1000 [mm]"); // TODO napojit na tabulku normy
+
                 m_PerimeterDepth_FBSide = value;
                 NotifyPropertyChanged("PerimeterDepth_FBSide");
             }

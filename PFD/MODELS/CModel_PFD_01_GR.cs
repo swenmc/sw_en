@@ -2267,7 +2267,7 @@ namespace PFD
                 // UC - Footings
                 float fMainColumnFooting_aX = (float)Math.Round(MathF.Max(0.6f, Math.Min(fW_frame * 0.07f, fL1_frame * 0.35f)), 1);
                 float fMainColumnFooting_bY = (float)Math.Round(MathF.Max(0.7f, Math.Min(fW_frame * 0.08f, fL1_frame * 0.40f)), 1);
-                float fMainColumnFooting_h = 0.4f;
+                float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
                 CReinforcementBar MainColumnFootingReference_Top_Bar_x;
@@ -2627,7 +2627,7 @@ namespace PFD
                     fFirstControlJointPositionInDirectionX = fControlJointsSpacingInDirectionX / 2f;
                 }
 
-                float fPerimeterDepth_LRSide = 0.55f;
+                float fPerimeterDepth_LRSide = 0.45f; // "AS 2870 - Size must be between 0.45 and 2 [m]"; // TODO napojit na tabulku normy
                 float fPerimeterWidth_LRSide = 0.25f;
                 float fStartersLapLength_LRSide = 0.6f;
                 float fStartersSpacing_LRSide = 0.6f;
@@ -2635,7 +2635,7 @@ namespace PFD
                 float fLongitud_Reinf_TopAndBotom_Phi_LRSide = 0.016f;
                 float fLongitud_Reinf_Intermediate_Phi_LRSide = 0.012f;
                 int fLongitud_Reinf_Intermediate_Count_LRSide = 1;
-                float fPerimeterDepth_FBSide = 0.55f;
+                float fPerimeterDepth_FBSide = 0.45f; // "AS 2870 - Size must be between 0.45 and 2 [m]"; // TODO napojit na tabulku normy
                 float fPerimeterWidth_FBSide = 0.25f;
                 float fStartersLapLength_FBSide = 0.6f;
                 float fStartersSpacing_FBSide = 0.6f;

@@ -35,6 +35,7 @@ namespace EXPIMP
         private const int fontSizeTitle = 14;
         private const int fontSizeNormal = 12;
         private const int fontSizeLegend = 8; // Cross-section shape legend
+        private const int fontSizeNotes = 10; // Drawing - notes
         private const int fontSizeDetailTable = 8; // Details description tables text
         private static int sheetNo;
 
@@ -328,6 +329,9 @@ namespace EXPIMP
                     opts.bDisplayDetailSymbols = false;
 
                     bCreateHorizontalGridlines = true;
+
+                    // Notes - floor
+                    DrawNotes_Floor(gfx, data.Model, (int)page.Width.Point - 280, (int)page.Height.Point - 200);
                 }
 
                 CModel filteredModel = null;
@@ -1168,10 +1172,10 @@ namespace EXPIMP
             viewPort.Dispose();
             trackport.Dispose();
 
-            // Logo            
+            // Logo
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logo2"]);
             gfx.DrawImage(image, gfx.PageSize.Width - 240 - 50, 630, 240, 75);
-            image.Dispose();            
+            image.Dispose();
 
             gfx.DrawString("TO BE READ IN CONJUCTION WITH", fontBold, XBrushes.Black, 900, 730);
             gfx.DrawString("ARCHITECTURAL PLAN SET", fontBold, XBrushes.Black, 947, 750);
@@ -1300,6 +1304,29 @@ namespace EXPIMP
 
                 y += height;
             }
+        }
+
+        private static void DrawNotes_Floor(XGraphics gfx, CModel model, int x, int y)
+        {
+            int iVerticalOffset_y = 10;
+            int yPosition = y;
+            XFont font = new XFont(fontFamily, fontSizeNotes, XFontStyle.Regular, options);
+            string sNote_1 = "1) Minimum ultimate ground bearing capacity " + (300000f / 1000f).ToString("F0") + " kPa."; // TODO - dostat sem vstup z UC_Footing pad
+            string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads.";
+            string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab.";
+            string sNote_41 = "4) If top soil encountered on site that should be removed";
+            string sNote_42 = "   and replaced with compacted engineerded soil.";
+
+            gfx.DrawString(sNote_1, font, XBrushes.Black, x, yPosition);
+            yPosition += iVerticalOffset_y;
+            gfx.DrawString(sNote_2, font, XBrushes.Black, x, yPosition);
+            yPosition += iVerticalOffset_y;
+            gfx.DrawString(sNote_3, font, XBrushes.Black, x, yPosition);
+            yPosition += iVerticalOffset_y;
+            gfx.DrawString(sNote_41, font, XBrushes.Black, x, yPosition);
+            yPosition += iVerticalOffset_y;
+            gfx.DrawString(sNote_42, font, XBrushes.Black, x, yPosition);
+            //yPosition += iVerticalOffset_y;
         }
 
         private static List<string> GetCrscFromModel(CModel model)
