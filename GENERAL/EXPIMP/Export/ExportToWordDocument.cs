@@ -584,7 +584,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, false, false, false, false, false, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));

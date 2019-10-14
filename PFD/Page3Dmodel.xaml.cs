@@ -24,12 +24,49 @@ namespace PFD
         //EGCS eGCS = EGCS.eGCSRightHanded;
 
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
-        {            
+        {
             sDisplayOptions = sDisplayOptions_temp;
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
+            bool bCreateHorizontalGridlines = false; // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bool bCreateVerticalGridlinesFront = false;
+            bool bCreateVerticalGridlinesBack = false;
+            bool bCreateVerticalGridlinesLeft = false;
+            bool bCreateVerticalGridlinesRight = false;
+
+            if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
+            {
+                bCreateVerticalGridlinesBack = true;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
+            {
+                bCreateVerticalGridlinesLeft = true;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
+            {
+                bCreateVerticalGridlinesRight = true;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
+            {
+                bCreateHorizontalGridlines = true;
+            }
+            else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT) // Front
+            {
+                bCreateVerticalGridlinesFront = true;
+            }
+            else
+            {
+                bCreateHorizontalGridlines = true;
+            }
+
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions,
+                        bCreateHorizontalGridlines,
+                        bCreateVerticalGridlinesFront,
+                        bCreateVerticalGridlinesBack,
+                        bCreateVerticalGridlinesLeft,
+                        bCreateVerticalGridlinesRight,
+                        loadcase, jointsDict);
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
@@ -42,8 +79,7 @@ namespace PFD
             else if(modelType == EModelType.eFooting)
                 Drawing3D.DrawFootingToTrackPort(_trackport, model, sDisplayOptions);
             else
-                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
-
+                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, true, false, false, false, false, null, null);
         }
 
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)

@@ -26,16 +26,43 @@ namespace BaseClasses
 
 
         #region DrawToTrackPort methods
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
+            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bool bCreateVerticalGridlinesFront,
+            bool bCreateVerticalGridlinesBack,
+            bool bCreateVerticalGridlinesLeft,
+            bool bCreateVerticalGridlinesRight)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions, null, null);
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions,
+            bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bCreateVerticalGridlinesFront,
+            bCreateVerticalGridlinesBack,
+            bCreateVerticalGridlinesLeft,
+            bCreateVerticalGridlinesRight, null, null);
         }
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
+            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bool bCreateVerticalGridlinesFront,
+            bool bCreateVerticalGridlinesBack,
+            bool bCreateVerticalGridlinesLeft,
+            bool bCreateVerticalGridlinesRight, CLoadCase loadcase)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions, loadcase, null);
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions,
+            bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bCreateVerticalGridlinesFront,
+            bCreateVerticalGridlinesBack,
+            bCreateVerticalGridlinesLeft,
+            bCreateVerticalGridlinesRight, 
+            loadcase, null);
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
+            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+            bool bCreateVerticalGridlinesFront,
+            bool bCreateVerticalGridlinesBack,
+            bool bCreateVerticalGridlinesLeft,
+            bool bCreateVerticalGridlinesRight,
+            CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             CModel model = null;
             //DateTime start = DateTime.Now;
@@ -114,7 +141,13 @@ namespace BaseClasses
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
 
-                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr,
+                    bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+                    bCreateVerticalGridlinesFront,
+                    bCreateVerticalGridlinesBack,
+                    bCreateVerticalGridlinesLeft,
+                    bCreateVerticalGridlinesRight
+                    );
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
@@ -1396,16 +1429,20 @@ namespace BaseClasses
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 
-        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
+        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr,
+             bool bCreateHorizontalGridlines = true,
+             bool bCreateVerticalGridlinesFront = false,
+             bool bCreateVerticalGridlinesBack = false,
+             bool bCreateVerticalGridlinesLeft = false,
+             bool bCreateVerticalGridlinesRight = false
+            )
         {
             Model3DGroup gridlines3DGroup = null;
 
             float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
 
-            float fOffset = 0.5f;
-            float fOffsetBehind = 0.3f;
-            float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
-            float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
+            // Create gridlines
+            List<CGridLine> listOfGridlines = new List<CGridLine>();
 
             // Labels - Y-direction (edge and main frames)
             List<char> labelsY = new List<char>();
@@ -1414,31 +1451,126 @@ namespace BaseClasses
                 labelsY.Add(letter);
             }
 
-            // Left side
-            CMember[] membersLeftSide = null;
-            membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
-
-            List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
-            membersBaseNodes_LeftSide = new List<CNode>();
-
-            foreach (CMember m in membersLeftSide)
+            if (bCreateHorizontalGridlines)
             {
-                if (MathF.d_equal(m.NodeStart.Z, 0))
+                float fOffset = 0.5f;
+                float fOffsetBehind = 0.3f;
+                float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
+                float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
+
+                // Left side
+                CMember[] membersLeftSide = null;
+                membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
+
+                List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
+                membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
+
+                // Front side
+                CMember[] membersFrontSide = null;
+                membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
+
+                List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
+                membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
+
+                for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
                 {
-                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
-                        membersBaseNodes_LeftSide.Add(m.NodeStart);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), new Vector3D(0,0,-1), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
                 }
 
-                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
                 {
-                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
-                        membersBaseNodes_LeftSide.Add(m.NodeEnd);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), new Vector3D(0, 0, -1), (i + 1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
                 }
             }
 
-            if (membersBaseNodes_LeftSide != null)
-                membersBaseNodes_LeftSide = membersBaseNodes_LeftSide.OrderBy(n => n.Y).ToList();
+            if (bCreateVerticalGridlinesFront)
+            {
+                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetBottom = 0.3f;
+                float fLineLength = fOffsetTop + fOffsetBottom;
 
+                List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
+                membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
+
+                for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
+                {
+                    Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
+                }
+            }
+
+            if (bCreateVerticalGridlinesBack)
+            {
+                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetBottom = 0.3f;
+                float fLineLength = fOffsetTop + fOffsetBottom;
+
+                List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
+                membersBaseNodes_BackSide = GetMemberBaseNodesBackSide(model);
+
+                for (int i = 0; i < membersBaseNodes_BackSide.Count; i++)
+                {
+                    Point3D controlPoint = new Point3D(membersBaseNodes_BackSide[i].X, membersBaseNodes_BackSide[i].Y, membersBaseNodes_BackSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, -1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
+                }
+            }
+
+            if (bCreateVerticalGridlinesLeft)
+            {
+                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetBottom = 0.3f;
+                float fLineLength = fOffsetTop + fOffsetBottom;
+
+                List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
+                membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
+
+                for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
+                {
+                    Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
+                }
+            }
+
+            if (bCreateVerticalGridlinesRight)
+            {
+                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetBottom = 0.3f;
+                float fLineLength = fOffsetTop + fOffsetBottom;
+
+                List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
+                membersBaseNodes_RightSide = GetMemberBaseNodesRightSide(model);
+
+                for (int i = 0; i < membersBaseNodes_RightSide.Count; i++)
+                {
+                    Point3D controlPoint = new Point3D(membersBaseNodes_RightSide[i].X, membersBaseNodes_RightSide[i].Y, membersBaseNodes_RightSide[i].Z);
+                    CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(-1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
+                    listOfGridlines.Add(gl);
+                }
+            }
+
+            // Create gridlines models
+            if (sDisplayOptions.bDisplayGridlines) gridlines3DGroup = Drawing3D.CreateModelGridlines_Model3DGroup(listOfGridlines, model, sDisplayOptions);
+            if (gridlines3DGroup != null) gr.Children.Add(gridlines3DGroup);
+
+            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
+            if (gridlines3DGroup != null)
+            {
+                foreach (CGridLine gridLine in listOfGridlines)
+                {
+                    DrawGridLineLabelText3D(gridLine, _trackport.ViewPort, sDisplayOptions);
+                }
+            }
+        }
+
+        private static List<CNode> GetMemberBaseNodesFrontSide(CModel model)
+        {
             // Front side
             CMember[] membersFrontSide = null;
             membersFrontSide = ModelHelper.GetMembersInDistance(model, 0, 1); // smer Y
@@ -1464,35 +1596,97 @@ namespace BaseClasses
             if (membersBaseNodes_FrontSide != null)
                 membersBaseNodes_FrontSide = membersBaseNodes_FrontSide.OrderBy(n => n.X).ToList();
 
-            // Create gridlines
-            List<CGridLine> listOfGridlines = new List<CGridLine>();
+            return membersBaseNodes_FrontSide;
+        }
 
-            for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
+        private static List<CNode> GetMemberBaseNodesBackSide(CModel model)
+        {
+            // Back side
+            CMember[] membersBackSide = null;
+            membersBackSide = ModelHelper.GetMembersInDistance(model, model.fL_tot, 1); // smer Y
+
+            List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
+            membersBaseNodes_BackSide = new List<CNode>();
+
+            foreach (CMember m in membersBackSide)
             {
-                Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
-                CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffset, fLineLength_Y, sDisplayOptions.GridLinePatternType);
-                listOfGridlines.Add(gl);
-            }
-
-            for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
-            {
-                Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
-                CGridLine gl = new CGridLine(controlPoint, new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffset, fLineLength_X, sDisplayOptions.GridLinePatternType);
-                listOfGridlines.Add(gl);
-            }
-
-            // Create gridlines models
-            if (sDisplayOptions.bDisplayGridlines) gridlines3DGroup = Drawing3D.CreateModelGridlines_Model3DGroup(listOfGridlines, model, sDisplayOptions);
-            if (gridlines3DGroup != null) gr.Children.Add(gridlines3DGroup);
-
-            // Create Label Texts - !!! Pred tym nez generujem text musi byt vygenerovany 3D model
-            if (gridlines3DGroup != null)
-            {
-                foreach (CGridLine gridLine in listOfGridlines)
+                if (MathF.d_equal(m.NodeStart.Z, 0))
                 {
-                    DrawGridLineLabelText3D(gridLine, _trackport.ViewPort, sDisplayOptions);
+                    if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                        membersBaseNodes_BackSide.Add(m.NodeStart);
+                }
+
+                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eC || m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eWP)
+                        membersBaseNodes_BackSide.Add(m.NodeEnd);
                 }
             }
+
+            if (membersBaseNodes_BackSide != null)
+                membersBaseNodes_BackSide = membersBaseNodes_BackSide.OrderBy(n => n.X).ToList();
+
+            return membersBaseNodes_BackSide;
+        }
+
+        private static List<CNode> GetMemberBaseNodesLeftSide(CModel model)
+        {
+            // Left side
+            CMember[] membersLeftSide = null;
+            membersLeftSide = ModelHelper.GetMembersInDistance(model, 0, 0); // smer X
+
+            List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
+            membersBaseNodes_LeftSide = new List<CNode>();
+
+            foreach (CMember m in membersLeftSide)
+            {
+                if (MathF.d_equal(m.NodeStart.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_LeftSide.Add(m.NodeStart);
+                }
+
+                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_LeftSide.Add(m.NodeEnd);
+                }
+            }
+
+            if (membersBaseNodes_LeftSide != null)
+                membersBaseNodes_LeftSide = membersBaseNodes_LeftSide.OrderBy(n => n.Y).ToList();
+
+            return membersBaseNodes_LeftSide;
+        }
+
+        private static List<CNode> GetMemberBaseNodesRightSide(CModel model)
+        {
+            // Right side
+            CMember[] membersRightSide = null;
+            membersRightSide = ModelHelper.GetMembersInDistance(model, model.fW_frame, 0); // smer X
+
+            List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
+            membersBaseNodes_RightSide = new List<CNode>();
+
+            foreach (CMember m in membersRightSide)
+            {
+                if (MathF.d_equal(m.NodeStart.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_RightSide.Add(m.NodeStart);
+                }
+
+                if (MathF.d_equal(m.NodeEnd.Z, 0))
+                {
+                    if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eEC)
+                        membersBaseNodes_RightSide.Add(m.NodeEnd);
+                }
+            }
+
+            if (membersBaseNodes_RightSide != null)
+                membersBaseNodes_RightSide = membersBaseNodes_RightSide.OrderBy(n => n.Y).ToList();
+
+            return membersBaseNodes_RightSide;
         }
 
         private static void DrawSectionSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
@@ -3800,12 +3994,39 @@ namespace BaseClasses
             tb.Foreground = new SolidColorBrush(displayOptions.GridLineLabelTextColor);
             tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
-            // PODOBNE AKO U ZAKLADOV - FOUNDATION DESCRIPTION
+            //if (gridline.Direction.Z == 0) // Horizontal gridlines
+            //{
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
-            // Vektor vzdy v horizontalnej rovine XY - zatial
+            // Vektor v horizontalnej rovine XY
             // Vektor by sme mali nastavovat podla pohladu
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
+            //}
+
+            // TODO - asi by bolo lepsie nastavovat vektory textu priamo podla parametrov pre View
+            if (gridline.Direction.Z != 0) // Vertical gridlines
+            {
+               if(gridline.ViewDirection.Y == 1) // Front View
+                {
+                    over = new Vector3D(fTextBlockHorizontalSizeFactor,0 , 0);
+                    up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+                }
+                else if (gridline.ViewDirection.Y == -1) // Back View
+                {
+                    over = new Vector3D(-fTextBlockHorizontalSizeFactor, 0, 0);
+                    up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+                }
+                else if (gridline.ViewDirection.X == 1) // Left View
+                {
+                    over = new Vector3D(0, -fTextBlockHorizontalSizeFactor, 0);
+                    up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+                }
+                else if (gridline.ViewDirection.X == -1) // Right View
+                {
+                    over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+                    up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+                }
+            }
 
             // Create text
             Transform3DGroup tr = new Transform3DGroup();

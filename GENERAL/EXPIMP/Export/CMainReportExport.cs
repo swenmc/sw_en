@@ -108,7 +108,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, true, false, false, false, false, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -190,35 +190,60 @@ namespace EXPIMP
                 FLOOR = 9
                 */
 
+                bool bCreateHorizontalGridlines = true; // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+                bool bCreateVerticalGridlinesFront = false;
+                bool bCreateVerticalGridlinesBack = false;
+                bool bCreateVerticalGridlinesLeft = false;
+                bool bCreateVerticalGridlinesRight = false;
+
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
                     // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
+                    opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
-                    opts.bDisplayDetailSymbols = true; // Pokus -zobrazenie znaciek detailov
+                    opts.bDisplayDetailSymbols = true;
+
+                    bCreateHorizontalGridlines = false;
+                    bCreateVerticalGridlinesFront = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.BACK)
                 {
+                    opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+
+                    bCreateHorizontalGridlines = false;
+                    bCreateVerticalGridlinesBack = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.LEFT)
                 {
+                    opts.bDisplayGridlines = true;// Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+
+                    bCreateHorizontalGridlines = false;
+                    bCreateVerticalGridlinesLeft = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.RIGHT)
                 {
+                    opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+
+                    bCreateHorizontalGridlines = false;
+                    bCreateVerticalGridlinesRight = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.ROOF)
                 {
+                    opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+
+                    bCreateHorizontalGridlines = true;
                 }
 
                 // Toto je len pokus ako to vyzera :)
@@ -230,8 +255,11 @@ namespace EXPIMP
 
                     //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
+                    opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
+
+                    bCreateVerticalGridlinesFront = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.COLUMNS)
@@ -246,9 +274,11 @@ namespace EXPIMP
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
                     opts.bDisplayFloorSlabDescription = false;
-                    opts.bDisplayGridlines = true;
+                    opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = true;
                     opts.bDisplayDetailSymbols = false;
+
+                    bCreateHorizontalGridlines = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FOUNDATIONS)
@@ -266,9 +296,11 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabDescription = false;
                     opts.bDisplayFoundationsDescription = true;
                     opts.bDisplayMemberDescription = false;
-                    opts.bDisplayGridlines = true;
+                    opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = true;
                     opts.bDisplayDetailSymbols = false;
+
+                    bCreateHorizontalGridlines = true;
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -291,14 +323,23 @@ namespace EXPIMP
                     opts.bDisplaySawCutsDescription = true;
                     opts.bDisplayControlJoints = true;
                     opts.bDisplayControlJointsDescription = true;
-                    opts.bDisplayGridlines = true;
+                    opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = true;
                     opts.bDisplayDetailSymbols = false;
+
+                    bCreateHorizontalGridlines = true;
                 }
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts,
+                    bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
+                    bCreateVerticalGridlinesFront,
+                    bCreateVerticalGridlinesBack,
+                    bCreateVerticalGridlinesLeft,
+                    bCreateVerticalGridlinesRight,
+                    data,
+                    out filteredModel, out trackport);
                 viewPort.UpdateLayout();
                 DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
                 filteredModel = null;
@@ -1113,7 +1154,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, true, false , false, false, false, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
