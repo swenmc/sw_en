@@ -1492,13 +1492,14 @@ namespace BaseClasses
                 float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
+                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
 
                 for (int i = 0; i < membersBaseNodes_FrontSide.Count; i++)
                 {
-                    Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y, membersBaseNodes_FrontSide[i].Z);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_FrontSide[i].X, membersBaseNodes_FrontSide[i].Y - fOffsetInViewDirection, membersBaseNodes_FrontSide[i].Z);
                     CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, 1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
                     listOfGridlines.Add(gl);
                 }
@@ -1509,13 +1510,14 @@ namespace BaseClasses
                 float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
+                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
                 List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
                 membersBaseNodes_BackSide = GetMemberBaseNodesBackSide(model);
 
                 for (int i = 0; i < membersBaseNodes_BackSide.Count; i++)
                 {
-                    Point3D controlPoint = new Point3D(membersBaseNodes_BackSide[i].X, membersBaseNodes_BackSide[i].Y, membersBaseNodes_BackSide[i].Z);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_BackSide[i].X, membersBaseNodes_BackSide[i].Y + fOffsetInViewDirection, membersBaseNodes_BackSide[i].Z);
                     CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(0, -1, 0), (i + 1).ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
                     listOfGridlines.Add(gl);
                 }
@@ -1526,13 +1528,14 @@ namespace BaseClasses
                 float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
+                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
 
                 for (int i = 0; i < membersBaseNodes_LeftSide.Count; i++)
                 {
-                    Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_LeftSide[i].X - fOffsetInViewDirection, membersBaseNodes_LeftSide[i].Y, membersBaseNodes_LeftSide[i].Z);
                     CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
                     listOfGridlines.Add(gl);
                 }
@@ -1543,13 +1546,14 @@ namespace BaseClasses
                 float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
+                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
                 List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
                 membersBaseNodes_RightSide = GetMemberBaseNodesRightSide(model);
 
                 for (int i = 0; i < membersBaseNodes_RightSide.Count; i++)
                 {
-                    Point3D controlPoint = new Point3D(membersBaseNodes_RightSide[i].X, membersBaseNodes_RightSide[i].Y, membersBaseNodes_RightSide[i].Z);
+                    Point3D controlPoint = new Point3D(membersBaseNodes_RightSide[i].X + fOffsetInViewDirection, membersBaseNodes_RightSide[i].Y, membersBaseNodes_RightSide[i].Z);
                     CGridLine gl = new CGridLine(controlPoint, new Vector3D(0, 0, -1), new Vector3D(-1, 0, 0), labelsY[i].ToString(), fMarkCircleDiameter, fOffsetTop, fLineLength, sDisplayOptions.GridLinePatternType);
                     listOfGridlines.Add(gl);
                 }
@@ -4006,7 +4010,7 @@ namespace BaseClasses
             // TODO - asi by bolo lepsie nastavovat vektory textu priamo podla parametrov pre View
             if (gridline.Direction.Z != 0) // Vertical gridlines
             {
-               if(gridline.ViewDirection.Y == 1) // Front View
+                if(gridline.ViewDirection.Y == 1) // Front View
                 {
                     over = new Vector3D(fTextBlockHorizontalSizeFactor,0 , 0);
                     up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
