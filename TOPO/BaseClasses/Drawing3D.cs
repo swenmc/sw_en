@@ -4341,7 +4341,7 @@ namespace BaseClasses
             //float fTextBlockHorizontalSizeFactor = 1f;
 
             // To Ondrej - Tu som upravil pomer a faktory, ak je text viacriadkovy. Nastavil si tam jednotky a bolo to roztiahnute, moze to byt teda nejako takto ????
-            int iNumberOfRowsInTexBlock = 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
+            int iNumberOfRowsInTexBlock = 4; // 6; // TODO Ondrej - tu sa snazim nastavit pomer velkosti podla poctu riadkov textu - da sa to vymysliet nejako tak ze sa toto udeje automaticky :)))
             float fTextBlockVerticalSizeFactor = 1.2f * iNumberOfRowsInTexBlock;
             float fTextBlockHorizontalSizeFactor = 0.5f / iNumberOfRowsInTexBlock;
 

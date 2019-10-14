@@ -1315,7 +1315,7 @@ namespace EXPIMP
             string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads.";
             string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab.";
             string sNote_41 = "4) If top soil encountered on site that should be removed";
-            string sNote_42 = "   and replaced with compacted engineerded soil.";
+            string sNote_42 = "   and replaced with compacted engineered soil.";
 
             gfx.DrawString(sNote_1, font, XBrushes.Black, x, yPosition);
             yPosition += iVerticalOffset_y;

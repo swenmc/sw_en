@@ -1089,12 +1089,23 @@ namespace BaseClasses
 
         public void SetDescriptionText()
         {
+            /*
             m_Text = m_sMeshGradeName + " MESH" + "\n" +
                         (m_fConcreteCover * 1000).ToString("F0") + " mm TOP COVER" + "\n" +
                         (m_fDim3 * 1000).ToString("F0") + " mm THICK" + "\n" +
                         "CONCRETE SLAB" + "\n" +
                         "DPC OVER SANDBLINDING" + "\n" +
                         "& COMPACTED HARDFILL";
+            */
+
+            m_Text = (m_fDim3 * 1000).ToString("F0") + " mm THICK CONCRETE SLAB" + "\n" +
+                     "WITH " + m_sMeshGradeName + " MESH on DPM" + "\n" +
+                     "ON 25 mm THICK SAND" + "\n" +
+                     "ON 150 mm THICK COMPACTED GAP 40 mm";
+
+            // Vysvetlivka - GAP (general all passing)
+            // DPM - damp-proof membrane
+            // DPC - damp proof course
         }
 
         public void SetControlPoint()
