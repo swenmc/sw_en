@@ -1813,19 +1813,14 @@ namespace PFD
 
             // ---------------------------------------------------------------------------------------------------
             // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
-            // Alebo sa tu nastavia a podla toho sa vyrobi model
+            // Alebo sa tu nastavia a podla toho sa vyrobi model ???
 
             UpdateFloorSlab();
-
-
-
 
             //CFoundation pad = GetSelectedFootingPad();
             //FootingPadSize_x_Or_a = pad.m_fDim1;
             //FootingPadSize_y_Or_b = pad.m_fDim2;
             //FootingPadSize_z_Or_h = pad.m_fDim3;
-
-
 
             // TO ONDREJ S tymito excentricitami je trosku problem
             // Pre rovnaky typ patiek sa im pri vyslednom zobrazeni meni sa im znamienko podla toho ako je otocena patka
@@ -1835,9 +1830,6 @@ namespace PFD
             //Eccentricity_ey = pad.Eccentricity_y;
             Eccentricity_ex = 0; // m
             Eccentricity_ey = 0; // m
-
-            
-            
 
             IsSetFromCode = false;
         }
@@ -1996,8 +1988,6 @@ namespace PFD
             return list;
         }
 
-        
-
         private void UpdateModelFootingPads()
         {
             foreach (CFoundation pad in listOfSelectedTypePads)
@@ -2088,8 +2078,10 @@ namespace PFD
 
             //TODO- Mato skontrolovat a nastavit
             //Concrete Grade
+            ConcreteGrade = pad.m_Mat.Name;
             //Max. Aggregate Size
             //ConcreteDensity
+            ConcreteDensity = pad.m_Mat.m_fRho;
             //Reinforcement Grade
             //SoilReductionFactor_Phi = pad.SoilReductionFactor_Phi;
             //SoilReductionFactorEQ_Phi = pad.SoilReductionFactorEQ_Phi;
@@ -2157,7 +2149,6 @@ namespace PFD
             LongReinBottom_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.YellowGreen);
             LongReinBottom_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Purple);
         }
-
 
         //tato metoda ma sluzit na nastavenie vlastnosti oznaceneho Footing pad podla hodnot z GUI
         //volat by sa mala po zmene v GUI
