@@ -1489,7 +1489,7 @@ namespace BaseClasses
 
             if (bCreateVerticalGridlinesFront)
             {
-                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
                 float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
@@ -1507,7 +1507,7 @@ namespace BaseClasses
 
             if (bCreateVerticalGridlinesBack)
             {
-                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
                 float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
@@ -1525,7 +1525,7 @@ namespace BaseClasses
 
             if (bCreateVerticalGridlinesLeft)
             {
-                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
                 float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
@@ -1543,7 +1543,7 @@ namespace BaseClasses
 
             if (bCreateVerticalGridlinesRight)
             {
-                float fOffsetTop = 0.5f + model.fH1_frame; // TODO - spravne by malo byt fH2 (ridge height)
+                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
                 float fLineLength = fOffsetTop + fOffsetBottom;
                 float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
@@ -5563,6 +5563,7 @@ namespace BaseClasses
             _model.fL_tot = model.fL_tot;
             _model.fW_frame = model.fW_frame;
             _model.fH1_frame = model.fH1_frame;
+            _model.fH2_frame = model.fH2_frame;
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {

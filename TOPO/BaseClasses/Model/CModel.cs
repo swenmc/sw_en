@@ -21,6 +21,7 @@ namespace BaseClasses
         public float fL1_frame;
         public float fW_frame;
         public float fH1_frame;
+        public float fH2_frame;
 
         // General project data
 

@@ -304,7 +304,7 @@ namespace EXPIMP
                     bCreateHorizontalGridlines = true;
 
                     // Table - footing pads list
-                    DrawFootingPadList(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 300);
+                    DrawFootingPadList(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -334,7 +334,7 @@ namespace EXPIMP
                     bCreateHorizontalGridlines = true;
 
                     // Notes - floor
-                    DrawNotes_Floor(gfx, data.Model, (int)page.Width.Point - 280, (int)page.Height.Point - 200);
+                    DrawNotes_Floor(gfx, data.Model, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
 
                 CModel filteredModel = null;
@@ -1325,12 +1325,19 @@ namespace EXPIMP
         {
             int iVerticalOffset_y = 10;
             int yPosition = y;
+            XFont fontTitle = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
             XFont font = new XFont(fontFamily, fontSizeNotes, XFontStyle.Regular, options);
+
+            string sNoteTitle = "Notes";
+
             string sNote_1 = "1) Minimum ultimate ground bearing capacity " + (300000f / 1000f).ToString("F0") + " kPa."; // TODO - dostat sem vstup z UC_Footing pad
             string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads.";
             string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab.";
             string sNote_41 = "4) If top soil encountered on site that should be removed";
             string sNote_42 = "   and replaced with compacted engineered soil.";
+
+            gfx.DrawString(sNoteTitle, fontTitle, XBrushes.Black, x, yPosition);
+            yPosition += 20;
 
             gfx.DrawString(sNote_1, font, XBrushes.Black, x, yPosition);
             yPosition += iVerticalOffset_y;

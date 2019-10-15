@@ -16,8 +16,6 @@ namespace PFD
 {
     public class CModel_PFD_01_GR : CModel_PFD
     {
-        float fH2_frame;
-
         public float fRoofPitch_rad;
         public int iFrameNo;
         
@@ -2248,7 +2246,7 @@ namespace PFD
             {
                 // Docasne
                 CMat_02_00 materialConcrete = new CMat_02_00();
-                materialConcrete.Name = "30";
+                materialConcrete.Name = "25";
                 materialConcrete.Fck = 25e+6f;
                 materialConcrete.m_fRho = 2300f;
                 materialConcrete.m_fE = 30e+9f;
@@ -2556,6 +2554,7 @@ namespace PFD
             {
                 // Docasne
                 CMat_02_00 materialConcrete = new CMat_02_00();
+                materialConcrete.Name = "25";
                 materialConcrete.Fck = 25e+6f;
                 materialConcrete.m_fRho = 2300f;
                 materialConcrete.m_fE = 30e+9f;
