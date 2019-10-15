@@ -61,7 +61,9 @@ namespace PFD
         private int m_SectionSymbolColorIndex;
 
         private Color m_DetailSymbolLabelTextColor = Colors.LightPink;
+        private Color? m_DetailSymbolLabelBackColor = Colors.White;
         private int m_DetailSymbolLabelTextColorIndex;
+        private int m_DetailSymbolLabelBackColorIndex;
         private Color m_DetailSymbolColor = Colors.LightPink;
         private int m_DetailSymbolColorIndex;
 
@@ -420,6 +422,19 @@ namespace PFD
                 NotifyPropertyChanged("DetailSymbolLabelTextColor");
             }
         }
+        public Color? DetailSymbolLabelBackColor
+        {
+            get
+            {
+                return m_DetailSymbolLabelBackColor;
+            }
+
+            set
+            {
+                m_DetailSymbolLabelBackColor = value;
+                NotifyPropertyChanged("DetailSymbolLabelBackColor");
+            }
+        }
 
         public Color DetailSymbolColor
         {
@@ -684,7 +699,7 @@ namespace PFD
             {
                 m_WireframeColorIndex = value;
                 
-                WireframeColor = CComboBoxHelper.ColorList[m_WireframeColorIndex].Color;
+                WireframeColor = CComboBoxHelper.ColorList[m_WireframeColorIndex].Color.Value;
 
                 NotifyPropertyChanged("WireframeColorIndex");
             }
@@ -700,7 +715,7 @@ namespace PFD
             {
                 m_NodeColorIndex = value;
                 
-                NodeColor = CComboBoxHelper.ColorList[m_NodeColorIndex].Color;
+                NodeColor = CComboBoxHelper.ColorList[m_NodeColorIndex].Color.Value;
 
                 NotifyPropertyChanged("NodeColorIndex");
             }
@@ -717,7 +732,7 @@ namespace PFD
             {
                 m_NodeDescriptionTextColorIndex = value;
                 
-                NodeDescriptionTextColor = CComboBoxHelper.ColorList[m_NodeDescriptionTextColorIndex].Color;
+                NodeDescriptionTextColor = CComboBoxHelper.ColorList[m_NodeDescriptionTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("NodeDescriptionTextColorIndex");
             }
@@ -734,7 +749,7 @@ namespace PFD
             {
                 m_MemberDescriptionTextColorIndex = value;
 
-                MemberDescriptionTextColor = CComboBoxHelper.ColorList[m_MemberDescriptionTextColorIndex].Color;
+                MemberDescriptionTextColor = CComboBoxHelper.ColorList[m_MemberDescriptionTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("MemberDescriptionTextColorIndex");
             }
@@ -751,7 +766,7 @@ namespace PFD
             {
                 m_DimensionTextColorIndex = value;
 
-                DimensionTextColor = CComboBoxHelper.ColorList[m_DimensionTextColorIndex].Color;
+                DimensionTextColor = CComboBoxHelper.ColorList[m_DimensionTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("DimensionTextColorIndex");
             }
@@ -768,7 +783,7 @@ namespace PFD
             {
                 m_DimensionLineColorIndex = value;
 
-                DimensionLineColor = CComboBoxHelper.ColorList[m_DimensionLineColorIndex].Color;
+                DimensionLineColor = CComboBoxHelper.ColorList[m_DimensionLineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("DimensionLineColorIndex");
             }
@@ -785,7 +800,7 @@ namespace PFD
             {
                 m_GridLineLabelTextColorIndex = value;
 
-                GridLineLabelTextColor = CComboBoxHelper.ColorList[m_GridLineLabelTextColorIndex].Color;
+                GridLineLabelTextColor = CComboBoxHelper.ColorList[m_GridLineLabelTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("GridLineLabelTextColorIndex");
             }
@@ -802,7 +817,7 @@ namespace PFD
             {
                 m_GridLineColorIndex = value;
                 
-                GridLineColor = CComboBoxHelper.ColorList[m_GridLineColorIndex].Color;
+                GridLineColor = CComboBoxHelper.ColorList[m_GridLineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("GridLineColorIndex");
             }
@@ -817,7 +832,7 @@ namespace PFD
             set
             {
                 m_SectionSymbolLabelTextColorIndex = value;
-                SectionSymbolLabelTextColor = CComboBoxHelper.ColorList[m_SectionSymbolLabelTextColorIndex].Color;
+                SectionSymbolLabelTextColor = CComboBoxHelper.ColorList[m_SectionSymbolLabelTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SectionSymbolLabelTextColorIndex");
             }
@@ -833,7 +848,7 @@ namespace PFD
             {
                 m_SectionSymbolColorIndex = value;
                 
-                SectionSymbolColor = CComboBoxHelper.ColorList[m_SectionSymbolColorIndex].Color;
+                SectionSymbolColor = CComboBoxHelper.ColorList[m_SectionSymbolColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SectionSymbolColorIndex");
             }
@@ -850,9 +865,25 @@ namespace PFD
             {
                 m_DetailSymbolLabelTextColorIndex = value;
                 
-                DetailSymbolLabelTextColor = CComboBoxHelper.ColorList[m_DetailSymbolLabelTextColorIndex].Color;
+                DetailSymbolLabelTextColor = CComboBoxHelper.ColorList[m_DetailSymbolLabelTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("DetailSymbolLabelTextColorIndex");
+            }
+        }
+        public int DetailSymbolLabelBackColorIndex
+        {
+            get
+            {
+                return m_DetailSymbolLabelBackColorIndex;
+            }
+
+            set
+            {
+                m_DetailSymbolLabelBackColorIndex = value;
+
+                DetailSymbolLabelBackColor = CComboBoxHelper.ColorListWithTransparent[m_DetailSymbolLabelBackColorIndex].Color;
+
+                NotifyPropertyChanged("DetailSymbolLabelBackColorIndex");
             }
         }
 
@@ -867,7 +898,7 @@ namespace PFD
             {
                 m_DetailSymbolColorIndex = value;
 
-                DetailSymbolColor = CComboBoxHelper.ColorList[m_DetailSymbolColorIndex].Color;
+                DetailSymbolColor = CComboBoxHelper.ColorList[m_DetailSymbolColorIndex].Color.Value;
 
                 NotifyPropertyChanged("DetailSymbolColorIndex");
             }
@@ -884,7 +915,7 @@ namespace PFD
             {
                 m_SawCutTextColorIndex = value;
                 
-                SawCutTextColor = CComboBoxHelper.ColorList[m_SawCutTextColorIndex].Color;
+                SawCutTextColor = CComboBoxHelper.ColorList[m_SawCutTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SawCutTextColorIndex");
             }
@@ -901,7 +932,7 @@ namespace PFD
             {
                 m_SawCutLineColorIndex = value;
 
-                SawCutLineColor = CComboBoxHelper.ColorList[m_SawCutLineColorIndex].Color;
+                SawCutLineColor = CComboBoxHelper.ColorList[m_SawCutLineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SawCutLineColorIndex");
             }
@@ -918,7 +949,7 @@ namespace PFD
             {
                 m_ControlJointTextColorIndex = value;
 
-                ControlJointTextColor = CComboBoxHelper.ColorList[m_ControlJointTextColorIndex].Color;
+                ControlJointTextColor = CComboBoxHelper.ColorList[m_ControlJointTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("ControlJointTextColorIndex");
             }
@@ -935,7 +966,7 @@ namespace PFD
             {
                 m_ControlJointLineColorIndex = value;
 
-                ControlJointLineColor = CComboBoxHelper.ColorList[m_ControlJointLineColorIndex].Color;
+                ControlJointLineColor = CComboBoxHelper.ColorList[m_ControlJointLineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("ControlJointLineColorIndex");
             }
@@ -952,7 +983,7 @@ namespace PFD
             {
                 m_FoundationTextColorIndex = value;
 
-                FoundationTextColor = CComboBoxHelper.ColorList[m_FoundationTextColorIndex].Color;
+                FoundationTextColor = CComboBoxHelper.ColorList[m_FoundationTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FoundationTextColorIndex");
             }
@@ -969,7 +1000,7 @@ namespace PFD
             {
                 m_FloorSlabTextColorIndex = value;
                 
-                FloorSlabTextColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color;
+                FloorSlabTextColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FloorSlabTextColorIndex");
             }
@@ -986,7 +1017,7 @@ namespace PFD
             {
                 m_FoundationColorIndex = value;
 
-                FoundationColor = CComboBoxHelper.ColorList[m_FoundationColorIndex].Color;
+                FoundationColor = CComboBoxHelper.ColorList[m_FoundationColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FoundationColorIndex");
             }
@@ -1003,7 +1034,7 @@ namespace PFD
             {
                 m_FloorSlabColorIndex = value;
                 
-                FloorSlabColor = CComboBoxHelper.ColorList[m_FloorSlabColorIndex].Color;
+                FloorSlabColor = CComboBoxHelper.ColorList[m_FloorSlabColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FloorSlabColorIndex");
             }
@@ -1014,6 +1045,13 @@ namespace PFD
             get
             {
                 return CComboBoxHelper.ColorList;
+            }
+        }
+        public List<CComboColor> ColorListWithTransparent
+        {
+            get
+            {
+                return CComboBoxHelper.ColorListWithTransparent;
             }
         }
         public List<ComboItem> LinePatternTypes
@@ -1069,6 +1107,7 @@ namespace PFD
             SectionSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.Cyan);
 
             DetailSymbolLabelTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
+            DetailSymbolLabelBackColorIndex = CComboBoxHelper.GetColorIndexWithTransparent(Colors.White);
             DetailSymbolColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightPink);
 
             SawCutTextColorIndex = CComboBoxHelper.GetColorIndex(Colors.Goldenrod);

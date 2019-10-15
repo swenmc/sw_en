@@ -749,7 +749,7 @@ namespace PFD
                                 
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color;
+                BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color.Value;
 
                 RecreateModel = true;
                 NotifyPropertyChanged("BackgroundColorIndex");
@@ -3123,6 +3123,7 @@ namespace PFD
             sDisplayOptions.SectionSymbolColor = _displayOptionsVM.SectionSymbolColor;
 
             sDisplayOptions.DetailSymbolLabelTextColor = _displayOptionsVM.DetailSymbolLabelTextColor;
+            sDisplayOptions.DetailSymbolLabelBackColor = _displayOptionsVM.DetailSymbolLabelBackColor;            
             sDisplayOptions.DetailSymbolColor = _displayOptionsVM.DetailSymbolColor;
 
             sDisplayOptions.SawCutTextColor = _displayOptionsVM.SawCutTextColor;

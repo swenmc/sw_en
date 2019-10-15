@@ -483,7 +483,7 @@ namespace PFD
 
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                LongReinTop_x_Color = listOfMediaColours[m_LongReinTop_x_ColorIndex].Color;
+                LongReinTop_x_Color = listOfMediaColours[m_LongReinTop_x_ColorIndex].Color.Value;
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
@@ -575,7 +575,7 @@ namespace PFD
 
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                LongReinTop_y_Color = listOfMediaColours[m_LongReinTop_y_ColorIndex].Color;
+                LongReinTop_y_Color = listOfMediaColours[m_LongReinTop_y_ColorIndex].Color.Value;
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
@@ -667,7 +667,7 @@ namespace PFD
 
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                LongReinBottom_x_Color = listOfMediaColours[m_LongReinBottom_x_ColorIndex].Color;
+                LongReinBottom_x_Color = listOfMediaColours[m_LongReinBottom_x_ColorIndex].Color.Value;
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
@@ -760,7 +760,7 @@ namespace PFD
 
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color;
+                LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color.Value;
 
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
