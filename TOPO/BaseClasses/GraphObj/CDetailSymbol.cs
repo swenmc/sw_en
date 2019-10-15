@@ -186,8 +186,10 @@ namespace BaseClasses.GraphObj
 
             float offset_x = 0.4f; // Umoznit Nastavovat podla velkosti text label ???
             float offset_y = -0.01f; // Default 0.0 (stred textu na stred ciary)
+
             //m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + offset_x, 0 + offset_y, -m_LineCylinderRadius);
-            m_PointLabelText = new Point3D(0,0,0);
+            //m_PointLabelText = new Point3D(0,0,0);
+            m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + markObjectSize / 2, 0, 0);
         }
 
         public Model3DGroup GetDetailSymbolModel(System.Windows.Media.Color color, bool drawLine)

@@ -2485,7 +2485,7 @@ namespace PFD
             ShowDimensions = true;
             ShowGridLines = false;
             ShowSectionSymbols = false;
-            ShowDetailSymbols = false;
+            ShowDetailSymbols = true;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
