@@ -163,6 +163,17 @@ namespace PFD
                 new CComboColor("YellowGreen", Colors.YellowGreen) // DB
         };
 
+        public static List<CComboColor> ColorListWithTransparent
+        {
+            get
+            {
+                List<CComboColor> colors = new List<CComboColor>(ColorList);
+                colors.Insert(0, new CComboColor("Transparent", null));
+                return colors;
+             }
+        } 
+        
+
         public static string GetColorName(Color color)
         {
             Type colors = typeof(Colors);
@@ -181,6 +192,21 @@ namespace PFD
             {
                 if (ColorList[i].Name == GetColorName(color))
                     return i;
+            }
+
+            // return -1; // Exception
+            throw new Exception("The provided Color was not found.");
+        }
+        public static int GetColorIndexWithTransparent(Color? color)
+        {
+            for (int i = 0; i < ColorListWithTransparent.Count; i++)
+            {
+                if (color.HasValue)
+                {
+                    if (ColorListWithTransparent[i].Name == GetColorName(color.Value))
+                        return i;
+                }
+                else return 0;
             }
 
             // return -1; // Exception

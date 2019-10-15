@@ -3854,7 +3854,8 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.DimensionTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);  //netreba nastavovat ak chceme mat transparentne
+
             //Vector3D over = new Vector3D(dimension.Horizontal.X * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Y * fTextBlockHorizontalSizeFactor, dimension.Horizontal.Z * fTextBlockHorizontalSizeFactor);
             //Vector3D up = new Vector3D(dimension.Vertical.X * fTextBlockVerticalSizeFactor, dimension.Vertical.Y * fTextBlockVerticalSizeFactor, dimension.Vertical.Z * fTextBlockVerticalSizeFactor);
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * dimension.iVectorOverFactor_LCS, 0, 0);
@@ -3906,7 +3907,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = Brushes.Coral;
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
@@ -3998,7 +3999,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.GridLineLabelTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             //if (gridline.Direction.Z == 0) // Horizontal gridlines
             //{
@@ -4070,7 +4071,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.SectionSymbolLabelTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor); //netreba nastavovat ak chceme mat transparentne
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sectionSymbol.iVectorOverFactor_LCS, 0, 0);
             Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sectionSymbol.iVectorUpFactor_LCS, 0);
 
@@ -4113,7 +4114,8 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            if(displayOptions.DetailSymbolLabelBackColor != null) tb.Background = new SolidColorBrush(displayOptions.DetailSymbolLabelBackColor.Value);            
 
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
@@ -4977,6 +4979,17 @@ namespace BaseClasses
             tb.Foreground = textColor;
             tb.FontFamily = font;
 
+            return CreateTextLabel3D(tb, bDoubleSided, height, center, over, up, widthScaleFactor);
+        }
+
+        public static ModelVisual3D CreateTextLabel3D(
+            TextBlock tb,
+            bool bDoubleSided,
+            double height,
+            Point3D center,
+            Vector3D over,
+            Vector3D up, double widthScaleFactor = 1.0)
+        {
             // Now use that TextBlock as the brush for a material
             DiffuseMaterial mat = new DiffuseMaterial();
 
@@ -4984,11 +4997,11 @@ namespace BaseClasses
             if (borderRequired)
             {
                 Label label = new Label();
-                label.Content = text;
-                label.Foreground = textColor;
-                label.FontFamily = font;
+                label.Content = tb.Text;
+                label.Foreground = tb.Foreground;
+                label.FontFamily = tb.FontFamily;
                 label.BorderThickness = new Thickness(2);
-                label.BorderBrush = textColor;
+                label.BorderBrush = tb.Foreground;
                 mat.Brush = new VisualBrush(label);
             }
             else
@@ -4997,7 +5010,7 @@ namespace BaseClasses
             }
 
             // We just assume the characters are square
-            double width = text.Length * height * widthScaleFactor;
+            double width = tb.Text.Length * height * widthScaleFactor;
 
             // Since the parameter coming in was the center of the label,
             // we need to find the four corners
@@ -5066,17 +5079,6 @@ namespace BaseClasses
             ModelVisual3D mv3d = new ModelVisual3D();
             mv3d.Content = new GeometryModel3D(mg, mat);
             return mv3d;
-        }
-
-        public static ModelVisual3D CreateTextLabel3D(
-            TextBlock tb,
-            bool bDoubleSided,
-            double height,
-            Point3D center,
-            Vector3D over,
-            Vector3D up, double widthScaleFactor = 1.0)
-        {
-            return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up, widthScaleFactor);
         }
 
         #endregion

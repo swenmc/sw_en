@@ -14,7 +14,7 @@ namespace BaseClasses.Helpers
         string MCodeRGB;
         string MCodeHEX;
         string MCodeHSV;
-        Color MColor;
+        Color? MColor;
 
         public int ID
         {
@@ -81,7 +81,7 @@ namespace BaseClasses.Helpers
             }
         }
 
-        public Color Color
+        public Color? Color
         {
             get
             {
@@ -99,7 +99,7 @@ namespace BaseClasses.Helpers
 
         }
 
-        public CComboColor(string name, Color color)
+        public CComboColor(string name, Color? color)
         {
             MName = name;
             MColor = color;

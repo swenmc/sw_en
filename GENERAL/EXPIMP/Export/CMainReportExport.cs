@@ -449,6 +449,7 @@ namespace EXPIMP
 
             opts.fDetailSymbolLabelTextFontSize = 30;
             opts.DetailSymbolLabelTextColor = System.Windows.Media.Colors.Black;
+            opts.DetailSymbolLabelBackColor = System.Windows.Media.Colors.White;
             opts.DetailSymbolColor = System.Windows.Media.Colors.Black;
             //opts.DetailSymbolLinePatternType = ELinePatternType.CONTINUOUS;
 

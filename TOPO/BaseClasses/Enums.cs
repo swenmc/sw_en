@@ -820,7 +820,9 @@
         //public ELinePatternType SectionSymbolPatternType;
 
         public System.Windows.Media.Color DetailSymbolLabelTextColor;
+        public System.Windows.Media.Color? DetailSymbolLabelBackColor;
         public System.Windows.Media.Color DetailSymbolColor;
+        
         //public ELinePatternType DetailSymbolPatternType;
 
         public System.Windows.Media.Color SawCutTextColor;
