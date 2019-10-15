@@ -2300,12 +2300,14 @@ namespace PFD
                     float fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h;
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
+                    string sName = "A";
                     string sDescriptionText = "PAD TYPE A [MC]";
                     //Color color = Colors.LightSkyBlue;
 
                     if (i == 0 || i == (iFrameNo - 1)) // First or last frame
                     {
                         columnTypePosition = EMemberType_FS_Position.EdgeColumn;
+                        sName = "B";
                         sDescriptionText = "PAD TYPE B [EC]";
                         fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h;
 
@@ -2326,6 +2328,7 @@ namespace PFD
                         node_left,
                         materialConcrete,
                         columnTypePosition,
+                        sName,
                         sDescriptionText,
                         //controlPoint_left,
                         fMainColumnFooting_aX, 
@@ -2354,6 +2357,7 @@ namespace PFD
                         node_right,
                         materialConcrete,
                         columnTypePosition,
+                        sName,
                         sDescriptionText,
                         //controlPoint_right,
                         fMainColumnFooting_aX,
@@ -2411,6 +2415,7 @@ namespace PFD
                         );
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnFrontSide;
+                    string sName = "C-FRONT";
                     string sDescriptionText = "PAD TYPE C [WP-FRONT]";
 
                     // Search footings control points
@@ -2432,6 +2437,7 @@ namespace PFD
                             listOfControlPoints[i],
                             materialConcrete,
                             columnTypePosition,
+                            sName,
                             sDescriptionText,
                             //controlPoint,
                             fFrontColumnFooting_aX,
@@ -2489,6 +2495,7 @@ namespace PFD
                         );
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.ColumnBackSide;
+                    string sName = "C-BACK";
                     string sDescriptionText = "PAD TYPE C [WP-BACK]";
 
                     // Search footings control points
@@ -2510,6 +2517,7 @@ namespace PFD
                             listOfControlPoints[i],
                             materialConcrete,
                             columnTypePosition,
+                            sName,
                             sDescriptionText,
                             //controlPoint,
                             fBackColumnFooting_aX,

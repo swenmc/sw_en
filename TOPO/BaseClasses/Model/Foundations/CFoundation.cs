@@ -351,6 +351,7 @@ namespace BaseClasses
             CNode node,
             MATERIAL.CMat_02_00 materialConcrete,
             EMemberType_FS_Position memberTypePosition,
+            string sName,
             string descriptionText,
             //Point3D pControlEdgePoint,
             float fX,
@@ -378,11 +379,13 @@ namespace BaseClasses
             m_Node = node; // Note that is assigned to the foundation / footing pad
             m_Mat = materialConcrete;
             m_ColumnMemberTypePosition = memberTypePosition;
+            Name = sName;
             m_Text = descriptionText;
             //m_pControlPoint = pControlEdgePoint;
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_fVolume = fX * fY * fZ; // !!! PLATI LEN PRE KVADER
             m_Eccentricity_x = ex;
             m_Eccentricity_y = ey;
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
@@ -410,8 +413,6 @@ namespace BaseClasses
 
             SetTextPoint();
         }
-
-
 
         public void SetTextPoint()
         {

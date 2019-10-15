@@ -302,6 +302,9 @@ namespace EXPIMP
                     opts.bDisplayDetailSymbols = false;
 
                     bCreateHorizontalGridlines = true;
+
+                    // Table - footing pads list
+                    DrawFootingPadList(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 300);
                 }
 
                 if (viewMembers == EViewModelMemberFilters.FLOOR)
@@ -1116,9 +1119,7 @@ namespace EXPIMP
             gfx.DrawString("Project Part: ", fontProjectInfo, XBrushes.Black, 30, 90);
             if (pInfo.ProjectName != null) gfx.DrawString(pInfo.ProjectPart, fontBoltProjectInfo, XBrushes.Black, 30 + 150, 90);
 
-            //gfx.DrawString("TITLE PAGE", font, XBrushes.Black, 500, 400);
-
-            // Do stredu by sa mozno mohol vlozit malicky preview isometricky pohlad na konstrukciu, aby to nebolo take prazdne :)
+            // Preview isometricky pohlad na konstrukciu
             // Bez kot, bez popisov
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = false;
@@ -1189,13 +1190,27 @@ namespace EXPIMP
             AddTableToDocument(gfx, x, y, tableParams);
         }
 
-        // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
-        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, int sheetNo, int issue) // TODO Ondrej - Tabulka s rozpiskou
+        private static void DrawTable(XGraphics gfx, int x, int y, Table t)
         {
-            // TODO - Onddrej - sem treba vykreslit tabulku podla vzoru co som Ti poslal (nemusis vsetko, len zhruba :) aby som si to vedel podoplnat)
+            AddTableToDocument(gfx, x, y, t);
+        }
+
+        // TO Ondrej - ma zmysel mat tieto vnorene metody ak maju rovnake parametre, neviem ci je opodstatnene - ja som to urobil len aby malo vsetko nazov Draw
+        private static void DrawTitleBlock(XGraphics gfx, CProjectInfo pInfo, string contents, int sheetNo, int issue) // Tabulka s rozpiskou
+        {
             // Velkost pisma mozes nastavit tak, aby bolo zhruba 2.5-3 mm velke, aby nam ta tabulka nezaberal prilis vela miesta, nazov projektu moze byt 5 mm pismom
 
             AddPageTitleBlockTableToDocument(gfx, pInfo, contents, sheetNo, issue);
+        }
+
+        private static void DrawFootingPadList(XGraphics gfx, CModelData data, int x, int y)
+        {
+            // Title
+            XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
+            gfx.DrawString("Footing Pads", font, XBrushes.Black, x, y);
+
+            // Table
+            AddFootingPadListTableToDocument(gfx, data, x, y + 20, 220);
         }
 
         private static int GetView(EViewModelMemberFilters viewModelMembers)
@@ -1765,6 +1780,26 @@ namespace EXPIMP
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
+        private static void AddTableToDocument(XGraphics gfx, double offsetX, double offsetY, Table t)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
+        }
+
         private static void AddTitlePageContentTableToDocument(XGraphics gfx, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
@@ -2044,6 +2079,54 @@ namespace EXPIMP
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
+        private static void AddFootingPadListTableToDocument(XGraphics gfx, CModelData data, int x, int y, int width)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = GetFootingPadListTable(doc, data);
+
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            //double width = 410;
+            double offsetX = x;
+            double offsetY = y;
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(width), t);
+
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+        }
+
+        private static Table GetFootingPadListTable(Document document, CModelData data)
+        {
+            List<string[]> tableParams = new List<string[]>();
+
+            //tableParams.Add(new string[6] { "Type", "Width L [m]", "Width W [m]", "Height H [m]", "Count", "Volume [m³]" });
+            tableParams.Add(new string[6] { "Type", "L [m]", "W [m]", "H [m]", "Count [-]", "Volume [m³]" });
+
+            foreach (KeyValuePair<string, Tuple<CFoundation, CConnectionJointTypes>> kvp in data.FootingsDict)
+            {
+                int numberOfPads = 0; // TODO Ondrej - zistit pocet jednotlivych typov objektov a doplnit do stlpca tabulky do tabulky
+
+                CFoundation pad = kvp.Value.Item1;
+                //CConnectionJointTypes joint = kvp.Value.Item2;
+
+                tableParams.Add(new string[6] { /*pad.Text*/ pad.Name, pad.m_fDim1.ToString(), pad.m_fDim2.ToString(), pad.m_fDim3.ToString(), numberOfPads.ToString(), pad.m_fVolume.ToString() });
+            }
+
+            Table table = Get6ColumnTable(document, tableParams, 9);
+            return table;
+        }
+
         private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
             gfx.MUH = PdfFontEncoding.Unicode;
@@ -2064,6 +2147,9 @@ namespace EXPIMP
             docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
+
+        // To Ondrej - Refaktoring 
+        // Tu by bolo elegantne urobit len jednu funkciu, ktora by podla poctu stlpcov poloziek v tableParams generovala tabulku
 
         public static Table GetSimpleTable(Document document, List<string[]> tableParams)
         {
@@ -2097,6 +2183,48 @@ namespace EXPIMP
             }
 
             table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
+        }
+        public static Table Get6ColumnTable(Document document, List<string[]> tableParams, int iFontSize)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+            table.Format.Font.Size = iFontSize;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(2));
+            column1.Format.Alignment = ParagraphAlignment.Left;
+            Column column2 = table.AddColumn(Unit.FromCentimeter(1.2));
+            column2.Format.Alignment = ParagraphAlignment.Right;
+            Column column3 = table.AddColumn(Unit.FromCentimeter(1.2));
+            column3.Format.Alignment = ParagraphAlignment.Right;
+            Column column4 = table.AddColumn(Unit.FromCentimeter(1.2));
+            column4.Format.Alignment = ParagraphAlignment.Right;
+            Column column5 = table.AddColumn(Unit.FromCentimeter(1.5));
+            column4.Format.Alignment = ParagraphAlignment.Right;
+            Column column6 = table.AddColumn(Unit.FromCentimeter(2));
+            column4.Format.Alignment = ParagraphAlignment.Right;
+
+            foreach (string[] strParams in tableParams)
+            {
+                Row row = table.AddRow();
+                Cell cell = row.Cells[0];
+                cell.AddParagraph(strParams[0]);
+                cell = row.Cells[1];
+                cell.AddParagraph(strParams[1]);
+                cell = row.Cells[2];
+                cell.AddParagraph(strParams[2]);
+                cell = row.Cells[3];
+                cell.AddParagraph(strParams[3]);
+                cell = row.Cells[4];
+                cell.AddParagraph(strParams[4]);
+                cell = row.Cells[5];
+                cell.AddParagraph(strParams[5]);
+            }
+
+            table.SetEdge(0, 0, 6, tableParams.Count, Edge.Box, BorderStyle.Single, 1.0, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }

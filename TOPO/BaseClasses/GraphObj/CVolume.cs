@@ -31,6 +31,8 @@ namespace BaseClasses.GraphObj
         public float m_fDim2;
         public float m_fDim3;
         public float m_fDim4;
+
+        public float m_fVolume;
         // Constructor 1
         public CVolume()
         {
@@ -74,6 +76,7 @@ namespace BaseClasses.GraphObj
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_fVolume = fX * fY * fZ; // !!! plati len pre kvader
             m_Material_1 = volMat1;
             m_volColor_2 = volMat1.Color;
             m_fvolOpacity = 1.0f;
@@ -95,6 +98,7 @@ namespace BaseClasses.GraphObj
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_fVolume = fX * fY * fZ; // !!! plati len pre kvader
             m_Material_1 = volMat1;
             m_volColor_2 = volMat1.Color;
             m_fvolOpacity = 1.0f;
@@ -116,6 +120,7 @@ namespace BaseClasses.GraphObj
             m_fDim1 = fX;
             m_fDim2 = fY;
             m_fDim3 = fZ;
+            m_fVolume = fX * fY * fZ; // !!! plati len pre kvader
             //m_Material_1 = volMat1;
             //m_volColor_2 = volMat1.Color;
             m_fvolOpacity = 1.0f;
