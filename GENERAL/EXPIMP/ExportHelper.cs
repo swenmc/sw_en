@@ -1511,7 +1511,7 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data)
+        public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data, bool bCenterLinesMemberModelAndIDs = false)
         {
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = false;
@@ -1548,8 +1548,29 @@ namespace EXPIMP
             opts.bDisplaySectionSymbols = false;
             opts.bDisplayDetailSymbols = false;
 
+            if(bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
+            {
+                opts.bDisplaySolidModel = false;
+                opts.bDisplayMembersCenterLines = true;
+
+                opts.bDisplayJoints = false;
+                opts.bDisplayPlates = false;
+
+                opts.bDisplayMemberDescription = true;
+                opts.bDisplayMemberID = true;
+                opts.bDisplayMemberCrossSectionStartName = false;
+                opts.bDisplayMemberPrefix = false;
+                opts.bDisplayMemberRealLength = false;
+                opts.bDisplayMemberRealLengthInMM = false;
+                opts.bDisplayMemberRealLengthUnit = false;
+
+                opts.MemberDescriptionTextColor = Colors.Black;
+                opts.wireFrameColor = Colors.Black;
+
+                opts.memberCenterlineColor = Colors.Black;
+            }
+
             return opts;
         }
-
     }
 }

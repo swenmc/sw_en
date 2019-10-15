@@ -234,7 +234,7 @@ namespace BaseClasses
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model
-                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, sDisplayOptions, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
@@ -402,7 +402,7 @@ namespace BaseClasses
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model
-                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, sDisplayOptions, _trackport.ViewPort);
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
@@ -557,7 +557,7 @@ namespace BaseClasses
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model
-                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, sDisplayOptions, _trackport.ViewPort);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
@@ -2901,8 +2901,8 @@ namespace BaseClasses
             }
         }
 
-        // Draw Members Centerlines
-        public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort)
+        // Draw Member Centerlines
+        public static void DrawModelMembersCenterLines(CModel model, DisplayOptions sDiplayOptions, Viewport3D viewPort)
         {
             ScreenSpaceLines3D lines = new ScreenSpaceLines3D();
 
@@ -2926,6 +2926,8 @@ namespace BaseClasses
                     }
                 }
 
+                lines.Color = sDiplayOptions.memberCenterlineColor; // Set wireframe color
+
                 //priprava na centrovanie modelu
                 if (centerModel)
                 {
@@ -2936,7 +2938,7 @@ namespace BaseClasses
             }
         }
 
-        // Draw Members Centerlines
+        // Draw Member Axes
         public static void DrawModelMembersAxis(CModel model, Viewport3D viewPort)
         {
             double axisL = 0.5;

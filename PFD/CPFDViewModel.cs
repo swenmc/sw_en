@@ -3094,7 +3094,10 @@ namespace PFD
 
             //sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.wireFrameColor = _displayOptionsVM.WireframeColor;
-            sDisplayOptions.fWireFrameLineThickness = _displayOptionsVM.WireFrameLineThickness; 
+            sDisplayOptions.fWireFrameLineThickness = _displayOptionsVM.WireFrameLineThickness;
+
+            sDisplayOptions.memberCenterlineColor = _displayOptionsVM.MemberCenterlineColor;
+            sDisplayOptions.fmemberCenterlineThickness = _displayOptionsVM.MemberCenterlineThickness;
 
             sDisplayOptions.fNodeDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report
             sDisplayOptions.fMemberDescriptionTextFontSize = 12; // TODO dopracovat nastavitelne v GUI - samostatne pre 3D scenu a report

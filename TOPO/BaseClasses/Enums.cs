@@ -788,8 +788,12 @@
         public double OrtographicCameraWidth;
 
         public System.Windows.Media.Color backgroundColor;
+
         public System.Windows.Media.Color wireFrameColor;
         public float fWireFrameLineThickness;
+
+        public System.Windows.Media.Color memberCenterlineColor;
+        public float fmemberCenterlineThickness;
 
         public int fNodeDescriptionTextFontSize;
         public int fMemberDescriptionTextFontSize;

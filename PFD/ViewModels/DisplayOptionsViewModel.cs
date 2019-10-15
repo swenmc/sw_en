@@ -25,6 +25,10 @@ namespace PFD
         private int m_WireframeColorIndex;
         private float m_WireFrameLineThickness;
 
+        private Color m_MemberCenterlineColor;
+        private int m_MemberCenterlineColorIndex;
+        private float m_MemberCenterlineThickness;
+
         private float m_NodeDescriptionTextFontSize;
         private float m_MemberDescriptionTextFontSize;
         private float m_DimensionTextFontSize;
@@ -108,10 +112,9 @@ namespace PFD
             }
             set
             {
-                m_WireframeColor = value;                
+                m_WireframeColor = value;
             }
         }
-
 
         public float WireFrameLineThickness
         {
@@ -124,6 +127,32 @@ namespace PFD
             {
                 m_WireFrameLineThickness = value;
                 NotifyPropertyChanged("WireFrameLineThickness");
+            }
+        }
+
+        public Color MemberCenterlineColor
+        {
+            get
+            {
+                return m_MemberCenterlineColor;
+            }
+            set
+            {
+                m_MemberCenterlineColor = value;
+            }
+        }
+
+        public float MemberCenterlineThickness
+        {
+            get
+            {
+                return m_MemberCenterlineThickness;
+            }
+
+            set
+            {
+                m_MemberCenterlineThickness = value;
+                NotifyPropertyChanged("MemberCenterlineThickness");
             }
         }
 
@@ -689,6 +718,24 @@ namespace PFD
                 NotifyPropertyChanged("WireframeColorIndex");
             }
         }
+
+        public int MemberCenterlineColorIndex
+        {
+            get
+            {
+                return m_MemberCenterlineColorIndex;
+            }
+
+            set
+            {
+                m_MemberCenterlineColorIndex = value;
+
+                MemberCenterlineColor = CComboBoxHelper.ColorList[m_MemberCenterlineColorIndex].Color;
+
+                NotifyPropertyChanged("MemberCenterlineColorIndex");
+            }
+        }
+
         public int NodeColorIndex
         {
             get
@@ -1029,18 +1076,18 @@ namespace PFD
             }
         }
 
-        
-
-
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public DisplayOptionsViewModel()
         {
             IsSetFromCode = true;
-            
+
             WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             WireFrameLineThickness = 2;
+
+            MemberCenterlineColorIndex = CComboBoxHelper.GetColorIndex(Colors.WhiteSmoke);
+            MemberCenterlineThickness = 2;
 
             NodeDescriptionTextFontSize = 12;
             MemberDescriptionTextFontSize = 12;

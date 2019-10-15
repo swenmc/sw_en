@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="800" Width="800">
+        Title="Display Options" Height="860" Width="800">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -16,9 +16,9 @@
         <Grid Name="GridDisplayOptions" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -45,7 +45,9 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>                
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left"/>
@@ -62,7 +64,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="WireFrameLineThickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="WireFrame Line Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="1" Grid.Column="1" Name ="WireFrameLineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=WireFrameLineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
@@ -109,7 +111,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Dimension TextColor:" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Dimension Text Color:" HorizontalAlignment="Left"/>
             <ComboBox Grid.Row="5" Grid.Column="1" Name ="Combobox_DimensionTextColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=DimensionTextColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
@@ -322,7 +324,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             
-            <TextBlock Grid.Row="22" Grid.Column="0" Text="FoundationColor Color:" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="22" Grid.Column="0" Text="Foundation Color:" HorizontalAlignment="Left"/>
             <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_FoundationColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=FoundationColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
@@ -350,48 +352,65 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
+            <TextBlock Grid.Row="24" Grid.Column="0" Text="Member Centerline Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_MemberCenterlineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=MemberCenterlineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="25" Grid.Column="0" Text="Member Centerline Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="25" Grid.Column="1" Name ="MemberCenterlineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=MemberCenterlineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
             <TextBlock Grid.Row="0" Grid.Column="2" Text="Member Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="0" Grid.Column="3" Name ="MemberSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=MemberSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="PlateSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="Plate Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="1" Grid.Column="3" Name ="PlateSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PlateSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="2" Text="ScrewSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="Screw Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="2" Grid.Column="3" Name ="ScrewSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ScrewSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="2" Text="AnchorSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="Anchor Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="3" Grid.Column="3" Name ="AnchorSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AnchorSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="2" Text="FoundationSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="4" Grid.Column="2" Text="Foundation Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="4" Grid.Column="3" Name ="FoundationSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FoundationSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="2" Text="ReinforcementBarSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="5" Grid.Column="2" Text="ReinforcementBar Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="5" Grid.Column="3" Name ="ReinforcementBarSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ReinforcementBarSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="2" Text="FloorSlabSolidModelOpacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="6" Grid.Column="2" Text="Floor Slab Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <TextBox Grid.Row="6" Grid.Column="3" Name ="FloorSlabSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FloorSlabSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <StackPanel Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <StackPanel Grid.Row="26" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
                 <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
             </StackPanel>
-
-
         </Grid>
     </ScrollViewer>
 </Window>

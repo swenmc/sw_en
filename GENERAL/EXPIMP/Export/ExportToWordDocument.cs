@@ -21,6 +21,12 @@ namespace EXPIMP
 {
     public static class ExportToWordDocument
     {
+        public enum EVIEWTYPE3D
+        {
+            EMEMBER_CENTERLINES = 0,
+            EMEMBER_SOLID = 1,
+        }
+
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
         private const int imageMaxWidth = 720;
@@ -37,7 +43,9 @@ namespace EXPIMP
                 document.ApplyTemplate(templatePath);
 
                 //DrawModel3DToDoc(document, viewPort);
-                DrawModel3DToDoc(document, modelData);
+                DrawModel3DToDoc(document, modelData, EVIEWTYPE3D.EMEMBER_SOLID);
+                DrawModel3DToDoc(document, modelData, EVIEWTYPE3D.EMEMBER_CENTERLINES);
+
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
                 DrawMaterial(document, modelData);
@@ -577,27 +585,41 @@ namespace EXPIMP
             p.AppendPicture(picture);
             p.InsertPageBreakAfterSelf();
         }
-        
-        private static void DrawModel3DToDoc(DocX document, CModelData data)
+
+        private static void DrawModel3DToDoc(DocX document, CModelData data, EVIEWTYPE3D eViewtype)
         {
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data);
+            string sParagraphName;
+            string sImageName;
+
+            if(eViewtype == EVIEWTYPE3D.EMEMBER_CENTERLINES)
+            {
+                sParagraphName = "[3DModelImage_MemberCenterlines]";
+                sImageName = "ViewPort2.png";
+            }
+            else
+            {
+                sParagraphName = "[3DModelImage_MemberSolidModel]";
+                sImageName = "ViewPort1.png";
+            }
+
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EVIEWTYPE3D.EMEMBER_CENTERLINES);
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, false, false, false, false, false, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
-            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[3DModelImage]"));
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));
 
             //ExportHelper.SaveViewPortContentAsImage(viewPort);
             RenderTargetBitmap bmp = ExportHelper.RenderVisual(viewPort);
-            ExportHelper.SaveBitmapImage(bmp, "ViewPort.png");
+            ExportHelper.SaveBitmapImage(bmp, sImageName);
             bmp = null;
 
             double ratio = imageMaxWidth / viewPort.ActualWidth;
 
             // Add a simple image from disk.
-            var image = document.AddImage("ViewPort.png");
+            var image = document.AddImage(sImageName);
             // Set Picture Height and Width.
             var picture = image.CreatePicture((int)(viewPort.ActualHeight * ratio), imageMaxWidth);
             // Insert Picture in paragraph.
