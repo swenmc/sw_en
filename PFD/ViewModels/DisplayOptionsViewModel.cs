@@ -745,7 +745,7 @@ namespace PFD
             {
                 m_MemberCenterlineColorIndex = value;
 
-                MemberCenterlineColor = CComboBoxHelper.ColorList[m_MemberCenterlineColorIndex].Color;
+                MemberCenterlineColor = CComboBoxHelper.ColorList[m_MemberCenterlineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("MemberCenterlineColorIndex");
             }
