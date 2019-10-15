@@ -3522,7 +3522,7 @@ namespace BaseClasses
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = new SolidColorBrush(displayOptions.MemberDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ???
-                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // Toto by mohlo byt nastavitelne kvoli exportu do doc alebo pdf // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
 
@@ -3817,7 +3817,7 @@ namespace BaseClasses
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = new SolidColorBrush(displayOptions.NodeDescriptionTextColor); // TO Ondrej - zda sa mi ze u textu je mozne nastavit rozne farby pre vypln a outline pismenok - vieme to nejako urobit ??? // Ina farba ako pre popis prutov
-                        tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
+                        //tb.Background = new SolidColorBrush(displayOptions.backgroundColor); // Todo by mohlo byt nastavitelne // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fOffsetZ = 0.06f;
                         float fOffsetX = 0.06f;
@@ -4117,13 +4117,13 @@ namespace BaseClasses
             tb.FontWeight = FontWeights.Normal;
             tb.Foreground = new SolidColorBrush(displayOptions.DetailSymbolLabelTextColor);
             //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            if(displayOptions.DetailSymbolLabelBackColor != null) tb.Background = new SolidColorBrush(displayOptions.DetailSymbolLabelBackColor.Value);            
+            if(displayOptions.DetailSymbolLabelBackColor != null) tb.Background = new SolidColorBrush(displayOptions.DetailSymbolLabelBackColor.Value);
 
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0);
             Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
             GetTextVectorsAccordingToView(displayOptions, out up, out over, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor);
 
-            // Create text            
+            // Create text
             Transform3DGroup tr = new Transform3DGroup();
 
             if (detailSymbol.TransformGr != null)
@@ -4159,7 +4159,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.SawCutTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * sawcut.iVectorOverFactor_LCS, 0, 0);
             Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sawcut.iVectorUpFactor_LCS, 0);
 
@@ -4223,7 +4223,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.ControlJointTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
             Vector3D over = new Vector3D(fTextBlockHorizontalSizeFactor * controlJoint.iVectorOverFactor_LCS, 0, 0);
             Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * controlJoint.iVectorUpFactor_LCS, 0);
 
@@ -4286,7 +4286,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.FoundationTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
@@ -4355,7 +4355,7 @@ namespace BaseClasses
             tb.FontStyle = FontStyles.Normal;
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = new SolidColorBrush(displayOptions.FloorSlabTextColor);
-            tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
 
             // Nastavujeme pre GCS (rovina XY - text v smere Y)
             Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
