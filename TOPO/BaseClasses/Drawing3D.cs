@@ -3371,6 +3371,8 @@ namespace BaseClasses
 
 
         ////Tu vyzera, ze tuto metodu vobec nepouzivame,takze ju zakomentovavam....
+        // TO Ondrej - pod nou je moja upravena metoda CreateMembersDescriptionModel3D_POKUS_MC takze ak si spokojny s tou novou takto toto cele zakomentovane vyhod
+
         //// Draw Text in 3D
         //public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         //{
