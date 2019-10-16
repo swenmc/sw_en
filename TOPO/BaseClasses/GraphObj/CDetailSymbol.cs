@@ -164,7 +164,8 @@ namespace BaseClasses.GraphObj
         string labelText,
         double markObjectSize,
         double lineLength,
-        ELinePatternType linePatternType
+        ELinePatternType linePatternType,
+        EModelViews modelView
         )
         {
             m_ControlPoint = controlPoint;
@@ -183,16 +184,24 @@ namespace BaseClasses.GraphObj
 
             m_PointLineStart_LCS = new Point3D((float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 0, 0);
             m_PointLineEnd_LCS = new Point3D((float)m_MarkObjectSize / 2f + m_LineCylinderRadius + m_LineLength, 0, 0);
+            m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + markObjectSize / 2, 0, 0);
 
-            float offset_x = 0.4f; // Umoznit Nastavovat podla velkosti text label ???
-            float offset_y = -0.01f; // Default 0.0 (stred textu na stred ciary)
+            if (modelView == EModelViews.TOP)
+            {
+                m_PointLineStart_LCS = new Point3D(0, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius, 0);
+                m_PointLineEnd_LCS = new Point3D(0, (float)m_MarkObjectSize / 2f + m_LineCylinderRadius + m_LineLength, 0);
+                m_PointLabelText = new Point3D(0, m_PointLineEnd_LCS.Y + markObjectSize / 2, 0);
+            }
+
+            //float offset_x = 0.4f; // Umoznit Nastavovat podla velkosti text label ???
+            //float offset_y = -0.01f; // Default 0.0 (stred textu na stred ciary)
 
             //m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + offset_x, 0 + offset_y, -m_LineCylinderRadius);
             //m_PointLabelText = new Point3D(0,0,0);
-            m_PointLabelText = new Point3D(m_PointLineEnd_LCS.X + markObjectSize / 2, 0, 0);
+            //m_PointLabelText = new Point3D(0, 0, m_PointLineEnd_LCS.Y + markObjectSize / 2);
         }
 
-        public Model3DGroup GetDetailSymbolModel(System.Windows.Media.Color color, bool drawLine)
+        public Model3DGroup GetDetailSymbolModel(System.Windows.Media.Color color, bool drawLine, EModelViews modelView)
         {
             Model3DGroup model_gr = new Model3DGroup();
 
@@ -211,7 +220,12 @@ namespace BaseClasses.GraphObj
                 short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
 
                 if (m_LinePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
-                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, 0, false, false));
+                {
+                    int primaryModelDirection = 0;
+                    if (modelView == EModelViews.TOP) primaryModelDirection = 1;
+
+                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, primaryModelDirection, false, false));
+                } 
                 else // Iny typ ciary
                 {
                     // dashed, dotted, divide, ....

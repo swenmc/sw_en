@@ -1817,7 +1817,7 @@ namespace BaseClasses
             {
                 if (symbolsPoints[i] == null) continue;
 
-                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], vector, (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS));
+                detailSymbols.Add(new CDetailSymbol((Point3D)symbolsPoints[i], vector, (i + 1).ToString(), fMarkCircleDiameter, fOffsetLineLength, ELinePatternType.CONTINUOUS, (EModelViews) opts.ModelView));
             }
             return detailSymbols;
         }
@@ -2775,7 +2775,7 @@ namespace BaseClasses
 
             foreach (CDetailSymbol detailSymbol in detailSymbols)
             {
-                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor, true));
+                gr.Children.Add(detailSymbol.GetDetailSymbolModel(displayOptions.DetailSymbolColor, true, (EModelViews)displayOptions.ModelView));
             }
 
             return gr;
