@@ -1565,8 +1565,6 @@ namespace EXPIMP
                 opts.bDisplayMemberRealLengthUnit = false;
 
                 opts.MemberDescriptionTextColor = Colors.Black;
-                opts.wireFrameColor = Colors.Black;
-
                 opts.memberCenterlineColor = Colors.Black;
             }
 
