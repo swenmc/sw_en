@@ -230,8 +230,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>-->
 
-                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -242,12 +242,12 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBlock Grid.Row="21" Grid.Column="0" Text="View:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="20" Grid.Column="0" Text="View:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project details" Width="20" Height="20" Click="btnProjectInfo_Click">

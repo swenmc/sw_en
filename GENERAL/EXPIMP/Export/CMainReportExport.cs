@@ -120,7 +120,7 @@ namespace EXPIMP
 
             int legendImgWidth = 100;
             int legendTextWidth = 70;
-            DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
+            DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
 
             XImage image = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));
 
@@ -348,7 +348,7 @@ namespace EXPIMP
                     data,
                     out filteredModel, out trackport);
                 viewPort.UpdateLayout();
-                DrawCrscLegend(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
+                DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point - legendImgWidth + 10, legendTextWidth);
                 filteredModel = null;
 
                 XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -1282,25 +1282,25 @@ namespace EXPIMP
             image.Dispose();
         }
 
-        private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
+        private static void DrawCrscLegendTable(XGraphics gfx, CModel model, int x, int textWidth)
         {
             List<string> list_crsc = GetCrscFromModel(model);
 
-            ////pokusy - zatial neviem velkost obrazku v tabulke zmenit
-            //Document doc = new Document();
-            //AddTableToDocument(doc, gfx, x - 200, 0, GetCRSC_Table(doc, model, list_crsc));
-            //return;
+            Document doc = new Document();
+            AddTableToDocument(doc, gfx, x - 100, 20, GetCRSC_Table(doc, model, list_crsc));
+        }
 
+        private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
+        {
+            List<string> list_crsc = GetCrscFromModel(model);
 
             int width = 100;
             int height = 76;
             int y = 20;
             int font_y = 20;
 
-
             XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
             
-
             foreach (string crsc in list_crsc)
             {
                 DrawImage(gfx, ConfigurationManager.AppSettings[crsc], x, y, width, height);
@@ -1332,53 +1332,54 @@ namespace EXPIMP
         }
         private static Table GetCRSC_Table(Document document, CModel model, List<string> list_crsc)
         {
+            int width = 100;
+            int height = 76;            
+
             Section sec = document.AddSection();
             Table table = new Table();
-            table.LeftPadding = 5;
-            table.RightPadding = 5;
-            table.TopPadding = 1;
-            table.BottomPadding = 1;
-            table.Borders.Width = 0.75;
+            table.LeftPadding = 0;
+            table.RightPadding = 0;
+            table.TopPadding = 0;
+            table.BottomPadding = 0;
+            table.Borders.Width = 0.5;
             table.Format.Font.Name = fontFamily;
-            table.Format.Font.Size = fontSizeNormal;
+            table.Format.Font.Size = fontSizeLegend;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(2));
             column1.Format.Alignment = ParagraphAlignment.Left;
-            column1.Format.Font.Bold = true;
+            column1.Width = 90;
+            column1.LeftPadding = 5;            
+            //column1.Format.Font.Bold = true;
             Column column2 = table.AddColumn(Unit.FromCentimeter(2));
             column2.Format.Alignment = ParagraphAlignment.Center;
-
+            column2.Width = 95;
+            
             foreach (string crsc in list_crsc)
             {
-                Row row = table.AddRow();
-                //row.Shading.Color = Colors.PaleGoldenrod;
+                Row row = table.AddRow();                 
                 Cell cell = row.Cells[0];
-                //cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
-
-
+                cell.AddParagraph("");
                 // List of member types
                 List<string> list_memberTypes = GetMemberTypesWithCrscFromModel(model, crsc);
                 foreach (string s in list_memberTypes)
                 {
-                    cell.AddParagraph(s);
-
+                    cell.AddParagraph($"[{s}]");
                 }
                 // Cross-section name
                 cell.AddParagraph(crsc);
 
                 // TEK screws number, gauge and distance - TO Ondrej - mozem to nacitavat tu z databazy znova alebo je lepsie dostat sem nie len crsc string ale cely objekt a necitat to z neho
                 DATABASE.DTO.CrScProperties crscProp = DATABASE.CSectionManager.GetSectionProperties(crsc); // Load cross-section properties
-
                 if (crscProp.IsBuiltUp == true)
                 {
                     string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge + "g" + " teks@" + (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
                     cell.AddParagraph(sScrewsDescrtiption);
                 }
 
-
                 cell = row.Cells[1];                
-                cell.AddImage(ConfigurationManager.AppSettings[crsc]);
-
+                MigraDoc.DocumentObjectModel.Shapes.Image img = cell.AddImage(ConfigurationManager.AppSettings[crsc]);
+                img.Width = width;
+                img.Height = height;
             }
 
             table.SetEdge(0, 0, 2, list_crsc.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
