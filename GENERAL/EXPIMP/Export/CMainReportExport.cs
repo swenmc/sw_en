@@ -63,21 +63,21 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            //DrawModel3D(s_document, modelData);
+            DrawModel3D(s_document, modelData);
 
             DrawModelViews(s_document, modelData);
 
-            //DrawJointTypes(s_document, modelData);
+            DrawJointTypes(s_document, modelData);
 
-            //DrawFootingTypes(s_document, modelData);
+            DrawFootingTypes(s_document, modelData);
 
-            //DrawFloorDetails(s_document, modelData);
+            DrawFloorDetails(s_document, modelData);
 
-            //DrawStandardDetails(s_document, modelData); // To Ondrej - for review
+            DrawStandardDetails(s_document, modelData);
 
-            //AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -1284,13 +1284,22 @@ namespace EXPIMP
 
         private static void DrawCrscLegend(XGraphics gfx, CModel model, int x, int textWidth)
         {
+            List<string> list_crsc = GetCrscFromModel(model);
+
+            ////pokusy - zatial neviem velkost obrazku v tabulke zmenit
+            //Document doc = new Document();
+            //AddTableToDocument(doc, gfx, x - 200, 0, GetCRSC_Table(doc, model, list_crsc));
+            //return;
+
+
             int width = 100;
             int height = 76;
             int y = 20;
             int font_y = 20;
 
+
             XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
-            List<string> list_crsc = GetCrscFromModel(model);
+            
 
             foreach (string crsc in list_crsc)
             {
@@ -1320,6 +1329,61 @@ namespace EXPIMP
 
                 y += height;
             }
+        }
+        private static Table GetCRSC_Table(Document document, CModel model, List<string> list_crsc)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.LeftPadding = 5;
+            table.RightPadding = 5;
+            table.TopPadding = 1;
+            table.BottomPadding = 1;
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+            table.Format.Font.Size = fontSizeNormal;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(2));
+            column1.Format.Alignment = ParagraphAlignment.Left;
+            column1.Format.Font.Bold = true;
+            Column column2 = table.AddColumn(Unit.FromCentimeter(2));
+            column2.Format.Alignment = ParagraphAlignment.Center;
+
+            foreach (string crsc in list_crsc)
+            {
+                Row row = table.AddRow();
+                //row.Shading.Color = Colors.PaleGoldenrod;
+                Cell cell = row.Cells[0];
+                //cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
+
+
+                // List of member types
+                List<string> list_memberTypes = GetMemberTypesWithCrscFromModel(model, crsc);
+                foreach (string s in list_memberTypes)
+                {
+                    cell.AddParagraph(s);
+
+                }
+                // Cross-section name
+                cell.AddParagraph(crsc);
+
+                // TEK screws number, gauge and distance - TO Ondrej - mozem to nacitavat tu z databazy znova alebo je lepsie dostat sem nie len crsc string ale cely objekt a necitat to z neho
+                DATABASE.DTO.CrScProperties crscProp = DATABASE.CSectionManager.GetSectionProperties(crsc); // Load cross-section properties
+
+                if (crscProp.IsBuiltUp == true)
+                {
+                    string sScrewsDescrtiption = crscProp.iScrewsNumber + "/" + crscProp.iScrewsGauge + "g" + " teks@" + (crscProp.dScrewDistance * 1000).ToString("F0") + "c/c";
+                    cell.AddParagraph(sScrewsDescrtiption);
+                }
+
+
+                cell = row.Cells[1];                
+                cell.AddImage(ConfigurationManager.AppSettings[crsc]);
+
+            }
+
+            table.SetEdge(0, 0, 2, list_crsc.Count, Edge.Box, BorderStyle.Single, 1, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
         }
 
         private static void DrawNotes_Floor(XGraphics gfx, CModel model, int x, int y)
@@ -1807,6 +1871,21 @@ namespace EXPIMP
             docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
+        private static void AddTableToDocument(Document doc, XGraphics gfx, double offsetX, double offsetY, Table t)
+        {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            //gfx.MFEH = PdfFontEmbedding.Always;
+            
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);            
+        }
 
         private static void AddTitlePageContentTableToDocument(XGraphics gfx, List<string[]> tableParams)
         {
@@ -1871,6 +1950,9 @@ namespace EXPIMP
             sec.Add(table);
             return table;
         }
+
+        
+
 
         private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, int sheetNo, int issue)
         {
