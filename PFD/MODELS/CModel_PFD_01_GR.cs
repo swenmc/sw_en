@@ -815,7 +815,7 @@ namespace PFD
             foreach (CMember member in m_arrMembers)
             {
                 if (member.CrScStart.m_Mat is CMat_03_00)
-                    DATABASE.CMaterialManager.LoadMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
+                    DATABASE.CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)member.CrScStart.m_Mat, member.CrScStart.m_Mat.Name);
             }
             //------------------------------------------------------------
 

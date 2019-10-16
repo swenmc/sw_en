@@ -564,7 +564,7 @@ namespace PFD
             ComponentDetailsList = new List<CSectionPropertiesText>(ComponentDetailsList);
 
             // Material properties
-            List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList(cInfo.Material);
+            List<string> listMaterialPropertyValue = CMaterialManager.LoadSteelMaterialPropertiesStringList(cInfo.Material);
 
             for (int i = 0; i < MaterialDetailsList.Count; i++)
             {

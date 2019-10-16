@@ -95,6 +95,7 @@
     <Compile Include="CSectionManager.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
     <Compile Include="DTO\CBoltProperties.cs" />
+    <Compile Include="DTO\CMaterialProperties_RC.cs" />
     <Compile Include="DTO\CMatPropertiesBOLT.cs" />
     <Compile Include="DTO\CMeshProperties.cs" />
     <Compile Include="DTO\CPlate_B_Properties.cs" />

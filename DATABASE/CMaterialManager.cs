@@ -11,7 +11,7 @@ namespace DATABASE
     public static class CMaterialManager
     {
         // STEEL
-        public static Dictionary<string, CMatProperties> LoadMaterialProperties()
+        public static Dictionary<string, CMatProperties> LoadSteelMaterialProperties()
         {
             CMatProperties mat = null;
             Dictionary<string, CMatProperties> items = new Dictionary<string, CMatProperties>();
@@ -58,7 +58,7 @@ namespace DATABASE
             }
             return items;
         }
-        public static CMatProperties LoadMaterialProperties(string name)
+        public static CMatProperties LoadSteelMaterialProperties(string name)
         {
             CMatProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
@@ -94,7 +94,7 @@ namespace DATABASE
             }
             return materialTypes;
         }
-        public static CMatProperties LoadMaterialProperties(int ID)
+        public static CMatProperties LoadSteelMaterialProperties(int ID)
         {
             CMatProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
@@ -113,7 +113,7 @@ namespace DATABASE
             }
             return properties;
         }
-        public static CMaterialProperties LoadMaterialPropertiesString(string name)
+        public static CMaterialProperties LoadSteelMaterialPropertiesString(string name)
         {
             CMaterialProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
@@ -126,7 +126,7 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        properties = GetMaterialPropertiesString(reader);
+                        properties = GetSteelMaterialPropertiesString(reader);
                     }
                 }
             }
@@ -160,7 +160,7 @@ namespace DATABASE
             mat.Note = reader["note"].ToString();
             return mat;
         }
-        private static CMaterialProperties GetMaterialPropertiesString(SQLiteDataReader reader)
+        private static CMaterialProperties GetSteelMaterialPropertiesString(SQLiteDataReader reader)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -188,13 +188,13 @@ namespace DATABASE
             mat.Note = reader["note"].ToString();
             return mat;
         }
-        public static List<string> LoadMaterialPropertiesStringList(string name)
+        public static List<string> LoadSteelMaterialPropertiesStringList(string name)
         {
             CMaterialProperties properties = new CMaterialProperties();
-            properties = LoadMaterialPropertiesString(name);
-            return FillListOfMaterialPropertiesString(properties);
+            properties = LoadSteelMaterialPropertiesString(name);
+            return FillListOfSteelMaterialPropertiesString(properties);
         }
-        public static void LoadMaterialProperties(CMat_03_00 mat, string matName) // Grade
+        public static void LoadSteelMaterialProperties(CMat_03_00 mat, string matName) // Grade
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -211,12 +211,12 @@ namespace DATABASE
                     {
                         mat.Name = matName;
 
-                        SetMaterialProperties(reader, ref mat);
+                        SetSteelMaterialProperties(reader, ref mat);
                     }
                 }
             }
         }
-        private static void SetMaterialProperties(SQLiteDataReader reader, ref CMat_03_00 mat)
+        private static void SetSteelMaterialProperties(SQLiteDataReader reader, ref CMat_03_00 mat)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -288,7 +288,7 @@ namespace DATABASE
                 mat.m_ff_u[3] = float.Parse(reader["f_u4"].ToString(), nfi) * fFactorUnit_Stress;
             }
         }
-        public static void SetMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
+        public static void SetSteelMaterialProperties(CMatProperties properties, ref CMat_03_00 mat)
         {
             float fFactorUnit_Stress = 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
             float fFactorUnit_Thickness = 0.001f; // From mm to m
@@ -357,7 +357,7 @@ namespace DATABASE
                 mat.m_ff_u[3] = (float)properties.f_u4 * fFactorUnit_Stress;
             }
         }
-        private static List<string> FillListOfMaterialPropertiesString(CMaterialProperties properties)
+        private static List<string> FillListOfSteelMaterialPropertiesString(CMaterialProperties properties)
         {
             List<string> list = new List<string>();
             list.Add(properties.Standard);
@@ -384,6 +384,13 @@ namespace DATABASE
         }
 
         // CONCRETE
+        public static List<string> LoadMaterialPropertiesStringList_RC(string name)
+        {
+            CMaterialProperties_RC properties = new CMaterialProperties_RC();
+            properties = LoadMaterialPropertiesString_RC(name);
+            return FillListOfMaterialPropertiesString_RC(properties);
+        }
+
         private static CMatPropertiesRC GetMaterialProperties_RC(SQLiteDataReader reader)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -400,6 +407,44 @@ namespace DATABASE
             mat.Rho = reader["density_rho"].ToString() == "" ? double.NaN : double.Parse(reader["density_rho"].ToString(), nfi);
             mat.Alpha = reader["alpha"].ToString() == "" ? double.NaN : double.Parse(reader["alpha"].ToString(), nfi);
 
+            return mat;
+        }
+
+        public static CMaterialProperties_RC LoadMaterialPropertiesString_RC(string name)
+        {
+            CMaterialProperties_RC properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsRCSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from Concrete_NZS3101 WHERE Grade = @Grade", conn);
+                command.Parameters.AddWithValue("@Grade", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetMaterialPropertiesString_RC(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private static CMaterialProperties_RC GetMaterialPropertiesString_RC(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CMaterialProperties_RC mat = new CMaterialProperties_RC();
+            mat.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            mat.Standard = reader["Standard"].ToString();
+            mat.Grade = reader["Grade"].ToString();
+            //mat.E = reader["E"].ToString();
+            //mat.G = reader["G"].ToString();
+            mat.Nu = reader["poisson_ratio_nu"].ToString();
+            mat.Fc = reader["fc_cylinder_Pa"].ToString();
+            mat.Rho = reader["density_rho"].ToString();
+            mat.Alpha = reader["alpha"].ToString();
             return mat;
         }
 
@@ -442,6 +487,21 @@ namespace DATABASE
                 }
             }
             return properties;
+        }
+
+        private static List<string> FillListOfMaterialPropertiesString_RC(CMaterialProperties_RC properties)
+        {
+            List<string> list = new List<string>();
+            list.Add(properties.Standard);
+            list.Add(properties.Grade);
+            //list.Add(properties.E);
+            //list.Add(properties.G);
+            list.Add(properties.Nu);
+            list.Add(properties.Fc);
+            list.Add(properties.Rho);
+            list.Add(properties.Alpha);
+
+            return list;
         }
 
         // REINFORCEMENT

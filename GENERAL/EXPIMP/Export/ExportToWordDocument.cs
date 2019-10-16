@@ -127,6 +127,7 @@ namespace EXPIMP
 
         private static void DrawMaterial(DocX document, CModelData data)
         {
+            // Steel
             var diffMaterials = data.ComponentList.Select(c => c.Material).Distinct();
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[MaterialProperties]"));
             par.RemoveText(0);
@@ -135,7 +136,7 @@ namespace EXPIMP
                 par = par.InsertParagraphAfterSelf("Material grade: ").Bold().Append(material);
 
                 // Material properties
-                List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList(material);
+                List<string> listMaterialPropertyValue = CMaterialManager.LoadSteelMaterialPropertiesStringList(material);
 
                 for (int i = 0; i < data.MaterialDetailsList.Count; i++)
                 {
@@ -146,7 +147,32 @@ namespace EXPIMP
                 par = DrawMaterialTable(document, par, data.MaterialDetailsList);
             }
 
+            // Concrete (uvazovat z GUI - UC Footings alebo z objektov zakladu ???
+            var diffMaterialsConcrete = data.Model.m_arrFoundations.Select(c => c.m_Mat.Name).Distinct();
+
+            // TODO 376 - in Work
+            /*
+            if(diffMaterialsConcrete != null)
+            {
+                foreach (string material in diffMaterialsConcrete)
+                {
+                    par = par.InsertParagraphAfterSelf("Material grade: ").Bold().Append(material);
+
+                    // Material properties
+                    List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList_RC(material);
+
+                    for (int i = 0; i < data.MaterialDetailsList.Count; i++)
+                    {
+                        data.MaterialDetailsList[i].Value = listMaterialPropertyValue[i];
+                    }
+                    data.MaterialDetailsList = new List<CMaterialPropertiesText>(data.MaterialDetailsList);
+
+                    par = DrawMaterialTable(document, par, data.MaterialDetailsList);
+                }
+            }
+            */
         }
+
         // TO Ondrej - Moje uvahy o jednom bazovom rieseni pre tabulky :-)
 
         // Dalo by sa metodu DrawMaterialTable zobecnit tak, ze List<CMaterialPropertiesText> a List<CSectionPropertiesText>

@@ -622,7 +622,7 @@ namespace PFD
             {
                 if (m is CMat_03_00)
                 {
-                    CMaterialManager.LoadMaterialProperties((CMat_03_00)m, m.Name);
+                    CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)m, m.Name);
                 }
             }
         }
@@ -1681,8 +1681,6 @@ namespace PFD
             WaitWindow ww = new WaitWindow("DOC");
             ww.ContentRendered += DOC_WaitWindow_ContentRendered;
             ww.Show();
-
-            
         }
         private void DOC_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
