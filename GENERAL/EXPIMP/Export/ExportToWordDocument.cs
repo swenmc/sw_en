@@ -21,10 +21,10 @@ namespace EXPIMP
 {
     public static class ExportToWordDocument
     {
-        public enum EVIEWTYPE3D
+        public enum EViewType3D
         {
-            EMEMBER_CENTERLINES = 0,
-            EMEMBER_SOLID = 1,
+            MEMBER_CENTERLINES = 0,
+            MEMBER_SOLID = 1,
         }
 
         private const string resourcesFolderPath = "./../../Resources/";
@@ -43,8 +43,8 @@ namespace EXPIMP
                 document.ApplyTemplate(templatePath);
 
                 //DrawModel3DToDoc(document, viewPort);
-                DrawModel3DToDoc(document, modelData, EVIEWTYPE3D.EMEMBER_SOLID);
-                DrawModel3DToDoc(document, modelData, EVIEWTYPE3D.EMEMBER_CENTERLINES);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_SOLID);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES);
 
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
@@ -612,12 +612,12 @@ namespace EXPIMP
             p.InsertPageBreakAfterSelf();
         }
 
-        private static void DrawModel3DToDoc(DocX document, CModelData data, EVIEWTYPE3D eViewtype)
+        private static void DrawModel3DToDoc(DocX document, CModelData data, EViewType3D eViewtype)
         {
             string sParagraphName;
             string sImageName;
 
-            if(eViewtype == EVIEWTYPE3D.EMEMBER_CENTERLINES)
+            if(eViewtype == EViewType3D.MEMBER_CENTERLINES)
             {
                 sParagraphName = "[3DModelImage_MemberCenterlines]";
                 sImageName = "ViewPort2.png";
@@ -628,7 +628,7 @@ namespace EXPIMP
                 sImageName = "ViewPort1.png";
             }
 
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EVIEWTYPE3D.EMEMBER_CENTERLINES);
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES);
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
