@@ -196,7 +196,7 @@ namespace PFD
             {
                 if (m_MaterialDetailsList == null)
                 {
-                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits();
+                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits("MaterialsSQLiteDB");
                 }
                 return m_MaterialDetailsList;
             }

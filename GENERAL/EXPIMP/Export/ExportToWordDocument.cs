@@ -144,33 +144,34 @@ namespace EXPIMP
                 }
                 data.MaterialDetailsList = new List<CMaterialPropertiesText>(data.MaterialDetailsList);
 
-                par = DrawMaterialTable(document, par, data.MaterialDetailsList);
+                par = DrawMaterialTable(document, par, "steelcoil01.png", data.MaterialDetailsList);
             }
 
+            // TODO 376
             // Concrete (uvazovat z GUI - UC Footings alebo z objektov zakladu ???
             var diffMaterialsConcrete = data.Model.m_arrFoundations.Select(c => c.m_Mat.Name).Distinct();
 
-            // TODO 376 - in Work
-            /*
+            // TODO Ondrej - for review, moze sa refaktorovat so steel (tabulky podla toho kolko je roznych druhov ocele + tabulky podla toho kolko je roznych druhov betonu pre footing pads (len teoreticky, v praxi bude beton len jeden)
+            // Este by sa mohol pridat beton pre floor slab a steel pre plates, ale to asi zatial neriesime
+
             if(diffMaterialsConcrete != null)
             {
                 foreach (string material in diffMaterialsConcrete)
                 {
-                    par = par.InsertParagraphAfterSelf("Material grade: ").Bold().Append(material);
+                    par = par.InsertParagraphAfterSelf("Concrete material grade: ").Bold().Append(material);
 
                     // Material properties
                     List<string> listMaterialPropertyValue = CMaterialManager.LoadMaterialPropertiesStringList_RC(material);
 
-                    for (int i = 0; i < data.MaterialDetailsList.Count; i++)
+                    for (int i = 0; i < data.MaterialDetailsList_RC.Count; i++)
                     {
-                        data.MaterialDetailsList[i].Value = listMaterialPropertyValue[i];
+                        data.MaterialDetailsList_RC[i].Value = listMaterialPropertyValue[i];
                     }
-                    data.MaterialDetailsList = new List<CMaterialPropertiesText>(data.MaterialDetailsList);
+                    data.MaterialDetailsList_RC = new List<CMaterialPropertiesText>(data.MaterialDetailsList_RC);
 
-                    par = DrawMaterialTable(document, par, data.MaterialDetailsList);
+                    par = DrawMaterialTable(document, par, "concretecube01.png", data.MaterialDetailsList_RC);
                 }
             }
-            */
         }
 
         // TO Ondrej - Moje uvahy o jednom bazovom rieseni pre tabulky :-)
@@ -195,14 +196,15 @@ namespace EXPIMP
         // Samozrejme by to bolo nastavitelne podla sirky datagridu v GUI alebo sirky stranky A4 bez okrajov
         // Spolocne by sa riesili horne a dolne indexy a jednotky
 
-        private static Paragraph DrawMaterialTable(DocX document, Paragraph p, List<CMaterialPropertiesText> details)
+        private static Paragraph DrawMaterialTable(DocX document, Paragraph p, string pictureName, List<CMaterialPropertiesText> details)
         {
             var t = document.AddTable(1, 5);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
             t.AutoFit = AutoFit.Window;
 
-            var imagePath = $"{resourcesFolderPath}steelcoil01.png";
+            //var imagePath = $"{resourcesFolderPath}steelcoil01.png";
+            var imagePath = $"{resourcesFolderPath}" + pictureName;
             var picWidth = 250;
             var picHeight = 250;
             var image = document.AddImage(imagePath);

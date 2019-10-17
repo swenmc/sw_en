@@ -31,12 +31,12 @@ namespace DATABASE
             }
             return items;
         }
-        public static List<CMaterialPropertiesText> LoadMaterialPropertiesNamesSymbolsUnits()
+        public static List<CMaterialPropertiesText> LoadMaterialPropertiesNamesSymbolsUnits(string databaseName)
         {
             CMaterialPropertiesText properties;
             List<CMaterialPropertiesText> items = new List<CMaterialPropertiesText>();
 
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[databaseName/*"MaterialsSQLiteDB"*/].ConnectionString))
             {
                 conn.Open();
                 SQLiteCommand command = new SQLiteCommand("Select * from materialProperties", conn);
@@ -442,7 +442,8 @@ namespace DATABASE
             //mat.E = reader["E"].ToString();
             //mat.G = reader["G"].ToString();
             mat.Nu = reader["poisson_ratio_nu"].ToString();
-            mat.Fc = reader["fc_cylinder_Pa"].ToString();
+            // mat.Fc = reader["fc_cylinder_Pa"].ToString();
+            mat.Fc = (double.Parse(reader["fc_cylinder_Pa"].ToString(), nfi) / 1000000f).ToString(); // TODO zjednotit jednotky napatia pre steel a concrete
             mat.Rho = reader["density_rho"].ToString();
             mat.Alpha = reader["alpha"].ToString();
             return mat;

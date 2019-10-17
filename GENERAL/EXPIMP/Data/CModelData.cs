@@ -44,6 +44,7 @@ namespace EXPIMP
         private ObservableCollection<CComponentInfo> MComponentList;
         private List<CSectionPropertiesText> m_ComponentDetailsList;
         private List<CMaterialPropertiesText> m_MaterialDetailsList;
+        private List<CMaterialPropertiesText> m_MaterialDetailsList_RC;
 
         //Loads
         private string m_Location;
@@ -472,7 +473,7 @@ namespace EXPIMP
             {
                 if (m_MaterialDetailsList == null)
                 {
-                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits();
+                    m_MaterialDetailsList = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits("MaterialsSQLiteDB");
                 }
                 return m_MaterialDetailsList;
             }
@@ -480,6 +481,23 @@ namespace EXPIMP
             set
             {
                 m_MaterialDetailsList = value;
+            }
+        }
+
+        public List<CMaterialPropertiesText> MaterialDetailsList_RC
+        {
+            get
+            {
+                if (m_MaterialDetailsList_RC == null)
+                {
+                    m_MaterialDetailsList_RC = CMaterialManager.LoadMaterialPropertiesNamesSymbolsUnits("MaterialsRCSQLiteDB");
+                }
+                return m_MaterialDetailsList_RC;
+            }
+
+            set
+            {
+                m_MaterialDetailsList_RC = value;
             }
         }
 
