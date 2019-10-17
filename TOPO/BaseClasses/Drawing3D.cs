@@ -1793,7 +1793,7 @@ namespace BaseClasses
                 if (notOverlapingJoint == null) //not found
                 {
                     CConnectionJointTypes joint = joints.FirstOrDefault();
-                    int index = GetOverlapingSymbolIndex(symbolsPoints, joint.m_Node.GetPoint3D(), fMarkCircleDiameter);
+                    int index = GetOverlapingSymbolIndex(symbolsPoints, joint.m_Node.GetPoint3D(), minDist);
                     symbolsPoints.Add(joint.m_Node.GetPoint3D()); //add point from this joint
 
                     //try to change first overlaping symbol
