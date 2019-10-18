@@ -698,6 +698,16 @@
         DIVIDE = 4
     }
 
+    // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+    public enum EGlobalPlane
+    {
+        XY = 0,
+        YZ = 1,
+        XZ = 2,
+
+        UNDEFINED = -1
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions
@@ -1074,6 +1084,8 @@
         public float fBeta_z_TB_TFB_l_ez;
         public float fBeta_LTB_fl_LTB;
     }
+
+
 
 
     
