@@ -497,6 +497,21 @@ namespace BaseClasses.GraphObj
             //TO Mato - ty kokso ja som taky zmateny z toho ze koniec
             // tieto transformacie asi budem potrebovat vysvetlit,ze co sa tu vlastne deje
 
+            // TO Ondrej
+            /*
+            Tie parametre na ktore si sa pytal by mali zmanenat ci chcem kotu v pohlade kreslit nahor, nadol, nalavo, napravo od kotovanych bodov.
+            Mozno sa do da urobit aj automaticky smerom od stredu modelu.
+            Parameter Direction som tam nechal este z Tvojho kotu.Direction ma asi zmysel len,
+            ak je kota rovnobezna s niektorou osou, ak je kota v rovine pootocena tak asi nema zmysel.
+
+            Tieto rotacie nizie robia len to ze kotu v LCS tj rovine XY, main line v smere X a extension lines vykreslene v smere zapornej osi Y
+            rozne rotujem a otacam a preklapam, aby sa v GCS dostala na spravnu poziciu.
+
+            Myslim ze sa to da zjednodusit. Toto su len moje experimenty co som skusal
+            // Potrebujeme jasne zadefinovat vztah medzi osovym systemom koty a poziciou koty v GCS 
+            (tj. v akej ma byt rovine a z ktorej strany sa na nu pozerame, ci ma byt "nad, pod, vlavo, vpravo" od kotovanych bodov atd)
+            */
+
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();
             RotateTransform3D rotateZ = new RotateTransform3D();
