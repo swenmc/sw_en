@@ -121,7 +121,7 @@ namespace BaseClasses
                 sDisplayOptions.bCreateVerticalGridlinesLeft = false;
                 sDisplayOptions.bCreateVerticalGridlinesRight = false;
 
-                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
@@ -5594,8 +5594,8 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
             {
-                _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model);
-                _model.m_arrNodes = ModelHelper.GetRoofViewNodes(model);
+                _model.m_arrMembers = ModelHelper.GetRoofViewMembers(model).ToArray();
+                _model.m_arrNodes = ModelHelper.GetRoofViewNodes(model).ToArray();
                 _model.m_arrConnectionJoints = ModelHelper.GetRelatedJoints(model, _model.m_arrMembers);
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.MIDDLE_FRAME)

@@ -56,7 +56,7 @@ namespace BaseClasses.Helpers
         }
 
         // Roof
-        public static CMember[] GetRoofViewMembers(CModel model)
+        public static List<CMember> GetRoofViewMembers(CModel model)
         {
             List<CMember> members = new List<CMember>();
 
@@ -75,10 +75,10 @@ namespace BaseClasses.Helpers
                     )
                     members.Add(m);
             }
-            return members.ToArray();
+            return members;
         }
 
-        public static CNode[] GetRoofViewNodes(CModel model)
+        public static List<CNode> GetRoofViewNodes(CModel model)
         {
             List<CNode> nodes = new List<CNode>();
 
@@ -86,7 +86,7 @@ namespace BaseClasses.Helpers
             {
                 if (n.Z >= model.fH1_frame || MathF.d_equal(n.Z, model.fH1_frame)) nodes.Add(n);
             }
-            return nodes.ToArray();
+            return nodes;
         }
 
         // Columns
