@@ -16,15 +16,24 @@ namespace BaseClasses.GraphObj
         private Point3D m_PointEnd;
         private Point3D m_PointText;
 
-        private Point3D m_PointStartL2;
-        private Point3D m_PointEndL2;
-        private Point3D m_PointMainLine1;
-        private Point3D m_PointMainLine2;
+        //private Point3D m_PointStartL2;
+        //private Point3D m_PointEndL2;
 
-        private Vector3D m_Direction;
-        //private Vector3D m_Horizontal;
-        //private Vector3D m_Vertical;
-        private double m_ExtensionLinesLength;
+        private Point3D m_Point1_ExtensionLine1;
+        private Point3D m_Point2_ExtensionLine1;
+        private Point3D m_Point1_ExtensionLine2;
+        private Point3D m_Point2_ExtensionLine2;
+
+        private Point3D m_Point1_MainLine;
+        private Point3D m_Point2_MainLine;
+
+        private Vector3D m_Direction;        
+        //private double m_ExtensionLinesLength;
+        private double m_ExtensionLine1Length;
+        private double m_ExtensionLine2Length;
+        private double m_ExtensionLines_OffsetBehindMainLine;
+
+
         private double m_DimensionMainLineDistance;
 
         private double m_fOffSetFromPoint;
@@ -68,44 +77,18 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        //public Vector3D Horizontal
+        //public double DimensionLinesLength
         //{
         //    get
         //    {
-        //        return m_Horizontal;
+        //        return m_ExtensionLinesLength;
         //    }
 
         //    set
         //    {
-        //        m_Horizontal = value;
+        //        m_ExtensionLinesLength = value;
         //    }
         //}
-
-        //public Vector3D Vertical
-        //{
-        //    get
-        //    {
-        //        return m_Vertical;
-        //    }
-
-        //    set
-        //    {
-        //        m_Vertical = value;
-        //    }
-        //}
-
-        public double DimensionLinesLength
-        {
-            get
-            {
-                return m_ExtensionLinesLength;
-            }
-
-            set
-            {
-                m_ExtensionLinesLength = value;
-            }
-        }
 
         public double DimensionMainLineDistance
         {
@@ -159,42 +142,42 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Point3D PointStartL2
-        {
-            get
-            {
-                return m_PointStartL2;
-            }
+        //public Point3D PointStartL2
+        //{
+        //    get
+        //    {
+        //        return m_PointStartL2;
+        //    }
 
-            set
-            {
-                m_PointStartL2 = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_PointStartL2 = value;
+        //    }
+        //}
 
-        public Point3D PointEndL2
-        {
-            get
-            {
-                return m_PointEndL2;
-            }
+        //public Point3D PointEndL2
+        //{
+        //    get
+        //    {
+        //        return m_PointEndL2;
+        //    }
 
-            set
-            {
-                m_PointEndL2 = value;
-            }
-        }
+        //    set
+        //    {
+        //        m_PointEndL2 = value;
+        //    }
+        //}
 
         public Point3D PointMainLine1
         {
             get
             {
-                return m_PointMainLine1;
+                return m_Point1_MainLine;
             }
 
             set
             {
-                m_PointMainLine1 = value;
+                m_Point1_MainLine = value;
             }
         }
 
@@ -202,12 +185,12 @@ namespace BaseClasses.GraphObj
         {
             get
             {
-                return m_PointMainLine2;
+                return m_Point2_MainLine;
             }
 
             set
             {
-                m_PointMainLine2 = value;
+                m_Point2_MainLine = value;
             }
         }
 
@@ -302,6 +285,45 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        public double ExtensionLine1Length
+        {
+            get
+            {
+                return m_ExtensionLine1Length;
+            }
+
+            set
+            {
+                m_ExtensionLine1Length = value;
+            }
+        }
+
+        public double ExtensionLine2Length
+        {
+            get
+            {
+                return m_ExtensionLine2Length;
+            }
+
+            set
+            {
+                m_ExtensionLine2Length = value;
+            }
+        }
+
+        public double ExtensionLines_OffsetBehindMainLine
+        {
+            get
+            {
+                return m_ExtensionLines_OffsetBehindMainLine;
+            }
+
+            set
+            {
+                m_ExtensionLines_OffsetBehindMainLine = value;
+            }
+        }
+
         public Transform3DGroup TransformGr;
 
 
@@ -356,9 +378,7 @@ namespace BaseClasses.GraphObj
             // V system komponent viewer kotujeme aj skutocne dlzky aj tie priemety, ale priemety trosku klamem tym ze tam neposielam skutocne body ale take body/suradnice,
             // aby som ziskal kotu v smere osy
 
-            m_Direction = direction;
-            //m_Horizontal = textHorizontal;
-            //m_Vertical = textVertical;
+            m_Direction = direction;            
 
             // TO Ondrej - su by sme mohli vyrobit viacero moznosti a kombinacii:
             // zadavat fixnu dlzku extension line
@@ -369,19 +389,61 @@ namespace BaseClasses.GraphObj
             // V praxi vacsinou chceme, aby boli extension line rozne dlhe s fixnym odstupom od kotovaneho bodu
             // Moznost ze su extension line konstantnej dlzky a odsadenie je rozne je menej casta lebo ak je odsadenie velke tak nemusi byt jasne ktory bod kotujeme
 
-            m_ExtensionLinesLength = extensionLinesLength;
+            m_ExtensionLine1Length = extensionLinesLength;
+            m_ExtensionLine2Length = extensionLinesLength;
             m_DimensionMainLineDistance = dimensionMainLineDistance;
+            m_ExtensionLines_OffsetBehindMainLine = (extensionLinesLength - DimensionMainLineDistance);
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
             
             SetPoints();
 
-            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
             // Suradnica y main line
             m_DimensionMainLinePositionIncludingOffset = - (m_DimensionMainLineDistance + m_fOffSetFromPoint);
 
             SetTextPointInLCS(); // Text v LCS
         }
+
+
+        public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd,
+            Vector3D direction,
+            EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
+            int iVectorOfProjectionToHorizontalViewAxis_temp, // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
+            int iVectorOfProjectionToVerticalViewAxis_temp, // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
+            double extensionLine1Length,
+            double extensionLine2Length,
+            double fExtensionLine_OffsetBehindMainLine,
+            double fOffsetFromPoint,
+            string text,
+            bool textIsInside = false)  //default by mohol byt text vo vnutri  // true - text je medzi vynasacimi ciarami, false - text je na opacnej strane nez vynasacie ciary
+        {
+            m_PointStart = pointStart;
+            m_PointEnd = pointEnd;
+
+            bTextInside = textIsInside;
+            
+            m_GlobalPlane = globalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+            iVectorOfProjectionToHorizontalViewAxis = iVectorOfProjectionToHorizontalViewAxis_temp; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
+            iVectorOfProjectionToVerticalViewAxis = iVectorOfProjectionToVerticalViewAxis_temp; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
+
+            m_Direction = direction;
+
+            m_ExtensionLine1Length = extensionLine1Length;
+            m_ExtensionLine1Length = extensionLine2Length;
+            m_ExtensionLines_OffsetBehindMainLine = fExtensionLine_OffsetBehindMainLine;            
+            m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
+            m_Text = text;
+
+            SetPoints();
+
+            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
+            // Suradnica y main line
+            m_DimensionMainLinePositionIncludingOffset = -(m_DimensionMainLineDistance + m_fOffSetFromPoint);
+
+            SetTextPointInLCS(); // Text v LCS
+        }
+
 
         public void SetTextPointInLCS()
         {
@@ -418,33 +480,47 @@ namespace BaseClasses.GraphObj
         
         public void SetPoints()
         {
-            m_PointMainLine1 = new Point3D()
+            //m_Point1_MainLine = new Point3D()
+            //{
+            //    X = m_PointStart.X + Direction.X * DimensionMainLineDistance,
+            //    Y = m_PointStart.Y + Direction.Y * DimensionMainLineDistance,
+            //    Z = m_PointStart.Z + Direction.Z * DimensionMainLineDistance,
+            //};
+
+            //m_Point2_MainLine = new Point3D()
+            //{
+            //    X = m_PointEnd.X + Direction.X * DimensionMainLineDistance,
+            //    Y = m_PointEnd.Y + Direction.Y * DimensionMainLineDistance,
+            //    Z = m_PointEnd.Z + Direction.Z * DimensionMainLineDistance,
+            //};
+
+            m_Point1_MainLine = new Point3D()
             {
-                X = m_PointStart.X + Direction.X * DimensionMainLineDistance,
-                Y = m_PointStart.Y + Direction.Y * DimensionMainLineDistance,
-                Z = m_PointStart.Z + Direction.Z * DimensionMainLineDistance,
+                X = m_PointStart.X + Direction.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointStart.Y + Direction.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointStart.Z + Direction.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
             };
 
-            m_PointMainLine2 = new Point3D()
+            m_Point2_MainLine = new Point3D()
             {
-                X = m_PointEnd.X + Direction.X * DimensionMainLineDistance,
-                Y = m_PointEnd.Y + Direction.Y * DimensionMainLineDistance,
-                Z = m_PointEnd.Z + Direction.Z * DimensionMainLineDistance,
+                X = m_PointEnd.X + Direction.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
             };
 
-            m_PointStartL2 = new Point3D()
-            {
-                X = m_PointStart.X + Direction.X * DimensionLinesLength,
-                Y = m_PointStart.Y + Direction.Y * DimensionLinesLength,
-                Z = m_PointStart.Z + Direction.Z * DimensionLinesLength,
-            };
+            //m_PointStartL2 = new Point3D()
+            //{
+            //    X = m_PointStart.X + Direction.X * DimensionLinesLength,
+            //    Y = m_PointStart.Y + Direction.Y * DimensionLinesLength,
+            //    Z = m_PointStart.Z + Direction.Z * DimensionLinesLength,
+            //};
 
-            m_PointEndL2 = new Point3D()
-            {
-                X = m_PointEnd.X + Direction.X * DimensionLinesLength,
-                Y = m_PointEnd.Y + Direction.Y * DimensionLinesLength,
-                Z = m_PointEnd.Z + Direction.Z * DimensionLinesLength,
-            };
+            //m_PointEndL2 = new Point3D()
+            //{
+            //    X = m_PointEnd.X + Direction.X * DimensionLinesLength,
+            //    Y = m_PointEnd.Y + Direction.Y * DimensionLinesLength,
+            //    Z = m_PointEnd.Z + Direction.Z * DimensionLinesLength,
+            //};
         }
         
         public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color, float fLineCylinderRadius)
@@ -453,9 +529,9 @@ namespace BaseClasses.GraphObj
             // TEXT by som kreslil v LCS koty do roviny XY a potom ho otacal s kotou (system potom mozeme pouzit aj pre popisy prutov, staci vyplnut zobrazenie koty a ostane len text)
 
             Model3DGroup model_gr = new Model3DGroup();
-            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color)); // TODO Ondrej - urobit nastavitelnu hrubku a farbu kotovacich ciar (Okno options pre zobrazenie v GUI a pre Export)
+            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
-            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_PointMainLine2.X - m_PointMainLine1.X, 2f) + (float)Math.Pow(m_PointMainLine2.Y - m_PointMainLine1.Y, 2f) + (float)Math.Pow(m_PointMainLine2.Z - m_PointMainLine1.Z, 2f));
+            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
             
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line
@@ -475,11 +551,11 @@ namespace BaseClasses.GraphObj
             short NumberOfCirclePoints = 16 + 1; // Toto by malo byt rovnake ako u arrow, je potrebne to zjednotit, pridany jeden bod pre stred
 
             // TO Ondrej - toto treba prerobit, ja kreslim tuto kotu v rovine XY a potom ju chcem otacat a presuvat podla potreby
-            float fExtensionLine1_Length = (float)DimensionLinesLength;
-            float fExtensionLine2_Length = (float)DimensionLinesLength;
+            float fExtensionLine1_Length = (float)ExtensionLine1Length;
+            float fExtensionLine2_Length = (float)ExtensionLine2Length;
 
-            float fExtensionLine1_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
-            float fExtensionLine2_OffsetBehindMainLine = (float)(DimensionLinesLength - DimensionMainLineDistance);
+            float fExtensionLine1_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
+            float fExtensionLine2_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
 
             // Extension line 1 (start)            
             model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));

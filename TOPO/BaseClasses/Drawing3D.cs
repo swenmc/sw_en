@@ -609,8 +609,10 @@ namespace BaseClasses
 
                 CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
                     /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ 0.5, 0.4, 0.15, "pokus");
+                CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
+                     0.4, 1.8, 0.15, 0.15, "pokus 2", true);
 
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3 };
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA4 };
 
                 DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
             }
@@ -2667,7 +2669,8 @@ namespace BaseClasses
 
             foreach (CDimensionLinear3D dimension in dimensions)
             {
-                dimension.DimensionLinesLength *= scale;
+                dimension.ExtensionLine1Length *= scale;
+                dimension.ExtensionLine2Length *= scale;
                 dimension.DimensionMainLineDistance *= scale;
                 dimension.DimensionMainLinePositionIncludingOffset *= scale;
                 dimension.OffSetFromPoint *= scale;
@@ -3871,96 +3874,96 @@ namespace BaseClasses
         }
 
         // Draw Dimension 3D
-        public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
-        {
-            TextBlock tb = new TextBlock();
-            tb.Text = dimension.Text;
-            tb.FontFamily = new FontFamily("Arial");
-            //float fTextBlockVerticalSize = 0.1f;
-            //float fTextBlockVerticalSizeFactor = 0.8f;
-            //float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
-            float fTextBlockVerticalSizeFactor = 1f;
-            float fTextBlockHorizontalSizeFactor = 1f;
+        //public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
+        //{
+        //    TextBlock tb = new TextBlock();
+        //    tb.Text = dimension.Text;
+        //    tb.FontFamily = new FontFamily("Arial");
+        //    //float fTextBlockVerticalSize = 0.1f;
+        //    //float fTextBlockVerticalSizeFactor = 0.8f;
+        //    //float fTextBlockHorizontalSizeFactor = 0.3f;
+        //    float fTextBlockVerticalSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 80f;
+        //    float fTextBlockVerticalSizeFactor = 1f;
+        //    float fTextBlockHorizontalSizeFactor = 1f;
 
-            tb.FontStretch = FontStretches.UltraCondensed;
-            tb.FontStyle = FontStyles.Normal;
-            tb.FontWeight = FontWeights.Thin;
-            tb.Foreground = Brushes.Coral;
-            //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
-            Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
-            Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
+        //    tb.FontStretch = FontStretches.UltraCondensed;
+        //    tb.FontStyle = FontStyles.Normal;
+        //    tb.FontWeight = FontWeights.Thin;
+        //    tb.Foreground = Brushes.Coral;
+        //    //tb.Background = new SolidColorBrush(displayOptions.backgroundColor);
+        //    Vector3D over = new Vector3D(0, fTextBlockHorizontalSizeFactor, 0);
+        //    Vector3D up = new Vector3D(0, 0, fTextBlockVerticalSizeFactor);
 
-            SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
-            // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
+        //    SetLabelsUpAndOverVectors(displayOptions, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, out over, out up);
+        //    // Create text
+        //    ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up);
 
-            if (centerModel)
-            {
-                textlabel.Transform = centerModelTransGr;
-            }
-            viewPort.Children.Add(textlabel);
+        //    if (centerModel)
+        //    {
+        //        textlabel.Transform = centerModelTransGr;
+        //    }
+        //    viewPort.Children.Add(textlabel);
 
-            // LINES
+        //    // LINES
 
-            float flineThickness = 4;
+        //    float flineThickness = 4;
 
-            //WireLine wL1 = new WireLine();
-            //wL1.Point1 = dimension.PointStart;
-            //wL1.Point2 = dimension.PointStartL2;
-            //wL1.Thickness = flineThickness;
-            //wL1.Color = dimensionColor;
+        //    //WireLine wL1 = new WireLine();
+        //    //wL1.Point1 = dimension.PointStart;
+        //    //wL1.Point2 = dimension.PointStartL2;
+        //    //wL1.Thickness = flineThickness;
+        //    //wL1.Color = dimensionColor;
 
-            //WireLine wL2 = new WireLine();
-            //wL2.Point1 = dimension.PointEnd;
-            //wL2.Point2 = dimension.PointEndL2;
-            //wL2.Thickness = flineThickness;
-            //wL2.Color = dimensionColor;
+        //    //WireLine wL2 = new WireLine();
+        //    //wL2.Point1 = dimension.PointEnd;
+        //    //wL2.Point2 = dimension.PointEndL2;
+        //    //wL2.Thickness = flineThickness;
+        //    //wL2.Color = dimensionColor;
 
-            //WireLine wMain = new WireLine();
-            //wMain.Point1 = dimension.PointMainLine1;
-            //wMain.Point2 = dimension.PointMainLine2;
-            //wMain.Thickness = flineThickness;
-            //wMain.Color = dimensionColor;
+        //    //WireLine wMain = new WireLine();
+        //    //wMain.Point1 = dimension.PointMainLine1;
+        //    //wMain.Point2 = dimension.PointMainLine2;
+        //    //wMain.Thickness = flineThickness;
+        //    //wMain.Color = dimensionColor;
 
-            //LinesVisual3D wL1 = new LinesVisual3D();
-            //LinesVisual3D wL2 = new LinesVisual3D();
-            //LinesVisual3D wMain = new LinesVisual3D();
+        //    //LinesVisual3D wL1 = new LinesVisual3D();
+        //    //LinesVisual3D wL2 = new LinesVisual3D();
+        //    //LinesVisual3D wMain = new LinesVisual3D();
 
-            ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
-            wL1.Points.Add(dimension.PointStart);
-            wL1.Points.Add(dimension.PointStartL2);
-            wL1.Color = displayOptions.DimensionLineColor;
-            wL1.Thickness = flineThickness;
+        //    ScreenSpaceLines3D wL1 = new ScreenSpaceLines3D();
+        //    ScreenSpaceLines3D wL2 = new ScreenSpaceLines3D();
+        //    ScreenSpaceLines3D wMain = new ScreenSpaceLines3D();
+        //    wL1.Points.Add(dimension.PointStart);
+        //    wL1.Points.Add(dimension.PointStartL2);
+        //    wL1.Color = displayOptions.DimensionLineColor;
+        //    wL1.Thickness = flineThickness;
 
-            wL2.Points.Add(dimension.PointEnd);
-            wL2.Points.Add(dimension.PointEndL2);
-            wL2.Color = displayOptions.DimensionLineColor;
-            wL2.Thickness = flineThickness;
+        //    wL2.Points.Add(dimension.PointEnd);
+        //    wL2.Points.Add(dimension.PointEndL2);
+        //    wL2.Color = displayOptions.DimensionLineColor;
+        //    wL2.Thickness = flineThickness;
 
-            wMain.Points.Add(dimension.PointMainLine1);
-            wMain.Points.Add(dimension.PointMainLine2);
-            wMain.Color = displayOptions.DimensionLineColor;
-            wMain.Thickness = flineThickness;
+        //    wMain.Points.Add(dimension.PointMainLine1);
+        //    wMain.Points.Add(dimension.PointMainLine2);
+        //    wMain.Color = displayOptions.DimensionLineColor;
+        //    wMain.Thickness = flineThickness;
 
-            if (centerModel)
-            {
-                wL1.Transform = centerModelTransGr;
-                wL2.Transform = centerModelTransGr;
-                wMain.Transform = centerModelTransGr;
-            }
+        //    if (centerModel)
+        //    {
+        //        wL1.Transform = centerModelTransGr;
+        //        wL2.Transform = centerModelTransGr;
+        //        wMain.Transform = centerModelTransGr;
+        //    }
 
-            viewPort.Children.Add(wL1);
-            viewPort.Children.Add(wL2);
-            viewPort.Children.Add(wMain);
-            //viewPort.UpdateLayout();
-            wL1.Rescale();
-            wL2.Rescale();
-            wMain.Rescale();
-            //viewPort.UpdateLayout();
-        }
+        //    viewPort.Children.Add(wL1);
+        //    viewPort.Children.Add(wL2);
+        //    viewPort.Children.Add(wMain);
+        //    //viewPort.UpdateLayout();
+        //    wL1.Rescale();
+        //    wL2.Rescale();
+        //    wMain.Rescale();
+        //    //viewPort.UpdateLayout();
+        //}
 
         // Draw Grid Line Label Text 3D
         public static void DrawGridLineLabelText3D(CGridLine gridline, Viewport3D viewPort, DisplayOptions displayOptions)
