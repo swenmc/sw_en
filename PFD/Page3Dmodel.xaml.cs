@@ -29,44 +29,38 @@ namespace PFD
 
             InitializeComponent();
 
-            bool bCreateHorizontalGridlines = false; // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bool bCreateVerticalGridlinesFront = false;
-            bool bCreateVerticalGridlinesBack = false;
-            bool bCreateVerticalGridlinesLeft = false;
-            bool bCreateVerticalGridlinesRight = false;
+            sDisplayOptions.bCreateHorizontalGridlines = false;
+            sDisplayOptions.bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.bCreateVerticalGridlinesRight = false;
 
             if (sDisplayOptions.ModelView == (int)EModelViews.BACK)
             {
-                bCreateVerticalGridlinesBack = true;
+                sDisplayOptions.bCreateVerticalGridlinesBack = true;
             }
             else if (sDisplayOptions.ModelView == (int)EModelViews.LEFT)
             {
-                bCreateVerticalGridlinesLeft = true;
+                sDisplayOptions.bCreateVerticalGridlinesLeft = true;
             }
             else if (sDisplayOptions.ModelView == (int)EModelViews.RIGHT)
             {
-                bCreateVerticalGridlinesRight = true;
+                sDisplayOptions.bCreateVerticalGridlinesRight = true;
             }
             else if (sDisplayOptions.ModelView == (int)EModelViews.TOP)
             {
-                bCreateHorizontalGridlines = true;
+                sDisplayOptions.bCreateHorizontalGridlines = true;
             }
             else if (sDisplayOptions.ModelView == (int)EModelViews.FRONT) // Front
             {
-                bCreateVerticalGridlinesFront = true;
+                sDisplayOptions.bCreateVerticalGridlinesFront = true;
             }
             else
             {
-                bCreateHorizontalGridlines = true;
+                sDisplayOptions.bCreateHorizontalGridlines = true;
             }
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions,
-                        bCreateHorizontalGridlines,
-                        bCreateVerticalGridlinesFront,
-                        bCreateVerticalGridlinesBack,
-                        bCreateVerticalGridlinesLeft,
-                        bCreateVerticalGridlinesRight,
-                        loadcase, jointsDict);
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
@@ -74,12 +68,18 @@ namespace PFD
 
             InitializeComponent();
 
-            if(modelType == EModelType.eJoint)
+            sDisplayOptions.bCreateHorizontalGridlines = true;
+            sDisplayOptions.bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+
+            if (modelType == EModelType.eJoint)
                 Drawing3D.DrawJointToTrackPort(_trackport, model, sDisplayOptions);
             else if(modelType == EModelType.eFooting)
                 Drawing3D.DrawFootingToTrackPort(_trackport, model, sDisplayOptions);
             else
-                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, true, false, false, false, false, null, null);
+                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
         }
 
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)

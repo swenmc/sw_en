@@ -1475,13 +1475,7 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions,
-                    bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-                    bool bCreateVerticalGridlinesFront,
-                    bool bCreateVerticalGridlinesBack,
-                    bool bCreateVerticalGridlinesLeft,
-                    bool bCreateVerticalGridlinesRight, 
-                    CModelData modelData, out CModel filteredModel, out Trackport3D _trackport, double width = 1400, double height = 1000)
+        public static Viewport3D GetBaseModelViewPort(DisplayOptions sDisplayOptions, CModelData modelData, out CModel filteredModel, out Trackport3D _trackport, double width = 1400, double height = 1000)
         {
             _trackport = new Trackport3D();
             _trackport.Background = new SolidColorBrush(sDisplayOptions.backgroundColor);
@@ -1497,13 +1491,7 @@ namespace EXPIMP
             //_trackport.ViewPort.Arrange(new Rect(size));
             //_trackport.ViewPort.UpdateLayout();
 
-            filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, sDisplayOptions,
-            bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bCreateVerticalGridlinesFront,
-            bCreateVerticalGridlinesBack,
-            bCreateVerticalGridlinesLeft,
-            bCreateVerticalGridlinesRight,
-            null, modelData.JointsDict);
+            filteredModel = Drawing3D.DrawToTrackPort(_trackport, modelData.Model, sDisplayOptions, null, modelData.JointsDict);
 
             //todo skusit refaktorovat Trackport3D a vyrobit mu nejaku dispose metodu na uvolennei pamate
             //pripadne skusit stale pouzivat jeden Trackport napriec celym exportom a len mu mazat model a viewport
@@ -1548,7 +1536,13 @@ namespace EXPIMP
             opts.bDisplaySectionSymbols = false;
             opts.bDisplayDetailSymbols = false;
 
-            if(bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
+            opts.bCreateHorizontalGridlines = true;
+            opts.bCreateVerticalGridlinesFront = false;
+            opts.bCreateVerticalGridlinesBack = false;
+            opts.bCreateVerticalGridlinesLeft = false;
+            opts.bCreateVerticalGridlinesRight = false;
+
+            if (bCenterLinesMemberModelAndIDs) // Prenastavujeme hodnoty pre centerline model a zobrazene member IDs
             {
                 opts.bDisplaySolidModel = false;
                 opts.bDisplayMembersCenterLines = true;

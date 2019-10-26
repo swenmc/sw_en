@@ -26,42 +26,16 @@ namespace BaseClasses
 
 
         #region DrawToTrackPort methods
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
-            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bool bCreateVerticalGridlinesFront,
-            bool bCreateVerticalGridlinesBack,
-            bool bCreateVerticalGridlinesLeft,
-            bool bCreateVerticalGridlinesRight)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions,
-            bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bCreateVerticalGridlinesFront,
-            bCreateVerticalGridlinesBack,
-            bCreateVerticalGridlinesLeft,
-            bCreateVerticalGridlinesRight, null, null);
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions, null, null);
         }
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
-            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bool bCreateVerticalGridlinesFront,
-            bool bCreateVerticalGridlinesBack,
-            bool bCreateVerticalGridlinesLeft,
-            bool bCreateVerticalGridlinesRight, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions,
-            bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bCreateVerticalGridlinesFront,
-            bCreateVerticalGridlinesBack,
-            bCreateVerticalGridlinesLeft,
-            bCreateVerticalGridlinesRight,
-            loadcase, null);
+            return DrawToTrackPort(_trackport, _model, sDisplayOptions, loadcase, null);
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
-            bool bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-            bool bCreateVerticalGridlinesFront,
-            bool bCreateVerticalGridlinesBack,
-            bool bCreateVerticalGridlinesLeft,
-            bool bCreateVerticalGridlinesRight,
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,            
             CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             CModel model = null;
@@ -141,13 +115,13 @@ namespace BaseClasses
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
 
-                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr,
-                    bCreateHorizontalGridlines, // TO Ondrej - nie som si isty kde by toto malo byt, nie su to typicke display options, ale "natvrdo" gridlines podla toho ktory pohlad exportujeme
-                    bCreateVerticalGridlinesFront,
-                    bCreateVerticalGridlinesBack,
-                    bCreateVerticalGridlinesLeft,
-                    bCreateVerticalGridlinesRight
-                    );
+                sDisplayOptions.bCreateHorizontalGridlines = true;
+                sDisplayOptions.bCreateVerticalGridlinesFront = false;
+                sDisplayOptions.bCreateVerticalGridlinesBack = false;
+                sDisplayOptions.bCreateVerticalGridlinesLeft = false;
+                sDisplayOptions.bCreateVerticalGridlinesRight = false;
+
+                DrawGridlinesToTrackport(_trackport, sDisplayOptions, model, gr);
 
                 DrawSectionSymbolsToTrackport(_trackport, sDisplayOptions, model, gr);
 
@@ -1415,13 +1389,7 @@ namespace BaseClasses
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 
-        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr,
-             bool bCreateHorizontalGridlines = true,
-             bool bCreateVerticalGridlinesFront = false,
-             bool bCreateVerticalGridlinesBack = false,
-             bool bCreateVerticalGridlinesLeft = false,
-             bool bCreateVerticalGridlinesRight = false
-            )
+        private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
         {
             Model3DGroup gridlines3DGroup = null;
 
@@ -1437,7 +1405,7 @@ namespace BaseClasses
                 labelsY.Add(letter);
             }
 
-            if (bCreateHorizontalGridlines)
+            if (sDisplayOptions.bCreateHorizontalGridlines)
             {
                 float fOffset = 0.5f;
                 float fOffsetBehind = 0.3f;
@@ -1473,7 +1441,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bCreateVerticalGridlinesFront)
+            if (sDisplayOptions.bCreateVerticalGridlinesFront)
             {
                 float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
@@ -1491,7 +1459,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bCreateVerticalGridlinesBack)
+            if (sDisplayOptions.bCreateVerticalGridlinesBack)
             {
                 float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
@@ -1509,7 +1477,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bCreateVerticalGridlinesLeft)
+            if (sDisplayOptions.bCreateVerticalGridlinesLeft)
             {
                 float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;
@@ -1527,7 +1495,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bCreateVerticalGridlinesRight)
+            if (sDisplayOptions.bCreateVerticalGridlinesRight)
             {
                 float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
                 float fOffsetBottom = 0.3f;

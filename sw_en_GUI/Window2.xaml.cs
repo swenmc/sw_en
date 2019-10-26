@@ -69,7 +69,12 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, true, false, false, false, false, null);
+            sDisplayOptions.bCreateHorizontalGridlines = true;
+            sDisplayOptions.bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null);
         }
 
         public Window2(CModel cmodel, DisplayOptions sDisplayOptions_temp, CLoadCase loadCaseToDisplay, bool bDebugging_temp)
@@ -79,7 +84,12 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, true, false, false, false, false, loadCaseToDisplay);
+            sDisplayOptions.bCreateHorizontalGridlines = true;
+            sDisplayOptions.bCreateVerticalGridlinesFront = false;
+            sDisplayOptions.bCreateVerticalGridlinesBack = false;
+            sDisplayOptions.bCreateVerticalGridlinesLeft = false;
+            sDisplayOptions.bCreateVerticalGridlinesRight = false;
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, loadCaseToDisplay);
         }
     }
 }

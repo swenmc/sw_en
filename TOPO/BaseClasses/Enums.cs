@@ -860,6 +860,12 @@
         public float fFoundationSolidModelOpacity;
         public float fReinforcementBarSolidModelOpacity;
         public float fFloorSlabSolidModelOpacity;
+
+        public bool bCreateHorizontalGridlines; 
+        public bool bCreateVerticalGridlinesFront;
+        public bool bCreateVerticalGridlinesBack;
+        public bool bCreateVerticalGridlinesLeft;
+        public bool bCreateVerticalGridlinesRight;
     }
 
     public struct BuildingDataInput

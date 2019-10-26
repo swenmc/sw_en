@@ -631,10 +631,15 @@ namespace EXPIMP
             }
 
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES);
+            opts.bCreateHorizontalGridlines = false;
+            opts.bCreateVerticalGridlinesFront = false;
+            opts.bCreateVerticalGridlinesBack = false;
+            opts.bCreateVerticalGridlinesLeft = false;
+            opts.bCreateVerticalGridlinesRight = false;
 
             CModel filteredModel = null;
-            Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, false, false, false, false, false, data, out filteredModel, out trackport);
+            Trackport3D trackport = null;            
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));
