@@ -405,7 +405,6 @@ namespace BaseClasses.GraphObj
             SetTextPointInLCS(); // Text v LCS
         }
 
-
         public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd,
             Vector3D direction,
             EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
@@ -431,19 +430,20 @@ namespace BaseClasses.GraphObj
 
             m_ExtensionLine1Length = extensionLine1Length;
             m_ExtensionLine1Length = extensionLine2Length;
-            m_ExtensionLines_OffsetBehindMainLine = fExtensionLine_OffsetBehindMainLine;            
+            m_ExtensionLines_OffsetBehindMainLine = fExtensionLine_OffsetBehindMainLine;
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
 
-            SetPoints2();
+            //SetPoints2();
+            //m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
 
-            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
+            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(pointEnd.X - pointStart.X, 2f) + (float)Math.Pow(pointEnd.Y - pointStart.Y, 2f) + (float)Math.Pow(pointEnd.Z - pointStart.Z, 2f));
+            SetPoints3_inLCS();
             // Suradnica y main line
             m_DimensionMainLinePositionIncludingOffset = -(m_DimensionMainLineDistance + m_fOffSetFromPoint);
 
             SetTextPointInLCS(); // Text v LCS
         }
-
 
         public void SetTextPointInLCS()
         {
@@ -576,6 +576,62 @@ namespace BaseClasses.GraphObj
                 X = m_PointEnd.X + Direction.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
                 Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
                 Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+            };
+        }
+
+        public void SetPoints3_inLCS()
+        {
+            // Body koty v LCS, rovina XY, main line sa kresli v smere +X, extension lines sa kreslia v smere -Y
+            // Origin je v pA [0,0,0] - LCS coordinates
+
+            // pA                         pE
+            // * LCS plane XY [0,0,0]     * [mainLineLength, 0, 0]
+            //
+            // EL1_P1                     EL2_P1
+            // |                          |
+            // |                          |
+            // |  ML_P1    value          |  ML_P2
+            // |/________________________\|
+            // |\                        /|
+            // EL1_P2                      EL2_P2
+
+            m_Point1_ExtensionLine1 = new Point3D()
+            {
+                X = 0,
+                Y = -OffSetFromPoint,
+                Z = 0,
+            };
+            m_Point2_ExtensionLine1 = new Point3D()
+            {
+                X = 0,
+                Y = - OffSetFromPoint - ExtensionLine1Length,
+                Z = 0,
+            };
+
+            m_Point1_ExtensionLine2 = new Point3D()
+            {
+                X = m_fMainLineLength,
+                Y = -OffSetFromPoint,
+                Z = 0,
+            };
+            m_Point2_ExtensionLine2 = new Point3D()
+            {
+                X = m_fMainLineLength,
+                Y = -OffSetFromPoint - ExtensionLine2Length,
+                Z = 0,
+            };
+
+            m_Point1_MainLine = new Point3D()
+            {
+                X = 0,
+                Y = -OffSetFromPoint - ExtensionLine1Length + ExtensionLines_OffsetBehindMainLine,
+                Z = 0,
+            };
+            m_Point2_MainLine = new Point3D()
+            {
+                X = m_fMainLineLength,
+                Y = -OffSetFromPoint - ExtensionLine2Length + ExtensionLines_OffsetBehindMainLine,
+                Z = 0,
             };
         }
 
