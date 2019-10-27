@@ -435,7 +435,7 @@ namespace BaseClasses.GraphObj
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
 
-            SetPoints();
+            SetPoints2();
 
             m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
             // Suradnica y main line
@@ -522,7 +522,52 @@ namespace BaseClasses.GraphObj
             //    Z = m_PointEnd.Z + Direction.Z * DimensionLinesLength,
             //};
         }
-        
+        public void SetPoints2()
+        {
+            m_Point1_ExtensionLine1 = new Point3D()
+            {
+                X = m_PointStart.X + Direction.X * (OffSetFromPoint),
+                Y = m_PointStart.Y + Direction.Y * (OffSetFromPoint),
+                Z = m_PointStart.Z + Direction.Z * (OffSetFromPoint),
+            };
+            m_Point2_ExtensionLine1 = new Point3D()
+            {
+                X = m_PointStart.X + Direction.X * (OffSetFromPoint + ExtensionLine1Length),
+                Y = m_PointStart.Y + Direction.Y * (OffSetFromPoint + ExtensionLine1Length),
+                Z = m_PointStart.Z + Direction.Z * (OffSetFromPoint + ExtensionLine1Length),
+            };
+
+            m_Point1_ExtensionLine2 = new Point3D()
+            {
+                X = m_PointEnd.X + Direction.X * (OffSetFromPoint),
+                Y = m_PointEnd.Y + Direction.Y * (OffSetFromPoint),
+                Z = m_PointEnd.Z + Direction.Z * (OffSetFromPoint),
+            };
+            m_Point2_ExtensionLine2 = new Point3D()
+            {
+                X = m_PointEnd.X + Direction.X * (OffSetFromPoint + ExtensionLine2Length),
+                Y = m_PointEnd.Y + Direction.Y * (OffSetFromPoint + ExtensionLine2Length),
+                Z = m_PointEnd.Z + Direction.Z * (OffSetFromPoint + ExtensionLine2Length),
+            };
+
+
+            m_Point1_MainLine = new Point3D()
+            {
+                X = m_PointStart.X + Direction.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointStart.Y + Direction.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointStart.Z + Direction.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+            };
+
+            m_Point2_MainLine = new Point3D()
+            {
+                X = m_PointEnd.X + Direction.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+            };
+
+            
+        }
+
         public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color, float fLineCylinderRadius)
         {
             // Zakladny model koty - hlavna kotovacia ciara - smer X, vynasacie ciary - smer Y
@@ -558,10 +603,12 @@ namespace BaseClasses.GraphObj
             float fExtensionLine2_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
 
             // Extension line 1 (start)            
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+            //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point1_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
             // Extension line 2 (end)
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, m_DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+            //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, m_DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point1_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
 
             // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, 
             // zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu

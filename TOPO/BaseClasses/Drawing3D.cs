@@ -2671,6 +2671,7 @@ namespace BaseClasses
             {
                 dimension.ExtensionLine1Length *= scale;
                 dimension.ExtensionLine2Length *= scale;
+                dimension.ExtensionLines_OffsetBehindMainLine *= scale;
                 dimension.DimensionMainLineDistance *= scale;
                 dimension.DimensionMainLinePositionIncludingOffset *= scale;
                 dimension.OffSetFromPoint *= scale;
