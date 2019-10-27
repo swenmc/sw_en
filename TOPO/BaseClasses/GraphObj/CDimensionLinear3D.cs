@@ -429,7 +429,7 @@ namespace BaseClasses.GraphObj
             m_Direction = direction;
 
             m_ExtensionLine1Length = extensionLine1Length;
-            m_ExtensionLine1Length = extensionLine2Length;
+            m_ExtensionLine2Length = extensionLine2Length;
             m_ExtensionLines_OffsetBehindMainLine = fExtensionLine_OffsetBehindMainLine;
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
