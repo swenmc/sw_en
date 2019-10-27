@@ -333,7 +333,7 @@ namespace BaseClasses.GraphObj
 
         public CDimensionLinear3D() { }
         public CDimensionLinear3D(Point3D pointStart,
-            Point3D pointEnd,            
+            Point3D pointEnd,
             Vector3D direction,
             EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
             int iVectorOfProjectionToHorizontalViewAxis_temp, // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
@@ -524,6 +524,19 @@ namespace BaseClasses.GraphObj
         }
         public void SetPoints2()
         {
+            // TO Ondrej - tu by som Ti poradil ujasnit, ci su pre vsetky body suradnice v GCS alebo v LCS
+            // Myslim ze by mali byt v LCS
+            // Vector Direction a vazbu na m_PointStart a m_PointEnd by som tu uplne zrusil
+
+            // pA                         pE
+            // * LCS plane XY [0,0,0]     * [mainLineLength, 0, 0]
+            //
+            // |                          |
+            // |                          |
+            // |           value          |
+            // |/________________________\|
+            // |\                        /|
+
             m_Point1_ExtensionLine1 = new Point3D()
             {
                 X = m_PointStart.X + Direction.X * (OffSetFromPoint),
@@ -564,8 +577,6 @@ namespace BaseClasses.GraphObj
                 Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
                 Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
             };
-
-            
         }
 
         public Model3DGroup GetDimensionModelNew(System.Windows.Media.Color color, float fLineCylinderRadius)
@@ -602,7 +613,7 @@ namespace BaseClasses.GraphObj
             float fExtensionLine1_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
             float fExtensionLine2_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
 
-            // Extension line 1 (start)            
+            // Extension line 1 (start)
             //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
             model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point1_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
