@@ -59,6 +59,19 @@ namespace BaseClasses.GraphObj.Objects_3D
             TransformArrowPointsToControlPoint();
         }
 
+        public GeometryModel3D GetModel3D(Material material)
+        {
+            GeometryModel3D model = new GeometryModel3D();
+            MeshGeometry3D mesh = new MeshGeometry3D();
+
+            mesh.Positions = ArrowPoints;
+            mesh.TriangleIndices = GetArrowIndices();
+            model.Geometry = mesh;
+            model.Material = material;
+
+            return model;
+        }
+
         float[,] GetCircleCoordinates(float fr)
         {
             float[,] fCirclePoints = new float[number_of_segments, 2];

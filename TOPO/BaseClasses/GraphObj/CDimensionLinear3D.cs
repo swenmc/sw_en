@@ -593,14 +593,7 @@ namespace BaseClasses.GraphObj
             // Main line
             // Default tip (cone height is 20% from length)
             Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new Point3D(0, DimensionMainLinePositionIncludingOffset,0), fMainLineLength, fLineCylinderRadius, 0, true);
-            GeometryModel3D model = new GeometryModel3D();
-            MeshGeometry3D mesh = new MeshGeometry3D();
-
-            mesh.Positions = arrow.ArrowPoints;
-            mesh.TriangleIndices = arrow.GetArrowIndices();
-            model.Geometry = mesh;
-            model.Material = material;
-            model_gr.Children.Add(model);  // Add straight arrow
+            model_gr.Children.Add(arrow.GetModel3D(material));  // Add straight arrow
 
             // Add other lines
             // TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
