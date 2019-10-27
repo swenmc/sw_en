@@ -608,11 +608,13 @@ namespace BaseClasses
                 CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
                 CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
-                    /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ 0.5, 0.4, 0.15, "pokus");
+                    /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ 0.5, 0.4, 0.15, "pokus 1");
                 CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
-                     0.4, 1.8, 0.15, 0.15, "pokus 2", true);
+                     0.4, 0.4, 0.05, 0.15, "pokus 2", true);
+                CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), EGlobalPlane.XZ, 1, 0,
+                     0.4, 0.4, 0.05, 0.15, "pokus 3" /*(model.fW_frame * 1000).ToString("F0")*/, true);
 
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA4 };
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { /*dimPOKUSNA1, */dimPOKUSNA2, dimPOKUSNA4, dimPOKUSNA5 };
 
                 DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
             }
@@ -2675,6 +2677,11 @@ namespace BaseClasses
                 dimension.DimensionMainLineDistance *= scale;
                 dimension.DimensionMainLinePositionIncludingOffset *= scale;
                 dimension.OffSetFromPoint *= scale;
+
+                //dimension.MainLineLength *= scale; // Tu si nie som isty ci to treba scalovat
+                dimension.SetPoints3_inLCS();
+                //dimension.SetTextPointInLCS(); // Mozno by som zavolal toto a prepocital poziciu textu funkciou // ????
+
                 dimension.PointText = new Point3D(dimension.PointText.X, dimension.PointText.Y * scale, dimension.PointText.Z);
                 gr.Children.Add(dimension.GetDimensionModelNew(displayOptions.DimensionLineColor, fLineRadius));
             }

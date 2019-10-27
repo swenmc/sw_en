@@ -439,6 +439,10 @@ namespace BaseClasses.GraphObj
 
             m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(pointEnd.X - pointStart.X, 2f) + (float)Math.Pow(pointEnd.Y - pointStart.Y, 2f) + (float)Math.Pow(pointEnd.Z - pointStart.Z, 2f));
             SetPoints3_inLCS();
+
+            // Main line distance (distance from start of extension line EL1_P1 to the main line point ML_P1
+            m_DimensionMainLineDistance = m_ExtensionLine1Length - m_ExtensionLines_OffsetBehindMainLine;
+
             // Suradnica y main line
             m_DimensionMainLinePositionIncludingOffset = -(m_DimensionMainLineDistance + m_fOffSetFromPoint);
 
@@ -643,12 +647,12 @@ namespace BaseClasses.GraphObj
             Model3DGroup model_gr = new Model3DGroup();
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
-            float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
+            //float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
             
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line
             // Default tip (cone height is 20% from length)
-            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new Point3D(0, DimensionMainLinePositionIncludingOffset,0), fMainLineLength, fLineCylinderRadius, 0, true);
+            Objects_3D.StraightLineArrow3D arrow = new Objects_3D.StraightLineArrow3D(new Point3D(0, m_DimensionMainLinePositionIncludingOffset,0), m_fMainLineLength, fLineCylinderRadius, 0, true);
             model_gr.Children.Add(arrow.GetModel3D(material));  // Add straight arrow
 
             // Add other lines
@@ -664,11 +668,11 @@ namespace BaseClasses.GraphObj
 
             // Extension line 1 (start)
             //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point1_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
             // Extension line 2 (end)
             //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, m_DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point1_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
 
             // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, 
             // zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
