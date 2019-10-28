@@ -900,7 +900,7 @@ namespace BaseClasses.Helpers
                 dimension.OffSetFromPoint *= scale;
 
                 //dimension.MainLineLength *= scale; // Tu si nie som isty ci to treba scalovat
-                dimension.SetPoints3_inLCS();
+                dimension.SetPoints_LCS();
                 //dimension.SetTextPointInLCS(); // Mozno by som zavolal toto a prepocital poziciu textu funkciou // ????
 
                 dimension.PointText = new Point3D(dimension.PointText.X, dimension.PointText.Y * scale, dimension.PointText.Z);

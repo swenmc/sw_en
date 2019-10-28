@@ -15,10 +15,7 @@ namespace BaseClasses.GraphObj
         private Point3D m_PointStart;
         private Point3D m_PointEnd;
         private Point3D m_PointText;
-
-        //private Point3D m_PointStartL2;
-        //private Point3D m_PointEndL2;
-
+        
         private Point3D m_Point1_ExtensionLine1;
         private Point3D m_Point2_ExtensionLine1;
         private Point3D m_Point1_ExtensionLine2;
@@ -28,12 +25,11 @@ namespace BaseClasses.GraphObj
         private Point3D m_Point2_MainLine;
 
         private Vector3D m_DirectionInGCS; // Pouzije sa pre kotovanie priemetu do GCS axes
-        //private double m_ExtensionLinesLength;
+        
         private double m_ExtensionLine1Length;
         private double m_ExtensionLine2Length;
         private double m_ExtensionLines_OffsetBehindMainLine;
-
-
+        
         private double m_DimensionMainLineDistance;
 
         private double m_fOffSetFromPoint;
@@ -46,8 +42,8 @@ namespace BaseClasses.GraphObj
         private int iVectorOverFactor_LCS;
         private int iVectorUpFactor_LCS;
 
-        private EGlobalPlane m_GlobalPlane;
-        //public int iGlobalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+        private EGlobalPlane m_GlobalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
+        
         public int iVectorOfProjectionToHorizontalViewAxis; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
         public int iVectorOfProjectionToVerticalViewAxis; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertiklane napravo od bodov, 0 - nie je definovane
 
@@ -76,20 +72,7 @@ namespace BaseClasses.GraphObj
                 m_PointEnd = value;
             }
         }
-
-        //public double DimensionLinesLength
-        //{
-        //    get
-        //    {
-        //        return m_ExtensionLinesLength;
-        //    }
-
-        //    set
-        //    {
-        //        m_ExtensionLinesLength = value;
-        //    }
-        //}
-
+        
         public double DimensionMainLineDistance
         {
             get
@@ -141,33 +124,7 @@ namespace BaseClasses.GraphObj
                 m_PointText = value;
             }
         }
-
-        //public Point3D PointStartL2
-        //{
-        //    get
-        //    {
-        //        return m_PointStartL2;
-        //    }
-
-        //    set
-        //    {
-        //        m_PointStartL2 = value;
-        //    }
-        //}
-
-        //public Point3D PointEndL2
-        //{
-        //    get
-        //    {
-        //        return m_PointEndL2;
-        //    }
-
-        //    set
-        //    {
-        //        m_PointEndL2 = value;
-        //    }
-        //}
-
+        
         public Point3D PointMainLine1
         {
             get
@@ -325,93 +282,15 @@ namespace BaseClasses.GraphObj
         }
 
         public Transform3DGroup TransformGr;
-
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        // TO ONDREJ - Ak moze byt pouzity druhy konstruktor takto tento zmazat
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        ///
-        /*
-        public CDimensionLinear3D() { }
-        public CDimensionLinear3D(Point3D pointStart,
-            Point3D pointEnd,
-            Vector3D direction,
-            EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
-            int iVectorOfProjectionToHorizontalViewAxis_temp, // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
-            int iVectorOfProjectionToVerticalViewAxis_temp, // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
-            double extensionLinesLength,
-            double dimensionMainLineDistance,
-            double fOffsetFromPoint,
-            string text, 
-            bool textIsInside = false)  //default by mohol byt text vo vnutri  // true - text je medzi vynasacimi ciarami, false - text je na opacnej strane nez vynasacie ciary
-        {
-            // Nazvy - main dimension line (hlavna kotovacia ciara) (ta hlavna dlha ciara na ktoru sa pise text)
-            // extension line (vynasacia ciara) (tie kratke ciarky smerujuce od kotovaneho bodu ku koncom hlavnej ciary), moze mat fixnu dlzku alebo moze mat fixny odstup od kotovaneho bodu, 
-            // moze mat aj presah, tj konci az za hlavnou ciarou
-
-            m_PointStart = pointStart;
-            m_PointEnd = pointEnd;
-
-            bTextInside = textIsInside;
-            // TO Ondrej
-            // m_Direction - Tento parameter by som mozno nahradil/doplnil parametrom ktory urcuje do akej roviny GCS sa kota ma kreslit XY, XZ, XY 
-            // (ak vieme rovinu, tak vieme ako mame kotu potocit kedze pozname pA a pB suradnicu v rovine,
-            // pripadne sa da nastavovat to ze budeme kotovat priemet do osi tvoriacich rovinu,
-            // napriklad pre XY bude mozne este nastavit ci chcem priemet do X, priemet do Y alebo realnu vzdialenost medzi pA a pB
-            // (pootocena kota, ak nemaju body rovnake suradnice X ani Y)
-
-            // TO Ondrej - tu som pripravil nejake parametre, ktore by sme mohli pouzit na inspiraciu, predpokladam ze sa Ti to nebude pacit a nebudes tomu asi ani uplne rozumiet :)
-            // Ide mi o to mat moznost nastavit do akej GCS roviny chcem kotu kreslit
-            // Mat moznost nastavit ci chcem kotovat realnu dlzku alebo priemet a ktorym smerom podla nastaveneho pohladu kotu priemetu orientovat
-            // ak by boli obe hodnoty iVectorOfProjectionToHorizontalViewAxis a iVectorOfProjectionToVerticalViewAxis rovne 0 znamenalo by to ze chcem v danej rovine kotovat skutocnu vzdialenost 
-            // a kota moze byt teda pootocena okolo osi kolmej na tuto rovinu
-
-            // Pre nastavenie projekcie a identifikaciu parametrov pohladu by sme mohli pouzit tieto vektory
-            // VIEW AXIS
-            //Vector3D viewVector;
-            //Vector3D viewHorizontalVector;
-            //Vector3D viewVerticalVector;
-
-            m_GlobalPlane = globalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
-            iVectorOfProjectionToHorizontalViewAxis = iVectorOfProjectionToHorizontalViewAxis_temp; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
-            iVectorOfProjectionToVerticalViewAxis = iVectorOfProjectionToVerticalViewAxis_temp; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
-
-            // V system komponent viewer kotujeme aj skutocne dlzky aj tie priemety, ale priemety trosku klamem tym ze tam neposielam skutocne body ale take body/suradnice,
-            // aby som ziskal kotu v smere osy
-
-            m_DirectionInGCS = direction;            
-
-            // TO Ondrej - su by sme mohli vyrobit viacero moznosti a kombinacii:
-            // zadavat fixnu dlzku extension line
-            // zadavat vzdialenost hlavnej kotovacej ciary od kotovaneho bodu
-            // zadavat fixny offset extension line of kotovaneho bodu
-            // zadavat presah extension line za main dimension line
-
-            // V praxi vacsinou chceme, aby boli extension line rozne dlhe s fixnym odstupom od kotovaneho bodu
-            // Moznost ze su extension line konstantnej dlzky a odsadenie je rozne je menej casta lebo ak je odsadenie velke tak nemusi byt jasne ktory bod kotujeme
-
-            m_ExtensionLine1Length = extensionLinesLength;
-            m_ExtensionLine2Length = extensionLinesLength;
-            m_DimensionMainLineDistance = dimensionMainLineDistance;
-            m_ExtensionLines_OffsetBehindMainLine = (extensionLinesLength - DimensionMainLineDistance);
-            m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
-            m_Text = text;
-            
-            SetPoints();
-
-            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
-            // Suradnica y main line
-            m_DimensionMainLinePositionIncludingOffset = - (m_DimensionMainLineDistance + m_fOffSetFromPoint);
-
-            SetTextPointInLCS(); // Text v LCS
-        }*/
-
-        // TODO Ondrej - popozeraj este na to, ci sa nedaju niektore parametre este zjednusit, rozmyslam nad
-        // textIsInside a 
+        
+        
+        
         // iVectorOfProjectionToHorizontalViewAxis_temp
         // iVectorOfProjectionToVerticalViewAxis_temp
 
         // Mozno by sa dala poloha textu ci je nad kotou alebo pod kotou urcovat nejako z vektorov pohladu ??? podla toho ci je kota nad/pod alebo vlavo/vpravo od kotovanych bodov
         // ale obcas sa moze hodit ze je to nastavitelne natvrdo
+        // Podla mna je dobre takto defaultne testIsInside a ked bude potrebne ho inde nakreslit,tak sa to da nastavit
 
         public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd,
             EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
@@ -439,11 +318,8 @@ namespace BaseClasses.GraphObj
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
 
-            //SetPoints2();
-            //m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
-
             m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(pointEnd.X - pointStart.X, 2f) + (float)Math.Pow(pointEnd.Y - pointStart.Y, 2f) + (float)Math.Pow(pointEnd.Z - pointStart.Z, 2f));
-            SetPoints3_inLCS();
+            SetPoints_LCS();
 
             // Main line distance (distance from start of extension line EL1_P1 to the main line point ML_P1
             m_DimensionMainLineDistance = m_ExtensionLine1Length - m_ExtensionLines_OffsetBehindMainLine;
@@ -487,113 +363,8 @@ namespace BaseClasses.GraphObj
             };
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        // TO ONDREJ - Ak moze byt pouzite len SetPoints3_inLCS tak tieto 2 funkcie zmazat, alebo presunut niekam na koniec ak by boli niekedy potrebne
-        //////////////////////////////////////////////////////////////////////////////////////////////
-
-        /*
-        public void SetPoints()
-        {
-            //m_Point1_MainLine = new Point3D()
-            //{
-            //    X = m_PointStart.X + Direction.X * DimensionMainLineDistance,
-            //    Y = m_PointStart.Y + Direction.Y * DimensionMainLineDistance,
-            //    Z = m_PointStart.Z + Direction.Z * DimensionMainLineDistance,
-            //};
-
-            //m_Point2_MainLine = new Point3D()
-            //{
-            //    X = m_PointEnd.X + Direction.X * DimensionMainLineDistance,
-            //    Y = m_PointEnd.Y + Direction.Y * DimensionMainLineDistance,
-            //    Z = m_PointEnd.Z + Direction.Z * DimensionMainLineDistance,
-            //};
-
-            m_Point1_MainLine = new Point3D()
-            {
-                X = m_PointStart.X + DirectionInGCS.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointStart.Y + DirectionInGCS.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointStart.Z + DirectionInGCS.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-            };
-
-            m_Point2_MainLine = new Point3D()
-            {
-                X = m_PointEnd.X + DirectionInGCS.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointEnd.Y + DirectionInGCS.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointEnd.Z + DirectionInGCS.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-            };
-
-            //m_PointStartL2 = new Point3D()
-            //{
-            //    X = m_PointStart.X + Direction.X * DimensionLinesLength,
-            //    Y = m_PointStart.Y + Direction.Y * DimensionLinesLength,
-            //    Z = m_PointStart.Z + Direction.Z * DimensionLinesLength,
-            //};
-
-            //m_PointEndL2 = new Point3D()
-            //{
-            //    X = m_PointEnd.X + Direction.X * DimensionLinesLength,
-            //    Y = m_PointEnd.Y + Direction.Y * DimensionLinesLength,
-            //    Z = m_PointEnd.Z + Direction.Z * DimensionLinesLength,
-            //};
-        }
-        public void SetPoints2()
-        {
-            // TO Ondrej - tu by som Ti poradil ujasnit, ci su pre vsetky body suradnice v GCS alebo v LCS
-            // Myslim ze by mali byt v LCS
-            // Vector Direction a vazbu na m_PointStart a m_PointEnd by som tu uplne zrusil
-
-            // pA                         pE
-            // * LCS plane XY [0,0,0]     * [mainLineLength, 0, 0]
-            //
-            // |                          |
-            // |                          |
-            // |           value          |
-            // |/________________________\|
-            // |\                        /|
-
-            m_Point1_ExtensionLine1 = new Point3D()
-            {
-                X = m_PointStart.X + DirectionInGCS.X * (OffSetFromPoint),
-                Y = m_PointStart.Y + DirectionInGCS.Y * (OffSetFromPoint),
-                Z = m_PointStart.Z + DirectionInGCS.Z * (OffSetFromPoint),
-            };
-            m_Point2_ExtensionLine1 = new Point3D()
-            {
-                X = m_PointStart.X + DirectionInGCS.X * (OffSetFromPoint + ExtensionLine1Length),
-                Y = m_PointStart.Y + DirectionInGCS.Y * (OffSetFromPoint + ExtensionLine1Length),
-                Z = m_PointStart.Z + DirectionInGCS.Z * (OffSetFromPoint + ExtensionLine1Length),
-            };
-
-            m_Point1_ExtensionLine2 = new Point3D()
-            {
-                X = m_PointEnd.X + DirectionInGCS.X * (OffSetFromPoint),
-                Y = m_PointEnd.Y + DirectionInGCS.Y * (OffSetFromPoint),
-                Z = m_PointEnd.Z + DirectionInGCS.Z * (OffSetFromPoint),
-            };
-            m_Point2_ExtensionLine2 = new Point3D()
-            {
-                X = m_PointEnd.X + DirectionInGCS.X * (OffSetFromPoint + ExtensionLine2Length),
-                Y = m_PointEnd.Y + DirectionInGCS.Y * (OffSetFromPoint + ExtensionLine2Length),
-                Z = m_PointEnd.Z + DirectionInGCS.Z * (OffSetFromPoint + ExtensionLine2Length),
-            };
-
-
-            m_Point1_MainLine = new Point3D()
-            {
-                X = m_PointStart.X + DirectionInGCS.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointStart.Y + DirectionInGCS.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointStart.Z + DirectionInGCS.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-            };
-
-            m_Point2_MainLine = new Point3D()
-            {
-                X = m_PointEnd.X + DirectionInGCS.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointEnd.Y + DirectionInGCS.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointEnd.Z + DirectionInGCS.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-            };
-        }*/
-
-        public void SetPoints3_inLCS()
+        
+        public void SetPoints_LCS()
         {
             // Body koty v LCS, rovina XY, main line sa kresli v smere +X, extension lines sa kreslia v smere -Y
             // Origin je v pA [0,0,0] - LCS coordinates
