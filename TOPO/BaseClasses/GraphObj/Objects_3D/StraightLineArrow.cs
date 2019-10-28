@@ -32,10 +32,10 @@ namespace BaseClasses.GraphObj.Objects_3D
             iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
             bArrowAtBothEnds = bArrowAtBothEnds_temp;
 
-            fConeHeight = 20 * fCylinderRadius; /// ???
+            fConeHeight = 20 * fCylinderRadius; // Vyska kuzela - podla smeru iPrimaryArrowModelDirection
             fCylinderHeight = fTotalHeight - fConeHeight;
 
-            AnnulusPoints(fCylinderRadius, fCylinderRadius * 10); // ???  nerozumiem co to je
+            AnnulusPoints(fCylinderRadius, fCylinderRadius * 5); // Spocita suradnice bodov medzikruzia (body na vnutornej a vonkajsej kruznici) // Zadane su polomer pre vnutornu a vonkajsiu kruznicu ???  nerozumiem co to je
 
             ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
 
