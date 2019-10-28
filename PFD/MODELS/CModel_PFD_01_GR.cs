@@ -2384,7 +2384,7 @@ namespace PFD
                 {
                     float fFrontColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
-                    float fFrontColumnFooting_h = 0.4f;
+                    float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
                     float fFrontColumnFooting_Eccentricity_y = 0.5f * fFrontColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h;
 
@@ -2464,7 +2464,7 @@ namespace PFD
                 {
                     float fBackColumnFooting_aX = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
-                    float fBackColumnFooting_h = 0.4f;
+                    float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
                     float fBackColumnFooting_Eccentricity_y = 0.5f * fBackColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h;
 
