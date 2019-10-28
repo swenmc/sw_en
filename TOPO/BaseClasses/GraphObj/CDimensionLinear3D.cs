@@ -27,7 +27,7 @@ namespace BaseClasses.GraphObj
         private Point3D m_Point1_MainLine;
         private Point3D m_Point2_MainLine;
 
-        private Vector3D m_Direction;        
+        private Vector3D m_DirectionInGCS; // Pouzije sa pre kotovanie priemetu do GCS axes
         //private double m_ExtensionLinesLength;
         private double m_ExtensionLine1Length;
         private double m_ExtensionLine2Length;
@@ -116,16 +116,16 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public Vector3D Direction
+        public Vector3D DirectionInGCS
         {
             get
             {
-                return m_Direction;
+                return m_DirectionInGCS;
             }
 
             set
             {
-                m_Direction = value;
+                m_DirectionInGCS = value;
             }
         }
 
@@ -326,11 +326,11 @@ namespace BaseClasses.GraphObj
 
         public Transform3DGroup TransformGr;
 
-
-        //TODO
-        //upravit vstupne parametre tak aby som vedel zadat rovinu v ktorej sa ma kota vykreslit, body koty, 
-        //polohu textu nad a pod ciarkou a orientaciu koty nejakym sposobom nad alebo pod bodmi v LCS
-
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        // TO ONDREJ - Ak moze byt pouzity druhy konstruktor takto tento zmazat
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        ///
+        /*
         public CDimensionLinear3D() { }
         public CDimensionLinear3D(Point3D pointStart,
             Point3D pointEnd,
@@ -378,7 +378,7 @@ namespace BaseClasses.GraphObj
             // V system komponent viewer kotujeme aj skutocne dlzky aj tie priemety, ale priemety trosku klamem tym ze tam neposielam skutocne body ale take body/suradnice,
             // aby som ziskal kotu v smere osy
 
-            m_Direction = direction;            
+            m_DirectionInGCS = direction;            
 
             // TO Ondrej - su by sme mohli vyrobit viacero moznosti a kombinacii:
             // zadavat fixnu dlzku extension line
@@ -403,10 +403,17 @@ namespace BaseClasses.GraphObj
             m_DimensionMainLinePositionIncludingOffset = - (m_DimensionMainLineDistance + m_fOffSetFromPoint);
 
             SetTextPointInLCS(); // Text v LCS
-        }
+        }*/
+
+        // TODO Ondrej - popozeraj este na to, ci sa nedaju niektore parametre este zjednusit, rozmyslam nad
+        // textIsInside a 
+        // iVectorOfProjectionToHorizontalViewAxis_temp
+        // iVectorOfProjectionToVerticalViewAxis_temp
+
+        // Mozno by sa dala poloha textu ci je nad kotou alebo pod kotou urcovat nejako z vektorov pohladu ??? podla toho ci je kota nad/pod alebo vlavo/vpravo od kotovanych bodov
+        // ale obcas sa moze hodit ze je to nastavitelne natvrdo
 
         public CDimensionLinear3D(Point3D pointStart, Point3D pointEnd,
-            Vector3D direction,
             EGlobalPlane globalPlane, // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)            
             int iVectorOfProjectionToHorizontalViewAxis_temp, // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
             int iVectorOfProjectionToVerticalViewAxis_temp, // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
@@ -425,8 +432,6 @@ namespace BaseClasses.GraphObj
             m_GlobalPlane = globalPlane; // Globalna rovina GCS do ktorej sa kota kresli 0 - XY, 1 - YZ, 2 - XZ, -1 nedefinovana (vseobecna kota)
             iVectorOfProjectionToHorizontalViewAxis = iVectorOfProjectionToHorizontalViewAxis_temp; // -1 kota sa kresli horizontalne pod body, 1 kota sa kresli horizontalne nad body, 0 - nie je definovane
             iVectorOfProjectionToVerticalViewAxis = iVectorOfProjectionToVerticalViewAxis_temp; // -1 kota sa kresli vertikalne nalavo od bodov, 1 kota sa kresli vertikalne napravo od bodov, 0 - nie je definovane
-
-            m_Direction = direction;
 
             m_ExtensionLine1Length = extensionLine1Length;
             m_ExtensionLine2Length = extensionLine2Length;
@@ -456,17 +461,17 @@ namespace BaseClasses.GraphObj
             // podobne ako sme to robili pre Plates v SystemComponent Viewer, mozno by sa dalo z toho nieco pouzit aby by sme celu tuto ulohu pre koty zuzili na 2D problem 
             // ak uz vieme v akej rovine GCS kreslime
 
-            if (Direction.Z == -1)
+            if (bTextInside) // Text je medzi extension lines (vektory over - doprava a up - nahor)
             {
                 iVectorOverFactor_LCS = 1;
                 iVectorUpFactor_LCS = 1;
             }
-            else
+            else // Text na opacnej strane (vektory over - dolava a up - nadol)
             {
                 iVectorOverFactor_LCS = -1;
                 iVectorUpFactor_LCS = -1;
             }
-            
+
             float fOffsetFromMainLine;
 
             if (bTextInside)
@@ -481,7 +486,12 @@ namespace BaseClasses.GraphObj
                 Z = 0
             };
         }
-        
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        // TO ONDREJ - Ak moze byt pouzite len SetPoints3_inLCS tak tieto 2 funkcie zmazat, alebo presunut niekam na koniec ak by boli niekedy potrebne
+        //////////////////////////////////////////////////////////////////////////////////////////////
+
+        /*
         public void SetPoints()
         {
             //m_Point1_MainLine = new Point3D()
@@ -500,16 +510,16 @@ namespace BaseClasses.GraphObj
 
             m_Point1_MainLine = new Point3D()
             {
-                X = m_PointStart.X + Direction.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointStart.Y + Direction.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointStart.Z + Direction.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                X = m_PointStart.X + DirectionInGCS.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointStart.Y + DirectionInGCS.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointStart.Z + DirectionInGCS.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
             };
 
             m_Point2_MainLine = new Point3D()
             {
-                X = m_PointEnd.X + Direction.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                X = m_PointEnd.X + DirectionInGCS.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointEnd.Y + DirectionInGCS.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointEnd.Z + DirectionInGCS.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
             };
 
             //m_PointStartL2 = new Point3D()
@@ -543,45 +553,45 @@ namespace BaseClasses.GraphObj
 
             m_Point1_ExtensionLine1 = new Point3D()
             {
-                X = m_PointStart.X + Direction.X * (OffSetFromPoint),
-                Y = m_PointStart.Y + Direction.Y * (OffSetFromPoint),
-                Z = m_PointStart.Z + Direction.Z * (OffSetFromPoint),
+                X = m_PointStart.X + DirectionInGCS.X * (OffSetFromPoint),
+                Y = m_PointStart.Y + DirectionInGCS.Y * (OffSetFromPoint),
+                Z = m_PointStart.Z + DirectionInGCS.Z * (OffSetFromPoint),
             };
             m_Point2_ExtensionLine1 = new Point3D()
             {
-                X = m_PointStart.X + Direction.X * (OffSetFromPoint + ExtensionLine1Length),
-                Y = m_PointStart.Y + Direction.Y * (OffSetFromPoint + ExtensionLine1Length),
-                Z = m_PointStart.Z + Direction.Z * (OffSetFromPoint + ExtensionLine1Length),
+                X = m_PointStart.X + DirectionInGCS.X * (OffSetFromPoint + ExtensionLine1Length),
+                Y = m_PointStart.Y + DirectionInGCS.Y * (OffSetFromPoint + ExtensionLine1Length),
+                Z = m_PointStart.Z + DirectionInGCS.Z * (OffSetFromPoint + ExtensionLine1Length),
             };
 
             m_Point1_ExtensionLine2 = new Point3D()
             {
-                X = m_PointEnd.X + Direction.X * (OffSetFromPoint),
-                Y = m_PointEnd.Y + Direction.Y * (OffSetFromPoint),
-                Z = m_PointEnd.Z + Direction.Z * (OffSetFromPoint),
+                X = m_PointEnd.X + DirectionInGCS.X * (OffSetFromPoint),
+                Y = m_PointEnd.Y + DirectionInGCS.Y * (OffSetFromPoint),
+                Z = m_PointEnd.Z + DirectionInGCS.Z * (OffSetFromPoint),
             };
             m_Point2_ExtensionLine2 = new Point3D()
             {
-                X = m_PointEnd.X + Direction.X * (OffSetFromPoint + ExtensionLine2Length),
-                Y = m_PointEnd.Y + Direction.Y * (OffSetFromPoint + ExtensionLine2Length),
-                Z = m_PointEnd.Z + Direction.Z * (OffSetFromPoint + ExtensionLine2Length),
+                X = m_PointEnd.X + DirectionInGCS.X * (OffSetFromPoint + ExtensionLine2Length),
+                Y = m_PointEnd.Y + DirectionInGCS.Y * (OffSetFromPoint + ExtensionLine2Length),
+                Z = m_PointEnd.Z + DirectionInGCS.Z * (OffSetFromPoint + ExtensionLine2Length),
             };
 
 
             m_Point1_MainLine = new Point3D()
             {
-                X = m_PointStart.X + Direction.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointStart.Y + Direction.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointStart.Z + Direction.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                X = m_PointStart.X + DirectionInGCS.X * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointStart.Y + DirectionInGCS.Y * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointStart.Z + DirectionInGCS.Z * (ExtensionLine1Length - ExtensionLines_OffsetBehindMainLine),
             };
 
             m_Point2_MainLine = new Point3D()
             {
-                X = m_PointEnd.X + Direction.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Y = m_PointEnd.Y + Direction.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
-                Z = m_PointEnd.Z + Direction.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                X = m_PointEnd.X + DirectionInGCS.X * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Y = m_PointEnd.Y + DirectionInGCS.Y * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
+                Z = m_PointEnd.Z + DirectionInGCS.Z * (ExtensionLine2Length - ExtensionLines_OffsetBehindMainLine),
             };
-        }
+        }*/
 
         public void SetPoints3_inLCS()
         {
@@ -648,7 +658,7 @@ namespace BaseClasses.GraphObj
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
             //float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
-            
+
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line
             // Default tip (cone height is 20% from length)
@@ -659,7 +669,7 @@ namespace BaseClasses.GraphObj
             // TODO - Zapracovat nastavitelnu dlzku a nastavitelny offset pre extension lines
             short NumberOfCirclePoints = 16 + 1; // Toto by malo byt rovnake ako u arrow, je potrebne to zjednotit, pridany jeden bod pre stred
 
-            // TO Ondrej - toto treba prerobit, ja kreslim tuto kotu v rovine XY a potom ju chcem otacat a presuvat podla potreby
+            // TODO Ondrej - Tento prevod z double na float by sme mohli asi radsej odstranit
             float fExtensionLine1_Length = (float)ExtensionLine1Length;
             float fExtensionLine2_Length = (float)ExtensionLine2Length;
 
@@ -667,72 +677,68 @@ namespace BaseClasses.GraphObj
             float fExtensionLine2_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
 
             // Extension line 1 (start)
-            //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, m_DimensionMainLinePositionIncludingOffset - fExtensionLine1_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
             model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
             // Extension line 2 (end)
-            //model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(fMainLineLength, m_DimensionMainLinePositionIncludingOffset - fExtensionLine2_OffsetBehindMainLine, 0), NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
             model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
-
-            // TO ONDREJ - tu treba pridat dalsie transformacie ak chceme kotu ako celok posuvat alebo otacat atd, trosku sa s tym treba pohrat, 
-            // zobecnit tak aby sa dali kreslit aj sikme koty napriklad na rafteroch pri pohlade na ram zpredu
-            // TODO - toto otacanie by chcelo nejako sprehladnit a zjednodusit - kotu vyrobim v rovine XY a potom ju mozeme otacat tak aby bola v rovine pohladu, 
-            // moze sa stat ze je pootocena okolo osy smerujucej kolmo na monitor (oznacena pre view Y - vid member description)
-            // Skus porozmyslat a navrhnut nejaky univerzalny system ako budeme tie koty a ich texty umiestnovat
-
-
-            //TO Mato - ty kokso ja som taky zmateny z toho ze koniec
-            // tieto transformacie asi budem potrebovat vysvetlit,ze co sa tu vlastne deje
-
-            // TO Ondrej
-            /*
-            Tie parametre na ktore si sa pytal by mali zmanenat ci chcem kotu v pohlade kreslit nahor, nadol, nalavo, napravo od kotovanych bodov.
-            Mozno sa do da urobit aj automaticky smerom od stredu modelu.
-            Parameter Direction som tam nechal este z Tvojho kotu.Direction ma asi zmysel len,
-            ak je kota rovnobezna s niektorou osou, ak je kota v rovine pootocena tak asi nema zmysel.
-
-            Tieto rotacie nizie robia len to ze kotu v LCS tj rovine XY, main line v smere X a extension lines vykreslene v smere zapornej osi Y
-            rozne rotujem a otacam a preklapam, aby sa v GCS dostala na spravnu poziciu.
-
-            Myslim ze sa to da zjednodusit. Toto su len moje experimenty co som skusal
-            // Potrebujeme jasne zadefinovat vztah medzi osovym systemom koty a poziciou koty v GCS 
-            (tj. v akej ma byt rovine a z ktorej strany sa na nu pozerame, ci ma byt "nad, pod, vlavo, vpravo" od kotovanych bodov atd)
-            */
 
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();
             RotateTransform3D rotateZ = new RotateTransform3D();
 
-            bool bDrawHorizontalDimesnionsInXY = false; // Toto by mohlo byt nastavitelne pre 3D scenu v GUI a pre export 3D pohladov, pre exporty 2D pohladov na rovinu XZ alebo YZ sa to nehodi, lebo kotu by nebolo vidno
+            // Pre sikme koty potrebujeme urcit uhly pootocenia v priestore
+            // LCS koty lezi v rovine XY, [0,0,0] zodpoveda prvemu kotovanemu bodu, kota sa kresli do zaporneho smeru Y
+            // Spocitame priemety 
+            double dDeltaX = m_PointEnd.X - m_PointStart.X;
+            double dDeltaY = m_PointEnd.Y - m_PointStart.Y;
+            double dDeltaZ = m_PointEnd.Z - m_PointStart.Z;
 
-            if (!bDrawHorizontalDimesnionsInXY && Direction.Z != 0) // Kota v smere X alebo Y - ak chceme aby nebola vykreslena v rovine XY ale zvislo v XZ alebo YZ
+            // Returns transformed coordinates of member nodes
+            // Angles
+            double dAlphaX = 0, dBetaY = 0, dGammaZ = 0;
+
+            // Uhly pootocenia LCS okolo osi GCS
+            // Angles
+            dAlphaX = Geom2D.GetAlpha2D_CW(dDeltaY, dDeltaZ);
+            dBetaY = Geom2D.GetAlpha2D_CW_2(dDeltaX, dDeltaZ); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
+            dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
+
+            if (m_GlobalPlane == EGlobalPlane.XY) // Kota v rovine XY - pohlad zhora
             {
-                // About X
+                // Defaultne je kota v rovine XY, main line smeruje v smere X
+
+                // About X (preklopenie)
                 AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
                 axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
-                axisAngleRotation3dX.Angle = Direction.Z == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                axisAngleRotation3dX.Angle = iVectorOfProjectionToHorizontalViewAxis == 1 ? 180 : 0; // Ak sa ma kota kreslit nad bodmi preklopime celu kotu na druhu stranu (okolo LCS x)
                 rotateX.Rotation = axisAngleRotation3dX;
 
-                // Kota je v rovine XZ alebo YZ
-                // Sikme koty potrebujeme pootocit okolo globalnych os X resp. Y, tomu zodpoveda pootocenie okolo LCS z
-
-                // Spocitame priemety 
-                double dDeltaX = m_PointEnd.X - m_PointStart.X;
-                double dDeltaY = m_PointEnd.Y - m_PointStart.Y;
-                double dDeltaZ = m_PointEnd.Z - m_PointStart.Z;
-
-                // Returns transformed coordinates of member nodes
-                // Angles
-                double dAlphaX = 0, dBetaY = 0, dGammaZ = 0;
-
-                // Uhly pootocenia LCS okolo osi GCS
-                // Angles
-                dAlphaX = Geom2D.GetAlpha2D_CW(dDeltaY, dDeltaZ);
-                dBetaY = Geom2D.GetAlpha2D_CW_2(dDeltaX, dDeltaZ); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
-                dGammaZ = Geom2D.GetAlpha2D_CW(dDeltaX, dDeltaY);
-
-                if (MathF.d_equal(dDeltaY, 0)) // Kota je v GCS rovine XZ
+                if (MathF.d_equal(dDeltaX, 0)) // Kota v smere Y
                 {
+                    // About Z
+                    AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
+                    axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
+                    axisAngleRotation3dZ.Angle = Geom2D.RadiansToDegrees(dGammaZ);
+                    rotateZ.Rotation = axisAngleRotation3dZ;
+                }
+            }
+            else if (m_GlobalPlane == EGlobalPlane.XZ)
+            {
+                // About X (otocenie do roviny XZ)
+                AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
+                axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
+                axisAngleRotation3dX.Angle = iVectorOfProjectionToHorizontalViewAxis == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                rotateX.Rotation = axisAngleRotation3dX;
+
+                // Sikma kota v rovine XZ
+                if (!MathF.d_equal(dDeltaZ, 0))
+                {
+                    if (dBetaY > Math.PI / 4) // Ak je kota viac zvislo nez horizontalne
+                    {
+                        axisAngleRotation3dX.Angle = iVectorOfProjectionToVerticalViewAxis == -1 ? 270 : 90; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                        rotateX.Rotation = axisAngleRotation3dX;
+                    }
+
                     // About Y
                     AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
                     axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
@@ -740,30 +746,42 @@ namespace BaseClasses.GraphObj
                     rotateY.Rotation = axisAngleRotation3dY;
                 }
             }
-
-            if ((Direction.X != 0 && (MathF.Equals(m_PointStart.X, m_PointEnd.X))) ||
-            (Direction.Y != 0 && MathF.Equals(m_PointStart.Y, m_PointEnd.Y))) // Zvisla kota TODO - Dopracovat pre ine smery
+            else if (m_GlobalPlane == EGlobalPlane.YZ)
             {
-                // About Y
-                AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
-                axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
-                axisAngleRotation3dY.Angle = -90;
-                rotateY.Rotation = axisAngleRotation3dY;
+                // About X (otocenie do roviny XZ)
+                AxisAngleRotation3D axisAngleRotation3dX = new AxisAngleRotation3D();
+                axisAngleRotation3dX.Axis = new Vector3D(1, 0, 0);
+                axisAngleRotation3dX.Angle = iVectorOfProjectionToHorizontalViewAxis == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                rotateX.Rotation = axisAngleRotation3dX;
 
-                // About Z
-                AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
-                axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
-                axisAngleRotation3dZ.Angle = -90;
-                rotateZ.Rotation = axisAngleRotation3dZ;
-            }
-
-            if (Direction.X == 0 && MathF.Equals(m_PointStart.X, m_PointEnd.X)) // Kota v smere Y
-            {
-                // About Z
+                // About Z (otocenie do roviny YZ)
                 AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
                 axisAngleRotation3dZ.Axis = new Vector3D(0, 0, 1);
                 axisAngleRotation3dZ.Angle = 90;
                 rotateZ.Rotation = axisAngleRotation3dZ;
+
+                // Sikma kota v rovine YZ
+                if (!MathF.d_equal(dDeltaZ, 0))
+                {
+                    if (dAlphaX > Math.PI / 4) // Ak je kota viac zvislo nez horizontalne
+                    {
+                        axisAngleRotation3dX.Angle = iVectorOfProjectionToVerticalViewAxis == -1 ? 90 : 270; // Otocena nadol 90 od kotovanych bodov alebo nahor 270 okolo LCS x
+                        rotateX.Rotation = axisAngleRotation3dX;
+                    }
+
+                    // About Y
+                    AxisAngleRotation3D axisAngleRotation3dY = new AxisAngleRotation3D();
+                    axisAngleRotation3dY.Axis = new Vector3D(0, 1, 0);
+                    axisAngleRotation3dY.Angle = Geom2D.RadiansToDegrees(-dAlphaX); // !!! zaporny uhol ???
+                    rotateY.Rotation = axisAngleRotation3dY;
+                }
+            }
+            else // obecne v priestore alebo mimo rovin GCS
+            {
+                // TODO - toto asi nie je az tak zlozite implementovat.
+                // Da sa pouzit zakladna transformacia LCS - GCS ako to robime pre prut, len by sme potrebovali urcit treti bod, aby bolo mozne urcit kam smeruju extension lines koty (3 body urcia rovinu v ktorej kota lezi)
+                // U pruta je defaultne treti bod s Z = infinity (urcuje sa potom uhol pootocenia okolo x - theta)
+                throw new NotImplementedException("General position of dimension in 3D is not implemented");
             }
 
             TranslateTransform3D translateOrigin = new TranslateTransform3D(m_PointStart.X, m_PointStart.Y, m_PointStart.Z);

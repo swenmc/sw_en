@@ -591,30 +591,22 @@ namespace BaseClasses
 
             Model3DGroup dimensions3DGroup = null;
 
-            //DIMENSIONS FRONT
+            // DIMENSIONS FRONT
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
             {
                 CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
                 CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-
-                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), EGlobalPlane.XZ, 1, 0,
-                    /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ 0.5, 0.4, 0.15, (model.fW_frame * 1000).ToString("F0"));
-                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(-1, 0, 0), EGlobalPlane.XZ, 1, -1,
-                    /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString("F0"));
-
-
-
                 CMember m3 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-                CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
+                //CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.MainColumn);
 
-                CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
-                    /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ 0.5, 0.4, 0.15, "pokus 1");
-                CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m3.NodeEnd.GetPoint3D(), new Vector3D(0, 0, 1), EGlobalPlane.XZ, 1, -1,
-                     0.4, 0.4, 0.05, 0.15, "pokus 2", true);
-                CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), EGlobalPlane.XZ, 1, 0,
-                     0.4, 0.4, 0.05, 0.15, "pokus 3" /*(model.fW_frame * 1000).ToString("F0")*/, true);
+                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+                     0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                     0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                     0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
 
-                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { /*dimPOKUSNA1, */dimPOKUSNA2, dimPOKUSNA4, dimPOKUSNA5 };
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3 };
 
                 DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
             }
@@ -671,8 +663,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -684,8 +677,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersLeftSideFirstBayGirtsNodes_1.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersLeftSideFirstBayGirtsNodes_1[i].GetPoint3D(), membersLeftSideFirstBayGirtsNodes_1[i + 1].GetPoint3D(),
-                                new Vector3D(0, 1, 0), EGlobalPlane.XZ, 0, 1,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersLeftSideFirstBayGirtsNodes_1[i + 1].Z - membersLeftSideFirstBayGirtsNodes_1[i].Z) * 1000).ToString("F0"));
+                                 EGlobalPlane.YZ, 0, -1,
+                                 fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersLeftSideFirstBayGirtsNodes_1[i + 1].Z - membersLeftSideFirstBayGirtsNodes_1[i].Z) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -705,16 +698,16 @@ namespace BaseClasses
                 CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
                 // stlpy na pravej strane maju PointEnd v Z = 0
-                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), new Vector3D(0, 0, -1), EGlobalPlane.XZ, 1, 0,
-                    /*new Vector3D(0, 1, 0), new Vector3D(0, 0, 1),*/ 0.5, 0.4, 0.15, (model.fL_tot * 1000).ToString("F0"));
+                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
                 // stlp vlavo - vyskova kota
-                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), new Vector3D(0, 1, 0), EGlobalPlane.XZ, 0, 1,
-                    /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ 0.5, 0.4, 0.15, (model.fH1_frame * 1000).ToString("F0"));
+                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
+                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
 
                 List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
 
-                DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                
+                DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
             }
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
@@ -835,8 +828,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -848,8 +842,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_FrontSide_1.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_1[i].GetPoint3D(), membersBaseNodes_FrontSide_1[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 0, -1,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString("F0"));
+                               EGlobalPlane.XY, 0, -1,
+                               fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_FrontSide_1[i + 1].X - membersBaseNodes_FrontSide_1[i].X) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -865,8 +859,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_FrontSide_2.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_2[i].GetPoint3D(), membersBaseNodes_FrontSide_2[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 0, -1,
-                                /*new Vector3D(0, 0, 1), new Vector3D(0, 1, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString("F0"));
+                                EGlobalPlane.XY, 0, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_FrontSide_2[i + 1].X - membersBaseNodes_FrontSide_2[i].X) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -882,13 +876,13 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_FrontSide_3.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSide_3[i].GetPoint3D(), membersBaseNodes_FrontSide_3[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 0, -1,
-                                /*new Vector3D(0, 0, 1), new Vector3D(0, 1, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString("F0"));
+                                EGlobalPlane.XY, 0, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_FrontSide_3[i + 1].X - membersBaseNodes_FrontSide_3[i].X) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
                     }
 
-                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                    
+                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
                 }
 
                 // TODO Ondrej - niektore casti kodu pre jednotlive steny front a left by sli zrefaktorovat a zjednotit do funkcii
@@ -990,8 +984,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -1003,8 +998,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_LeftSide_1.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 1, 0,
-                                /*new Vector3D(0, 0, 1), new Vector3D(0, 1, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"));
+                                EGlobalPlane.XY, 1, 0,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1020,8 +1015,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_LeftSide_2.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_2[i].GetPoint3D(), membersBaseNodes_LeftSide_2[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 1, 0,
-                                /*new Vector3D(0, 0, 1), new Vector3D(0, 1, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"));
+                                EGlobalPlane.XY, 1, 0,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1037,16 +1032,15 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_LeftSide_3.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_3[i].GetPoint3D(), membersBaseNodes_LeftSide_3[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, -1), 0, 1, 0,
-                                /*new Vector3D(0, 0, 1), new Vector3D(0, 1, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_LeftSide_3[i + 1].Y - membersBaseNodes_LeftSide_3[i].Y) * 1000).ToString("F0"));
+                                EGlobalPlane.XY, 1, 0,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_LeftSide_3[i + 1].Y - membersBaseNodes_LeftSide_3[i].Y) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
                     }
 
-                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                    
+                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
                 }
             }
-
 
             //------------------------------------------------------------------------------------------------------------------
             //MIDLE FRAME DIMENSIONS
@@ -1140,8 +1134,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -1152,8 +1147,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_FrontSideGirts_1.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideGirts_1[i].GetPoint3D(), membersBaseNodes_FrontSideGirts_1[i + 1].GetPoint3D(),
-                                new Vector3D(-1, 0, 0), EGlobalPlane.YZ, 0, -1,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString("F0"));
+                                EGlobalPlane.XZ, 0, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_FrontSideGirts_1[i + 1].Z - membersBaseNodes_FrontSideGirts_1[i].Z) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1169,8 +1164,8 @@ namespace BaseClasses
                         for (int i = 0; i < membersBaseNodes_FrontSideVertical_2.Count - 1; i++)
                         {
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideVertical_2[i].GetPoint3D(), membersBaseNodes_FrontSideVertical_2[i + 1].GetPoint3D(),
-                                new Vector3D(-1, 0, 0), EGlobalPlane.YZ, 0, -1,
-                                /*new Vector3D(0, 0, 1), new Vector3D(-1, 0, 0),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString("F0"));
+                                EGlobalPlane.XZ, 0, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_FrontSideVertical_2[i + 1].Z - membersBaseNodes_FrontSideVertical_2[i].Z) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1214,8 +1209,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -1227,8 +1223,8 @@ namespace BaseClasses
                         {
                             float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].X - membersBaseNodes_FrontSidePurlins_1[i].X) + MathF.Pow2(membersBaseNodes_FrontSidePurlins_1[i + 1].Z - membersBaseNodes_FrontSidePurlins_1[i].Z));
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSidePurlins_1[i].GetPoint3D(), membersBaseNodes_FrontSidePurlins_1[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, 1), EGlobalPlane.YZ, 0, 0,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
+                                EGlobalPlane.XZ, 1, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1245,8 +1241,8 @@ namespace BaseClasses
                         {
                             float fLengthForText = MathF.Sqrt(MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].X - membersBaseNodes_FrontSideRafter_2[i].X) + MathF.Pow2(membersBaseNodes_FrontSideRafter_2[i + 1].Z - membersBaseNodes_FrontSideRafter_2[i].Z));
                             CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_FrontSideRafter_2[i].GetPoint3D(), membersBaseNodes_FrontSideRafter_2[i + 1].GetPoint3D(),
-                                new Vector3D(0, 0, 1), EGlobalPlane.YZ, 0, 0,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"));
+                                EGlobalPlane.XZ, 1, -1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, (fLengthForText * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1256,7 +1252,7 @@ namespace BaseClasses
                         fExtensionLineOffset += fDistanceBetweenMainLines;
                     }
 
-                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                    
+                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
                 }
             }
 
@@ -1289,8 +1285,9 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
                     float fDistanceBetweenMainLines = 0.2f;
 
@@ -1299,8 +1296,9 @@ namespace BaseClasses
                         listOfDimensions = new List<CDimensionLinear3D>();
                         for (int i = 0; i < dimensionPoints_1.Count - 1; i++)
                         {
-                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1], new Vector3D(0, 0, -1), 0, 1, 0,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_1[i + 1].Y - dimensionPoints_1[i].Y) * 1000).ToString("F0"));
+                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1],
+                                EGlobalPlane.XY, -1, 0,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((dimensionPoints_1[i + 1].Y - dimensionPoints_1[i].Y) * 1000).ToString("F0"), true);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1315,8 +1313,9 @@ namespace BaseClasses
                         if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                         for (int i = 0; i < dimensionPoints_2.Count - 1; i++)
                         {
-                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1], new Vector3D(0, 0, -1), 0, 1, 0,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_2[i + 1].Y - dimensionPoints_2[i].Y) * 1000).ToString("F0"));
+                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1],
+                                EGlobalPlane.XY, -1, 0,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((dimensionPoints_2[i + 1].Y - dimensionPoints_2[i].Y) * 1000).ToString("F0"), true);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1326,7 +1325,7 @@ namespace BaseClasses
                         fExtensionLineOffset += fDistanceBetweenMainLines;
                     }
 
-                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                    
+                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
                 }
 
                 if (bDrawDimension_Back == true) // Kota v zadnej casti budovy
@@ -1347,18 +1346,20 @@ namespace BaseClasses
                     List<CDimensionLinear3D> listOfDimensions = null;
 
                     float fExtensionLineLength = 0.5f;
-                    float fMainLinePosition = 0.4f;
+                    //float fMainLinePosition = 0.4f;
                     float fExtensionLineOffset = 0.15f;
+                    float fOffsetBehindMainLine = 0.05f;
 
-                    float fDistanceBetweenMainLines = 0.2f;
+                    float fDistanceBetweenMainLines = 0.25f;
 
                     if (bDrawDimension_1 == true)
                     {
                         listOfDimensions = new List<CDimensionLinear3D>();
                         for (int i = 0; i < dimensionPoints_1.Count - 1; i++)
                         {
-                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1], new Vector3D(0, 0, -1), 0, 0, -1,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_1[i + 1].X - dimensionPoints_1[i].X) * 1000).ToString("F0"));
+                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_1[i], dimensionPoints_1[i + 1],
+                                EGlobalPlane.XY, 0, 1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((dimensionPoints_1[i + 1].X - dimensionPoints_1[i].X) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1373,8 +1374,9 @@ namespace BaseClasses
                         if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
                         for (int i = 0; i < dimensionPoints_2.Count - 1; i++)
                         {
-                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1], new Vector3D(0, 0, -1), 0, 0, -1,
-                                /*new Vector3D(1, 0, 0), new Vector3D(0, 0, 1),*/ fExtensionLineLength, fMainLinePosition, fExtensionLineOffset, ((dimensionPoints_2[i + 1].X - dimensionPoints_2[i].X) * 1000).ToString("F0"));
+                            CDimensionLinear3D dim = new CDimensionLinear3D(dimensionPoints_2[i], dimensionPoints_2[i + 1],
+                                EGlobalPlane.XY, 0, 1,
+                                fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((dimensionPoints_2[i + 1].X - dimensionPoints_2[i].X) * 1000).ToString("F0"), false);
                             listOfDimensions.Add(dim);
                         }
 
@@ -1384,7 +1386,7 @@ namespace BaseClasses
                         fExtensionLineOffset += fDistanceBetweenMainLines;
                     }
 
-                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);                    
+                    DrawDimensions(_trackport, listOfDimensions, model, sDisplayOptions, gr);
                 }
             }
 
