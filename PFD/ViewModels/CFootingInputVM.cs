@@ -985,6 +985,7 @@ namespace PFD
 
                 //if (IsSetFromCode == false) UpdateValuesInGUI();
                 //_model.m_arrSlabs.First().ConcreteCover = m_MeshConcreteCover / 1000;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("MeshConcreteCover");
             }
         }
@@ -1004,6 +1005,7 @@ namespace PFD
 
                 m_FloorSlabThickness = value;
                 //_model.m_arrSlabs.First().m_fDim3 = m_FloorSlabThickness / 1000;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("FloorSlabThickness");
             }
         }
@@ -1032,6 +1034,7 @@ namespace PFD
                 SetIsEnabledFirstSawCutPositionInDirectionX();
                 //SetIsEnabledSawCutsSpacingInDirectionX();
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionX");
             }
         }
@@ -1060,6 +1063,7 @@ namespace PFD
                 SetIsEnabledFirstSawCutPositionInDirectionY();
                 //SetIsEnabledSawCutsSpacingInDirectionY();
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("NumberOfSawCutsInDirectionY");
             }
         }
@@ -1079,6 +1083,7 @@ namespace PFD
 
                 m_FirstSawCutPositionInDirectionX = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionX");
             }
         }
@@ -1098,6 +1103,7 @@ namespace PFD
 
                 m_FirstSawCutPositionInDirectionY = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("FirstSawCutPositionInDirectionY");
             }
         }
@@ -1118,6 +1124,7 @@ namespace PFD
                 m_SawCutsSpacingInDirectionX = value;
 
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("SawCutsSpacingInDirectionX");
             }
         }
@@ -1138,6 +1145,7 @@ namespace PFD
                 m_SawCutsSpacingInDirectionY = value;
 
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("SawCutsSpacingInDirectionY");
             }
         }
@@ -1152,6 +1160,7 @@ namespace PFD
             set
             {
                 m_CutWidth = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("CutWidth");
             }
         }
@@ -1166,6 +1175,7 @@ namespace PFD
             set
             {
                 m_CutDepth = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("CutDepth");
             }
         }
@@ -1194,6 +1204,7 @@ namespace PFD
                 SetIsEnabledFirstControlJointPositionInDirectionX();
                 //SetIsEnabledControlJointsSpacingInDirectionX();
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("NumberOfControlJointsInDirectionX");
             }
         }
@@ -1223,6 +1234,7 @@ namespace PFD
                 SetIsEnabledFirstControlJointPositionInDirectionY();
                 //SetIsEnabledControlJointsSpacingInDirectionY();
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("NumberOfControlJointsInDirectionY");
             }
         }
@@ -1242,6 +1254,7 @@ namespace PFD
 
                 m_FirstControlJointPositionInDirectionX = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("FirstControlJointPositionInDirectionX");
             }
         }
@@ -1261,6 +1274,7 @@ namespace PFD
 
                 m_FirstControlJointPositionInDirectionY = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("FirstControlJointPositionInDirectionY");
             }
         }
@@ -1280,6 +1294,7 @@ namespace PFD
 
                 m_ControlJointsSpacingInDirectionX = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("ControlJointsSpacingInDirectionX");
             }
         }
@@ -1299,6 +1314,7 @@ namespace PFD
 
                 m_ControlJointsSpacingInDirectionY = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("ControlJointsSpacingInDirectionY");
             }
         }
@@ -1313,6 +1329,7 @@ namespace PFD
             set
             {
                 m_DowelDiameter = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("DowelDiameter");
             }
         }
@@ -1327,6 +1344,7 @@ namespace PFD
             set
             {
                 m_DowelLength = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("DowelLength");
             }
         }
@@ -1341,6 +1359,7 @@ namespace PFD
             set
             {
                 m_DowelSpacing = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("DowelSpacing");
             }
         }
@@ -1479,6 +1498,7 @@ namespace PFD
                     throw new ArgumentException("AS 2870 - Perimeter depth must be between 450 and 1000 [mm]"); // TODO napojit na tabulku normy
 
                 m_PerimeterDepth_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("PerimeterDepth_LRSide");
             }
         }
@@ -1494,6 +1514,7 @@ namespace PFD
             set
             {
                 m_PerimeterWidth_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("PerimeterWidth_LRSide");
             }
         }
@@ -1509,6 +1530,7 @@ namespace PFD
             set
             {
                 m_StartersLapLength_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("StartersLapLength_LRSide");
             }
         }
@@ -1524,6 +1546,7 @@ namespace PFD
             set
             {
                 m_StartersSpacing_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("StartersSpacing_LRSide");
             }
         }
@@ -1539,6 +1562,7 @@ namespace PFD
             set
             {
                 m_Starters_Phi_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Starters_Phi_LRSide");
             }
         }
@@ -1554,7 +1578,7 @@ namespace PFD
             set
             {
                 m_RebateWidth_LRSide = value;
-                UpdateFloorSlabModelFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("RebateWidth_LRSide");
             }
         }
@@ -1570,6 +1594,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_TopAndBotom_Phi_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_TopAndBotom_Phi_LRSide");
             }
         }
@@ -1585,6 +1610,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_Intermediate_Phi_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_Intermediate_Phi_LRSide");
             }
         }
@@ -1600,6 +1626,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_Intermediate_Count_LRSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_Intermediate_Count_LRSide");
             }
         }
@@ -1618,6 +1645,7 @@ namespace PFD
                     throw new ArgumentException("AS 2870 - Perimeter depth must be between 450 and 1000 [mm]"); // TODO napojit na tabulku normy
 
                 m_PerimeterDepth_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("PerimeterDepth_FBSide");
             }
         }
@@ -1633,6 +1661,7 @@ namespace PFD
             set
             {
                 m_PerimeterWidth_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("PerimeterWidth_FBSide");
             }
         }
@@ -1648,6 +1677,7 @@ namespace PFD
             set
             {
                 m_StartersLapLength_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("StartersLapLength_FBSide");
             }
         }
@@ -1663,6 +1693,7 @@ namespace PFD
             set
             {
                 m_StartersSpacing_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("StartersSpacing_FBSide");
             }
         }
@@ -1678,6 +1709,7 @@ namespace PFD
             set
             {
                 m_Starters_Phi_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Starters_Phi_FBSide");
             }
         }
@@ -1693,7 +1725,7 @@ namespace PFD
             set
             {
                 m_RebateWidth_FBSide = value;
-                UpdateFloorSlabModelFromGUI();
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("RebateWidth_FBSide");
             }
         }
@@ -1709,6 +1741,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_TopAndBotom_Phi_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_TopAndBotom_Phi_FBSide");
             }
         }
@@ -1724,6 +1757,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_Intermediate_Phi_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_Intermediate_Phi_FBSide");
             }
         }
@@ -1740,6 +1774,7 @@ namespace PFD
             set
             {
                 m_Longitud_Reinf_Intermediate_Count_FBSide = value;
+                //UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("Longitud_Reinf_Intermediate_Count_FBSide");
             }
         }
@@ -2079,10 +2114,18 @@ namespace PFD
         }
 
         //GUI was changed, so update Model
-        public void UpdateFloorSlabModelFromGUI()
+
+        // TO ONDREJ - TAK SOM SA NAKONIEC DOPATRAL K INEJ METODE, KTORA ROBI TO ISTE 
+        // NASTAVUJE HODNOTY Z GUI DO REALNYCH OBJEKTOV
+        // Pozri UC_FootingInput.xaml.cs UpdateModelProperties(), line 175
+        // Prosim pozri sa na to a skus to zjednotit aby sme to mali pre footing pads a floor slab podobne
+
+        public void UpdateFloorSlabModelFromGUI_XXX()
         {
             foreach (CSlab slab in _pfdVM.Model.m_arrSlabs)
             {
+                // TAKTO BY SME PRISTUPOVALI A MENILI JEDNOTLIVE PARAMETRE
+                /*
                 foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
                 {
                     foreach (CSlabRebate rebate in perimeter.SlabRebates)
@@ -2092,10 +2135,73 @@ namespace PFD
                         else rebate.RebateWidth = RebateWidth_LRSide / 1000;
                     }
                 }
-            }
-            
-        }
+                */
 
+                // NASTAVIME PROPERTIES PRE SLAB A VSETKY OBJEKTY V SLAB PREGENERUJEME (VYGENERUJEME UPLNE NANOVO
+
+                _pfdVM.Model.m_arrSlabs.First().m_fDim3 = FloorSlabThickness / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().ConcreteCover = MeshConcreteCover / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().MeshGradeName = ReinforcementMeshGrade;
+
+                // Saw Cuts
+                _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionX = FirstSawCutPositionInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().FirstSawCutPositionInDirectionY = FirstSawCutPositionInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionX = NumberOfSawCutsInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfSawCutsInDirectionY = NumberOfSawCutsInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionX = SawCutsSpacingInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().SawCutsSpacingInDirectionY = SawCutsSpacingInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutWidth = CutWidth / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceSawCut.CutDepth = CutDepth / 1000f;
+
+                // Control Joints
+                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = FirstControlJointPositionInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = FirstControlJointPositionInDirectionY; 
+                _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = NumberOfControlJointsInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = NumberOfControlJointsInDirectionY;
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX =  ControlJointsSpacingInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = ControlJointsSpacingInDirectionY; 
+                //_pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Diameter_shank = (float.Parse(DowelDiameter)) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Length = DowelLength / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.DowelSpacing =DowelSpacing / 1000;
+
+                // Perimeters
+
+                // Left / Right Side
+                //_pfdVM.Model.m_arrSlabs.First().PerimeterDepth_LRSide = PerimeterDepth_LRSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().PerimeterWidth_LRSide = PerimeterWidth_LRSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().StartersLapLength_LRSide = StartersLapLength_LRSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().StartersSpacing_LRSide = StartersSpacing_LRSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Starters_Phi_LRSide = (float.Parse(Starters_Phi_LRSide)) / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_LRSide = (float.Parse(Longitud_Reinf_TopAndBotom_Phi_LRSide)) / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_LRSide = (float.Parse(Longitud_Reinf_Intermediate_Phi_LRSide)) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_LRSide =  Longitud_Reinf_Intermediate_Count_LRSide;
+
+                // Rebate
+                _pfdVM.Model.m_arrSlabs.First().RebateWidth_LRSide = RebateWidth_LRSide / 1000f;
+
+                // Front / Back Side
+
+                //_pfdVM.Model.m_arrSlabs.First().PerimeterDepth_FBSide = PerimeterDepth_FBSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().PerimeterWidth_FBSide = PerimeterWidth_FBSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().StartersLapLength_FBSide = StartersLapLength_FBSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().StartersSpacing_FBSide = StartersSpacing_FBSide / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Starters_Phi_FBSide = (float.Parse(Starters_Phi_FBSide)) / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_FBSide = (float.Parse(Longitud_Reinf_TopAndBotom_Phi_FBSide)) / 1000f;
+                //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_FBSide = (float.Parse(Longitud_Reinf_Intermediate_Phi_FBSide)) / 1000f;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_FBSide = Longitud_Reinf_Intermediate_Count_FBSide;
+
+                // Rebate
+                _pfdVM.Model.m_arrSlabs.First().RebateWidth_FBSide = RebateWidth_FBSide / 1000f;
+
+                // PREGENERUJ OBJEKTY V SLAB
+                _pfdVM.Model.m_arrSlabs.First().SetControlPoint();
+                _pfdVM.Model.m_arrSlabs.First().SetTextPoint();
+                _pfdVM.Model.m_arrSlabs.First().CreateSawCuts();
+                _pfdVM.Model.m_arrSlabs.First().CreateControlJoints();
+                _pfdVM.Model.m_arrSlabs.First().CreatePerimeters();
+                _pfdVM.Model.m_arrSlabs.First().SetDescriptionText();
+            }
+        }
 
         //vyrobil som novu metodu, lebo toto podla mna mala robit metoda, ktoru sme mali nizsie UpdateValuesInGUI
         //ak zmenim index pre Footing Pad type sa musia v GUI prestavit vsetky hodnoty podla toho co ma dany objekt v modeli

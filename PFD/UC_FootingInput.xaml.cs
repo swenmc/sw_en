@@ -208,6 +208,8 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_LRSide = float.Parse(vm.Longitud_Reinf_Intermediate_Phi_LRSide) / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_LRSide = vm.Longitud_Reinf_Intermediate_Count_LRSide;
 
+                _pfdVM.Model.m_arrSlabs.First().RebateWidth_LRSide = vm.RebateWidth_LRSide / 1000f;
+
                 _pfdVM.Model.m_arrSlabs.First().PerimeterDepth_FBSide = vm.PerimeterDepth_FBSide / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().PerimeterWidth_FBSide = vm.PerimeterWidth_FBSide / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().StartersLapLength_FBSide = vm.StartersLapLength_FBSide / 1000f;
@@ -216,6 +218,8 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_FBSide = float.Parse(vm.Longitud_Reinf_TopAndBotom_Phi_FBSide) / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_FBSide = float.Parse(vm.Longitud_Reinf_Intermediate_Phi_FBSide) / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_FBSide = vm.Longitud_Reinf_Intermediate_Count_FBSide;
+
+                _pfdVM.Model.m_arrSlabs.First().RebateWidth_FBSide = vm.RebateWidth_FBSide / 1000f;
 
                 // TOTO ASI NIE JE POTREBNE, VYTVORIME PERIMETERS NANOVO PODLA VYSSIE NASTAVENYCH HODNOT, ALE NECHAVAM TO ZATIAL TU, MOZNO SA TO ESTE BUDE HODIT
                 // Perimeters
