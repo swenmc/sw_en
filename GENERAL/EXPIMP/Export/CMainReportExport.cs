@@ -1011,18 +1011,6 @@ namespace EXPIMP
                 string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
                 string sTextP11 = sTextP9;
 
-                // IN WORK 26.8.2019
-                // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
-                // TO Ondrej - zistil som ze to otocim vid nizsie, aj to funguje, ale musim vytvorit novu XGraphics pre kazdy text
-                // Rozumiem tomu spravne ze mam vykreslit najprv vsetko, co je horizontalne, potom gfx.Dispose(); a potom vytvorit pre kazdy rotovany text novu XGraphics?
-
-                /*
-                gfx.Dispose();
-                XGraphics gfxRotate = XGraphics.FromPdfPage(page);
-                gfxRotate.RotateAtTransform(-90, new XPoint(200, 300));
-                gfxRotate.DrawString("Text Here", fontDimension, XBrushes.Black, new XPoint(200, 300));
-                */
-                
                 gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, 380);                
                 gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, 225);
                 gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, 380);
@@ -1033,6 +1021,7 @@ namespace EXPIMP
                 gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, 305);
                 gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, 350);
                 
+                //Rotacia textu
                 XGraphicsState state = gfx.Save();
                 gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, 300));
                 gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, 300);
@@ -1049,37 +1038,39 @@ namespace EXPIMP
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
-                int iPictureTextOffset = 240;
                 foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
                 {
                     bool bAddRollerDoorDetail = false;
                     foreach (DoorProperties prop in data.DoorBlocksProperties)
                     {
+                        // musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
                         if (prop.sDoorType == "Roller Door" && perimeter.BuildingSide == prop.sBuildingSide)
                             bAddRollerDoorDetail = true;
                     }
-
-                    // TODO Ondrej - musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
 
                     if (bAddRollerDoorDetail) // Add roller door rebate detail
                     {
                         XImage image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
                         double imageWidthOriginal = image.PixelWidth;
                         double imageHeightOriginal = image.PixelHeight;
+
+                        if (dImagePosition_x + imageWidthOriginal * scale > gfx.PageSize.Width) { dImagePosition_x = 2; dRowPosition2 = dRowPosition + 15; }
+
                         gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
                         image.Dispose();
-                        dImagePosition_x += imageWidthOriginal * scale;
-                        dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
-
-                        // TODO Ondrej - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
+                        
                         if (perimeter.SlabRebates != null)
                         {
                             // Tu by sa mali nacitat data pre rebate, v pripade ze su v perimeter viacere rebates s roznymi parametrami mal by sa pridat detail pre kazdy z nich, to sa ale nestane
                             // Neumoznujeme, aby mal kazdy rebate v jednom perimeter inu sirku alebo sklon
                         }
 
-                        float fRebateDepth_Step = 0.01f; // perimeter.SlabRebates.First().RebateDepth_Step;
-                        float fRebateDepth_Edge = 0.02f; // perimeter.SlabRebates.First().RebateDepth_Edge;
+
+                        //TO Mato - chcel som pouzit toto dole ale perimeter.SlabRebates je NULL
+                        //float fRebateDepth_Step = perimeter.SlabRebates.First().RebateDepth_Step; // 0.01f;
+                        //float fRebateDepth_Edge = perimeter.SlabRebates.First().RebateDepth_Edge; // 0.02f;
+                        float fRebateDepth_Step = 0.01f;
+                        float fRebateDepth_Edge = 0.02f;
 
                         float fPerimeterDepth = perimeter.PerimeterDepth;
                         float fPerimeterBottomWidth = perimeter.PerimeterWidth;
@@ -1096,11 +1087,11 @@ namespace EXPIMP
                         string sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
                         string sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
 
-                        // TODO - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
-                        float fRollerDoorRebate = 0.5f; // data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().SlabRebates.First().RebateWidth;
+                        //TO Mato - chcel som pouzit toto dole ale perimeter.SlabRebates je NULL
+                        //float fRollerDoorRebate = perimeter.SlabRebates.First().RebateWidth; // 0.5f;
+                        float fRollerDoorRebate = 0.5f;
                         string sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
-
-
+                        
                         CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
                         float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
 
@@ -1114,19 +1105,25 @@ namespace EXPIMP
                         string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
                         string sTextP11 = sTextP9;
 
-                        gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
-                        gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
-                        gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 25, 230);
-                        gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 25, 255);
-                        gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
-                        gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
+                        //Rotacia textu
+                        XGraphicsState state = gfx.Save();
+                        gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 300 - 156));
+                        gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 300 - 156);
+                        gfx.Restore(state);
+                                                
+                        gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 380 - 156);
+                        gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 230 - 156);
+                        gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 255 - 156);
+                        gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 380 - 156);
+                        gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 130, dRowPosition2 + 210 - 156);
 
                         // Longitudinal reinforcement - Toto je asi zbytocna duplicita, uz je to oznacene v perimeter, ale zatial to tak necham.
-                        gfx.DrawString(sTextP9, fontNote, brushNote, iPictureTextOffset + 100, 265);
-                        gfx.DrawString(sTextP10, fontNote, brushNote, iPictureTextOffset + 93, 305);
-                        gfx.DrawString(sTextP11, fontNote, brushNote, iPictureTextOffset + 100, 350);
-
-                        iPictureTextOffset += (int)dImagePosition_x;
+                        gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 265 - 156);
+                        gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 305 - 156);
+                        gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 350 - 156);
+                        
+                        dImagePosition_x += imageWidthOriginal * scale;
+                        dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
                     }
                 }
 

@@ -16,7 +16,34 @@ namespace PFD.Infrastructure
             DoorProperties doorProps = new DoorProperties();
             doorProps.sBuildingSide = "Front";
             doorProps.iBayNumber = 2;
-            doorProps.sDoorType = "Personnel Door";
+            doorProps.sDoorType = "Roller Door";
+            doorProps.fDoorsHeight = 2.1f;
+            doorProps.fDoorsWidth = 0.8f;
+            doorProps.fDoorCoordinateXinBlock = 0.5f;            
+            DoorBlocks.Add(doorProps);
+
+            doorProps = new DoorProperties();
+            doorProps.sBuildingSide = "Left";
+            doorProps.iBayNumber = 1;
+            doorProps.sDoorType = "Roller Door";
+            doorProps.fDoorsHeight = 2.1f;
+            doorProps.fDoorsWidth = 0.8f;
+            doorProps.fDoorCoordinateXinBlock = 0.5f;
+            DoorBlocks.Add(doorProps);
+
+            doorProps = new DoorProperties();
+            doorProps.sBuildingSide = "Right";
+            doorProps.iBayNumber = 1;
+            doorProps.sDoorType = "Roller Door";
+            doorProps.fDoorsHeight = 2.1f;
+            doorProps.fDoorsWidth = 0.8f;
+            doorProps.fDoorCoordinateXinBlock = 0.5f;
+            DoorBlocks.Add(doorProps);
+
+            doorProps = new DoorProperties();
+            doorProps.sBuildingSide = "Back";
+            doorProps.iBayNumber = 1;
+            doorProps.sDoorType = "Roller Door";
             doorProps.fDoorsHeight = 2.1f;
             doorProps.fDoorsWidth = 0.8f;
             doorProps.fDoorCoordinateXinBlock = 0.5f;
