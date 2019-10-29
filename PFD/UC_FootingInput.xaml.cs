@@ -51,7 +51,12 @@ namespace PFD
             CFoundation pad = vm.GetSelectedFootingPad(); 
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
 
-            //Toto Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
+            // To Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
+            // To Ondrej - kvoli vypoctu a kresleniu patky v 2D potrebujem niekde spocitat vzdialenosti
+            // ake su medzi anchors a hranami base plates a medzi anchors a hranami foundation pads
+            // Prosim presun to niekam kde by to malo byt aby som to mohol pouzivat,tak ze ked zmenim nejaky rozmer footing pad, excentricita, alebo column crsc - teda rozmery base plate
+            // tak sa tie hodnoty prepocitaju
+
             // Joint with base plate and anchors
             if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
             {
