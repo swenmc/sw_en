@@ -63,6 +63,8 @@ namespace PFD
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
+        private ObservableCollection<DoorProperties> DoorBlocksProperties; // Pridane kvoli Rebates
+
         private List<CNode> listOfSupportedNodes_S1;
         private List<CNode> listOfSupportedNodes_S2;
 
@@ -105,6 +107,8 @@ namespace PFD
             fDist_BackGirts = fDist_Girt_temp;
             fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_temp_deg * MathF.fPI / 180f;
             fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_temp_deg * MathF.fPI / 180f;
+
+            DoorBlocksProperties = doorBlocksProperties;
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -2642,6 +2646,9 @@ namespace PFD
                 float fLongitud_Reinf_TopAndBotom_Phi_LRSide = 0.016f;
                 float fLongitud_Reinf_Intermediate_Phi_LRSide = 0.012f;
                 int fLongitud_Reinf_Intermediate_Count_LRSide = 1;
+
+                float fRebateWidth_LRSide = 0.5f;
+
                 float fPerimeterDepth_FBSide = 0.45f; // "AS 2870 - Size must be between 0.45 and 2 [m]"; // TODO napojit na tabulku normy
                 float fPerimeterWidth_FBSide = 0.25f;
                 float fStartersLapLength_FBSide = 0.6f;
@@ -2650,6 +2657,8 @@ namespace PFD
                 float fLongitud_Reinf_TopAndBotom_Phi_FBSide = 0.016f;
                 float fLongitud_Reinf_Intermediate_Phi_FBSide = 0.012f;
                 int fLongitud_Reinf_Intermediate_Count_FBSide = 1;
+
+                float fRebateWidth_FBSide = 0.5f;
 
                 m_arrSlabs = new List<CSlab>();
                 m_arrSlabs.Add(new CSlab(1,
@@ -2683,6 +2692,7 @@ namespace PFD
                             fLongitud_Reinf_TopAndBotom_Phi_LRSide,
                             fLongitud_Reinf_Intermediate_Phi_LRSide,
                             fLongitud_Reinf_Intermediate_Count_LRSide,
+                            fRebateWidth_LRSide,
                             fPerimeterDepth_FBSide,
                             fPerimeterWidth_FBSide,
                             fStartersLapLength_FBSide,
@@ -2691,6 +2701,8 @@ namespace PFD
                             fLongitud_Reinf_TopAndBotom_Phi_FBSide,
                             fLongitud_Reinf_Intermediate_Phi_FBSide,
                             fLongitud_Reinf_Intermediate_Count_FBSide,
+                            fRebateWidth_FBSide,
+                            DoorBlocksProperties,
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
                             //BackColumnFootingReference_Bottom_Bar_x,

@@ -1058,19 +1058,20 @@ namespace EXPIMP
 
                         gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
                         image.Dispose();
-                        
+
+                        float fRebateDepth_Step = 0;
+                        float fRebateDepth_Edge = 0;
+                        float fRollerDoorRebate = 0.5f;
+
                         if (perimeter.SlabRebates != null)
                         {
                             // Tu by sa mali nacitat data pre rebate, v pripade ze su v perimeter viacere rebates s roznymi parametrami mal by sa pridat detail pre kazdy z nich, to sa ale nestane
                             // Neumoznujeme, aby mal kazdy rebate v jednom perimeter inu sirku alebo sklon
+
+                            fRebateDepth_Step = perimeter.SlabRebates.First().RebateDepth_Step; // 0.01f;
+                            fRebateDepth_Edge = perimeter.SlabRebates.First().RebateDepth_Edge; // 0.02f;
+                            fRollerDoorRebate = perimeter.SlabRebates.First().RebateWidth; // 0.5f;
                         }
-
-
-                        //TO Mato - chcel som pouzit toto dole ale perimeter.SlabRebates je NULL
-                        //float fRebateDepth_Step = perimeter.SlabRebates.First().RebateDepth_Step; // 0.01f;
-                        //float fRebateDepth_Edge = perimeter.SlabRebates.First().RebateDepth_Edge; // 0.02f;
-                        float fRebateDepth_Step = 0.01f;
-                        float fRebateDepth_Edge = 0.02f;
 
                         float fPerimeterDepth = perimeter.PerimeterDepth;
                         float fPerimeterBottomWidth = perimeter.PerimeterWidth;
@@ -1087,11 +1088,8 @@ namespace EXPIMP
                         string sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
                         string sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
 
-                        //TO Mato - chcel som pouzit toto dole ale perimeter.SlabRebates je NULL
-                        //float fRollerDoorRebate = perimeter.SlabRebates.First().RebateWidth; // 0.5f;
-                        float fRollerDoorRebate = 0.5f;
                         string sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
-                        
+
                         CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
                         float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
 

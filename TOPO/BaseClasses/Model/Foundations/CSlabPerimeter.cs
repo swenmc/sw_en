@@ -137,7 +137,6 @@ namespace BaseClasses
             }
         }
 
-
         //-------------------------------------------------------------------------------------------------------------
         public int Longitud_Reinf_Intermediate_Count
         {

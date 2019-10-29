@@ -1,6 +1,7 @@
 ﻿using _3DTools;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -67,6 +68,8 @@ namespace BaseClasses
         private float m_Longitud_Reinf_Intermediate_Phi_LRSide;
         private int m_Longitud_Reinf_Intermediate_Count_LRSide;
 
+        private float m_RebateWidth_LRSide;
+
         private float m_PerimeterDepth_FBSide;
         private float m_PerimeterWidth_FBSide;
         private float m_StartersLapLength_FBSide;
@@ -76,7 +79,11 @@ namespace BaseClasses
         private float m_Longitud_Reinf_Intermediate_Phi_FBSide;
         private int m_Longitud_Reinf_Intermediate_Count_FBSide;
 
+        private float m_RebateWidth_FBSide;
+
         private List<CSlabPerimeter> m_PerimeterBeams;
+
+        private ObservableCollection<DoorProperties> m_DoorBlocksProperties;
 
         private List<Point3D> MWireFramePoints;
 
@@ -593,6 +600,20 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float RebateWidth_LRSide
+        {
+            get
+            {
+                return m_RebateWidth_LRSide;
+            }
+
+            set
+            {
+                m_RebateWidth_LRSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float PerimeterDepth_FBSide
         {
             get
@@ -705,10 +726,46 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float RebateWidth_FBSide
+        {
+            get
+            {
+                return m_RebateWidth_FBSide;
+            }
+
+            set
+            {
+                m_RebateWidth_FBSide = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public List<CSlabPerimeter> PerimeterBeams
         {
-            get { return m_PerimeterBeams; }
-            set { m_PerimeterBeams = value; }
+            get
+            {
+                return m_PerimeterBeams;
+            }
+
+            set
+            {
+                m_PerimeterBeams = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public ObservableCollection<DoorProperties> DoorBlocksProperties
+        {
+            get
+            {
+                return m_DoorBlocksProperties;
+            }
+
+            set
+            {
+                m_DoorBlocksProperties = value;
+            }
         }
 
         private float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stlpy aby bolo vidno ich obrys
@@ -750,6 +807,7 @@ namespace BaseClasses
             float fLongitud_Reinf_TopAndBotom_Phi_LRSide,
             float fLongitud_Reinf_Intermediate_Phi_LRSide,
             int   iLongitud_Reinf_Intermediate_Count_LRSide,
+            float fRebateWidth_LRSide,
             float fPerimeterDepth_FBSide,
             float fPerimeterWidth_FBSide,
             float fStartersLapLength_FBSide,
@@ -758,17 +816,19 @@ namespace BaseClasses
             float fLongitud_Reinf_TopAndBotom_Phi_FBSide,
             float fLongitud_Reinf_Intermediate_Phi_FBSide,
             int   iLongitud_Reinf_Intermediate_Count_FBSide,
+            float fRebateWidth_FBSide,
+            ObservableCollection<DoorProperties> doorBlocksProperties,
 
-        //CReinforcementBar refTopBar_x,
-        //CReinforcementBar refTopBar_y,
-        //CReinforcementBar refBottomBar_x,
-        //CReinforcementBar refBottomBar_y,
-        //int iNumberOfBarsTop_x,
-        //int iNumberOfBarsTop_y,
-        //int iNumberOfBarsBottom_x,
-        //int iNumberOfBarsBottom_y,
-        //Color volColor,
-        float fvolOpacity,
+            //CReinforcementBar refTopBar_x,
+            //CReinforcementBar refTopBar_y,
+            //CReinforcementBar refBottomBar_x,
+            //CReinforcementBar refBottomBar_y,
+            //int iNumberOfBarsTop_x,
+            //int iNumberOfBarsTop_y,
+            //int iNumberOfBarsBottom_x,
+            //int iNumberOfBarsBottom_y,
+            //Color volColor,
+            float fvolOpacity,
             bool bIsDisplayed,
             float fTime)
         {
@@ -796,6 +856,7 @@ namespace BaseClasses
             m_ControlJointsSpacingInDirectionX = fControlJointsSpacingInDirectionX;
             m_ControlJointsSpacingInDirectionY = fControlJointsSpacingInDirectionY;
             m_ReferenceControlJoint = refControlJoint;
+
             m_PerimeterDepth_LRSide = fPerimeterDepth_LRSide;
             m_PerimeterWidth_LRSide = fPerimeterWidth_LRSide;
             m_StartersLapLength_LRSide = fStartersLapLength_LRSide;
@@ -804,6 +865,9 @@ namespace BaseClasses
             m_Longitud_Reinf_TopAndBotom_Phi_LRSide = fLongitud_Reinf_TopAndBotom_Phi_LRSide;
             m_Longitud_Reinf_Intermediate_Phi_LRSide = fLongitud_Reinf_Intermediate_Phi_LRSide;
             m_Longitud_Reinf_Intermediate_Count_LRSide = iLongitud_Reinf_Intermediate_Count_LRSide;
+
+            m_RebateWidth_LRSide = fRebateWidth_LRSide;
+
             m_PerimeterDepth_FBSide = fPerimeterDepth_FBSide;
             m_PerimeterWidth_FBSide = fPerimeterWidth_FBSide;
             m_StartersLapLength_FBSide = fStartersLapLength_FBSide;
@@ -812,6 +876,10 @@ namespace BaseClasses
             m_Longitud_Reinf_TopAndBotom_Phi_FBSide = fLongitud_Reinf_TopAndBotom_Phi_FBSide;
             m_Longitud_Reinf_Intermediate_Phi_FBSide = fLongitud_Reinf_Intermediate_Phi_FBSide;
             m_Longitud_Reinf_Intermediate_Count_FBSide = iLongitud_Reinf_Intermediate_Count_FBSide;
+
+            m_RebateWidth_FBSide = fRebateWidth_FBSide;
+
+            m_DoorBlocksProperties = doorBlocksProperties;
 
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
@@ -1034,6 +1102,66 @@ namespace BaseClasses
 
             // TODO - potrebujeme se dostat vysku zakladovych patiek na kazdej strane budovy aby sme nastavili default, resp. perimeter depth z GUI
 
+
+            // Vytvorime objekty a zoznam rebates podla toho kde sa nachadzaju roller doors a tieto rebates posleme ako zoznam do konstruktora CSlabPerimeter
+
+            List<CSlabRebate> rebatesLeftSide = null;
+            List<CSlabRebate> rebatesRightSide = null;
+            List<CSlabRebate> rebatesFrontSide = null;
+            List<CSlabRebate> rebatesBackSide = null;
+
+            if (m_DoorBlocksProperties != null && m_DoorBlocksProperties.Count > 0) // Some door exists
+            {
+                for (int i = 0; i < m_DoorBlocksProperties.Count; i++)
+                {
+                    DoorProperties doorProp = m_DoorBlocksProperties[i];
+
+                    if (doorProp.sDoorType == "Roller Door")
+                    {
+                        // TODO Ondrej - Refaktorovat - 4 strany
+                        if (doorProp.sBuildingSide == "Left")
+                        {
+                            if (rebatesLeftSide == null) rebatesLeftSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
+                                /*
+                                        private float m_RebateWidth;      // Distance from the slab edge
+                                        private float m_RebatePosition;   // Roller door start position + half of trimmer width
+                                        private float m_RebateLength;     // Roller door clear width
+                                        private float m_RebateDepth_Step; // Step size (10 mm)
+                                        private float m_RebateDepth_Edge; // Total depth at the edge (20 mm)
+                                */
+
+                                rebatesLeftSide.Add(new CSlabRebate(i + 1, m_RebateWidth_LRSide,
+                                /*TODO Ondrej - tu treba pripocitat polohu bay a 0.5 x rozmer b rollerDoorTrimmer Crsc*/ doorProp.fDoorCoordinateXinBlock,
+                                /*TODO Ondrej - tu treba odpocitat 1 x rozmer b rollerDoorTrimmer Crsc*/ doorProp.fDoorsWidth, 0.01f, 0.02f, true, 0));
+                        }
+
+                        if (doorProp.sBuildingSide == "Right")
+                        {
+                            if (rebatesRightSide == null) rebatesRightSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
+                            rebatesRightSide.Add(new CSlabRebate(i + 1, m_RebateWidth_LRSide,
+                            doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth, 0.01f, 0.02f, true, 0));
+                        }
+
+                        if (doorProp.sBuildingSide == "Front")
+                        {
+                            if (rebatesFrontSide == null) rebatesFrontSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
+                            rebatesFrontSide.Add(new CSlabRebate(i + 1, m_RebateWidth_FBSide,
+                            doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth, 0.01f, 0.02f, true, 0));
+                        }
+
+                        if (doorProp.sBuildingSide == "Back")
+                        {
+                            if (rebatesBackSide == null) rebatesBackSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
+                            rebatesBackSide.Add(new CSlabRebate(i + 1, m_RebateWidth_FBSide,
+                            doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth, 0.01f, 0.02f, true, 0));
+                        }
+                    }
+                }
+            }
+
             m_PerimeterBeams.Add(new CSlabPerimeter(1,
                 "Left",
                 m_PerimeterDepth_LRSide,
@@ -1045,7 +1173,8 @@ namespace BaseClasses
                 m_Longitud_Reinf_Intermediate_Phi_LRSide,
                 m_Longitud_Reinf_Intermediate_Count_LRSide,
                 true,
-                0));
+                0,
+                rebatesLeftSide));
 
             m_PerimeterBeams.Add(new CSlabPerimeter(2,
                 "Right",
@@ -1058,7 +1187,8 @@ namespace BaseClasses
                 m_Longitud_Reinf_Intermediate_Phi_LRSide,
                 m_Longitud_Reinf_Intermediate_Count_LRSide,
                 true,
-                0));
+                0,
+                rebatesRightSide));
 
             m_PerimeterBeams.Add(new CSlabPerimeter(3,
                 "Front",
@@ -1071,7 +1201,8 @@ namespace BaseClasses
                 m_Longitud_Reinf_Intermediate_Phi_FBSide,
                 m_Longitud_Reinf_Intermediate_Count_FBSide,
                 true,
-                0));
+                0,
+                rebatesFrontSide));
 
             m_PerimeterBeams.Add(new CSlabPerimeter(4,
                 "Back",
@@ -1084,7 +1215,8 @@ namespace BaseClasses
                 m_Longitud_Reinf_Intermediate_Phi_FBSide,
                 m_Longitud_Reinf_Intermediate_Count_FBSide,
                 true,
-                0));
+                0,
+                rebatesBackSide));
         }
 
         public void SetDescriptionText()
