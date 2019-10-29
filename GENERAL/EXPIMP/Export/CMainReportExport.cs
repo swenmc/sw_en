@@ -905,7 +905,15 @@ namespace EXPIMP
             XBrush brushNote = XBrushes.Black;
 
             CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
-            if (slab == null) return; //to Mato - je to takto dobre? ze ak je null tak nemame co robit?
+            if (slab == null) return;
+            // To Mato - je to takto dobre? ze ak je null tak nemame co robit? 
+            // To Ondrej - v podstate je to chyba alebo do znacnej miery vynimka
+            // Mohlo by sa stat ze niekto bude chciet budovu bez betonovej podlahy napriklad nejaky pristresok pre zvierata alebo na nejake stroje
+            // Mozno by stalo za to mat v GUI nejaky checkbox  v UC FootingInput ci sa ma vobec floor generovat
+            // Ak by bol unchecked, tak by sa podlaha ani dalsie objekty v nej (saw cuts, control joints, perimeters, rebates, description text, ...)
+            // vobec negenerovala a ani sa nevytvaralo v PDF layout pre floor a floor details
+            // Asi to nie je extra dolezite, ale mozes sa s tym pohrat v ramci review "floor slab" :)
+            // Aspon budes mat lepsi prehlad toho ako to teraz funguje, tipujem ze pri tom odhalis ine suvislosti, slabiny a nedorobky
 
             if (slab.SawCuts.Count > 0)
             {
