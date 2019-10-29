@@ -2088,8 +2088,8 @@ namespace PFD
                     foreach (CSlabRebate rebate in perimeter.SlabRebates)
                     {
                         if(perimeter.BuildingSide == "Front" || perimeter.BuildingSide == "Back")                        
-                            rebate.RebateWidth = RebateWidth_FBSide;
-                        else rebate.RebateWidth = RebateWidth_LRSide;
+                            rebate.RebateWidth = RebateWidth_FBSide / 1000;
+                        else rebate.RebateWidth = RebateWidth_LRSide / 1000;
                     }
                 }
             }
