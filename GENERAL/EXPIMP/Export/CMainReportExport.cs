@@ -63,21 +63,21 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            DrawModel3D(s_document, modelData);
+            //DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            //DrawModelViews(s_document, modelData);
 
-            DrawJointTypes(s_document, modelData);
+            //DrawJointTypes(s_document, modelData);
 
-            DrawFootingTypes(s_document, modelData);
+            //DrawFootingTypes(s_document, modelData);
 
             DrawFloorDetails(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData);
+            //DrawStandardDetails(s_document, modelData);
 
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            //AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -898,80 +898,90 @@ namespace EXPIMP
             double dImagePosition_y = 2;
             double dRowPosition = 0;
 
-            // TODO Ondrej - tu by sa to mohlo upravit tak ze ak neexistuje ziaden saw cut alebo ziaden control joint tak ten detail sa nezobrazi, je treba poriesit ze ak nie je zobrazeny detail pre saw cut, 
-            // tak control joint sa zobrazi ako prvy obrazok
-
-            // 1st row
-            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
-            double imageWidthOriginal = image.PixelWidth;
-            double imageHeightOriginal = image.PixelHeight;
-            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
-            image.Dispose();
-            dImagePosition_x += imageWidthOriginal * scale;
-            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
-
             XFont fontDimension = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
             XBrush brushDimension = XBrushes.DarkOrange;
 
             XFont fontNote = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
             XBrush brushNote = XBrushes.Black;
-
-            if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
+            
+            CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
+            if (slab != null)
             {
-                if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
+                if (slab.SawCuts.Count > 0)
                 {
-                    string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
-                    gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
+                    // 1st row
+                    XImage imageSC = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
+                    double imageWidthOriginalSC = imageSC.PixelWidth;
+                    double imageHeightOriginalSC = imageSC.PixelHeight;
+                    gfx.DrawImage(imageSC, dImagePosition_x, dImagePosition_y, imageWidthOriginalSC * scale, imageHeightOriginalSC * scale);
+                    imageSC.Dispose();
+                    dImagePosition_x += imageWidthOriginalSC * scale;
+                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalSC * scale);
+                    
+                    if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
+                    {
+                        if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
+                        {
+                            string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
+                            gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
 
-                    string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
-                    gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
+                            string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
+                            gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
+                        }
+                    }
                 }
+
+                if (slab.ControlJoints.Count > 0)
+                {
+                    XImage imageJD = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
+                    double imageWidthOriginalJD = imageJD.PixelWidth;
+                    double imageHeightOriginalJD = imageJD.PixelHeight;
+                    gfx.DrawImage(imageJD, dImagePosition_x, dImagePosition_y, imageWidthOriginalJD * scale, imageHeightOriginalJD * scale);
+                    imageJD.Dispose();
+                    
+                    if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
+                    {
+                        if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
+                        {
+                            /*
+                            string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
+                                " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
+                                (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
+                            */
+
+                            string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
+                            string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
+                                (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
+                            string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
+
+                            gfx.DrawString(sText1, fontNote, brushNote, dImagePosition_x + 112, 125);
+                            gfx.DrawString(sText2, fontNote, brushNote, dImagePosition_x + 112, 135);
+                            gfx.DrawString(sText3, fontNote, brushNote, dImagePosition_x + 112, 145);
+                        }
+                    }
+
+                    dImagePosition_x += imageWidthOriginalJD * scale;
+                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
+                }
+
             }
 
-            image = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
-            imageWidthOriginal = image.PixelWidth;
-            imageHeightOriginal = image.PixelHeight;
-            gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
-            image.Dispose();
-            dImagePosition_x += imageWidthOriginal * scale;
-            dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginal * scale);
-
-            if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
-            {
-                if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
-                {
-                    /*
-                    string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
-                        " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
-                        (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
-                    */
-
-                    string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
-                    string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
-                        (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
-                    string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
-
-                    gfx.DrawString(sText1, fontNote, brushNote, 315, 125);
-                    gfx.DrawString(sText2, fontNote, brushNote, 315, 135);
-                    gfx.DrawString(sText3, fontNote, brushNote, 315, 145);
-                }
-            }
-
+            
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
             // 2nd row
             dImagePosition_x = 2; // Zaciname znova od laveho okraja
             double dRowPosition2 = dRowPosition;
 
-            image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
-            imageWidthOriginal = image.PixelWidth;
-            imageHeightOriginal = image.PixelHeight;
+            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
+            double imageWidthOriginal = image.PixelWidth;
+            double imageHeightOriginal = image.PixelHeight;
             gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
             image.Dispose();
             dImagePosition_x += imageWidthOriginal * scale;
             dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
             // TODO - zapracovat pre lavu/pravu stranu a potom samostatne prednu a zadnu PerimeterBeams by malo obsahovat 4 objekty
-            CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
+            //CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
             CSlabPerimeter perimeter = slab.PerimeterBeams.FirstOrDefault();
 
             float fPerimeterDepth = perimeter.PerimeterDepth;
