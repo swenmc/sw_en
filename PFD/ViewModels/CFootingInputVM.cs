@@ -1554,6 +1554,7 @@ namespace PFD
             set
             {
                 m_RebateWidth_LRSide = value;
+                UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("RebateWidth_LRSide");
             }
         }
@@ -1692,6 +1693,7 @@ namespace PFD
             set
             {
                 m_RebateWidth_FBSide = value;
+                UpdateFloorSlabModelFromGUI();
                 NotifyPropertyChanged("RebateWidth_FBSide");
             }
         }
@@ -1823,7 +1825,7 @@ namespace PFD
             // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
             // Alebo sa tu nastavia a podla toho sa vyrobi model ???
 
-            UpdateFloorSlab();
+            UpdateFloorSlabViewModelFromModel();
 
             //CFoundation pad = GetSelectedFootingPad();
             //FootingPadSize_x_Or_a = pad.m_fDim1;
@@ -2006,7 +2008,8 @@ namespace PFD
             }
         }
 
-        public void UpdateFloorSlab()
+        //set GUI values from Model
+        public void UpdateFloorSlabViewModelFromModel()
         {
             //FloorSlabThickness = 125; // mm 0.125f; m
             FloorSlabThickness = _pfdVM.Model.m_arrSlabs.First().m_fDim3 * 1000;
@@ -2074,6 +2077,25 @@ namespace PFD
             else
                 RebateWidth_FBSide = 0;
         }
+
+        //GUI was changed, so update Model
+        public void UpdateFloorSlabModelFromGUI()
+        {
+            foreach (CSlab slab in _pfdVM.Model.m_arrSlabs)
+            {
+                foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
+                {
+                    foreach (CSlabRebate rebate in perimeter.SlabRebates)
+                    {
+                        if(perimeter.BuildingSide == "Front" || perimeter.BuildingSide == "Back")                        
+                            rebate.RebateWidth = RebateWidth_FBSide;
+                        else rebate.RebateWidth = RebateWidth_LRSide;
+                    }
+                }
+            }
+            
+        }
+
 
         //vyrobil som novu metodu, lebo toto podla mna mala robit metoda, ktoru sme mali nizsie UpdateValuesInGUI
         //ak zmenim index pre Footing Pad type sa musia v GUI prestavit vsetky hodnoty podla toho co ma dany objekt v modeli

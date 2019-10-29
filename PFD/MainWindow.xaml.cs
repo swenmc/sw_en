@@ -778,7 +778,7 @@ namespace PFD
             if (vm.RecreateFloorSlab)
             {
                 vm.FootingVM.IsSetFromCode = true;
-                vm.FootingVM.UpdateFloorSlab();
+                vm.FootingVM.UpdateFloorSlabViewModelFromModel();
                 vm.FootingVM.IsSetFromCode = false;
             }
         }
