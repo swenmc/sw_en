@@ -84,7 +84,7 @@ namespace EXPIMP
             s_document.Save(fileName);
             s_document.Close();
             s_document.Dispose();
-            
+
             // ...and start a viewer
             Process.Start(fileName);
         }
@@ -903,200 +903,251 @@ namespace EXPIMP
 
             XFont fontNote = new XFont(fontFamily, fontSizeDetailTable, XFontStyle.Bold, options);
             XBrush brushNote = XBrushes.Black;
-            
+
             CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
-            if (slab != null)
+            if (slab == null) return; //to Mato - je to takto dobre? ze ak je null tak nemame co robit?
+
+            if (slab.SawCuts.Count > 0)
             {
-                if (slab.SawCuts.Count > 0)
-                {
-                    // 1st row
-                    XImage imageSC = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
-                    double imageWidthOriginalSC = imageSC.PixelWidth;
-                    double imageHeightOriginalSC = imageSC.PixelHeight;
-                    gfx.DrawImage(imageSC, dImagePosition_x, dImagePosition_y, imageWidthOriginalSC * scale, imageHeightOriginalSC * scale);
-                    imageSC.Dispose();
-                    dImagePosition_x += imageWidthOriginalSC * scale;
-                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalSC * scale);
-                    
-                    if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
-                    {
-                        if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
-                        {
-                            string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
-                            gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
+                // 1st row
+                XImage imageSC = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
+                double imageWidthOriginalSC = imageSC.PixelWidth;
+                double imageHeightOriginalSC = imageSC.PixelHeight;
+                gfx.DrawImage(imageSC, dImagePosition_x, dImagePosition_y, imageWidthOriginalSC * scale, imageHeightOriginalSC * scale);
+                imageSC.Dispose();
+                dImagePosition_x += imageWidthOriginalSC * scale;
+                dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalSC * scale);
 
-                            string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
-                            gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
-                        }
+                if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
+                {
+                    if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
+                    {
+                        string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
+                        gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
+
+                        string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
+                        gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
                     }
                 }
-
-                if (slab.ControlJoints.Count > 0)
-                {
-                    XImage imageJD = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
-                    double imageWidthOriginalJD = imageJD.PixelWidth;
-                    double imageHeightOriginalJD = imageJD.PixelHeight;
-                    gfx.DrawImage(imageJD, dImagePosition_x, dImagePosition_y, imageWidthOriginalJD * scale, imageHeightOriginalJD * scale);
-                    imageJD.Dispose();
-                    
-                    if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
-                    {
-                        if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
-                        {
-                            /*
-                            string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
-                                " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
-                                (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
-                            */
-
-                            string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
-                            string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
-                                (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
-                            string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
-
-                            gfx.DrawString(sText1, fontNote, brushNote, dImagePosition_x + 112, 125);
-                            gfx.DrawString(sText2, fontNote, brushNote, dImagePosition_x + 112, 135);
-                            gfx.DrawString(sText3, fontNote, brushNote, dImagePosition_x + 112, 145);
-                        }
-                    }
-
-                    dImagePosition_x += imageWidthOriginalJD * scale;
-                    dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
-                }
-
             }
 
+            if (slab.ControlJoints.Count > 0)
+            {
+                XImage imageJD = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
+                double imageWidthOriginalJD = imageJD.PixelWidth;
+                double imageHeightOriginalJD = imageJD.PixelHeight;
+                gfx.DrawImage(imageJD, dImagePosition_x, dImagePosition_y, imageWidthOriginalJD * scale, imageHeightOriginalJD * scale);
+                imageJD.Dispose();
+
+                if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
+                {
+                    if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
+                    {
+                        /*
+                        string sText = "D"+(data.Model.m_arrControlJoints[0].ReferenceDowel.Diameter_shank*1000).ToString("F0") + " GALVANISED DOWEL"+
+                            " ("+ (data.Model.m_arrControlJoints[0].ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / "+
+                            (data.Model.m_arrControlJoints[0].DowelSpacing * 1000).ToString("F0") + " CENTRES \n (WRAP ONE SIDE WITH DENSO TAPE)";
+                        */
+
+                        string sText1 = "D" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Diameter_shank * 1000).ToString("F0") + " GALVANISED DOWEL";
+                        string sText2 = "(" + (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.ReferenceDowel.Length * 1000).ToString("F0") + " mm LONG) / " +
+                            (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
+                        string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
+
+                        gfx.DrawString(sText1, fontNote, brushNote, dImagePosition_x + 112, 125);
+                        gfx.DrawString(sText2, fontNote, brushNote, dImagePosition_x + 112, 135);
+                        gfx.DrawString(sText3, fontNote, brushNote, dImagePosition_x + 112, 145);
+                    }
+                }
+
+                dImagePosition_x += imageWidthOriginalJD * scale;
+                dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
+            }
             
+
+
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
             // 2nd row
             dImagePosition_x = 2; // Zaciname znova od laveho okraja
             double dRowPosition2 = dRowPosition;
+            
+            List<CSlabPerimeter> diff_perimeters = GetDifferentPerimeters(slab.PerimeterBeams);
+            foreach (CSlabPerimeter perimeter in diff_perimeters)
+            {
+                XImage image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
+                double imageWidthOriginal = image.PixelWidth;
+                double imageHeightOriginal = image.PixelHeight;
+                gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                image.Dispose();                
 
-            XImage image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
-            double imageWidthOriginal = image.PixelWidth;
-            double imageHeightOriginal = image.PixelHeight;
-            gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
-            image.Dispose();
-            dImagePosition_x += imageWidthOriginal * scale;
-            dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+                float fPerimeterDepth = perimeter.PerimeterDepth;
+                float fPerimeterBottomWidth = perimeter.PerimeterWidth;
+                float fMeshAndStartersOverlapping = perimeter.StartersLapLength;
+                float fStartersDiameter = perimeter.Starters_Phi;
+                float fStartersSpacing = perimeter.StartersSpacing;
+                float fLongitud_Reinf_TopAndBotom_Phi = perimeter.Longitud_Reinf_TopAndBotom_Phi;
+                float fLongitud_Reinf_Intermediate_Phi = perimeter.Longitud_Reinf_Intermediate_Phi;
+                int iLongitud_Reinf_Intermediate_Count = perimeter.Longitud_Reinf_Intermediate_Count;
 
-            // TODO - zapracovat pre lavu/pravu stranu a potom samostatne prednu a zadnu PerimeterBeams by malo obsahovat 4 objekty
-            //CSlab slab = data.Model.m_arrSlabs.FirstOrDefault();
-            CSlabPerimeter perimeter = slab.PerimeterBeams.FirstOrDefault();
+                float fFloorSlabTopCover = slab.ConcreteCover;
+                CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
+                float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
 
-            float fPerimeterDepth = perimeter.PerimeterDepth;
-            float fPerimeterBottomWidth = perimeter.PerimeterWidth;
-            float fMeshAndStartersOverlapping = perimeter.StartersLapLength;
-            float fStartersDiameter = perimeter.Starters_Phi;
-            float fStartersSpacing = perimeter.StartersSpacing;
-            float fLongitud_Reinf_TopAndBotom_Phi = perimeter.Longitud_Reinf_TopAndBotom_Phi;
-            float fLongitud_Reinf_Intermediate_Phi = perimeter.Longitud_Reinf_Intermediate_Phi;
-            int iLongitud_Reinf_Intermediate_Count = perimeter.Longitud_Reinf_Intermediate_Count;
+                float fStarterTopPosition = fFloorSlabTopCover + 0.02f; // Mesh position + 20 mm
+                float fMiddleDimension = fPerimeterDepth - fPerimeterCover;
 
-            float fFloorSlabTopCover = slab.ConcreteCover;
-            CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
-            float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
+                string sTextP1 = (fPerimeterDepth * 1000).ToString("F0");
+                string sTextP2 = (fPerimeterCover * 1000).ToString("F0");
+                string sTextP3 = (fMiddleDimension * 1000).ToString("F0");
+                string sTextP4 = (fStarterTopPosition * 1000).ToString("F0");
 
-            float fStarterTopPosition = fFloorSlabTopCover + 0.02f; // Mesh position + 20 mm
-            float fMiddleDimension = fPerimeterDepth - fPerimeterCover;
+                string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
+                string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
 
-            string sTextP1 = (fPerimeterDepth * 1000).ToString("F0");
-            string sTextP2 = (fPerimeterCover * 1000).ToString("F0");
-            string sTextP3 = (fMiddleDimension * 1000).ToString("F0");
-            string sTextP4 = (fStarterTopPosition * 1000).ToString("F0");
+                string sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
+                string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
 
-            string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
-            string sTextP6 = (fMeshAndStartersOverlapping * 1000).ToString("F0") + " lap with mesh";
+                string sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
+                string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+                string sTextP11 = sTextP9;
 
-            string sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
-            string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
+                // IN WORK 26.8.2019
+                // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
+                // TO Ondrej - zistil som ze to otocim vid nizsie, aj to funguje, ale musim vytvorit novu XGraphics pre kazdy text
+                // Rozumiem tomu spravne ze mam vykreslit najprv vsetko, co je horizontalne, potom gfx.Dispose(); a potom vytvorit pre kazdy rotovany text novu XGraphics?
 
-            string sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
-            string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
-            string sTextP11 = sTextP9;
-
-            // IN WORK 26.8.2019
-            // TO ONDREJ - ako otocim text o 90 stupnov ??? aby bol rovnobezne so zvislou kotou???
-            // TO Ondrej - zistil som ze to otocim vid nizsie, aj to funguje, ale musim vytvorit novu XGraphics pre kazdy text
-            // Rozumiem tomu spravne ze mam vykreslit najprv vsetko, co je horizontalne, potom gfx.Dispose(); a potom vytvorit pre kazdy rotovany text novu XGraphics?
-
-            /*
-            gfx.Dispose();
-            XGraphics gfxRotate = XGraphics.FromPdfPage(page);
-            gfxRotate.RotateAtTransform(-90, new XPoint(200, 300));
-            gfxRotate.DrawString("Text Here", fontDimension, XBrushes.Black, new XPoint(200, 300));
-            */
-
-            gfx.DrawString(sTextP1, fontDimension, brushDimension, 17, 295);
-            gfx.DrawString(sTextP2, fontDimension, brushDimension, 45, 380);
-            gfx.DrawString(sTextP3, fontDimension, brushDimension, 43, 295);
-            gfx.DrawString(sTextP4, fontDimension, brushDimension, 45, 225);
-            gfx.DrawString(sTextP5, fontDimension, brushDimension, 90, 380);
-            gfx.DrawString(sTextP6, fontDimension, brushDimension, 100, 210);
-            gfx.DrawString(sTextP7, fontNote, brushNote, 180, 290);
-            gfx.DrawString(sTextP8, fontNote, brushNote, 180, 300);
-            gfx.DrawString(sTextP9, fontNote, brushNote, 100, 265);
-            gfx.DrawString(sTextP10, fontNote, brushNote, 93, 305);
-            gfx.DrawString(sTextP11, fontNote, brushNote, 100, 350);
+                /*
+                gfx.Dispose();
+                XGraphics gfxRotate = XGraphics.FromPdfPage(page);
+                gfxRotate.RotateAtTransform(-90, new XPoint(200, 300));
+                gfxRotate.DrawString("Text Here", fontDimension, XBrushes.Black, new XPoint(200, 300));
+                */
+                
+                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, 380);                
+                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, 225);
+                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, 380);
+                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, 210);
+                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, 290);
+                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, 300);
+                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, 265);
+                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, 305);
+                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, 350);
+                
+                XGraphicsState state = gfx.Save();
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, 300));
+                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, 300);
+                gfx.Restore(state);
+                state = gfx.Save();
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, 300));
+                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, 300);
+                gfx.Restore(state);
+                
+                dImagePosition_x += imageWidthOriginal * scale;
+                dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+            }
+            
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
-                bool bAddRollerDoorDetail = false;
-                foreach (DoorProperties prop in data.DoorBlocksProperties)
+                int iPictureTextOffset = 240;
+                foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
                 {
-                    if (prop.sDoorType == "Roller Door")
-                        bAddRollerDoorDetail = true;
-                }
-
-                // TODO Ondrej - musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
-
-                if (bAddRollerDoorDetail) // Add roller door rebate detail
-                {
-                    int iPictureTextOffset = 240;
-
-                    image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
-                    imageWidthOriginal = image.PixelWidth;
-                    imageHeightOriginal = image.PixelHeight;
-                    gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
-                    image.Dispose();
-                    dImagePosition_x += imageWidthOriginal * scale;
-                    dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
-
-                    // TODO Ondrej - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
-                    if (perimeter.SlabRebates != null)
+                    bool bAddRollerDoorDetail = false;
+                    foreach (DoorProperties prop in data.DoorBlocksProperties)
                     {
-                        // Tu by sa mali nacitat data pre rebate, v pripade ze su v perimeter viacere rebates s roznymi parametrami mal by sa pridat detail pre kazdy z nich, to sa ale nestane
-                        // Neumoznujeme, aby mal kazdy rebate v jednom perimeter inu sirku alebo sklon
+                        if (prop.sDoorType == "Roller Door" && perimeter.BuildingSide == prop.sBuildingSide)
+                            bAddRollerDoorDetail = true;
                     }
 
-                    float fRebateDepth_Step = 0.01f; // perimeter.SlabRebates.First().RebateDepth_Step;
-                    float fRebateDepth_Edge = 0.02f; // perimeter.SlabRebates.First().RebateDepth_Edge;
+                    // TODO Ondrej - musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
 
-                    float fPerimeterDepthRebate = fPerimeterDepth - fRebateDepth_Edge; // Default (10 + 10 mm)
-                    sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
+                    if (bAddRollerDoorDetail) // Add roller door rebate detail
+                    {
+                        XImage image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
+                        double imageWidthOriginal = image.PixelWidth;
+                        double imageHeightOriginal = image.PixelHeight;
+                        gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                        image.Dispose();
+                        dImagePosition_x += imageWidthOriginal * scale;
+                        dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
 
-                    sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
-                    sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
+                        // TODO Ondrej - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
+                        if (perimeter.SlabRebates != null)
+                        {
+                            // Tu by sa mali nacitat data pre rebate, v pripade ze su v perimeter viacere rebates s roznymi parametrami mal by sa pridat detail pre kazdy z nich, to sa ale nestane
+                            // Neumoznujeme, aby mal kazdy rebate v jednom perimeter inu sirku alebo sklon
+                        }
 
-                    // TODO - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
-                    float fRollerDoorRebate = 0.5f; // data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().SlabRebates.First().RebateWidth;
-                    sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
+                        float fRebateDepth_Step = 0.01f; // perimeter.SlabRebates.First().RebateDepth_Step;
+                        float fRebateDepth_Edge = 0.02f; // perimeter.SlabRebates.First().RebateDepth_Edge;
 
-                    gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
-                    gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
-                    gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 25, 230);
-                    gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 25, 255);
-                    gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
-                    gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
+                        float fPerimeterDepth = perimeter.PerimeterDepth;
+                        float fPerimeterBottomWidth = perimeter.PerimeterWidth;
+                        float fMeshAndStartersOverlapping = perimeter.StartersLapLength;
+                        float fStartersDiameter = perimeter.Starters_Phi;
+                        float fStartersSpacing = perimeter.StartersSpacing;
+                        float fLongitud_Reinf_TopAndBotom_Phi = perimeter.Longitud_Reinf_TopAndBotom_Phi;
+                        float fLongitud_Reinf_Intermediate_Phi = perimeter.Longitud_Reinf_Intermediate_Phi;
+                        int iLongitud_Reinf_Intermediate_Count = perimeter.Longitud_Reinf_Intermediate_Count;
 
-                    // Longitudinal reinforcement - Toto je asi zbytocna duplicita, uz je to oznacene v perimeter, ale zatial to tak necham.
-                    gfx.DrawString(sTextP9, fontNote, brushNote, iPictureTextOffset + 100, 265);
-                    gfx.DrawString(sTextP10, fontNote, brushNote, iPictureTextOffset + 93, 305);
-                    gfx.DrawString(sTextP11, fontNote, brushNote, iPictureTextOffset + 100, 350);
+                        float fPerimeterDepthRebate = fPerimeterDepth - fRebateDepth_Edge; // Default (10 + 10 mm)
+                        string sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
+
+                        string sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
+                        string sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
+
+                        // TODO - napojit hodnotu na data ak existuje rebate na prislusnej strane, resp v danom perimeter
+                        float fRollerDoorRebate = 0.5f; // data.Model.m_arrSlabs.FirstOrDefault().PerimeterBeams.FirstOrDefault().SlabRebates.First().RebateWidth;
+                        string sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
+
+
+                        CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
+                        float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
+
+                        string sTextP2 = (fPerimeterCover * 1000).ToString("F0");
+                        string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
+                        
+                        string sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
+                        string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
+
+                        string sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
+                        string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+                        string sTextP11 = sTextP9;
+
+                        gfx.DrawString(sTextP1, fontDimension, brushDimension, iPictureTextOffset + 17, 295);
+                        gfx.DrawString(sTextP2, fontDimension, brushDimension, iPictureTextOffset + 45, 380);
+                        gfx.DrawString(sTextP3, fontDimension, brushDimension, iPictureTextOffset + 25, 230);
+                        gfx.DrawString(sTextP4, fontDimension, brushDimension, iPictureTextOffset + 25, 255);
+                        gfx.DrawString(sTextP5, fontDimension, brushDimension, iPictureTextOffset + 90, 380);
+                        gfx.DrawString(sTextP6, fontDimension, brushDimension, iPictureTextOffset + 130, 210);
+
+                        // Longitudinal reinforcement - Toto je asi zbytocna duplicita, uz je to oznacene v perimeter, ale zatial to tak necham.
+                        gfx.DrawString(sTextP9, fontNote, brushNote, iPictureTextOffset + 100, 265);
+                        gfx.DrawString(sTextP10, fontNote, brushNote, iPictureTextOffset + 93, 305);
+                        gfx.DrawString(sTextP11, fontNote, brushNote, iPictureTextOffset + 100, 350);
+
+                        iPictureTextOffset += (int)dImagePosition_x;
+                    }
                 }
+
+                
             }
             gfx.Dispose();
             page.Close();
+        }
+
+        private static List<CSlabPerimeter> GetDifferentPerimeters(List<CSlabPerimeter> perimeters)
+        {
+            List<CSlabPerimeter> differentPerimeters = new List<CSlabPerimeter>();
+            if (perimeters.Count == 0) return differentPerimeters;
+
+            differentPerimeters.Add(perimeters[0]);
+            for(int i = 1; i < perimeters.Count; i++)
+            {
+                if (differentPerimeters.Exists(p => p.Equals(perimeters[i]))) continue;
+                else differentPerimeters.Add(perimeters[i]);
+            }
+            return differentPerimeters;
         }
 
         private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data)
@@ -1310,7 +1361,7 @@ namespace EXPIMP
             int font_y = 20;
 
             XFont font = new XFont(fontFamily, fontSizeLegend, XFontStyle.Regular, options);
-            
+
             foreach (string crsc in list_crsc)
             {
                 DrawImage(gfx, ConfigurationManager.AppSettings[crsc], x, y, width, height);
@@ -1343,7 +1394,7 @@ namespace EXPIMP
         private static Table GetCRSC_Table(Document document, CModel model, List<string> list_crsc)
         {
             int width = 100;
-            int height = 76;            
+            int height = 76;
 
             Section sec = document.AddSection();
             Table table = new Table();
@@ -1358,15 +1409,15 @@ namespace EXPIMP
             Column column1 = table.AddColumn(Unit.FromCentimeter(2));
             column1.Format.Alignment = ParagraphAlignment.Left;
             column1.Width = 90;
-            column1.LeftPadding = 5;            
+            column1.LeftPadding = 5;
             //column1.Format.Font.Bold = true;
             Column column2 = table.AddColumn(Unit.FromCentimeter(2));
             column2.Format.Alignment = ParagraphAlignment.Center;
             column2.Width = 95;
-            
+
             foreach (string crsc in list_crsc)
             {
-                Row row = table.AddRow();                 
+                Row row = table.AddRow();
                 Cell cell = row.Cells[0];
                 cell.AddParagraph("");
                 // List of member types
@@ -1386,7 +1437,7 @@ namespace EXPIMP
                     cell.AddParagraph(sScrewsDescrtiption);
                 }
 
-                cell = row.Cells[1];                
+                cell = row.Cells[1];
                 MigraDoc.DocumentObjectModel.Shapes.Image img = cell.AddImage(ConfigurationManager.AppSettings[crsc]);
                 img.Width = width;
                 img.Height = height;
@@ -1886,7 +1937,7 @@ namespace EXPIMP
         {
             gfx.MUH = PdfFontEncoding.Unicode;
             //gfx.MFEH = PdfFontEmbedding.Always;
-            
+
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
             pdfRenderer.RenderDocument();
@@ -1895,7 +1946,7 @@ namespace EXPIMP
             docRenderer.PrepareDocument();
 
             // Render the paragraph. You can render tables or shapes the same way.
-            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);            
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(offsetX), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
         }
 
         private static void AddTitlePageContentTableToDocument(XGraphics gfx, List<string[]> tableParams)
@@ -1962,7 +2013,7 @@ namespace EXPIMP
             return table;
         }
 
-        
+
 
 
         private static void AddPageTitleBlockTableToDocument(XGraphics gfx, CProjectInfo projectInfo, string contents, int sheetNo, int issue)

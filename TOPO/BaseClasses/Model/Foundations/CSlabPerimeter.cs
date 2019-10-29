@@ -193,5 +193,22 @@ namespace BaseClasses
             FTime = fTime;
             m_SlabRebates = slabRebates;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (!(obj is CSlabPerimeter)) return false;
+
+            CSlabPerimeter perimeter = (CSlabPerimeter)obj;
+            if (MathF.d_equal(PerimeterDepth, perimeter.PerimeterDepth) &&
+                MathF.d_equal(PerimeterWidth, perimeter.PerimeterWidth) &&
+                MathF.d_equal(StartersLapLength, perimeter.StartersLapLength) &&
+                MathF.d_equal(Starters_Phi, perimeter.Starters_Phi) &&
+                MathF.d_equal(StartersSpacing, perimeter.StartersSpacing) &&
+                MathF.d_equal(Longitud_Reinf_TopAndBotom_Phi, perimeter.Longitud_Reinf_TopAndBotom_Phi) &&
+                MathF.d_equal(Longitud_Reinf_Intermediate_Phi, perimeter.Longitud_Reinf_Intermediate_Phi) &&
+                Longitud_Reinf_Intermediate_Count == perimeter.Longitud_Reinf_Intermediate_Count) return true;
+            else return false;
+        }
     }
 }
