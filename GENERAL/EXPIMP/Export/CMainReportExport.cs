@@ -1061,7 +1061,7 @@ namespace EXPIMP
 
                         float fRebateDepth_Step = 0;
                         float fRebateDepth_Edge = 0;
-                        float fRollerDoorRebate = 0.5f;
+                        float fRollerDoorRebate = 0f;
 
                         if (perimeter.SlabRebates != null)
                         {

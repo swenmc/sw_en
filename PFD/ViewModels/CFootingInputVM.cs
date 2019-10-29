@@ -118,20 +118,22 @@ namespace PFD
         private float m_StartersLapLength_LRSide;
         private float m_StartersSpacing_LRSide;
         private string m_Starters_Phi_LRSide;
-        private float m_RebateWidth_LRSide;
         private string m_Longitud_Reinf_TopAndBotom_Phi_LRSide;
         private string m_Longitud_Reinf_Intermediate_Phi_LRSide;
         private int m_Longitud_Reinf_Intermediate_Count_LRSide;
+
+        private float m_RebateWidth_LRSide;
 
         private float m_PerimeterDepth_FBSide;
         private float m_PerimeterWidth_FBSide;
         private float m_StartersLapLength_FBSide;
         private float m_StartersSpacing_FBSide;
         private string m_Starters_Phi_FBSide;
-        private float m_RebateWidth_FBSide;
         private string m_Longitud_Reinf_TopAndBotom_Phi_FBSide;
         private string m_Longitud_Reinf_Intermediate_Phi_FBSide;
         private int m_Longitud_Reinf_Intermediate_Count_FBSide;
+
+        private float m_RebateWidth_FBSide;
 
         private List<CFoundation> listOfSelectedTypePads;
         private Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> m_DictFootings;

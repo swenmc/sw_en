@@ -149,6 +149,8 @@ namespace PFD
                 e.PropertyName == "Longitud_Reinf_Intermediate_Phi_LRSide" ||
                 e.PropertyName == "Longitud_Reinf_Intermediate_Count_LRSide" ||
 
+                e.PropertyName == "RebateWidth_LRSide" ||
+
                 e.PropertyName == "PerimeterDepth_FBSide" ||
                 e.PropertyName == "PerimeterWidth_FBSide" ||
                 e.PropertyName == "StartersLapLength_FBSide" ||
@@ -157,7 +159,9 @@ namespace PFD
                 e.PropertyName == "RebateWidth_FBSide" ||
                 e.PropertyName == "Longitud_Reinf_TopAndBotom_Phi_FBSide" ||
                 e.PropertyName == "Longitud_Reinf_Intermediate_Phi_FBSide" ||
-                e.PropertyName == "Longitud_Reinf_Intermediate_Count_FBSide"
+                e.PropertyName == "Longitud_Reinf_Intermediate_Count_FBSide" ||
+
+                e.PropertyName == "RebateWidth_FBSide"
                 )
             {
                 UpdateModelProperties();
