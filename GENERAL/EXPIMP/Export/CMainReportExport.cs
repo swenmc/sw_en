@@ -971,14 +971,12 @@ namespace EXPIMP
                 dImagePosition_x += imageWidthOriginalJD * scale;
                 dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
             }
-            
-
 
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
             // 2nd row
             dImagePosition_x = 2; // Zaciname znova od laveho okraja
             double dRowPosition2 = dRowPosition;
-            
+
             List<CSlabPerimeter> diff_perimeters = GetDifferentPerimeters(slab.PerimeterBeams);
             foreach (CSlabPerimeter perimeter in diff_perimeters)
             {
@@ -986,7 +984,7 @@ namespace EXPIMP
                 double imageWidthOriginal = image.PixelWidth;
                 double imageHeightOriginal = image.PixelHeight;
                 gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
-                image.Dispose();                
+                image.Dispose();
 
                 float fPerimeterDepth = perimeter.PerimeterDepth;
                 float fPerimeterBottomWidth = perimeter.PerimeterWidth;
@@ -1019,30 +1017,29 @@ namespace EXPIMP
                 string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
                 string sTextP11 = sTextP9;
 
-                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, 380);                
-                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, 225);
-                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, 380);
-                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, 210);
-                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, 290);
-                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, 300);
-                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, 265);
-                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, 305);
-                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, 350);
-                
+                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition + 224);
+                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition + 99);
+                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition + 224);
+                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, dRowPosition + 54);
+                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, dRowPosition + 134);
+                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, dRowPosition + 144);
+                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition + 109);
+                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition + 149);
+                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition + 194);
+
                 //Rotacia textu
                 XGraphicsState state = gfx.Save();
-                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, 300));
-                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, 300);
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition + 144));
+                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition + 144);
                 gfx.Restore(state);
                 state = gfx.Save();
-                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, 300));
-                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, 300);
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, dRowPosition + 144));
+                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, dRowPosition + 144);
                 gfx.Restore(state);
-                
+
                 dImagePosition_x += imageWidthOriginal * scale;
                 dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
             }
-            
 
             if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
             {
@@ -1122,20 +1119,20 @@ namespace EXPIMP
 
                         //Rotacia textu
                         XGraphicsState state = gfx.Save();
-                        gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 300 - 156));
-                        gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 300 - 156);
+                        gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 144));
+                        gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 144);
                         gfx.Restore(state);
-                                                
-                        gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 380 - 156);
-                        gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 230 - 156);
-                        gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 255 - 156);
-                        gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 380 - 156);
-                        gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 130, dRowPosition2 + 210 - 156);
+
+                        gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 224);
+                        gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 74);
+                        gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 99);
+                        gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 224);
+                        gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 130, dRowPosition2 + 54);
 
                         // Longitudinal reinforcement - Toto je asi zbytocna duplicita, uz je to oznacene v perimeter, ale zatial to tak necham.
-                        gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 265 - 156);
-                        gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 305 - 156);
-                        gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 350 - 156);
+                        gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 109);
+                        gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 149);
+                        gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 194);
                         
                         dImagePosition_x += imageWidthOriginal * scale;
                         dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
