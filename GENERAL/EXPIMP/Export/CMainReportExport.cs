@@ -1032,30 +1032,36 @@ namespace EXPIMP
 
                 XGraphicsState state = gfx.Save();
                 gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition + 144));
-                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition + 144);
+                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 144);
                 gfx.Restore(state);
                 state = gfx.Save();
                 gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, dRowPosition + 144));
-                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, dRowPosition + 144);
+                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, dRowPosition2 + 144);
                 gfx.Restore(state);
 
                 dImagePosition_x += imageWidthOriginal * scale;
                 dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
-            }
 
-            if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
-            {
-                foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
+                // Pre kazdy perimeter mozeme vlozit maximalne jeden detail roller door rebate, nezavisle na tom kolko doors v danom perimeter existuje
+                // Vsetky detaily rebates pre jeden perimeter budu rovnake, takze detail vlozime len raz
+
+                // TODO Ondrej - je tu takyto mensi problem
+                // Mam Perimeters ktore su pre L/R a F/B uplne rovnake
+                // Takze sa vklada jeden detail pre perimeter, ale nastavim inu hodnotu rebate pre F/B, to znamena ze by sa mali vykreslit 3 obrazky
+                // Perimeter Detail, Rebate 1 Detail (L/R) a Rebate 2 Detail (F/B)
+                // Kedze sme tu v cykle cez rozne perimeters, tak tento cyklus zbehne len raz takze Rebate 2 Detail sa nevykresli
+
+                if (data.DoorBlocksProperties != null && data.DoorBlocksProperties.Count > 0) // Some door exists
                 {
                     bool bAddRollerDoorDetail = false;
                     foreach (DoorProperties prop in data.DoorBlocksProperties)
                     {
-                        // musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
+                        // Musime najst konkretny perimeter (left, right, front, back), v ktorom je rebate pre dane roller doors a pouzit hodnoty z konkretneho perimeter
                         if (prop.sDoorType == "Roller Door" && perimeter.BuildingSide == prop.sBuildingSide)
                             bAddRollerDoorDetail = true;
                     }
 
-                    if (bAddRollerDoorDetail) // Add roller door rebate detail
+                    if (bAddRollerDoorDetail) // Add roller door rebate detail // Vsetky detaily rebates pre jeden perimeter budu rovnake, takze detail vlozime len raz
                     {
                         /////////////////////////////////////////////////////////////////////////////////////////////////////
                         // TODO - Ondrej - Vlozit dynamicky nazov detailu - mal by to byt text Verdana, velkost 17
@@ -1070,9 +1076,9 @@ namespace EXPIMP
                         gfx.DrawString("[Confirm with door manufacture]", fontBold_Title2, XBrushes.DarkGreen, 400, 485);
                         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                        XImage image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
-                        double imageWidthOriginal = image.PixelWidth;
-                        double imageHeightOriginal = image.PixelHeight;
+                        /*XImage*/ image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
+                        /*double*/ imageWidthOriginal = image.PixelWidth;
+                        /*double*/ imageHeightOriginal = image.PixelHeight;
 
                         if (dImagePosition_x + imageWidthOriginal * scale > gfx.PageSize.Width) { dImagePosition_x = 2; dRowPosition2 = dRowPosition + 15; }
 
@@ -1093,38 +1099,39 @@ namespace EXPIMP
                             fRollerDoorRebate = perimeter.SlabRebates.First().RebateWidth; // 0.5f;
                         }
 
-                        float fPerimeterDepth = perimeter.PerimeterDepth;
-                        float fPerimeterBottomWidth = perimeter.PerimeterWidth;
-                        float fMeshAndStartersOverlapping = perimeter.StartersLapLength;
-                        float fStartersDiameter = perimeter.Starters_Phi;
-                        float fStartersSpacing = perimeter.StartersSpacing;
-                        float fLongitud_Reinf_TopAndBotom_Phi = perimeter.Longitud_Reinf_TopAndBotom_Phi;
-                        float fLongitud_Reinf_Intermediate_Phi = perimeter.Longitud_Reinf_Intermediate_Phi;
-                        int iLongitud_Reinf_Intermediate_Count = perimeter.Longitud_Reinf_Intermediate_Count;
+                        /*float*/ fPerimeterDepth = perimeter.PerimeterDepth;
+                        /*float*/ fPerimeterBottomWidth = perimeter.PerimeterWidth;
+                        /*float*/ fMeshAndStartersOverlapping = perimeter.StartersLapLength;
+                        /*float*/ fStartersDiameter = perimeter.Starters_Phi;
+                        /*float*/ fStartersSpacing = perimeter.StartersSpacing;
+                        /*float*/ fLongitud_Reinf_TopAndBotom_Phi = perimeter.Longitud_Reinf_TopAndBotom_Phi;
+                        /*float*/ fLongitud_Reinf_Intermediate_Phi = perimeter.Longitud_Reinf_Intermediate_Phi;
+                        /*int*/ iLongitud_Reinf_Intermediate_Count = perimeter.Longitud_Reinf_Intermediate_Count;
 
                         float fPerimeterDepthRebate = fPerimeterDepth - fRebateDepth_Edge; // Default (10 + 10 mm)
-                        string sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
+                        /*string*/ sTextP1 = (fPerimeterDepthRebate * 1000).ToString("F0");
 
-                        string sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
-                        string sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
+                        /*string*/ sTextP3 = (fRebateDepth_Step * 1000).ToString("F0"); // Step
+                        /*string*/ sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
 
-                        string sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
+                        /*string*/
+                        sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
 
-                        CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
-                        float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
+                        /*CFoundation*/ f = data.Model.m_arrFoundations.FirstOrDefault();
+                        /*float*/ fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
 
-                        string sTextP2 = (fPerimeterCover * 1000).ToString("F0");
-                        string sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
-                        
-                        string sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
-                        string sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
+                        /*string*/ sTextP2 = (fPerimeterCover * 1000).ToString("F0");
+                        /*string*/ sTextP5 = (fPerimeterBottomWidth * 1000).ToString("F0");
 
-                        string sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
-                        string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
-                        string sTextP11 = sTextP9;
+                        /*string*/ sTextP7 = "HD" + (fStartersDiameter * 1000).ToString("F0") + " Starters";
+                        /*string*/ sTextP8 = (fStartersSpacing * 1000).ToString("F0") + " mm crs";
+
+                        /*string*/ sTextP9 = "HD" + (fLongitud_Reinf_TopAndBotom_Phi * 1000).ToString("F0");
+                        /*string*/ sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
+                        /*string*/ sTextP11 = sTextP9;
 
                         //Rotacia textu
-                        XGraphicsState state = gfx.Save();
+                        /*XGraphicsState*/ state = gfx.Save();
                         gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 144));
                         gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 144);
                         gfx.Restore(state);
@@ -1139,12 +1146,13 @@ namespace EXPIMP
                         gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 109);
                         gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 149);
                         gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 194);
-                        
+
                         dImagePosition_x += imageWidthOriginal * scale;
                         dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
                     }
                 }
             }
+
             gfx.Dispose();
             page.Close();
         }
