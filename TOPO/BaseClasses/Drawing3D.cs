@@ -846,15 +846,139 @@ namespace BaseClasses
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
-            CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true);
-            CSectionSymbol secSymbol2 = new CSectionSymbol(new Point3D(2, 0, 0), new Vector3D(-1, 0, 0), "B", -0.75f, 1.5f, true); // Left
-            CSectionSymbol secSymbol3 = new CSectionSymbol(new Point3D(2, model.fL_tot, 0), new Vector3D(-1, 0, 0), "B", 0.75f, 1.5f, false); // Right
+            // Floor Slab Perimeter and Rebate Section Symbols
+            if (model.m_arrSlabs != null && model.m_arrSlabs.Count > 0)
+            {
+                CSlab slab = model.m_arrSlabs.FirstOrDefault();
 
-            listOfSectionSymbols.Add(secSymbol1);
-            listOfSectionSymbols.Add(secSymbol2);
-            listOfSectionSymbols.Add(secSymbol3);
+                //CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true); // VZOR
 
-            // Create gridlines models
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // NOVY KOD - 30.10.2019 - TO Ondrej prosim o upravy a refaktoring  - TASK 373
+
+                // Tu sa snazim naznacit ako by sa mali vkladat symboly section, este to treba doladit, ponapajat na Floor Details podla toho kolko je roznych perimeters a rebates
+                // Urcit spravnu hodnotu rebate position (teraz sa nezohladnuje, v ktorej bay  v smere X (n * ColumnDistance) alebo smere Y (n * fL1_frame) sa rebate nachadza)
+
+                // TODO TO Ondrej - tu by sme mali vytvorit znacky "section symbols" pre jednotlive detaily perimeters a rebates
+                // Podla toho ci su rovnake alebo rozne
+                // Prosim o napojenie na identifikaciu objektov typu perimeter a rebate (zistenie ktore su perimeters / rebates rovnake, kde sa ktore rebate nachadzaju, atd ) a refaktoring
+                // TODO - zapracovat update na akcie v UC_DoorAndWindows - ked pridam nove roller door, alebo zmenim typ door z personnel na roller door alebo presuniem roller door do inej bay
+                // TODO - zapracovat update ak sa zmenia rozmery budovy a podobne
+
+                foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
+                {
+                    Point3D pointLeft; // Pozn. Pre Perimeter a Rebate mozeme pouzit len jeden bod (nastavime odsadenie symbolov vlavo a vpravo od tohto bodu)
+                    Point3D pointRight;
+                    CSectionSymbol secSymbolLeft = null;
+                    CSectionSymbol secSymbolRight = null;
+
+                    string sDetailLabel; // TODO Ondrej - toto by sem malo prist s perimetrom resp, jeho detailom podla toho kolko roznych detailov perimeters a rebates existuje
+                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily
+
+                    float fSymmbolLineStartOffset = -0.75f;
+                    float fSymbolLineLength = 0.5f;
+
+                    if (perimeter.BuildingSide == "Left")
+                    {
+                        sDetailLabel = "A";
+                        pointLeft = new Point3D(0, 0.5f * model.fL_tot, 0);
+                        pointRight = new Point3D(0, 0.5f * model.fL_tot, 0);
+
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                    }
+                    else if(perimeter.BuildingSide == "Right")
+                    {
+                        sDetailLabel = "A";
+                        pointLeft = new Point3D(model.fW_frame, 0.5f * model.fL_tot, 0);
+                        pointRight = new Point3D(model.fW_frame, 0.5f * model.fL_tot, 0);
+
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                    }
+                    else if (perimeter.BuildingSide == "Front")
+                    {
+                        sDetailLabel = "B";
+                        pointLeft = new Point3D(0.5f * model.fW_frame, 0, 0);
+                        pointRight = new Point3D(0.5f * model.fW_frame, 0, 0);
+
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                    }
+                    else //if (perimeter.BuildingSide == "Back")
+                    {
+                        sDetailLabel = "B";
+                        pointLeft = new Point3D(0.5f * model.fW_frame, model.fL_tot, 0);
+                        pointRight = new Point3D(0.5f * model.fW_frame, model.fL_tot, 0);
+
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                    }
+
+                    // Add symbols of perimeters
+                    listOfSectionSymbols.Add(secSymbolLeft);
+                    listOfSectionSymbols.Add(secSymbolRight);
+
+                    // Symboly rebates v danom perimeter
+                    if (perimeter.SlabRebates != null && perimeter.SlabRebates.Count > 0)
+                    {
+                        foreach (CSlabRebate rebate in perimeter.SlabRebates)
+                        {
+                            // rebate.RebatePosition - uvada poziciu zaciatku rebate v ramci perimeter 0 - dlzka strany budovy
+                            // urcit ako x dveri + pocet bays * sirka bays
+
+                            if (perimeter.BuildingSide == "Left")
+                            {
+                                sDetailLabel = "C";
+                                pointLeft = new Point3D(0, rebate.RebatePosition + 0.5f * rebate.RebateLength, 0);
+                                pointRight = new Point3D(0, rebate.RebatePosition + 0.5f * rebate.RebateLength, 0);
+
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                            }
+                            else if (perimeter.BuildingSide == "Right")
+                            {
+                                sDetailLabel = "C";
+                                pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + 0.5f * rebate.RebateLength, 0);
+                                pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + 0.5f * rebate.RebateLength, 0);
+
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                            }
+                            else if (perimeter.BuildingSide == "Front")
+                            {
+                                sDetailLabel = "D";
+                                pointLeft = new Point3D(rebate.RebatePosition + 0.5f * rebate.RebateLength, 0, 0);
+                                pointRight = new Point3D(rebate.RebatePosition + 0.5f * rebate.RebateLength, 0, 0);
+
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                            }
+                            else //if (perimeter.BuildingSide == "Back")
+                            {
+                                sDetailLabel = "D";
+                                pointLeft = new Point3D(rebate.RebatePosition + 0.5f * rebate.RebateLength, model.fL_tot, 0);
+                                pointRight = new Point3D(rebate.RebatePosition + 0.5f * rebate.RebateLength, model.fL_tot, 0);
+
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                            }
+
+                            // Add symbols of rebates
+                            listOfSectionSymbols.Add(secSymbolLeft);
+                            listOfSectionSymbols.Add(secSymbolRight);
+                        }
+                    }
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            }
+
+            // Create section symbols models
             if (sDisplayOptions.bDisplaySectionSymbols) sectionSymbols3DGroup = Drawing3D.CreateModelSectionSymbols_Model3DGroup(listOfSectionSymbols, model, sDisplayOptions);
             if (sectionSymbols3DGroup != null) gr.Children.Add(sectionSymbols3DGroup);
 

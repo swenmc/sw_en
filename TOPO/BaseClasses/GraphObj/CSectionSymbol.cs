@@ -157,6 +157,10 @@ namespace BaseClasses.GraphObj
             float fTextSize = 30; // Vyska textu 1 point = 0.01 metra = 30 / 100 = 0.3 metra
             float fSpaceToLine = 20; // medzera medzi hornou hranou textu a ciarou
             fArrowSize = (fTextSize + fSpaceToLine) / 100f;
+
+            // TODO - teraz je text vzdy v polovici vzdialenosti zaciatku ciary od urcujuceho bodu
+            // Asi by bolo dobre urobit to nastavitelne
+            // Podobne urobit nastavitelnu poziciu sipky - fArrowPosition_LCS_x
             m_PointLabelText = new Point3D(0.5f * m_LineStartToControlPointOffset, - fArrowSize + (0.5f * fTextSize / 100f), 0); // Pozicia textu v LCS - text je pod osou x
 
             if (!m_bArrowLeftFromControlPoint)
