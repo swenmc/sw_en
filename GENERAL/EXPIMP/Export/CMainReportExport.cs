@@ -1056,12 +1056,16 @@ namespace EXPIMP
                     if (bAddRollerDoorDetail) // Add roller door rebate detail
                     {
                         /////////////////////////////////////////////////////////////////////////////////////////////////////
-                        // TODO - Ondrej Vlozit dynamicky nazov detailu - mal by to byt text Verdana, velkost 17
+                        // TODO - Ondrej - Vlozit dynamicky nazov detailu - mal by to byt text Verdana, velkost 17
                         // Daj mi vediet ci mam vymazat / odrezat tie nazvy / texty z obrazkov alebo ako to spravime
 
                         // Pokus
-                        XFont fontBold = new XFont("Verdana", 17, XFontStyle.Bold, options);
-                        gfx.DrawString("SECTION C-C - ROLLER DOOR REBATE", fontBold, XBrushes.Blue, 400, 450);
+                        XFont fontBold_Title1 = new XFont("Verdana", 17, XFontStyle.Bold, options);
+                        XFont fontBold_Title2 = new XFont("Verdana", 12, XFontStyle.Bold, options);
+
+                        gfx.DrawString("SECTION C-C", fontBold_Title1, XBrushes.Blue, 400, 450);
+                        gfx.DrawString("ROLLER DOOR REBATE", fontBold_Title1, XBrushes.DarkOliveGreen, 400, 470);
+                        gfx.DrawString("[Confirm with door manufacture]", fontBold_Title2, XBrushes.DarkGreen, 400, 485);
                         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
                         XImage image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
