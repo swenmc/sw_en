@@ -499,9 +499,9 @@ namespace BaseClasses.Helpers
                 // Create Dimensions
                 List<CDimensionLinear3D> listOfDimensions = null;
 
-                float fExtensionLineLength = 0.5f;
+                float fExtensionLineLength = 0.2f;
                 //float fMainLinePosition = 0.4f;
-                float fExtensionLineOffset = 0.15f;
+                float fExtensionLineOffset = 0.1f;
                 float fOffsetBehindMainLine = 0.05f;
 
                 float fDistanceBetweenMainLines = 0.2f;
@@ -655,9 +655,9 @@ namespace BaseClasses.Helpers
                 // Create Dimensions
                 List<CDimensionLinear3D> listOfDimensions = null;
 
-                float fExtensionLineLength = 0.5f;
+                float fExtensionLineLength = 0.2f;
                 //float fMainLinePosition = 0.4f;
-                float fExtensionLineOffset = 0.15f;
+                float fExtensionLineOffset = 0.1f;
                 float fOffsetBehindMainLine = 0.05f;
 
                 float fDistanceBetweenMainLines = 0.2f;
@@ -713,7 +713,6 @@ namespace BaseClasses.Helpers
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }
         }
-
         private static void DrawDimensionsFOUNDATIONS(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
             // Pre zakladne koty okotujeme podorys podobne ako pre Columns View
@@ -742,9 +741,9 @@ namespace BaseClasses.Helpers
                 // Create Dimensions
                 List<CDimensionLinear3D> listOfDimensions = null;
 
-                float fExtensionLineLength = 0.5f;
+                float fExtensionLineLength = 0.2f;
                 //float fMainLinePosition = 0.4f;
-                float fExtensionLineOffset = 0.15f;
+                float fExtensionLineOffset = 0.1f;
                 float fOffsetBehindMainLine = 0.05f;
 
                 float fDistanceBetweenMainLines = 0.2f;
@@ -803,9 +802,9 @@ namespace BaseClasses.Helpers
                 // Create Dimensions
                 List<CDimensionLinear3D> listOfDimensions = null;
 
-                float fExtensionLineLength = 0.5f;
+                float fExtensionLineLength = 0.2f;
                 //float fMainLinePosition = 0.4f;
-                float fExtensionLineOffset = 0.15f;
+                float fExtensionLineOffset = 0.1f;
                 float fOffsetBehindMainLine = 0.05f;
 
                 float fDistanceBetweenMainLines = 0.25f;
@@ -847,7 +846,6 @@ namespace BaseClasses.Helpers
                 DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }
         }
-
         private static void DrawDimensionsROOF(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
 

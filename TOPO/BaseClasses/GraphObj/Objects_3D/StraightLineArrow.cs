@@ -25,6 +25,10 @@ namespace BaseClasses.GraphObj.Objects_3D
         public StraightLineArrow3D()
         { }
 
+        // TODO Ondrej - dorobit konstruktor, kde bude mozne zadat priamo tieto dva parametre ConeHeight = 20 * fCylinderRadius,
+        //                                                                                    AnnulusDiameter = fCylinderRadius * 5 * 2
+        // (tj. vysku a a sirku - rozmery sipky)
+
         public StraightLineArrow3D(Point3D pControlPoint_temp, float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             pControlPoint = pControlPoint_temp;

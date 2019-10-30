@@ -67,7 +67,7 @@ namespace EXPIMP
 
             //DrawModel3D(s_document, modelData);
 
-            //DrawModelViews(s_document, modelData);
+            DrawModelViews(s_document, modelData);
 
             //DrawJointTypes(s_document, modelData);
 
@@ -171,7 +171,10 @@ namespace EXPIMP
                 // Defaultne hodnoty pre vsetky pohlady
                 opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
                 opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
-                opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
+                //opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
+                // TO Ondrej - Tu treba doriesit co sa nastavuje ako line thickness v [pxs] a co sa nastavuje ako rozmer valca v [m]
+                // Trosku sa to pomiesalo, niekde vstupuju metre, niekde hodnota pre hrubku ciary ... Skus to nejako upratat
+                opts.fWireFrameLineThickness = 1f;
 
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
 
@@ -252,10 +255,9 @@ namespace EXPIMP
                 if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
                 {
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
-                    opts.bDisplayWireFrameModel = true;
-                    opts.bTransformScreenLines3DToCylinders3D = true;
-
-                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
+                    //opts.bDisplayWireFrameModel = true;
+                    //opts.bDisplayMembersWireFrame = true;
+                    //opts.bTransformScreenLines3DToCylinders3D = true;
 
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
@@ -269,15 +271,15 @@ namespace EXPIMP
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bDisplayFloorSlabWireFrame = true;
+                    opts.bDisplayMembersWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
                     opts.bDisplayFloorSlabDescription = false;
                     opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = true;
+                    opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
 
                     opts.bCreateHorizontalGridlines = true;
@@ -290,7 +292,6 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -299,7 +300,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsDescription = true;
                     opts.bDisplayMemberDescription = false;
                     opts.bDisplayGridlines = true; // Horizontal
-                    opts.bDisplaySectionSymbols = true;
+                    opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
 
                     opts.bCreateHorizontalGridlines = true;
@@ -315,7 +316,6 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    //opts.fWireFrameLineThickness = 0.001f; //MAto - tu stoji za uvahu skontrolova/nastavit hrubku pre wireframe
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
@@ -433,7 +433,7 @@ namespace EXPIMP
 
             opts.fControlJointTextFontSize = 14;
             opts.ControlJointTextColor = System.Windows.Media.Colors.Black;
-            opts.ControlJointLineColor = System.Windows.Media.Colors.Green;
+            opts.ControlJointLineColor = System.Windows.Media.Colors.Black;
             opts.ControlJointLinePatternType = ELinePatternType.DIVIDE;
 
             opts.fSectionSymbolLabelTextFontSize = 30;

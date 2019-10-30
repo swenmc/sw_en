@@ -16,7 +16,7 @@ namespace BaseClasses.GraphObj
         private Vector3D m_ViewDirection;
         private Point3D m_PointLabelText;
         private string m_LabelText;
-        private float m_LineStartToControlPointOffset;
+        private float m_LineFarEndToControlPointOffsetDistance;
         private float m_LineLength;
 
         public Point3D ControlPoint
@@ -97,16 +97,16 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public float LineStartToControlPointOffset
+        public float LineFarEndToControlPointOffsetDistance
         {
             get
             {
-                return m_LineStartToControlPointOffset;
+                return m_LineFarEndToControlPointOffsetDistance;
             }
 
             set
             {
-                m_LineStartToControlPointOffset = value;
+                m_LineFarEndToControlPointOffsetDistance = value;
             }
         }
 
@@ -127,6 +127,9 @@ namespace BaseClasses.GraphObj
 
         ELinePatternType m_LinePatternType;
         float fArrowSize;
+        float fArrowWidth;
+        float fAdditionalOffset;
+
         public bool m_bArrowLeftFromControlPoint;
 
         public int iVectorOverFactor_LCS;
@@ -138,7 +141,7 @@ namespace BaseClasses.GraphObj
         Point3D controlPoint,
         Vector3D viewdirection,
         string sLabelText,
-        float fLineStartToControlPointOffset,
+        float fLineFarEndToControlPointOffsetDistance,
         float fLineLength,
         bool bArrowLeftFromControlPoint
             )
@@ -146,29 +149,36 @@ namespace BaseClasses.GraphObj
             m_ControlPoint = controlPoint;
             m_ViewDirection = viewdirection;
             m_LabelText = sLabelText;
-            m_LineStartToControlPointOffset = fLineStartToControlPointOffset; // moze byt zaporny alebo kladny
+            m_LineFarEndToControlPointOffsetDistance = fLineFarEndToControlPointOffsetDistance; // Vzdy je kladne, o tom ci je to bod vlavo alebo vpravo rozhoduje bArrowLeftFromControlPoint
             m_LineLength = fLineLength;
 
             m_LinePatternType = ELinePatternType.DASHDOTTED; // Mohlo by byt nastavitelne aj ale je to velmi zriedave
 
             m_bArrowLeftFromControlPoint = bArrowLeftFromControlPoint;
 
-            m_PointLineStart_LCS = new Point3D(m_LineStartToControlPointOffset, 0, 0);
-            m_PointLineEnd_LCS = new Point3D(m_LineStartToControlPointOffset + m_LineLength, 0, 0);
+            m_PointLineStart_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance, 0, 0);
+            m_PointLineEnd_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance + m_LineLength, 0, 0);
 
-            float fTextSize = 30; // Vyska textu 1 point = 0.01 metra = 30 / 100 = 0.3 metra
-            float fSpaceToLine = 20; // medzera medzi hornou hranou textu a ciarou
+            float fTextSize = 40; // Vyska textu 1 point = 0.01 metra = 30 / 100 = 0.3 metra
+            float fSpaceToLine = 10; // medzera medzi hornou hranou textu a ciarou
             fArrowSize = (fTextSize + fSpaceToLine) / 100f;
+            fArrowWidth = 0.1f * fArrowSize;
+
+            fAdditionalOffset = 0.5f * fArrowWidth; // Pridavna konstanta (pre vzdialenost sipky od konca ciary)
+            float fDistanceOfTextCenterToTheArrow = 0.5f * fTextSize / 100f;
 
             // TODO - teraz je text vzdy v polovici vzdialenosti zaciatku ciary od urcujuceho bodu
             // Asi by bolo dobre urobit to nastavitelne
             // Podobne urobit nastavitelnu poziciu sipky - fArrowPosition_LCS_x
-            m_PointLabelText = new Point3D(0.5f * m_LineStartToControlPointOffset, - fArrowSize + (0.5f * fTextSize / 100f), 0); // Pozicia textu v LCS - text je pod osou x
+            m_PointLabelText = new Point3D(-m_LineFarEndToControlPointOffsetDistance + 0.5f * fArrowWidth + fAdditionalOffset + fDistanceOfTextCenterToTheArrow, - fArrowSize + (0.3f * fTextSize / 100f), 0); // Pozicia textu v LCS - text je pod osou x
 
             if (!m_bArrowLeftFromControlPoint)
             {
-                m_PointLineStart_LCS = new Point3D(m_LineStartToControlPointOffset - m_LineLength, 0, 0);
-                m_PointLineEnd_LCS = new Point3D(m_LineStartToControlPointOffset, 0, 0);
+                m_PointLineStart_LCS = new Point3D(m_LineFarEndToControlPointOffsetDistance - m_LineLength, 0, 0);
+                m_PointLineEnd_LCS = new Point3D(m_LineFarEndToControlPointOffsetDistance, 0, 0);
+
+                // 1.5 * ???? neviem preco je 0.5 * zle, vid popis nizsie
+                m_PointLabelText = new Point3D(m_LineFarEndToControlPointOffsetDistance - 1.5f * fArrowWidth - fAdditionalOffset - fDistanceOfTextCenterToTheArrow, -fArrowSize + (0.3f * fTextSize / 100f), 0);
             }
 
             SetTextPointInLCS();
@@ -217,11 +227,13 @@ namespace BaseClasses.GraphObj
             if(bAddArrow)
             {
                 // Pridame model sipky smerujucej v smere LCS y, nastavitelna poloha sipky v smere x
-                float fArrowPosition_LCS_x = m_LineStartToControlPointOffset + 0.5f * fArrowSize;
+                float fArrowPosition_LCS_x = -m_LineFarEndToControlPointOffsetDistance + 0.5f * fArrowWidth + fAdditionalOffset;
 
                 if (!m_bArrowLeftFromControlPoint)
                 {
-                    fArrowPosition_LCS_x = m_LineStartToControlPointOffset - 0.5f * fArrowSize;
+                    // fArrowPosition_LCS_x = m_LineFarEndToControlPointOffsetDistance - 0.5f * fArrowWidth - fAdditionalOffset; // To Ondrej - Nechapem preco je to toto zle, mala by to byt pozicia sipky od zaciatocneho bodu ked sa znacka kresli na pravu stranu
+                    // Dal som tam 1.5 nasobok ale neviem preco :)))
+                    fArrowPosition_LCS_x = m_LineFarEndToControlPointOffsetDistance - 1.5f * fArrowWidth - fAdditionalOffset;
                 }
 
                 Point3D arrowControlPoint = new Point3D(fArrowPosition_LCS_x, 0, 0); // Arrow Tip in LCS of section symbol

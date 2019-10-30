@@ -116,11 +116,14 @@ namespace BaseClasses
 
                 DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
 
+                // Martin 31.10.2019 - toto som zakomentoval inak sa pri generovani modelu pre export do pdf prepisovali display options, takze sa vzdy zobrazovali horizontalne gridlines, aj ked sa jednalo o elevations (front, back, left, right)
+                /*
                 sDisplayOptions.bCreateHorizontalGridlines = true;
                 sDisplayOptions.bCreateVerticalGridlinesFront = false;
                 sDisplayOptions.bCreateVerticalGridlinesBack = false;
                 sDisplayOptions.bCreateVerticalGridlinesLeft = false;
                 sDisplayOptions.bCreateVerticalGridlinesRight = false;
+                */
 
                 DrawGridlinesToTrackport(_trackport, sDisplayOptions, _model, gr);
 
@@ -600,7 +603,7 @@ namespace BaseClasses
 
             if (sDisplayOptions.bCreateHorizontalGridlines)
             {
-                float fOffset = 0.5f;
+                float fOffset = 0.8f; // Nastavit tak, aby sa znacky neprekryvali s horizontalnymi kotami
                 float fOffsetBehind = 0.3f;
                 float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
                 float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
@@ -880,7 +883,9 @@ namespace BaseClasses
                     // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily
                     // To Mato - ake detaily? co za detaily? TO Ondrej Layout FLOOR DETAILS - Perimeter, Rebate
                     
-                    float fSymmbolLineStartOffset = -0.75f;
+                    float fSymmbolLineStartOffsetDistanceLeft = 1.0f; // Absolutna vzdialenost
+                    float fSymmbolLineEndOffsetDistanceRight = 0.5f; // Absolutna vzdialenost
+
                     float fSymbolLineLength = 0.5f;
 
                     float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
@@ -900,8 +905,8 @@ namespace BaseClasses
                         pointLeft = new Point3D(0, fAbsolutePosition, 0);
                         pointRight = new Point3D(0, fAbsolutePosition, 0);
 
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                     }
                     else if(perimeter.BuildingSide == "Right")
                     {
@@ -913,8 +918,8 @@ namespace BaseClasses
                         pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
                         pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
 
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                     }
                     else if (perimeter.BuildingSide == "Front")
                     {
@@ -926,8 +931,8 @@ namespace BaseClasses
                         pointLeft = new Point3D(fAbsolutePosition, 0, 0);
                         pointRight = new Point3D(fAbsolutePosition, 0, 0);
 
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                     }
                     else //if (perimeter.BuildingSide == "Back")
                     {
@@ -939,8 +944,8 @@ namespace BaseClasses
                         pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
                         pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
 
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                     }
 
                     // Add symbols of perimeters
@@ -963,8 +968,8 @@ namespace BaseClasses
                                 pointLeft = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
                                 pointRight = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
 
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             }
                             else if (perimeter.BuildingSide == "Right")
                             {
@@ -972,8 +977,8 @@ namespace BaseClasses
                                 pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
                                 pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
 
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             }
                             else if (perimeter.BuildingSide == "Front")
                             {
@@ -981,8 +986,8 @@ namespace BaseClasses
                                 pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
                                 pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
 
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             }
                             else //if (perimeter.BuildingSide == "Back")
                             {
@@ -990,8 +995,8 @@ namespace BaseClasses
                                 pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
                                 pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
 
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
+                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             }
 
                             // Add symbols of rebates
@@ -4956,7 +4961,7 @@ namespace BaseClasses
             }
             else if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
-                vector = new Vector3D(-1, 0, 0);
+                vector = new Vector3D(-1, 0, 0); // ??? TO Ondrej, nema to byt Z = -1, jec spravne ze pre niektore filtre je to nenastavene o zostava tam default???
             }
 
             return vector;

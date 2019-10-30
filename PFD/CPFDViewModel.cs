@@ -2466,8 +2466,8 @@ namespace PFD
             ColorsAccordingToSections = true;
             RecreateModel = true;
             ViewIndex = (int)EModelViews.TOP;
-            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.FOUNDATIONS;
-            TransformScreenLines3DToCylinders3D = false;            
+            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.FLOOR;
+            TransformScreenLines3DToCylinders3D = false;
 
             ShowMemberID = true;
 
