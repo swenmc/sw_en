@@ -847,15 +847,11 @@ namespace BaseClasses
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
-            
-
             // Floor Slab Perimeter and Rebate Section Symbols
             if (model.m_arrSlabs != null && model.m_arrSlabs.Count > 0)
             {
-                CSlab slab = model.m_arrSlabs.FirstOrDefault();                
+                CSlab slab = model.m_arrSlabs.FirstOrDefault();
                 if (slab == null) return;
-
-                
 
                 //CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true); // VZOR
 
@@ -881,26 +877,28 @@ namespace BaseClasses
                     CSectionSymbol secSymbolRight = null;
 
                     string sDetailLabel; // TODO Ondrej - toto by sem malo prist s perimetrom resp, jeho detailom podla toho kolko roznych detailov perimeters a rebates existuje
-                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily                    
-                    // To Mato - ake detaily? co za detaily?
+                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily
+                    // To Mato - ake detaily? co za detaily? TO Ondrej Layout FLOOR DETAILS - Perimeter, Rebate
                     
                     float fSymmbolLineStartOffset = -0.75f;
                     float fSymbolLineLength = 0.5f;
 
-                    //float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
+                    float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
                     // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay 
                     // kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
-                    
+
                     // TO Mato - ja sa citim akoby som cital po spanielsky - vsetko som si precital snad aj 5 krat ale nic nerozumiem
+                    // To Ondrej - Cele je to o tom ze nechceme aby sa znacky section prekryvali alebo boli prilis blizko seba
 
                     if (perimeter.BuildingSide == "Left")
                     {
                         sDetailLabel = "A";
 
                         int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
-                        pointLeft = new Point3D(0, firstFreeBay * model.fL1_frame - model.fL1_frame / 2, 0);
-                        pointRight = new Point3D(0, firstFreeBay * model.fL1_frame - model.fL1_frame / 2, 0);
-                        //pointRight = new Point3D(0, fRelativePositionPerimeterSymbol * model.fL_tot, 0);
+                        float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
+
+                        pointLeft = new Point3D(0, fAbsolutePosition, 0);
+                        pointRight = new Point3D(0, fAbsolutePosition, 0);
 
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
@@ -910,10 +908,10 @@ namespace BaseClasses
                         sDetailLabel = "A";
 
                         int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
-                        pointLeft = new Point3D(model.fW_frame, firstFreeBay * model.fL1_frame - model.fL1_frame / 2, 0);
-                        pointRight = new Point3D(model.fW_frame, firstFreeBay * model.fL1_frame - model.fL1_frame / 2, 0);
-                        //pointLeft = new Point3D(model.fW_frame, fRelativePositionPerimeterSymbol * model.fL_tot, 0);
-                        //pointRight = new Point3D(model.fW_frame, fRelativePositionPerimeterSymbol * model.fL_tot, 0);
+                        float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
+
+                        pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
+                        pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
 
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
@@ -923,11 +921,10 @@ namespace BaseClasses
                         sDetailLabel = "B";
 
                         int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Front");
-                        //To Mato - Mato povedal,ze vraj mam fColumnDistance ale kedze nemam, tak som si vyrobil z fDist_FrontColumns
-                        pointLeft = new Point3D(firstFreeBay * model.fColumnDistance - model.fColumnDistance / 2, 0, 0);
-                        pointRight = new Point3D(firstFreeBay * model.fColumnDistance - model.fColumnDistance / 2, 0, 0);
-                        //pointLeft = new Point3D(fRelativePositionPerimeterSymbol * model.fW_frame, 0, 0);
-                        //pointRight = new Point3D(fRelativePositionPerimeterSymbol * model.fW_frame, 0, 0);
+                        float fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
+
+                        pointLeft = new Point3D(fAbsolutePosition, 0, 0);
+                        pointRight = new Point3D(fAbsolutePosition, 0, 0);
 
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
@@ -937,11 +934,10 @@ namespace BaseClasses
                         sDetailLabel = "B";
 
                         int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
-                        //To Mato - Mato povedal,ze vraj mam fColumnDistance ale kedze nemam, tak som si vyrobil z fDist_FrontColumns
-                        pointLeft = new Point3D(firstFreeBay * model.fColumnDistance - model.fColumnDistance / 2, model.fL_tot, 0);
-                        pointRight = new Point3D(firstFreeBay * model.fColumnDistance - model.fColumnDistance / 2, model.fL_tot, 0);
-                        //pointLeft = new Point3D(fRelativePositionPerimeterSymbol * model.fW_frame, model.fL_tot, 0);
-                        //pointRight = new Point3D(fRelativePositionPerimeterSymbol * model.fW_frame, model.fL_tot, 0);
+                        float fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
+
+                        pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
+                        pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
 
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffset, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, -fSymmbolLineStartOffset, fSymbolLineLength, false); // Right Symbol
@@ -4837,6 +4833,8 @@ namespace BaseClasses
             _model.fW_frame = model.fW_frame;
             _model.fH1_frame = model.fH1_frame;
             _model.fH2_frame = model.fH2_frame;
+            _model.fDist_FrontColumns = model.fDist_FrontColumns;
+            _model.fDist_BackColumns = model.fDist_BackColumns;
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {
