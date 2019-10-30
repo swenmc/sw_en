@@ -2443,11 +2443,11 @@ namespace PFD
             DisplayPlates = false;
             DisplayConnectors = false;
             DisplayNodes = false;
-            DisplayFoundations = false;
+            DisplayFoundations = true;
             DisplayReinforcementBars = false;
-            DisplayFloorSlab = false;
-            DisplaySawCuts = false;
-            DisplayControlJoints = false;
+            DisplayFloorSlab = true;
+            DisplaySawCuts = true;
+            DisplayControlJoints = true;
 
             DisplayMembersWireFrame = false;
             DisplayJointsWireFrame = false;
@@ -2458,15 +2458,15 @@ namespace PFD
             DisplayReinforcementBarsWireFrame = false;            
             DisplayNodalSupports = false;
             DisplayMembersCenterLines = true;
-            DisplaySolidModel = false;
+            DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
             ColorsAccordingToMembers = false;
             ColorsAccordingToSections = true;
             RecreateModel = true;
-            ViewIndex = (int)EModelViews.FRONT;
-            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.FRONT;
+            ViewIndex = (int)EModelViews.TOP;
+            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.FOUNDATIONS;
             TransformScreenLines3DToCylinders3D = false;            
 
             ShowMemberID = true;
@@ -2484,7 +2484,7 @@ namespace PFD
             ShowControlJointsDescription = false;
             ShowDimensions = true;
             ShowGridLines = false;
-            ShowSectionSymbols = false;
+            ShowSectionSymbols = true;
             ShowDetailSymbols = false;
 
             ShowLoads = false;

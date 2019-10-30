@@ -1,6 +1,8 @@
 ﻿
 using MATH;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses.Helpers
@@ -410,6 +412,17 @@ namespace BaseClasses.Helpers
                 return p.Y;
             else //if (iDirectionCode == 2) // Direction Z
                 return p.Z;
+        }
+
+        public static int GetFirstBayWithoutDoors(ObservableCollection<DoorProperties> doors, string side)
+        {
+            int freeBayIndex = 0;
+            IEnumerable<DoorProperties> doorsOnSide = doors.Where(d => d.sBuildingSide == side);
+            foreach (DoorProperties door in doorsOnSide.OrderBy(d => d.iBayNumber))
+            {
+                if (freeBayIndex == door.iBayNumber) freeBayIndex++;
+            }
+            return freeBayIndex;
         }
     }
 }
