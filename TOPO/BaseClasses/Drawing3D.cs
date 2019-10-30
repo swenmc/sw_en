@@ -850,6 +850,7 @@ namespace BaseClasses
             if (model.m_arrSlabs != null && model.m_arrSlabs.Count > 0)
             {
                 CSlab slab = model.m_arrSlabs.FirstOrDefault();
+                if (slab == null) return;
 
                 //CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true); // VZOR
 
@@ -875,12 +876,17 @@ namespace BaseClasses
                     CSectionSymbol secSymbolRight = null;
 
                     string sDetailLabel; // TODO Ondrej - toto by sem malo prist s perimetrom resp, jeho detailom podla toho kolko roznych detailov perimeters a rebates existuje
-                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily
-
+                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily                    
+                    // To Mato - ake detaily? co za detaily?
+                    
                     float fSymmbolLineStartOffset = -0.75f;
                     float fSymbolLineLength = 0.5f;
 
-                    float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
+                    float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
+                    // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay 
+                    // kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
+                    
+                    // TO Mato - ja sa citim akoby som cital po spanielsky - vsetko som si precital snad aj 5 krat ale nic nerozumiem
 
                     if (perimeter.BuildingSide == "Left")
                     {
@@ -977,6 +983,7 @@ namespace BaseClasses
                     }
                 }
 
+                //TO Mato - sumne si to zrobil. a co tam vlastne este treba spravit?
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
