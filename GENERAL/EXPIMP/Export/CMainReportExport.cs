@@ -1017,17 +1017,19 @@ namespace EXPIMP
                 string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
                 string sTextP11 = sTextP9;
 
-                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition + 224);
-                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition + 99);
-                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition + 224);
-                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, dRowPosition + 54);
-                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, dRowPosition + 134);
-                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, dRowPosition + 144);
-                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition + 109);
-                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition + 149);
-                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition + 194);
+                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 224);
+                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 99);
+                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 224);
+                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, dRowPosition2 + 54);
+                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, dRowPosition2 + 134);
+                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, dRowPosition2 + 144);
+                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 109);
+                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 149);
+                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 194);
 
-                //Rotacia textu
+                // Rotacia textu
+                // TODO Ondrej - ked su tam 2 detaily pre perimeter, tak sa tieto orotovane texty v druhom obrazku nezobrazia, resp su asi niekde mimo stranku
+
                 XGraphicsState state = gfx.Save();
                 gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition + 144));
                 gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition + 144);
@@ -1142,8 +1144,6 @@ namespace EXPIMP
                         dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
                     }
                 }
-
-                
             }
             gfx.Dispose();
             page.Close();
