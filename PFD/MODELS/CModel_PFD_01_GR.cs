@@ -101,12 +101,14 @@ namespace PFD
 
             fDist_Girt = fDist_Girt_temp;
             fDist_Purlin = fDist_Purlin_temp;
-            fDist_FrontColumns = fDist_FrontColumns_temp;
+            fDist_FrontColumns = fDist_FrontColumns_temp;            
             fBottomGirtPosition = fBottomGirtPosition_temp;
             fDist_FrontGirts = fDist_Girt_temp; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
             fDist_BackGirts = fDist_Girt_temp;
             fFrontFrameRakeAngle_temp_rad = fFrontFrameRakeAngle_temp_deg * MathF.fPI / 180f;
             fBackFrameRakeAngle_temp_rad = fBackFrameRakeAngle_temp_deg * MathF.fPI / 180f;
+
+            fColumnDistance = fDist_FrontColumns;
 
             DoorBlocksProperties = doorBlocksProperties;
 

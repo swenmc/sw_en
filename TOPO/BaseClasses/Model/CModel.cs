@@ -23,6 +23,8 @@ namespace BaseClasses
         public float fH1_frame;
         public float fH2_frame;
 
+        public float fColumnDistance;
+
         // General project data
 
         public string m_sProjectName;
