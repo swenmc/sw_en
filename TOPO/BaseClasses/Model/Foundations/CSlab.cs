@@ -1119,7 +1119,12 @@ namespace BaseClasses
                     if (doorProp.sDoorType == "Roller Door")
                     {
                         // TODO Ondrej
-                        // napojit nejako elegantne tieto premenne - su v CModel_PFD_01_GR
+                        // napojit nejako elegantne premenne fL1_frame, ... - su v CModel_PFD_01_GR
+                        // Trosku sa mi nepaci ze doska ma mat take parametre
+                        // Najlepsie by bolo keby Slab dostala uz rovno zoznam doors typu roller door (upraveny m_DoorBlocksProperties) a v ramci toho uz aj ich aj absolutnu poziciu (na strane budovy) , poziciu rebates a dlzku rebates
+                        // podla jednotlivych rebates, ktore su pre tieto doors potrebne
+                        // podla mna by do dosky nemalo ist ako parameter nieco ako sirka stlpa dveri
+
                         float fL1_frame = 3f; // Vzdialenost ramov
                         float fColumnDistance = 2f; // Vzdialenost wind posts (stlpov v prednej alebo zadnej stene)
                         float fTrimmerWidth = 0.14f; // Sirka cross-section typu roller door trimmer
