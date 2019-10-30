@@ -768,6 +768,13 @@ namespace BaseClasses
             }
         }
 
+        // DOCASNE
+        // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
+        float m_fL1_frame; // Vzdialenost ramov
+        float m_fDist_FrontColumns; // Vzdialenost wind posts (stlpov v prednej stene)
+        float m_fDist_BackColumns; // Vzdialenost wind posts (stlpov v zadnej stene)
+        float m_fTrimmerWidth; // Sirka cross-section typu roller door trimmer
+
         private float fTolerance = 0.0001f; // Tolerance - 3D graphics collision (doska o 0.1 mm nizsie nez stlpy aby bolo vidno ich obrys
 
         public CSlab()
@@ -819,16 +826,22 @@ namespace BaseClasses
             float fRebateWidth_FBSide,
             ObservableCollection<DoorProperties> doorBlocksProperties,
 
-            //CReinforcementBar refTopBar_x,
-            //CReinforcementBar refTopBar_y,
-            //CReinforcementBar refBottomBar_x,
-            //CReinforcementBar refBottomBar_y,
-            //int iNumberOfBarsTop_x,
-            //int iNumberOfBarsTop_y,
-            //int iNumberOfBarsBottom_x,
-            //int iNumberOfBarsBottom_y,
-            //Color volColor,
-            float fvolOpacity,
+            // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
+            float fL1_frame, // Vzdialenost ramov
+            float fDist_FrontColumns, // Vzdialenost wind posts (stlpov v prednej stene)
+            float fDist_BackColumns, // Vzdialenost wind posts (stlpov v zadnej stene)
+            float fTrimmerWidth, // Sirka cross-section typu roller door trimmer
+
+        //CReinforcementBar refTopBar_x,
+        //CReinforcementBar refTopBar_y,
+        //CReinforcementBar refBottomBar_x,
+        //CReinforcementBar refBottomBar_y,
+        //int iNumberOfBarsTop_x,
+        //int iNumberOfBarsTop_y,
+        //int iNumberOfBarsBottom_x,
+        //int iNumberOfBarsBottom_y,
+        //Color volColor,
+        float fvolOpacity,
             bool bIsDisplayed,
             float fTime)
         {
@@ -880,6 +893,12 @@ namespace BaseClasses
             m_RebateWidth_FBSide = fRebateWidth_FBSide;
 
             m_DoorBlocksProperties = doorBlocksProperties;
+
+            // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
+            m_fL1_frame = fL1_frame; // Vzdialenost ramov
+            m_fDist_FrontColumns = fDist_FrontColumns; // Vzdialenost wind posts (stlpov v prednej stene)
+            m_fDist_BackColumns = fDist_BackColumns; // Vzdialenost wind posts (stlpov v zadnej stene)
+            m_fTrimmerWidth = fTrimmerWidth; // Sirka cross-section typu roller door trimmer
 
             //m_Reference_Top_Bar_x = refTopBar_x;
             //m_Reference_Top_Bar_y = refTopBar_y;
@@ -1099,10 +1118,7 @@ namespace BaseClasses
             // TODO - potrebujeme sem dostat vsetky vytvorene roller doors, stranu na ktorej sa nachadzaju, ich pozicie na strane, rozmer roller door trimmer
             // z toho urcime cistu sirku dveri a zaciatok floor slab rebate (vyrez do dosky v mieste dveri)
             // TODO - vytvorime list rebates, ktory priradime CSlabPerimeter ako posledny parameters
-
             // TODO - potrebujeme se dostat vysku zakladovych patiek na kazdej strane budovy aby sme nastavili default, resp. perimeter depth z GUI
-
-
             // Vytvorime objekty a zoznam rebates podla toho kde sa nachadzaju roller doors a tieto rebates posleme ako zoznam do konstruktora CSlabPerimeter
 
             List<CSlabRebate> rebatesLeftSide = null;
@@ -1125,9 +1141,9 @@ namespace BaseClasses
                         // podla jednotlivych rebates, ktore su pre tieto doors potrebne
                         // podla mna by do dosky nemalo ist ako parameter nieco ako sirka stlpa dveri
 
-                        float fL1_frame = 3f; // Vzdialenost ramov
-                        float fColumnDistance = 2f; // Vzdialenost wind posts (stlpov v prednej alebo zadnej stene)
-                        float fTrimmerWidth = 0.14f; // Sirka cross-section typu roller door trimmer
+                        //float fL1_frame = 3f; // Vzdialenost ramov
+                        //float fColumnDistance = 2f; // Vzdialenost wind posts (stlpov v prednej alebo zadnej stene)
+                        //float fTrimmerWidth = 0.14f; // Sirka cross-section typu roller door trimmer
 
                         // TODO Ondrej - Refaktorovat - 4 strany
                         if (doorProp.sBuildingSide == "Left")
@@ -1142,32 +1158,32 @@ namespace BaseClasses
                                 */
 
                                 rebatesLeftSide.Add(new CSlabRebate(i + 1, m_RebateWidth_LRSide,
-                                /*TODO Ondrej - tu treba pripocitat polohu bay a 0.5 x rozmer b rollerDoorTrimmer Crsc*/ (doorProp.iBayNumber - 1) * fL1_frame + 0.5f * fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
-                                /*TODO Ondrej - tu treba odpocitat 1 x rozmer b rollerDoorTrimmer Crsc*/ doorProp.fDoorsWidth - fTrimmerWidth, 0.01f, 0.02f, true, 0));
+                                /*TODO Ondrej - tu treba pripocitat polohu bay a 0.5 x rozmer b rollerDoorTrimmer Crsc*/ (doorProp.iBayNumber - 1) * m_fL1_frame + 0.5f * m_fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
+                                /*TODO Ondrej - tu treba odpocitat 1 x rozmer b rollerDoorTrimmer Crsc*/ doorProp.fDoorsWidth - m_fTrimmerWidth, 0.01f, 0.02f, true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Right")
                         {
                             if (rebatesRightSide == null) rebatesRightSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
                             rebatesRightSide.Add(new CSlabRebate(i + 1, m_RebateWidth_LRSide,
-                            (doorProp.iBayNumber - 1) * fL1_frame + 0.5f * fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
-                            doorProp.fDoorsWidth - fTrimmerWidth, 0.01f, 0.02f, true, 0));
+                            (doorProp.iBayNumber - 1) * m_fL1_frame + 0.5f * m_fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth - m_fTrimmerWidth, 0.01f, 0.02f, true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Front")
                         {
                             if (rebatesFrontSide == null) rebatesFrontSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
                             rebatesFrontSide.Add(new CSlabRebate(i + 1, m_RebateWidth_FBSide,
-                            (doorProp.iBayNumber - 1) * fColumnDistance + 0.5f * fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
-                            doorProp.fDoorsWidth - fTrimmerWidth, 0.01f, 0.02f, true, 0));
+                            (doorProp.iBayNumber - 1) * m_fDist_FrontColumns + 0.5f * m_fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth - m_fTrimmerWidth, 0.01f, 0.02f, true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Back")
                         {
                             if (rebatesBackSide == null) rebatesBackSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
                             rebatesBackSide.Add(new CSlabRebate(i + 1, m_RebateWidth_FBSide,
-                            (doorProp.iBayNumber - 1) * fColumnDistance + 0.5f * fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
-                            doorProp.fDoorsWidth - fTrimmerWidth, 0.01f, 0.02f, true, 0));
+                            (doorProp.iBayNumber - 1) * m_fDist_BackColumns + 0.5f * m_fTrimmerWidth + doorProp.fDoorCoordinateXinBlock,
+                            doorProp.fDoorsWidth - m_fTrimmerWidth, 0.01f, 0.02f, true, 0));
                         }
                     }
                 }

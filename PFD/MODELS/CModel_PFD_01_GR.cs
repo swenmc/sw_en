@@ -2703,6 +2703,14 @@ namespace PFD
                             fLongitud_Reinf_Intermediate_Count_FBSide,
                             fRebateWidth_FBSide,
                             DoorBlocksProperties,
+
+                            // Temp
+                            // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
+                            fL1_frame, // Vzdialenost ramov
+                            fDist_FrontColumns, // Vzdialenost wind posts (stlpov v prednej stene)
+                            fDist_BackColumns, // Vzdialenost wind posts (stlpov v zadnej stene)
+                            0.14f, // Sirka cross-section typu roller door trimmer
+
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
                             //BackColumnFootingReference_Bottom_Bar_x,

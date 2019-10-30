@@ -123,6 +123,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        float fOffsetFromPlane = 0.05f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+
         ELinePatternType m_LinePatternType;
         float fArrowSize;
         public bool m_bArrowLeftFromControlPoint;
@@ -188,7 +190,7 @@ namespace BaseClasses.GraphObj
             // Vytvorime model gridline v LCS, [0,0,0] je uvazovane v bode m_ControlPoint, line smeruje v kladnom smere x a znacka s label text je v rovine xy
             // Sipka smeruje v smere LCS y
 
-            float fLineCylinderRadius = 0.015f; // Nastavovat ! polomer valca, malo by to byt zhruba 0.7 mm hrube na vykrese (zhruba 3x taka hrubka ako maju ostatne ciary)
+            float fLineCylinderRadius = 0.02f; // Nastavovat ! polomer valca, malo by to byt zhruba 0.7 mm hrube na vykrese (zhruba 3x taka hrubka ako maju ostatne ciary)
             
             // Line
             short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
@@ -272,7 +274,7 @@ namespace BaseClasses.GraphObj
             axisAngleRotation3dZ.Angle = dRotationZ;
             rotateZ.Rotation = axisAngleRotation3dZ;
 
-            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_ControlPoint.X, m_ControlPoint.Y, m_ControlPoint.Z);
+            TranslateTransform3D translateOrigin = new TranslateTransform3D(m_ControlPoint.X, m_ControlPoint.Y, m_ControlPoint.Z + fOffsetFromPlane);
 
             TransformGr = new Transform3DGroup();
             TransformGr.Children.Add(rotateX);
