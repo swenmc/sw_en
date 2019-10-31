@@ -414,15 +414,6 @@ namespace BaseClasses.Helpers
                 return p.Z;
         }
 
-        public static int GetFirstBayWithoutDoors(ObservableCollection<DoorProperties> doors, string side)
-        {
-            int freeBayIndex = 0;
-            IEnumerable<DoorProperties> doorsOnSide = doors.Where(d => d.sBuildingSide == side);
-            foreach (DoorProperties door in doorsOnSide.OrderBy(d => d.iBayNumber))
-            {
-                if (freeBayIndex == door.iBayNumber) freeBayIndex++;
-            }
-            return freeBayIndex;
-        }
+        
     }
 }
