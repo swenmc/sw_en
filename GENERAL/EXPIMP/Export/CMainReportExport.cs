@@ -68,7 +68,7 @@ namespace EXPIMP
 
             //DrawModel3D(s_document, modelData);
 
-            //DrawModelViews(s_document, modelData);
+            DrawModelViews(s_document, modelData);
 
             //DrawJointTypes(s_document, modelData);
 

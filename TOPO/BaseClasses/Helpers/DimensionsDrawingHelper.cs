@@ -1539,7 +1539,7 @@ namespace BaseClasses.Helpers
             Vector3D up = new Vector3D(0, dimension.VectorUpFactor_LCS, 0);
 
             // Create text
-            ModelVisual3D textlabel = Drawing3D.CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up, 0.8);
+            ModelVisual3D textlabel = Drawing3D.CreateTextLabel3D(tb, true, fTextBlockVerticalSize, dimension.PointText, over, up, 0.5);
 
             if (Drawing3D.centerModel)
             {

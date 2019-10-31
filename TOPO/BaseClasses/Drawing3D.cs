@@ -3130,7 +3130,7 @@ namespace BaseClasses
                         pTextPosition.Z = p.Z + fOffsetZ;
 
                         // Create text
-                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor),0.5);
 
                         if (centerModel)
                         {
@@ -3141,8 +3141,6 @@ namespace BaseClasses
                 }
             }
         }
-
-
 
         // Draw Dimension 3D
         //public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
@@ -3416,7 +3414,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * sawcut.iVectorUpFactor_LCS, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sawcut.PointText, over, up);
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, sawcut.PointText, over, up, 0.5);
 
             if (centerModel)
             {
@@ -3480,7 +3478,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(0, fTextBlockVerticalSizeFactor * controlJoint.iVectorUpFactor_LCS, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, controlJoint.PointText, over, up);
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, controlJoint.PointText, over, up, 0.5);
 
             if (centerModel)
             {
@@ -3545,7 +3543,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up); ;
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, foundation.PointText, over, up, 0.5);
             Transform3DGroup tr = new Transform3DGroup();
 
             if (foundation.GetFoundationTransformGroup_Complete() == null)
@@ -3559,7 +3557,7 @@ namespace BaseClasses
 
                 // Nechceme transofrmovat cely text label len vkladaci bod
                 Point3D pTransformed = tr.Transform(foundation.PointText);
-                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up);
+                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTransformed, over, up, 0.5);
             }
 
             if (centerModel)
@@ -3643,9 +3641,7 @@ namespace BaseClasses
             }
         }
 
-
         #endregion
-
 
         private static Transform3DGroup GetModelRotationAccordingToView(DisplayOptions sDisplayOptions)
         {
