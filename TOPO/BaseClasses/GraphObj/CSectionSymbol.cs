@@ -271,14 +271,28 @@ namespace BaseClasses.GraphObj
 
             double dRotationZ = 0;
 
+            if (ViewDirection.Y == 1)
+            {
+                // Nastavenie textu citatelneho zdola nahor (citatel je vpravo)
+                iVectorOverFactor_LCS = -1;
+                iVectorUpFactor_LCS = -1;
+            }
+
             if (ViewDirection.Y == -1)
                 dRotationZ = 180;
 
             if (ViewDirection.X == 1)
+            {
                 dRotationZ = -90;
+
+                // Nastavenie textu citatelneho zlava doprava (citatel je dole)
+                iVectorOverFactor_LCS = -1;
+                iVectorUpFactor_LCS = -1;
+            }
 
             if (ViewDirection.X == -1)
                 dRotationZ = 90;
+
 
             // About Z - plane XY
             AxisAngleRotation3D axisAngleRotation3dZ = new AxisAngleRotation3D();
