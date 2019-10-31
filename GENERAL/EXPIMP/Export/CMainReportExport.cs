@@ -68,11 +68,11 @@ namespace EXPIMP
 
             //DrawModel3D(s_document, modelData);
 
-            //DrawModelViews(s_document, modelData);
+            DrawModelViews(s_document, modelData);
 
-            //DrawJointTypes(s_document, modelData);
+            DrawJointTypes(s_document, modelData);
 
-            //DrawFootingTypes(s_document, modelData);
+            DrawFootingTypes(s_document, modelData);
 
             DrawFloorDetails(s_document, modelData);
 
@@ -2274,16 +2274,12 @@ namespace EXPIMP
 
             //tableParams.Add(new string[6] { "Type", "Width L [m]", "Width W [m]", "Height H [m]", "Count", "Volume [m³]" });
             tableParams.Add(new string[6] { "Type", "L [m]", "W [m]", "H [m]", "Count [-]", "Volume [m³]" });
-
+            
             foreach (KeyValuePair<string, Tuple<CFoundation, CConnectionJointTypes>> kvp in data.FootingsDict)
             {
-                //data.Model.m_arrFoundations;
-
-                int numberOfPads = 0; // TODO Ondrej - zistit pocet jednotlivych typov objektov a doplnit do stlpca tabulky do tabulky
-
                 CFoundation pad = kvp.Value.Item1;
-                //CConnectionJointTypes joint = kvp.Value.Item2;
-
+                int numberOfPads = data.Model.m_arrFoundations.Where(f => f.Text == pad.Text).Count();
+                
                 tableParams.Add(new string[6] { /*pad.Text*/ pad.Name, pad.m_fDim1.ToString(), pad.m_fDim2.ToString(), pad.m_fDim3.ToString(), numberOfPads.ToString(), pad.m_fVolume.ToString() });
             }
 
