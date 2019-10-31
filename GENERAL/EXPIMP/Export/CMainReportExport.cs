@@ -68,11 +68,11 @@ namespace EXPIMP
 
             //DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            //DrawModelViews(s_document, modelData);
 
-            DrawJointTypes(s_document, modelData);
+            //DrawJointTypes(s_document, modelData);
 
-            DrawFootingTypes(s_document, modelData);
+            //DrawFootingTypes(s_document, modelData);
 
             DrawFloorDetails(s_document, modelData);
 
@@ -895,9 +895,19 @@ namespace EXPIMP
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Floor.GetFriendlyName() });
 
             double scale = 0.2; // 20% of original file dimensions in pixels
-            double dImagePosition_x = 2;
-            double dImagePosition_y = 2;
-            double dRowPosition = 0;
+            double dImagePosition_x_First = 2;
+            double dImagePosition_x = dImagePosition_x_First;
+            double dImagePosition_y = 0;
+
+            double dTitlePositionOffset_x = 20; // Medzi lavym okrajom obrazka a nadpisom
+            double dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x; // Pozicia textu nadpisu
+            double dTitleLineHeight_1 = 20; // Vyska riadku nadpisu
+            double dTitleLineHeight_2 = 15; // Vyska riadku nadpisu
+            double dTitleBottomOffset = 5; // Medzera medzi spodnou hranou textu a obrazkom
+            double dTitlePosition_y = dTitleLineHeight_1; // Pozicia textu nadpisu
+            double dTitleSpaceHeight = dTitlePosition_y + dTitleBottomOffset; // Celkova vyska nadpisu vratane odstupu - rozne pre jednotlive nadpisy / obrazky
+            double dCurrentRowPosition = 0;
+            double dNextRowPosition = 0;
 
             XFont fontDimension = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
             XBrush brushDimension = XBrushes.DarkOrange;
@@ -919,38 +929,57 @@ namespace EXPIMP
             // Asi to nie je extra dolezite, ale mozes sa s tym pohrat v ramci review "floor slab" :)
             // Aspon budes mat lepsi prehlad toho ako to teraz funguje, tipujem ze pri tom odhalis ine suvislosti, slabiny a nedorobky
 
+            // 1st row
             if (slab.SawCuts.Count > 0)
             {
-                // 1st row
+                // Vlozime nadpis
+                gfx.DrawString("SAW CUT", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dTitlePosition_y);
+
+                dTitleSpaceHeight = dTitleLineHeight_1 + dTitleBottomOffset;
+                dImagePosition_y = dCurrentRowPosition + dTitleSpaceHeight;
+
+                // Vlozime obrazok
                 XImage imageSC = XImage.FromFile(ConfigurationManager.AppSettings["SawCutDetail"]);
                 double imageWidthOriginalSC = imageSC.PixelWidth;
                 double imageHeightOriginalSC = imageSC.PixelHeight;
                 gfx.DrawImage(imageSC, dImagePosition_x, dImagePosition_y, imageWidthOriginalSC * scale, imageHeightOriginalSC * scale);
                 imageSC.Dispose();
-                dImagePosition_x += imageWidthOriginalSC * scale;
-                dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalSC * scale);
 
+                // Vlozime popisy do obrazku
                 if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
                 {
                     if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut != null)
                     {
                         string sCutWidth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutWidth * 1000).ToString("F0");
-                        gfx.DrawString(sCutWidth, fontDimension, brushDimension, 115, 17);
+                        gfx.DrawString(sCutWidth, fontDimension, brushDimension, dImagePosition_x + 113, dImagePosition_y + 15);
 
                         string sCutDepth = (data.Model.m_arrSlabs.FirstOrDefault().ReferenceSawCut.CutDepth * 1000).ToString("F0");
-                        gfx.DrawString(sCutDepth, fontDimension, brushDimension, 60, 40);
+                        gfx.DrawString(sCutDepth, fontDimension, brushDimension, dImagePosition_x + 58, dImagePosition_y + 38);
                     }
                 }
+
+                // Nastavime pozicie pre vlozenie dalsieho nadpisu a obrazku
+                dImagePosition_x += imageWidthOriginalSC * scale;
+                dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
+                dNextRowPosition = Math.Max(dNextRowPosition, dImagePosition_y + imageHeightOriginalSC * scale);
             }
 
             if (slab.ControlJoints.Count > 0)
             {
+                // Vlozime nadpis
+                gfx.DrawString("CONTROL JOINT", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dTitlePosition_y);
+
+                dTitleSpaceHeight = dTitleLineHeight_1 + dTitleBottomOffset;
+                dImagePosition_y = dCurrentRowPosition + dTitleSpaceHeight;
+
+                // Vlozime obrazok
                 XImage imageJD = XImage.FromFile(ConfigurationManager.AppSettings["ControlJointDetail"]);
                 double imageWidthOriginalJD = imageJD.PixelWidth;
                 double imageHeightOriginalJD = imageJD.PixelHeight;
                 gfx.DrawImage(imageJD, dImagePosition_x, dImagePosition_y, imageWidthOriginalJD * scale, imageHeightOriginalJD * scale);
                 imageJD.Dispose();
 
+                // Vlozime popisy do obrazku
                 if (data.Model.m_arrSlabs != null && data.Model.m_arrSlabs.Count > 0)
                 {
                     if (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint != null)
@@ -966,21 +995,23 @@ namespace EXPIMP
                             (data.Model.m_arrSlabs.FirstOrDefault().ReferenceControlJoint.DowelSpacing * 1000).ToString("F0") + " CENTRES";
                         string sText3 = "WRAP ONE SIDE WITH DENSO TAPE";
 
-                        gfx.DrawString(sText1, fontNote, brushNote, dImagePosition_x + 112, 125);
-                        gfx.DrawString(sText2, fontNote, brushNote, dImagePosition_x + 112, 135);
-                        gfx.DrawString(sText3, fontNote, brushNote, dImagePosition_x + 112, 145);
+                        gfx.DrawString(sText1, fontNote, brushNote, dImagePosition_x + 112, dImagePosition_y + 115);
+                        gfx.DrawString(sText2, fontNote, brushNote, dImagePosition_x + 112, dImagePosition_y + 125);
+                        gfx.DrawString(sText3, fontNote, brushNote, dImagePosition_x + 112, dImagePosition_y + 135);
                     }
                 }
 
+                // Nastavime pozicie pre vlozenie dalsieho nadpisu a obrazku
                 dImagePosition_x += imageWidthOriginalJD * scale;
-                dRowPosition = Math.Max(dRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
+                dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
+                dNextRowPosition = Math.Max(dNextRowPosition, dImagePosition_y + imageHeightOriginalJD * scale);
             }
 
             // TODO - skontrolovat ci sa dalsi obrazok vojde do sirky stranky, ak nie pridat novy rad (len ak sa vojde na vysku) alebo novu stranku
             // 2nd row
-            int verticalMargin = 50;
-            dImagePosition_x = 2; // Zaciname znova od laveho okraja
-            double dRowPosition2 = dRowPosition + verticalMargin;
+            dImagePosition_x = dImagePosition_x_First; // Zaciname znova od laveho okraja
+            dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
+            dCurrentRowPosition = dNextRowPosition;
 
             List<string> sectionDetailsLetters = new List<string>() { "A", "B", "C", "D", "E", "F" };
             int sectionDetailsLetterIndex = 0;
@@ -990,17 +1021,33 @@ namespace EXPIMP
             
             foreach (CSlabPerimeter perimeter in diff_perimetersWithoutRebates)
             {
+                // Nacitame obrazok
                 XImage image = XImage.FromFile(ConfigurationManager.AppSettings["PerimeterDetail"]);
                 double imageWidthOriginal = image.PixelWidth;
                 double imageHeightOriginal = image.PixelHeight;
-                gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
-                image.Dispose();
 
+                // Skontrolujeme ci obrazok vojde do riadku, inak vkladame na novy riadok
+                if (dImagePosition_x + imageWidthOriginal * scale > gfx.PageSize.Width)
+                {
+                     dImagePosition_x = dImagePosition_x_First;
+                     dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
+                     dCurrentRowPosition = dNextRowPosition;
+                }
+
+                // Vlozime nadpis
                 letter = sectionDetailsLetters[sectionDetailsLetterIndex];
                 sectionDetailsLetterIndex++;
-                gfx.DrawString($"SECTION {letter}-{letter}", fontBold_Title1, XBrushes.Blue, dImagePosition_x + 20, dRowPosition2 + 10 - verticalMargin);
-                gfx.DrawString("PERIMETER DETAIL", fontBold_Title1, XBrushes.DarkOliveGreen, dImagePosition_x + 20, dRowPosition2 + 30 - verticalMargin);                
+                gfx.DrawString($"SECTION {letter}-{letter}", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dCurrentRowPosition + dTitleLineHeight_1);
+                gfx.DrawString("PERIMETER", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dCurrentRowPosition + 2 * dTitleLineHeight_1);
 
+                dTitleSpaceHeight = 2 * dTitleLineHeight_1 + dTitleLineHeight_2 + dTitleBottomOffset; // Rovnake ako rebate, lebo chceme aby boli obrazky pekne vedla seba
+                dImagePosition_y = dCurrentRowPosition + dTitleSpaceHeight;
+
+                // Vlozime obrazok
+                gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                image.Dispose();
+
+                // Vlozime popisy do obrazku
                 float fPerimeterDepth = perimeter.PerimeterDepth;
                 float fPerimeterBottomWidth = perimeter.PerimeterWidth;
                 float fMeshAndStartersOverlapping = perimeter.StartersLapLength;
@@ -1032,28 +1079,31 @@ namespace EXPIMP
                 string sTextP10 = iLongitud_Reinf_Intermediate_Count.ToString() + "x" + "HD" + (fLongitud_Reinf_Intermediate_Phi * 1000).ToString("F0");
                 string sTextP11 = sTextP9;
 
-                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 224 - verticalMargin);
-                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 105 - verticalMargin);
-                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 224 - verticalMargin);
-                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 100, dRowPosition2 + 59 - verticalMargin);
-                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, dRowPosition2 + 134 - verticalMargin);
-                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, dRowPosition2 + 144 - verticalMargin);
-                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 109 - verticalMargin);
-                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 149 - verticalMargin);
-                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 194 - verticalMargin);
+                gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dImagePosition_y + 176);
+                gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 45, dImagePosition_y + 20);
+                gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dImagePosition_y + 172);
+                gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 96, dImagePosition_y + 9);
+                gfx.DrawString(sTextP7, fontNote, brushNote, dImagePosition_x + 180, dImagePosition_y + 86);
+                gfx.DrawString(sTextP8, fontNote, brushNote, dImagePosition_x + 180, dImagePosition_y + 96);
+                gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dImagePosition_y + 61);
+                gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dImagePosition_y + 101);
+                gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dImagePosition_y + 146);
 
                 // Rotacia textu
                 XGraphicsState state = gfx.Save();
-                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 144 - verticalMargin));
-                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 144 - verticalMargin);
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dImagePosition_y + 96));
+                gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dImagePosition_y + 96);
                 gfx.Restore(state);
                 state = gfx.Save();
-                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, dRowPosition2 + 144 - verticalMargin));
-                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, dRowPosition2 + 144 - verticalMargin);
+                gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 59, dImagePosition_y + 96));
+                gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 59, dImagePosition_y + 96);
                 gfx.Restore(state);
 
+                // Updatujeme poziciu pre dalsi pripadny riadok
+                dNextRowPosition = Math.Max(dNextRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+                // Nastavime pozicie pre vlozenie dalsieho nadpisu a obrazku
                 dImagePosition_x += imageWidthOriginal * scale;
-                dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+                dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
             }
 
             // Pre kazdy perimeter mozeme vlozit maximalne jeden detail roller door rebate, nezavisle na tom kolko doors v danom perimeter existuje
@@ -1073,21 +1123,34 @@ namespace EXPIMP
 
                     if (bAddRollerDoorDetail) // Add roller door rebate detail // Vsetky detaily rebates pre jeden perimeter budu rovnake, takze detail vlozime len raz
                     {
-                        letter = sectionDetailsLetters[sectionDetailsLetterIndex];
-                        sectionDetailsLetterIndex++;
-                        gfx.DrawString($"SECTION {letter}-{letter}", fontBold_Title1, XBrushes.Blue, dImagePosition_x + 20, dRowPosition2 + 10 - verticalMargin);
-                        gfx.DrawString("ROLLER DOOR REBATE", fontBold_Title1, XBrushes.DarkOliveGreen, dImagePosition_x + 20, dRowPosition2 + 30 - verticalMargin);
-                        gfx.DrawString("[Confirm with door manufacture]", fontBold_Title2, XBrushes.DarkGreen, dImagePosition_x + 20, dRowPosition2 + 45 - verticalMargin);
-
+                        // Nacitame obrazok
                         XImage image = XImage.FromFile(ConfigurationManager.AppSettings["RollerDoorRebateDetail"]);
                         double imageWidthOriginal = image.PixelWidth;
                         double imageHeightOriginal = image.PixelHeight;
 
-                        if (dImagePosition_x + imageWidthOriginal * scale > gfx.PageSize.Width) { dImagePosition_x = 2; dRowPosition2 = dRowPosition + 15; }
+                        // Skontrolujeme ci obrazok vojde do riadku, inak vkladame na novy riadok
+                        if (dImagePosition_x + imageWidthOriginal * scale > gfx.PageSize.Width)
+                        {
+                            dImagePosition_x = dImagePosition_x_First;
+                            dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
+                            dCurrentRowPosition = dNextRowPosition;
+                        }
 
-                        gfx.DrawImage(image, dImagePosition_x, dRowPosition2, imageWidthOriginal * scale, imageHeightOriginal * scale);
+                        // Vlozime nadpis
+                        letter = sectionDetailsLetters[sectionDetailsLetterIndex];
+                        sectionDetailsLetterIndex++;
+                        gfx.DrawString($"SECTION {letter}-{letter}", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dCurrentRowPosition + dTitleLineHeight_1);
+                        gfx.DrawString("ROLLER DOOR REBATE", fontBold_Title1, XBrushes.Black, dTitlePosition_x, dCurrentRowPosition + 2 * dTitleLineHeight_1);
+                        gfx.DrawString("[Confirm with door manufacture]", fontBold_Title2, XBrushes.Black, dTitlePosition_x, dCurrentRowPosition + 2 * dTitleLineHeight_1 + dTitleLineHeight_2);
+
+                        dTitleSpaceHeight = 2 * dTitleLineHeight_1 + dTitleLineHeight_2 + dTitleBottomOffset;
+                        dImagePosition_y = dCurrentRowPosition + dTitleSpaceHeight;
+
+                        // Vlozime obrazok
+                        gfx.DrawImage(image, dImagePosition_x, dImagePosition_y, imageWidthOriginal * scale, imageHeightOriginal * scale);
                         image.Dispose();
 
+                        // Vlozime popisy do obrazku
                         float fRebateDepth_Step = 0;
                         float fRebateDepth_Edge = 0;
                         float fRollerDoorRebate = 0f;
@@ -1118,7 +1181,6 @@ namespace EXPIMP
                         string sTextP4 = ((fRebateDepth_Edge - fRebateDepth_Step) * 1000).ToString("F0"); // Slope between the edge and step
                         string sTextP6 = (fRollerDoorRebate * 1000).ToString("F0");
 
-
                         CFoundation f = data.Model.m_arrFoundations.FirstOrDefault();
                         float fPerimeterCover = f.ConcreteCover; // TODO - asi by to mala byt samostatna polozka - property v CPerimeter
 
@@ -1132,33 +1194,33 @@ namespace EXPIMP
 
                         //Rotacia textu
                         XGraphicsState state = gfx.Save();
-                        gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dRowPosition2 + 144 - verticalMargin));
-                        gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dRowPosition2 + 144 - verticalMargin);
+                        gfx.RotateAtTransform(-90, new XPoint(dImagePosition_x + 35, dImagePosition_y + 96));
+                        gfx.DrawString(sTextP1, fontDimension, brushDimension, dImagePosition_x + 35, dImagePosition_y + 96);
                         gfx.Restore(state);
 
-                        gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dRowPosition2 + 224 - verticalMargin);
-                        gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 74 - verticalMargin);
-                        gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 25, dRowPosition2 + 99 - verticalMargin);
-                        gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dRowPosition2 + 224 - verticalMargin);
-                        gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 130, dRowPosition2 + 59 - verticalMargin);
+                        gfx.DrawString(sTextP2, fontDimension, brushDimension, dImagePosition_x + 45, dImagePosition_y + 176);
+                        gfx.DrawString(sTextP3, fontDimension, brushDimension, dImagePosition_x + 25, dImagePosition_y + 26);
+                        gfx.DrawString(sTextP4, fontDimension, brushDimension, dImagePosition_x + 25, dImagePosition_y + 51);
+                        gfx.DrawString(sTextP5, fontDimension, brushDimension, dImagePosition_x + 90, dImagePosition_y + 172);
+                        gfx.DrawString(sTextP6, fontDimension, brushDimension, dImagePosition_x + 130, dImagePosition_y + 9);
 
                         // Longitudinal reinforcement - Toto je asi zbytocna duplicita, uz je to oznacene v perimeter, ale zatial to tak necham.
-                        gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 109 - verticalMargin);
-                        gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dRowPosition2 + 149 - verticalMargin);
-                        gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dRowPosition2 + 194 - verticalMargin);
+                        gfx.DrawString(sTextP9, fontNote, brushNote, dImagePosition_x + 100, dImagePosition_y + 61);
+                        gfx.DrawString(sTextP10, fontNote, brushNote, dImagePosition_x + 93, dImagePosition_y + 101);
+                        gfx.DrawString(sTextP11, fontNote, brushNote, dImagePosition_x + 100, dImagePosition_y + 146);
 
+                        // Updatujeme poziciu pre dalsi pripadny riadok
+                        dNextRowPosition = Math.Max(dNextRowPosition, dImagePosition_y + imageHeightOriginal * scale);
+                        // Nastavime pozicie pre vlozenie dalsieho nadpisu a obrazku
                         dImagePosition_x += imageWidthOriginal * scale;
-                        dRowPosition = Math.Max(dRowPosition, dRowPosition2 + dImagePosition_y + imageHeightOriginal * scale);
+                        dTitlePosition_x = dImagePosition_x + dTitlePositionOffset_x;
                     }
                 }
-
             }
 
             gfx.Dispose();
             page.Close();
         }
-
-        
 
         private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data)
         {
