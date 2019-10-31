@@ -891,9 +891,7 @@ namespace BaseClasses
                     float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
                     // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay 
                     // kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
-
-                    // TO Mato - ja sa citim akoby som cital po spanielsky - vsetko som si precital snad aj 5 krat ale nic nerozumiem
-                    // To Ondrej - Cele je to o tom ze nechceme aby sa znacky section prekryvali alebo boli prilis blizko seba
+                    
 
                     if (perimeter.BuildingSide == "Left")
                     {
@@ -934,7 +932,7 @@ namespace BaseClasses
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                     }
-                    else //if (perimeter.BuildingSide == "Back")
+                    else if (perimeter.BuildingSide == "Back")
                     {
                         sDetailLabel = "B";
 
@@ -989,7 +987,7 @@ namespace BaseClasses
                                 secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                                 secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             }
-                            else //if (perimeter.BuildingSide == "Back")
+                            else if (perimeter.BuildingSide == "Back")
                             {
                                 sDetailLabel = "D";
                                 pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
