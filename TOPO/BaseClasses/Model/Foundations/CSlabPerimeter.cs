@@ -212,7 +212,7 @@ namespace BaseClasses
 
         public bool EqualsWithRebates(object obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (!this.Equals(obj)) return false;
 
             if (obj == null) return false;
             if (!(obj is CSlabPerimeter)) return false;
@@ -221,7 +221,7 @@ namespace BaseClasses
             if (SlabRebates.FirstOrDefault() == null) return false;
             if (perimeter.SlabRebates.FirstOrDefault() == null) return false;
 
-            return MathF.d_equal( SlabRebates.FirstOrDefault().RebateWidth, perimeter.SlabRebates.FirstOrDefault().RebateWidth);
+            return MathF.d_equal(SlabRebates.FirstOrDefault().RebateWidth, perimeter.SlabRebates.FirstOrDefault().RebateWidth);
         }
     }
 }
