@@ -27,10 +27,7 @@ namespace BaseClasses.Helpers
             // Dalej mozu byt dalsie koty pridavane s nejakym odstupom voci prvej kolmo na hlavnu kotovaciu ciaru, tak ziskame niekolko kot pod sebou
             // Ja ich tu mam 1 - 3
 
-            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
-            {
-                DrawDimensionsFRONT(_trackport, model, sDisplayOptions, gr);
-            }
+            // TODO - To Ondrej - nedame tu switch alebo else if ???
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
@@ -40,6 +37,16 @@ namespace BaseClasses.Helpers
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.RIGHT)
             {
                 DrawDimensionsRIGHT(_trackport, model, sDisplayOptions, gr);
+            }
+
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FRONT)
+            {
+                DrawDimensionsFRONT(_trackport, model, sDisplayOptions, gr);
+            }
+
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.BACK)
+            {
+                DrawDimensionsBACK(_trackport, model, sDisplayOptions, gr);
             }
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
@@ -174,7 +181,20 @@ namespace BaseClasses.Helpers
         }
         private static void DrawDimensionsBACK(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
-            // TODO - IMPLEMENT
+            CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            CMember m3 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeRafter);
+
+            CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+                 0.4, 0.4, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+            CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                 0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+            CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m3.NodeStart.GetPoint3D(), m3.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                 0.4, 0.4, 0.05, 0.15, (m3.FLength * 1000).ToString("F0"), false);
+
+            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3 };
+
+            DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
         }
         private static void DrawDimensionsROOF(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
