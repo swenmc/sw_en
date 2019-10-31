@@ -892,6 +892,8 @@ namespace BaseClasses
                     // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay 
                     // kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
                     
+                    //toto tu treba
+                    //List<CSlabPerimeter> diff_perimeters = GetDifferentPerimeters(slab.PerimeterBeams);
 
                     if (perimeter.BuildingSide == "Left")
                     {
@@ -3613,7 +3615,7 @@ namespace BaseClasses
             Vector3D up = new Vector3D(-fTextBlockVerticalSizeFactor, 0, 0);
 
             // Create text
-            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up); ;
+            ModelVisual3D textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, slab.PointText, over, up, 1);
             Transform3DGroup tr = new Transform3DGroup();
 
             if (slab.GetSlabTransformGroup() == null)

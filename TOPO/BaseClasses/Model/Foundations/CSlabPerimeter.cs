@@ -209,5 +209,19 @@ namespace BaseClasses
                 Longitud_Reinf_Intermediate_Count == perimeter.Longitud_Reinf_Intermediate_Count) return true;
             else return false;
         }
+
+        public bool EqualsWithRebates(object obj)
+        {
+            if (!base.Equals(obj)) return false;
+
+            if (obj == null) return false;
+            if (!(obj is CSlabPerimeter)) return false;
+
+            CSlabPerimeter perimeter = (CSlabPerimeter)obj;
+            if (SlabRebates.FirstOrDefault() == null) return false;
+            if (perimeter.SlabRebates.FirstOrDefault() == null) return false;
+
+            return MathF.d_equal( SlabRebates.FirstOrDefault().RebateWidth, perimeter.SlabRebates.FirstOrDefault().RebateWidth);
+        }
     }
 }
