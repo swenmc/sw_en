@@ -318,7 +318,8 @@ namespace BaseClasses.GraphObj
             m_fOffSetFromPoint = fOffsetFromPoint; // Odsadenie bodu vynasacej ciary (extension line) od kotovaneho bodu
             m_Text = text;
 
-            m_fMainLineLength = (float)Math.Sqrt((float)Math.Pow(pointEnd.X - pointStart.X, 2f) + (float)Math.Pow(pointEnd.Y - pointStart.Y, 2f) + (float)Math.Pow(pointEnd.Z - pointStart.Z, 2f));
+            m_fMainLineLength = Drawing3D.GetPoint3DDistanceFloat(pointStart, pointEnd);
+
             SetPoints_LCS();
 
             // Main line distance (distance from start of extension line EL1_P1 to the main line point ML_P1
@@ -427,8 +428,6 @@ namespace BaseClasses.GraphObj
 
             Model3DGroup model_gr = new Model3DGroup();
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
-
-            //float fMainLineLength = (float)Math.Sqrt((float)Math.Pow(m_Point2_MainLine.X - m_Point1_MainLine.X, 2f) + (float)Math.Pow(m_Point2_MainLine.Y - m_Point1_MainLine.Y, 2f) + (float)Math.Pow(m_Point2_MainLine.Z - m_Point1_MainLine.Z, 2f));
 
             // Main Line - uvazuje sa ze [0,0,0] je v kotovanom bode
             // Main line

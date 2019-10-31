@@ -4521,7 +4521,14 @@ namespace BaseClasses
             else
                 return false;
         }
-
+        public static double GetPoint3DDistanceDouble(Point3D p1, Point3D p2)
+        {
+            return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2) + Math.Pow(p2.Z - p1.Z, 2));
+        }
+        public static float GetPoint3DDistanceFloat(Point3D p1, Point3D p2)
+        {
+            return (float)GetPoint3DDistanceDouble(p1, p2);
+        }
         public static Rect GetRectanglesIntersection(Point p1r1, Point p2r1, Point p1r2, Point p2r2)
         {
             Rect r1 = new Rect(p1r1, p2r1);

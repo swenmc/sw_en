@@ -490,7 +490,7 @@ namespace BaseClasses
         public void Fill_Basic()
         {
             // Theroretical length of member (between definition nodes) - used for calculation
-            FLength = (float)Math.Sqrt((float)Math.Pow(m_NodeEnd.X - m_NodeStart.X, 2f) + (float)Math.Pow(m_NodeEnd.Y - m_NodeStart.Y, 2f) + (float)Math.Pow(m_NodeEnd.Z - m_NodeStart.Z, 2f));
+            FLength = Drawing3D.GetPoint3DDistanceFloat(m_NodeStart.GetPoint3D(), m_NodeEnd.GetPoint3D());
 
             // Real length of member (displayed in graphics, used for material list)
             FLength_real = FAlignment_Start + FLength + FAlignment_End;

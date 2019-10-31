@@ -72,6 +72,27 @@ namespace BaseClasses.Helpers
 
         private static void DrawDimensionsLEFT(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
+            // Basic dimensions
+            bool bDrawBasicDimensions = true;
+
+            if (bDrawBasicDimensions)
+            {
+                CMember m1 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                CMember m2 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+
+                // stlpy na lavej strane maju PointStart v Z = 0
+                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m2.NodeStart.GetPoint3D(), m1.NodeStart.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+
+                // stlp vlavo - vyskova kota
+                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
+                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+
+                DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
+            }
+
             // Najdeme girts na lavej strane
             // Girts
             CMember[] membersLeftSideGirts = null;
@@ -97,12 +118,14 @@ namespace BaseClasses.Helpers
                 {
                     if (MathF.d_equal(m.NodeStart.Y, model.fL1_frame))
                     {
-                        membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeStart);
+                        if(!membersLeftSideFirstBayGirtsNodes_1.Contains(m.NodeStart)) // Uzol pridame len v pripade, ze este nie je v zozname
+                          membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeStart);
                     }
 
                     if (MathF.d_equal(m.NodeEnd.Y, model.fL1_frame))
                     {
-                        membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeEnd);
+                        if (!membersLeftSideFirstBayGirtsNodes_1.Contains(m.NodeEnd)) // Uzol pridame len v pripade, ze este nie je v zozname
+                            membersLeftSideFirstBayGirtsNodes_1.Add(m.NodeEnd);
                     }
                 }
 
@@ -131,13 +154,20 @@ namespace BaseClasses.Helpers
                     listOfDimensions = new List<CDimensionLinear3D>();
                     for (int i = 0; i < membersLeftSideFirstBayGirtsNodes_1.Count - 1; i++)
                     {
-                        CDimensionLinear3D dim = new CDimensionLinear3D(membersLeftSideFirstBayGirtsNodes_1[i].GetPoint3D(), membersLeftSideFirstBayGirtsNodes_1[i + 1].GetPoint3D(),
+                        // TO Ondrej - stava sa mi ze do zoznamu bodov z ktorych robim koty sa dostanu 2 takmer totozne uzly, ktorych vzdialenost je napriklad 1e-7m
+                        // Potreboval by som to nejako osetrit uz v listoch bodov 
+
+                        // Zatial docasne pre tento pripad toto
+                        if (Drawing3D.GetPoint3DDistanceDouble(membersLeftSideFirstBayGirtsNodes_1[i].GetPoint3D(), membersLeftSideFirstBayGirtsNodes_1[i + 1].GetPoint3D()) > 0.00001)
+                        {
+                            CDimensionLinear3D dim = new CDimensionLinear3D(membersLeftSideFirstBayGirtsNodes_1[i].GetPoint3D(), membersLeftSideFirstBayGirtsNodes_1[i + 1].GetPoint3D(),
                              EGlobalPlane.YZ, 0, -1,
                              fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersLeftSideFirstBayGirtsNodes_1[i + 1].Z - membersLeftSideFirstBayGirtsNodes_1[i].Z) * 1000).ToString("F0"), false);
-                        listOfDimensions.Add(dim);
+                            listOfDimensions.Add(dim);
+                        }
                     }
 
-                    // Nastavime parametre pre dalsie koty                        
+                    // Nastavime parametre pre dalsie koty
                     fExtensionLineOffset += fDistanceBetweenMainLines;
                 }
 
@@ -146,20 +176,26 @@ namespace BaseClasses.Helpers
         }
         private static void DrawDimensionsRIGHT(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
-            CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-            CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+            // Basic dimensions
+            bool bDrawBasicDimensions = true;
 
-            // stlpy na pravej strane maju PointEnd v Z = 0
-            CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
-                0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+            if (bDrawBasicDimensions)
+            {
+                CMember m1 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
+                CMember m2 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn);
 
-            // stlp vlavo - vyskova kota
-            CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
-                0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
+                // stlpy na pravej strane maju PointEnd v Z = 0
+                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeEnd.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    0.4, 0.4, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
 
-            List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+                // stlp vlavo - vyskova kota
+                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m1.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, 0, -1,
+                    0.4, 0.4, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), false);
 
-            DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2 };
+
+                DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
+            }
         }
         private static void DrawDimensionsFRONT(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {

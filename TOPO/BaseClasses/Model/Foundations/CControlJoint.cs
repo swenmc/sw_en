@@ -87,7 +87,7 @@ namespace BaseClasses
 
             m_Text = "CONTROL JOINT";
 
-            Length = (float)Math.Sqrt((float)Math.Pow(m_PointEnd.X - m_PointStart.X, 2f) + (float)Math.Pow(m_PointEnd.Y - m_PointStart.Y, 2f) + (float)Math.Pow(m_PointEnd.Z - m_PointStart.Z, 2f));
+            Length = Drawing3D.GetPoint3DDistanceFloat(m_PointStart, m_PointEnd);
 
             SetTextPointInLCS(); // Text v LCS
         }
