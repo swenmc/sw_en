@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses;
+using BaseClasses.Helpers;
 using DATABASE.DTO;
 using MATH;
 using MigraDoc.DocumentObjectModel;
@@ -984,8 +985,8 @@ namespace EXPIMP
             List<string> sectionDetailsLetters = new List<string>() { "A", "B", "C", "D", "E", "F" };
             int sectionDetailsLetterIndex = 0;
             string letter;
-            List<CSlabPerimeter> diff_perimetersWithoutRebates = GetDifferentPerimetersWithoutRebates(slab.PerimeterBeams);
-            List<CSlabPerimeter> diff_perimetersWithRebates = GetDifferentPerimetersWithRebates(slab.PerimeterBeams);
+            List<CSlabPerimeter> diff_perimetersWithoutRebates = ModelHelper.GetDifferentPerimetersWithoutRebates(slab.PerimeterBeams);
+            List<CSlabPerimeter> diff_perimetersWithRebates = ModelHelper.GetDifferentPerimetersWithRebates(slab.PerimeterBeams);
             
             foreach (CSlabPerimeter perimeter in diff_perimetersWithoutRebates)
             {
@@ -1157,32 +1158,7 @@ namespace EXPIMP
             page.Close();
         }
 
-        private static List<CSlabPerimeter> GetDifferentPerimetersWithoutRebates(List<CSlabPerimeter> perimeters)
-        {
-            List<CSlabPerimeter> differentPerimeters = new List<CSlabPerimeter>();
-            if (perimeters.Count == 0) return differentPerimeters;
-
-            differentPerimeters.Add(perimeters[0]);
-            for (int i = 1; i < perimeters.Count; i++)
-            {
-                if (differentPerimeters.Exists(p => p.Equals(perimeters[i]))) continue;
-                else differentPerimeters.Add(perimeters[i]);
-            }
-            return differentPerimeters;
-        }
-        private static List<CSlabPerimeter> GetDifferentPerimetersWithRebates(List<CSlabPerimeter> perimeters)
-        {
-            List<CSlabPerimeter> differentPerimeters = new List<CSlabPerimeter>();
-            if (perimeters.Count == 0) return differentPerimeters;
-
-            differentPerimeters.Add(perimeters[0]);
-            for (int i = 1; i < perimeters.Count; i++)
-            {
-                if (differentPerimeters.Exists(p => p.EqualsWithRebates(perimeters[i]))) continue;
-                else differentPerimeters.Add(perimeters[i]);
-            }
-            return differentPerimeters;
-        }
+        
 
         private static XGraphics DrawTitlePage(PdfDocument s_document, CProjectInfo pInfo, CModelData data)
         {

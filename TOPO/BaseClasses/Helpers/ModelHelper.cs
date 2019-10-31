@@ -414,6 +414,43 @@ namespace BaseClasses.Helpers
                 return p.Z;
         }
 
-        
+        public static int GetFirstBayWithoutDoors(ObservableCollection<DoorProperties> doors, string side)
+        {
+            int freeBay = 1;
+            IEnumerable<DoorProperties> doorsOnSide = doors.Where(d => d.sBuildingSide == side);
+            foreach (DoorProperties door in doorsOnSide.OrderBy(d => d.iBayNumber))
+            {
+                if (freeBay == door.iBayNumber) freeBay++;
+            }
+            return freeBay;
+        }
+
+        public static List<CSlabPerimeter> GetDifferentPerimetersWithoutRebates(List<CSlabPerimeter> perimeters)
+        {
+            List<CSlabPerimeter> differentPerimeters = new List<CSlabPerimeter>();
+            if (perimeters.Count == 0) return differentPerimeters;
+
+            differentPerimeters.Add(perimeters[0]);
+            for (int i = 1; i < perimeters.Count; i++)
+            {
+                if (differentPerimeters.Exists(p => p.Equals(perimeters[i]))) continue;
+                else differentPerimeters.Add(perimeters[i]);
+            }
+            return differentPerimeters;
+        }
+        public static List<CSlabPerimeter> GetDifferentPerimetersWithRebates(List<CSlabPerimeter> perimeters)
+        {
+            List<CSlabPerimeter> differentPerimeters = new List<CSlabPerimeter>();
+            if (perimeters.Count == 0) return differentPerimeters;
+
+            differentPerimeters.Add(perimeters[0]);
+            for (int i = 1; i < perimeters.Count; i++)
+            {
+                if (differentPerimeters.Exists(p => p.EqualsWithRebates(perimeters[i]))) continue;
+                else differentPerimeters.Add(perimeters[i]);
+            }
+            return differentPerimeters;
+        }
+
     }
 }

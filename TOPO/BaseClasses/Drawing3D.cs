@@ -36,7 +36,7 @@ namespace BaseClasses
             return DrawToTrackPort(_trackport, _model, sDisplayOptions, loadcase, null);
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,            
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
             CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             CModel model = null;
@@ -582,7 +582,7 @@ namespace BaseClasses
 
         private static void DrawDimensionsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
         {
-            DimensionsDrawingHelper.DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);           
+            DimensionsDrawingHelper.DrawDimensionsToTrackport(_trackport, sDisplayOptions, model, gr);
         }
 
         private static void DrawGridlinesToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, Model3DGroup gr)
@@ -855,162 +855,170 @@ namespace BaseClasses
             {
                 CSlab slab = model.m_arrSlabs.FirstOrDefault();
                 if (slab == null) return;
-
-                //CSectionSymbol secSymbol1 = new CSectionSymbol(new Point3D(0, 2.5, 0), new Vector3D(0, 1, 0), "A", -1, 2, true); // VZOR
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // NOVY KOD - 30.10.2019 - TO Ondrej prosim o upravy a refaktoring  - TASK 373
-
-                // Tu sa snazim naznacit ako by sa mali vkladat symboly section, este to treba doladit, ponapajat na Floor Details podla toho kolko je roznych perimeters a rebates
-                // Urcit spravnu hodnotu rebate position (teraz sa nezohladnuje, v ktorej bay  v smere X (n * ColumnDistance) alebo smere Y (n * fL1_frame) sa rebate nachadza)
-
-                // TODO TO Ondrej - tu by sme mali vytvorit znacky "section symbols" pre jednotlive detaily perimeters a rebates
-                // Podla toho ci su rovnake alebo rozne
-                // Prosim o napojenie na identifikaciu objektov typu perimeter a rebate (zistenie ktore su perimeters / rebates rovnake, kde sa ktore rebate nachadzaju, atd ) a refaktoring
+                
                 // TODO - zapracovat update na akcie v UC_DoorAndWindows - ked pridam nove roller door, alebo zmenim typ door z personnel na roller door alebo presuniem roller door do inej bay
                 // TODO - zapracovat update ak sa zmenia rozmery budovy a podobne
+                List<CSlabPerimeter> diff_perimetersWithoutRebates = ModelHelper.GetDifferentPerimetersWithoutRebates(slab.PerimeterBeams);
+                List<CSlabPerimeter> diff_perimetersWithRebates = ModelHelper.GetDifferentPerimetersWithRebates(slab.PerimeterBeams);
 
-                foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
+                Point3D pointLeft; // Pozn. Pre Perimeter a Rebate mozeme pouzit len jeden bod (nastavime odsadenie symbolov vlavo a vpravo od tohto bodu)
+                Point3D pointRight;
+                CSectionSymbol secSymbolLeft = null;
+                CSectionSymbol secSymbolRight = null;
+                float fSymmbolLineStartOffsetDistanceLeft = 1.0f; // Absolutna vzdialenost
+                float fSymmbolLineEndOffsetDistanceRight = 0.5f; // Absolutna vzdialenost
+                float fSymbolLineLength = 0.5f;
+                float fRelativePositionPerimeterSymbol = 0.4f;
+                List<string> sectionDetailsLetters = new List<string>() { "A", "B", "C", "D", "E", "F" };
+                int sectionDetailsLetterIndex = 0;
+                string sDetailLabel;
+
+                foreach (CSlabPerimeter perimeter in diff_perimetersWithoutRebates)
                 {
-                    Point3D pointLeft; // Pozn. Pre Perimeter a Rebate mozeme pouzit len jeden bod (nastavime odsadenie symbolov vlavo a vpravo od tohto bodu)
-                    Point3D pointRight;
-                    CSectionSymbol secSymbolLeft = null;
-                    CSectionSymbol secSymbolRight = null;
-
-                    string sDetailLabel; // TODO Ondrej - toto by sem malo prist s perimetrom resp, jeho detailom podla toho kolko roznych detailov perimeters a rebates existuje
-                    // Label by sa mala nastavovat dynamicky podla toho ako oznacene budu detaily
-                    // To Mato - ake detaily? co za detaily? TO Ondrej Layout FLOOR DETAILS - Perimeter, Rebate
-                    
-                    float fSymmbolLineStartOffsetDistanceLeft = 1.0f; // Absolutna vzdialenost
-                    float fSymmbolLineEndOffsetDistanceRight = 0.5f; // Absolutna vzdialenost
-
-                    float fSymbolLineLength = 0.5f;
-
-                    float fRelativePositionPerimeterSymbol = 0.4f; // Relativna pozicia na dlzke strany // Nechcem aby to bolo v strede, malo by to byt tam kde nie je footing pad 
-                    // TODO Ondrej - da sa to urobit krajsie napriklad tak ze zistime kde su pozicie rebates a symboly perimeter dame do polovice bay 
-                    // kde nie su ziadne dvere (pracujeme potom ID bays a s fL1_frame a fColumnDistance)
-                    
-                    //toto tu treba
-                    //List<CSlabPerimeter> diff_perimeters = GetDifferentPerimeters(slab.PerimeterBeams);
-
-                    if (perimeter.BuildingSide == "Left")
+                    sDetailLabel = sectionDetailsLetters[sectionDetailsLetterIndex];
+                    sectionDetailsLetterIndex++;
+                    if (diff_perimetersWithoutRebates.Count == 1)
                     {
-                        sDetailLabel = "A";
-
-                        int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
+                        int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
                         float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
-
                         pointLeft = new Point3D(0, fAbsolutePosition, 0);
                         pointRight = new Point3D(0, fAbsolutePosition, 0);
-
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                    }
-                    else if(perimeter.BuildingSide == "Right")
-                    {
-                        sDetailLabel = "A";
+                        listOfSectionSymbols.Add(secSymbolLeft);
+                        listOfSectionSymbols.Add(secSymbolRight);
 
-                        int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
-                        float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
-
+                        firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
+                        fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
                         pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
                         pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
-
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                    }
-                    else if (perimeter.BuildingSide == "Front")
-                    {
-                        sDetailLabel = "B";
+                        listOfSectionSymbols.Add(secSymbolLeft);
+                        listOfSectionSymbols.Add(secSymbolRight);
 
-                        int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Front");
-                        float fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
-
+                        firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Front");
+                        fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
                         pointLeft = new Point3D(fAbsolutePosition, 0, 0);
                         pointRight = new Point3D(fAbsolutePosition, 0, 0);
-
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                    }
-                    else if (perimeter.BuildingSide == "Back")
-                    {
-                        sDetailLabel = "B";
+                        listOfSectionSymbols.Add(secSymbolLeft);
+                        listOfSectionSymbols.Add(secSymbolRight);
 
-                        int firstFreeBay = GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
-                        float fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
-
+                        firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
+                        fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
                         pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
                         pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
-
                         secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
                         secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                        listOfSectionSymbols.Add(secSymbolLeft);
+                        listOfSectionSymbols.Add(secSymbolRight);
                     }
-
-                    // Add symbols of perimeters
-                    listOfSectionSymbols.Add(secSymbolLeft);
-                    listOfSectionSymbols.Add(secSymbolRight);
-
-                    // Symboly rebates v danom perimeter
-                    if (perimeter.SlabRebates != null && perimeter.SlabRebates.Count > 0)
+                    else if (diff_perimetersWithoutRebates.Count == 2)
                     {
-                        foreach (CSlabRebate rebate in perimeter.SlabRebates)
+                        if (perimeter.BuildingSide == "Left" || perimeter.BuildingSide == "Right")
                         {
-                            // rebate.RebatePosition - uvada poziciu zaciatku rebate v ramci perimeter 0 - dlzka strany budovy
-                            // urcit ako x dveri + pocet bays * sirka bays
+                            int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Left");
+                            float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
+                            pointLeft = new Point3D(0, fAbsolutePosition, 0);
+                            pointRight = new Point3D(0, fAbsolutePosition, 0);
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            listOfSectionSymbols.Add(secSymbolLeft);
+                            listOfSectionSymbols.Add(secSymbolRight);
 
-                            float fRelativePositionRebateSymbol = 0.4f; // Relativna pozicia v ramci rebate length
+                            firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Right");
+                            fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
+                            pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
+                            pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            listOfSectionSymbols.Add(secSymbolLeft);
+                            listOfSectionSymbols.Add(secSymbolRight);
+                        }
+                        else if (perimeter.BuildingSide == "Front" || perimeter.BuildingSide == "Back")
+                        {
+                            int firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Front");
+                            float fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
+                            pointLeft = new Point3D(fAbsolutePosition, 0, 0);
+                            pointRight = new Point3D(fAbsolutePosition, 0, 0);
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            listOfSectionSymbols.Add(secSymbolLeft);
+                            listOfSectionSymbols.Add(secSymbolRight);
 
-                            if (perimeter.BuildingSide == "Left")
-                            {
-                                sDetailLabel = "C";
-                                pointLeft = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
-                                pointRight = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
-
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                            }
-                            else if (perimeter.BuildingSide == "Right")
-                            {
-                                sDetailLabel = "C";
-                                pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
-                                pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
-
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                            }
-                            else if (perimeter.BuildingSide == "Front")
-                            {
-                                sDetailLabel = "D";
-                                pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
-                                pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
-
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                            }
-                            else if (perimeter.BuildingSide == "Back")
-                            {
-                                sDetailLabel = "D";
-                                pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
-                                pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
-
-                                secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
-                            }
-
-                            // Add symbols of rebates
+                            firstFreeBay = ModelHelper.GetFirstBayWithoutDoors(slab.DoorBlocksProperties, "Back");
+                            fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
+                            pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
+                            pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
                             listOfSectionSymbols.Add(secSymbolRight);
                         }
                     }
                 }
+                
+                float fRelativePositionRebateSymbol = 0.4f; // Relativna pozicia v ramci rebate length
+                foreach (CSlabPerimeter diffPerimeter in diff_perimetersWithRebates)
+                {
+                    sDetailLabel = sectionDetailsLetters[sectionDetailsLetterIndex];
+                    sectionDetailsLetterIndex++;
 
-                //TO Mato - sumne si to zrobil. a co tam vlastne este treba spravit?
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            }
+                    foreach (CSlabPerimeter perimeter in slab.PerimeterBeams)
+                    {
+                        if (!perimeter.EqualsWithRebates(diffPerimeter)) continue;
+
+                        // Symboly rebates v danom perimeter
+                        if (perimeter.SlabRebates != null && perimeter.SlabRebates.Count > 0)
+                        {
+                            foreach (CSlabRebate rebate in perimeter.SlabRebates)
+                            {
+                                // rebate.RebatePosition - uvada poziciu zaciatku rebate v ramci perimeter 0 - dlzka strany budovy
+                                // urcit ako x dveri + pocet bays * sirka bays
+                                
+                                if (perimeter.BuildingSide == "Left")
+                                {
+                                    pointLeft = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+                                    pointRight = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                }
+                                else if (perimeter.BuildingSide == "Right")
+                                {
+                                    pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+                                    pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
+
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                }
+                                else if (perimeter.BuildingSide == "Front")
+                                {
+                                    pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
+                                    pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
+
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                }
+                                else if (perimeter.BuildingSide == "Back")
+                                {
+                                    pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
+                                    pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
+
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                }
+
+                                // Add symbols of rebates
+                                listOfSectionSymbols.Add(secSymbolLeft);
+                                listOfSectionSymbols.Add(secSymbolRight);
+                            }
+                        }
+                    }
+                }
+            } //end if
 
             // Create section symbols models
             if (sDisplayOptions.bDisplaySectionSymbols) sectionSymbols3DGroup = Drawing3D.CreateModelSectionSymbols_Model3DGroup(listOfSectionSymbols, model, sDisplayOptions);
@@ -1026,16 +1034,7 @@ namespace BaseClasses
             }
         }
 
-        private static int GetFirstBayWithoutDoors(ObservableCollection<DoorProperties> doors, string side)
-        {
-            int freeBay = 1;
-            IEnumerable<DoorProperties> doorsOnSide = doors.Where(d => d.sBuildingSide == side);
-            foreach (DoorProperties door in doorsOnSide.OrderBy(d=> d.iBayNumber))
-            {
-                if (freeBay == door.iBayNumber) freeBay++;
-            }
-            return freeBay;
-        }
+       
 
         private static void DrawDetailSymbolsToTrackport(Trackport3D _trackport, DisplayOptions sDisplayOptions, CModel model, List<CDetailSymbol> listOfDetailSymbols, Model3DGroup gr)
         {
@@ -1993,9 +1992,9 @@ namespace BaseClasses
             return model3D_group;
         }
 
-        
 
-        
+
+
 
 
 
@@ -3143,7 +3142,7 @@ namespace BaseClasses
             }
         }
 
-        
+
 
         // Draw Dimension 3D
         //public static void DrawDimension3D(CDimensionLinear3D dimension, Viewport3D viewPort, DisplayOptions displayOptions)
