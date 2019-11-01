@@ -1149,13 +1149,13 @@ namespace BaseClasses
                         if (doorProp.sBuildingSide == "Left")
                         {
                             if (rebatesLeftSide == null) rebatesLeftSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                                rebatesLeftSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, -270, new Point3D (Eccentricity_x , doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, - doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
+                                rebatesLeftSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, -90, new Point3D (Eccentricity_x , doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, - doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Right")
                         {
                             if (rebatesRightSide == null) rebatesRightSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                            rebatesRightSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, -90, new Point3D(Eccentricity_x + fW_frame, doorProp.RebateProp.RebatePosition, - doorProp.RebateProp.RebateDepth_Edge + 0.001f),true, 0));
+                            rebatesRightSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, 90, new Point3D((-Eccentricity_x) + fW_frame, doorProp.RebateProp.RebatePosition, - doorProp.RebateProp.RebateDepth_Edge + 0.001f),true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Front")
@@ -1167,7 +1167,7 @@ namespace BaseClasses
                         if (doorProp.sBuildingSide == "Back")
                         {
                             if (rebatesBackSide == null) rebatesBackSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                            rebatesBackSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, 180, new Point3D(doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, Eccentricity_y + fL_tot, -doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
+                            rebatesBackSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, 180, new Point3D(doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, (-Eccentricity_y) + fL_tot, -doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
                         }
                     }
                 }
