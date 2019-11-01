@@ -728,6 +728,7 @@
         public bool bDisplayFoundations;
         public bool bDisplayReinforcementBars;
         public bool bDisplayFloorSlab;
+        public bool bDisplaySlabRebates;
         public bool bDisplaySawCuts;
         public bool bDisplayControlJoints;
         public bool bDisplayNodalSupports;
@@ -740,6 +741,7 @@
         public bool bDisplayFoundationsWireFrame;
         public bool bDisplayReinforcementBarsWireFrame;
         public bool bDisplayFloorSlabWireFrame;
+        public bool bDisplaySlabRebateWireFrame;
 
         public bool bDisplayMembersCenterLines;
         public bool bDisplaySolidModel;
@@ -848,6 +850,7 @@
 
         public System.Windows.Media.Color FoundationColor;
         public System.Windows.Media.Color FloorSlabColor;
+        public System.Windows.Media.Color SlabRebateColor;
         public System.Windows.Media.Color ReinforcementBarColor_Top_x;
         public System.Windows.Media.Color ReinforcementBarColor_Top_y;
         public System.Windows.Media.Color ReinforcementBarColor_Bottom_x;
@@ -860,6 +863,7 @@
         public float fFoundationSolidModelOpacity;
         public float fReinforcementBarSolidModelOpacity;
         public float fFloorSlabSolidModelOpacity;
+        public float fSlabRebateSolidModelOpacity;
 
         public bool bCreateHorizontalGridlines; 
         public bool bCreateVerticalGridlinesFront;

@@ -87,13 +87,6 @@ namespace BaseClasses
 
         private List<Point3D> MWireFramePoints;
 
-        private CJointDesignDetails m_DesignDetails;
-        public CJointDesignDetails DesignDetails
-        {
-            get { return m_DesignDetails; }
-            set { m_DesignDetails = value; }
-        }
-
         public float Eccentricity_x
         {
             get
@@ -1145,29 +1138,36 @@ namespace BaseClasses
                         //float fColumnDistance = 2f; // Vzdialenost wind posts (stlpov v prednej alebo zadnej stene)
                         //float fTrimmerWidth = 0.14f; // Sirka cross-section typu roller door trimmer
 
+                        // TODO Ondrej
+                        //Este potrebujem uyrcit vkladaci bod rebate v 3D
+                        // Preto tu mam
+                        float fL_tot = 10f;
+                        float fW_frame = 8;
+                        // Poradis mi kde by som ten bod mal nastavit aby sem nesli tie parametre? Alebo to mam pocitat z rozmerov slab?
+
                         // TODO Ondrej - Refaktorovat - 4 strany
                         if (doorProp.sBuildingSide == "Left")
                         {
                             if (rebatesLeftSide == null) rebatesLeftSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                                rebatesLeftSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, true, 0));
+                                rebatesLeftSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, -270, new Point3D (Eccentricity_x , doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, - doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Right")
                         {
                             if (rebatesRightSide == null) rebatesRightSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                            rebatesRightSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, true, 0));
+                            rebatesRightSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, -90, new Point3D(Eccentricity_x + fW_frame, doorProp.RebateProp.RebatePosition, - doorProp.RebateProp.RebateDepth_Edge + 0.001f),true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Front")
                         {
                             if (rebatesFrontSide == null) rebatesFrontSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                            rebatesFrontSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, true, 0));
+                            rebatesFrontSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, 0, new Point3D(doorProp.RebateProp.RebatePosition, Eccentricity_y, -doorProp.RebateProp.RebateDepth_Edge + 0.001f),true, 0));
                         }
 
                         if (doorProp.sBuildingSide == "Back")
                         {
                             if (rebatesBackSide == null) rebatesBackSide = new List<CSlabRebate>(); // Ak zoznam nie je inicializovany, tak ho inicializujeme a pridame rebates pre vsetky roller doors na danej strane budovy
-                            rebatesBackSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, true, 0));
+                            rebatesBackSide.Add(new CSlabRebate(i + 1, doorProp.RebateProp, 180, new Point3D(doorProp.RebateProp.RebatePosition + doorProp.RebateProp.RebateLength, Eccentricity_y + fL_tot, -doorProp.RebateProp.RebateDepth_Edge + 0.001f), true, 0));
                         }
                     }
                 }

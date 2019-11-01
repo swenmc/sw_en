@@ -1853,7 +1853,7 @@ namespace BaseClasses
                             {
                                 if (cmodel.m_arrSlabs[i].SawCuts[j] != null &&
                                     cmodel.m_arrSlabs[i].SawCuts[j].m_pControlPoint != null &&
-                                    cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                                    cmodel.m_arrSlabs[i].SawCuts[j].BIsDisplayed == true) // Saw Cut object is valid (not empty) and should be displayed
                                 {
                                     Model3DGroup modelsc = cmodel.m_arrSlabs[i].SawCuts[j].GetSawCutModel(sDisplayOptions.SawCutLineColor, sDisplayOptions.SawCutLinePatternType, lineRadius);
                                     model3D_group.Children.Add(modelsc); // Add saw cut to the model group
@@ -1868,10 +1868,31 @@ namespace BaseClasses
                             {
                                 if (cmodel.m_arrSlabs[i].ControlJoints[j] != null &&
                                     cmodel.m_arrSlabs[i].ControlJoints[j].m_pControlPoint != null &&
-                                    cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                                    cmodel.m_arrSlabs[i].ControlJoints[j].BIsDisplayed == true) // Control Joint object is valid (not empty) and should be displayed
                                 {
                                     Model3DGroup modelcj = cmodel.m_arrSlabs[i].ControlJoints[j].GetControlJointModel(sDisplayOptions.ControlJointLineColor, sDisplayOptions.ControlJointLinePatternType, lineRadius);
-                                    model3D_group.Children.Add(modelcj); // Add saw cut to the model group
+                                    model3D_group.Children.Add(modelcj); // Add control joint to the model group
+                                }
+                            }
+                        }
+
+                        if (cmodel.m_arrSlabs[i].PerimeterBeams != null /*&& sDisplayOptions.bDisplayPerimeterBeams*/)
+                        {
+                            // Model Groups of Volumes
+                            for (int j = 0; j < cmodel.m_arrSlabs[i].PerimeterBeams.Count; j++)
+                            {
+                                if (cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates != null && sDisplayOptions.bDisplaySlabRebates)
+                                {
+                                    for (int k = 0; k < cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates.Count; k++)
+                                    {
+                                        if (cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k] != null &&
+                                        cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].m_pControlPoint != null &&
+                                        cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].BIsDisplayed == true) // Rebate object is valid (not empty) and should be displayed
+                                        {
+                                            GeometryModel3D modelrb = cmodel.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].CreateGeomModel3D(sDisplayOptions.SlabRebateColor, sDisplayOptions.fSlabRebateSolidModelOpacity);
+                                            model3D_group.Children.Add(modelrb); // Add rebate to the model group
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -4897,6 +4918,7 @@ namespace BaseClasses
             {
                 // Ak vyberiem filter pre floor slabs, chcem aby sa automaticky nastavilo v display options zobrazenie slabs
                 sDisplayOptions.bDisplayFloorSlab = true;
+                sDisplayOptions.bDisplaySlabRebates = true;
                 sDisplayOptions.bDisplaySawCuts = true;
                 sDisplayOptions.bDisplayControlJoints = true;
 

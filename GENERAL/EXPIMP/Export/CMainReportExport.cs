@@ -456,6 +456,8 @@ namespace EXPIMP
             opts.FloorSlabColor = System.Windows.Media.Colors.White;
             opts.FloorSlabTextColor = System.Windows.Media.Colors.Black;
 
+            opts.SlabRebateColor = System.Windows.Media.Colors.White;
+
             opts.ReinforcementBarColor_Top_x = System.Windows.Media.Colors.Black;
             opts.ReinforcementBarColor_Top_y = System.Windows.Media.Colors.Black;
             opts.ReinforcementBarColor_Bottom_x = System.Windows.Media.Colors.Black;
@@ -463,6 +465,7 @@ namespace EXPIMP
 
             opts.fFoundationSolidModelOpacity = 0;
             opts.fFloorSlabSolidModelOpacity = 0;
+            opts.fSlabRebateSolidModelOpacity = 0;
             opts.fReinforcementBarSolidModelOpacity = 1;
 
             return opts;

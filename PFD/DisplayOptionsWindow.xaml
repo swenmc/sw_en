@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="860" Width="800">
+        Title="Display Options" Height="890" Width="800">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -21,6 +21,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -352,8 +353,22 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="24" Grid.Column="0" Text="Member Centerline Color:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_MemberCenterlineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+            <TextBlock Grid.Row="24" Grid.Column="0" Text="Slab Rebate Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_SlabRebateColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
+                      SelectedIndex="{Binding Path=SlabRebateColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                      ItemsSource="{Binding Path=ColorList}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="25" Grid.Column="0" Text="Member Centerline Color:" HorizontalAlignment="Left"/>
+            <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_MemberCenterlineColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
                       SelectedIndex="{Binding Path=MemberCenterlineColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                       ItemsSource="{Binding Path=ColorList}">
                 <ComboBox.ItemTemplate>
@@ -366,8 +381,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Row="25" Grid.Column="0" Text="Member Centerline Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="25" Grid.Column="1" Name ="MemberCenterlineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="26" Grid.Column="0" Text="Member Centerline Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="26" Grid.Column="1" Name ="MemberCenterlineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=MemberCenterlineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
@@ -406,7 +421,12 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FloorSlabSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <StackPanel Grid.Row="26" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <TextBlock Grid.Row="7" Grid.Column="2" Text="Slab Rebate Solid Model Opacity:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="7" Grid.Column="3" Name ="SlabRebateSolidModelOpacity" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=SlabRebateSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
                 <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>

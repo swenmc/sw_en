@@ -148,6 +148,7 @@ namespace PFD
         private bool MShowGridLines;
         private bool MShowSectionSymbols;
         private bool MShowDetailSymbols;
+        private bool MShowSlabRebates;
 
         private float MDisplayIn3DRatio;
 
@@ -2106,6 +2107,20 @@ namespace PFD
             }
         }
 
+        public bool ShowSlabRebates
+        {
+            get
+            {
+                return MShowSlabRebates;
+            }
+
+            set
+            {
+                MShowSlabRebates = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("ShowSlabRebates");
+            }
+        }
+
         public bool TransformScreenLines3DToCylinders3D
         {
             get
@@ -2486,6 +2501,7 @@ namespace PFD
             ShowGridLines = false;
             ShowSectionSymbols = true;
             ShowDetailSymbols = false;
+            ShowSlabRebates = true;
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
@@ -3064,6 +3080,7 @@ namespace PFD
             sDisplayOptions.bDisplayGridlines = ShowGridLines;
             sDisplayOptions.bDisplaySectionSymbols = ShowSectionSymbols;
             sDisplayOptions.bDisplayDetailSymbols = ShowDetailSymbols;
+            sDisplayOptions.bDisplaySlabRebates = ShowSlabRebates;
 
             sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
             sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
@@ -3143,6 +3160,8 @@ namespace PFD
             sDisplayOptions.FoundationColor = _displayOptionsVM.FoundationColor;
             sDisplayOptions.FloorSlabColor = _displayOptionsVM.FloorSlabColor;
 
+            sDisplayOptions.SlabRebateColor = _displayOptionsVM.SlabRebateColor;
+
             if (FootingVM != null)
             {
                 sDisplayOptions.ReinforcementBarColor_Top_x = FootingVM.LongReinTop_x_Color;
@@ -3158,6 +3177,7 @@ namespace PFD
             sDisplayOptions.fFoundationSolidModelOpacity = _displayOptionsVM.FoundationSolidModelOpacity;
             sDisplayOptions.fReinforcementBarSolidModelOpacity = _displayOptionsVM.ReinforcementBarSolidModelOpacity;
             sDisplayOptions.fFloorSlabSolidModelOpacity = _displayOptionsVM.FloorSlabSolidModelOpacity;
+            sDisplayOptions.fSlabRebateSolidModelOpacity = _displayOptionsVM.SlabRebateSolidModelOpacity;
 
             sDisplayOptions.backgroundColor = BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;

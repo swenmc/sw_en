@@ -92,6 +92,8 @@ namespace PFD
         private int m_FoundationColorIndex;
         private Color m_FloorSlabColor = Colors.LightGray;
         private int m_FloorSlabColorIndex;
+        private Color m_SlabRebateColor = Colors.DarkOrange;
+        private int m_SlabRebateColorIndex;
 
         private float m_MemberSolidModelOpacity = 0.8f;
         private float m_PlateSolidModelOpacity = 0.5f;
@@ -100,6 +102,7 @@ namespace PFD
         private float m_FoundationSolidModelOpacity = 0.2f;
         private float m_ReinforcementBarSolidModelOpacity = 0.9f;
         private float m_FloorSlabSolidModelOpacity = 0.2f;
+        private float m_SlabRebateSolidModelOpacity = 0.6f;
 
         public bool IsSetFromCode = false;
 
@@ -619,6 +622,20 @@ namespace PFD
             }
         }
 
+        public Color SlabRebateColor
+        {
+            get
+            {
+                return m_SlabRebateColor;
+            }
+
+            set
+            {
+                m_SlabRebateColor = value;
+                NotifyPropertyChanged("SlabRebateColor");
+            }
+        }
+
         public float MemberSolidModelOpacity
         {
             get
@@ -714,6 +731,20 @@ namespace PFD
             {
                 m_FloorSlabSolidModelOpacity = value;
                 NotifyPropertyChanged("FloorSlabSolidModelOpacity");
+            }
+        }
+
+        public float SlabRebateSolidModelOpacity
+        {
+            get
+            {
+                return m_SlabRebateSolidModelOpacity;
+            }
+
+            set
+            {
+                m_SlabRebateSolidModelOpacity = value;
+                NotifyPropertyChanged("SlabRebateSolidModelOpacity");
             }
         }
 
@@ -1087,6 +1118,23 @@ namespace PFD
             }
         }
 
+        public int SlabRebateColorIndex
+        {
+            get
+            {
+                return m_SlabRebateColorIndex;
+            }
+
+            set
+            {
+                m_SlabRebateColorIndex = value;
+
+                SlabRebateColor = CComboBoxHelper.ColorList[m_SlabRebateColorIndex].Color.Value;
+
+                NotifyPropertyChanged("SlabRebateColorIndex");
+            }
+        }
+
         public List<CComboColor> ColorList
         {
             get
@@ -1170,6 +1218,7 @@ namespace PFD
 
             FoundationColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkGray);
             FloorSlabColorIndex = CComboBoxHelper.GetColorIndex(Colors.LightGray);
+            SlabRebateColorIndex = CComboBoxHelper.GetColorIndex(Colors.DarkOrange);
 
             MemberSolidModelOpacity = 0.8f;
             PlateSolidModelOpacity = 0.5f;
@@ -1178,6 +1227,7 @@ namespace PFD
             FoundationSolidModelOpacity = 0.2f;
             ReinforcementBarSolidModelOpacity = 0.9f;
             FloorSlabSolidModelOpacity = 0.2f;
+            SlabRebateSolidModelOpacity = 0.9f;
 
             IsSetFromCode = false;
         }
