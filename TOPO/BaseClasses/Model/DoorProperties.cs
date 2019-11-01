@@ -223,8 +223,17 @@ namespace BaseClasses
             m_distBackColumns = distBackColumns;
         }
 
-        public void SetRebateProperties(float fRollerDoorTrimmerWidth, float fRebateWidth)
+        // TODO Ondrej - duplicita parametrov s funkciou SetValidationValues
+        public void SetRebateProperties(float fRollerDoorTrimmerWidth, float fRebateWidth,
+                    float L1, // TODO  Ondrej - tento parameter by tu asi nemal byt, hodnoty by sa mohli nastavit skor
+                    float distFrontColumns, // TODO  Ondrej - tento parameter by tu asi nemal byt, hodnoty by sa mohli nastavit skor
+                    float distBackColumns // TODO  Ondrej - tento parameter by tu asi nemal byt, hodnoty by sa mohli nastavit skor
+            )
         {
+            m_L1 = L1;
+            m_distFrontColumns = distFrontColumns;
+            m_distBackColumns = distBackColumns;
+
             if (m_sDoorType == "Roller Door")
             {
                 m_RebateProp = new RebateProperties();
