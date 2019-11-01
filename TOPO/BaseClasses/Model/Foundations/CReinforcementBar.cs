@@ -199,7 +199,9 @@ namespace BaseClasses
                 dRotationAngle_deg = -90; // Prut smeruje v ose y
 
             CVolume volume = new CVolume(1, EVolumeShapeType.eShape3D_Cylinder, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, new DiffuseMaterial(brush), true, 0);
-            model = volume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0) /*new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z)*/, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
+            //model = volume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0) /*new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z)*/, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
+            // Tato metoda umoznuje nastavit pocet bodov
+            model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
 
             // Model Transformation
             // Rotate about X or Y axis
