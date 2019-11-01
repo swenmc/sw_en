@@ -19,14 +19,14 @@ namespace BaseClasses
         private float m_fDoorsWidth;
         private float m_fDoorCoordinateXinBlock;
 
+        private RebateProperties m_RebateProp;
+        float fRollerDoorTrimmerWidth; // Sirka cross-section typu roller door trimmer
 
         //validationValues
         private float m_WallHeight = float.NaN;
         private float m_L1 = float.NaN;
         private float m_distFrontColumns = float.NaN;
         private float m_distBackColumns = float.NaN;
-
-
 
         public string sBuildingSide
         {
@@ -152,10 +152,21 @@ namespace BaseClasses
             }
         }
 
+        public RebateProperties RebateProp
+        {
+            get
+            {
+                return m_RebateProp;
+            }
+
+            set
+            {
+                m_RebateProp = value;
+            }
+        }
 
         public DoorProperties()
         {
-            
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -210,8 +221,26 @@ namespace BaseClasses
             m_L1 = L1;
             m_distFrontColumns = distFrontColumns;
             m_distBackColumns = distBackColumns;
-
         }
-        
+
+        public void SetRebateProperties(float fRollerDoorTrimmerWidth, float fRebateWidth)
+        {
+            if (m_sDoorType == "Roller Door")
+            {
+                m_RebateProp = new RebateProperties();
+                m_RebateProp.RebateWidth = fRebateWidth;
+
+                if (m_sBuildingSide == "Right" || m_sBuildingSide == "Left")
+                    m_RebateProp.RebatePosition = (m_iBayNumber - 1) * m_L1 + 0.5f * fRollerDoorTrimmerWidth + m_fDoorCoordinateXinBlock;
+                else if (m_sBuildingSide == "Front")
+                    m_RebateProp.RebatePosition = (m_iBayNumber - 1) * m_distFrontColumns + 0.5f * fRollerDoorTrimmerWidth + m_fDoorCoordinateXinBlock;
+                else
+                    m_RebateProp.RebatePosition = (m_iBayNumber - 1) * m_distBackColumns + 0.5f * fRollerDoorTrimmerWidth + m_fDoorCoordinateXinBlock;
+
+                m_RebateProp.RebateLength = m_fDoorsWidth - fRollerDoorTrimmerWidth;
+                m_RebateProp.RebateDepth_Step = 0.01f;
+                m_RebateProp.RebateDepth_Edge = 0.02f;
+            }
+        }
     }
 }

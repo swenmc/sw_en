@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Media3D;
-using BaseClasses.GraphObj;
-using MATH;
+using System.Windows;
 
 namespace BaseClasses
 {
-    [Serializable]
-    public class CSlabRebate : CEntity3D
+    public class RebateProperties
     {
         private float m_RebateWidth;      // Distance from the slab edge
         private float m_RebatePosition;   // Roller door start position + half of trimmer width
@@ -88,38 +86,22 @@ namespace BaseClasses
             }
         }
 
-        public CSlabRebate(int id,
+        public RebateProperties()
+        {
+        }
+
+        public RebateProperties(
            float rebateWidth,
            float rebatePosition,
            float rebateLength,
            float rebateDepth_Step,
-           float rebateDepth_Edge,
-           bool bIsDiplayed_temp,
-           int fTime)
+           float rebateDepth_Edge)
         {
-            ID = id;
             m_RebateWidth = rebateWidth;
             m_RebatePosition = rebatePosition;
             m_RebateLength = rebateLength;
             m_RebateDepth_Step = rebateDepth_Step;
             m_RebateDepth_Edge = rebateDepth_Edge;
-            BIsDisplayed = bIsDiplayed_temp;
-            FTime = fTime;
-        }
-
-        public CSlabRebate(int id,
-           RebateProperties prop,
-           bool bIsDiplayed_temp,
-           int fTime)
-        {
-            ID = id;
-            m_RebateWidth = prop.RebateWidth;
-            m_RebatePosition = prop.RebatePosition;
-            m_RebateLength = prop.RebateLength;
-            m_RebateDepth_Step = prop.RebateDepth_Step;
-            m_RebateDepth_Edge = prop.RebateDepth_Edge;
-            BIsDisplayed = bIsDiplayed_temp;
-            FTime = fTime;
         }
     }
 }

@@ -105,6 +105,7 @@
     <Compile Include="GraphObj\Objects_3D\CHollowCylinder.cs" />
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
+    <Compile Include="Model\RebateProperties.cs" />
     <Compile Include="Model\Foundations\CSlabRebate.cs" />
     <Compile Include="Model\Foundations\CSlabPerimeter.cs" />
     <Compile Include="Model\Foundations\CControlJoint.cs" />

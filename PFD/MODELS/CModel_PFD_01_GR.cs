@@ -731,7 +731,6 @@ namespace PFD
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Blocks
-            // TODO - pokusny blok dveri, je potreba refaktorovat
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             DoorsModels = new List<CBlock_3D_001_DoorInBay>();
             WindowsModels = new List<CBlock_3D_002_WindowInBay>();
@@ -744,7 +743,21 @@ namespace PFD
                     else if (!bGenerateFrontGirts && doorBlocksProperties[i].sBuildingSide == "Front") continue;
                     else if (!bGenerateBackGirts && doorBlocksProperties[i].sBuildingSide == "Back") continue;
 
-                    if (doorBlocksProperties[i].Validate()) AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
+                    if (doorBlocksProperties[i].Validate()) // Ak su vlastnosti dveri validne vyrobime blok dveri a nastavime rebates pre floor slab
+                    {
+                        AddDoorBlock(doorBlocksProperties[i], 0.5f, fH1_frame);
+
+                        // TODO - Ondrej - potrebujem vm.FootingVM.RebateWidth_LRSide a vm.FootingVM.RebateWidth_FBSide
+                        // Ale som trosku zacykleny lebo tento model sa vyraba skor nez VM existuje a zase rebate width sa naplna v CSlab, ktora sa vytvara az po vytvoreni bloku dveri
+                        // Prosim pomoz mi to nejako usporiadat :)
+                        // Mozno by bolo spravnejsie keby sa Rebate width nastavovala v UC_Doors pre Roller Door a tym padom by v UC_Footing - Floor uz boli len vlastnosti saw cut, control joints a perimeters
+                        // Potom by som vsetko co sa tyka rebates bral z doorBlocksProperties
+
+                        if (doorBlocksProperties[i].sBuildingSide == "Right" || doorBlocksProperties[i].sBuildingSide == "Left")
+                            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.5f /*vm.FootingVM.RebateWidth_LRSide*/); // Vlastnosti rebate pre LR Side
+                        else
+                            doorBlocksProperties[i].SetRebateProperties((float)DoorsModels.Last().m_arrCrSc[1].b, 0.4f /*vm.FootingVM.RebateWidth_FBSide*/); // Vlastnosti Rebate pre FB Side
+                    }
                 }
             }
 
@@ -2706,10 +2719,10 @@ namespace PFD
 
                             // Temp
                             // TODO Ondrej - tieto parametre sa mi nepacia, sluzia na vypocet polohy zaciatku rebate a dlzky rebate, malo by to podla mna prist do CSlab uz nejako v ramci door properties
-                            fL1_frame, // Vzdialenost ramov
-                            fDist_FrontColumns, // Vzdialenost wind posts (stlpov v prednej stene)
-                            fDist_BackColumns, // Vzdialenost wind posts (stlpov v zadnej stene)
-                            0.14f, // Sirka cross-section typu roller door trimmer
+                            //fL1_frame, // Vzdialenost ramov
+                            //fDist_FrontColumns, // Vzdialenost wind posts (stlpov v prednej stene)
+                            //fDist_BackColumns, // Vzdialenost wind posts (stlpov v zadnej stene)
+                            //0.14f, // Sirka cross-section typu roller door trimmer
 
                             //BackColumnFootingReference_Top_Bar_x,
                             //BackColumnFootingReference_Top_Bar_y,
