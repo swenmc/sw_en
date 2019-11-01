@@ -200,7 +200,7 @@ namespace BaseClasses
             // Naplnime pole bodov wireFrame
             // TODO - Ondrej - chcelo by to nejako elegantne zjednotit u vsetkych objektov ktore maju 3D geometriu kde a ako ziskavat wireframe
             // TODO Ondrej - tu chyba v tom ze beriem pozicie z povodneho zakladu nie z posunuteho do finalnej pozicie
-            WireFramePoints = GetWireFramePoints_Volume_8Edges(model);
+            WireFramePoints = GetWireFramePoints_Volume(model);
 
             Visual_Object = model;
 

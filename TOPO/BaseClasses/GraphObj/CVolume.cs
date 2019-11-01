@@ -441,8 +441,10 @@ namespace BaseClasses.GraphObj
 
             return CreateGM_3D_Volume_8EdgesOld(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1);
         }
-        public List<Point3D> GetWireFramePoints_Volume_8Edges(GeometryModel3D volumeModel)
+        public List<Point3D> GetWireFramePoints_Volume(GeometryModel3D volumeModel, bool bIsPointOnBase = false)
         {
+            // Funguje len pre prizmaticke prvky pravidelneho tvaru (rovnaky pocet bodov na hornej aj spodnej podstave)
+
             List<Point3D> wireframePoints = new List<Point3D>();
             MeshGeometry3D geom = volumeModel.Geometry as MeshGeometry3D;
 
@@ -454,44 +456,88 @@ namespace BaseClasses.GraphObj
                 transformedPoints.Add(transdformed);
             }
 
-            int iNumberOfEdgesTotal = 8;
+            int iNumberOfEdgesTotal = transformedPoints.Count;
             int iNumberOfEdges_Base = iNumberOfEdgesTotal / 2; // Plati pre pravidelne hranoly, valce atd, celkovy pocet bodov je vzdy parny
 
-            // Spodna podstava - Bottom Base
-            for (int i = 0; i < iNumberOfEdges_Base; i++)
+            if (!bIsPointOnBase)
             {
-                if (i < iNumberOfEdges_Base - 1)
+                // Spodna podstava - Bottom Base
+                for (int i = 0; i < iNumberOfEdges_Base; i++)
                 {
-                    wireframePoints.Add(transformedPoints[i]);
-                    wireframePoints.Add(transformedPoints[i + 1]);
+                    if (i < iNumberOfEdges_Base - 1)
+                    {
+                        wireframePoints.Add(transformedPoints[i]);
+                        wireframePoints.Add(transformedPoints[i + 1]);
+                    }
+                    else
+                    {
+                        wireframePoints.Add(transformedPoints[i]);
+                        wireframePoints.Add(transformedPoints[0]);
+                    }
                 }
-                else
+
+                // Horna podstava - Top Base
+                for (int i = 0; i < iNumberOfEdges_Base; i++)
+                {
+                    if (i < iNumberOfEdges_Base - 1)
+                    {
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
+                    }
+                    else
+                    {
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
+                    }
+                }
+
+                // Plast hranola
+                for (int i = 0; i < iNumberOfEdges_Base; i++)
                 {
                     wireframePoints.Add(transformedPoints[i]);
-                    wireframePoints.Add(transformedPoints[0]);
+                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
                 }
             }
-
-            // Horna podstava - Top Base
-            for (int i = 0; i < iNumberOfEdges_Base; i++)
+            else
             {
-                if (i < iNumberOfEdges_Base - 1)
-                {
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
-                }
-                else
-                {
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
-                    wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
-                }
-            }
+                int iNumberOfEdges_BaseWithoutMiddle = iNumberOfEdges_Base - 1;
 
-            // Plast hranola
-            for (int i = 0; i < iNumberOfEdges_Base; i++)
-            {
+                // Spodna podstava - Bottom Base
+                for (int i = 0; i < iNumberOfEdges_BaseWithoutMiddle; i++)
+                {
+                    if (i < iNumberOfEdges_BaseWithoutMiddle - 1)
+                    {
+                        wireframePoints.Add(transformedPoints[i]);
+                        wireframePoints.Add(transformedPoints[i + 1]);
+                    }
+                    else
+                    {
+                        wireframePoints.Add(transformedPoints[i]);
+                        wireframePoints.Add(transformedPoints[0]);
+                    }
+                }
+
+                // Horna podstava - Top Base
+                for (int i = 0; i < iNumberOfEdges_BaseWithoutMiddle; i++)
+                {
+                    if (i < iNumberOfEdges_BaseWithoutMiddle - 1)
+                    {
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i + 1]);
+                    }
+                    else
+                    {
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                        wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + 0]);
+                    }
+                }
+
+                // Plast hranola
+                for (int i = 0; i < iNumberOfEdges_BaseWithoutMiddle; i++)
+                {
                     wireframePoints.Add(transformedPoints[i]);
                     wireframePoints.Add(transformedPoints[iNumberOfEdges_Base + i]);
+                }
             }
 
             return wireframePoints;
@@ -866,36 +912,6 @@ namespace BaseClasses.GraphObj
 
             return geomModel3D;
         }
-
-        // Refaktorovat s StraightLineArrow3D
-        private static Point3D GetPointinLCS(int iPrimaryModelDirection, double dCoordX, double dCoordY, double dCoordZ)
-        {
-            Point3D p = new Point3D();
-            // Nastavi suradnice uzla podla toho v akom smere sa ma valec primarne vykreslit
-
-            // iPrimaryModelDirection Kod pre smer modelu valca v LCS(0 - X, 1 - Y, 2 - Z - default
-            if (iPrimaryModelDirection == 0)
-            {
-                p.X = dCoordZ;
-                p.Y = dCoordX;
-                p.Z = dCoordY;
-            }
-            else if (iPrimaryModelDirection == 1)
-            {
-                p.X = dCoordX;
-                p.Y = dCoordZ;
-                p.Z = dCoordY;
-            }
-            else //if (iPrimaryModelDirection == 2)// Default (valec v smere Z)
-            {
-                p.X = dCoordX;
-                p.Y = dCoordY;
-                p.Z = dCoordZ;
-            }
-
-            return p;
-        }
-
         public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
         {
             Int32Collection wireFrameIndices = new Int32Collection();
@@ -940,6 +956,35 @@ namespace BaseClasses.GraphObj
             }
 
             return wireFrameIndices;
+        }
+
+        // Refaktorovat s StraightLineArrow3D
+        private static Point3D GetPointinLCS(int iPrimaryModelDirection, double dCoordX, double dCoordY, double dCoordZ)
+        {
+            Point3D p = new Point3D();
+            // Nastavi suradnice uzla podla toho v akom smere sa ma valec primarne vykreslit
+
+            // iPrimaryModelDirection Kod pre smer modelu valca v LCS(0 - X, 1 - Y, 2 - Z - default
+            if (iPrimaryModelDirection == 0)
+            {
+                p.X = dCoordZ;
+                p.Y = dCoordX;
+                p.Z = dCoordY;
+            }
+            else if (iPrimaryModelDirection == 1)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordZ;
+                p.Z = dCoordY;
+            }
+            else //if (iPrimaryModelDirection == 2)// Default (valec v smere Z)
+            {
+                p.X = dCoordX;
+                p.Y = dCoordY;
+                p.Z = dCoordZ;
+            }
+
+            return p;
         }
 
         //--------------------------------------------------------------------------------------------

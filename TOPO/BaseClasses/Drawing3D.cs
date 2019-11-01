@@ -2532,7 +2532,7 @@ namespace BaseClasses
                 for (int m = 0; m < bars.Count; m++)
                 {
                     GeometryModel3D geom = bars[m].Visual_Object;
-                    List<Point3D> points = bars[m].GetWireFramePoints_Volume_8Edges(geom);
+                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(geom, true);
                     wireFramePoints.AddRange(points);
                 }
             }
