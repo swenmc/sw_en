@@ -1496,8 +1496,6 @@ namespace BaseClasses
             return model3D;
         }
 
-
-
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
         public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushPlates = null, SolidColorBrush brushScrews = null, SolidColorBrush brushAnchors = null, SolidColorBrush brushWelds = null)
@@ -2012,13 +2010,6 @@ namespace BaseClasses
 
             return model3D_group;
         }
-
-
-
-
-
-
-
 
         private static Model3DGroup CreateModelGridlines_Model3DGroup(List<CGridLine> gridLines, CModel model, DisplayOptions displayOptions)
         {
@@ -2562,7 +2553,28 @@ namespace BaseClasses
                     if (model.m_arrSlabs[i] != null &&
                         model.m_arrSlabs[i].BIsDisplayed) // Slab object is valid (not empty) and is active to be displayed
                     {
+                        // Slab
                         wireFramePoints.AddRange(model.m_arrSlabs[i].WireFramePoints);
+
+                        // Rebates
+                        if (model.m_arrSlabs[i].PerimeterBeams != null /*&& sDisplayOptions.bDisplayPerimeterBeams*/)
+                        {
+                            for (int j = 0; j < model.m_arrSlabs[i].PerimeterBeams.Count; j++)
+                            {
+                                if (model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates != null && sDisplayOptions.bDisplaySlabRebates)
+                                {
+                                    for (int k = 0; k < model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates.Count; k++)
+                                    {
+                                        if (model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k] != null &&
+                                        model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].m_pControlPoint != null &&
+                                        model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].BIsDisplayed == true) // Rebate object is valid (not empty) and should be displayed
+                                        {
+                                            wireFramePoints.AddRange(model.m_arrSlabs[i].PerimeterBeams[j].SlabRebates[k].WireFramePoints);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
