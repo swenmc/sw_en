@@ -161,10 +161,11 @@ namespace BaseClasses
             BIsDisplayed = bIsDiplayed_temp;
             FTime = fTime;
 
+            float fFictiveDepth = 0.001f; // Fiktivna hrubka rebate pre ucely vykreslenia
             // TODO - Upravit v ramci refaktoringu CVolume
             m_fDim1 = m_RebateLength;
             m_fDim2 = m_RebateWidth;
-            m_fDim3 = m_RebateDepth_Edge;
+            m_fDim3 = fFictiveDepth; //m_RebateDepth_Edge;
         }
 
         public /*override*/ GeometryModel3D CreateGeomModel3D(Color color, float fOpacity)
@@ -182,7 +183,7 @@ namespace BaseClasses
 
             // TODO - pohrat sa s nastavenim farieb
             DiffuseMaterial qDiffTrans = new DiffuseMaterial(brush);
-            SpecularMaterial qSpecTrans = new SpecularMaterial(brush, 90.0);
+            SpecularMaterial qSpecTrans = new SpecularMaterial(brush, 40.0);
 
             MaterialGroup qOuterMaterial = new MaterialGroup();
             qOuterMaterial.Children.Add(qDiffTrans);

@@ -92,7 +92,7 @@ namespace PFD
         private int m_FoundationColorIndex;
         private Color m_FloorSlabColor = Colors.LightGray;
         private int m_FloorSlabColorIndex;
-        private Color m_SlabRebateColor = Colors.DarkOrange;
+        private Color m_SlabRebateColor = Colors.OrangeRed;
         private int m_SlabRebateColorIndex;
 
         private float m_MemberSolidModelOpacity = 0.8f;
@@ -102,7 +102,7 @@ namespace PFD
         private float m_FoundationSolidModelOpacity = 0.2f;
         private float m_ReinforcementBarSolidModelOpacity = 0.9f;
         private float m_FloorSlabSolidModelOpacity = 0.2f;
-        private float m_SlabRebateSolidModelOpacity = 0.6f;
+        private float m_SlabRebateSolidModelOpacity = 0.5f;
 
         public bool IsSetFromCode = false;
 
@@ -1227,7 +1227,7 @@ namespace PFD
             FoundationSolidModelOpacity = 0.2f;
             ReinforcementBarSolidModelOpacity = 0.9f;
             FloorSlabSolidModelOpacity = 0.2f;
-            SlabRebateSolidModelOpacity = 0.9f;
+            SlabRebateSolidModelOpacity = 0.3f;
 
             IsSetFromCode = false;
         }
