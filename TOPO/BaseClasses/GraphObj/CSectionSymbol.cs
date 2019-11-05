@@ -123,12 +123,13 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        float fOffsetFromPlane = 0.05f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
+        float fOffsetFromPlane = 0.10f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
         ELinePatternType m_LinePatternType;
         float fArrowSize;
         float fArrowWidth;
         float fAdditionalOffset;
+        float fLineCylinderRadius; // Nastavovat ! polomer valca, malo by to byt zhruba 0.7 mm hrube na vykrese (zhruba 3x taka hrubka ako maju ostatne ciary)
 
         public bool m_bArrowLeftFromControlPoint;
 
@@ -143,7 +144,9 @@ namespace BaseClasses.GraphObj
         string sLabelText,
         float fLineFarEndToControlPointOffsetDistance,
         float fLineLength,
-        bool bArrowLeftFromControlPoint
+        bool bArrowLeftFromControlPoint,
+        float fTextSize,
+        float fSpaceToLine
             )
         {
             m_ControlPoint = controlPoint;
@@ -159,10 +162,9 @@ namespace BaseClasses.GraphObj
             m_PointLineStart_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance, 0, 0);
             m_PointLineEnd_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance + m_LineLength, 0, 0);
 
-            float fTextSize = 40; // Vyska textu 1 point = 0.01 metra = 30 / 100 = 0.3 metra
-            float fSpaceToLine = 10; // medzera medzi hornou hranou textu a ciarou
             fArrowSize = (fTextSize + fSpaceToLine) / 100f;
             fArrowWidth = 0.1f * fArrowSize;
+            fLineCylinderRadius = fArrowWidth / 2;
 
             fAdditionalOffset = 0.5f * fArrowWidth; // Pridavna konstanta (pre vzdialenost sipky od konca ciary)
             float fDistanceOfTextCenterToTheArrow = 0.5f * fTextSize / 100f;
@@ -199,8 +201,6 @@ namespace BaseClasses.GraphObj
 
             // Vytvorime model gridline v LCS, [0,0,0] je uvazovane v bode m_ControlPoint, line smeruje v kladnom smere x a znacka s label text je v rovine xy
             // Sipka smeruje v smere LCS y
-
-            float fLineCylinderRadius = 0.02f; // Nastavovat ! polomer valca, malo by to byt zhruba 0.7 mm hrube na vykrese (zhruba 3x taka hrubka ako maju ostatne ciary)
             
             // Line
             short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
@@ -212,7 +212,7 @@ namespace BaseClasses.GraphObj
                 // dashed, dotted, divide, ....
 
                 // Vytvorime liniu zacinajucu v start point v smere x s celkovou dlzkou
-                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS, fLineCylinderRadius * 7);
+                CLine line = new CLine(m_LinePatternType, m_PointLineStart_LCS, m_PointLineEnd_LCS, fLineCylinderRadius * 3);
 
                 // Vyrobime sadu valcov pre segmenty ciary a pridame ju do zoznamu
                 for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod

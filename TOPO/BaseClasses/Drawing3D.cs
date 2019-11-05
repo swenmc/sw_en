@@ -850,6 +850,13 @@ namespace BaseClasses
             // Create section symbols
             List<CSectionSymbol> listOfSectionSymbols = new List<CSectionSymbol>();
 
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float textSize = maxModelLength * 4;
+            float spaceToLine = maxModelLength;
+            float fSymmbolLineStartOffsetDistanceLeft = maxModelLength / 10; // 1.0f; // Absolutna vzdialenost
+            float fSymmbolLineEndOffsetDistanceRight = maxModelLength / 20;  //0.5f; // Absolutna vzdialenost
+            float fSymbolLineLength = maxModelLength / 20; // 0.5f;
+
             // Floor Slab Perimeter and Rebate Section Symbols
             if (model.m_arrSlabs != null && model.m_arrSlabs.Count > 0)
             {
@@ -865,9 +872,7 @@ namespace BaseClasses
                 Point3D pointRight;
                 CSectionSymbol secSymbolLeft = null;
                 CSectionSymbol secSymbolRight = null;
-                float fSymmbolLineStartOffsetDistanceLeft = 1.0f; // Absolutna vzdialenost
-                float fSymmbolLineEndOffsetDistanceRight = 0.5f; // Absolutna vzdialenost
-                float fSymbolLineLength = 0.5f;
+                
                 float fRelativePositionPerimeterSymbol = 0.4f;
                 List<string> sectionDetailsLetters = new List<string>() { "A", "B", "C", "D", "E", "F" };
                 int sectionDetailsLetterIndex = 0;
@@ -883,8 +888,8 @@ namespace BaseClasses
                         float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
                         pointLeft = new Point3D(0, fAbsolutePosition, 0);
                         pointRight = new Point3D(0, fAbsolutePosition, 0);
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
                         listOfSectionSymbols.Add(secSymbolRight);
 
@@ -892,8 +897,8 @@ namespace BaseClasses
                         fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
                         pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
                         pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
                         listOfSectionSymbols.Add(secSymbolRight);
 
@@ -901,8 +906,8 @@ namespace BaseClasses
                         fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
                         pointLeft = new Point3D(fAbsolutePosition, 0, 0);
                         pointRight = new Point3D(fAbsolutePosition, 0, 0);
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
                         listOfSectionSymbols.Add(secSymbolRight);
 
@@ -910,8 +915,8 @@ namespace BaseClasses
                         fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
                         pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
                         pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
-                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                        secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                        secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                         listOfSectionSymbols.Add(secSymbolLeft);
                         listOfSectionSymbols.Add(secSymbolRight);
                     }
@@ -923,8 +928,8 @@ namespace BaseClasses
                             float fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
                             pointLeft = new Point3D(0, fAbsolutePosition, 0);
                             pointRight = new Point3D(0, fAbsolutePosition, 0);
-                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
                             listOfSectionSymbols.Add(secSymbolRight);
 
@@ -932,8 +937,8 @@ namespace BaseClasses
                             fAbsolutePosition = firstFreeBay * model.fL1_frame - (1 - fRelativePositionPerimeterSymbol) * model.fL1_frame;
                             pointLeft = new Point3D(model.fW_frame, fAbsolutePosition, 0);
                             pointRight = new Point3D(model.fW_frame, fAbsolutePosition, 0);
-                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
                             listOfSectionSymbols.Add(secSymbolRight);
                         }
@@ -943,8 +948,8 @@ namespace BaseClasses
                             float fAbsolutePosition = firstFreeBay * model.fDist_FrontColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_FrontColumns;
                             pointLeft = new Point3D(fAbsolutePosition, 0, 0);
                             pointRight = new Point3D(fAbsolutePosition, 0, 0);
-                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
                             listOfSectionSymbols.Add(secSymbolRight);
 
@@ -952,8 +957,8 @@ namespace BaseClasses
                             fAbsolutePosition = firstFreeBay * model.fDist_BackColumns - (1 - fRelativePositionPerimeterSymbol) * model.fDist_BackColumns;
                             pointLeft = new Point3D(fAbsolutePosition, model.fL_tot, 0);
                             pointRight = new Point3D(fAbsolutePosition, model.fL_tot, 0);
-                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                            secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                            secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                             listOfSectionSymbols.Add(secSymbolLeft);
                             listOfSectionSymbols.Add(secSymbolRight);
                         }
@@ -983,32 +988,32 @@ namespace BaseClasses
                                     pointLeft = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
                                     pointRight = new Point3D(0, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
 
-                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, 1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                                 }
                                 else if (perimeter.BuildingSide == "Right")
                                 {
                                     pointLeft = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
                                     pointRight = new Point3D(model.fW_frame, rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0);
 
-                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(0, -1, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                                 }
                                 else if (perimeter.BuildingSide == "Front")
                                 {
                                     pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
                                     pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, 0, 0);
 
-                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(-1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                                 }
                                 else if (perimeter.BuildingSide == "Back")
                                 {
                                     pointLeft = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
                                     pointRight = new Point3D(rebate.RebatePosition + fRelativePositionRebateSymbol * rebate.RebateLength, model.fL_tot, 0);
 
-                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true); // Left Symbol
-                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false); // Right Symbol
+                                    secSymbolLeft = new CSectionSymbol(pointLeft, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineStartOffsetDistanceLeft, fSymbolLineLength, true, textSize, spaceToLine); // Left Symbol
+                                    secSymbolRight = new CSectionSymbol(pointRight, new Vector3D(1, 0, 0), sDetailLabel, fSymmbolLineEndOffsetDistanceRight, fSymbolLineLength, false, textSize, spaceToLine); // Right Symbol
                                 }
 
                                 // Add symbols of rebates
