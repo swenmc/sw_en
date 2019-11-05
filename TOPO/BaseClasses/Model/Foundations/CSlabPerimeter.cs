@@ -218,6 +218,8 @@ namespace BaseClasses
             if (!(obj is CSlabPerimeter)) return false;
 
             CSlabPerimeter perimeter = (CSlabPerimeter)obj;
+            if (perimeter.SlabRebates == null) return false;
+            if (SlabRebates == null) return false;
             if (SlabRebates.FirstOrDefault() == null) return false;
             if (perimeter.SlabRebates.FirstOrDefault() == null) return false;
 

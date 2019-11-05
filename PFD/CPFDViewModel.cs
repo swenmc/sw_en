@@ -1292,6 +1292,7 @@ namespace PFD
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                 }
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
         }
@@ -1312,10 +1313,12 @@ namespace PFD
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 RecreateJoints = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("DoorBlocksProperties_CollectionChanged");
                 RecreateJoints = false;
                 SetResultsAreNotValid();
             }
+            RecreateFloorSlab = true;
             SetComponentListAccordingToDoors();
         }
 
@@ -2832,7 +2835,7 @@ namespace PFD
             {
                 SetResultsAreNotValid();
             }
-
+            RecreateFloorSlab = true;
             this.PropertyChanged(sender, e);
         }
 

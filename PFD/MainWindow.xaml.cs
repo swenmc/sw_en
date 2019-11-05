@@ -188,6 +188,7 @@ namespace PFD
             {
                 Datagrid_DoorsAndGates_SelectionChanged(null, null);
                 vm.RecreateJoints = true;
+                vm.RecreateFloorSlab = true;
             }
             else if (sender is WindowProperties)
             {
