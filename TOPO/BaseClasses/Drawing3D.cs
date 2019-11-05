@@ -589,7 +589,8 @@ namespace BaseClasses
         {
             Model3DGroup gridlines3DGroup = null;
 
-            float fMarkCircleDiameter = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z) / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
+            float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            float fMarkCircleDiameter = maxModelLength / 28f;  //velkost podla modelu, ale to cislo "28f" je potrebne data do DisplayOptions
 
             // Create gridlines
             List<CGridLine> listOfGridlines = new List<CGridLine>();
@@ -603,8 +604,8 @@ namespace BaseClasses
 
             if (sDisplayOptions.bCreateHorizontalGridlines)
             {
-                float fOffset = 0.8f; // Nastavit tak, aby sa znacky neprekryvali s horizontalnymi kotami
-                float fOffsetBehind = 0.3f;
+                float fOffset = maxModelLength * 0.08f; //  0.8f; // Nastavit tak, aby sa znacky neprekryvali s horizontalnymi kotami
+                float fOffsetBehind = maxModelLength * 0.03f; // 0.3f;
                 float fLineLength_X = fOffset + model.fW_frame + fOffsetBehind;
                 float fLineLength_Y = fOffset + model.fL_tot + fOffsetBehind;
 
@@ -637,13 +638,13 @@ namespace BaseClasses
                 }
             }
 
-            if (sDisplayOptions.bCreateVerticalGridlinesFront)
-            {
-                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
-                float fOffsetBottom = 0.3f;
-                float fLineLength = fOffsetTop + fOffsetBottom;
-                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
+            float fOffsetTop = maxModelLength * 0.05f + model.fH2_frame; // H2 (ridge height)
+            float fOffsetBottom = maxModelLength * 0.03f;
+            float fLineLength = fOffsetTop + fOffsetBottom;
+            float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
+            if (sDisplayOptions.bCreateVerticalGridlinesFront)
+            {                
                 List<CNode> membersBaseNodes_FrontSide = null; // Wind posts and edge columns
                 membersBaseNodes_FrontSide = GetMemberBaseNodesFrontSide(model);
 
@@ -657,11 +658,6 @@ namespace BaseClasses
 
             if (sDisplayOptions.bCreateVerticalGridlinesBack)
             {
-                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
-                float fOffsetBottom = 0.3f;
-                float fLineLength = fOffsetTop + fOffsetBottom;
-                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
-
                 List<CNode> membersBaseNodes_BackSide = null; // Wind posts and edge columns
                 membersBaseNodes_BackSide = GetMemberBaseNodesBackSide(model);
 
@@ -675,11 +671,6 @@ namespace BaseClasses
 
             if (sDisplayOptions.bCreateVerticalGridlinesLeft)
             {
-                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
-                float fOffsetBottom = 0.3f;
-                float fLineLength = fOffsetTop + fOffsetBottom;
-                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
-
                 List<CNode> membersBaseNodes_LeftSide = null; // Main columns and edge columns
                 membersBaseNodes_LeftSide = GetMemberBaseNodesLeftSide(model);
 
@@ -693,11 +684,6 @@ namespace BaseClasses
 
             if (sDisplayOptions.bCreateVerticalGridlinesRight)
             {
-                float fOffsetTop = 0.5f + model.fH2_frame; // H2 (ridge height)
-                float fOffsetBottom = 0.3f;
-                float fLineLength = fOffsetTop + fOffsetBottom;
-                float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
-
                 List<CNode> membersBaseNodes_RightSide = null; // Main columns and edge columns
                 membersBaseNodes_RightSide = GetMemberBaseNodesRightSide(model);
 

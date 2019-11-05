@@ -162,6 +162,9 @@ namespace BaseClasses.GraphObj
             m_PointLineStart_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance, 0, 0);
             m_PointLineEnd_LCS = new Point3D(-m_LineFarEndToControlPointOffsetDistance + m_LineLength, 0, 0);
 
+            //To Mato - treba to nejako rozumne nastavit - mne osobne chyba sirka tej doplnujucej sipky, resp. aj dlzka akoze Arrow Width asi...
+            //ale zase to zvacsi aj sipku...a asi chceme len ciaru tej sipky
+            //Proste je to nejako poprepajane a treba to tu nastavit tak aby dobre bolo, ale urcite hrubsiu ciaru pre doplnujucu sipku,lebo ju nevidno
             fArrowSize = (fTextSize + fSpaceToLine) / 100f;
             fArrowWidth = 0.1f * fArrowSize;
             fLineCylinderRadius = fArrowWidth / 2;
