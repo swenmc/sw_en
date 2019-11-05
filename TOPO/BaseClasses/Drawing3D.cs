@@ -641,6 +641,8 @@ namespace BaseClasses
             float fOffsetTop = maxModelLength * 0.05f + model.fH2_frame; // H2 (ridge height)
             float fOffsetBottom = maxModelLength * 0.03f;
             float fLineLength = fOffsetTop + fOffsetBottom;
+            
+            //TO Mato - tento parameter sa asi nemusi scalovat podla velkosti modelu, ci? Aspon tak som to spravil.
             float fOffsetInViewDirection = 0.4f; // Offset aby boli linie v smere pohladu pred konstrukciou
 
             if (sDisplayOptions.bCreateVerticalGridlinesFront)
@@ -2503,7 +2505,8 @@ namespace BaseClasses
                     cylinders = new Model3DGroup();
                     for (int i = 0; i < wireFramePoints.Count / 2; i++)
                     {
-                        float fFactor = 0.01f;
+                        //To Mato - to je co toto za factor? nema sa brat nahodou podla velkosti modelu,alebo take nieco?
+                        float fFactor = 0.01f;                        
                         GeometryModel3D cylinder = Get3DLineReplacement(sDisplayOptions.wireFrameColor, fFactor * sDisplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
