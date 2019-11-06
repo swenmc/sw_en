@@ -180,7 +180,7 @@ namespace BaseClasses.GraphObj
             fArrowConeSizeFactor = 0.35f;                        // Relativna vyska kuzela sipky (faktor pre cast z celkovej vysky)
             fArrowCylinderSizeFactor = 1f - fArrowConeSizeFactor;//0.65f;                 // Relativna vyska valca sipky (faktor pre cast z celkovej vysky)
             fArrowWidthFactor = 0.25f;                           // Relativna sirka sipky (faktor pre cast z celkovej vysky) // TO Ondrej - mozno by malo byt nazavisle na vyske
-            fArrowCylinderWidthFactor = 0.2f;                    // Relativna sirka ciary sipky (faktor pre cast zo sirky) // TO Ondrej - mozno by malo byt nazavisle na sirke sipky
+            fArrowCylinderWidthFactor = 0.15f;                   // Relativna sirka ciary sipky (faktor pre cast zo sirky) // TO Ondrej - mozno by malo byt nazavisle na sirke sipky
 
             fArrowSize = (fTextSize + fSpaceToLine) / 100f;                        // Celkova vyska sipky
             fArrowWidth = fArrowWidthFactor * fArrowSize;                          // Sirka sipky, resp. vonkajsi priemer medzikruzia sipky
@@ -189,7 +189,7 @@ namespace BaseClasses.GraphObj
             fOffsetFromPlane = 0.5f * fArrowWidth;                                 // Offset above floor
 
             // Section Symbol Line
-            fSymbolLineCylinderRadius = fArrowWidth / 4f;                         // Sirka ciary, resp. priemer valca ciary symbolu rezu // TODO Ondrej - nemala by byt viazana na sirku sipky, ale ako uplne nezavisly parameter, cca 0.7 mm na vykresoch
+            fSymbolLineCylinderRadius = fArrowWidth / 4.5f;                         // Sirka ciary, resp. priemer valca ciary symbolu rezu // TODO Ondrej - nemala by byt viazana na sirku sipky, ale ako uplne nezavisly parameter, cca 0.7 mm na vykresoch
 
             fAdditionalOffset = 0.5f * fArrowWidth; // Pridavna konstanta (pre vzdialenost sipky od konca ciary)
             float fDistanceOfTextCenterToTheArrow = 0.5f * fTextSize / 100f;
