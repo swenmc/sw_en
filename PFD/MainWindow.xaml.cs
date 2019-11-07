@@ -117,7 +117,7 @@ namespace PFD
             displayOptionsVM = new DisplayOptionsViewModel();
 
             // Model Geometry
-            vm = new CPFDViewModel(3, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;

@@ -29,9 +29,13 @@ namespace BaseClasses
             m_ft = 0.003f;
             m_flip = 0.18f;
 
-            //to Mato - tu je problem task 355
-            if (MATH.MathF.d_equal(m_MainMember.FAlignment_Start, 0)) m_MainMember.FAlignment_Start = -m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate
-            else m_MainMember.FAlignment_End = -m_ft;  //doplnene pre columns na pravej strane
+            // Skratime prut v uzle spoja - base plate o hrubku plechu
+            if (m_MainMember.NodeStart.Equals(m_Node)) m_MainMember.FAlignment_Start -= m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate - columns at the left side
+            else if (m_MainMember.NodeEnd.Equals(m_Node)) m_MainMember.FAlignment_End -= m_ft;  // Skratit prut (skutocny rozmer) o hrubku base plate - columns at the right side
+            else
+                throw new System.Exception("Joint node is not definition node of member.");
+
+            // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
             float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
