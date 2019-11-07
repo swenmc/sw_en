@@ -29,7 +29,9 @@ namespace BaseClasses
             m_ft = 0.003f;
             m_flip = 0.18f;
 
-            m_MainMember.FAlignment_Start = -m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate
+            //to Mato - tu je problem task 355
+            if (MATH.MathF.d_equal(m_MainMember.FAlignment_Start, 0)) m_MainMember.FAlignment_Start = -m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate
+            else m_MainMember.FAlignment_End = -m_ft;  //doplnene pre columns na pravej strane
             m_MainMember.Fill_Basic();
 
             float fTolerance = 0.001f; // Gap between cross-section surface and plate surface

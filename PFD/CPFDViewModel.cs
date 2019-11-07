@@ -2480,11 +2480,11 @@ namespace PFD
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
             DisplayTransparentModelMember = false;
-            ColorsAccordingToMembers = false;
-            ColorsAccordingToSections = true;
+            ColorsAccordingToMembers = true;
+            ColorsAccordingToSections = false;
             RecreateModel = true;
-            ViewIndex = (int)EModelViews.TOP;
-            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.FLOOR;
+            ViewIndex = (int)EModelViews.RIGHT;
+            ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
 
             ShowMemberID = true;
