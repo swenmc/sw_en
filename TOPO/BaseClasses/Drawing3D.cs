@@ -4802,11 +4802,11 @@ namespace BaseClasses
                 //Toto som pravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
                 //rovnako sa pregeneruju na novo m_arrPlates
 
-                CConnectionJointTypes recteated_joint = joint.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
-                jointClone.m_arrPlates = recteated_joint.m_arrPlates;                
-                //Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint???
-                jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
-                jointClone.m_ControlPoint = recteated_joint.m_ControlPoint;
+                //CConnectionJointTypes recteated_joint = joint.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
+                //jointClone.m_arrPlates = recteated_joint.m_arrPlates;                
+                ////Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint???
+                //jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
+                //jointClone.m_ControlPoint = recteated_joint.m_ControlPoint;
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
 
