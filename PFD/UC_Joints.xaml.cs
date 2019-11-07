@@ -1094,6 +1094,7 @@ namespace PFD
             sDisplayOptions.bDisplayMemberDescription = false;
             sDisplayOptions.bDisplayNodes = false;
             sDisplayOptions.bDisplayNodesDescription = false;
+            sDisplayOptions.bDisplayMembersCenterLines = false;
 
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
