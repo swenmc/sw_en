@@ -25,10 +25,7 @@ namespace BaseClasses.GraphObj.Objects_3D
         public StraightLineArrow3D()
         { }
 
-        // TODO Ondrej - dorobit konstruktor, kde bude mozne zadat priamo tieto dva parametre ConeHeight = 20 * fCylinderRadius,
-        //                                                                                    AnnulusDiameter = fCylinderRadius * 5 * 2
-        // (tj. vysku a a sirku - rozmery sipky)
-
+        // Constructor
         public StraightLineArrow3D(Point3D pControlPoint_temp, float totalHeight, float fCylinderRadius, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             pControlPoint = pControlPoint_temp;
@@ -46,6 +43,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             TransformArrowPointsToControlPoint();
         }
 
+        // Constructor
         public StraightLineArrow3D(Point3D pControlPoint_temp, float totalHeight, int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
         {
             pControlPoint = pControlPoint_temp;
@@ -62,6 +60,71 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             TransformArrowPointsToControlPoint();
         }
+
+        // TODO Ondrej - dorobit konstruktor, kde bude mozne zadat priamo tieto dva parametre ConeHeight = 20 * fCylinderRadius,
+        //                                                                                    AnnulusDiameter = fCylinderRadius * 5 * 2
+        // (tj. vysku a a sirku - rozmery sipky)
+
+        // Constructor - set all parameters
+        public StraightLineArrow3D(Point3D pControlPoint_temp,
+            //float totalHeight,   // Total height
+            float fconeHeight,     // Cone height
+            float fcylinderHeight, // Cylinder height
+            float fconeWidth,      // Cone outside diameter
+            float fcylinderWidth,  // Cylinder diameter
+
+            int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        {
+            pControlPoint = pControlPoint_temp;
+            //fTotalHeight = totalHeight;
+            fConeHeight = fconeHeight;
+            fCylinderHeight = fcylinderHeight;
+            fConeHeight = fconeHeight;
+            iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
+            bArrowAtBothEnds = bArrowAtBothEnds_temp;
+
+            fTotalHeight = fConeHeight + fCylinderHeight;
+            AnnulusPoints(0.5f * fcylinderWidth, 0.5f * fconeWidth);
+
+            // TODO - doplnit validacie pre zadanu geometriu
+            if (fcylinderWidth > fconeWidth)
+                throw new ArgumentOutOfRangeException();
+
+            ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
+
+            TransformArrowPointsToControlPoint();
+        }
+
+        /*
+        // Constructor - set all parameters
+        public StraightLineArrow3D(Point3D pControlPoint_temp,
+            float totalHeight,   // Total height
+            float fconeHeight,     // Cone height
+            //float fcylinderHeight, // Cylinder height
+            float fconeWidth,      // Cone outside diameter
+            float fcylinderWidth,  // Cylinder diameter
+            int iPrimaryArrowModelDirection_temp = 2, bool bArrowAtBothEnds_temp = false)
+        {
+            pControlPoint = pControlPoint_temp;
+            fTotalHeight = totalHeight;
+            fConeHeight = fconeHeight;
+            //fCylinderHeight = fcylinderHeight;
+            fConeHeight = fconeHeight;
+            iPrimaryArrowModelDirection = iPrimaryArrowModelDirection_temp;
+            bArrowAtBothEnds = bArrowAtBothEnds_temp;
+
+            fCylinderHeight = fTotalHeight - fConeHeight;
+            AnnulusPoints(0.5f * fcylinderWidth, 0.5f * fconeWidth);
+
+            // TODO - doplnit validacie pre zadanu geometriu
+            if (fcylinderWidth > fconeWidth)
+                throw new ArgumentOutOfRangeException();
+
+            ArrowPoints = GetArrowPoints(); // Vyrobi sipku ktora zacina v [0,0,0]
+
+            TransformArrowPointsToControlPoint();
+        }
+        */
 
         public GeometryModel3D GetModel3D(Material material)
         {

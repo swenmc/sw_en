@@ -1532,9 +1532,12 @@ namespace EXPIMP
 
             string sNoteTitle = "Notes";
 
-            string sNote_1 = "1) Minimum ultimate ground bearing capacity " + (300000f / 1000f).ToString("F0") + " kPa."; // TODO - dostat sem vstup z UC_Footing pad
-            string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads.";
-            string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab.";
+            // TODO Ondrej - sem by som potreboval dostat data z UC_FootingInput, resp z view modelu
+            // TODO Ondrej - parametre soil capacity, concrete strength atd by mali byt spolocne pre vsetky foundation pads
+
+            string sNote_1 = "1) Minimum ultimate ground bearing capacity " + (300000f / 1000f).ToString("F0") + " kPa."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI
+            string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
+            string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
             string sNote_41 = "4) If top soil encountered on site that should be removed";
             string sNote_42 = "   and replaced with compacted engineered soil.";
 
