@@ -9,10 +9,10 @@ namespace BaseClasses
         // TODO - neviem ci je to potrebne ale urobil som samostatne triedy TA01 - TD01 pre rozne typy pripoja ku zakladu, mozno by stacil len jeden objekt kde sa bude menit len velkost plate a screw arrangement
 
         // Wind Post to Foundation Connection
-        float m_ft;
-        int m_iHoleNo;
-        float m_fd_hole;
-        float m_flip;
+        public float m_ft;
+        public int m_iHoleNo;
+        public float m_fd_hole;
+        public float m_flip;
 
         public CConnectionJoint_TB01() { }
 

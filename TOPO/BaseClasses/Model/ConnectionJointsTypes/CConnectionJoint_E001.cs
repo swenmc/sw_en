@@ -9,7 +9,7 @@ namespace BaseClasses
     public class CConnectionJoint_E001 : CConnectionJointTypes
     {
         // Purlin to Rafter Joint
-        float m_ft;
+        public float m_ft;
 
         public CConnectionJoint_E001() { }
 

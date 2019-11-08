@@ -7,10 +7,10 @@ namespace BaseClasses
     public class CConnectionJoint_CT01 : CConnectionJointTypes
     {
         // Column to Rafter Connection (Front and back side of portal)
-        float m_ft;
-        int m_iHoleNo;
-        float m_fd_hole;
-        float m_flip;
+        public float m_ft;
+        public int m_iHoleNo;
+        public float m_fd_hole;
+        public float m_flip;
 
         public CConnectionJoint_CT01() { }
 

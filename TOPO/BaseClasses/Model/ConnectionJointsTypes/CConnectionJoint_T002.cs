@@ -12,9 +12,9 @@ namespace BaseClasses
     public class CConnectionJoint_T002 : CConnectionJointTypes
     {
         // Eaves Purlin to Rafter/Main Column Joint
-        float m_ft;
-        float m_ft_main_plate;
-        float m_fPlate_Angle_Leg;
+        public float m_ft;
+        public float m_ft_main_plate;
+        public float m_fPlate_Angle_Leg;
 
         public CConnectionJoint_T002() { }
 

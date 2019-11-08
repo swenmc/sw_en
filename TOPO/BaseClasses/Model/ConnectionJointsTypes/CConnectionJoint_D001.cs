@@ -7,7 +7,7 @@ namespace BaseClasses
     public class CConnectionJoint_D001 : CConnectionJointTypes
     {
         // Girts to Main Column Joint
-        float m_ft;
+        public float m_ft;
 
         public CConnectionJoint_D001() { }
 

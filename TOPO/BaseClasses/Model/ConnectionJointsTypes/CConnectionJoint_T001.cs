@@ -13,12 +13,12 @@ namespace BaseClasses
     public class CConnectionJoint_T001 : CConnectionJointTypes
     {
         // Beam to Main Rafter / Main Column / Front Column / Back Column Joint
-        float m_ft;
-        float m_ft_main_plate;
-        float m_fPlate_Angle_Leg;
-        string m_sPlateType_ForL;
-        EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
-        bool m_bIsAlignmentMainMemberWidth;
+        public float m_ft;
+        public float m_ft_main_plate;
+        public float m_fPlate_Angle_Leg;
+        public string m_sPlateType_ForL;
+        public EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
+        public bool m_bIsAlignmentMainMemberWidth;
 
         public CConnectionJoint_T001() { }
 

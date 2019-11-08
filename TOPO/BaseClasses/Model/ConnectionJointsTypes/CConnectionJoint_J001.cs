@@ -7,7 +7,7 @@ namespace BaseClasses
     public class CConnectionJoint_J001 : CConnectionJointTypes
     {
         // Front Girts to Front Column Joint
-        float m_ft;
+        public float m_ft;
 
         public CConnectionJoint_J001() { }
 

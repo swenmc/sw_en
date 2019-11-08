@@ -12,12 +12,12 @@ namespace BaseClasses
     public class CConnectionJoint_A001 : CConnectionJointTypes
     {
         // Rafter to Rafter Joint - Roof Tip
-        float m_fb;
-        float m_fh_1;
-        float m_fh_2;
-        float m_ft;
-        float m_fSlope_rad;
-        float m_fJointAngleAboutZ_deg;
+        public float m_fb;
+        public float m_fh_1;
+        public float m_fh_2;
+        public float m_ft;
+        public float m_fSlope_rad;
+        public float m_fJointAngleAboutZ_deg;
 
         public CConnectionJoint_A001() { }
 

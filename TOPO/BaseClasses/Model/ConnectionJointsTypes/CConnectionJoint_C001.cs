@@ -7,7 +7,7 @@ namespace BaseClasses
     public class CConnectionJoint_C001 : CConnectionJointTypes
     {
         // Eaves Purlin to Rafter/Main Column Joint
-        float m_ft;
+        public float m_ft;
 
         public CConnectionJoint_C001() { }
 

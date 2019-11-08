@@ -13,15 +13,15 @@ namespace BaseClasses
     public class CConnectionJoint_T003 : CConnectionJointTypes
     {
         // Beam / Purlin to Main Rafter Joint - use Fly bracing plates "F"
-        float m_ft;
-        float m_ft_main_plate;
-        float m_fPlate_Angle_LeftLeg;
-        float m_fPlate_Angle_RightLeg_BX1;
-        float m_fPlate_Angle_RightLeg_BX2;
-        float m_fPlate_Angle_Height;
-        string m_sPlateType_F;
-        EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
-        bool m_bIsAlignmentMainMemberWidth;
+        public float m_ft;
+        public float m_ft_main_plate;
+        public float m_fPlate_Angle_LeftLeg;
+        public float m_fPlate_Angle_RightLeg_BX1;
+        public float m_fPlate_Angle_RightLeg_BX2;
+        public float m_fPlate_Angle_Height;
+        public string m_sPlateType_F;
+        public EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
+        public bool m_bIsAlignmentMainMemberWidth;
 
         public CConnectionJoint_T003() { }
 

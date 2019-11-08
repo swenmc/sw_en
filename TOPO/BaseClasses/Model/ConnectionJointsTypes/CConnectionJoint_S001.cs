@@ -14,8 +14,8 @@ namespace BaseClasses
     public class CConnectionJoint_S001 : CConnectionJointTypes
     {
         // Column to Main Rafter Joint
-        float m_ft;
-        bool m_bSwitchConnectedSide_Z;
+        public float m_ft;
+        public bool m_bSwitchConnectedSide_Z;
 
         public CConnectionJoint_S001() { }
 

@@ -14,14 +14,14 @@ namespace BaseClasses
     {
         // Rafter to Main Column Joint - Knee Joint
 
-        float m_fb_1;
-        float m_fb_2;
-        float m_fh_1;
-        float m_fh_2;
-        float m_ft;
-        float m_fSlope_rad;
-        float m_ft_rafter;
-        float m_fJointAngleAboutZ_deg;
+        public float m_fb_1;
+        public float m_fb_2;
+        public float m_fh_1;
+        public float m_fh_2;
+        public float m_ft;
+        public float m_fSlope_rad;
+        public float m_ft_rafter;
+        public float m_fJointAngleAboutZ_deg;
 
         public CConnectionJoint_B001() { }
 
