@@ -5,6 +5,7 @@ using System.Windows.Media.Media3D;
 using MATH;
 using DATABASE;
 using DATABASE.DTO;
+using MATERIAL;
 
 namespace BaseClasses
 {
@@ -400,13 +401,13 @@ namespace BaseClasses
 
             h_effective = 0.330f; // 330 mm (efektivna dlzka tyce zabetonovana v zaklade)
 
-            m_Mat.Name = "8.8";
-            m_Mat.m_ft_interval = new float[1] { 0.100f };
+            ((CMat_03_00)m_Mat).Name = "8.8";
+            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
 
             CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
 
-            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
-            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
             Mass = GetMass();
 
@@ -450,12 +451,12 @@ namespace BaseClasses
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
             m_Mat.Name = nameMaterial_temp;
-            m_Mat.m_ft_interval = new float[1] { 0.100f };
+            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
 
             CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
 
-            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
-            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
             Mass = GetMass();
 
@@ -499,12 +500,12 @@ namespace BaseClasses
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
             m_Mat.Name = nameMaterial_temp;
-            m_Mat.m_ft_interval = new float[1] { 0.100f };
+            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
 
             CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
 
-            m_Mat.m_ff_yk = new float[1] { (float)materialProperties.Fy };
-            m_Mat.m_ff_u = new float[1] { (float)materialProperties.Fu };
+            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
             Mass = GetMass();
 

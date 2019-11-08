@@ -123,8 +123,8 @@ namespace M_AS4600
                 throw new Exception("Invalid component thickness. Check thickness cross-section or plate.");
             }
 
-            ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);
-            ff_uk_1_plate = plate.m_Mat.Get_f_uk_by_thickness((float)ft_1_plate);
+            ff_yk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness((float)ft_1_plate);
+            ff_uk_1_plate = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness((float)ft_1_plate);
 
             if (crsc_mainMember.m_Mat is CMat_03_00) // Material is Steel
             {
@@ -976,8 +976,8 @@ namespace M_AS4600
             designDetails.fA_c = basePlate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
             designDetails.fA_o = basePlate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            designDetails.ff_y_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_yk[0];
-            designDetails.ff_u_anchor = basePlate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_u[0];
+            designDetails.ff_y_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_yk[0];
+            designDetails.ff_u_anchor = ((CMat_03_00)basePlate.AnchorArrangement.referenceAnchor.m_Mat).m_ff_u[0];
 
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design

@@ -209,14 +209,14 @@ namespace BaseClasses
         public CPlate()
         {
             // Set Default Material
-            CMaterialManager.LoadSteelMaterialProperties(m_Mat, "G450");
+            CMaterialManager.LoadSteelMaterialProperties((CMat_03_00)m_Mat, "G450");
             BIsDisplayed = true;
         }
 
         public CPlate(bool bIsDisplayed)
         {
             // Set Default Material
-            CMaterialManager.LoadSteelMaterialProperties(m_Mat, "G450");
+            CMaterialManager.LoadSteelMaterialProperties((CMat_03_00) m_Mat, "G450");
             BIsDisplayed = bIsDisplayed;
         }
 

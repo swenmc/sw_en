@@ -39,8 +39,8 @@ namespace BaseClasses
         [NonSerialized]
         public EConnectionComponentType eConnComponentType;
 
-        [NonSerialized]
-        public new CMat_03_00 m_Mat; // Pre Connection Component predefinovat material z obecneho na STEEL 03_00
+        //[NonSerialized]
+        //public new CMat_03_00 m_Mat; // Pre Connection Component predefinovat material z obecneho na STEEL 03_00
 
         public CConnectionComponentEntity3D()
         {
