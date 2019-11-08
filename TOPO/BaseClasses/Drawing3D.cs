@@ -4822,6 +4822,8 @@ namespace BaseClasses
                 // Tolko teoria, mali by sme sa na to pozriet spolu ako to ma byt spravne
                 // Bud musime plechom v spojoch na konci pruta nastavit spravne suradnice alebo urobit reverznu transformaciu a presunut tieto plechy "akokeby" na zaciatok
 
+                // Asi je problem aj v tom ze neexistuje funkcia ktora transformuje cely joint a vsetky jeho komponenty ako jeden balik do suradnic m_pControlPoint
+
                 jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
