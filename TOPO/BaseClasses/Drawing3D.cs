@@ -4574,8 +4574,8 @@ namespace BaseClasses
 
         public static CModel GetJointPreviewModel(CConnectionJointTypes joint, CFoundation pad, ref DisplayOptions sDisplayOptions)
         {
-            CConnectionJointTypes jointClone = joint.GetClonedJoint();            
-            
+            CConnectionJointTypes jointClone = joint.GetClonedJoint();
+
             CFoundation padClone = pad.Clone();
             if (pad != null) padClone.Visual_Object = pad.Visual_Object;
 
@@ -4793,42 +4793,18 @@ namespace BaseClasses
                 }
                 jointModel.m_arrNodes = nodeList.ToArray();
 
-                // Prutom musime niekde updatetovat wire frame positions
+                // Prutom musime niekde updatovat wire frame positions
                 if (sDisplayOptions.bDisplayWireFrameModel)
                 {
                     UpdateWireFramePoints(jointModel, sDisplayOptions);
                 }
 
-                //--------------------------------------------------------------------------------------------------------------------------------------
-                // Toto som spravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
-                // Rovnako sa pregeneruju na novo m_arrPlates
-                CConnectionJointTypes recteated_joint = jointClone.RecreateJoint();
-                jointClone.m_arrPlates = recteated_joint.m_arrPlates;
+                // Pregenerujeme naklonovany joint, aby sme aktualizovali suradnice control points, pozicie plechov na skratenych prutoch a podobne
+                CConnectionJointTypes jointCloneRecreated = jointClone.RecreateJoint();
+                jointClone.m_arrPlates = jointCloneRecreated.m_arrPlates;
+                jointClone.m_pControlPoint = jointCloneRecreated.m_pControlPoint;
 
-                //TO Mato - ak je Bug 351 vyrieseny tak vymaz asi vsetky komenty nizsie,lebo ich nepotrebujeme si myslim.
-
-                // To Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint ???
-                // To Ondrej: Ta nanic, CEntity3D obsahuje control point a v CConnectionJointTypes, ktory od toho objektu dedi bol predefinovany
-
-                // Bug 351 - To Ondrej
-                // Tak som to trosku krokoval a tu je par poznamok
-                // Myslim si, ze problem je v tom ze s joint.m_pControlPoint sa nikde nepracovalo, vzdy bol [0,0,0]
-                // Ako vkladaci bod spoja s vzdy uvazoval m_Node, ktoremu je spoj priradeny.
-                // Pointa je v tom, ze plechy, ktore su v m_arrPlates by mali mat podobne suradnice m_pControl Point ako je joint po akejkolvek jeho transformacii alebo presune
-                // Zistil som ze to neplati
-
-                // Myslim si ze chyba je v tom ze pre spoje, ktore su na konci pruta sa toto nenastavi spravne resp sa potom pri transformacii spoja nepresunu aj plates
-                // Potrebovali by sme pri presune spoja updatovat suradnice tychto bodov
-                // m_Node, m_pControlPoint spoja a aj suradnice bodov pre vlozenie plates m_ControlPoint_P1,  m_ControlPoint_P2
-                // aby sa plechy vytvorili vlozene adekvatne k tomu aku poziciu ma m_ControlPoint, resp. m_Node
-
-                // Tolko teoria, mali by sme sa na to pozriet spolu ako to ma byt spravne
-                // Bud musime plechom v spojoch na konci pruta nastavit spravne suradnice alebo urobit reverznu transformaciu a presunut tieto plechy "akokeby" na zaciatok
-
-                // Asi je problem aj v tom ze neexistuje funkcia ktora transformuje cely joint a vsetky jeho komponenty ako jeden balik do suradnic m_pControlPoint
-
-                
-                jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
+                // Pridame upraveny naklonovany spoj do modelu
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
 
