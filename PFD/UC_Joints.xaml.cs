@@ -1090,7 +1090,7 @@ namespace PFD
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
             // TODO - refaktorovat s nastavenim zobrazenia footing pad preview
-            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMemberDescription = false;
             sDisplayOptions.bDisplayNodes = false;
             sDisplayOptions.bDisplayNodesDescription = false;
