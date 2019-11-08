@@ -191,6 +191,7 @@ namespace PFD
             foreach (CConnectionJointTypes joint in items)
             {
                 if (joint.m_MainMember == null) continue;
+                if (joint.BIsGenerated == false) continue;
 
                 switch (con.ID)
                 {
