@@ -4574,10 +4574,8 @@ namespace BaseClasses
 
         public static CModel GetJointPreviewModel(CConnectionJointTypes joint, CFoundation pad, ref DisplayOptions sDisplayOptions)
         {
-            if (!(joint is CConnectionJoint_T001)) return null;
-            CConnectionJoint_T001 j = (CConnectionJoint_T001)joint;
-            CConnectionJoint_T001 jointClone = j.Clone();
-            //CConnectionJointTypes jointClone = joint.Clone();
+            CConnectionJointTypes jointClone = joint.GetClonedJoint();            
+            
             CFoundation padClone = pad.Clone();
             if (pad != null) padClone.Visual_Object = pad.Visual_Object;
 
@@ -4804,9 +4802,10 @@ namespace BaseClasses
                 //--------------------------------------------------------------------------------------------------------------------------------------
                 // Toto som spravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
                 // Rovnako sa pregeneruju na novo m_arrPlates
-
-                CConnectionJointTypes recteated_joint = jointClone.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
+                CConnectionJointTypes recteated_joint = jointClone.RecreateJoint();
                 jointClone.m_arrPlates = recteated_joint.m_arrPlates;
+
+                //TO Mato - ak je Bug 351 vyrieseny tak vymaz asi vsetky komenty nizsie,lebo ich nepotrebujeme si myslim.
 
                 // To Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint ???
                 // To Ondrej: Ta nanic, CEntity3D obsahuje control point a v CConnectionJointTypes, ktory od toho objektu dedi bol predefinovany
@@ -4829,8 +4828,8 @@ namespace BaseClasses
                 // Asi je problem aj v tom ze neexistuje funkcia ktora transformuje cely joint a vsetky jeho komponenty ako jeden balik do suradnic m_pControlPoint
 
                 
-                //jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
-                jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { recteated_joint };
+                jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
+                jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
 
             // Footing Pad

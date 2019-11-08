@@ -20,6 +20,93 @@ namespace BaseClasses
             return JsonConvert.DeserializeObject<T>(serialized, settings);
         }
 
+        public static CConnectionJointTypes GetClonedJoint(this CConnectionJointTypes joint)
+        {
+            CConnectionJointTypes clone = null;
+            if (joint is CConnectionJoint_A001)
+            {
+                CConnectionJoint_A001 j = joint as CConnectionJoint_A001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_B001)
+            {
+                CConnectionJoint_B001 j = joint as CConnectionJoint_B001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_C001)
+            {
+                CConnectionJoint_C001 j = joint as CConnectionJoint_C001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_CT01)
+            {
+                CConnectionJoint_CT01 j = joint as CConnectionJoint_CT01;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_D001)
+            {
+                CConnectionJoint_D001 j = joint as CConnectionJoint_D001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_E001)
+            {
+                CConnectionJoint_E001 j = joint as CConnectionJoint_E001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_J001)
+            {
+                CConnectionJoint_J001 j = joint as CConnectionJoint_J001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_L001)
+            {
+                CConnectionJoint_L001 j = joint as CConnectionJoint_L001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_S001)
+            {
+                CConnectionJoint_S001 j = joint as CConnectionJoint_S001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_T001)
+            {
+                CConnectionJoint_T001 j = joint as CConnectionJoint_T001;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_T002)
+            {
+                CConnectionJoint_T002 j = joint as CConnectionJoint_T002;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_T003)
+            {
+                CConnectionJoint_T003 j = joint as CConnectionJoint_T003;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_TA01)
+            {
+                CConnectionJoint_TA01 j = joint as CConnectionJoint_TA01;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_TB01)
+            {
+                CConnectionJoint_TB01 j = joint as CConnectionJoint_TB01;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_TC01)
+            {
+                CConnectionJoint_TC01 j = joint as CConnectionJoint_TC01;
+                clone = j.Clone();
+            }
+            else if (joint is CConnectionJoint_TD01)
+            {
+                CConnectionJoint_TD01 j = joint as CConnectionJoint_TD01;
+                clone = j.Clone();
+            }
+            
+            return clone;
+        }
+
         public static void Dispose(this Viewport3D viewPort)
         {
             if (viewPort == null) return;
