@@ -48,7 +48,7 @@ namespace PFD
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CPFDViewModel)) return;
-            CFoundation pad = vm.GetSelectedFootingPad(); 
+            CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
 
             // To Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...

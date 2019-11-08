@@ -4631,7 +4631,7 @@ namespace BaseClasses
                     CMember m = jointClone.m_MainMember;
 
                     CNode nodeJoint = jointClone.m_Node; // Joint Node
-                    CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+                    CNode nodeOtherEnd;                  // Volny uzol na druhej strane pruta
                     float fX;
                     float fY;
                     float fZ;
@@ -4734,7 +4734,7 @@ namespace BaseClasses
                     m.Fill_Basic();
 
                     jointModel.m_arrMembers[0] = m; // Set new member (member array)
-                    jointClone.m_MainMember = m; // Set new member (joint)
+                    jointClone.m_MainMember = m;    // Set new member (joint)
                 }
 
                 // Secondary members
@@ -4745,7 +4745,7 @@ namespace BaseClasses
                         CMember m = jointClone.m_SecondaryMembers[i];
 
                         CNode nodeJoint = jointClone.m_Node; // Joint Node
-                        CNode nodeOtherEnd;             // Volny uzol na druhej strane pruta
+                        CNode nodeOtherEnd;                  // Volny uzol na druhej strane pruta
 
                         if (jointClone.m_Node.ID == m.NodeStart.ID)
                         {
@@ -4799,14 +4799,30 @@ namespace BaseClasses
                 }
 
                 //--------------------------------------------------------------------------------------------------------------------------------------
-                //Toto som pravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
-                //rovnako sa pregeneruju na novo m_arrPlates
+                // Toto som spravil len kvoli tomu aby sa tam znovu nastavil control point, pretoze konstruktor nie je ciste odovzdavanie parametrov, ale vacsinou sa tam este nieco nastavuje
+                // Rovnako sa pregeneruju na novo m_arrPlates
 
-                //CConnectionJointTypes recteated_joint = joint.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
-                //jointClone.m_arrPlates = recteated_joint.m_arrPlates;                
-                ////Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint???
-                //jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
-                //jointClone.m_ControlPoint = recteated_joint.m_ControlPoint;
+                CConnectionJointTypes recteated_joint = joint.RecreateJoint(); // To Ondrej - toto sa mi uplne nepozdava, chceme len pregenerovat povodny joint a plechy z neho nastavit jointClone ? predtym sa nastavoval jointClone na joint a tym padom sa zmenili dlzky a body wireframe
+                jointClone.m_arrPlates = recteated_joint.m_arrPlates;
+                // To Mato: vysvetli mi niekto naco je m_pControlPoint a naco m_ControlPoint ???
+                // To Ondrej: Ta nanic, CEntity3D obsahuje control point a v CConnectionJointTypes, ktory od toho objektu dedi bol predefinovany
+
+                // Bug 351 - To Ondrej
+                // Tak som to trosku krokoval a tu je par poznamok
+                // Myslim si, ze problem je v tom ze s joint.m_pControlPoint sa nikde nepracovalo, vzdy bol [0,0,0]
+                // Ako vkladaci bod spoja s vzdy uvazoval m_Node, ktoremu je spoj priradeny.
+                // Pointa je v tom, ze plechy, ktore su v m_arrPlates by mali mat podobne suradnice m_pControl Point ako je joint po akejkolvek jeho transformacii alebo presune
+                // Zistil som ze to neplati
+
+                // Myslim si ze chyba je v tom ze pre spoje, ktore su na konci pruta sa toto nenastavi spravne resp sa potom pri transformacii spoja nepresunu aj plates
+                // Potrebovali by sme pri presune spoja updatovat suradnice tychto bodov
+                // m_Node, m_pControlPoint spoja a aj suradnice bodov pre vlozenie plates m_ControlPoint_P1,  m_ControlPoint_P2
+                // aby sa plechy vytvorili vlozene adekvatne k tomu aku poziciu ma m_ControlPoint, resp. m_Node
+
+                // Tolko teoria, mali by sme sa na to pozriet spolu ako to ma byt spravne
+                // Bud musime plechom v spojoch na konci pruta nastavit spravne suradnice alebo urobit reverznu transformaciu a presunut tieto plechy "akokeby" na zaciatok
+
+                jointClone.m_pControlPoint = recteated_joint.m_pControlPoint;
                 jointModel.m_arrConnectionJoints = new List<CConnectionJointTypes>() { jointClone };
             }
 
@@ -5135,7 +5151,6 @@ namespace BaseClasses
             up = new Vector3D(up_InView.X * fTextBlockVerticalSizeFactor, up_InView.Y * fTextBlockVerticalSizeFactor, up_InView.Z * fTextBlockVerticalSizeFactor);
         }
 
-
         public static GeometryModel3D Get3DLineReplacement(Color color, float fLineThickness, Point3D pA, Point3D pB)
         {
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
@@ -5170,10 +5185,6 @@ namespace BaseClasses
 
             return gm3D;
         }
-
-
-
-
 
         #region not used methods
         private static List<Point3D> GetWireFramePointsFromGeometryPositions(Point3DCollection positions)

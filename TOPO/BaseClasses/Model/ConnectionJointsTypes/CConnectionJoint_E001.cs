@@ -2,6 +2,7 @@
 using MATH;
 using System;
 using System.Windows.Media.Media3D;
+using BaseClasses.Helpers;
 
 namespace BaseClasses
 {
@@ -17,6 +18,7 @@ namespace BaseClasses
             bIsJointDefinedinGCS = true;
 
             m_Node = Node_temp;
+            m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainFrameRafter_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = Purlin_temp;

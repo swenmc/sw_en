@@ -6,6 +6,7 @@ using DATABASE.DTO;
 using BaseClasses.GraphObj;
 using System.Globalization;
 using System.Windows.Media.Media3D;
+using BaseClasses.Helpers;
 
 namespace BaseClasses
 {
@@ -29,6 +30,7 @@ namespace BaseClasses
             m_ePlateNumberAndPosition = ePlateNumberAndPosition;
             m_bIsAlignmentMainMemberWidth = bIsAlignmentMainMemberWidth;
             m_Node = Node_temp;
+            m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;

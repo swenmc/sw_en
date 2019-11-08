@@ -36,7 +36,6 @@ namespace PFD
 
             vm.LimitStateIndex = 0;
         }
-        
 
         protected void HandleJointDesignPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {

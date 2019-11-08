@@ -14,7 +14,6 @@ namespace BaseClasses
         public CMember m_MainMember; // hlavny prvok (spravidla najmasivnejsi) ku ktoremu sa pripajaju jeden alebo viacero dalsich sekundarnych
         public CMember[] m_SecondaryMembers; // zoznam sekundarnych prvkov, TODO - asi bude potrebne upravit podla jednotlivych typov prvkov v spoji (nosnik / diagonala / stlp)
         public CNode m_Node;
-        public Point3D m_ControlPoint;
         public CNode[] m_arrAssignedNodesWithJointType;
         public bool bIsJointDefinedinGCS;
 
