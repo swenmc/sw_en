@@ -2461,11 +2461,11 @@ namespace PFD
             DisplayPlates = false;
             DisplayConnectors = false;
             DisplayNodes = false;
-            DisplayFoundations = true;
+            DisplayFoundations = false;
             DisplayReinforcementBars = false;
-            DisplayFloorSlab = true;
-            DisplaySawCuts = true;
-            DisplayControlJoints = true;
+            DisplayFloorSlab = false;
+            DisplaySawCuts = false;
+            DisplayControlJoints = false;
 
             DisplayMembersWireFrame = false;
             DisplayJointsWireFrame = false;
@@ -2483,7 +2483,7 @@ namespace PFD
             ColorsAccordingToMembers = true;
             ColorsAccordingToSections = false;
             RecreateModel = true;
-            ViewIndex = (int)EModelViews.RIGHT;
+            ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
 
