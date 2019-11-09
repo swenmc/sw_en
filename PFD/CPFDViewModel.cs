@@ -2473,9 +2473,9 @@ namespace PFD
             DisplayConnectorsWireFrame = false;
             DisplayNodesWireFrame = false;
             DisplayFoundationsWireFrame = false;
-            DisplayReinforcementBarsWireFrame = false;            
+            DisplayReinforcementBarsWireFrame = false;
             DisplayNodalSupports = false;
-            DisplayMembersCenterLines = true;
+            DisplayMembersCenterLines = false;
             DisplaySolidModel = true;
             DisplayWireFrameModel = false;
             DisplayDistinguishedColorMember = false;
@@ -2502,7 +2502,7 @@ namespace PFD
             ShowControlJointsDescription = false;
             ShowDimensions = true;
             ShowGridLines = false;
-            ShowSectionSymbols = true;
+            ShowSectionSymbols = false;
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
 
