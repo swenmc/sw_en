@@ -225,7 +225,7 @@
         eShape3D_SquarePyramid,
         eShape3D_HexagonalPyramid,
         eShape3D_NPyramid,
-        eShape3D_Cylinder,
+        //eShape3D_Cylinder,
         eShape3D_Frustum,
         eShape3D_Cone,
         eShape3D_Sphere,

@@ -7,6 +7,7 @@ using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
 using MATH;
 using System.Windows.Media;
+using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {
@@ -128,7 +129,7 @@ namespace BaseClasses
 
             // LCS - line in x-direction
             if (linePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
-                model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, fLineCylinderRadius, m_fLength, material, 0));
+                model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, fLineCylinderRadius, m_fLength, material, 0));
             else // Iny typ ciary
             {
                 // dashed, dotted, divide, ....
@@ -140,7 +141,7 @@ namespace BaseClasses
                 for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
                 {
                     float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
-                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], 13, fLineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                    model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], 13, fLineCylinderRadius, fLineSegmentLength, material, 0, false, false));
                 }
             }
 

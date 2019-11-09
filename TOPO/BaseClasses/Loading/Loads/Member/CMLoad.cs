@@ -133,8 +133,8 @@ namespace BaseClasses
                 else
                     pPoint = new Point3D(0, -fq_value * fDisplayin3D_ratio, 0);
 
-                Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(fq_value * fDisplayin3D_ratio), floadsequencelength, m_Material3DGraphics);
-                model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(fq_value * fDisplayin3D_ratio), floadsequencelength, m_Material3DGraphics));
+                //Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(fq_value * fDisplayin3D_ratio), floadsequencelength, m_Material3DGraphics);
+                model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(fq_value * fDisplayin3D_ratio), floadsequencelength, m_Material3DGraphics));
             }
 
             // Trasnform position of load on member (consider eccentricity of load / member / cross-section dimensions)

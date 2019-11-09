@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using MATH;
+using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses.GraphObj
 {    
@@ -447,10 +448,10 @@ namespace BaseClasses.GraphObj
             float fExtensionLine2_OffsetBehindMainLine = (float)ExtensionLines_OffsetBehindMainLine;
 
             // Extension line 1 (start)
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
+            model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine1, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine1_Length, material, 1));
 
             // Extension line 2 (end)
-            model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
+            model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(m_Point2_ExtensionLine2, NumberOfCirclePoints, fLineCylinderRadius, fExtensionLine2_Length, material, 1));
 
             RotateTransform3D rotateX = new RotateTransform3D();
             RotateTransform3D rotateY = new RotateTransform3D();

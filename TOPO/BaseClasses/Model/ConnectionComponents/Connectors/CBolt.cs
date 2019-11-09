@@ -19,7 +19,7 @@ namespace BaseClasses
             Mass = fMass_temp;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
+            //m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
         /*

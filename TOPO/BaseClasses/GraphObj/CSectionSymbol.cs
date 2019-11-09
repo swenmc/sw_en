@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseClasses.GraphObj.Objects_3D;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -226,7 +227,7 @@ namespace BaseClasses.GraphObj
             short NumberOfCirclePointsLine = 8 + 1;//8 + 1;
 
             if (m_LinePatternType == ELinePatternType.CONTINUOUS) // Ak je continuous tak nepouzijeme CLine
-                model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, fSymbolLineCylinderRadius, (float)m_LineLength, material, 0, false, false));
+                model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, fSymbolLineCylinderRadius, (float)m_LineLength, material, 0, false, false));
             else // Iny typ ciary
             {
                 // dashed, dotted, divide, ....
@@ -238,7 +239,7 @@ namespace BaseClasses.GraphObj
                 for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
                 {
                     float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
-                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, fSymbolLineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                    model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, fSymbolLineCylinderRadius, fLineSegmentLength, material, 0, false, false));
                 }
             }
 

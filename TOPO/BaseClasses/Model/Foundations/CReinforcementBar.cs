@@ -8,12 +8,13 @@ using BaseClasses.GraphObj;
 using MATH;
 using DATABASE;
 using DATABASE.DTO;
+using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {
     // Class CReinforcementBar
     [Serializable]
-    public class CReinforcementBar : CVolume
+    public class CReinforcementBar : Cylinder
     {
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
@@ -101,31 +102,12 @@ namespace BaseClasses
             }
         }
 
-        public new MATERIAL.CMat_03_00 m_Mat; // Pre Bar predefinovat material z obecneho na STEEL 03_00
+        public MATERIAL.CMat_03_00 m_Mat; // Pre Bar predefinovat material z obecneho na STEEL 03_00
 
         public CReinforcementBar()
         {
         }
 
-        /*
-        public CReinforcementBar(int iBar_ID, string materialName, Point3D pControlEdgePoint, Point3D startPoint, Point3D endPoint, float fLength, float fDiameter, Color volColor, float fvolOpacity, bool bIsDisplayed, float fTime)
-        {
-            ID = iBar_ID;
-            m_pControlPoint = pControlEdgePoint;
-            m_StartPoint = startPoint;
-            m_EndPoint = endPoint;
-            m_fDim1 = 0.5f * fDiameter;
-            m_fDim2 = fLength;
-            m_volColor_2 = volColor;
-            m_fvolOpacity = fvolOpacity;
-            BIsDisplayed = bIsDisplayed;
-            FTime = fTime;
-
-            m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
-
-            SetMaterialPropertiesFromDatabase(materialName);
-        }
-        */
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
         public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
@@ -146,7 +128,7 @@ namespace BaseClasses
             m_diameter = fDiameter;
             m_totalLength = fLength;
 
-            m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
+            //m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
 
             m_fArea_As_1 = MathF.fPI * MathF.Pow2(m_diameter) / 4f; // Reinforcement bar cross-sectional area
 
@@ -198,10 +180,10 @@ namespace BaseClasses
             else // Rotate from Z to Y (90 deg about X)
                 dRotationAngle_deg = -90; // Prut smeruje v ose y
 
-            CVolume volume = new CVolume(1, EVolumeShapeType.eShape3D_Cylinder, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, new DiffuseMaterial(brush), true, 0);
+            //CVolume volume = new CVolume(1, EVolumeShapeType.eShape3D_Cylinder, m_pControlPoint, m_fDim1, m_fDim2, m_fDim3, new DiffuseMaterial(brush), true, 0);
             //model = volume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0,0,0) /*new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z)*/, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
             // Tato metoda umoznuje nastavit pocet bodov
-            model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
+            model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush));
 
             // Model Transformation
             // Rotate about X or Y axis

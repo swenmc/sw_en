@@ -418,7 +418,7 @@ namespace BaseClasses
             m_fRotationZ_deg = 0;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+            //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
         public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, float fh_eff_temp, bool bIsDisplayed)
@@ -467,7 +467,7 @@ namespace BaseClasses
             m_fRotationZ_deg = 0;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+            //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
         public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -518,7 +518,7 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
+            //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
         public float GetMass()

@@ -165,7 +165,7 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
+            //m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
         public CScrew(string sName_temp, CTEKScrewProperties screwproperties)

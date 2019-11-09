@@ -1920,6 +1920,11 @@ namespace BaseClasses
                         cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         // Get shape - prism , sphere, ...
+                        //TODO for Cylinder
+                        //if (cmodel.m_arrGOVolumes[i] is Cylinder)
+                        //{
+                        //    model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
+                        //}
 
                         switch (cmodel.m_arrGOVolumes[i].m_eShapeType)
                         {
@@ -1927,9 +1932,9 @@ namespace BaseClasses
                             case EVolumeShapeType.eShape3DPrism_8Edges:
                                 model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
                                 break;
-                            case EVolumeShapeType.eShape3D_Cylinder:
-                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
-                                break;
+                            //case EVolumeShapeType.eShape3D_Cylinder:
+                            //    model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
+                            //    break;
                             default:
                                 //TODO - prepracovat a dopracovat
                                 break;
@@ -5156,7 +5161,8 @@ namespace BaseClasses
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
             // Model valca som nahradil len plastom a nebudeme kreslit hornu a spodnu podstavu, to bz malo pre "ciaru" postacovat
             // TODO - zjednotit triedy Cylinder a funkcie z CVolume pre valec
-            GeometryModel3D gm3D = CVolume.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
+            //To Mato mozno treba pozriet aj triedu Cylinder od Petzolda,ci tam nie je vsetko co potrebujeme            
+            GeometryModel3D gm3D = BaseClasses.GraphObj.Objects_3D.Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
 
             // Transform cylinder from its LCS to GCS
             CMember m = new CMember();

@@ -1,4 +1,5 @@
 ﻿using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
 using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -121,7 +122,7 @@ namespace BaseClasses
                 if (m_bRestrain[(int)ENSupportType.eNST_Rx] == false)
                 {
                     GeometryModel3D GeomModel3_RX = new GeometryModel3D();
-                    GeomModel3_RX = volaux.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), fr_c, fa_c, new DiffuseMaterial(brushX));
+                    GeomModel3_RX = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 73, fr_c, fa_c, new DiffuseMaterial(brushX));
 
                     Transform3DGroup Trans3DGroup = new Transform3DGroup();
                     RotateTransform3D RotateTrans3D_AUX = new RotateTransform3D();
@@ -140,7 +141,7 @@ namespace BaseClasses
                 if (m_bRestrain[(int)ENSupportType.eNST_Ry] == false)
                 {
                     GeometryModel3D GeomModel3_RY = new GeometryModel3D();
-                    GeomModel3_RY = volaux.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), fr_c, fa_c, new DiffuseMaterial(brushY));
+                    GeomModel3_RY = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), fr_c, fa_c, new DiffuseMaterial(brushY));
 
                     Transform3DGroup Trans3DGroup = new Transform3DGroup();
                     RotateTransform3D RotateTrans3D_AUX = new RotateTransform3D();
@@ -160,7 +161,7 @@ namespace BaseClasses
                 {
                     GeometryModel3D GeomModel3_RZ = new GeometryModel3D();
                     TranslateTransform3D Translate3D_AUX;
-                    GeomModel3_RZ = volaux.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), fr_c, fa_c, new DiffuseMaterial(brushZ));
+                    GeomModel3_RZ = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), fr_c, fa_c, new DiffuseMaterial(brushZ));
                     Translate3D_AUX = new TranslateTransform3D(0, 0, -0.5f * fa_c);
                     GeomModel3_RZ.Transform = Translate3D_AUX;
                     model_gr.Children.Add(GeomModel3_RZ); // Add object to release model group

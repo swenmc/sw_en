@@ -1,4 +1,5 @@
 ﻿using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
 using System;
 using System.Collections;
 using System.Windows.Media;
@@ -180,14 +181,14 @@ namespace BaseClasses
 
                     if (m_bRestrain[(int)ENSupportType.eNST_Rz] == false)
                     {
-                        model_gr.Children.Add(volaux.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, - 1.5f * fh), 0.25f * fa, 0.5f * fh, new DiffuseMaterial(brush)));
+                        model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, - 1.5f * fh), 0.25f * fa, 0.5f * fh, new DiffuseMaterial(brush)));
                     }
                 }
                 else if (m_bRestrain[(int)ENSupportType.eNST_Rx] == true || m_bRestrain[(int)ENSupportType.eNST_Ry])
                 {
                     // Support in point 0,0,0
                     model_gr.Children.Add(volaux.CreateM_G_M_3D_Volume_6Edges_CN(new Point3D(0, 0, 0), fa, fh, new DiffuseMaterial(brush)));
-                    GeomModel3Daux = volaux.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 0.20f * fa, fa, new DiffuseMaterial(brush));
+                    GeomModel3Daux = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 0.20f * fa, fa, new DiffuseMaterial(brush));
                     RotateTrans3D = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), 90));
                     Translate3D = new TranslateTransform3D(new Vector3D(0, 0.5f * fa, 0));
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj.Objects_3D;
 using MATH;
 
 namespace BaseClasses.GraphObj
@@ -224,7 +225,7 @@ namespace BaseClasses.GraphObj
                     int primaryModelDirection = 0;
                     if (modelView == EModelViews.TOP) primaryModelDirection = 1;
 
-                    model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, primaryModelDirection, false, false));
+                    model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(m_PointLineStart_LCS, NumberOfCirclePointsLine, m_LineCylinderRadius, (float)m_LineLength, material, primaryModelDirection, false, false));
                 } 
                 else // Iny typ ciary
                 {
@@ -237,7 +238,7 @@ namespace BaseClasses.GraphObj
                     for (int i = 0; i < line.PointsCollection.Count; i += 2) // Ako zaciatok berieme kazdy druhy bod
                     {
                         float fLineSegmentLength = (float)(line.PointsCollection[i + 1].X - line.PointsCollection[i].X);
-                        model_gr.Children.Add(CVolume.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, m_LineCylinderRadius, fLineSegmentLength, material, 0, false, false));
+                        model_gr.Children.Add(Cylinder.CreateM_G_M_3D_Volume_Cylinder(line.PointsCollection[i], NumberOfCirclePointsLine, m_LineCylinderRadius, fLineSegmentLength, material, 0, false, false));
                     }
                 }
             }
