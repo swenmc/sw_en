@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
 using BaseClasses.Helpers;
 using DATABASE.DTO;
 using HelixToolkit.Wpf;
@@ -2072,8 +2073,7 @@ namespace BaseClasses
                         // Pripadne mozes upravit celu triedu CVolume, je tam teraz trosku chaos a duplicity, rozne mozne konstruktory pre to iste atd :)
 
                         // Sphere
-                        GraphObj.CVolume sphere = new GraphObj.CVolume();
-                        model3D_group.Children.Add(sphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(displayOptions.NodeColor))));
+                        model3D_group.Children.Add(CSphere.CreateM_3D_G_Volume_Sphere(p, (float)nodesSize, new DiffuseMaterial(new SolidColorBrush(displayOptions.NodeColor))));
 
                         // Cube
                         //model3D_group.Children.Add(GetCube(p, nodesSize, new SolidColorBrush(Colors.Cyan)));

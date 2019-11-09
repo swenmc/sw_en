@@ -1683,11 +1683,7 @@ namespace Examples
 
             //m_arrGOPoints[449] = new Point3D(450, 4, 4, 3.7, 0);
             m_arrGOPoints[449] = new Point3D(4, 4, 3.7);
-            m_arrGOVolumes[433] = new CVolume(434, EVolumeShapeType.eShape3D_Sphere, m_arrGOPoints[449], 0.5f, mat_Ball, true, 0);
-
-
-
-
+            m_arrGOVolumes[433] = new BaseClasses.GraphObj.Objects_3D.CSphere(434, m_arrGOPoints[449], 0.5f, mat_Ball, true, 0);
 
             // Windows
 

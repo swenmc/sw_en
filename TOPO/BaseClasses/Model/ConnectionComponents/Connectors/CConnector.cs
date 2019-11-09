@@ -147,7 +147,7 @@ namespace BaseClasses
             ScreenSpaceLines3D ssl3D = new ScreenSpaceLines3D();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
+            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
 
             Int32Collection wireFrameIndices = Cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -166,7 +166,7 @@ namespace BaseClasses
             Point3DCollection points3D = new Point3DCollection();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
+            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
 
             Int32Collection wireFrameIndices = Cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -245,7 +245,7 @@ namespace BaseClasses
         {
             m_DiffuseMat = new DiffuseMaterial(brush);
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
+            geometryModel = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat, 0);
 
             TransformCoord(geometryModel);
 

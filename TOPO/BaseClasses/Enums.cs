@@ -228,7 +228,7 @@
         //eShape3D_Cylinder,
         eShape3D_Frustum,
         eShape3D_Cone,
-        eShape3D_Sphere,
+        //eShape3D_Sphere,
         eShape3D_Ellipsoid,
         eShape3D_Torus,
         eShape3D_Tetrahedron,
