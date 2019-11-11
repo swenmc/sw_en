@@ -99,9 +99,9 @@ namespace PFD
         private float m_PlateSolidModelOpacity = 0.5f;
         private float m_ScrewSolidModelOpacity = 0.9f;
         private float m_AnchorSolidModelOpacity = 0.9f;
-        private float m_FoundationSolidModelOpacity = 0.2f;
+        private float m_FoundationSolidModelOpacity = 0.4f;
         private float m_ReinforcementBarSolidModelOpacity = 0.9f;
-        private float m_FloorSlabSolidModelOpacity = 0.2f;
+        private float m_FloorSlabSolidModelOpacity = 0.3f;
         private float m_SlabRebateSolidModelOpacity = 0.5f;
 
         public bool IsSetFromCode = false;
@@ -1224,9 +1224,9 @@ namespace PFD
             PlateSolidModelOpacity = 0.5f;
             ScrewSolidModelOpacity = 0.9f;
             AnchorSolidModelOpacity = 0.9f;
-            FoundationSolidModelOpacity = 0.2f;
+            FoundationSolidModelOpacity = 0.4f;
             ReinforcementBarSolidModelOpacity = 0.9f;
-            FloorSlabSolidModelOpacity = 0.2f;
+            FloorSlabSolidModelOpacity = 0.3f;
             SlabRebateSolidModelOpacity = 0.3f;
 
             IsSetFromCode = false;
