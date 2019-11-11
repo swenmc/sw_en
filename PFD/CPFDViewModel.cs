@@ -330,6 +330,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -356,6 +357,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("Length");
             }
         }
@@ -382,6 +384,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -439,6 +442,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -460,6 +464,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -481,6 +486,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -519,6 +525,7 @@ namespace PFD
                 SetResultsAreNotValid();
                 RecreateJoints = true;
                 RecreateModel = true;
+                RecreateFloorSlab = true;
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
