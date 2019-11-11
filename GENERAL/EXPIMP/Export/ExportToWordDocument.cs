@@ -151,7 +151,8 @@ namespace EXPIMP
             // Concrete (uvazovat z GUI - UC Footings alebo z objektov zakladu ???
             var diffMaterialsConcrete = data.Model.m_arrFoundations.Select(c => c.m_Mat.Name).Distinct();
 
-            // TODO Ondrej - for review, moze sa refaktorovat so steel (tabulky podla toho kolko je roznych druhov ocele + tabulky podla toho kolko je roznych druhov betonu pre footing pads (len teoreticky, v praxi bude beton len jeden)
+            // TODO Ondrej - for review, moze sa refaktorovat so steel (tabulky podla toho kolko je roznych druhov ocele 
+            // + tabulky podla toho kolko je roznych druhov betonu pre footing pads (len teoreticky, v praxi bude beton len jeden)
             // Este by sa mohol pridat beton pre floor slab a steel pre plates, ale to asi zatial neriesime
 
             if(diffMaterialsConcrete != null)
