@@ -81,7 +81,6 @@ namespace PFD
             else
                 Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
         }
-
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)
         {
             sDisplayOptions = sDisplayOptions_temp;
@@ -139,7 +138,6 @@ namespace PFD
 
             _trackport.SetupScene();
         }
-
         public Page3Dmodel(CPlate model, DisplayOptions sDisplayOptions_temp)
         {
             sDisplayOptions = sDisplayOptions_temp;
@@ -202,8 +200,6 @@ namespace PFD
 
             _trackport.SetupScene();
         }
-
-
         public Page3Dmodel(CCrSc_TW crsc, DisplayOptions sDisplayOptions_temp)
         {
             sDisplayOptions = sDisplayOptions_temp;
@@ -240,7 +236,6 @@ namespace PFD
 
             _trackport.SetupScene();
         }
-
 
         public Page3Dmodel(string pathToModel, PerspectiveCamera camera)
         {

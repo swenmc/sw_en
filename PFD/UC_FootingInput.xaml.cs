@@ -27,6 +27,11 @@ namespace PFD
         DisplayOptions sDisplayOptions;
         CPFDViewModel _pfdVM;
         CFootingInputVM vm;
+        double Frame2DWidth;
+        double Frame2DHeight;
+
+        CFoundation pad;
+        CConnectionJointTypes joint;
 
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
@@ -40,8 +45,8 @@ namespace PFD
             this.DataContext = vm;
             vm.FootingPadMemberTypeIndex = 0;
 
-            CFoundation pad = vm.GetSelectedFootingPad();
-            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
+            pad = vm.GetSelectedFootingPad();
+            joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             displayFootingPad(pad, joint);
         }
 
@@ -285,7 +290,7 @@ namespace PFD
             e.Handled = true;
         }
 
-        private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
+        private Page3Dmodel GetFootingPad3DPreview(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
         {
             // TO Ondrej - tu potrebujeme refaktorovat cast funkcie displayJoint a Drawing3D.GetJointPreviewModel
             // Mala by sa vykreslit patka (betonovy kvader prisluchajuci k uzlu) a v pripade ze je bool bDisplayJointComponents == true tak aj plech a cast pruta ktore su v danom uzle k zakladu pripojene
@@ -293,7 +298,7 @@ namespace PFD
             // Asi aj patku je potrebne naklonovat, nech to funguje rovnako
             // Vykreslenie vyztuze podla projektu AAC
 
-            if (pad == null) return; // Error - nothing to display
+            if (pad == null) return null; // Error - nothing to display
 
             sDisplayOptions = _pfdVM.GetDisplayOptions();
             //Here is the place to overwrite displayOptions from Main Model
@@ -319,11 +324,68 @@ namespace PFD
 
             CModel padModel = Drawing3D.GetJointPreviewModel(joint, pad, ref sDisplayOptions);
 
-            Page3Dmodel page1 = new Page3Dmodel(padModel, sDisplayOptions, EModelType.eFooting);
+            return new Page3Dmodel(padModel, sDisplayOptions, EModelType.eFooting);
+        }
+
+        private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
+        {
+            Canvas page = new Canvas();
+
+            Drawing2D.DrawPlateToCanvas(joint.m_arrPlates.FirstOrDefault(),
+               Frame2DWidth,
+               Frame2DHeight,
+               ref page,
+             true,//  vm.DrawPoints2D,
+             true,//  vm.DrawOutLine2D,
+             true,//  vm.DrawPointNumbers2D,
+             true,//  vm.DrawHoles2D,
+             true,//  vm.DrawHoleCentreSymbol2D,
+             true,//  vm.DrawDrillingRoute2D,
+             true,//  vm.DrawDimensions2D,
+             true,//  vm.DrawMemberOutline2D,
+             true);//  vm.DrawBendLines2D);
+
+            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, ref page);
+
+            return page;
+        }
+
+        private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint)
+        {
+            CFootingInputVM vm = this.DataContext as CFootingInputVM;
+
+            SetFrame2DSize();
+
+            // Create 2D page
+            Canvas page2D = GetFootingPad2DPreview(pad, joint);
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+
+            // Create 3D window
+            Page3Dmodel page3D = GetFootingPad3DPreview(pad, joint);
 
             // Display model in 3D preview frame
-            FrameFootingPadPreview3D.Content = page1;
-            FrameFootingPadPreview3D.UpdateLayout();
+            FrameFootingPadPreview3D.Content = page3D;
+
+            this.UpdateLayout();
+        }
+
+        private void SetFrame2DSize()
+        {
+            Frame2DWidth = Frame2D.ActualWidth;
+            Frame2DHeight = Frame2D.ActualHeight;
+            // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna
+
+            // TODO Ondrej - prevzate zo System Component Viewer - nastavit konstanty pre toto okno
+            if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
+            if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
+        }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CFootingInputVM vm = this.DataContext as CFootingInputVM;
+            displayFootingPad(pad, joint);
         }
     }
 }

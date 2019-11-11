@@ -404,6 +404,34 @@ namespace BaseClasses
             return canvasForImage;
         }
 
+        public static void DrawFootingPadSideElevationToCanvas(CFoundation pad, CConnectionJointTypes joint, ref Canvas canvasForImage)
+        {
+            bool bDrawFootingPad;
+            bool bDrawColumnOutline;
+            bool bDrawAnchors;
+            bool bDrawBasePlate;
+            bool bDrawScrews;
+            bool bDrawPerimeter;
+            bool bDrawReinforcement;
+            bool bDrawDPC;
+
+            bool bDrawDimensions;
+            bool bDrawNotes;
+
+            float fFloorWidthPart = 0.5f * 100; // 0.5 m
+            float fFloorEdge = 0.03f * 100; // 0.03 m
+            float floorThickness = 0.15f * 100;
+
+            List<Point> PointsFootingPad = new List<Point> {
+                new Point(fFloorWidthPart + 0.5f * pad.m_fDim2 * 100, -floorThickness),
+            new Point(0.5f * pad.m_fDim2 * 100 + fFloorEdge, -floorThickness),
+            new Point(0.5f * pad.m_fDim2 * 100, -floorThickness - fFloorEdge)
+            };
+            DrawPolyLine(false, PointsFootingPad, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+
+
+        }
+
         public static Stream GetCanvasStream(Canvas canvas)
         {
             RenderTargetBitmap bmp = RenderVisual(canvas);

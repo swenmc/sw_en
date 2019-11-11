@@ -22,11 +22,11 @@
                 <Grid Margin="5,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="160"/>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="65"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -52,9 +52,19 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Content="FrameFootingPadPreview" Name="FrameFootingPadPreview3D"
-               HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Height="430" Width="570"
-               MouseWheel="FrameFootingPadPreview3D_MouseWheel"/>
+
+                    <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged" Grid.ColumnSpan="7" Margin="0,0,10,10">
+                        <TabItem Name="tabItem2D" Header="View 2D">
+                            <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch"/>
+                        </TabItem>
+                        <TabItem Name="tabItem3D" Header="View 3D">
+                            <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Content="FrameFootingPadPreview" Name="FrameFootingPadPreview3D"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch" NavigationUIVisibility="Hidden"
+                                   MouseWheel="FrameFootingPadPreview3D_MouseWheel"/>
+                        </TabItem>
+                    </TabControl>
+
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
                     <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ComponentType" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"
                   SelectedIndex="{Binding Path=FootingPadMemberTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
