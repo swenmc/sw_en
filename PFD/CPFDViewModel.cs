@@ -2931,6 +2931,11 @@ namespace PFD
             data.JointsDict = JointsVM.DictJoints;
             data.FootingsDict = FootingVM.DictFootings;
 
+            //tu treba dat vsetky data ktore si chces hore dole prenasat z PFDViewModelu
+            //Task 366
+            data.SoilBearingCapacity = FootingVM.SoilBearingCapacity;
+
+
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();
             return data;

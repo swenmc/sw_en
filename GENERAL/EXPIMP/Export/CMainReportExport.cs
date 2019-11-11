@@ -335,8 +335,8 @@ namespace EXPIMP
 
                     opts.bCreateHorizontalGridlines = true;
 
-                    // Notes - floor
-                    DrawNotes_Floor(gfx, data.Model, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
+                    // Notes - floor                    
+                    DrawNotes_Floor(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
 
                 CModel filteredModel = null;
@@ -1523,7 +1523,7 @@ namespace EXPIMP
             return table;
         }
 
-        private static void DrawNotes_Floor(XGraphics gfx, CModel model, int x, int y)
+        private static void DrawNotes_Floor(XGraphics gfx, CModelData data, int x, int y)
         {
             int iVerticalOffset_y = 10;
             int yPosition = y;
@@ -1534,10 +1534,13 @@ namespace EXPIMP
 
             // TODO Ondrej - sem by som potreboval dostat data z UC_FootingInput, resp z view modelu
             // TODO Ondrej - parametre soil capacity, concrete strength atd by mali byt spolocne pre vsetky foundation pads
-
-            string sNote_1 = "1) Minimum ultimate ground bearing capacity " + (300000f / 1000f).ToString("F0") + " kPa."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI
-            string sNote_2 = "2) Concrete grade " + model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
-            string sNote_3 = "3) Concrete grade " + model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
+            
+            //TODO Mato - ukazku som spravil...tak mozes dostat dalsie parametre...vsetko treba preniest do CModelData a potom to tu kade tade vyuzivat
+            // ja mam problem identifikovat premmenne ktore chces preniest, tak preto mas len ukazku ako na to
+            //Task 366
+            string sNote_1 = "1) Minimum ultimate ground bearing capacity " + data.SoilBearingCapacity.ToString("F0") + " kPa."; // Ukazka ako to dostat z Footing Input
+            string sNote_2 = "2) Concrete grade " + data.Model.m_arrFoundations.FirstOrDefault().m_Mat.Name + " MPa for footing pads."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
+            string sNote_3 = "3) Concrete grade " + data.Model.m_arrSlabs.FirstOrDefault().m_Mat.Name + " MPa for floor slab."; // TODO - dostat sem vstup z UC_Footing pad a ponapajat na GUI, resp zabezpecit update materialu v objekte CFoundation pre zmene v GUI
             string sNote_41 = "4) If top soil encountered on site that should be removed";
             string sNote_42 = "   and replaced with compacted engineered soil.";
 

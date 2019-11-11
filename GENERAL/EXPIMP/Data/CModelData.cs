@@ -78,6 +78,7 @@ namespace EXPIMP
         private float m_R_SLS;
 
         private bool MUseCRSCGeometricalAxes;
+        private float m_SoilBearingCapacity;
 
         private CProjectInfo projectInfo;
         private DisplayOptions sDisplayOptions;
@@ -862,6 +863,19 @@ namespace EXPIMP
             set
             {
                 m_R_SLS = value;
+            }
+        }
+
+        public float SoilBearingCapacity
+        {
+            get
+            {
+                return m_SoilBearingCapacity;
+            }
+
+            set
+            {
+                m_SoilBearingCapacity = value;                
             }
         }
 

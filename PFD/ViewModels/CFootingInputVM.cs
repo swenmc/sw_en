@@ -1851,6 +1851,8 @@ namespace PFD
             ReinforcementGrade = "500E"; // 500 MPa
             ReinforcementMeshGrade = "SE92DE"; // SE92
 
+
+            //To Mato - toto su tie soil capacity parametre?
             SoilReductionFactor_Phi = 0.5f;
             SoilReductionFactorEQ_Phi = 0.8f;
 
