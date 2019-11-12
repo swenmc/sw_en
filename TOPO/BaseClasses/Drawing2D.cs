@@ -486,14 +486,12 @@ namespace BaseClasses
 
                     List<Point> PointsDPC_DPM = new List<Point>
                     {
-                        new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset),
-                        new Point(PointsFootingPad_real[1].X + fAux, PointsFootingPad_real[1].Y - fRealOffset),
-                        new Point(PointsFootingPad_real[2].X + fRealOffset, PointsFootingPad_real[2].Y - fAux),
-                        new Point(PointsFootingPad_real[3].X + fRealOffset, PointsFootingPad_real[3].Y - fRealOffset),
-                        new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset)
+                        new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset),
+                        new Point(PointsFootingPad_real[1].X + fAux, PointsFootingPad_real[1].Y + fRealOffset),
+                        new Point(PointsFootingPad_real[2].X + fRealOffset, PointsFootingPad_real[2].Y + fAux),
+                        new Point(PointsFootingPad_real[3].X + fRealOffset, PointsFootingPad_real[3].Y + fRealOffset),
+                        new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset)
                     };
-
-                    //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsDPC_DPM);
 
                     PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
@@ -511,12 +509,10 @@ namespace BaseClasses
                     {
                         new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y),
                         new Point(PointsFootingPad_real[4].X + fPerimeterWidth + fFloorEdge, PointsFootingPad_real[1].Y),
-                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[1].Y - fFloorEdge),
-                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[5].Y - fPerimeterDepth),
-                        new Point(PointsFootingPad_real[5].X, PointsFootingPad_real[5].Y - fPerimeterDepth)
+                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[1].Y + fFloorEdge),
+                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[5].Y + fPerimeterDepth),
+                        new Point(PointsFootingPad_real[5].X, PointsFootingPad_real[5].Y + fPerimeterDepth)
                     };
-
-                    //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsPerimeter);
 
                     PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
@@ -633,10 +629,11 @@ namespace BaseClasses
                     {
                         Point bottom = new Point(PointsStiffenersBottom[i].X, PointsStiffenersBottom[i].Y);
                         Point top = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
-                        
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsLine);
+                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
+                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
+
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                         Line l = new Line();
                         l.X1 = PointsLine[0].X;
@@ -655,9 +652,10 @@ namespace BaseClasses
                         Point bottom = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
                         Point top = new Point(PointsStiffenersTop[i].X, PointsStiffenersTop[i].Y);
 
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
+                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
 
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsLine);
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                         Line l = new Line();
                         l.X1 = PointsLine[0].X;
@@ -676,9 +674,11 @@ namespace BaseClasses
                 Point bottomLeft = new Point(horizontalOffset + 0, basePlate.Ft);
                 Point topLeft = new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft);
 
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomLeft);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topLeft);
+
                 List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft, topLeft }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsLineLeft);
                 Line l_Left = new Line();
                 l_Left.X1 = PointsLineLeft[0].X;
                 l_Left.Y1 = PointsLineLeft[0].Y;
@@ -692,8 +692,11 @@ namespace BaseClasses
                 Point bottomRight = new Point(horizontalOffset + crscDepth, basePlate.Ft);
                 Point topRight = new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight);
 
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topRight);
+
                 List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight, topRight }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsLineRight);
+
                 Line l_Right = new Line();
                 l_Right.X1 = PointsLineRight[0].X;
                 l_Right.Y1 = PointsLineRight[0].Y;
@@ -721,12 +724,13 @@ namespace BaseClasses
                 {
                     Point insertingPoint_Plate = new Point(0, 0); // TODO - doplnit napojenie na excentricity
 
-                    Point lt_Plate = new Point(insertingPoint_Plate.X - basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y);
-                    Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y + basePlate.Fl_Z); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                    Point lt_Plate = new Point(insertingPoint_Plate.X - basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y + basePlate.Fl_Z);
+                    Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                    // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_Plate);
+                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_Plate);
+
                     List<Point> PointsPlate = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_Plate, br_Plate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                    //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsPlate);
                     DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsPlate[0], PointsPlate[1]);
 
                     // Obrys vnutornej hrany
@@ -757,11 +761,11 @@ namespace BaseClasses
                         for(int i = 0; i<PointsHolesScrews.Count / 2; i++) // Kreslime len polovicu bodov
                         {
                             // Potrebujeme zamenit suradnice x a y
-                            canvasPointsHolesScrews.Add(new Point(lt_Plate.X + PointsHolesScrews[i].Y, lt_Plate.Y + PointsHolesScrews[i].X));
+                            canvasPointsHolesScrews.Add(new Point(-lt_Plate.X - PointsHolesScrews[i].Y, -lt_Plate.Y - PointsHolesScrews[i].X)); // -lt_Plate.Y - uz bolo preklopene uvazujem kladnu hodnotu
                         }
 
-                        canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref canvasPointsHolesScrews);
+                        canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                         double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * fReal_Model_Zoom_Factor;
 
@@ -784,11 +788,12 @@ namespace BaseClasses
                             Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z);
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
-                            Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y + fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br);
+
                             List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                            //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsAnchor);
                             DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
                             // Washers
@@ -796,14 +801,15 @@ namespace BaseClasses
                             // Washer - Plate
                             float fPlateWasherWidth = anchor.y_washer_plate;
                             float fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
-                            float fPlateWasherOffsetFromTop = 0.05f; // TO napojit na GUI ???
+                            float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
 
                             Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
-                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop + fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlate);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlate);
+
                             List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                            //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsPlateWasher);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
 
                             // Washer - Bearing
@@ -812,11 +818,12 @@ namespace BaseClasses
                             float fBearingWasherOffsetFromTop = fAnchorLength - 0.05f; // TO napojit na GUI ???
 
                             Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
-                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop + fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
+
                             List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                            //Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsBearingWasher);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
                         }
                     }

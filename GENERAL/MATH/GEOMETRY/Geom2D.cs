@@ -339,7 +339,7 @@ namespace MATH
         }
         public static void MirrorAboutX_ChangeYCoordinates(ref Point point)
         {
-            point.Y *= -1;            
+            point.Y *= -1;
         }
         public static List<Point> MirrorAboutX_ChangeYCoordinates(List<Point> points)
         {
