@@ -109,7 +109,7 @@ namespace PFD
                 SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
                 if (vm != null && vm.IsSetFromCode) return;
 
-                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); }
+                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); this.Title = "System Component Viewer"; }
 
                 if (e.PropertyName == "DrawPoints2D" ||
                     e.PropertyName == "DrawOutLine2D" ||
@@ -2419,7 +2419,7 @@ namespace PFD
         }
 
         private void OpenDataFile(string fileName)
-        {
+        {   
             CPlate deserializedPlate = null;
             CProductionInfo pInfo = null;
             using (Stream stream = File.Open(fileName, FileMode.Open))
@@ -2458,6 +2458,8 @@ namespace PFD
                 if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
 
                 DisplayComponent(vm);
+                
+                this.Title = $"System Component Viewer - {Path.GetFileName(fileName)}";
             }
         }
 
