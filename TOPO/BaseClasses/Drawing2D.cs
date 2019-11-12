@@ -537,12 +537,10 @@ namespace BaseClasses
                     {
                         for (int i = 0; i < pad.Top_Bars_x.Count; i++)
                         {
-                            // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
-                            // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                             Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
-                            p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
-
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
+                            p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
                             DrawCircle(p, fReal_Model_Zoom_Factor *  pad.Reference_Top_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
@@ -551,11 +549,10 @@ namespace BaseClasses
                     {
                         for (int i = 0; i < pad.Bottom_Bars_x.Count; i++)
                         {
-                            // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
-                            // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                             Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
-                            p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
+                            p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
                             DrawCircle(p, fReal_Model_Zoom_Factor * pad.Reference_Bottom_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
@@ -568,13 +565,11 @@ namespace BaseClasses
                         Point pStart = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].StartPoint.Y, pad.Top_Bars_y[0].StartPoint.Z);
                         Point pEnd = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].EndPoint.Y, pad.Top_Bars_y[0].EndPoint.Z);
 
-                        // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
-                        // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
-                        pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
-                        pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
-
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
+
+                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
                     }
@@ -586,13 +581,12 @@ namespace BaseClasses
                         Point pStart = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].StartPoint.Y, pad.Bottom_Bars_y[0].StartPoint.Z);
                         Point pEnd = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].EndPoint.Y, pad.Bottom_Bars_y[0].EndPoint.Z);
 
-                        // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
-                        // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
-                        pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
-                        pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
-
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
+
+                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
                     }
                 }
