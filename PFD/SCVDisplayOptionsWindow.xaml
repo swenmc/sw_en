@@ -1,0 +1,41 @@
+﻿<Window x:Class="PFD.SCVDisplayOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Export Display Options" Height="300" Width="250">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridDisplayOptions" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>                
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Margin="5,0,0,0">                
+                <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawPointNumbers2D" IsChecked="{Binding Path=DrawPointNumbers2D}" Content="Draw Point Numbers" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawHoles2D" IsChecked="{Binding Path=DrawHoles2D}" Content="Draw Holes" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawHoleCentreSymbol2D" IsChecked="{Binding Path=DrawHoleCentreSymbol2D}" Content="Draw Hole Centre Symbol" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Content="Draw Member Outline" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Content="Draw Bend Lines" Margin="0 5 0 0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0" >
+                <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
