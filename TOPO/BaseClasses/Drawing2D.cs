@@ -404,7 +404,22 @@ namespace BaseClasses
             return canvasForImage;
         }
 
-        public static void DrawFootingPadSideElevationToCanvas(CFoundation pad, CConnectionJointTypes joint, ref Canvas canvasForImage)
+        public static void DrawFootingPadSideElevationToCanvas(CFoundation pad,
+            CConnectionJointTypes joint,
+            double width,
+            double height,
+            ref Canvas canvasForImage,
+            bool bDrawFootingPad = true,
+            bool bDrawColumnOutline = true,
+            bool bDrawAnchors = true,
+            bool bDrawBasePlate = true,
+            bool bDrawScrews = true,
+            bool bDrawPerimeter = true,
+            bool bDrawReinforcement = true,
+            bool bDrawDPC_DPM = true,
+            bool bDrawDimensions = true,
+            bool bDrawNotes = true
+            )
         {
             // TODO Ondrej
 
@@ -413,44 +428,48 @@ namespace BaseClasses
             // 1. Potrebujem zjednotit tento system podla toho co je lepsie
             // - najprv pripravit vsetky realne suradnice, potom ich previest na canvas units a potom kreslit objekty // DrawPlateToCanvas
             // - pripravit realne suradnice pre dany bool (typ objektov ktore kreslime) , previest na canvas units, kreslit objekty a potom pokracovat pre dalsi bool // DrawFootingPadSideElevationToCanvas
-            
+
             // To Mato - je to asi jedno, ja by som mozno isiel podla bodu 2 - stale podla bool podla toho co prave ides kreslis
 
             // 2. Prepocitat vertikalne suradnice -y za +y a opacne - urobit to analogicky ako je v DrawPlateToCanvas
 
             // 3. Vypocitat scalovaci faktor fReal_Model_Zoom_Factor z rozmerov canvas a toho co sa kresli - vid  DrawPlateToCanvas
+            // Nieco som tu uz nadhodil
 
-            bool bDrawFootingPad = true;
-            bool bDrawColumnOutline = true;
-            bool bDrawAnchors = true;
-            bool bDrawBasePlate = true;
-            bool bDrawScrews = true;
-            bool bDrawPerimeter = true;
-            bool bDrawReinforcement = true;
-            bool bDrawDPC_DPM = true;
+            // 4. Urcit spravne hodnotu top margin a odsadenie modelu fmodelMarginTop_y
+            // Obrazok sa kresli na spodny okraj a nie do stredu, nepredpoklada tato funkcia ConvertRealPointsToCanvasDrawingPoints ze vsetky realne points su rovnakeho znamienka alebo nieco take?
 
-            bool bDrawDimensions;
-            bool bDrawNotes;
+            CConCom_Plate_B_basic basePlate = null;
 
-            // TODO - vypocitat a napojit
-            float fReal_Model_Zoom_Factor = 400; // TODO - vypocitat z rozmerov patky, stlpa a vykreslovanej casti floor slab
-            float min_x;
-            float min_y;
-            float modelMarginLeft_x = 30;
-            float modelMarginTop_y = 5;
-            
+            double crscDepth = 0; // zobrazovana sirka prierezu
+            float fVerticalOffsetLeft = 0; // hrana pruta nad plechom spoja vlavo
+            float fVerticalOffsetRight = 0; // hrana pruta na plechom spoja vpravo
+            float fTopLineSlope_rad = 0; // Sklon pomocnej ciary ktora ukoncuje stlp
+
+            if (joint != null)
+            {
+                if (joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic)
+                    basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
+
+                if (bDrawColumnOutline)
+                {
+                    crscDepth = joint.m_MainMember.CrScStart.h;
+
+                    fVerticalOffsetLeft = 0.3f * (float)crscDepth; // TODO - urobit nastavitelne odsadenie podla toho aku velku cast chceme kreslit
+                    fTopLineSlope_rad = 15f * MathF.fPI / 180f; // slope in radians
+                    fVerticalOffsetRight = fVerticalOffsetLeft + (float)crscDepth * (float)Math.Tan(fTopLineSlope_rad);
+                }
+            }
+
             // Draw footing pad outline
 
-            float fFloorWidthPart = 0.5f; // 0.5 m
+            float fFloorWidthPart = 0.5f; // 0.5 m // Sirka vykreslovanej casti floor slab - aproximovana skutocna vzdialenost, aby to bolo dobre na obrazku
             float fFloorEdge = 0.03f; // 0.03 m // Horizontalne / Vertikalne skosenie hrany
             float floorThickness = 0.15f; // TODO - napojit na GUI
             float fPadWidth_y = pad.m_fDim2;
             float fPadDepth_z = pad.m_fDim3;
 
-            float fRealOffset_DPC_DPM = 0.02f; // m
-
-            min_x = -0.5f * fPadWidth_y;
-            min_y = -fPadDepth_z - fRealOffset_DPC_DPM;
+            float fRealOffset_DPC_DPM = 0.02f; // m // Offset vrstvy DPC / DPM od floor slab alebo footing pad - aproximovana skutocna vzdialenost, aby to bolo dobre na obrazku
 
             // Suradnica x = 0 je v polovici rozmeru patky 0.5f * fPadWidth_y
             // Suradnica y = 0 je v urovni hornej hrany floor slab
@@ -467,14 +486,62 @@ namespace BaseClasses
                     new Point(horizontalOffset + fFloorWidthPart + fPadWidth_y, 0)
                 };
 
+            // Vytvorime pole bodov v ktorom budu vsetky relevantne krajne body potrebne pre urcenie velkosti vykreslovaneho obrazku
+            List<Point> PointsForEdgeCoord_real = new List<Point>
+            {
+                new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM), // Right
+                new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM),  // Left Bottom point
+                new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
+                new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight) // Top Right Column Point
+            };
+
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
-            CalculateModelLimits(PointsFootingPad_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+
+            CalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+
+            int scale_unit = 1000; // mm
+
+            double fModel_Length_x_real;
+            double fModel_Length_y_real;
+            double fModel_Length_x_page;
+            double fModel_Length_y_page;
+            double dFactor_x;
+            double dFactor_y;
+            double dReal_Model_Zoom_Factor;
+            float fmodelMarginLeft_x;
+            float fmodelMarginTop_y;
+            double dPointInOutDistance_x_page;
+            double dPointInOutDistance_y_page;
+
+            CalculateBasicValue(
+                    fTempMax_X,
+                    fTempMin_X,
+                    fTempMax_Y,
+                    fTempMin_Y,
+                    0.8f,
+                    scale_unit,
+                    width,
+                    height,
+                    null,
+                    0,
+                    0,
+                    out fModel_Length_x_real,
+                    out fModel_Length_y_real,
+                    out fModel_Length_x_page,
+                    out fModel_Length_y_page,
+                    out dFactor_x,
+                    out dFactor_y,
+                    out dReal_Model_Zoom_Factor,
+                    out fmodelMarginLeft_x,
+                    out fmodelMarginTop_y,
+                    out dPointInOutDistance_x_page,
+                    out dPointInOutDistance_y_page);
 
             if (bDrawFootingPad)
             {
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsFootingPad_real);
 
-                List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
 
@@ -493,7 +560,7 @@ namespace BaseClasses
                         new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM)
                     };
 
-                    PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                    PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
@@ -517,7 +584,7 @@ namespace BaseClasses
                         new Point(PointsFootingPad_real[5].X, PointsFootingPad_real[5].Y + fPerimeterDepth)
                     };
 
-                    PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                    PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
@@ -525,7 +592,7 @@ namespace BaseClasses
                     DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, dashes);
                 }
 
-                if(bDrawReinforcement)
+                if (bDrawReinforcement)
                 {
                     // Vyztuz v smere x kreslime ako kruhy (v reze)
                     // Vyztuz v smere y kreslime ako ciary (v pohlade z boku)
@@ -539,9 +606,9 @@ namespace BaseClasses
                         {
                             Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
-                            p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                            p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
 
@@ -551,13 +618,13 @@ namespace BaseClasses
                         {
                             Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
-                            p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                            p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
 
-                    double dLineThicknessFactor = fReal_Model_Zoom_Factor; //  0.4 * 1000; // TODO Ondrej - Vhodne nastavit zavislost hrubky ciary a priemeru vyztuze
+                    double dLineThicknessFactor = dReal_Model_Zoom_Factor; //  0.4 * 1000; // TODO Ondrej - Vhodne nastavit zavislost hrubky ciary a priemeru vyztuze
 
                     // Reinforcement in LCS y direction - lines
                     if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
@@ -570,8 +637,8 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
-                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
                     }
@@ -586,26 +653,17 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
-                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
-                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
                     }
                 }
             }
 
-            CConCom_Plate_B_basic basePlate = null;
-            if(joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic)
-            basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
-
             if (bDrawColumnOutline)
             {
-                double crscDepth = joint.m_MainMember.CrScStart.h;
                 horizontalOffset = - 0.5 * crscDepth;
-
-                float fVerticalOffsetLeft = 0.3f * (float)crscDepth; // TODO - urobit nastavitelne odsadenie podla toho aku velku cast chceme kreslit
-                float fTopLineSlope_rad = 15f * MathF.fPI / 180f ; // slope in radians
-                float fVerticalOffsetRight = fVerticalOffsetLeft + (float)crscDepth * (float)Math.Tan(fTopLineSlope_rad);
 
                 const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
                 double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth  }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
@@ -635,7 +693,7 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
 
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         Line l = new Line();
                         l.X1 = PointsLine[0].X;
@@ -660,7 +718,7 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
 
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         Line l = new Line();
                         l.X1 = PointsLine[0].X;
@@ -682,7 +740,7 @@ namespace BaseClasses
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomLeft);
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref topLeft);
 
-                List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft, topLeft }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft, topLeft }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 Line l_Left = new Line();
                 l_Left.X1 = PointsLineLeft[0].X;
@@ -700,7 +758,7 @@ namespace BaseClasses
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight);
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref topRight);
 
-                List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight, topRight }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight, topRight }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 Line l_Right = new Line();
                 l_Right.X1 = PointsLineRight[0].X;
@@ -735,7 +793,7 @@ namespace BaseClasses
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_Plate);
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_Plate);
 
-                    List<Point> PointsPlate = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_Plate, br_Plate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                    List<Point> PointsPlate = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_Plate, br_Plate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                     DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsPlate[0], PointsPlate[1]);
 
                     // Obrys vnutornej hrany
@@ -743,7 +801,7 @@ namespace BaseClasses
                     Point left = new Point(lt_Plate.X, lt_Plate.Y + basePlate.Ft);
                     Point right = new Point(br_Plate.X, lt_Plate.Y + basePlate.Ft);
 
-                    List <Point> PointsPlateLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { left, right }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                    List <Point> PointsPlateLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { left, right }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsPlateLine);
                     Line l = new Line();
                     l.X1 = PointsPlateLine[0].X;
@@ -770,9 +828,9 @@ namespace BaseClasses
                         }
 
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref canvasPointsHolesScrews);
-                        canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                        canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * fReal_Model_Zoom_Factor;
+                        double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * dReal_Model_Zoom_Factor;
 
                         DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, dHolesDiameterScrews, canvasForImage, 2);
                     }
@@ -798,7 +856,7 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br);
 
-                            List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                            List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
                             // Washers
@@ -814,7 +872,7 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlate);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlate);
 
-                            List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                            List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
 
                             // Washer - Bearing
@@ -828,7 +886,7 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
 
-                            List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+                            List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
                         }
                     }
@@ -1144,7 +1202,6 @@ namespace BaseClasses
             }
             return updatedLines;
         }
-
 
         public static void CalculateBasicValue(
             double fTempMax_X,

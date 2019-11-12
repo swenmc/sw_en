@@ -56,7 +56,7 @@
                     <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged" Grid.ColumnSpan="7" Margin="0,0,10,10">
                         <TabItem Name="tabItem2D" Header="View 2D">
                             <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
-                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch"/>
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch"/>
                         </TabItem>
                         <TabItem Name="tabItem3D" Header="View 3D">
                             <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Content="FrameFootingPadPreview" Name="FrameFootingPadPreview3D"

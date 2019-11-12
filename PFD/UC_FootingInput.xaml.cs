@@ -331,7 +331,8 @@ namespace PFD
         private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
         {
             Canvas page = new Canvas();
-            if (joint == null) return page;
+
+            if (pad == null || joint == null) return page;
 
 
             // TO Ondrej - toto je funkcia ktorou kreslime plech 
@@ -354,7 +355,7 @@ namespace PFD
              true);//  vm.DrawBendLines2D);
              */
 
-            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, ref page);
+            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, Frame2DWidth, Frame2DHeight, ref page);
 
             return page;
         }
@@ -364,6 +365,21 @@ namespace PFD
             CFootingInputVM vm = this.DataContext as CFootingInputVM;
 
             SetFrame2DSize();
+
+            // TO Ondrej - tu je problem ze zistujem velkost frame, ale vtedy su este jeho parametre NaN alebo 0 :)
+            // Asi to treba trosku preusporiadat
+
+            if (MathF.d_equal(Frame2D.ActualWidth, 0) || MathF.d_equal(Frame2D.ActualHeight, 0))
+            {
+                Frame2DWidth = 579; // TO Ondrej - zatial nastavujem natvrdo
+                Frame2DHeight = 397; // TO Ondrej - zatial nastavujem natvrdo
+            }
+
+            // ??? TO Ondrej - dal som tu takuto validaciu pre pripad ze sa nenastavia dobre rozmery frame alebo su neinicializovane
+            if (double.IsNaN(Frame2DWidth) || double.IsNaN(Frame2DHeight) || Frame2DWidth <= 0 || Frame2DHeight <= 0)
+            {
+                throw new ArgumentNullException("Error. Invalid size of canvas frame.");
+            }
 
             // Create 2D page
             Canvas page2D = GetFootingPad2DPreview(pad, joint);
