@@ -442,9 +442,15 @@ namespace BaseClasses
             CConCom_Plate_B_basic basePlate = null;
 
             double crscDepth = 0; // zobrazovana sirka prierezu
+            double horizontalOffsetColumn = 0; //
             float fVerticalOffsetLeft = 0; // hrana pruta nad plechom spoja vlavo
             float fVerticalOffsetRight = 0; // hrana pruta na plechom spoja vpravo
             float fTopLineSlope_rad = 0; // Sklon pomocnej ciary ktora ukoncuje stlp
+
+            Point bottomLeft_ColumnEdge = new Point();
+            Point topLeft_ColumnEdge = new Point();
+            Point bottomRight_ColumnEdge = new Point();
+            Point topRight_ColumnEdge = new Point();
 
             if (joint != null)
             {
@@ -454,10 +460,17 @@ namespace BaseClasses
                 if (bDrawColumnOutline)
                 {
                     crscDepth = joint.m_MainMember.CrScStart.h;
+                    horizontalOffsetColumn = -0.5 * crscDepth; // Column
 
                     fVerticalOffsetLeft = 0.3f * (float)crscDepth; // TODO - urobit nastavitelne odsadenie podla toho aku velku cast chceme kreslit
                     fTopLineSlope_rad = 15f * MathF.fPI / 180f; // slope in radians
                     fVerticalOffsetRight = fVerticalOffsetLeft + (float)crscDepth * (float)Math.Tan(fTopLineSlope_rad);
+
+                    bottomLeft_ColumnEdge = new Point(horizontalOffsetColumn + 0, basePlate.Ft);
+                    topLeft_ColumnEdge = new Point(horizontalOffsetColumn + 0, basePlate.Fl_Z + fVerticalOffsetLeft);
+
+                    bottomRight_ColumnEdge = new Point(horizontalOffsetColumn + crscDepth, basePlate.Ft);
+                    topRight_ColumnEdge = new Point(horizontalOffsetColumn + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight);
                 }
             }
 
@@ -663,8 +676,6 @@ namespace BaseClasses
 
             if (bDrawColumnOutline)
             {
-                horizontalOffset = - 0.5 * crscDepth;
-
                 const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
                 double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth  }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
 
@@ -675,11 +686,11 @@ namespace BaseClasses
                 // Sfiffeners Edges
                 for(int i = 0; i < stiffenersHorizontalPositions.Length; i++)
                 {
-                    PointsStiffenersBottom.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Ft));
-                    PointsStiffenersIntermediate.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
+                    PointsStiffenersBottom.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Ft));
+                    PointsStiffenersIntermediate.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
                     //double fVerticalOffset_x = fVerticalOffsetRight + ((float)crscDepth - stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // pozicie zadane zdola (kreslene zprava)
                     double fVerticalOffset_x = fVerticalOffsetLeft + (stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // Pozicie zadane zhora (kreslene zlava)
-                    PointsStiffenersTop.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Fl_Z + fVerticalOffset_x));
+                    PointsStiffenersTop.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z + fVerticalOffset_x));
 
                     // Draw Lines
 
@@ -734,13 +745,10 @@ namespace BaseClasses
                 // Outlines
 
                 // Left Line
-                Point bottomLeft = new Point(horizontalOffset + 0, basePlate.Ft);
-                Point topLeft = new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomLeft_ColumnEdge);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topLeft_ColumnEdge);
 
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomLeft);
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topLeft);
-
-                List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft, topLeft }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft_ColumnEdge, topLeft_ColumnEdge }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 Line l_Left = new Line();
                 l_Left.X1 = PointsLineLeft[0].X;
@@ -752,13 +760,10 @@ namespace BaseClasses
                 DrawLine(l_Left, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
 
                 // Right Line
-                Point bottomRight = new Point(horizontalOffset + crscDepth, basePlate.Ft);
-                Point topRight = new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight_ColumnEdge);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topRight_ColumnEdge);
 
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight);
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref topRight);
-
-                List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight, topRight }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight_ColumnEdge, topRight_ColumnEdge }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 Line l_Right = new Line();
                 l_Right.X1 = PointsLineRight[0].X;
@@ -891,6 +896,40 @@ namespace BaseClasses
                         }
                     }
                 }
+            }
+
+            if(bDrawDimensions)
+            {
+                List<CDimension> Dimensions = new List<CDimension>(); // Real
+
+                Point center = new Point(0,0); // TO Ondrej - toto by mal byt asi stred obrazku
+
+                // Vertical Dimensions
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true)); // Vertical Dimension - floor slab
+                Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true)); // Vertical Dimension - footing pad to floor slab bottom surface
+
+                // Horizontal Dimensions
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], bottomLeft_ColumnEdge, true, false)); // Horizontal Dimension - footing pad edge to column
+
+                //canvasDimensions = MirrorYCoordinates(Dimensions.ToArray()); // Nezrkadlime body lebo uz boli zrkadlene pre vykreslenie patky atd
+                List<CDimension> canvasDimensions = Dimensions;
+
+                canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                // Dimensions
+                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+            }
+
+            if (bDrawNotes)
+            {
+                CNote2D[] notes2D = null; 
+                List<CNote2D> canvasNotes2D = null;
+                //canvasNotes2D = MirrorYCoordinates(notes2D);
+                //canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(notes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                //Notes
+                //if (notes2D != null) DrawNote(canvasNotes2D, canvasForImage);
             }
         }
 
