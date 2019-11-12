@@ -541,7 +541,7 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
                             p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, fReal_Model_Zoom_Factor *  pad.Reference_Top_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
 
@@ -553,9 +553,11 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
                             p = ConvertRealPointToCanvasDrawingPoint(p, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Reference_Bottom_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
                         }
                     }
+
+                    double dLineThicknessFactor = fReal_Model_Zoom_Factor; //  0.4 * 1000; // TODO Ondrej - Vhodne nastavit zavislost hrubky ciary a priemeru vyztuze
 
                     // Reinforcement in LCS y direction - lines
                     if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
@@ -571,7 +573,7 @@ namespace BaseClasses
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
                     }
 
                     if (pad.Bottom_Bars_y != null && pad.Bottom_Bars_y.Count > 0)
@@ -587,7 +589,7 @@ namespace BaseClasses
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
                     }
                 }
             }
