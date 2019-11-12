@@ -433,11 +433,11 @@ namespace BaseClasses
             bool bDrawNotes;
 
             // TODO - vypocitat a napojit
-            float fReal_Model_Zoom_Factor = 350; // TODO - vypocitat z rozmerov patky, stlpa a vykreslovanej casti floor slab
+            float fReal_Model_Zoom_Factor = 400; // TODO - vypocitat z rozmerov patky, stlpa a vykreslovanej casti floor slab
             float min_x;
             float min_y;
-            float modelMarginLeft_x = 50;
-            float modelMarginTop_y = 50;
+            float modelMarginLeft_x = 30;
+            float modelMarginTop_y = 5;
             
             // Draw footing pad outline
 
@@ -447,8 +447,10 @@ namespace BaseClasses
             float fPadWidth_y = pad.m_fDim2;
             float fPadDepth_z = pad.m_fDim3;
 
+            float fRealOffset_DPC_DPM = 0.02f; // m
+
             min_x = -0.5f * fPadWidth_y;
-            min_y = -fPadDepth_z;
+            min_y = -fPadDepth_z - fRealOffset_DPC_DPM;
 
             // Suradnica x = 0 je v polovici rozmeru patky 0.5f * fPadWidth_y
             // Suradnica y = 0 je v urovni hornej hrany floor slab
@@ -478,19 +480,17 @@ namespace BaseClasses
 
                 if (bDrawDPC_DPM)
                 {
-                    float fRealOffset = 0.02f; // m
-
                     float fLineSlope_rad = 45f * MathF.fPI / 180f; // slope in radians
                     float fAngleAux_rad = 0.5f * fLineSlope_rad;
-                    double fAux = fRealOffset * Math.Tan(fAngleAux_rad);
+                    double fAux = fRealOffset_DPC_DPM * Math.Tan(fAngleAux_rad);
 
                     List<Point> PointsDPC_DPM = new List<Point>
                     {
-                        new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset),
-                        new Point(PointsFootingPad_real[1].X + fAux, PointsFootingPad_real[1].Y + fRealOffset),
-                        new Point(PointsFootingPad_real[2].X + fRealOffset, PointsFootingPad_real[2].Y + fAux),
-                        new Point(PointsFootingPad_real[3].X + fRealOffset, PointsFootingPad_real[3].Y + fRealOffset),
-                        new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset)
+                        new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM),
+                        new Point(PointsFootingPad_real[1].X + fAux, PointsFootingPad_real[1].Y + fRealOffset_DPC_DPM),
+                        new Point(PointsFootingPad_real[2].X + fRealOffset_DPC_DPM, PointsFootingPad_real[2].Y + fAux),
+                        new Point(PointsFootingPad_real[3].X + fRealOffset_DPC_DPM, PointsFootingPad_real[3].Y + fRealOffset_DPC_DPM),
+                        new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM)
                     };
 
                     PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
