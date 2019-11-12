@@ -56,6 +56,7 @@ namespace PFD
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
 
+            if (joint == null) return;
             // To Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
             // To Ondrej - kvoli vypoctu a kresleniu patky v 2D potrebujem niekde spocitat vzdialenosti
             // ake su medzi anchors a hranami base plates a medzi anchors a hranami foundation pads
@@ -330,6 +331,8 @@ namespace PFD
         private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
         {
             Canvas page = new Canvas();
+            if (joint == null) return page;
+
 
             // TO Ondrej - toto je funkcia ktorou kreslime plech 
             // podobne by malo byt pre kreslenie detailu patky
