@@ -495,7 +495,10 @@ namespace BaseClasses
 
                     PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                    DrawPolyLine(false, PointsDPC_DPM, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, null);
+                    DoubleCollection dashes = new DoubleCollection();
+                    dashes.Add(10); dashes.Add(10);
+
+                    DrawPolyLine(false, PointsDPC_DPM, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, dashes);
                 }
 
                 if (bDrawPerimeter)
@@ -516,7 +519,10 @@ namespace BaseClasses
 
                     PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
-                    DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, null);
+                    DoubleCollection dashes = new DoubleCollection();
+                    dashes.Add(10); dashes.Add(10);
+
+                    DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, dashes);
                 }
 
                 if(bDrawReinforcement)
@@ -642,7 +648,10 @@ namespace BaseClasses
                         l.X2 = PointsLine[1].X;
                         l.Y2 = PointsLine[1].Y;
 
-                        DrawLine(l, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash);
+                        DoubleCollection dashes = new DoubleCollection();
+                        dashes.Add(10); dashes.Add(10);
+
+                        DrawLine(l, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, dashes);
                     }
 
                     bool bTopPartAbovePlate = true;
