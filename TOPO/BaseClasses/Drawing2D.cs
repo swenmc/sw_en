@@ -413,6 +413,8 @@ namespace BaseClasses
             // 1. Potrebujem zjednotit tento system podla toho co je lepsie
             // - najprv pripravit vsetky realne suradnice, potom ich previest na canvas units a potom kreslit objekty // DrawPlateToCanvas
             // - pripravit realne suradnice pre dany bool (typ objektov ktore kreslime) , previest na canvas units, kreslit objekty a potom pokracovat pre dalsi bool // DrawFootingPadSideElevationToCanvas
+            
+            // To Mato - je to asi jedno, ja by som mozno isiel podla bodu 2 - stale podla bool podla toho co prave ides kreslis
 
             // 2. Prepocitat vertikalne suradnice -y za +y a opacne - urobit to analogicky ako je v DrawPlateToCanvas
 
@@ -421,11 +423,11 @@ namespace BaseClasses
             bool bDrawFootingPad = true;
             bool bDrawColumnOutline = true;
             bool bDrawAnchors = true;
-            bool bDrawBasePlate = true;
-            bool bDrawScrews = true;
-            bool bDrawPerimeter = true;
-            bool bDrawReinforcement = true;
-            bool bDrawDPC_DPM = true;
+            bool bDrawBasePlate = false;
+            bool bDrawScrews = false;
+            bool bDrawPerimeter = false;
+            bool bDrawReinforcement = false;
+            bool bDrawDPC_DPM = false;
 
             bool bDrawDimensions;
             bool bDrawNotes;
@@ -466,6 +468,8 @@ namespace BaseClasses
                     new Point(horizontalOffset + fFloorWidthPart + fPadWidth_y, 0)
                 };
 
+                PointsFootingPad_real = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsFootingPad_real);
+
                 List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                 DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -486,6 +490,8 @@ namespace BaseClasses
                         new Point(PointsFootingPad_real[3].X + fRealOffset, PointsFootingPad_real[3].Y - fRealOffset),
                         new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset)
                     };
+
+                    PointsDPC_DPM = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDPC_DPM);
 
                     PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
@@ -508,6 +514,8 @@ namespace BaseClasses
                         new Point(PointsFootingPad_real[5].X, PointsFootingPad_real[5].Y - fPerimeterDepth)
                     };
 
+                    PointsPerimeter = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsPerimeter);
+
                     PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
 
                     DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, null);
@@ -526,6 +534,7 @@ namespace BaseClasses
                         for (int i = 0; i < pad.Top_Bars_x.Count; i++)
                         {
                             // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                            // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                             Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
                             p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
 
@@ -538,6 +547,7 @@ namespace BaseClasses
                         for (int i = 0; i < pad.Bottom_Bars_x.Count; i++)
                         {
                             // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                            // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                             Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
                             p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
 
@@ -554,6 +564,7 @@ namespace BaseClasses
                         Point pEnd = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].EndPoint.Y, pad.Top_Bars_y[0].EndPoint.Z);
 
                         // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                        // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                         pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
                         pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
 
@@ -568,6 +579,7 @@ namespace BaseClasses
                         Point pEnd = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].EndPoint.Y, pad.Bottom_Bars_y[0].EndPoint.Z);
 
                         // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                        // To Mato - mas ju pripravenu ConvertRealPointToCanvasDrawingPoint
                         pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
                         pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
 
@@ -1072,6 +1084,10 @@ namespace BaseClasses
                 updatedPoints.Add(point);
             }
             return updatedPoints;
+        }
+        private static Point ConvertRealPointToCanvasDrawingPoint(Point point, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            return new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (point.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (point.Y - minY));            
         }
         private static List<CDimension> ConvertRealPointsToCanvasDrawingPoints(List<CDimension> dimensions, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
