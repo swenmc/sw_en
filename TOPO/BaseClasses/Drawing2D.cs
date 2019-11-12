@@ -452,6 +452,12 @@ namespace BaseClasses
             Point bottomRight_ColumnEdge = new Point();
             Point topRight_ColumnEdge = new Point();
 
+            Point bottomReinforcementLeftPointForDimensions = new Point();
+            Point bottomReinforcementRightPointForDimensions = new Point();
+
+            List<CAnchor> anchorsToDraw = null;
+            List<Point> anchorControlPointsForDimensions = null;
+
             if (joint != null)
             {
                 if (joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic)
@@ -666,6 +672,9 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
+                        bottomReinforcementLeftPointForDimensions = new Point(pStart.X, pStart.Y); // Nastavime suradnice bodov pouzite pre kotovanie
+                        bottomReinforcementRightPointForDimensions = new Point(pEnd.X, pEnd.Y);
+
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
@@ -844,7 +853,19 @@ namespace BaseClasses
                 // Draw Anchors
                 if (basePlate.AnchorArrangement.Anchors != null && basePlate.AnchorArrangement.Anchors.Length > 0)
                 {
+                    // Filter anchors in one row // Nechceme zobrazovat kotvy ktore su za sebou a prekryvaju sa
+
+                    anchorsToDraw = new List<CAnchor>();
+
                     foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                    {
+                        if (MathF.d_equal(anchor.m_pControlPoint.X, basePlate.AnchorArrangement.Anchors[0].m_pControlPoint.X)) // Pridame do zoznamu len kotvy, ktore maju rovnaku suradnicu X (kolmo na zobrazovanu rovinu YZ) ako prva kotva
+                            anchorsToDraw.Add(anchor);
+                    }
+
+                    anchorControlPointsForDimensions = new List<Point>(); // Inicializujeme zoznam bodov pre koty
+
+                    foreach (CAnchor anchor in anchorsToDraw) // Kreslime vyfiltrovane kotvy
                     {
                         // TODO Implementovat funckiu ktora vykresli jednu anchors + washers
 
@@ -854,6 +875,13 @@ namespace BaseClasses
                             float fAnchorDiameter = anchor.Diameter_shank;
                             float fAnchorLength = anchor.Length;
                             Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z);
+
+                            // Pridame bod do zoznamu bodov pre kotovanie
+                            Point insertingPointForDimesnions = new Point(); // Vytvorime nezavisly objekt pre bod - klon :)
+                            insertingPointForDimesnions.X = insertingPoint.X;
+                            insertingPointForDimesnions.Y = insertingPoint.Y;
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref insertingPointForDimesnions); // Bod transofrmujeme
+                            anchorControlPointsForDimensions.Add(insertingPointForDimesnions); // Bod pridame do zoznamu bodov pre koty
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
                             Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
@@ -898,19 +926,56 @@ namespace BaseClasses
                 }
             }
 
-            if(bDrawDimensions)
+            if (bDrawDimensions)
             {
                 List<CDimension> Dimensions = new List<CDimension>(); // Real
 
                 Point center = new Point(0,0); // TO Ondrej - toto by mal byt asi stred obrazku
 
                 // Vertical Dimensions
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true)); // Vertical Dimension - floor slab
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad depth
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true)); // Vertical Dimension - floor slab thickness
                 Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true)); // Vertical Dimension - footing pad to floor slab bottom surface
 
+                if (bDrawAnchors && anchorsToDraw != null && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
+                {
+                    CAnchor firstAnchor = anchorsToDraw.First(); // First from right
+                    Point cPoint = anchorControlPointsForDimensions.Last(); // Last from left
+                    Point conctactWithFloorSlab = new Point(PointsFootingPad_real.Last().X, PointsFootingPad_real.Last().Y); // Posledny bod obrysu
+
+                    Dimensions.Add(new CDimensionLinear(center, new Point(cPoint.X, cPoint.Y + firstAnchor.Length), new Point (cPoint.X, conctactWithFloorSlab.Y), false, true, 50)); // Vertical Dimension - first anchor
+                    Dimensions.Add(new CDimensionLinear(center, new Point(cPoint.X, conctactWithFloorSlab.Y), cPoint, false, true, 50)); // Vertical Dimension - first anchor
+                }
+
                 // Horizontal Dimensions
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], bottomLeft_ColumnEdge, true, false)); // Horizontal Dimension - footing pad edge to column
+
+                // Anchors
+                if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
+                {
+                    for(int i = 0; i < anchorControlPointsForDimensions.Count; i++)
+                    {
+                        if(i == 0) // First dimension
+                            Dimensions.Add(new CDimensionLinear(center, new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[i].Y), anchorControlPointsForDimensions[i], true, true));
+                        else
+                            Dimensions.Add(new CDimensionLinear(center, anchorControlPointsForDimensions[i-1], anchorControlPointsForDimensions[i], true, true));
+                    }
+                }
+
+                // Footing pad to column edge
+                if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true)); // Horizontal Dimension - footing pad edge to column
+                else // Kota v pripade ze nekotujeme ziadne anchors
+                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false)); // Horizontal Dimension - footing pad edge to column
+
+                // Reinforcement
+                if(bDrawReinforcement)
+                {
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftPointForDimensions.Y), bottomReinforcementLeftPointForDimensions, false, true, 70)); // Horizontal Dimension - reinforcement cover left
+                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementLeftPointForDimensions, bottomReinforcementRightPointForDimensions, false, true, 70)); // Horizontal Dimension - reinforcement length
+                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementRightPointForDimensions, new Point(PointsFootingPad_real[3].X, bottomReinforcementRightPointForDimensions.Y), false, true, 70)); // Horizontal Dimension - reinforcement cover right
+                }
+
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[3], false, true, 50)); // Horizontal Dimension - footing pad width
 
                 //canvasDimensions = MirrorYCoordinates(Dimensions.ToArray()); // Nezrkadlime body lebo uz boli zrkadlene pre vykreslenie patky atd
                 List<CDimension> canvasDimensions = Dimensions;
