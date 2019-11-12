@@ -406,30 +406,396 @@ namespace BaseClasses
 
         public static void DrawFootingPadSideElevationToCanvas(CFoundation pad, CConnectionJointTypes joint, ref Canvas canvasForImage)
         {
-            bool bDrawFootingPad;
-            bool bDrawColumnOutline;
-            bool bDrawAnchors;
-            bool bDrawBasePlate;
-            bool bDrawScrews;
-            bool bDrawPerimeter;
-            bool bDrawReinforcement;
-            bool bDrawDPC;
+            // TODO Ondrej
+
+            // Tuto funckiu potrebujem zrefaktorovat a precistit tak aby bol system vykreslovania podobny ako je pre DrawPlateToCanvas
+
+            // 1. Potrebujem zjednotit tento system podla toho co je lepsie
+            // - najprv pripravit vsetky realne suradnice, potom ich previest na canvas units a potom kreslit objekty // DrawPlateToCanvas
+            // - pripravit realne suradnice pre dany bool (typ objektov ktore kreslime) , previest na canvas units, kreslit objekty a potom pokracovat pre dalsi bool // DrawFootingPadSideElevationToCanvas
+
+            // 2. Prepocitat vertikalne suradnice -y za +y a opacne - urobit to analogicky ako je v DrawPlateToCanvas
+
+            // 3. Vypocitat scalovaci faktor fReal_Model_Zoom_Factor z rozmerov canvas a toho co sa kresli - vid  DrawPlateToCanvas
+
+            bool bDrawFootingPad = true;
+            bool bDrawColumnOutline = true;
+            bool bDrawAnchors = true;
+            bool bDrawBasePlate = true;
+            bool bDrawScrews = true;
+            bool bDrawPerimeter = true;
+            bool bDrawReinforcement = true;
+            bool bDrawDPC_DPM = true;
 
             bool bDrawDimensions;
             bool bDrawNotes;
 
-            float fFloorWidthPart = 0.5f * 100; // 0.5 m
-            float fFloorEdge = 0.03f * 100; // 0.03 m
-            float floorThickness = 0.15f * 100;
+            // TODO - vypocitat a napojit
+            float fReal_Model_Zoom_Factor = 350; // TODO - vypocitat z rozmerov patky, stlpa a vykreslovanej casti floor slab
+            float min_x;
+            float min_y;
+            float modelMarginLeft_x = 50;
+            float modelMarginTop_y = 50;
 
-            List<Point> PointsFootingPad = new List<Point> {
-                new Point(fFloorWidthPart + 0.5f * pad.m_fDim2 * 100, -floorThickness),
-            new Point(0.5f * pad.m_fDim2 * 100 + fFloorEdge, -floorThickness),
-            new Point(0.5f * pad.m_fDim2 * 100, -floorThickness - fFloorEdge)
-            };
-            DrawPolyLine(false, PointsFootingPad, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+            // Draw footing pad outline
 
+            float fFloorWidthPart = 0.5f; // 0.5 m
+            float fFloorEdge = 0.03f; // 0.03 m // Horizontalne / Vertikalne skosenie hrany
+            float floorThickness = 0.15f; // TODO - napojit na GUI
+            float fPadWidth_y = pad.m_fDim2;
+            float fPadDepth_z = pad.m_fDim3;
 
+            min_x = -0.5f * fPadWidth_y;
+            min_y = -fPadDepth_z;
+
+            // Suradnica x = 0 je v polovici rozmeru patky 0.5f * fPadWidth_y
+            // Suradnica y = 0 je v urovni hornej hrany floor slab
+
+            if (bDrawFootingPad)
+            {
+                double horizontalOffset = -0.5 * fPadWidth_y;
+
+                List<Point> PointsFootingPad_real = new List<Point>
+                {
+                    new Point(horizontalOffset + fFloorWidthPart + fPadWidth_y, -floorThickness),
+                    new Point(horizontalOffset + fPadWidth_y + fFloorEdge, -floorThickness),
+                    new Point(horizontalOffset + fPadWidth_y, -floorThickness - fFloorEdge),
+                    new Point(horizontalOffset + fPadWidth_y, -fPadDepth_z),
+                    new Point(horizontalOffset + 0, -fPadDepth_z),
+                    new Point(horizontalOffset + 0, 0),
+                    new Point(horizontalOffset + fFloorWidthPart + fPadWidth_y, 0)
+                };
+
+                List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+
+                if (bDrawDPC_DPM)
+                {
+                    float fRealOffset = 0.02f; // m
+
+                    float fLineSlope_rad = 45f * MathF.fPI / 180f; // slope in radians
+                    float fAngleAux_rad = 0.5f * fLineSlope_rad;
+                    double fAux = fRealOffset * Math.Tan(fAngleAux_rad);
+
+                    List<Point> PointsDPC_DPM = new List<Point>
+                    {
+                        new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset),
+                        new Point(PointsFootingPad_real[1].X + fAux, PointsFootingPad_real[1].Y - fRealOffset),
+                        new Point(PointsFootingPad_real[2].X + fRealOffset, PointsFootingPad_real[2].Y - fAux),
+                        new Point(PointsFootingPad_real[3].X + fRealOffset, PointsFootingPad_real[3].Y - fRealOffset),
+                        new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset)
+                    };
+
+                    PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                    DrawPolyLine(false, PointsDPC_DPM, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, null);
+                }
+
+                if (bDrawPerimeter)
+                {
+                    // TODO - sem potrebujeme dostat rozmery perimeter pre danu stranu floor slab kde sa nachadza patka (left/right, front/back)
+
+                    float fPerimeterWidth = 0.2f; // TODO - napojit
+                    float fPerimeterDepth = fPadDepth_z; // TODO - napojit
+
+                    List<Point> PointsPerimeter = new List<Point>
+                    {
+                        new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y),
+                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth + fFloorEdge, PointsFootingPad_real[1].Y),
+                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[1].Y - fFloorEdge),
+                        new Point(PointsFootingPad_real[4].X + fPerimeterWidth, PointsFootingPad_real[5].Y - fPerimeterDepth),
+                        new Point(PointsFootingPad_real[5].X, PointsFootingPad_real[5].Y - fPerimeterDepth)
+                    };
+
+                    PointsPerimeter = ConvertRealPointsToCanvasDrawingPoints(PointsPerimeter, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                    DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, null);
+                }
+
+                if(bDrawReinforcement)
+                {
+                    // Vyztuz v smere x kreslime ako kruhy (v reze)
+                    // Vyztuz v smere y kreslime ako ciary (v pohlade z boku)
+
+                    double horizontalOffsetReinfocement = 3 * 0.075f; // !!!!! Je potrebne doriesit co tu ma byt - 3x concrete cover ?????????
+
+                    // Reinforcement in LCS x direction - circles
+                    if (pad.Top_Bars_x != null && pad.Top_Bars_x.Count > 0)
+                    {
+                        for (int i = 0; i < pad.Top_Bars_x.Count; i++)
+                        {
+                            // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                            Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
+                            p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
+
+                            DrawCircle(p, fReal_Model_Zoom_Factor *  pad.Reference_Top_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                        }
+                    }
+
+                    if (pad.Bottom_Bars_x != null && pad.Bottom_Bars_x.Count > 0)
+                    {
+                        for (int i = 0; i < pad.Bottom_Bars_x.Count; i++)
+                        {
+                            // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                            Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
+                            p = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (p.Y - min_y));
+
+                            DrawCircle(p, fReal_Model_Zoom_Factor * pad.Reference_Bottom_Bar_x.Diameter, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                        }
+                    }
+
+                    // Reinforcement in LCS y direction - lines
+                    if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
+                    {
+                        // Kreslime len prvy prut
+                        // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
+                        Point pStart = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].StartPoint.Y, pad.Top_Bars_y[0].StartPoint.Z);
+                        Point pEnd = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].EndPoint.Y, pad.Top_Bars_y[0].EndPoint.Z);
+
+                        // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                        pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
+                        pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
+
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
+                    }
+
+                    if (pad.Bottom_Bars_y != null && pad.Bottom_Bars_y.Count > 0)
+                    {
+                        // Kreslime len prvy prut
+                        // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
+                        Point pStart = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].StartPoint.Y, pad.Bottom_Bars_y[0].StartPoint.Z);
+                        Point pEnd = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].EndPoint.Y, pad.Bottom_Bars_y[0].EndPoint.Z);
+
+                        // TODO Ondrej - asi by bolo dobre zaviest funkciu ktora prevedie aj jednotlive body, nielen zoznam bodov na canvas units ConvertRealPointsToCanvasDrawingPoints
+                        pStart = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pStart.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pStart.Y - min_y));
+                        pEnd = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (pEnd.X - min_x), modelMarginTop_y + fReal_Model_Zoom_Factor * (pEnd.Y - min_y));
+
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, 3, canvasForImage, DashStyles.Solid, null);
+                    }
+                }
+            }
+
+            CConCom_Plate_B_basic basePlate = null;
+            if(joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic)
+            basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
+
+            if (bDrawColumnOutline)
+            {
+                double crscDepth = joint.m_MainMember.CrScStart.h;
+                double horizontalOffset = - 0.5 * crscDepth;
+
+                float fVerticalOffsetLeft = 0.3f * (float)crscDepth; // TODO - urobit nastavitelne odsadenie podla toho aku velku cast chceme kreslit
+                float fTopLineSlope_rad = 15f * MathF.fPI / 180f ; // slope in radians
+                float fVerticalOffsetRight = fVerticalOffsetLeft + (float)crscDepth * (float)Math.Tan(fTopLineSlope_rad);
+
+                const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
+                double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth  }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
+
+                List<Point> PointsStiffenersBottom = new List<Point>();
+                List<Point> PointsStiffenersIntermediate = new List<Point>();
+                List<Point> PointsStiffenersTop = new List<Point>();
+
+                // Sfiffeners Edges
+                for(int i = 0; i < stiffenersHorizontalPositions.Length; i++)
+                {
+                    PointsStiffenersBottom.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Ft));
+                    PointsStiffenersIntermediate.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
+                    //double fVerticalOffset_x = fVerticalOffsetRight + ((float)crscDepth - stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // pozicie zadane zdola (kreslene zprava)
+                    double fVerticalOffset_x = fVerticalOffsetLeft + (stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // Pozicie zadane zhora (kreslene zlava)
+                    PointsStiffenersTop.Add(new Point(horizontalOffset + stiffenersHorizontalPositions[i], basePlate.Fl_Z + fVerticalOffset_x));
+
+                    // Draw Lines
+
+                    bool bBottomPartBehindPlate = true;
+
+                    if (bBottomPartBehindPlate)
+                    {
+                        Point bottom = new Point(PointsStiffenersBottom[i].X, PointsStiffenersBottom[i].Y);
+                        Point top = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
+
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                        Line l = new Line();
+                        l.X1 = PointsLine[0].X;
+                        l.Y1 = PointsLine[0].Y;
+
+                        l.X2 = PointsLine[1].X;
+                        l.Y2 = PointsLine[1].Y;
+
+                        DrawLine(l, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash);
+                    }
+
+                    bool bTopPartAbovePlate = true;
+
+                    if (bTopPartAbovePlate)
+                    {
+                        Point bottom = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
+                        Point top = new Point(PointsStiffenersTop[i].X, PointsStiffenersTop[i].Y);
+
+                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                        Line l = new Line();
+                        l.X1 = PointsLine[0].X;
+                        l.Y1 = PointsLine[0].Y;
+
+                        l.X2 = PointsLine[1].X;
+                        l.Y2 = PointsLine[1].Y;
+
+                        DrawLine(l, Brushes.Turquoise, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+                    }
+                }
+
+                // Outlines
+
+                // Left Line
+                Point bottomLeft = new Point(horizontalOffset + 0, basePlate.Ft);
+                Point topLeft = new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft);
+
+                List<Point> PointsLineLeft = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomLeft, topLeft }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                Line l_Left = new Line();
+                l_Left.X1 = PointsLineLeft[0].X;
+                l_Left.Y1 = PointsLineLeft[0].Y;
+
+                l_Left.X2 = PointsLineLeft[1].X;
+                l_Left.Y2 = PointsLineLeft[1].Y;
+
+                DrawLine(l_Left, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+
+                // Right Line
+                Point bottomRight = new Point(horizontalOffset + crscDepth, basePlate.Ft);
+                Point topRight = new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight);
+
+                List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight, topRight }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                Line l_Right = new Line();
+                l_Right.X1 = PointsLineRight[0].X;
+                l_Right.Y1 = PointsLineRight[0].Y;
+
+                l_Right.X2 = PointsLineRight[1].X;
+                l_Right.Y2 = PointsLineRight[1].Y;
+
+                DrawLine(l_Right, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+
+                // Top Line
+                Line l_Top = new Line();
+                l_Top.X1 = PointsLineLeft[1].X;
+                l_Top.Y1 = PointsLineLeft[1].Y;
+
+                l_Top.X2 = PointsLineRight[1].X;
+                l_Top.Y2 = PointsLineRight[1].Y;
+
+                DrawLine(l_Top, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+            }
+
+            if (basePlate != null)
+            {
+                // Draw Plate Outline
+                if (bDrawBasePlate)
+                {
+                    Point insertingPoint_Plate = new Point(0, 0); // TODO - doplnit napojenie na excentricity
+
+                    Point lt_Plate = new Point(insertingPoint_Plate.X - basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y);
+                    Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y + basePlate.Fl_Z); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+
+                    // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                    List<Point> PointsPlate = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_Plate, br_Plate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                    DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsPlate[0], PointsPlate[1]);
+
+                    // Obrys vnutornej hrany
+
+                    Point left = new Point(lt_Plate.X, lt_Plate.Y + basePlate.Ft);
+                    Point right = new Point(br_Plate.X, lt_Plate.Y + basePlate.Ft);
+
+                    List <Point> PointsPlateLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { left, right }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                    Line l = new Line();
+                    l.X1 = PointsPlateLine[0].X;
+                    l.Y1 = PointsPlateLine[0].Y;
+
+                    l.X2 = PointsPlateLine[1].X;
+                    l.Y2 = PointsPlateLine[1].Y;
+
+                    DrawLine(l, Brushes.Brown, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash);
+
+                    if(bDrawScrews)
+                    {
+                        bool bDrawHoles = true;
+                        bool bDrawHoleCentreSymbols = true;
+
+                        List<Point> PointsHolesScrews = basePlate.ScrewArrangement.HolesCentersPoints2D.ToList();
+
+                        List<Point> canvasPointsHolesScrews = new List<Point>();
+
+                        for(int i = 0; i<PointsHolesScrews.Count / 2; i++) // Kreslime len polovicu bodov
+                        {
+                            // Potrebujeme zamenit suradnice x a y
+                            canvasPointsHolesScrews.Add(new Point(lt_Plate.X + PointsHolesScrews[i].Y, lt_Plate.Y + PointsHolesScrews[i].X));
+                        }
+
+                        canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                        double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * fReal_Model_Zoom_Factor;
+
+                        DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, dHolesDiameterScrews, canvasForImage, 2);
+                    }
+                }
+
+                // Draw Anchors
+                if (basePlate.AnchorArrangement.Anchors != null && basePlate.AnchorArrangement.Anchors.Length > 0)
+                {
+                    foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+                    {
+                        // TODO Implementovat funckiu ktora vykresli jednu anchors + washers
+
+                        // Anchor Bar
+                        if (bDrawAnchors)
+                        {
+                            float fAnchorDiameter = anchor.Diameter_shank;
+                            float fAnchorLength = anchor.Length;
+                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z);
+
+                            Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
+                            Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y + fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+
+                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                            DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
+
+                            // Washers
+
+                            // Washer - Plate
+                            float fPlateWasherWidth = anchor.y_washer_plate;
+                            float fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
+                            float fPlateWasherOffsetFromTop = 0.05f; // TO napojit na GUI ???
+
+                            Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
+                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop + fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+
+                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                            DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
+
+                            // Washer - Bearing
+                            float fBearingWasherWidth = anchor.y_washer_bearing;
+                            float fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
+                            float fBearingWasherOffsetFromTop = fAnchorLength - 0.05f; // TO napojit na GUI ???
+
+                            Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
+                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop + fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+
+                            // TODO - Transformovat skutocne body do zobrazovacich jednotiek
+                            List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, min_x, min_y, modelMarginLeft_x, modelMarginTop_y, fReal_Model_Zoom_Factor);
+
+                            DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
+                        }
+                    }
+                }
+            }
         }
 
         public static Stream GetCanvasStream(Canvas canvas)
@@ -542,7 +908,7 @@ namespace BaseClasses
             Point pCenterPoint = new Point(width / 2, height / 2);
 
             // Head Inside Circle
-            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, 1, canvasForImage);
+            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, null, 1, canvasForImage);
 
             // Head Hexagon
             float a = (0.5f * screw.D_h_headdiameter) / (float)Math.Cos(30f / 180f * Math.PI);
@@ -556,7 +922,7 @@ namespace BaseClasses
             DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Washer Circle
-            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, 1, canvasForImage);
+            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, null, 1, canvasForImage);
 
             // Draw Symbol of Center
             if (bDrawCentreSymbol)
@@ -1064,7 +1430,7 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, double dHolesDiameter, Canvas canvasForImage)
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, double dHolesDiameter, Canvas canvasForImage, double SymbolOffsetFromHoleCircle = 5)
         {
             if (bDrawHoles)
             {
@@ -1074,10 +1440,10 @@ namespace BaseClasses
                     for (int i = 0; i < PointsHoles.Count; i++)
                     {
                         // Draw Hole
-                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, 1, canvasForImage);
+                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, 1, canvasForImage);
 
                         // Draw Symbol of Center
-                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 10, Brushes.Red, 1, canvasForImage);
+                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, Brushes.Red, 1, canvasForImage);
                     }
                 }
             }
@@ -1308,7 +1674,7 @@ namespace BaseClasses
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
         }
-        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, DashStyle dashStyle = null, DoubleCollection dashArray = null)
         {
             if (listPoints == null) return;
             if (listPoints.Count < 2) return;
@@ -1326,6 +1692,13 @@ namespace BaseClasses
             myLine.StrokeThickness = thickness;
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
+
+            if (dashStyle != null)
+            {
+                if (dashArray != null) myLine.StrokeDashArray = dashArray;
+                else myLine.StrokeDashArray = dashStyle.Dashes;
+            }
+
             Canvas.SetTop(myLine, canvasTop);
             Canvas.SetLeft(myLine, canvasLeft);
             imageCanvas.Children.Add(myLine);
@@ -1353,7 +1726,7 @@ namespace BaseClasses
             Canvas.SetLeft(polygon, canvasLeft);
             imageCanvas.Children.Add(polygon);
         }
-        public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
+        public static void DrawCircle(Point center, double diameter, SolidColorBrush colorStroke, SolidColorBrush colorFill, double thickness, Canvas imageCanvas)
         {
             if (!Double.IsNaN(center.X))
             {
@@ -1361,7 +1734,9 @@ namespace BaseClasses
                 circle.Height = diameter;
                 circle.Width = diameter;
                 circle.StrokeThickness = thickness;
-                circle.Stroke = color;
+                circle.Stroke = colorStroke;
+                if(colorFill != null)
+                  circle.Fill = colorFill;
 
                 double left = center.X - (diameter / 2) + thickness / 2;
                 double top = center.Y - (diameter / 2) + thickness / 2;

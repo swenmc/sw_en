@@ -115,6 +115,13 @@ namespace BaseClasses
             m_pControlPoint = pControlEdgePoint;
             m_StartPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
             //m_EndPoint - závisi od pootocenia
+
+            m_EndPoint = new Point3D(m_pControlPoint.X + fLength, m_pControlPoint.Y, m_pControlPoint.Z);
+            if (!BarIsInXDirection)
+            {
+                m_EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fLength, m_pControlPoint.Z);
+            }
+
             m_fDim1 = 0.5f * fDiameter;
             m_fDim2 = fLength;
             //m_volColor_2 = volColor;

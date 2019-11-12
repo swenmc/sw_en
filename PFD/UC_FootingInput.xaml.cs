@@ -331,6 +331,11 @@ namespace PFD
         {
             Canvas page = new Canvas();
 
+            // TO Ondrej - toto je funkcia ktorou kreslime plech 
+            // podobne by malo byt pre kreslenie detailu patky
+            // bool hodnoty su zatial vo vnutri funkcie DrawFootingPadSideElevationToCanvas
+
+            /*
             Drawing2D.DrawPlateToCanvas(joint.m_arrPlates.FirstOrDefault(),
                Frame2DWidth,
                Frame2DHeight,
@@ -344,6 +349,7 @@ namespace PFD
              true,//  vm.DrawDimensions2D,
              true,//  vm.DrawMemberOutline2D,
              true);//  vm.DrawBendLines2D);
+             */
 
             Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, ref page);
 
