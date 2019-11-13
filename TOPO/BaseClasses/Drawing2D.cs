@@ -460,6 +460,8 @@ namespace BaseClasses
             Point FloorMeshReinforcementRightPointForDimensions = new Point();
             Point FloorMeshNotePoint = new Point();
 
+            Point dpc_dpm_NotePoint = new Point();
+
             Point columnNotePoint = new Point();
             Point anchorNotePoint = new Point();
 
@@ -477,6 +479,11 @@ namespace BaseClasses
 
             List<CAnchor> anchorsToDraw = null;
             List<Point> anchorControlPointsForDimensions = null;
+
+            Point reinforcement_bottom_x_NotePoint = new Point();
+            Point reinforcement_top_x_NotePoint = new Point();
+            Point reinforcement_bottom_y_NotePoint = new Point();
+            Point reinforcement_top_y_NotePoint = new Point();
 
             if (joint != null)
             {
@@ -603,6 +610,8 @@ namespace BaseClasses
                         new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM)
                     };
 
+                    dpc_dpm_NotePoint = new Point(PointsDPC_DPM[1].X + 0.05 * (PointsDPC_DPM[0].X - PointsDPC_DPM[1].X), PointsDPC_DPM[0].Y); // 5% od zlomu
+
                     PointsDPC_DPM = ConvertRealPointsToCanvasDrawingPoints(PointsDPC_DPM, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                     DoubleCollection dashes = new DoubleCollection();
@@ -657,6 +666,10 @@ namespace BaseClasses
                         {
                             Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
+
+                            if(i == pad.Top_Bars_x.Count - 1) // Consider only last bar
+                               reinforcement_top_x_NotePoint = new Point(p.X, p.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice poslednej tyce
+
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                             DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
@@ -669,6 +682,10 @@ namespace BaseClasses
                         {
                             Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
+
+                            if (i == pad.Bottom_Bars_x.Count-1) // Consider only last bar
+                                reinforcement_bottom_x_NotePoint = new Point(p.X, p.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice poslednej tyce
+
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                             DrawCircle(p, dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
@@ -688,6 +705,8 @@ namespace BaseClasses
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
+                        reinforcement_top_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
+
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
@@ -706,6 +725,8 @@ namespace BaseClasses
 
                         bottomReinforcementLeftPointForDimensions = new Point(pStart.X, pStart.Y); // Nastavime suradnice bodov pouzite pre kotovanie
                         bottomReinforcementRightPointForDimensions = new Point(pEnd.X, pEnd.Y);
+
+                        reinforcement_bottom_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
 
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
@@ -1003,8 +1024,8 @@ namespace BaseClasses
 
                 // Vertical Dimensions
                 Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad depth
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true, 70)); // Vertical Dimension - floor slab thickness
-                Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true, 70)); // Vertical Dimension - footing pad to floor slab bottom surface
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true, 50)); // Vertical Dimension - floor slab thickness
+                Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true, 50)); // Vertical Dimension - footing pad to floor slab bottom surface
 
                 if (bDrawReinforcement && bDrawReinforcementInSlab)
                     Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, FloorMeshReinforcementRightPointForDimensions.Y), PointsFootingPad_real[6], false, true)); // Vertical Dimension - footing pad top surface to mesh - floor mesh cover
@@ -1071,16 +1092,16 @@ namespace BaseClasses
 
                 double dVerticalOffsetOfText = 0.03; // m // Vertikalne odsadenie textu od ciary
                 double dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
-                double dVerticalProjectionOfArrow = 0.15; // m // TODO Ondrej - S tymto sa treba pohrat
+                double dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.05 m
-                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.05;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+                // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.1 m
+                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.1;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
 
                 bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
 
                 // Column Description
                 bool bDrawColumnDescription = true;
-                if (bDrawColumnDescription)
+                if (bDrawColumnOutline && bDrawColumnDescription)
                 {
                     Point pArrowStart = columnNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
@@ -1092,9 +1113,9 @@ namespace BaseClasses
 
                 // Anchors Description
                 bool bDrawAnchorDescription = true;
-                if (bDrawAnchorDescription)
+                if (bDrawAnchors && bDrawAnchorDescription)
                 {
-                    dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
+                    dVerticalProjectionOfArrow = 0.4; // m // TODO Ondrej - S tymto sa treba pohrat
 
                     Point pArrowStart = anchorNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
@@ -1131,7 +1152,7 @@ namespace BaseClasses
                     if (bDrawAnchorBottomWasherDescription)
                     {
                         dHorizontalProjectionOfArrow = 0.30; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
-                        dVerticalProjectionOfArrow = -0.35; // m // TODO Ondrej - S tymto sa treba pohrat
+                        dVerticalProjectionOfArrow = -0.50; // m // TODO Ondrej - S tymto sa treba pohrat
 
                         Point pArrowStart_AnchorBottomWasher = bearingWasherNotePoint;
                         double pTextPosition_AnchorBottomWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
@@ -1147,25 +1168,113 @@ namespace BaseClasses
 
                         notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                     }
+                }
 
-                    bool bDrawMeshDescription = true;
+                bool bDrawMeshDescription = true; // Kreslit poznamku
+                bool bDrawArrowMeshDescription = true; // Kreslit sipku
 
-                    if (bDrawMeshDescription)
-                    {
-                        dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
-                        dVerticalProjectionOfArrow = 0.10; // m // TODO Ondrej - S tymto sa treba pohrat
+                if (bDrawReinforcementInSlab && bDrawMeshDescription)
+                {
+                    dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+                    dVerticalProjectionOfArrow = 0.10; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                        Point pArrowStart_Mesh = FloorMeshNotePoint;
-                        double pTextPosition_Mesh_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Mesh.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                    Point pArrowStart_Mesh = FloorMeshNotePoint;
+                    double pTextPosition_Mesh_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Mesh.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
-                        Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pArrowStart_Mesh.Y - dVerticalProjectionOfArrow);
-                        Point pTextNote_Mesh = new Point(pArrowEnd_Mesh.X, pArrowEnd_Mesh.Y - dVerticalOffsetOfText);
-                        // Sample text: SE92 [500 Grade] Mesh
+                    Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pArrowStart_Mesh.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_Mesh = new Point(pArrowEnd_Mesh.X, pArrowEnd_Mesh.Y - dVerticalOffsetOfText);
+                    // Sample text: SE92 [500 Grade] Mesh
 
-                        string sText_Mesh = floorSlab.MeshGradeName +" [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
+                    string sText_Mesh = floorSlab.MeshGradeName + " [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
 
-                        notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    }
+                    notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, 0, 0, bDrawArrowMeshDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                }
+
+                bool bDraw_dpc_dpm_Description = true; // Kreslit poznamku
+                bool bDrawArrow_dpc_dpm_Description = true; // Kreslit sipku
+
+                if (bDrawDPC_DPM && bDraw_dpc_dpm_Description)
+                {
+                    dHorizontalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+                    dVerticalProjectionOfArrow = -0.10; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                    Point pArrowStart_dpc_dpm = dpc_dpm_NotePoint;
+                    double pTextPosition_dpc_dpm_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_dpc_dpm.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd_dpc_dpm = new Point(pTextPosition_dpc_dpm_x, pArrowStart_dpc_dpm.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_dpc_dpm = new Point(pArrowEnd_dpc_dpm.X, pArrowEnd_dpc_dpm.Y - dVerticalOffsetOfText);
+                    // Sample text: DPC to underside
+
+                    string sText_dpc_dpm = "DPC to underside";
+
+                    notes2D.Add(new CNote2D(pTextNote_dpc_dpm, sText_dpc_dpm, 0, 0, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, pArrowEnd_dpc_dpm, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                }
+
+                bool bDraw_reinforcement_Description = true; // Kreslit poznamku
+                bool bDrawArrow_reinforcement_Description = true; // Kreslit sipku
+
+                if (bDrawReinforcement && bDraw_reinforcement_Description)
+                {
+                    dHorizontalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+
+                    // TODO Ondrej - toto vykreslovanie poznamok by sa dalo refaktorovat pre tieto 4 pozicie vyztuze
+                    // Navrhujem vytovrit jednu funkciu, ktora vykresli poznamku pre vyztuz, poslat jej objekt vyztuze, polohu NotePoint a odsadenia ciary
+
+                    // Top_Bar_x
+                    dVerticalProjectionOfArrow = 0.22; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                    Point pArrowStart_RC_Top_x = reinforcement_top_x_NotePoint;
+                    double pTextPosition_RC_Top_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_RC_Top_x = new Point(pArrowEnd_RC_Top_x.X, pArrowEnd_RC_Top_x.Y - dVerticalOffsetOfText);
+                    // Sample text: 5 x HD16 bars with standard hook each end
+
+                    string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+
+                    notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+
+                    // Top_Bar_y
+                    dVerticalProjectionOfArrow = 0.30; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                    Point pArrowStart_RC_Top_y = reinforcement_top_y_NotePoint;
+                    double pTextPosition_RC_Top_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_RC_Top_y = new Point(pArrowEnd_RC_Top_y.X, pArrowEnd_RC_Top_y.Y - dVerticalOffsetOfText);
+                    // Sample text: 5 x HD16 bars with standard hook each end
+
+                    string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+
+                    notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+
+                    // Bottom_Bar_x
+                    dVerticalProjectionOfArrow = -0.20; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                    Point pArrowStart_RC_Bottom_x = reinforcement_bottom_x_NotePoint;
+                    double pTextPosition_RC_Bottom_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_RC_Bottom_x = new Point(pArrowEnd_RC_Bottom_x.X, pArrowEnd_RC_Bottom_x.Y - dVerticalOffsetOfText);
+                    // Sample text: 5 x HD16 bars with standard hook each end
+
+                    string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+
+                    notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+
+                    // Bottom_Bar_y
+                    dVerticalProjectionOfArrow = -0.27; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                    Point pArrowStart_RC_Bottom_y = reinforcement_bottom_y_NotePoint;
+                    double pTextPosition_RC_Bottom_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote_RC_Bottom_y = new Point(pArrowEnd_RC_Bottom_y.X, pArrowEnd_RC_Bottom_y.Y - dVerticalOffsetOfText);
+                    // Sample text: 5 x HD16 bars with standard hook each end
+
+                    string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+
+                    notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                 }
 
                 List<CNote2D> canvasNotes2D = notes2D;
