@@ -975,7 +975,10 @@ namespace BaseClasses
                             List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
-                            // Washers
+                            // Washers & Nuts
+                            CNut nut = new CNut(anchor.Name); // TODO - docasne - vytvorit databazu a napojit
+                            float fNutWidth = nut.fB_accrosCorners;
+                            float fNutHeight = nut.fC_headHeight;
 
                             // Washer - Plate
                             fPlateWasherWidth_x = anchor.x_washer_plate; // Kolmo na rovinu
@@ -995,11 +998,23 @@ namespace BaseClasses
                             List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
 
+                            // Nut - Plate
+                            float fPlateWasherNutOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness - fNutHeight;
+
+                            Point lt_WasherPlateNut = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop);
+                            Point br_WasherPlateNut = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop - fNutHeight);
+
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlateNut);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlateNut);
+
+                            List<Point> PointsPlateWasherNut = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlateNut, br_WasherPlateNut }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsPlateWasherNut[0], PointsPlateWasherNut[1]);
+
                             // Washer - Bearing
                             fBearingWasherWidth_x = anchor.x_washer_bearing; // Kolmo na rovinu
                             fBearingWasherWidth_y = anchor.y_washer_bearing;
                             fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
-                            float fBearingWasherOffsetFromTop = fAnchorLength - 0.05f; // TO napojit na GUI ???
+                            float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
 
                             Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
                             Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
@@ -1011,6 +1026,32 @@ namespace BaseClasses
 
                             List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
+
+                            // Nuts - Bearing
+                            // Top nut
+
+                            float fBearingWasherNut_Top_OffsetFromTop = fBearingWasherOffsetFromTop - fNutHeight;
+
+                            Point lt_WasherBearingNut_Top = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop);
+                            Point br_WasherBearingNut_Top = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop - fNutHeight);
+
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Top);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Top);
+
+                            List<Point> PointsBearingWasherNut_Top = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Top, br_WasherBearingNut_Top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsBearingWasherNut_Top[0], PointsBearingWasherNut_Top[1]);
+
+                            // Bottom nut
+                            float fBearingWasherNut_Bottom_OffsetFromTop = fBearingWasherOffsetFromTop + fBearingWasherThickness;
+
+                            Point lt_WasherBearingNut_Bottom = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop);
+                            Point br_WasherBearingNut_Bottom = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop - fNutHeight);
+
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Bottom);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Bottom);
+
+                            List<Point> PointsBearingWasherNut_Bottom = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Bottom, br_WasherBearingNut_Bottom }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsBearingWasherNut_Bottom[0], PointsBearingWasherNut_Bottom[1]);
                         }
                     }
                 }
