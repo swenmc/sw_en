@@ -556,7 +556,7 @@ namespace BaseClasses
                     fTempMin_X,
                     fTempMax_Y,
                     fTempMin_Y,
-                    0.8f,
+                    0.65f,
                     scale_unit,
                     width,
                     height,
@@ -1033,9 +1033,9 @@ namespace BaseClasses
                 // Reinforcement
                 if(bDrawReinforcement)
                 {
-                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftPointForDimensions.Y), bottomReinforcementLeftPointForDimensions, false, true, 70)); // Horizontal Dimension - reinforcement cover left
-                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementLeftPointForDimensions, bottomReinforcementRightPointForDimensions, false, true, 70)); // Horizontal Dimension - reinforcement length
-                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementRightPointForDimensions, new Point(PointsFootingPad_real[3].X, bottomReinforcementRightPointForDimensions.Y), false, true, 70)); // Horizontal Dimension - reinforcement cover right
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftPointForDimensions.Y), bottomReinforcementLeftPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement cover left
+                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementLeftPointForDimensions, bottomReinforcementRightPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement length
+                    Dimensions.Add(new CDimensionLinear(center, bottomReinforcementRightPointForDimensions, new Point(PointsFootingPad_real[3].X, bottomReinforcementRightPointForDimensions.Y), false, true, 53)); // Horizontal Dimension - reinforcement cover right
                 }
 
                 Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[3], false, true, 50)); // Horizontal Dimension - footing pad width
@@ -1064,14 +1064,20 @@ namespace BaseClasses
                 double dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
                 double dVerticalProjectionOfArrow = 0.15; // m // TODO Ondrej - S tymto sa treba pohrat
 
+                double dNoteTextHorizontalPosition_x = 0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+
+                bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
+
                 // Column Description
                 bool bDrawColumnDescription = true;
                 if (bDrawColumnDescription)
                 {
                     Point pArrowStart = columnNotePoint;
-                    Point pArrowEnd = new Point(pArrowStart.X + dHorizontalProjectionOfArrow, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd = new Point(pTextPosition_x, pArrowStart.Y - dVerticalProjectionOfArrow);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
-                    notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText));
+                    notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                 }
 
                 // Anchors Description
@@ -1079,26 +1085,30 @@ namespace BaseClasses
                 if (bDrawAnchorDescription)
                 {
                     Point pArrowStart = anchorNotePoint;
-                    Point pArrowEnd = new Point(pArrowStart.X + dHorizontalProjectionOfArrow, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                    Point pArrowEnd = new Point(pTextPosition_x, pArrowStart.Y - dVerticalProjectionOfArrow);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
                     // Sample text: 4/M16 HD bolts 500 mm long
                     string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + "/M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
                                    (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
 
-                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Left));
+                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
 
                     bool bDrawAnchorTopWasherDescription = true;
 
                     if (bDrawAnchorTopWasherDescription)
                     {
                         Point pArrowStart_AnchorTopWasher = plateWasherNotePoint;
-                        Point pArrowEnd_AnchorTopWasher = new Point(pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow, pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow);
+                        double pTextPosition_AnchorTopWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                        Point pArrowEnd_AnchorTopWasher = new Point(pTextPosition_AnchorTopWasher_x, pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow);
                         Point pTextNote_AnchorTopWasher = new Point(pArrowEnd_AnchorTopWasher.X, pArrowEnd_AnchorTopWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 HT nut & 80sq x 12mm washer on top
 
-                        string sText_AnchorTopWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut &" +
-                            (fPlateWasherWidth_x * 1000).ToString("F0") + " x " +
-                            (fPlateWasherWidth_y * 1000).ToString("F0") + " x " +
+                        string sText_AnchorTopWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut & " +
+                            (fPlateWasherWidth_x * 1000).ToString("F0") + "x" +
+                            (fPlateWasherWidth_y * 1000).ToString("F0") + "x" +
                             (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
 
                         notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher, 0, 0, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
@@ -1108,17 +1118,22 @@ namespace BaseClasses
 
                     if (bDrawAnchorBottomWasherDescription)
                     {
+                        dHorizontalProjectionOfArrow = 0.30; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+                        dVerticalProjectionOfArrow = -0.35; // m // TODO Ondrej - S tymto sa treba pohrat
+
                         Point pArrowStart_AnchorBottomWasher = bearingWasherNotePoint;
-                        Point pArrowEnd_AnchorBottomWasher = new Point(pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow, pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow);
+                        double pTextPosition_AnchorBottomWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                        Point pArrowEnd_AnchorBottomWasher = new Point(pTextPosition_AnchorBottomWasher_x, pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow);
                         Point pTextNote_AnchorBottomWasher = new Point(pArrowEnd_AnchorBottomWasher.X, pArrowEnd_AnchorBottomWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 Nuts & 60sq x 6mm washer at base
 
-                        string sText_AnchorBottomWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut &" +
-                            (fBearingWasherWidth_x * 1000).ToString("F0") + " x " +
-                            (fBearingWasherWidth_y * 1000).ToString("F0") + " x " +
-                            (fBearingWasherThickness * 1000).ToString("F0") + " mm washer on at base";
+                        string sText_AnchorBottomWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut & " +
+                            (fBearingWasherWidth_x * 1000).ToString("F0") + "x" +
+                            (fBearingWasherWidth_y * 1000).ToString("F0") + "x" +
+                            (fBearingWasherThickness * 1000).ToString("F0") + " mm washer at base";
 
-                        notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText));
+                        notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                     }
                 }
 
