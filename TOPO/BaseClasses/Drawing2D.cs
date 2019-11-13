@@ -532,8 +532,11 @@ namespace BaseClasses
 
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
-            CalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsForEdgeCoord_real);
 
+            CalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            //PointsForEdgeCoord_real = MovePointsToCenterCSAndCalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            
             int scale_unit = 1000; // mm
 
             double fModel_Length_x_real;
@@ -577,7 +580,7 @@ namespace BaseClasses
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsFootingPad_real);
 
                 List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-
+                
                 DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
 
                 if (bDrawDPC_DPM)
@@ -2662,6 +2665,25 @@ namespace BaseClasses
                         fTempMin_Y = Points_temp[i].Y;
                 }
             }
+        }
+
+        public static List<Point> MovePointsToCenterCSAndCalculateModelLimits(List<Point> points, out double max_X, out double min_X, out double max_Y, out double min_Y)
+        {
+            CalculateModelLimits(points, out max_X, out min_X, out max_Y, out min_Y);
+            
+            List<Point> updatedPoints = MovePointsToCenterOfCoordinateSystem(points, min_X, min_Y);
+            CalculateModelLimits(updatedPoints, out max_X, out min_X, out max_Y, out min_Y);
+            return updatedPoints;
+        }
+        //Moves model points left bottom to[0,0]
+        public static List<Point> MovePointsToCenterOfCoordinateSystem(List<Point> points, double min_X, double min_Y)
+        {
+            List<Point> updatedPoints = new List<Point>();
+            foreach (Point p in points)
+            {
+                updatedPoints.Add(new Point(p.X - min_X, p.Y - min_Y));
+            }
+            return updatedPoints;
         }
 
         public static Point CalculateModelCenter(Point[] Points)
