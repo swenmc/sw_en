@@ -406,6 +406,7 @@ namespace BaseClasses
 
         public static void DrawFootingPadSideElevationToCanvas(CFoundation pad,
             CConnectionJointTypes joint,
+            CSlab floorSlab,
             double width,
             double height,
             ref Canvas canvasForImage,
@@ -484,7 +485,7 @@ namespace BaseClasses
 
             float fFloorWidthPart = 0.5f; // 0.5 m // Sirka vykreslovanej casti floor slab - aproximovana skutocna vzdialenost, aby to bolo dobre na obrazku
             float fFloorEdge = 0.03f; // 0.03 m // Horizontalne / Vertikalne skosenie hrany
-            float floorThickness = 0.15f; // TODO - napojit na GUI
+            float floorThickness = floorSlab.m_fDim3;
             float fPadWidth_y = pad.m_fDim2;
             float fPadDepth_z = pad.m_fDim3;
 
@@ -591,8 +592,16 @@ namespace BaseClasses
                 {
                     // TODO - sem potrebujeme dostat rozmery perimeter pre danu stranu floor slab kde sa nachadza patka (left/right, front/back)
 
-                    float fPerimeterWidth = 0.2f; // TODO - napojit
-                    float fPerimeterDepth = fPadDepth_z; // TODO - napojit
+                    // Left or right side of building
+                    float fPerimeterWidth = floorSlab.PerimeterWidth_LRSide; // TODO - napojit
+                    float fPerimeterDepth = floorSlab.PerimeterDepth_LRSide; // TODO - napojit
+
+                    // Front or back side
+                    if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    {
+                        fPerimeterWidth = floorSlab.PerimeterWidth_FBSide;
+                        fPerimeterDepth = floorSlab.PerimeterDepth_FBSide;
+                    }
 
                     List<Point> PointsPerimeter = new List<Point>
                     {
@@ -643,7 +652,7 @@ namespace BaseClasses
                         }
                     }
 
-                    double dLineThicknessFactor = dReal_Model_Zoom_Factor; //  0.4 * 1000; // TODO Ondrej - Vhodne nastavit zavislost hrubky ciary a priemeru vyztuze
+                    double dLineThicknessFactor = dReal_Model_Zoom_Factor; // TODO Ondrej - Vhodne nastavit zavislost hrubky ciary a priemeru vyztuze
 
                     // Reinforcement in LCS y direction - lines
                     if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
@@ -679,6 +688,31 @@ namespace BaseClasses
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+                    }
+
+                    // Vyztuz v podlahovej doske
+                    // Kreslime len prvy prut
+                    bool bDrawReinforcementInSlab = true;
+
+                    if (bDrawReinforcementInSlab)
+                    {
+                        double horizontalOffsetReinfocementInSlab = horizontalOffset + floorSlab.ConcreteCover;
+
+                        float reinfocementDiameter = 0.008f; // m // TODO zapracovat priemer prutov siete do databazy a vykreslovat
+
+                        Point pStart = new Point(horizontalOffsetReinfocementInSlab, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover);
+                        Point pEnd = new Point(PointsFootingPad_real.Last().X, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover);
+
+                        //Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart); // Netransformujeme - body PointsFootingPad_real uz boli transformovane
+                        //Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
+
+                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                        DoubleCollection dashes = new DoubleCollection();
+                        dashes.Add(10); dashes.Add(10);
+
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.BlueViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
                     }
                 }
             }

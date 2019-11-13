@@ -1978,6 +1978,7 @@ namespace PFD
 
             return pad;
         }
+
         public CConnectionJointTypes GetBaseJointForSelectedNode(CNode node)
         {
             // Vrati spoj typu base plate pre uzol selektovanej patky
@@ -1991,6 +1992,11 @@ namespace PFD
             }
 
             return null; // Error - joint wasn't found
+        }
+
+        public CSlab GetFloorSlab()
+        {
+            return _pfdVM.Model.m_arrSlabs.FirstOrDefault();
         }
 
         public CFoundation GetFootingPad(EMemberType_FS_Position memberType)

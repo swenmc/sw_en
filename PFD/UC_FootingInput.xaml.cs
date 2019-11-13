@@ -32,6 +32,7 @@ namespace PFD
 
         CFoundation pad;
         CConnectionJointTypes joint;
+        CSlab floorSlab;
 
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
@@ -47,7 +48,8 @@ namespace PFD
 
             pad = vm.GetSelectedFootingPad();
             joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
-            displayFootingPad(pad, joint);
+            floorSlab = vm.GetFloorSlab();
+            displayFootingPad(pad, joint, floorSlab);
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -55,6 +57,7 @@ namespace PFD
             if (!(sender is CPFDViewModel)) return;
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
+            CSlab floorSlab = vm.GetFloorSlab();
 
             if (joint == null) return;
             // To Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
@@ -86,7 +89,7 @@ namespace PFD
                 basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
             }
 
-            displayFootingPad(pad, joint);
+            displayFootingPad(pad, joint, floorSlab);
         }
 
         protected void HandleFootingPadPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -180,7 +183,9 @@ namespace PFD
             }
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
-            displayFootingPad(pad, joint);
+            CSlab floorSlab = vm.GetFloorSlab();
+
+            displayFootingPad(pad, joint, floorSlab);
         }
 
         private void UpdateModelProperties()
@@ -328,7 +333,7 @@ namespace PFD
             return new Page3Dmodel(padModel, sDisplayOptions, EModelType.eFooting);
         }
 
-        private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, bool bDisplayJointComponents = true)
+        private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, CSlab floorSlab, bool bDisplayJointComponents = true)
         {
             Canvas page = new Canvas();
 
@@ -355,12 +360,12 @@ namespace PFD
              true);//  vm.DrawBendLines2D);
              */
 
-            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, Frame2DWidth, Frame2DHeight, ref page);
+            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page);
 
             return page;
         }
 
-        private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint)
+        private void displayFootingPad(CFoundation pad, CConnectionJointTypes joint, CSlab floorSlab)
         {
             CFootingInputVM vm = this.DataContext as CFootingInputVM;
 
@@ -382,7 +387,7 @@ namespace PFD
             }
 
             // Create 2D page
-            Canvas page2D = GetFootingPad2DPreview(pad, joint);
+            Canvas page2D = GetFootingPad2DPreview(pad, joint, floorSlab);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
@@ -410,7 +415,7 @@ namespace PFD
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CFootingInputVM vm = this.DataContext as CFootingInputVM;
-            displayFootingPad(pad, joint);
+            displayFootingPad(pad, joint, floorSlab);
         }
     }
 }
