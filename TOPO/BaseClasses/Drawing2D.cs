@@ -417,6 +417,7 @@ namespace BaseClasses
             bool bDrawScrews = true,
             bool bDrawPerimeter = true,
             bool bDrawReinforcement = true,
+            bool bDrawReinforcementInSlab = true,
             bool bDrawDPC_DPM = true,
             bool bDrawDimensions = true,
             bool bDrawNotes = true
@@ -455,6 +456,9 @@ namespace BaseClasses
 
             Point bottomReinforcementLeftPointForDimensions = new Point();
             Point bottomReinforcementRightPointForDimensions = new Point();
+
+            Point FloorMeshReinforcementRightPointForDimensions = new Point();
+            Point FloorMeshNotePoint = new Point();
 
             Point columnNotePoint = new Point();
             Point anchorNotePoint = new Point();
@@ -710,19 +714,20 @@ namespace BaseClasses
 
                     // Vyztuz v podlahovej doske
                     // Kreslime len prvy prut
-                    bool bDrawReinforcementInSlab = true;
-
                     if (bDrawReinforcementInSlab)
                     {
                         double horizontalOffsetReinfocementInSlab = horizontalOffset + floorSlab.ConcreteCover;
 
                         float reinfocementDiameter = 0.008f; // m // TODO zapracovat priemer prutov siete do databazy a vykreslovat
 
-                        Point pStart = new Point(horizontalOffsetReinfocementInSlab, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover);
-                        Point pEnd = new Point(PointsFootingPad_real.Last().X, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover);
+                        Point pStart = new Point(horizontalOffsetReinfocementInSlab, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover + 0.5 * reinfocementDiameter);
+                        Point pEnd = new Point(PointsFootingPad_real.Last().X, PointsFootingPad_real.Last().Y + floorSlab.ConcreteCover + 0.5 * reinfocementDiameter);
 
                         //Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart); // Netransformujeme - body PointsFootingPad_real uz boli transformovane
                         //Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
+
+                        FloorMeshReinforcementRightPointForDimensions = new Point(pEnd.X, pEnd.Y - 0.5 * reinfocementDiameter); // Odpocitame polomer vystuze a dostaneme hodnotu cisteho krytia pre y // Nastavime suradnice bodov pouzite pre kotovanie
+                        FloorMeshNotePoint = new Point(PointsFootingPad_real[1].X, FloorMeshReinforcementRightPointForDimensions.Y); // Bod pre note - zaciatok sipky poznamky
 
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
@@ -997,8 +1002,11 @@ namespace BaseClasses
 
                 // Vertical Dimensions
                 Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad depth
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true)); // Vertical Dimension - floor slab thickness
-                Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true)); // Vertical Dimension - footing pad to floor slab bottom surface
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true, 70)); // Vertical Dimension - floor slab thickness
+                Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true, 70)); // Vertical Dimension - footing pad to floor slab bottom surface
+
+                if (bDrawReinforcement && bDrawReinforcementInSlab)
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, FloorMeshReinforcementRightPointForDimensions.Y), PointsFootingPad_real[6], false, true)); // Vertical Dimension - footing pad top surface to mesh - floor mesh cover
 
                 if (bDrawAnchors && anchorsToDraw != null && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
                 {
@@ -1064,7 +1072,8 @@ namespace BaseClasses
                 double dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
                 double dVerticalProjectionOfArrow = 0.15; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                double dNoteTextHorizontalPosition_x = 0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+                // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.05 m
+                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.05;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
 
                 bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
 
@@ -1084,6 +1093,8 @@ namespace BaseClasses
                 bool bDrawAnchorDescription = true;
                 if (bDrawAnchorDescription)
                 {
+                    dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
+
                     Point pArrowStart = anchorNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
@@ -1134,6 +1145,25 @@ namespace BaseClasses
                             (fBearingWasherThickness * 1000).ToString("F0") + " mm washer at base";
 
                         notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    }
+
+                    bool bDrawMeshDescription = true;
+
+                    if (bDrawMeshDescription)
+                    {
+                        dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+                        dVerticalProjectionOfArrow = 0.10; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                        Point pArrowStart_Mesh = FloorMeshNotePoint;
+                        double pTextPosition_Mesh_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Mesh.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+
+                        Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pArrowStart_Mesh.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_Mesh = new Point(pArrowEnd_Mesh.X, pArrowEnd_Mesh.Y - dVerticalOffsetOfText);
+                        // Sample text: SE92 [500 Grade] Mesh
+
+                        string sText_Mesh = floorSlab.MeshGradeName +" [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
+
+                        notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                     }
                 }
 

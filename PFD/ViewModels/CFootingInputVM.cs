@@ -2206,6 +2206,7 @@ namespace PFD
                 _pfdVM.Model.m_arrSlabs.First().SetTextPoint();
                 _pfdVM.Model.m_arrSlabs.First().CreateSawCuts();
                 _pfdVM.Model.m_arrSlabs.First().CreateControlJoints();
+                _pfdVM.Model.m_arrSlabs.First().CreateMesh();
                 _pfdVM.Model.m_arrSlabs.First().CreatePerimeters();
                 _pfdVM.Model.m_arrSlabs.First().SetDescriptionText();
             }

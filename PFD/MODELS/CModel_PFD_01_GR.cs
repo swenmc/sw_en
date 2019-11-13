@@ -2596,6 +2596,8 @@ namespace PFD
                 float fConcreteCoverTop = 0.05f; // 50 mm
                 string sMeshGradeName = "SE92DE";
 
+                CReinforcementMesh mesh = new CReinforcementMesh(sMeshGradeName);
+
                 // Saw Cuts
                 CSawCut refSawCut = new CSawCut(0, new Point3D(0, 0, 0), new Point3D(1, 0, 0), 0.01f, 0.03f, true, 0);
 

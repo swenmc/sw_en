@@ -179,6 +179,7 @@ namespace PFD
         private bool MRecreateFloorSlab;
         private bool MRecreateSawCuts;
         private bool MRecreateControlJoints;
+        private bool MRecreateRCMesh;
 
         private bool MFootingChanged;
 
@@ -292,6 +293,7 @@ namespace PFD
 
                 RecreateSawCuts = true;
                 RecreateControlJoints = true;
+                MRecreateRCMesh = true;
 
                 RecreateModel = true;
                 IsSetFromCode = false;
@@ -1918,6 +1920,19 @@ namespace PFD
             set
             {
                 MRecreateControlJoints = value;
+            }
+        }
+
+        public bool RecreateRCMesh
+        {
+            get
+            {
+                return MRecreateRCMesh;
+            }
+
+            set
+            {
+                MRecreateRCMesh = value;
             }
         }
 

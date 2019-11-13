@@ -40,6 +40,7 @@ namespace BaseClasses
         private float m_fConcreteCover;
 
         private string m_sMeshGradeName;
+        private CReinforcementMesh m_RCMesh;
 
         private int m_NumberOfSawCutsInDirectionX;
         private int m_NumberOfSawCutsInDirectionY;
@@ -351,6 +352,19 @@ namespace BaseClasses
         {
             get { return m_sMeshGradeName; }
             set { m_sMeshGradeName = value; }
+        }
+
+        public CReinforcementMesh RCMesh
+        {
+            get
+            {
+                return m_RCMesh;
+            }
+
+            set
+            {
+                m_RCMesh = value;
+            }
         }
 
         public List<Point3D> WireFramePoints
@@ -848,6 +862,7 @@ namespace BaseClasses
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
             m_fConcreteCover = fConcreteCover;
             m_sMeshGradeName = sMeshGradeName;
+
             m_NumberOfSawCutsInDirectionX = iNumberOfSawCutsInDirectionX;
             m_NumberOfSawCutsInDirectionY = iNumberOfSawCutsInDirectionY;
             m_FirstSawCutPositionInDirectionX = fFirstSawCutPositionInDirectionX;
@@ -910,6 +925,7 @@ namespace BaseClasses
             SetTextPoint();
             CreateSawCuts();
             CreateControlJoints();
+            CreateMesh();
             CreatePerimeters();
             SetDescriptionText();
         }
@@ -1230,6 +1246,11 @@ namespace BaseClasses
                 true,
                 0,
                 rebatesBackSide));
+        }
+
+        public void CreateMesh()
+        {
+            m_RCMesh = new CReinforcementMesh(MeshGradeName);
         }
 
         public void SetDescriptionText()
