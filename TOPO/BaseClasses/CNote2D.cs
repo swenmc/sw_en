@@ -15,6 +15,8 @@ namespace BaseClasses
         private Point MArrowPoint2;
         private Point MLineEndPoint;
         private Point MRefPoint;
+        private VerticalAlignment MValign;
+        private HorizontalAlignment MHalign;
 
         public Point NoteTextPoint
         {
@@ -146,11 +148,38 @@ namespace BaseClasses
             }
         }
 
+        public VerticalAlignment Valign
+        {
+            get
+            {
+                return MValign;
+            }
+
+            set
+            {
+                MValign = value;
+            }
+        }
+
+        public HorizontalAlignment Halign
+        {
+            get
+            {
+                return MHalign;
+            }
+
+            set
+            {
+                MHalign = value;
+            }
+        }
+
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         public CNote2D() { }
-        public CNote2D(Point noteTextPoint, string text, double distanceX, double distanceY, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint, bool bDrawLineUnderText = false)
+        public CNote2D(Point noteTextPoint, string text, double distanceX, double distanceY, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint, 
+            bool bDrawLineUnderText = false, VerticalAlignment valign = VerticalAlignment.Center, HorizontalAlignment halign = HorizontalAlignment.Center)
         {
             MNoteTextPoint = noteTextPoint;
             MText = text;
@@ -161,6 +190,8 @@ namespace BaseClasses
             MArrowPoint2 = arrowPoint2;
             MRefPoint = RefPoint;
             MDrawLineUnderText = bDrawLineUnderText;
+            MValign = valign;
+            Halign = halign;
         }
 
         public void MirrorYCoordinates()

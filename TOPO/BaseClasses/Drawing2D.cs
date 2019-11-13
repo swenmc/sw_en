@@ -1085,7 +1085,7 @@ namespace BaseClasses
                     string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + "/M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
                                    (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
 
-                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText));
+                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Left));
 
                     bool bDrawAnchorTopWasherDescription = true;
 
@@ -1101,7 +1101,7 @@ namespace BaseClasses
                             (fPlateWasherWidth_y * 1000).ToString("F0") + " x " +
                             (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
 
-                        notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher, 0, 0, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText));
+                        notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher, 0, 0, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                     }
 
                     bool bDrawAnchorBottomWasherDescription = true;
@@ -1896,7 +1896,10 @@ namespace BaseClasses
 
             double textWidth;
 
-            DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, 0, fontSize, Brushes.Black, canvasForImage, out textWidth);
+            //DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, 0, fontSize, Brushes.Black, canvasForImage, out textWidth);
+            DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, fontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
+
+
 
             if (note.DrawArrow)
             {
@@ -2874,6 +2877,32 @@ namespace BaseClasses
             //DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
 
             Canvas.SetLeft(textBlock, posx);
+            if (valign == VerticalAlignment.Center) Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+            else if (valign == VerticalAlignment.Top) Canvas.SetTop(textBlock, posy - txtSize.Height);
+            else Canvas.SetTop(textBlock, posy);
+
+            canvas.Children.Add(textBlock);
+        }
+        //public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas, out double txtWidth)
+        public static void DrawText(string text, double posx, double posy, double fontSize, VerticalAlignment valign, HorizontalAlignment halign, SolidColorBrush color, Canvas canvas, out double txtWidth)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            //textBlock.Background = new SolidColorBrush(Colors.Red);
+            textBlock.FontSize = fontSize;
+            Size txtSize = MeasureString(textBlock, text);
+
+            txtWidth = txtSize.Width; // Dlzka texboxu - pre potreby vykreslenia ciary pod textom
+
+            // NOTE - docasne vykreslujeme body na ktore sa viaze text
+            DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
+
+            //Canvas.SetLeft(textBlock, posx);
+            if (halign == HorizontalAlignment.Center) Canvas.SetLeft(textBlock, posx - txtSize.Width / 2); 
+            else if (halign == HorizontalAlignment.Left) Canvas.SetLeft(textBlock, posx - txtSize.Width);
+            else Canvas.SetLeft(textBlock, posx);
+
             if (valign == VerticalAlignment.Center) Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
             else if (valign == VerticalAlignment.Top) Canvas.SetTop(textBlock, posy - txtSize.Height);
             else Canvas.SetTop(textBlock, posy);
