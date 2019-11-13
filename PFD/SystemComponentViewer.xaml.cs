@@ -1412,10 +1412,20 @@ namespace PFD
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, false, true, false, true, true, false, false, false, false);
-            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);
+            SCVDisplayOptionsWindow displayOptionsWindow = new SCVDisplayOptionsWindow();
+            displayOptionsWindow.Closed += DisplayOptionsWindow_Closed;
+            displayOptionsWindow.ShowDialog();
+        }
 
-            //CExportToDXF.ExportCanvas_DXF(page2D, 0, 0);
+        private void DisplayOptionsWindow_Closed(object sender, EventArgs e)
+        {
+            SCVDisplayOptionsWindow w = sender as SCVDisplayOptionsWindow;
+            SCVDisplayOptionsViewModel vm = w.DataContext as SCVDisplayOptionsViewModel;
+
+            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
+                        vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
+            //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, false, true, false, true, true, false, false, false, false);
+            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);            
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)

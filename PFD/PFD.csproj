@@ -142,8 +142,12 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="SCVDisplayOptionsWindow.xaml.cs">
+      <DependentUpon>SCVDisplayOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\Calculations\CCladdingDesignCalculations.cs" />
     <Compile Include="Infrastructure\CPlateHelper.cs" />
+    <Compile Include="SCVDisplayOptionsViewModel.cs" />
     <Compile Include="UC_FootingDesign.xaml.cs">
       <DependentUpon>UC_FootingDesign.xaml</DependentUpon>
     </Compile>
@@ -280,6 +284,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SCVDisplayOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="FrameInternalForces_2D.xaml">
       <SubType>Designer</SubType>
