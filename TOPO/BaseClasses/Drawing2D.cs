@@ -531,7 +531,8 @@ namespace BaseClasses
                 new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM), // Right
                 new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM),  // Left Bottom point
                 new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
-                new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight) // Top Right Column Point
+                new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight), // Top Right Column Point
+                new Point(PointsFootingPad_real[0].X * 1.25, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM) // TODO Ondrej - tu by trebalo zohladnit aj koncovy bod ciary poznamky vpravo ????, texty poznamok, koty a pod
             };
 
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
