@@ -552,7 +552,8 @@ namespace EXPIMP
                         string txt = (fUnitFactor * IF_Value).ToString($"F{NumberOfDecimalPlaces}");
                         txt += " " + IFTypeUnit;
                         //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas);
+                        double dTextWidth;
+                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas, out dTextWidth);
                     }
                     
                     Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
@@ -777,7 +778,8 @@ namespace EXPIMP
                         string txt = (fUnitFactor * IF_Value).ToString($"F{NumberOfDecimalPlaces}");
                         txt += " " + IFTypeUnit;
                         //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas);
+                        double dTextWidth;
+                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, FontSize, Brushes.SlateGray, DiagramCanvas, out dTextWidth);
                     }
 
                     Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);

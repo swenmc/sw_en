@@ -456,6 +456,21 @@ namespace BaseClasses
             Point bottomReinforcementLeftPointForDimensions = new Point();
             Point bottomReinforcementRightPointForDimensions = new Point();
 
+            Point columnNotePoint = new Point();
+            Point anchorNotePoint = new Point();
+
+            float fPlateWasherWidth_x = 0;
+            float fPlateWasherWidth_y = 0;
+            float fPlateWasherThickness = 0;
+
+            Point plateWasherNotePoint = new Point();
+
+            float fBearingWasherWidth_x = 0;
+            float fBearingWasherWidth_y = 0;
+            float fBearingWasherThickness = 0;
+
+            Point bearingWasherNotePoint = new Point();
+
             List<CAnchor> anchorsToDraw = null;
             List<Point> anchorControlPointsForDimensions = null;
 
@@ -806,6 +821,8 @@ namespace BaseClasses
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight_ColumnEdge);
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref topRight_ColumnEdge);
 
+                columnNotePoint = new Point(topRight_ColumnEdge.X, topRight_ColumnEdge.Y + 0.5 * fVerticalOffsetRight);
+
                 List<Point> PointsLineRight = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottomRight_ColumnEdge, topRight_ColumnEdge }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 Line l_Right = new Line();
@@ -919,9 +936,11 @@ namespace BaseClasses
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
                             Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            anchorNotePoint = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - 0.5 * fAnchorLength);
 
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref anchorNotePoint);
 
                             List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
@@ -929,29 +948,36 @@ namespace BaseClasses
                             // Washers
 
                             // Washer - Plate
-                            float fPlateWasherWidth = anchor.y_washer_plate;
-                            float fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
+                            fPlateWasherWidth_x = anchor.x_washer_plate; // Kolmo na rovinu
+                            fPlateWasherWidth_y = anchor.y_washer_plate;
+                            fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
+
                             float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
 
-                            Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
-                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
+                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlate);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlate);
+
+                            plateWasherNotePoint = new Point(br_WasherPlate.X, lt_WasherPlate.Y);
 
                             List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
 
                             // Washer - Bearing
-                            float fBearingWasherWidth = anchor.y_washer_bearing;
-                            float fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
+                            fBearingWasherWidth_x = anchor.x_washer_bearing; // Kolmo na rovinu
+                            fBearingWasherWidth_y = anchor.y_washer_bearing;
+                            fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
                             float fBearingWasherOffsetFromTop = fAnchorLength - 0.05f; // TO napojit na GUI ???
 
-                            Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
-                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
+                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
+
+                            bearingWasherNotePoint = new Point(br_BearingWasher.X, lt_BearingWasher.Y);
 
                             List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
@@ -1022,13 +1048,82 @@ namespace BaseClasses
 
             if (bDrawNotes)
             {
-                CNote2D[] notes2D = null; 
-                List<CNote2D> canvasNotes2D = null;
-                //canvasNotes2D = MirrorYCoordinates(notes2D);
-                //canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(notes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                List<CNote2D> notes2D = new List<CNote2D>(); // Real
 
-                //Notes
-                //if (notes2D != null) DrawNote(canvasNotes2D, canvasForImage);
+                Point center = new Point(0, 0); // TO Ondrej - toto by mal byt asi stred obrazku
+
+                bool bDrawArrows = true;
+                bool bDrawUnderLineBelowText = true;
+
+                // TODO - zatial natvrdo nastavene parametre pre odkazovu ciaru
+
+                double dVerticalOffsetOfText = 0.03; // m // Vertikalne odsadenie textu od ciary
+                double dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
+                double dVerticalProjectionOfArrow = 0.15; // m // TODO Ondrej - S tymto sa treba pohrat
+
+                // Column Description
+                bool bDrawColumnDescription = true;
+                if (bDrawColumnDescription)
+                {
+                    Point pArrowStart = columnNotePoint;
+                    Point pArrowEnd = new Point(pArrowStart.X + dHorizontalProjectionOfArrow, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
+                    notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText));
+                }
+
+                // Anchors Description
+                bool bDrawAnchorDescription = true;
+                if (bDrawAnchorDescription)
+                {
+                    Point pArrowStart = anchorNotePoint;
+                    Point pArrowEnd = new Point(pArrowStart.X + dHorizontalProjectionOfArrow, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
+                    // Sample text: 4/M16 HD bolts 500 mm long
+                    string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + "/M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
+                                   (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
+
+                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText));
+
+                    bool bDrawAnchorTopWasherDescription = true;
+
+                    if (bDrawAnchorTopWasherDescription)
+                    {
+                        Point pArrowStart_AnchorTopWasher = plateWasherNotePoint;
+                        Point pArrowEnd_AnchorTopWasher = new Point(pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow, pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_AnchorTopWasher = new Point(pArrowEnd_AnchorTopWasher.X, pArrowEnd_AnchorTopWasher.Y - dVerticalOffsetOfText);
+                        // Sample text: M16 HT nut & 80sq x 12mm washer on top
+
+                        string sText_AnchorTopWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut &" +
+                            (fPlateWasherWidth_x * 1000).ToString("F0") + " x " +
+                            (fPlateWasherWidth_y * 1000).ToString("F0") + " x " +
+                            (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
+
+                        notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher, 0, 0, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText));
+                    }
+
+                    bool bDrawAnchorBottomWasherDescription = true;
+
+                    if (bDrawAnchorBottomWasherDescription)
+                    {
+                        Point pArrowStart_AnchorBottomWasher = bearingWasherNotePoint;
+                        Point pArrowEnd_AnchorBottomWasher = new Point(pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow, pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_AnchorBottomWasher = new Point(pArrowEnd_AnchorBottomWasher.X, pArrowEnd_AnchorBottomWasher.Y - dVerticalOffsetOfText);
+                        // Sample text: M16 Nuts & 60sq x 6mm washer at base
+
+                        string sText_AnchorBottomWasher = "M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HT nut &" +
+                            (fBearingWasherWidth_x * 1000).ToString("F0") + " x " +
+                            (fBearingWasherWidth_y * 1000).ToString("F0") + " x " +
+                            (fBearingWasherThickness * 1000).ToString("F0") + " mm washer on at base";
+
+                        notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText));
+                    }
+                }
+
+                List<CNote2D> canvasNotes2D = notes2D;
+                canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(canvasNotes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                // Draw Notes
+                DrawNotes(bDrawNotes, canvasNotes2D, canvasForImage);
             }
         }
 
@@ -1069,7 +1164,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kb.pTip.X) < 1 ? kb.pTip.X / 10 : kb.pTip.X / 18;
                     double moveY = Math.Abs(kb.pTip.Y) < 1 ? kb.pTip.Y / 10 : kb.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, false, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
@@ -1080,7 +1175,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kc.pTip.X) < 1 ? kc.pTip.X / 10 : kc.pTip.X / 18;
                     double moveY = Math.Abs(kc.pTip.Y) < 1 ? kc.pTip.Y / 10 : kc.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", 0, 0, true, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", 0, 0, false, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
@@ -1091,7 +1186,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kd.pTip.X) < 1 ? kd.pTip.X / 10 : kd.pTip.X / 18;
                     double moveY = Math.Abs(kd.pTip.Y) < 1 ? kd.pTip.Y / 10 : kd.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", 0, 0, true, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", 0, 0, false, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KES)
@@ -1102,7 +1197,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(ke.pTip.X) < 1 ? ke.pTip.X / 10 : ke.pTip.X / 18;
                     double moveY = Math.Abs(ke.pTip.Y) < 1 ? ke.pTip.Y / 10 : ke.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", 0, 0, true, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", 0, 0, false, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
                 }
             }
             return note2D;
@@ -1328,6 +1423,17 @@ namespace BaseClasses
 
             note2D.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             return note2D;
+        }
+        private static List<CNote2D> ConvertRealPointsToCanvasDrawingPoints(List<CNote2D> notes, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            if (notes == null) return new List<CNote2D>();
+
+            List<CNote2D> updatedNotes = new List<CNote2D>(notes);
+            foreach (CNote2D n in updatedNotes)
+            {
+                n.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            }
+            return updatedNotes;
         }
         private static List<CLine2D> ConvertRealPointsToCanvasDrawingPoints(List<CLine2D> lines, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
@@ -1780,18 +1886,51 @@ namespace BaseClasses
 
         public static void DrawNote(CNote2D note, Canvas canvasForImage)
         {
-            //todo implementacion
-            DrawText(note.Text, note.NotePoint.X, note.NotePoint.Y, 0, 12, Brushes.Black, canvasForImage);
+            double fontSize = 12;
+            double lineThickness = 1;
 
-            //if (note.DrawArrow)
-            //{
-            //    Line line = new Line();
-            //    line.X1 = note.ArrowPoint1.X;
-            //    line.Y1 = note.ArrowPoint1.Y;
-            //    line.X2 = note.ArrowPoint2.X;
-            //    line.Y2 = note.ArrowPoint2.Y;
-            //    DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Flat, PenLineCap.Triangle, 3, canvasForImage, null);
-            //}
+            // TO Ondrej - Teraz centrujeme text na stred podla NoteTextPoint - chcelo by to zaviest moznost ze mozem nastavit ci je text voci bodu vycentrovany alebo je vlavo alebo vpravo od bodu
+
+            double textWidth;
+
+            DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, 0, fontSize, Brushes.Black, canvasForImage, out textWidth);
+
+            if (note.DrawArrow)
+            {
+                Line line = new Line();
+                line.X1 = note.ArrowPoint1.X;
+                line.Y1 = note.ArrowPoint1.Y;
+                line.X2 = note.ArrowPoint2.X;
+                line.Y2 = note.ArrowPoint2.Y;
+
+                // TO Ondrej - potrebovali by sme nakreslit peknu sipku lebo PenLineCap.Triangle len zapbrusi ciarku a vyzera ako ceruzka
+                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Triangle, PenLineCap.Flat, lineThickness, canvasForImage, null);
+            }
+
+            if(note.DrawLineUnderText)
+            {
+                Line line = new Line();
+                line.X1 = note.ArrowPoint2.X;
+                line.Y1 = note.ArrowPoint2.Y;
+
+                line.X2 = note.ArrowPoint2.X + textWidth; // TODO Ondrej - Zistime dlzku textu, aby sme mohli vykreslit ciaru pod text !!!
+                line.Y2 = note.ArrowPoint2.Y;
+
+                // TO Ondrej - potrebovali by sme nakreslit peknu sipku lebo PenLineCap.Triangle len zapbrusi ciarku a vyzera ako ceruzka
+                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Triangle, PenLineCap.Flat, lineThickness, canvasForImage, null);
+            }
+        }
+
+        public static void DrawNotes(bool bDrawNotes, List<CNote2D> Notes, Canvas canvasForImage)
+        {
+            if (bDrawNotes && Notes != null && Notes.Count > 0)
+            {
+                for (int i = 0; i < Notes.Count; i++) // Zoznam poznamok
+                {
+                   CNote2D note = Notes[i];
+                   DrawNote(note, canvasForImage);
+                }
+            }
         }
 
         public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
@@ -2462,7 +2601,8 @@ namespace BaseClasses
             double fTextPositiony = (pathStartPoint.Y * 3 + pathTowardsPoint.Y * 3 + pCenter.Y) / 7;
             string sText = Math.Round(slopeDeg, 1).ToString() + " °";
 
-            DrawText(sText, fTextPositionx, fTextPositiony, 0, 12, Brushes.Black, imageCanvas);
+            double dTextWidth;
+            DrawText(sText, fTextPositionx, fTextPositiony, 0, 12, Brushes.Black, imageCanvas, out dTextWidth);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
@@ -2678,7 +2818,7 @@ namespace BaseClasses
             canvas.Children.Add(textBlock);
         }
 
-        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas)
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas, out double txtWidth)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
@@ -2686,6 +2826,8 @@ namespace BaseClasses
             //textBlock.Background = new SolidColorBrush(Colors.Red);
             textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
+
+            txtWidth = txtSize.Width; // Dlzka texboxu - pre potreby vykreslenia ciary pod textom
 
             // NOTE - docasne vykreslujeme body na ktore sa viaze text
             DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
