@@ -1006,12 +1006,12 @@ namespace BaseClasses
                 {
                     // Filter anchors in one row // Nechceme zobrazovat kotvy ktore su za sebou a prekryvaju sa
 
-                    anchorsToDraw = new List<CAnchor>();
+                    anchorsToDraw = new List<CAnchor>(); // Kotvy, ktore sa budu vykreslovat. Suradnice Y su dane v ramci plate pricom y smeruje zprava dolava od pravej hrany plechu
 
                     foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
                     {
                         if (MathF.d_equal(anchor.m_pControlPoint.X, basePlate.AnchorArrangement.Anchors[0].m_pControlPoint.X)) // Pridame do zoznamu len kotvy, ktore maju rovnaku suradnicu X (kolmo na zobrazovanu rovinu YZ) ako prva kotva
-                            anchorsToDraw.Add(anchor);
+                            anchorsToDraw.Add(anchor); //
                     }
 
                     anchorControlPointsForDimensions = new List<Point>(); // Inicializujeme zoznam bodov pre koty
@@ -1025,7 +1025,7 @@ namespace BaseClasses
                         {
                             float fAnchorDiameter = anchor.Diameter_shank;
                             float fAnchorLength = anchor.Length;
-                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z);
+                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Koty kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
 
                             // Pridame bod do zoznamu bodov pre kotovanie
                             Point insertingPointForDimesnions = new Point(); // Vytvorime nezavisly objekt pre bod - klon :)
@@ -1035,7 +1035,7 @@ namespace BaseClasses
                             anchorControlPointsForDimensions.Add(insertingPointForDimesnions); // Bod pridame do zoznamu bodov pre koty
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
-                            Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                            Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength);
                             anchorNotePoint = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - 0.7 * fAnchorLength);
 
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt);
