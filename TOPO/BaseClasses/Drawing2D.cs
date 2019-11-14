@@ -1028,7 +1028,7 @@ namespace BaseClasses
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
                             Point br = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - fAnchorLength); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
-                            anchorNotePoint = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - 0.5 * fAnchorLength);
+                            anchorNotePoint = new Point(insertingPoint.X + fAnchorDiameter * 0.5, insertingPoint.Y - 0.7 * fAnchorLength);
 
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref br);
@@ -1222,7 +1222,7 @@ namespace BaseClasses
                 bool bDrawAnchorDescription = true;
                 if (bDrawAnchors && bDrawAnchorDescription)
                 {
-                    dVerticalProjectionOfArrow = 0.44; // m // TODO Ondrej - S tymto sa treba pohrat
+                    dVerticalProjectionOfArrow = 0.52; // m // TODO Ondrej - S tymto sa treba pohrat
 
                     Point pArrowStart = anchorNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
