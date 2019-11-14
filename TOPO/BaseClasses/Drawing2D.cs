@@ -2234,20 +2234,18 @@ namespace BaseClasses
             double fontSize = 12;
             double lineThickness = 1;
 
-            // TO Ondrej - Teraz centrujeme text na stred podla NoteTextPoint - chcelo by to zaviest moznost ze mozem nastavit ci je text voci bodu vycentrovany alebo je vlavo alebo vpravo od bodu
-
-            double textWidth;            
+            double textWidth;
             DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, fontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
             
             if (note.DrawArrow)
             {
                 PointCollection points = new PointCollection() { new Point(note.ArrowPoint1.X, note.ArrowPoint1.Y), new Point(note.ArrowPoint2.X, note.ArrowPoint2.Y) };
-                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Red), 2, ArrowEnds.Begin, 45);
+                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.Black), lineThickness, ArrowEnds.Begin, 30);
             }
             if (note.DrawLineUnderText)
             {
                 PointCollection points = new PointCollection() { new Point(note.ArrowPoint2.X, note.ArrowPoint2.Y), new Point(note.ArrowPoint2.X + textWidth, note.ArrowPoint2.Y) };
-                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Red), 2, ArrowEnds.None, 45);
+                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.Black), lineThickness, ArrowEnds.None, 30);
             }
         }
 
