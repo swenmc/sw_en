@@ -1089,17 +1089,17 @@ namespace BaseClasses
                     for(int i = 0; i < anchorControlPointsForDimensions.Count; i++)
                     {
                         if(i == 0) // First dimension
-                            Dimensions.Add(new CDimensionLinear(center, new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[i].Y), anchorControlPointsForDimensions[i], true, true));
+                            Dimensions.Add(new CDimensionLinear(center, new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[i].Y), anchorControlPointsForDimensions[i], true, true,20));
                         else
-                            Dimensions.Add(new CDimensionLinear(center, anchorControlPointsForDimensions[i-1], anchorControlPointsForDimensions[i], true, true));
+                            Dimensions.Add(new CDimensionLinear(center, anchorControlPointsForDimensions[i-1], anchorControlPointsForDimensions[i], true, true,20));
                     }
                 }
 
                 // Footing pad to column edge
                 if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
-                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true)); // Horizontal Dimension - footing pad edge to column
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true,20)); // Horizontal Dimension - footing pad edge to column
                 else // Kota v pripade ze nekotujeme ziadne anchors
-                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false)); // Horizontal Dimension - footing pad edge to column
+                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false,20)); // Horizontal Dimension - footing pad edge to column
 
                 // Reinforcement
                 if(bDrawReinforcement)
@@ -1156,15 +1156,15 @@ namespace BaseClasses
                 bool bDrawAnchorDescription = true;
                 if (bDrawAnchors && bDrawAnchorDescription)
                 {
-                    dVerticalProjectionOfArrow = 0.4; // m // TODO Ondrej - S tymto sa treba pohrat
+                    dVerticalProjectionOfArrow = 0.44; // m // TODO Ondrej - S tymto sa treba pohrat
 
                     Point pArrowStart = anchorNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
                     Point pArrowEnd = new Point(pTextPosition_x, pArrowStart.Y - dVerticalProjectionOfArrow);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
-                    // Sample text: 4/M16 HD bolts 500 mm long
-                    string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + "/M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
+                    // Sample text: 4 x M16 HD bolts 500 mm long
+                    string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + " x M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
                                    (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
 
                     notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
@@ -1173,6 +1173,8 @@ namespace BaseClasses
 
                     if (bDrawAnchorTopWasherDescription)
                     {
+                        dVerticalProjectionOfArrow = 0.40; // m // TODO Ondrej - S tymto sa treba pohrat
+
                         Point pArrowStart_AnchorTopWasher = plateWasherNotePoint;
                         double pTextPosition_AnchorTopWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 

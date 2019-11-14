@@ -124,8 +124,9 @@ namespace BaseClasses
 
         void Calc_HolesControlPointsCoord3D(float fbX, float flZ, float ft)
         {
-            float fPortionOtAnchorAbovePlate_rel = 0.2f; // [-] // Suradnica konca kotvy nad plechom (maximum z 20% dlzky kotvy alebo 30 mm)
-            float fPortionOtAnchorAbovePlate_abs = Math.Max(fPortionOtAnchorAbovePlate_rel * referenceAnchor.Length, 0.03f); // [m]
+            // TODO - Tuto vzdialenost mozeme urcovat rozne, ako parameter kolko ma byt kotva nad plechom / betonom alebo ako parameter dlzka kotvy - kolko ma byt kotevna dlzka (dlzka zabetonovanej casti kotvy)
+            float fPortionOtAnchorAbovePlate_rel = 0.09f; // [-] // Suradnica konca kotvy nad plechom (maximum z 9% dlzky kotvy, 1.8x priemer kotvy alebo 20 mm)
+            float fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * referenceAnchor.Length, 1.8f * referenceAnchor.Diameter_shank, 0.02f); // [m]
 
             int iGroupIndex = 0;
             int iLastItemIndex = 0;
