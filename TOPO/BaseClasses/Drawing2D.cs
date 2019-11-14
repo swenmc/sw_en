@@ -457,6 +457,8 @@ namespace BaseClasses
             Point bottomReinforcementLeftPointForDimensions = new Point();
             Point bottomReinforcementRightPointForDimensions = new Point();
 
+            Point bottomReinforcementLeftBottomPointForDimensions = new Point(); // Lavy spodny okraj vyztuze pre kotovanie concrete cover od spodneho okraja (default 75 mm)
+
             Point FloorMeshReinforcementRightPointForDimensions = new Point();
             Point FloorMeshNotePoint = new Point();
 
@@ -657,14 +659,15 @@ namespace BaseClasses
                     // Vyztuz v smere x kreslime ako kruhy (v reze)
                     // Vyztuz v smere y kreslime ako ciary (v pohlade z boku)
 
-                    double horizontalOffsetReinfocement = 3 * 0.075f; // !!!!! Je potrebne doriesit co tu ma byt - 3x concrete cover ?????????
-
                     // Reinforcement in LCS x direction - circles
                     if (pad.Top_Bars_x != null && pad.Top_Bars_x.Count > 0)
                     {
+                        float fFirstPosition_y = (float)pad.Reference_Top_Bar_x.m_pControlPoint.Y;
+                        float fDistanceInLCS_y = pad.DistanceOfBars_Top_x_SpacingInyDirection;
+
                         for (int i = 0; i < pad.Top_Bars_x.Count; i++)
                         {
-                            Point p = new Point(horizontalOffsetReinfocement + pad.Top_Bars_x[i].m_pControlPoint.Y, pad.Top_Bars_x[i].m_pControlPoint.Z);
+                            Point p = new Point(horizontalOffset + fFirstPosition_y + i*fDistanceInLCS_y, pad.Top_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
                             if(i == pad.Top_Bars_x.Count - 1) // Consider only last bar
@@ -678,9 +681,12 @@ namespace BaseClasses
 
                     if (pad.Bottom_Bars_x != null && pad.Bottom_Bars_x.Count > 0)
                     {
+                        float fFirstPosition_y = (float)pad.Reference_Bottom_Bar_x.m_pControlPoint.Y;
+                        float fDistanceInLCS_y = pad.DistanceOfBars_Bottom_x_SpacingInyDirection;
+
                         for (int i = 0; i < pad.Bottom_Bars_x.Count; i++)
                         {
-                            Point p = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_x[i].m_pControlPoint.Y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
+                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
                             if (i == pad.Bottom_Bars_x.Count-1) // Consider only last bar
@@ -699,8 +705,8 @@ namespace BaseClasses
                     {
                         // Kreslime len prvy prut
                         // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
-                        Point pStart = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].StartPoint.Y, pad.Top_Bars_y[0].StartPoint.Z);
-                        Point pEnd = new Point(horizontalOffsetReinfocement + pad.Top_Bars_y[0].EndPoint.Y, pad.Top_Bars_y[0].EndPoint.Z);
+                        Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Top_Bars_y[0].StartPoint.Z);
+                        Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Top_Bars_y[0].TotalLength, pad.Top_Bars_y[0].EndPoint.Z);
 
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
@@ -717,14 +723,16 @@ namespace BaseClasses
                     {
                         // Kreslime len prvy prut
                         // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
-                        Point pStart = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].StartPoint.Y, pad.Bottom_Bars_y[0].StartPoint.Z);
-                        Point pEnd = new Point(horizontalOffsetReinfocement + pad.Bottom_Bars_y[0].EndPoint.Y, pad.Bottom_Bars_y[0].EndPoint.Z);
+                        Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Bottom_Bars_y[0].StartPoint.Z);
+                        Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Bottom_Bars_y[0].TotalLength, pad.Bottom_Bars_y[0].EndPoint.Z);
 
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
                         bottomReinforcementLeftPointForDimensions = new Point(pStart.X, pStart.Y); // Nastavime suradnice bodov pouzite pre kotovanie
                         bottomReinforcementRightPointForDimensions = new Point(pEnd.X, pEnd.Y);
+
+                        bottomReinforcementLeftBottomPointForDimensions = new Point(pStart.X, pStart.Y + 0.5f * pad.Reference_Bottom_Bar_y.Diameter); // Pripocitana vzdialenost od stredu tyce smerom nadol (polovica priemeru), aby sme ziskali spodny okraj
 
                         reinforcement_bottom_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
 
@@ -1064,9 +1072,13 @@ namespace BaseClasses
                 Point center = new Point(0,0); // TO Ondrej - toto by mal byt asi stred obrazku
 
                 // Vertical Dimensions
-                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true)); // Vertical Dimension - footing pad depth
+                Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true, 40)); // Vertical Dimension - footing pad depth
                 Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[0], PointsFootingPad_real[6], false, true, 50)); // Vertical Dimension - floor slab thickness
                 Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true, 50)); // Vertical Dimension - footing pad to floor slab bottom surface
+
+                // Reinforcement
+                if (bDrawReinforcement)
+                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftBottomPointForDimensions.Y), true, true, 20)); // Vertical Dimension - reinforcement cover bottom
 
                 if (bDrawReinforcement && bDrawReinforcementInSlab)
                     Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, FloorMeshReinforcementRightPointForDimensions.Y), PointsFootingPad_real[6], false, true)); // Vertical Dimension - footing pad top surface to mesh - floor mesh cover
@@ -1264,60 +1276,72 @@ namespace BaseClasses
                     // Navrhujem vytovrit jednu funkciu, ktora vykresli poznamku pre vyztuz, poslat jej objekt vyztuze, polohu NotePoint a odsadenia ciary
 
                     // Top_Bar_x
-                    dVerticalProjectionOfArrow = 0.22; // m // TODO Ondrej - S tymto sa treba pohrat
+                    if (pad.Top_Bars_x != null && pad.Top_Bars_x.Count > 0)
+                    {
+                        dVerticalProjectionOfArrow = 0.22; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                    Point pArrowStart_RC_Top_x = reinforcement_top_x_NotePoint;
-                    double pTextPosition_RC_Top_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        Point pArrowStart_RC_Top_x = reinforcement_top_x_NotePoint;
+                        double pTextPosition_RC_Top_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
-                    Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow);
-                    Point pTextNote_RC_Top_x = new Point(pArrowEnd_RC_Top_x.X, pArrowEnd_RC_Top_x.Y - dVerticalOffsetOfText);
-                    // Sample text: 5 x HD16 bars with standard hook each end
+                        Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_RC_Top_x = new Point(pArrowEnd_RC_Top_x.X, pArrowEnd_RC_Top_x.Y - dVerticalOffsetOfText);
+                        // Sample text: 5 x HD16 bars with standard hook each end
 
-                    string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+                        string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                    notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    }
 
                     // Top_Bar_y
-                    dVerticalProjectionOfArrow = 0.30; // m // TODO Ondrej - S tymto sa treba pohrat
+                    if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
+                    {
+                        dVerticalProjectionOfArrow = 0.30; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                    Point pArrowStart_RC_Top_y = reinforcement_top_y_NotePoint;
-                    double pTextPosition_RC_Top_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        Point pArrowStart_RC_Top_y = reinforcement_top_y_NotePoint;
+                        double pTextPosition_RC_Top_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
-                    Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow);
-                    Point pTextNote_RC_Top_y = new Point(pArrowEnd_RC_Top_y.X, pArrowEnd_RC_Top_y.Y - dVerticalOffsetOfText);
-                    // Sample text: 5 x HD16 bars with standard hook each end
+                        Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_RC_Top_y = new Point(pArrowEnd_RC_Top_y.X, pArrowEnd_RC_Top_y.Y - dVerticalOffsetOfText);
+                        // Sample text: 5 x HD16 bars with standard hook each end
 
-                    string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+                        string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                    notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    }
 
                     // Bottom_Bar_x
-                    dVerticalProjectionOfArrow = -0.20; // m // TODO Ondrej - S tymto sa treba pohrat
+                    if (pad.Bottom_Bars_x != null && pad.Bottom_Bars_x.Count > 0)
+                    {
+                        dVerticalProjectionOfArrow = -0.20; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                    Point pArrowStart_RC_Bottom_x = reinforcement_bottom_x_NotePoint;
-                    double pTextPosition_RC_Bottom_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        Point pArrowStart_RC_Bottom_x = reinforcement_bottom_x_NotePoint;
+                        double pTextPosition_RC_Bottom_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
-                    Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow);
-                    Point pTextNote_RC_Bottom_x = new Point(pArrowEnd_RC_Bottom_x.X, pArrowEnd_RC_Bottom_x.Y - dVerticalOffsetOfText);
-                    // Sample text: 5 x HD16 bars with standard hook each end
+                        Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_RC_Bottom_x = new Point(pArrowEnd_RC_Bottom_x.X, pArrowEnd_RC_Bottom_x.Y - dVerticalOffsetOfText);
+                        // Sample text: 5 x HD16 bars with standard hook each end
 
-                    string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+                        string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                    notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    }
 
                     // Bottom_Bar_y
-                    dVerticalProjectionOfArrow = -0.27; // m // TODO Ondrej - S tymto sa treba pohrat
+                    if (pad.Bottom_Bars_y != null && pad.Bottom_Bars_y.Count > 0)
+                    {
+                        dVerticalProjectionOfArrow = -0.27; // m // TODO Ondrej - S tymto sa treba pohrat
 
-                    Point pArrowStart_RC_Bottom_y = reinforcement_bottom_y_NotePoint;
-                    double pTextPosition_RC_Bottom_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        Point pArrowStart_RC_Bottom_y = reinforcement_bottom_y_NotePoint;
+                        double pTextPosition_RC_Bottom_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
 
-                    Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow);
-                    Point pTextNote_RC_Bottom_y = new Point(pArrowEnd_RC_Bottom_y.X, pArrowEnd_RC_Bottom_y.Y - dVerticalOffsetOfText);
-                    // Sample text: 5 x HD16 bars with standard hook each end
+                        Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow);
+                        Point pTextNote_RC_Bottom_y = new Point(pArrowEnd_RC_Bottom_y.X, pArrowEnd_RC_Bottom_y.Y - dVerticalOffsetOfText);
+                        // Sample text: 5 x HD16 bars with standard hook each end
 
-                    string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
+                        string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                    notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    }
                 }
 
                 List<CNote2D> canvasNotes2D = notes2D;
