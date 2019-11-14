@@ -716,7 +716,28 @@ namespace BaseClasses
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkSeaGreen, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.WhiteSmoke, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+
+                        // Vyztuz v tvare U
+
+                        // Posun aby boli viditelne zvisle ciary
+                        float fCenterLineHorizontalOffsetFromBottom = 0.5f * pad.Reference_Top_Bar_y.Diameter + 0.5f * pad.Reference_Bottom_Bar_y.Diameter;
+                        // Pridanie medzery medzi ciarami
+                        fCenterLineHorizontalOffsetFromBottom += 0.5f * fCenterLineHorizontalOffsetFromBottom;
+
+                        DrawReincementBar_U_Shape(
+                            /*pad.Reference_Top_Bar_y*/ pad.Top_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                            pad,
+                            new Point(horizontalOffset + fCenterLineHorizontalOffsetFromBottom, 0), // Vkladaci bod vyztuze (lavy horny roh patky) // posun v smere x aby bolo vidno zvisle ciary spodneho aj horneho pruta vyztuze
+                            0.03f, // Netto polomer zakrivenia rohu
+                            true,
+                            Brushes.DarkOrange,
+                            fTempMin_X,
+                            fTempMin_Y,
+                            fmodelMarginLeft_x,
+                            fmodelMarginTop_y,
+                            dReal_Model_Zoom_Factor,
+                            canvasForImage);
                     }
 
                     if (pad.Bottom_Bars_y != null && pad.Bottom_Bars_y.Count > 0)
@@ -739,7 +760,22 @@ namespace BaseClasses
                         pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkTurquoise, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.WhiteSmoke, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+
+                        // Vyztuz v tvare U
+                        DrawReincementBar_U_Shape(
+                             /*pad.Reference_Bottom_Bar_y */ pad.Bottom_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                             pad,
+                             new Point(horizontalOffset, 0), // Vkladaci bod vyztuze (lavy horny roh patky)
+                             0.03f, // Netto polomer zakrivenia rohu
+                             false,
+                             Brushes.DarkViolet,
+                             fTempMin_X,
+                             fTempMin_Y,
+                             fmodelMarginLeft_x,
+                             fmodelMarginTop_y,
+                             dReal_Model_Zoom_Factor,
+                             canvasForImage);
                     }
 
                     // Vyztuz v podlahovej doske
@@ -766,39 +802,6 @@ namespace BaseClasses
                         dashes.Add(10); dashes.Add(10);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.BlueViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
-                    }
-
-                    // Pokus kreslit vyztuz v tvare U
-                    if (true)
-                    {
-                        PathSegmentCollection listOfSegments = new PathSegmentCollection();
-
-                        LineSegment verticalSegment_Left = new LineSegment(new Point(200, 100), true);
-                        ArcSegment leftArc = new ArcSegment(new Point(200, 150), new Size(5, 5), 90, false, SweepDirection.Counterclockwise, true);
-                        LineSegment horizontalSegment = new LineSegment(new Point(250, 150), true);
-                        ArcSegment rightArc = new ArcSegment(new Point(400, 150), new Size(5, 5), 90, false, SweepDirection.Counterclockwise, true);
-                        LineSegment verticalSegment_Right = new LineSegment(new Point(400, 100), true);
-
-                        listOfSegments.Add(verticalSegment_Left);
-                        listOfSegments.Add(leftArc);
-                        listOfSegments.Add(horizontalSegment);
-                        listOfSegments.Add(rightArc);
-                        listOfSegments.Add(verticalSegment_Right);
-
-                        PathFigure spline = new PathFigure(verticalSegment_Left.Point, listOfSegments, false);
-
-                        PathFigureCollection myPathFigureCollection = new PathFigureCollection();
-                        myPathFigureCollection.Add(spline);
-
-                        PathGeometry myPathGeometry = new PathGeometry();
-                        myPathGeometry.Figures = myPathFigureCollection;
-
-                        System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
-                        myPath.Stroke = Brushes.Black;
-                        myPath.StrokeThickness = 1;
-                        myPath.Data = myPathGeometry;
-
-                        canvasForImage.Children.Add(myPath);
                     }
                 }
             }
@@ -2117,6 +2120,89 @@ namespace BaseClasses
         //        }
         //    }
         //}
+
+        public static void DrawReincementBar_U_Shape(
+            CReinforcementBar bar,
+            CFoundation pad,
+            Point pControlPoint, // Left top point of footing pad
+            float fArcNetRadius, // m
+            bool bIsTopBar, // true - horna vystuz (preklapame U)
+            SolidColorBrush colorBrush,
+            double fTempMin_X,
+            double fTempMin_Y,
+            float fmodelMarginLeft_x,
+            float fmodelMarginTop_y,
+            double dReal_Model_Zoom_Factor,
+            Canvas canvasForImage)
+        {
+            float fBarDiameter = bar.Diameter;
+            float fArcRadius = fArcNetRadius + 0.5f * fBarDiameter;
+
+            Point start = new Point(pad.ConcreteCover + 0.5f * fBarDiameter, -pad.ConcreteCover);
+            Point leftArcStart = new Point(start.X, start.Y - (pad.m_fDim3 - pad.ConcreteCover - pad.ConcreteCover - 0.5f * fBarDiameter - fArcRadius));
+            Point leftArcEnd = new Point(start.X + fArcRadius, leftArcStart.Y - fArcRadius);
+            Point rightArcStart = new Point(leftArcEnd.X + (pad.m_fDim2 - 2 * (pad.ConcreteCover + 0.5f * fBarDiameter + fArcRadius)), leftArcEnd.Y);
+            Point rightArcEnd = new Point(rightArcStart.X + fArcRadius, rightArcStart.Y + fArcRadius);
+            Point end = new Point(pad.m_fDim2 - pad.ConcreteCover - 0.5 * fBarDiameter, start.Y);
+
+            // Presunut body
+            List<Point> listOfPoints = new List<Point>() { start, leftArcStart, leftArcEnd, rightArcStart, rightArcEnd, end };
+
+            //Point pControlPoint = new Point(horizontalOffset, 0); // Vkladaci bod vyztuze (lavy horny roh patky)
+            for (int i = 0; i < listOfPoints.Count; i++)
+            {
+                Point aux = new Point(listOfPoints[i].X + pControlPoint.X, listOfPoints[i].Y + pControlPoint.Y); // Presun
+
+                if (bIsTopBar) // Preklopenie pre hornu vystuz
+                {
+                    Point aux2 = new Point(aux.X, aux.Y);
+                    aux = new Point(aux.X, -(pad.m_fDim3 + aux2.Y));
+                }
+
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref aux); // Odzrkadlenie
+                aux = ConvertRealPointToCanvasDrawingPoint(aux, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor); // Konverzia na zobrazovacie jednotky
+                listOfPoints[i] = aux;
+            }
+
+            double dArcRadiusInCanvas = fArcRadius * dReal_Model_Zoom_Factor;
+            double dBarDiameterInCanvas = fBarDiameter * dReal_Model_Zoom_Factor;
+
+            PathSegmentCollection listOfSegments = new PathSegmentCollection();
+
+            Point startPoint = listOfPoints[0];
+
+            SweepDirection sDirection = SweepDirection.Counterclockwise;
+
+            if (bIsTopBar)
+                sDirection = SweepDirection.Clockwise;
+
+            LineSegment verticalSegment_Left = new LineSegment(listOfPoints[1], true);
+            ArcSegment leftArc = new ArcSegment(listOfPoints[2], new Size(dArcRadiusInCanvas, dArcRadiusInCanvas), 90, false, sDirection, true);
+            LineSegment horizontalSegment = new LineSegment(listOfPoints[3], true);
+            ArcSegment rightArc = new ArcSegment(listOfPoints[4], new Size(dArcRadiusInCanvas, dArcRadiusInCanvas), 90, false, sDirection, true);
+            LineSegment verticalSegment_Right = new LineSegment(listOfPoints[5], true);
+
+            listOfSegments.Add(verticalSegment_Left);
+            listOfSegments.Add(leftArc);
+            listOfSegments.Add(horizontalSegment);
+            listOfSegments.Add(rightArc);
+            listOfSegments.Add(verticalSegment_Right);
+
+            PathFigure spline = new PathFigure(startPoint, listOfSegments, false);
+
+            PathFigureCollection myPathFigureCollection = new PathFigureCollection();
+            myPathFigureCollection.Add(spline);
+
+            PathGeometry myPathGeometry = new PathGeometry();
+            myPathGeometry.Figures = myPathFigureCollection;
+
+            System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
+            myPath.Stroke = colorBrush;
+            myPath.StrokeThickness = dBarDiameterInCanvas;
+            myPath.Data = myPathGeometry;
+
+            canvasForImage.Children.Add(myPath);
+        }
 
         public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage)
         {
