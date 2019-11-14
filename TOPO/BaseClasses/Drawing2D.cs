@@ -329,7 +329,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    if(plate.PointsOut2D != null) canvasPointsOut = new List<Point>(plate.PointsOut2D);
+                    if (plate.PointsOut2D != null) canvasPointsOut = new List<Point>(plate.PointsOut2D);
                     canvasPointsOut_Mirror = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
                     //canvasPointsIn = new List<Point>(PointsIn);
                     if (pHolesCentersPointsScrews2D != null) canvasPointsHolesScrews = new List<Point>(pHolesCentersPointsScrews2D);
@@ -551,7 +551,7 @@ namespace BaseClasses
 
             CalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             //PointsForEdgeCoord_real = MovePointsToCenterCSAndCalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
-            
+
             int scale_unit = 1000; // mm
 
             double fModel_Length_x_real;
@@ -595,7 +595,7 @@ namespace BaseClasses
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsFootingPad_real);
 
                 List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                
+
                 DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
 
                 if (bDrawDPC_DPM)
@@ -668,11 +668,11 @@ namespace BaseClasses
 
                         for (int i = 0; i < pad.Top_Bars_x.Count; i++)
                         {
-                            Point p = new Point(horizontalOffset + fFirstPosition_y + i*fDistanceInLCS_y, pad.Top_Bars_x[i].m_pControlPoint.Z);
+                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, pad.Top_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
-                            if(i == pad.Top_Bars_x.Count - 1) // Consider only last bar
-                               reinforcement_top_x_NotePoint = new Point(p.X, p.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice poslednej tyce
+                            if (i == pad.Top_Bars_x.Count - 1) // Consider only last bar
+                                reinforcement_top_x_NotePoint = new Point(p.X, p.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice poslednej tyce
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
@@ -690,7 +690,7 @@ namespace BaseClasses
                             Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
-                            if (i == pad.Bottom_Bars_x.Count-1) // Consider only last bar
+                            if (i == pad.Bottom_Bars_x.Count - 1) // Consider only last bar
                                 reinforcement_bottom_x_NotePoint = new Point(p.X, p.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice poslednej tyce
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
@@ -803,6 +803,23 @@ namespace BaseClasses
                         dashes.Add(10); dashes.Add(10);
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.BlueViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
+
+                        // Starter - reinforcement bar to connect with mesh in floor slab
+                        bool bDrawReinforcement_Starter = true;
+
+                        if (bDrawReinforcement_Starter)
+                            DrawReincementBar_Starter_Shape(
+                            pad,
+                            floorSlab,
+                            new Point(horizontalOffset - 0.01, -0.01), // Vkladaci bod vyztuze (lavy horny roh patky) // Posunieme o trosku nahor, aby sa neprekvyvali
+                            0.03f, // m
+                            Brushes.DarkSeaGreen,
+                            fTempMin_X,
+                            fTempMin_Y,
+                            fmodelMarginLeft_x,
+                            fmodelMarginTop_y,
+                            dReal_Model_Zoom_Factor,
+                            canvasForImage);
                     }
                 }
             }
@@ -810,14 +827,14 @@ namespace BaseClasses
             if (bDrawColumnOutline)
             {
                 const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
-                double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth  }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
+                double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
 
                 List<Point> PointsStiffenersBottom = new List<Point>();
                 List<Point> PointsStiffenersIntermediate = new List<Point>();
                 List<Point> PointsStiffenersTop = new List<Point>();
 
                 // Sfiffeners Edges
-                for(int i = 0; i < stiffenersHorizontalPositions.Length; i++)
+                for (int i = 0; i < stiffenersHorizontalPositions.Length; i++)
                 {
                     PointsStiffenersBottom.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Ft));
                     PointsStiffenersIntermediate.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
@@ -941,7 +958,7 @@ namespace BaseClasses
                     Point left = new Point(lt_Plate.X, lt_Plate.Y + basePlate.Ft);
                     Point right = new Point(br_Plate.X, lt_Plate.Y + basePlate.Ft);
 
-                    List <Point> PointsPlateLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { left, right }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                    List<Point> PointsPlateLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { left, right }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsPlateLine);
                     Line l = new Line();
                     l.X1 = PointsPlateLine[0].X;
@@ -952,7 +969,7 @@ namespace BaseClasses
 
                     DrawLine(l, Brushes.Brown, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash);
 
-                    if(bDrawScrews)
+                    if (bDrawScrews)
                     {
                         bool bDrawHoles = true;
                         bool bDrawHoleCentreSymbols = true;
@@ -961,7 +978,7 @@ namespace BaseClasses
 
                         List<Point> canvasPointsHolesScrews = new List<Point>();
 
-                        for(int i = 0; i<PointsHolesScrews.Count / 2; i++) // Kreslime len polovicu bodov
+                        for (int i = 0; i < PointsHolesScrews.Count / 2; i++) // Kreslime len polovicu bodov
                         {
                             // Potrebujeme zamenit suradnice x a y
                             canvasPointsHolesScrews.Add(new Point(-lt_Plate.X - PointsHolesScrews[i].Y, -lt_Plate.Y - PointsHolesScrews[i].X)); // -lt_Plate.Y - uz bolo preklopene uvazujem kladnu hodnotu
@@ -1106,7 +1123,7 @@ namespace BaseClasses
             {
                 List<CDimension> Dimensions = new List<CDimension>(); // Real
 
-                Point center = new Point(0,0); // TO Ondrej - toto by mal byt asi stred obrazku
+                Point center = new Point(0, 0); // TO Ondrej - toto by mal byt asi stred obrazku
 
                 // Vertical Dimensions
                 Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], PointsFootingPad_real[5], true, true, 40)); // Vertical Dimension - footing pad depth
@@ -1126,7 +1143,7 @@ namespace BaseClasses
                     Point cPoint = anchorControlPointsForDimensions.Last(); // Last from left
                     Point conctactWithFloorSlab = new Point(PointsFootingPad_real.Last().X, PointsFootingPad_real.Last().Y); // Posledny bod obrysu
 
-                    Dimensions.Add(new CDimensionLinear(center, new Point(cPoint.X, cPoint.Y + firstAnchor.Length), new Point (cPoint.X, conctactWithFloorSlab.Y), false, true, 50)); // Vertical Dimension - first anchor
+                    Dimensions.Add(new CDimensionLinear(center, new Point(cPoint.X, cPoint.Y + firstAnchor.Length), new Point(cPoint.X, conctactWithFloorSlab.Y), false, true, 50)); // Vertical Dimension - first anchor
                     Dimensions.Add(new CDimensionLinear(center, new Point(cPoint.X, conctactWithFloorSlab.Y), cPoint, false, true, 50)); // Vertical Dimension - first anchor
                 }
 
@@ -1135,23 +1152,23 @@ namespace BaseClasses
                 // Anchors
                 if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
                 {
-                    for(int i = 0; i < anchorControlPointsForDimensions.Count; i++)
+                    for (int i = 0; i < anchorControlPointsForDimensions.Count; i++)
                     {
-                        if(i == 0) // First dimension
-                            Dimensions.Add(new CDimensionLinear(center, new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[i].Y), anchorControlPointsForDimensions[i], true, true,20));
+                        if (i == 0) // First dimension
+                            Dimensions.Add(new CDimensionLinear(center, new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[i].Y), anchorControlPointsForDimensions[i], true, true, 20));
                         else
-                            Dimensions.Add(new CDimensionLinear(center, anchorControlPointsForDimensions[i-1], anchorControlPointsForDimensions[i], true, true,20));
+                            Dimensions.Add(new CDimensionLinear(center, anchorControlPointsForDimensions[i - 1], anchorControlPointsForDimensions[i], true, true, 20));
                     }
                 }
 
                 // Footing pad to column edge
                 if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
-                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true,20)); // Horizontal Dimension - footing pad edge to column
+                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true, 20)); // Horizontal Dimension - footing pad edge to column
                 else // Kota v pripade ze nekotujeme ziadne anchors
-                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false,20)); // Horizontal Dimension - footing pad edge to column
+                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false, 20)); // Horizontal Dimension - footing pad edge to column
 
                 // Reinforcement
-                if(bDrawReinforcement)
+                if (bDrawReinforcement)
                 {
                     Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftPointForDimensions.Y), bottomReinforcementLeftPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement cover left
                     Dimensions.Add(new CDimensionLinear(center, bottomReinforcementLeftPointForDimensions, bottomReinforcementRightPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement length
@@ -1629,7 +1646,7 @@ namespace BaseClasses
             //Notes
             if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
         }
-        
+
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
         {
             if (Dimensions == null) return new List<CDimension>();
@@ -1666,7 +1683,7 @@ namespace BaseClasses
         }
         private static Point ConvertRealPointToCanvasDrawingPoint(Point point, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
-            return new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (point.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (point.Y - minY));            
+            return new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (point.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (point.Y - minY));
         }
         private static List<CDimension> ConvertRealPointsToCanvasDrawingPoints(List<CDimension> dimensions, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
@@ -2192,6 +2209,94 @@ namespace BaseClasses
             DrawPathFigure(startPoint, listOfSegments, false, colorBrush, dBarDiameterInCanvas, canvasForImage);
         }
 
+        public static void DrawReincementBar_Starter_Shape(
+            CFoundation pad,
+            CSlab slab,
+            Point pControlPoint, // Left top point of footing pad
+            float fArcNetRadius, // m
+            SolidColorBrush colorBrush,
+            double fTempMin_X,
+            double fTempMin_Y,
+            float fmodelMarginLeft_x,
+            float fmodelMarginTop_y,
+            double dReal_Model_Zoom_Factor,
+            Canvas canvasForImage)
+        {
+            // Reinforcement bar type starter
+            // Kreslime od spodneho haku smerom nahor a doprava, takze v smere hodinovych ruciciek
+
+            // TODO - sem potrebujeme dostat rozmery starter pre danu stranu floor slab kde sa nachadza patka (left/right, front/back)
+
+            // Left or right side of building
+            float fBarDiameter = slab.Starters_Phi_LRSide;
+            float fTopPartProjectionLength = slab.StartersLapLength_LRSide;
+
+            // Front or back side
+            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            {
+                fBarDiameter = slab.Starters_Phi_FBSide;
+                fTopPartProjectionLength = slab.StartersLapLength_FBSide;
+            }
+
+            float fArcRadius = fArcNetRadius + 0.5f * fBarDiameter;
+
+            // Horna priama cast
+            float fTopStraightPartLength = fTopPartProjectionLength - fArcRadius;
+
+            // Spodny hak - zahnutie
+            float fHookStraightPartLength = 5 * fBarDiameter;
+            float fHookAngleFromVerticalAxis_deg = 30;
+            float fHookAngleFromVerticalAxis_rad = fHookAngleFromVerticalAxis_deg / 180f * MathF.fPI;
+
+            float fHookStraightPart_Projection_x = fHookStraightPartLength * (float)Math.Sin(fHookAngleFromVerticalAxis_rad);
+            float fHookStraightPart_Projection_y = fHookStraightPartLength * (float)Math.Cos(fHookAngleFromVerticalAxis_rad);
+
+            Point pHookCenterPoint = new Point(pad.ConcreteCover + fBarDiameter + fArcNetRadius, -(pad.m_fDim3 - pad.ConcreteCover - fBarDiameter - fArcNetRadius));
+
+            Point bottomArcStart = new Point(pHookCenterPoint.X + fArcRadius * (float)Math.Cos(fHookAngleFromVerticalAxis_rad), pHookCenterPoint.Y - fArcRadius * (float)Math.Sin(fHookAngleFromVerticalAxis_rad));
+            Point start = new Point(bottomArcStart.X + fHookStraightPart_Projection_x, bottomArcStart.Y + fHookStraightPart_Projection_y);
+            Point bottomArcEnd = new Point(pHookCenterPoint.X - fArcRadius, pHookCenterPoint.Y);
+            Point topArcStart = new Point(bottomArcEnd.X, -slab.ConcreteCover - fBarDiameter - fArcNetRadius);
+            Point toptArcEnd = new Point(topArcStart.X + fArcRadius, topArcStart.Y + fArcRadius);
+            Point end = new Point(toptArcEnd.X + fTopStraightPartLength, toptArcEnd.Y);
+
+            // Presunut body
+            List<Point> listOfPoints = new List<Point>() { start, bottomArcStart, bottomArcEnd, topArcStart, toptArcEnd, end };
+
+            //Point pControlPoint = new Point(horizontalOffset, 0); // Vkladaci bod vyztuze (lavy horny roh patky)
+            for (int i = 0; i < listOfPoints.Count; i++)
+            {
+                Point aux = new Point(listOfPoints[i].X + pControlPoint.X, listOfPoints[i].Y + pControlPoint.Y); // Presun
+
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref aux); // Odzrkadlenie
+                aux = ConvertRealPointToCanvasDrawingPoint(aux, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor); // Konverzia na zobrazovacie jednotky
+                listOfPoints[i] = aux;
+            }
+
+            double dArcRadiusInCanvas = fArcRadius * dReal_Model_Zoom_Factor;
+            double dBarDiameterInCanvas = fBarDiameter * dReal_Model_Zoom_Factor;
+
+            PathSegmentCollection listOfSegments = new PathSegmentCollection();
+
+            Point startPoint = listOfPoints[0];
+
+            SweepDirection sDirection = SweepDirection.Clockwise;
+
+            LineSegment hookSegment = new LineSegment(listOfPoints[1], true);
+            ArcSegment bottomArc = new ArcSegment(listOfPoints[2], new Size(dArcRadiusInCanvas, dArcRadiusInCanvas), 90 + (90 - fHookAngleFromVerticalAxis_deg), false, sDirection, true);
+            LineSegment verticalSegment = new LineSegment(listOfPoints[3], true);
+            ArcSegment topArc = new ArcSegment(listOfPoints[4], new Size(dArcRadiusInCanvas, dArcRadiusInCanvas), 90, false, sDirection, true);
+            LineSegment horizontalSegment = new LineSegment(listOfPoints[5], true);
+
+            listOfSegments.Add(hookSegment);
+            listOfSegments.Add(bottomArc);
+            listOfSegments.Add(verticalSegment);
+            listOfSegments.Add(topArc);
+            listOfSegments.Add(horizontalSegment);
+
+            DrawPathFigure(startPoint, listOfSegments, false, colorBrush, dBarDiameterInCanvas, canvasForImage);
+        }
+
         public static void DrawPathFigure(Point start, PathSegmentCollection listOfSegments, bool bIsPathClosed, SolidColorBrush brush, double strokeThickness, Canvas canvasForImage)
         {
             PathFigure spline = new PathFigure(start, listOfSegments, bIsPathClosed);
@@ -2241,7 +2346,7 @@ namespace BaseClasses
 
             double textWidth;
             DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, fontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
-            
+
             if (note.DrawArrow)
             {
                 PointCollection points = new PointCollection() { new Point(note.ArrowPoint1.X, note.ArrowPoint1.Y), new Point(note.ArrowPoint2.X, note.ArrowPoint2.Y) };
@@ -2260,8 +2365,8 @@ namespace BaseClasses
             {
                 for (int i = 0; i < Notes.Count; i++) // Zoznam poznamok
                 {
-                   CNote2D note = Notes[i];
-                   DrawNote(note, canvasForImage);
+                    CNote2D note = Notes[i];
+                    DrawNote(note, canvasForImage);
                 }
             }
         }
@@ -2416,7 +2521,7 @@ namespace BaseClasses
         public static void DrawArrow(PointCollection points, Canvas imageCanvas, SolidColorBrush fillColor, SolidColorBrush strokeColor, double thickness = 2, ArrowEnds arrowEnds = ArrowEnds.Start, double arrowAngle = 45)
         {
             ArrowPolyline arrow = new ArrowPolyline();
-            arrow.Stroke = strokeColor;            
+            arrow.Stroke = strokeColor;
             arrow.StrokeThickness = thickness;
             arrow.Fill = fillColor;
             arrow.ArrowEnds = arrowEnds;
@@ -2456,8 +2561,8 @@ namespace BaseClasses
                 circle.Width = diameter;
                 circle.StrokeThickness = thickness;
                 circle.Stroke = colorStroke;
-                if(colorFill != null)
-                  circle.Fill = colorFill;
+                if (colorFill != null)
+                    circle.Fill = colorFill;
 
                 double left = center.X - (diameter / 2) + thickness / 2;
                 double top = center.Y - (diameter / 2) + thickness / 2;
@@ -3012,7 +3117,7 @@ namespace BaseClasses
         public static List<Point> MovePointsToCenterCSAndCalculateModelLimits(List<Point> points, out double max_X, out double min_X, out double max_Y, out double min_Y)
         {
             CalculateModelLimits(points, out max_X, out min_X, out max_Y, out min_Y);
-            
+
             List<Point> updatedPoints = MovePointsToCenterOfCoordinateSystem(points, min_X, min_Y);
             CalculateModelLimits(updatedPoints, out max_X, out min_X, out max_Y, out min_Y);
             return updatedPoints;
@@ -3236,10 +3341,10 @@ namespace BaseClasses
 
             // NOTE - docasne vykreslujeme body na ktore sa viaze text
             bool drawTextPoint = false;
-            if(drawTextPoint) DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
+            if (drawTextPoint) DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
 
             //Canvas.SetLeft(textBlock, posx);
-            if (halign == HorizontalAlignment.Center) Canvas.SetLeft(textBlock, posx - txtSize.Width / 2); 
+            if (halign == HorizontalAlignment.Center) Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
             else if (halign == HorizontalAlignment.Left) Canvas.SetLeft(textBlock, posx - txtSize.Width);
             else Canvas.SetLeft(textBlock, posx);
 
@@ -3607,12 +3712,10 @@ namespace BaseClasses
                         double v1 = ConversionsHelper.GetDoubleFromText(tb.Text);
                         double v2 = ConversionsHelper.GetDoubleFromText(tb2.Text);
                         if (Math.Abs(v1) >= Math.Abs(v2)) tb2.Visibility = Visibility.Hidden;
-                        else { tb.Visibility = Visibility.Hidden; break; } 
+                        else { tb.Visibility = Visibility.Hidden; break; }
                     }
                 } //inner foreach
             } //outer foreach
         }
-        
-
     }
 }
