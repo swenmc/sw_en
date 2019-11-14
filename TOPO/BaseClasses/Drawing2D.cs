@@ -2189,7 +2189,12 @@ namespace BaseClasses
             listOfSegments.Add(rightArc);
             listOfSegments.Add(verticalSegment_Right);
 
-            PathFigure spline = new PathFigure(startPoint, listOfSegments, false);
+            DrawPathFigure(startPoint, listOfSegments, false, colorBrush, dBarDiameterInCanvas, canvasForImage);
+        }
+
+        public static void DrawPathFigure(Point start, PathSegmentCollection listOfSegments, bool bIsPathClosed, SolidColorBrush brush, double strokeThickness, Canvas canvasForImage)
+        {
+            PathFigure spline = new PathFigure(start, listOfSegments, bIsPathClosed);
 
             PathFigureCollection myPathFigureCollection = new PathFigureCollection();
             myPathFigureCollection.Add(spline);
@@ -2198,8 +2203,8 @@ namespace BaseClasses
             myPathGeometry.Figures = myPathFigureCollection;
 
             System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
-            myPath.Stroke = colorBrush;
-            myPath.StrokeThickness = dBarDiameterInCanvas;
+            myPath.Stroke = brush;
+            myPath.StrokeThickness = strokeThickness;
             myPath.Data = myPathGeometry;
 
             canvasForImage.Children.Add(myPath);
