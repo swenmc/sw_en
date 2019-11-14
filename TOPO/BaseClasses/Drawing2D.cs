@@ -12,6 +12,7 @@ using BaseClasses.GraphObj;
 using BaseClasses.Helpers;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Petzold.Media2D;
 
 namespace BaseClasses
 {
@@ -2235,36 +2236,18 @@ namespace BaseClasses
 
             // TO Ondrej - Teraz centrujeme text na stred podla NoteTextPoint - chcelo by to zaviest moznost ze mozem nastavit ci je text voci bodu vycentrovany alebo je vlavo alebo vpravo od bodu
 
-            double textWidth;
-
-            //DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, 0, fontSize, Brushes.Black, canvasForImage, out textWidth);
+            double textWidth;            
             DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, fontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
-
-
-
+            
             if (note.DrawArrow)
             {
-                Line line = new Line();
-                line.X1 = note.ArrowPoint1.X;
-                line.Y1 = note.ArrowPoint1.Y;
-                line.X2 = note.ArrowPoint2.X;
-                line.Y2 = note.ArrowPoint2.Y;
-
-                // TO Ondrej - potrebovali by sme nakreslit peknu sipku lebo PenLineCap.Triangle len zapbrusi ciarku a vyzera ako ceruzka
-                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Triangle, PenLineCap.Flat, lineThickness, canvasForImage, null);
+                PointCollection points = new PointCollection() { new Point(note.ArrowPoint1.X, note.ArrowPoint1.Y), new Point(note.ArrowPoint2.X, note.ArrowPoint2.Y) };
+                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Red), 2, ArrowEnds.Begin, 45);
             }
-
-            if(note.DrawLineUnderText)
+            if (note.DrawLineUnderText)
             {
-                Line line = new Line();
-                line.X1 = note.ArrowPoint2.X;
-                line.Y1 = note.ArrowPoint2.Y;
-
-                line.X2 = note.ArrowPoint2.X + textWidth; // TODO Ondrej - Zistime dlzku textu, aby sme mohli vykreslit ciaru pod text !!!
-                line.Y2 = note.ArrowPoint2.Y;
-
-                // TO Ondrej - potrebovali by sme nakreslit peknu sipku lebo PenLineCap.Triangle len zapbrusi ciarku a vyzera ako ceruzka
-                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Triangle, PenLineCap.Flat, lineThickness, canvasForImage, null);
+                PointCollection points = new PointCollection() { new Point(note.ArrowPoint2.X, note.ArrowPoint2.Y), new Point(note.ArrowPoint2.X + textWidth, note.ArrowPoint2.Y) };
+                DrawArrow(points, canvasForImage, new SolidColorBrush(Colors.Red), new SolidColorBrush(Colors.Red), 2, ArrowEnds.None, 45);
             }
         }
 
@@ -2425,6 +2408,18 @@ namespace BaseClasses
             Canvas.SetTop(myLine, canvasTop);
             Canvas.SetLeft(myLine, canvasLeft);
             imageCanvas.Children.Add(myLine);
+        }
+
+        public static void DrawArrow(PointCollection points, Canvas imageCanvas, SolidColorBrush fillColor, SolidColorBrush strokeColor, double thickness = 2, ArrowEnds arrowEnds = ArrowEnds.Start, double arrowAngle = 45)
+        {
+            ArrowPolyline arrow = new ArrowPolyline();
+            arrow.Stroke = strokeColor;            
+            arrow.StrokeThickness = thickness;
+            arrow.Fill = fillColor;
+            arrow.ArrowEnds = arrowEnds;
+            arrow.ArrowAngle = arrowAngle;
+            arrow.Points = points;
+            imageCanvas.Children.Add(arrow);
         }
 
         public static void DrawPolygon(List<Point> listPoints, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
@@ -3237,7 +3232,8 @@ namespace BaseClasses
             txtWidth = txtSize.Width; // Dlzka texboxu - pre potreby vykreslenia ciary pod textom
 
             // NOTE - docasne vykreslujeme body na ktore sa viaze text
-            DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
+            bool drawTextPoint = false;
+            if(drawTextPoint) DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
 
             //Canvas.SetLeft(textBlock, posx);
             if (halign == HorizontalAlignment.Center) Canvas.SetLeft(textBlock, posx - txtSize.Width / 2); 
