@@ -1196,7 +1196,6 @@ namespace BaseClasses
                 bool bDrawUnderLineBelowText = true;
 
                 // TODO - zatial natvrdo nastavene parametre pre odkazovu ciaru
-
                 double dVerticalOffsetOfText = 0.03; // m // Vertikalne odsadenie textu od ciary
                 double dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
                 double dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
@@ -1206,14 +1205,43 @@ namespace BaseClasses
 
                 bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
 
+                bool bUseEquallySpacedVerticalPositions = true; // Vytvorime zoznam pozicii pre poznamky nad a pod floor slab a postupne do nich umiestnujeme poznamky
+
+                double dNotesVerticalOffset = 0.1f;
+
+                // TODO Ondrej - skusam tu vyrobit pozicie pre poznamky v smere y, akokeby tabulku nad a pod floor slab
+                // potom na zaklade indexov vkladam na jednotlive pozicie poznamky
+
+                // TODO Ondrej - mozno by bolo lepsie nahradit (dNoteTextHorizontalPosition_x a notesVerticalPositions... priamo zoznamom Points)
+                List<double> notesVerticalPositionsAboveFloor = new List<double>();
+                List<double> notesVerticalPositionsBelowFloor = new List<double>();
+
+                double dFirstNoteVerticalPositionsAboveFloor = PointsFootingPad_real[6].Y + 0.1f;
+                double dFirstNoteVerticalPositionsBelowFloor = PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM - 0.55f;
+
+                // Naplnime zoznamy pozicii
+                short numberOfNotePositions = 10;
+
+                for(int i = 0; i< numberOfNotePositions; i++)
+                {
+                    notesVerticalPositionsAboveFloor.Add(dFirstNoteVerticalPositionsAboveFloor + i * dNotesVerticalOffset);
+                    notesVerticalPositionsBelowFloor.Add(dFirstNoteVerticalPositionsBelowFloor - i * dNotesVerticalOffset);
+
+                    // Pripravime si preklopene suradnice 
+                    // MirrorAboutX_ChangeYCoordinates
+                    notesVerticalPositionsAboveFloor[i] *= -1;
+                    notesVerticalPositionsBelowFloor[i] *= -1;
+                }
+
                 // Column Description
                 bool bDrawColumnDescription = true;
                 if (bDrawColumnOutline && bDrawColumnDescription)
                 {
                     Point pArrowStart = columnNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                    double pTextPosition_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[5] : pArrowStart.Y - dVerticalProjectionOfArrow;
 
-                    Point pArrowEnd = new Point(pTextPosition_x, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
                     notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
                 }
@@ -1226,8 +1254,9 @@ namespace BaseClasses
 
                     Point pArrowStart = anchorNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                    double pTextPosition_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[3] : pArrowStart.Y - dVerticalProjectionOfArrow;
 
-                    Point pArrowEnd = new Point(pTextPosition_x, pArrowStart.Y - dVerticalProjectionOfArrow);
+                    Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
                     // Sample text: 4 x M16 HD bolts 500 mm long
                     string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + " x M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
@@ -1243,8 +1272,9 @@ namespace BaseClasses
 
                         Point pArrowStart_AnchorTopWasher = plateWasherNotePoint;
                         double pTextPosition_AnchorTopWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_AnchorTopWasher_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[4] : pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_AnchorTopWasher = new Point(pTextPosition_AnchorTopWasher_x, pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_AnchorTopWasher = new Point(pTextPosition_AnchorTopWasher_x, pTextPosition_AnchorTopWasher_y);
                         Point pTextNote_AnchorTopWasher = new Point(pArrowEnd_AnchorTopWasher.X, pArrowEnd_AnchorTopWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 HT nut & 80sq x 12mm washer on top
 
@@ -1265,8 +1295,9 @@ namespace BaseClasses
 
                         Point pArrowStart_AnchorBottomWasher = bearingWasherNotePoint;
                         double pTextPosition_AnchorBottomWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_AnchorBottomWasher_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[3] : pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_AnchorBottomWasher = new Point(pTextPosition_AnchorBottomWasher_x, pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_AnchorBottomWasher = new Point(pTextPosition_AnchorBottomWasher_x, pTextPosition_AnchorBottomWasher_y);
                         Point pTextNote_AnchorBottomWasher = new Point(pArrowEnd_AnchorBottomWasher.X, pArrowEnd_AnchorBottomWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 Nuts & 60sq x 6mm washer at base
 
@@ -1289,8 +1320,9 @@ namespace BaseClasses
 
                     Point pArrowStart_Mesh = FloorMeshNotePoint;
                     double pTextPosition_Mesh_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Mesh.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                    double pTextPosition_Mesh_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[0] : pArrowStart_Mesh.Y - dVerticalProjectionOfArrow;
 
-                    Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pArrowStart_Mesh.Y - dVerticalProjectionOfArrow);
+                    Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pTextPosition_Mesh_y);
                     Point pTextNote_Mesh = new Point(pArrowEnd_Mesh.X, pArrowEnd_Mesh.Y - dVerticalOffsetOfText);
                     // Sample text: SE92 [500 Grade] Mesh
 
@@ -1309,8 +1341,9 @@ namespace BaseClasses
 
                     Point pArrowStart_dpc_dpm = dpc_dpm_NotePoint;
                     double pTextPosition_dpc_dpm_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_dpc_dpm.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                    double pTextPosition_dpc_dpm_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[0] : pArrowStart_dpc_dpm.Y - dVerticalProjectionOfArrow;
 
-                    Point pArrowEnd_dpc_dpm = new Point(pTextPosition_dpc_dpm_x, pArrowStart_dpc_dpm.Y - dVerticalProjectionOfArrow);
+                    Point pArrowEnd_dpc_dpm = new Point(pTextPosition_dpc_dpm_x, pTextPosition_dpc_dpm_y);
                     Point pTextNote_dpc_dpm = new Point(pArrowEnd_dpc_dpm.X, pArrowEnd_dpc_dpm.Y - dVerticalOffsetOfText);
                     // Sample text: DPC to underside
 
@@ -1336,8 +1369,9 @@ namespace BaseClasses
 
                         Point pArrowStart_RC_Top_x = reinforcement_top_x_NotePoint;
                         double pTextPosition_RC_Top_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_RC_Top_x_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[1] : pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pTextPosition_RC_Top_x_y);
                         Point pTextNote_RC_Top_x = new Point(pArrowEnd_RC_Top_x.X, pArrowEnd_RC_Top_x.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
 
@@ -1353,8 +1387,9 @@ namespace BaseClasses
 
                         Point pArrowStart_RC_Top_y = reinforcement_top_y_NotePoint;
                         double pTextPosition_RC_Top_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_RC_Top_y_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[2] : pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pTextPosition_RC_Top_y_y);
                         Point pTextNote_RC_Top_y = new Point(pArrowEnd_RC_Top_y.X, pArrowEnd_RC_Top_y.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
 
@@ -1370,8 +1405,9 @@ namespace BaseClasses
 
                         Point pArrowStart_RC_Bottom_x = reinforcement_bottom_x_NotePoint;
                         double pTextPosition_RC_Bottom_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_RC_Bottom_x_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[1] : pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pTextPosition_RC_Bottom_x_y);
                         Point pTextNote_RC_Bottom_x = new Point(pArrowEnd_RC_Bottom_x.X, pArrowEnd_RC_Bottom_x.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
 
@@ -1387,8 +1423,9 @@ namespace BaseClasses
 
                         Point pArrowStart_RC_Bottom_y = reinforcement_bottom_y_NotePoint;
                         double pTextPosition_RC_Bottom_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
+                        double pTextPosition_RC_Bottom_y_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[2] : pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow;
 
-                        Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow);
+                        Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pTextPosition_RC_Bottom_y_y);
                         Point pTextNote_RC_Bottom_y = new Point(pArrowEnd_RC_Bottom_y.X, pArrowEnd_RC_Bottom_y.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
 
