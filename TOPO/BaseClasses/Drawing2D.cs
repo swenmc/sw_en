@@ -767,6 +767,39 @@ namespace BaseClasses
 
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.BlueViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
                     }
+
+                    // Pokus kreslit vyztuz v tvare U
+                    if (true)
+                    {
+                        PathSegmentCollection listOfSegments = new PathSegmentCollection();
+
+                        LineSegment verticalSegment_Left = new LineSegment(new Point(200, 100), true);
+                        ArcSegment leftArc = new ArcSegment(new Point(200, 150), new Size(5, 5), 90, false, SweepDirection.Counterclockwise, true);
+                        LineSegment horizontalSegment = new LineSegment(new Point(250, 150), true);
+                        ArcSegment rightArc = new ArcSegment(new Point(400, 150), new Size(5, 5), 90, false, SweepDirection.Counterclockwise, true);
+                        LineSegment verticalSegment_Right = new LineSegment(new Point(400, 100), true);
+
+                        listOfSegments.Add(verticalSegment_Left);
+                        listOfSegments.Add(leftArc);
+                        listOfSegments.Add(horizontalSegment);
+                        listOfSegments.Add(rightArc);
+                        listOfSegments.Add(verticalSegment_Right);
+
+                        PathFigure spline = new PathFigure(verticalSegment_Left.Point, listOfSegments, false);
+
+                        PathFigureCollection myPathFigureCollection = new PathFigureCollection();
+                        myPathFigureCollection.Add(spline);
+
+                        PathGeometry myPathGeometry = new PathGeometry();
+                        myPathGeometry.Figures = myPathFigureCollection;
+
+                        System.Windows.Shapes.Path myPath = new System.Windows.Shapes.Path();
+                        myPath.Stroke = Brushes.Black;
+                        myPath.StrokeThickness = 1;
+                        myPath.Data = myPathGeometry;
+
+                        canvasForImage.Children.Add(myPath);
+                    }
                 }
             }
 
