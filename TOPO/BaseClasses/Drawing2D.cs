@@ -1224,12 +1224,14 @@ namespace BaseClasses
 
                 // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.1 m
                 double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.1;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+                double dNoteTextHorizontalPosition_x_rel = 0.56;
 
                 bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
 
                 bool bUseEquallySpacedVerticalPositions = true; // Vytvorime zoznam pozicii pre poznamky nad a pod floor slab a postupne do nich umiestnujeme poznamky
 
                 double dNotesVerticalOffset = 0.1f;
+                double dNotesVerticalOffset_rel = 0.05f;
 
                 // TODO Ondrej - skusam tu vyrobit pozicie pre poznamky v smere y, akokeby tabulku nad a pod floor slab
                 // potom na zaklade indexov vkladam na jednotlive pozicie poznamky
@@ -1238,8 +1240,14 @@ namespace BaseClasses
                 List<double> notesVerticalPositionsAboveFloor = new List<double>();
                 List<double> notesVerticalPositionsBelowFloor = new List<double>();
 
+                List<double> notesVerticalPositionsAboveFloor_rel = new List<double>();
+                List<double> notesVerticalPositionsBelowFloor_rel = new List<double>();
+
                 double dFirstNoteVerticalPositionsAboveFloor = PointsFootingPad_real[6].Y + 0.1f;
                 double dFirstNoteVerticalPositionsBelowFloor = PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM - 0.55f;
+
+                double dFirstNoteVerticalPositionsAboveFloor_rel = 0.40f;
+                double dFirstNoteVerticalPositionsBelowFloor_rel = 0.80f;
 
                 // Naplnime zoznamy pozicii
                 short numberOfNotePositions = 10;
@@ -1253,10 +1261,14 @@ namespace BaseClasses
                     // MirrorAboutX_ChangeYCoordinates
                     notesVerticalPositionsAboveFloor[i] *= -1;
                     notesVerticalPositionsBelowFloor[i] *= -1;
+
+                    notesVerticalPositionsAboveFloor_rel.Add(dFirstNoteVerticalPositionsAboveFloor_rel - i * dNotesVerticalOffset_rel);
+                    notesVerticalPositionsBelowFloor_rel.Add(dFirstNoteVerticalPositionsBelowFloor_rel + i * dNotesVerticalOffset_rel);
                 }
 
-                //Tu sa nastavuje relativna pozicia textu v percentach 1 = 100%
-                Point relativePoint = new Point(0.56, 0.05);
+                // Tu sa nastavuje relativna pozicia textu v percentach (0- 1) 1.00 = 100%
+
+                Point relativePoint;
                 // Column Description
                 bool bDrawColumnDescription = true;
                 if (bDrawColumnOutline && bDrawColumnDescription)
@@ -1264,6 +1276,8 @@ namespace BaseClasses
                     Point pArrowStart = columnNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                     double pTextPosition_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[6] : pArrowStart.Y - dVerticalProjectionOfArrow;
+
+                    relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[6]);
 
                     Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
@@ -1281,6 +1295,8 @@ namespace BaseClasses
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                     double pTextPosition_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[4] : pArrowStart.Y - dVerticalProjectionOfArrow;
 
+                    relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[4]);
+
                     Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
                     // Sample text: 4 x M16 HD bolts 500 mm long
@@ -1288,7 +1304,7 @@ namespace BaseClasses
                                    (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
 
                     //notes2D.Add(new CNote2D(pTextNote, sText, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    relativePoint.Y += 0.05;
+
                     notes2D.Add(new CNote2D(relativePoint, sText, bDrawArrows, pArrowStart, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
 
                     bool bDrawAnchorTopWasherDescription = true;
@@ -1301,6 +1317,8 @@ namespace BaseClasses
                         double pTextPosition_AnchorTopWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorTopWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_AnchorTopWasher_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[5] : pArrowStart_AnchorTopWasher.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[5]);
+
                         Point pArrowEnd_AnchorTopWasher = new Point(pTextPosition_AnchorTopWasher_x, pTextPosition_AnchorTopWasher_y);
                         Point pTextNote_AnchorTopWasher = new Point(pArrowEnd_AnchorTopWasher.X, pArrowEnd_AnchorTopWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 HT nut & 80sq x 12mm washer on top
@@ -1311,7 +1329,7 @@ namespace BaseClasses
                             (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
 
                         //notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher,bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
+   
                         notes2D.Add(new CNote2D(relativePoint, sText_AnchorTopWasher, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
@@ -1326,6 +1344,8 @@ namespace BaseClasses
                         double pTextPosition_AnchorBottomWasher_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_AnchorBottomWasher.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_AnchorBottomWasher_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[3] : pArrowStart_AnchorBottomWasher.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsBelowFloor_rel[3]);
+
                         Point pArrowEnd_AnchorBottomWasher = new Point(pTextPosition_AnchorBottomWasher_x, pTextPosition_AnchorBottomWasher_y);
                         Point pTextNote_AnchorBottomWasher = new Point(pArrowEnd_AnchorBottomWasher.X, pArrowEnd_AnchorBottomWasher.Y - dVerticalOffsetOfText);
                         // Sample text: M16 Nuts & 60sq x 6mm washer at base
@@ -1336,7 +1356,6 @@ namespace BaseClasses
                             (fBearingWasherThickness * 1000).ToString("F0") + " mm washer at base";
 
                         //notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
@@ -1353,6 +1372,8 @@ namespace BaseClasses
                     double pTextPosition_Mesh_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Mesh.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                     double pTextPosition_Mesh_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[0] : pArrowStart_Mesh.Y - dVerticalProjectionOfArrow;
 
+                    relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[0]);
+
                     Point pArrowEnd_Mesh = new Point(pTextPosition_Mesh_x, pTextPosition_Mesh_y);
                     Point pTextNote_Mesh = new Point(pArrowEnd_Mesh.X, pArrowEnd_Mesh.Y - dVerticalOffsetOfText);
                     // Sample text: SE92 [500 Grade] Mesh
@@ -1360,7 +1381,6 @@ namespace BaseClasses
                     string sText_Mesh = floorSlab.MeshGradeName + " [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
 
                     //notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    relativePoint.Y += 0.05;
                     notes2D.Add(new CNote2D(relativePoint, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     // Starter
                     bool bDrawStarterDescription = true; // Kreslit poznamku
@@ -1375,13 +1395,14 @@ namespace BaseClasses
                         double pTextPosition_Starter_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_Starter.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_Starter_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[1] : pArrowStart_Starter.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[1]);
+
                         Point pArrowEnd_Starter = new Point(pTextPosition_Starter_x, pTextPosition_Starter_y);
                         Point pTextNote_Starter = new Point(pArrowEnd_Starter.X, pArrowEnd_Starter.Y - dVerticalOffsetOfText);
                         // Sample text: HD12 Starters / 600 mm crs.
                         string sText_Starter = "HD" + (/*floorSlab.fStartersDiameter*/ fStarterBarDiameter * 1000).ToString("F0") + " Starters / " + (/*floorSlab.stafStartersSpacing*/ startersSpacing * 1000).ToString("F0") + " mm crs";
 
                         //notes2D.Add(new CNote2D(pTextNote_Starter, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, pArrowEnd_Starter, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
@@ -1398,6 +1419,8 @@ namespace BaseClasses
                     double pTextPosition_dpc_dpm_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_dpc_dpm.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                     double pTextPosition_dpc_dpm_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[0] : pArrowStart_dpc_dpm.Y - dVerticalProjectionOfArrow;
 
+                    relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsBelowFloor_rel[0]);
+
                     Point pArrowEnd_dpc_dpm = new Point(pTextPosition_dpc_dpm_x, pTextPosition_dpc_dpm_y);
                     Point pTextNote_dpc_dpm = new Point(pArrowEnd_dpc_dpm.X, pArrowEnd_dpc_dpm.Y - dVerticalOffsetOfText);
                     // Sample text: DPC to underside
@@ -1405,7 +1428,6 @@ namespace BaseClasses
                     string sText_dpc_dpm = "DPC to underside";
 
                     //notes2D.Add(new CNote2D(pTextNote_dpc_dpm, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, pArrowEnd_dpc_dpm, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    relativePoint.Y = 0.8;
                     notes2D.Add(new CNote2D(relativePoint, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                 }
 
@@ -1428,6 +1450,8 @@ namespace BaseClasses
                         double pTextPosition_RC_Top_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_RC_Top_x_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[2] : pArrowStart_RC_Top_x.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[2]);
+
                         Point pArrowEnd_RC_Top_x = new Point(pTextPosition_RC_Top_x_x, pTextPosition_RC_Top_x_y);
                         Point pTextNote_RC_Top_x = new Point(pArrowEnd_RC_Top_x.X, pArrowEnd_RC_Top_x.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
@@ -1435,7 +1459,6 @@ namespace BaseClasses
                         string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
@@ -1448,6 +1471,8 @@ namespace BaseClasses
                         double pTextPosition_RC_Top_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Top_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_RC_Top_y_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsAboveFloor[3] : pArrowStart_RC_Top_y.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsAboveFloor_rel[3]);
+
                         Point pArrowEnd_RC_Top_y = new Point(pTextPosition_RC_Top_y_x, pTextPosition_RC_Top_y_y);
                         Point pTextNote_RC_Top_y = new Point(pArrowEnd_RC_Top_y.X, pArrowEnd_RC_Top_y.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
@@ -1455,7 +1480,6 @@ namespace BaseClasses
                         string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
@@ -1468,6 +1492,8 @@ namespace BaseClasses
                         double pTextPosition_RC_Bottom_x_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_x.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_RC_Bottom_x_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[1] : pArrowStart_RC_Bottom_x.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsBelowFloor_rel[1]);
+
                         Point pArrowEnd_RC_Bottom_x = new Point(pTextPosition_RC_Bottom_x_x, pTextPosition_RC_Bottom_x_y);
                         Point pTextNote_RC_Bottom_x = new Point(pArrowEnd_RC_Bottom_x.X, pArrowEnd_RC_Bottom_x.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
@@ -1475,7 +1501,6 @@ namespace BaseClasses
                         string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
@@ -1488,6 +1513,8 @@ namespace BaseClasses
                         double pTextPosition_RC_Bottom_y_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart_RC_Bottom_y.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
                         double pTextPosition_RC_Bottom_y_y = bUseEquallySpacedVerticalPositions ? notesVerticalPositionsBelowFloor[2] : pArrowStart_RC_Bottom_y.Y - dVerticalProjectionOfArrow;
 
+                        relativePoint = new Point(dNoteTextHorizontalPosition_x_rel, notesVerticalPositionsBelowFloor_rel[2]);
+
                         Point pArrowEnd_RC_Bottom_y = new Point(pTextPosition_RC_Bottom_y_x, pTextPosition_RC_Bottom_y_y);
                         Point pTextNote_RC_Bottom_y = new Point(pArrowEnd_RC_Bottom_y.X, pArrowEnd_RC_Bottom_y.Y - dVerticalOffsetOfText);
                         // Sample text: 5 x HD16 bars with standard hook each end
@@ -1495,7 +1522,6 @@ namespace BaseClasses
                         string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        relativePoint.Y += 0.05;
                         notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
