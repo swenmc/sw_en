@@ -18,27 +18,27 @@ namespace BaseClasses.GraphObj.Objects_3D
         public float[,] fAnnulusInPoints;
 
         public Point3DCollection ArrowPoints;
-        public Color SurfaceColor;
-        public float m_fOpacity;
+        //public Color SurfaceColor;
+        //public float m_fOpacity;
 
         const int number_of_segments = 72;
 
         public CurvedLineArrow3D()
         { }
 
-        public CurvedLineArrow3D(Point3D pCPoint, float lineRadius, Color cColor, float fOpacity)
+        public CurvedLineArrow3D(Point3D pCPoint, float lineRadius)
         {
             pCenter = pCPoint;
             fLineRadius = lineRadius;
-            SurfaceColor = cColor;
-            m_fOpacity = fOpacity;
+            //SurfaceColor = cColor;
+            //m_fOpacity = fOpacity;
 
             fRadius = 0.005f * lineRadius;
         }
 
-        public Model3DGroup GetTorus3DGroup()
+        public GeometryModel3D GetTorusGeometryModel3D(DiffuseMaterial mat)
         {
-            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, SurfaceColor, m_fOpacity, pCenter);
+            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, pCenter);
 
             ps.Umin = 0;
             ps.Umax = /*2 **/ Math.PI; // hlavny uhol
@@ -46,9 +46,9 @@ namespace BaseClasses.GraphObj.Objects_3D
             ps.Vmax = 2 * Math.PI;
             ps.Nu = 60; // delenie
             ps.Nv = 30;
-            ps.CreateSurface();
+            ps.CreateSurface(mat);
 
-            return ps.Group3D;
+            return ps.GeometryModel3D;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -22,13 +23,15 @@ namespace BaseClasses.GraphObj.Objects_3D
         private double zmin = -1;
         private double zmax = 1;
         private Color lineColor = Colors.Black;
-        private Color surfaceColor = Colors.White;
-        private float fOpacity;
+        //private Color surfaceColor = Colors.White;
+        //private float fOpacity;
         private Point3D center = new Point3D();
         private bool isHiddenLine = false;
         private bool isWireframe = true;
         private Viewport3D viewport3d = new Viewport3D();
-        private Model3DGroup group3d = new Model3DGroup();
+        private GeometryModel3D m_geometryModel3D;
+        private List<Point3D> m_WireframePoints;
+
         public bool IsWireframe
         {
             get { return isWireframe; }
@@ -54,16 +57,16 @@ namespace BaseClasses.GraphObj.Objects_3D
             get { return lineColor; }
             set { lineColor = value; }
         }
-        public Color SurfaceColor
-        {
-            get { return surfaceColor; }
-            set { surfaceColor = value; }
-        }
-        public float FOpacity
-        {
-            get { return fOpacity; }
-            set { fOpacity = value; }
-        }
+        //public Color SurfaceColor
+        //{
+        //    get { return surfaceColor; }
+        //    set { surfaceColor = value; }
+        //}
+        //public float FOpacity
+        //{
+        //    get { return fOpacity; }
+        //    set { fOpacity = value; }
+        //}
         public double Umin
         {
             get { return umin; }
@@ -137,16 +140,30 @@ namespace BaseClasses.GraphObj.Objects_3D
         }
 
         // Martin
-        public Model3DGroup Group3D
+        public GeometryModel3D GeometryModel3D
         {
-            get { return group3d; }
-            set { group3d = value; }
+            get { return m_geometryModel3D; }
+            set { m_geometryModel3D = value; }
         }
 
-        public ParametricSurface(double mainradius, double radius, Color cSurfaceColor, float fOpacity, Point3D pCenterPoint)
+        public List<Point3D> WireframePoints
         {
-            SurfaceColor = cSurfaceColor;
-            FOpacity = fOpacity;
+            get
+            {
+                return m_WireframePoints;
+            }
+
+            set
+            {
+                m_WireframePoints = value;
+            }
+        }
+
+        public ParametricSurface(double mainradius, double radius, Point3D pCenterPoint)
+        {
+            //SurfaceColor = cSurfaceColor;
+            //FOpacity = fOpacity;
+
             Mainradius = mainradius;
             Radius = radius;
             Center = pCenterPoint;
@@ -160,7 +177,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             return new Point3D(x, y, z);
         }
 
-        public void CreateSurface()
+        public void CreateSurface(DiffuseMaterial mat)
         {
             double du = (Umax - Umin) / (Nu - 1);
             double dv = (Vmax - Vmin) / (Nv - 1);
@@ -182,6 +199,10 @@ namespace BaseClasses.GraphObj.Objects_3D
                 }
             }
             Point3D[] p = new Point3D[4];
+            List<Point3D> positions = new List<Point3D>();
+            List<int> triangleIndices = new List<int>();
+            m_WireframePoints = new List<Point3D>();
+            int index = 0;
             for (int i = 0; i < Nu - 1; i++)
             {
                 for (int j = 0; j < Nv - 1; j++)
@@ -190,26 +211,23 @@ namespace BaseClasses.GraphObj.Objects_3D
                     p[1] = pts[i, j + 1];
                     p[2] = pts[i + 1, j + 1];
                     p[3] = pts[i + 1, j];
+                    
+                    Utility.CreateRectangleFace(p[0], p[1], p[2], p[3], index, positions, triangleIndices);
+                    index = index + 4;
 
-                    /*
-                    if (IsHiddenLine == false)
-                        Utility.CreateRectangleFace(
-                        p[0], p[1], p[2], p[3],
-                        SurfaceColor, Viewport3d);
-                    */
-
-                    // Martin
-                    Utility.CreateRectangleFaceMartin(
-                        p[0], p[1], p[2], p[3],
-                        SurfaceColor, FOpacity, Group3D);
-
-                    // Create wireframe:
-                    if (IsWireframe == true)
-                        Utility.CreateWireframe(
-                        p[0], p[1], p[2], p[3],
-                        LineColor, Viewport3d);
+                    // Create wireframe
+                    if (IsWireframe == true) Utility.CreateWireframe(p[0], p[1], p[2], p[3], m_WireframePoints);
                 }
             }
+
+            MeshGeometry3D meshGeom3D = new MeshGeometry3D();
+            meshGeom3D.Positions = new Point3DCollection(positions);
+            meshGeom3D.TriangleIndices = new Int32Collection(triangleIndices);
+
+            m_geometryModel3D = new GeometryModel3D();
+            m_geometryModel3D.Geometry = meshGeom3D; // Set mesh to model
+            m_geometryModel3D.Material = mat;
         }
+
     }
 }

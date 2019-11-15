@@ -32,9 +32,9 @@ namespace BaseClasses.GraphObj.Objects_3D
             Point3D cylinderVerticalRight_ControlPoint = new Point3D(arcRight_ControlPoint.X + arcRadius, 0, arcRight_ControlPoint.Z);
 
             GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalLeft_Length, mat, 2, true, false);
-            Model3DGroup leftArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, Math.PI, 1.5 * Math.PI, ((SolidColorBrush)mat.Brush).Color, mat.Brush.Opacity, arcLeft_ControlPoint);
+            GeometryModel3D leftArc = GetTorusGeometryModel3D(arcRadius, 0.5f * fDiameter, Math.PI, 1.5 * Math.PI, mat, arcLeft_ControlPoint);
             GeometryModel3D cylinderHorizontal = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderHorizontal_ControlPoint, 13, 0.5f * fDiameter, cylinderHorizontal_Length, mat,0, false, false);
-            Model3DGroup rightArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, 1.5 * Math.PI, 2 * Math.PI, ((SolidColorBrush)mat.Brush).Color, mat.Brush.Opacity, arcRight_ControlPoint);
+            GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * fDiameter, 1.5 * Math.PI, 2 * Math.PI, mat, arcRight_ControlPoint);
             GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
 
             // Add particular segments to the group
@@ -49,11 +49,11 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         // Refaktorovat s CurvedLineArrow3D
 
-        public static Model3DGroup GetTorus3DGroup(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, Color SurfaceColor, double dOpacity, Point3D pCenter)
+        public static GeometryModel3D GetTorusGeometryModel3D(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, DiffuseMaterial mat, Point3D pCenter)
         {
             // Torus sa defaultne kresli do roviny XZ
 
-            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, SurfaceColor, (float)dOpacity, pCenter);
+            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, pCenter);
 
             ps.Umin = fAngle_min_rad;
             ps.Umax = fAngle_max_rad; // hlavny uhol
@@ -61,9 +61,9 @@ namespace BaseClasses.GraphObj.Objects_3D
             ps.Vmax = 2 * Math.PI;
             ps.Nu = 24; // delenie
             ps.Nv = 12;
-            ps.CreateSurface();
+            ps.CreateSurface(mat);
 
-            return ps.Group3D;
+            return ps.GeometryModel3D;
         }
     }
 }

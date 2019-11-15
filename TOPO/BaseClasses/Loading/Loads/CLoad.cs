@@ -212,8 +212,8 @@ namespace BaseClasses
             else // Moment
             {
                 // Arc
-                CurvedLineArrow3D cArrowArc = new CurvedLineArrow3D(new Point3D(0, 0, 0), Math.Abs(fValueFor3D), cColor, fOpacity);
-                model_gr.Children.Add(cArrowArc.GetTorus3DGroup());  // Add curved segment (arc)
+                CurvedLineArrow3D cArrowArc = new CurvedLineArrow3D(new Point3D(0, 0, 0), Math.Abs(fValueFor3D));
+                model_gr.Children.Add(cArrowArc.GetTorusGeometryModel3D(material));  // Add curved segment (arc)
 
                 // Tip (cone height is 20% from moment value)
                 Arrow3DTip cArrowTip = new Arrow3DTip(0.2f * Math.Abs(fValueFor3D));
