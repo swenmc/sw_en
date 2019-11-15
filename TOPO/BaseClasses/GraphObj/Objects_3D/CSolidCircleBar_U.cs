@@ -31,11 +31,11 @@ namespace BaseClasses.GraphObj.Objects_3D
             Point3D arcRight_ControlPoint = new Point3D(cylinderHorizontal_ControlPoint.X + cylinderHorizontal_Length, 0, cylinderHorizontal_ControlPoint.Z + arcRadius);
             Point3D cylinderVerticalRight_ControlPoint = new Point3D(arcRight_ControlPoint.X + arcRadius, 0, arcRight_ControlPoint.Z);
 
-            GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalLeft_Length, mat, 2);
-            Model3DGroup leftArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, Math.PI, 1.5 * Math.PI, Colors.Blue /*mat.Color*/, 1, arcLeft_ControlPoint /*new Point3D(0, 0, 0)*/);
+            GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalLeft_Length, mat, 2, true, false);
+            Model3DGroup leftArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, Math.PI, 1.5 * Math.PI, ((SolidColorBrush)mat.Brush).Color, mat.Brush.Opacity, arcLeft_ControlPoint);
             GeometryModel3D cylinderHorizontal = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderHorizontal_ControlPoint, 13, 0.5f * fDiameter, cylinderHorizontal_Length, mat,0, false, false);
-            Model3DGroup rightArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, 1.5 * Math.PI, 2 * Math.PI, Colors.Orange /*mat.Color*/, 1, arcRight_ControlPoint /*new Point3D(0, 0, 0)*/);
-            GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalRight_Length, mat, 2);
+            Model3DGroup rightArc = GetTorus3DGroup(arcRadius, 0.5f * fDiameter, 1.5 * Math.PI, 2 * Math.PI, ((SolidColorBrush)mat.Brush).Color, mat.Brush.Opacity, arcRight_ControlPoint);
+            GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, 13, 0.5f * fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
 
             // Add particular segments to the group
             models.Children.Add((Model3D)cylinderVerticalLeft);
@@ -49,11 +49,11 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         // Refaktorovat s CurvedLineArrow3D
 
-        public static Model3DGroup GetTorus3DGroup(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, Color SurfaceColor, float fOpacity, Point3D pCenter)
+        public static Model3DGroup GetTorus3DGroup(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, Color SurfaceColor, double dOpacity, Point3D pCenter)
         {
-            // Ak som to spravne pochopil tak torus sa defaultne kresli do roviny XZ ???
+            // Torus sa defaultne kresli do roviny XZ
 
-            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, SurfaceColor, fOpacity, pCenter);
+            ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, SurfaceColor, (float)dOpacity, pCenter);
 
             ps.Umin = fAngle_min_rad;
             ps.Umax = fAngle_max_rad; // hlavny uhol
