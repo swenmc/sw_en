@@ -28,7 +28,7 @@ namespace BaseClasses.GraphObj.Objects_3D
         private Point3D center = new Point3D();
         private bool isHiddenLine = false;
         private bool isWireframe = true;
-        private Viewport3D viewport3d = new Viewport3D();
+        //private Viewport3D viewport3d = new Viewport3D();
         private GeometryModel3D m_geometryModel3D;
         private List<Point3D> m_WireframePoints;
 
@@ -133,13 +133,12 @@ namespace BaseClasses.GraphObj.Objects_3D
             get { return center; }
             set { center = value; }
         }
-        public Viewport3D Viewport3d
-        {
-            get { return viewport3d; }
-            set { viewport3d = value; }
-        }
-
-        // Martin
+        //public Viewport3D Viewport3d
+        //{
+        //    get { return viewport3d; }
+        //    set { viewport3d = value; }
+        //}
+        
         public GeometryModel3D GeometryModel3D
         {
             get { return m_geometryModel3D; }

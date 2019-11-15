@@ -2442,11 +2442,11 @@ namespace BaseClasses
 
         public static void DrawNote(CNote2D note, Canvas canvasForImage)
         {
-            double fontSize = 12;
+            //double fontSize = 12;
             double lineThickness = 1;
 
             double textWidth;
-            DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, fontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
+            DrawText(note.Text, note.NoteTextPoint.X, note.NoteTextPoint.Y, note.FontSize, note.Valign, note.Halign, Brushes.Black, canvasForImage, out textWidth);
 
             if (note.DrawArrow)
             {
@@ -3558,6 +3558,14 @@ namespace BaseClasses
                 TextFormattingMode.Display);
 
             return new Size(formattedText.Width, formattedText.Height);
+        }
+        public static double GetTextWidth(string text, double fontSize)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;            
+            textBlock.FontSize = fontSize;
+            Size txtSize = MeasureString(textBlock, text);
+            return txtSize.Width;
         }
 
         public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
