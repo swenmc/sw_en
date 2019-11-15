@@ -64,6 +64,8 @@ namespace BaseClasses.GraphObj.Objects_3D
     Point3D p0, Point3D p1, Point3D p2, Point3D p3,
     Color surfaceColor, float fOpacity, Model3DGroup gr)
         {
+            // TODO - Ondrej performance - tu pre kazdy stvorcek robim novy GeometryModel3D
+            // a pridavam to do model group, asi by bolo lepsie mat to vsetko v jednom GeometryModel3D, pochybujem ze by sme potrebovali kazdemu stvorceku definovat iny material
             MeshGeometry3D mesh = new MeshGeometry3D();
             mesh.Positions.Add(p0);
             mesh.Positions.Add(p1);
