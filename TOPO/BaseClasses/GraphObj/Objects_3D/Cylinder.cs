@@ -7,18 +7,18 @@ namespace BaseClasses.GraphObj.Objects_3D
     // Cylinder in local x-axis
     public class Cylinder : CVolume
     {
-        public float m_fDim1_r;
-        public float m_fDim2_L;
+        public float m_fr;
+        public float m_fL;
         DiffuseMaterial m_mat;
 
         //short iTotNoPoints = 13; // 1 auxialiary node in centroid / stredovy bod
 
         public Cylinder()
         { }
-        public Cylinder(float fDim1_r, float fDim2_L, DiffuseMaterial mat)
+        public Cylinder(float fr, float fL, DiffuseMaterial mat)
         {
-            m_fDim1_r = fDim1_r;
-            m_fDim2_L = fDim2_L;
+            m_fr = fr;
+            m_fL = fL;
             m_mat = mat;
         }
 
@@ -70,13 +70,13 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             return wireFrameIndices;
         }
-        public static GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat, int iPrimaryModelDirection = 2, bool bDrawTop = true, bool bDrawBottom = true)
+        public static GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fr, float fL, DiffuseMaterial mat, int iPrimaryModelDirection = 2, bool bDrawTop = true, bool bDrawBottom = true)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
             short iTotNoPoints = nPoints; // 73 // 1 auxialiary node in centroid / stredovy bod
 
-            if (fDim1_r <= 0f)
+            if (fr <= 0f)
             {
                 // Exception
                 //return;
@@ -86,7 +86,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             float[,] PointsOut = new float[iTotNoPoints - 1, 2];
 
             // Outside Points Coordinates
-            PointsOut = Geom2D.GetCirclePointCoordArray_CW(fDim1_r, iTotNoPoints - 1);
+            PointsOut = Geom2D.GetCirclePointCoordArray_CW(fr, iTotNoPoints - 1);
 
             // TODO - potrebujeme zmenit velkost dvojrozmerneho pola a pridat don posledny bod - stredovy bod kruhu
             float[,] PointsOutTemp = PointsOut;
@@ -116,7 +116,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             // Top h = xxx
             for (int i = 0; i < iTotNoPoints; i++)
             {
-                Point3D pPrimary = CVolume.GetPointinLCS(iPrimaryModelDirection, PointsOut[i, 0], PointsOut[i, 1], fDim2_h);
+                Point3D pPrimary = CVolume.GetPointinLCS(iPrimaryModelDirection, PointsOut[i, 0], PointsOut[i, 1], fL);
                 Point3D p = new Point3D(solidControlEdge.X + pPrimary.X, solidControlEdge.Y + pPrimary.Y, solidControlEdge.Z + pPrimary.Z);
                 meshGeom3D.Positions.Add(p);
             }

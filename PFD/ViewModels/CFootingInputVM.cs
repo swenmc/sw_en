@@ -445,7 +445,7 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     // Dim 1 je polomer valca
-                    pad.Reference_Top_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinTop_x_Phi) / 1000f;
+                    pad.Reference_Top_Bar_x.m_fr = 0.5f * float.Parse(LongReinTop_x_Phi) / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -539,7 +539,7 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     // Dim 1 je polomer valca
-                    pad.Reference_Top_Bar_y.m_fDim1 = 0.5f * float.Parse(LongReinTop_y_Phi) / 1000f;
+                    pad.Reference_Top_Bar_y.m_fr = 0.5f * float.Parse(LongReinTop_y_Phi) / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -631,7 +631,7 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     // Dim 1 je polomer valca
-                    pad.Reference_Bottom_Bar_x.m_fDim1 = 0.5f * float.Parse(LongReinBottom_x_Phi) / 1000f;
+                    pad.Reference_Bottom_Bar_x.m_fr = 0.5f * float.Parse(LongReinBottom_x_Phi) / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -724,7 +724,7 @@ namespace PFD
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     // Dim 1 je polomer valca
-                    pad.Reference_Bottom_Bar_y.m_fDim1 = 0.5f * float.Parse(LongReinBottom_y_Phi) / 1000f;
+                    pad.Reference_Bottom_Bar_y.m_fr = 0.5f * float.Parse(LongReinBottom_y_Phi) / 1000f;
                 }
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -2266,16 +2266,16 @@ namespace PFD
             LongReinBottom_y_distance_s_x = 0;
 
             LongReinTop_x_No = pad.Count_Top_Bars_x == 0 ? "None" : pad.Count_Top_Bars_x.ToString();
-            LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fDim1 * 2f * 1000f).ToString();
+            LongReinTop_x_Phi = (pad.Reference_Top_Bar_x.m_fr * 2f * 1000f).ToString();
 
             LongReinTop_y_No = pad.Count_Top_Bars_y == 0 ? "None" : pad.Count_Top_Bars_y.ToString();
-            LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fDim1 * 2f * 1000f).ToString();
+            LongReinTop_y_Phi = (pad.Reference_Top_Bar_y.m_fr * 2f * 1000f).ToString();
 
             LongReinBottom_x_No = pad.Count_Bottom_Bars_x == 0 ? "None" : pad.Count_Bottom_Bars_x.ToString();
-            LongReinBottom_x_Phi = (pad.Reference_Bottom_Bar_x.m_fDim1 * 2f * 1000f).ToString();
+            LongReinBottom_x_Phi = (pad.Reference_Bottom_Bar_x.m_fr * 2f * 1000f).ToString();
 
             LongReinBottom_y_No = pad.Count_Bottom_Bars_y == 0 ? "None" : pad.Count_Bottom_Bars_y.ToString();
-            LongReinBottom_y_Phi = (pad.Reference_Bottom_Bar_y.m_fDim1 * 2f * 1000f).ToString();
+            LongReinBottom_y_Phi = (pad.Reference_Bottom_Bar_y.m_fr * 2f * 1000f).ToString();
 
             if (LongReinTop_x_No != "None")
                 LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, pad.Count_Top_Bars_y > 0 ? float.Parse(LongReinTop_y_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
@@ -2348,15 +2348,23 @@ namespace PFD
             Point3D cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
             Point3D cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
 
+            if (!bIsReinforcementBarStraight)
+            {
+                cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fConcreteCover + fDiameterTop_Bar_y);
+                cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fConcreteCover);
+                cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, m_FootingPadSize_z_Or_h - fConcreteCover - fDiameterBottom_Bar_y);
+                cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, m_FootingPadSize_z_Or_h - fConcreteCover);
+            }
+
             // Regenerate reinforcement bars
             foreach (CFoundation pad in listOfSelectedTypePads)
             {
                 // For each pad recalculate lengths of reference bars
-                pad.Reference_Top_Bar_x.m_fDim2 = pad.Reference_Top_Bar_x.IsStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Top_Bar_x.Diameter;
-                pad.Reference_Bottom_Bar_x.m_fDim2 = pad.Reference_Bottom_Bar_x.IsStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Bottom_Bar_x.Diameter;
+                pad.Reference_Top_Bar_x.m_fL = pad.Reference_Top_Bar_x.IsStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Top_Bar_x.Diameter;
+                pad.Reference_Bottom_Bar_x.m_fL = pad.Reference_Bottom_Bar_x.IsStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Bottom_Bar_x.Diameter;
 
-                pad.Reference_Top_Bar_y.m_fDim2 = pad.Reference_Top_Bar_y.IsStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Top_Bar_y.Diameter;
-                pad.Reference_Bottom_Bar_y.m_fDim2 = pad.Reference_Bottom_Bar_y.IsStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Bottom_Bar_y.Diameter;
+                pad.Reference_Top_Bar_y.m_fL = pad.Reference_Top_Bar_y.IsStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Top_Bar_y.Diameter;
+                pad.Reference_Bottom_Bar_y.m_fL = pad.Reference_Bottom_Bar_y.IsStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Bottom_Bar_y.Diameter;
 
                 // For each pad set for all reference bars current control point
                 pad.Reference_Top_Bar_x.m_pControlPoint = cp_Top_x;

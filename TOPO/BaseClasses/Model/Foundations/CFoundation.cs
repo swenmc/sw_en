@@ -519,25 +519,25 @@ namespace BaseClasses
 
             if (Count_Top_Bars_x > 0)
             {
-                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover, Reference_Top_Bar_y.IsStraight);
+                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fr, 2 * Reference_Top_Bar_y.m_fr, ConcreteCover, Reference_Top_Bar_y.IsStraight);
                 m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
             }
 
             if (Count_Top_Bars_y > 0)
             {
-                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover, Reference_Top_Bar_x.IsStraight);
+                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fr, 2 * Reference_Top_Bar_x.m_fr, ConcreteCover, Reference_Top_Bar_x.IsStraight);
                 m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
             }
 
             if (Count_Bottom_Bars_x > 0)
             {
-                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover, Reference_Bottom_Bar_y.IsStraight);
+                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fr, 2 * Reference_Bottom_Bar_y.m_fr, ConcreteCover, Reference_Bottom_Bar_y.IsStraight);
                 m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
             }
 
             if (Count_Bottom_Bars_y > 0)
             {
-                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover, Reference_Bottom_Bar_x.IsStraight);
+                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fr, 2 * Reference_Bottom_Bar_x.m_fr, ConcreteCover, Reference_Bottom_Bar_x.IsStraight);
                 m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
             }
         }
@@ -575,11 +575,12 @@ namespace BaseClasses
                         referenceBar.Name,
                         bBarIsInXDirection,
                         controlPoint,
-                        referenceBar.m_fDim2, // Length
-                        2 * referenceBar.m_fDim1, // Diameter
+                        referenceBar.m_fL, // Length
+                        2 * referenceBar.m_fr, // Diameter
                         //referenceBar.m_volColor_2,
                         referenceBar.m_fvolOpacity,
                         referenceBar.IsStraight,
+                        referenceBar.IsTop_U,
                         referenceBar.BIsDisplayed,
                         referenceBar.FTime));
 

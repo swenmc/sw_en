@@ -25,6 +25,7 @@ namespace BaseClasses
         private bool m_BarIsInXDirection; // TODO - toto urobit nejako krajsie (pouzit napriklad nejaky enum X,Y,Z)
 
         private bool m_bIsStraight;
+        private bool m_bIsTop_U;
 
         public float Diameter
         {
@@ -117,12 +118,25 @@ namespace BaseClasses
             }
         }
 
+        public bool IsTop_U
+        {
+            get
+            {
+                return m_bIsTop_U;
+            }
+
+            set
+            {
+                m_bIsTop_U = value;
+            }
+        }
+
         public CReinforcementBar()
         {
         }
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsStraight, bool bIsDisplayed, float fTime)
+        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsStraight, bool bIsTop_U, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
             Name = barName;
@@ -137,11 +151,12 @@ namespace BaseClasses
                 m_EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fLength, m_pControlPoint.Z);
             }
 
-            m_fDim1 = 0.5f * fDiameter;
-            m_fDim2 = fLength;
+            m_fr = 0.5f * fDiameter;
+            m_fL = fLength;
             //m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
             m_bIsStraight = bIsStraight;
+            m_bIsTop_U = bIsTop_U;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 
@@ -203,15 +218,34 @@ namespace BaseClasses
             if (m_bIsStraight) // Priamy prut
             {
                 GeometryModel3D model = new GeometryModel3D();
-                model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush), 0);
+                model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fr, m_fL, new DiffuseMaterial(brush), 0);
                 modelGroup.Children.Add(model);
             }
             else
-                modelGroup = CSolidCircleBar_U.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1, m_fDim1, new DiffuseMaterial(brush));
+            {
+                CSolidCircleBar_U bar = new CSolidCircleBar_U(m_BarIsInXDirection, m_pControlPoint, m_diameter, 0.03f, m_bIsTop_U, new DiffuseMaterial(brush));
+                modelGroup = bar.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
+            }
 
             double dRotationAngle_deg = 0;
 
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
+
+            if(!m_bIsStraight && m_bIsTop_U) // Is U shape and upper reinforcement
+            {
+                // Model Rotation
+                // Rotate about X-axis
+                // Create and apply a transformation that rotates the object.
+                RotateTransform3D myRotateTransform3D = new RotateTransform3D();
+                AxisAngleRotation3D myAxisAngleRotation3d = new AxisAngleRotation3D();
+                myAxisAngleRotation3d.Axis = new Vector3D(1, 0, 0); // Rotate about X
+                myAxisAngleRotation3d.Angle = 180;
+                myRotateTransform3D.Rotation = myAxisAngleRotation3d;
+
+                // Add the rotation transform to Transform3DGroup
+                myTransform3DGroup.Children.Add(myRotateTransform3D);
+            }
+
             if (!BarIsInXDirection) // Rotate from X to Y (90 deg about Z)
             {
                 dRotationAngle_deg = 90; // Prut smeruje v ose y
