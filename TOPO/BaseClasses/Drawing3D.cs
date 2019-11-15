@@ -1754,7 +1754,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1768,7 +1768,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Top_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Top_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1782,7 +1782,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_x[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Bottom_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
@@ -1796,7 +1796,7 @@ namespace BaseClasses
                                     if (cmodel.m_arrFoundations[i].Bottom_Bars_y[j].m_pControlPoint != null &&
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
-                                        GeometryModel3D modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateGeomModel3D(sDisplayOptions.ReinforcementBarColor_Bottom_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
+                                        Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup());
                                         model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }

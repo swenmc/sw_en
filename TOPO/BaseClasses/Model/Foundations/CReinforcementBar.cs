@@ -177,30 +177,37 @@ namespace BaseClasses
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(float fOpacity, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(float fOpacity, Transform3DGroup temp)
         {
             SolidColorBrush brush = new SolidColorBrush(m_volColor_2);
             brush.Opacity = fOpacity;
 
-            return CreateGeomModel3D(brush, temp);
+            return CreateModel3DGroup(brush, temp);
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush, float fOpacity, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(Color colorBrush, float fOpacity, Transform3DGroup temp)
         {
             SolidColorBrush brush = new SolidColorBrush(colorBrush);
             brush.Opacity = fOpacity;
-            Visual_Object = CreateGeomModel3D(brush, temp);
+            Model3DGroup Visual_Object = CreateModel3DGroup(brush, temp);
             return Visual_Object;
         }
 
-        public /*override*/ GeometryModel3D CreateGeomModel3D(SolidColorBrush brush, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(SolidColorBrush brush, Transform3DGroup temp)
         {
-            GeometryModel3D model = new GeometryModel3D();
+            Model3DGroup modelGroup = new Model3DGroup();
 
             DiffuseMaterial mat = new DiffuseMaterial(brush);
 
-            // Vytvorime model ktory smeru v ose X
-            model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush), 0);
+            // Vytvorime model ktory smeruje v ose X
+            if (m_bIsStraight) // Priamy prut
+            {
+                GeometryModel3D model = new GeometryModel3D();
+                model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fDim1, m_fDim2, new DiffuseMaterial(brush), 0);
+                modelGroup.Children.Add(model);
+            }
+            else
+                modelGroup = CSolidCircleBar_U.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1, m_fDim1, new DiffuseMaterial(brush));
 
             double dRotationAngle_deg = 0;
 
@@ -228,7 +235,7 @@ namespace BaseClasses
             // Add the translation transform to the Transform3DGroup.
             myTransform3DGroup.Children.Add(myTranslateTransform3D);
 
-            // Set the Transform property of the GeometryModel to the Transform3DGroup which includes 
+            // Set the Transform property of the modelGroup to the Transform3DGroup which includes 
             // both transformations. The 3D object now has two Transformations applied to it.
             //model.Transform = myTransform3DGroup;
 
@@ -239,12 +246,12 @@ namespace BaseClasses
             // Je tu podobna vec ako bola pri plechoch a spojoch, musime si zapamatat body po trasnformaciach line 152-168 a na tie body potom urobit tuto transformaciu
             myTransform3DGroup.Children.Add(temp);
 
-            // Set the Transform property of the GeometryModel to the Transform3DGroup which includes 
+            // Set the Transform property of the modelGroup to the Transform3DGroup which includes 
             // both transformations. The 3D object now has two Transformations applied to it.
-            model.Transform = myTransform3DGroup;
+            modelGroup.Transform = myTransform3DGroup;
             //---------------------------------------------------------------------------
 
-            return model;
+            return modelGroup;
         }
     }
 }

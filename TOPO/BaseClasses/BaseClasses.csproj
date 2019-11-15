@@ -103,6 +103,7 @@
     <Compile Include="GraphObj\CGridLine.cs" />
     <Compile Include="GraphObj\CSectionSymbol.cs" />
     <Compile Include="GraphObj\Objects_3D\CHollowCylinder.cs" />
+    <Compile Include="GraphObj\Objects_3D\CSolidCircleBar_U.cs" />
     <Compile Include="GraphObj\Objects_3D\CSphere.cs" />
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
