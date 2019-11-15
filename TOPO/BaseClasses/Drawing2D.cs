@@ -1255,6 +1255,8 @@ namespace BaseClasses
                     notesVerticalPositionsBelowFloor[i] *= -1;
                 }
 
+                //Tu sa nastavuje relativna pozicia textu v percentach 1 = 100%
+                Point relativePoint = new Point(0.56, 0.05);
                 // Column Description
                 bool bDrawColumnDescription = true;
                 if (bDrawColumnOutline && bDrawColumnDescription)
@@ -1265,7 +1267,8 @@ namespace BaseClasses
 
                     Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
-                    notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    //notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    notes2D.Add(new CNote2D(relativePoint, joint.m_MainMember.CrScStart.Name_short, bDrawArrows, pArrowStart, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                 }
 
                 // Anchors Description
@@ -1284,7 +1287,9 @@ namespace BaseClasses
                     string sText = basePlate.AnchorArrangement.Anchors.Length.ToString() + " x M" + (anchorsToDraw.First().Diameter_shank * 1000).ToString("F0") + " HD bolts - " +
                                    (anchorsToDraw.First().Length * 1000).ToString("F0") + " mm long";
 
-                    notes2D.Add(new CNote2D(pTextNote, sText, 0, 0, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    //notes2D.Add(new CNote2D(pTextNote, sText, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    relativePoint.Y += 0.05;
+                    notes2D.Add(new CNote2D(relativePoint, sText, bDrawArrows, pArrowStart, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
 
                     bool bDrawAnchorTopWasherDescription = true;
 
@@ -1305,7 +1310,9 @@ namespace BaseClasses
                             (fPlateWasherWidth_y * 1000).ToString("F0") + "x" +
                             (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
 
-                        notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher, 0, 0, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher,bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorTopWasher, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
                     bool bDrawAnchorBottomWasherDescription = true;
@@ -1328,7 +1335,9 @@ namespace BaseClasses
                             (fBearingWasherWidth_y * 1000).ToString("F0") + "x" +
                             (fBearingWasherThickness * 1000).ToString("F0") + " mm washer at base";
 
-                        notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, 0, 0, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
 
@@ -1350,8 +1359,9 @@ namespace BaseClasses
 
                     string sText_Mesh = floorSlab.MeshGradeName + " [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
 
-                    notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, 0, 0, bDrawArrowMeshDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-
+                    //notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    relativePoint.Y += 0.05;
+                    notes2D.Add(new CNote2D(relativePoint, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     // Starter
                     bool bDrawStarterDescription = true; // Kreslit poznamku
                     bool bDrawArrowStarterDescription = true; // Kreslit sipku
@@ -1370,7 +1380,9 @@ namespace BaseClasses
                         // Sample text: HD12 Starters / 600 mm crs.
                         string sText_Starter = "HD" + (/*floorSlab.fStartersDiameter*/ fStarterBarDiameter * 1000).ToString("F0") + " Starters / " + (/*floorSlab.stafStartersSpacing*/ startersSpacing * 1000).ToString("F0") + " mm crs";
 
-                        notes2D.Add(new CNote2D(pTextNote_Starter, sText_Starter, 0, 0, bDrawArrowStarterDescription, pArrowStart_Starter, pArrowEnd_Starter, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_Starter, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, pArrowEnd_Starter, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
 
@@ -1392,7 +1404,9 @@ namespace BaseClasses
 
                     string sText_dpc_dpm = "DPC to underside";
 
-                    notes2D.Add(new CNote2D(pTextNote_dpc_dpm, sText_dpc_dpm, 0, 0, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, pArrowEnd_dpc_dpm, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    //notes2D.Add(new CNote2D(pTextNote_dpc_dpm, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, pArrowEnd_dpc_dpm, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                    relativePoint.Y = 0.8;
+                    notes2D.Add(new CNote2D(relativePoint, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                 }
 
                 bool bDraw_reinforcement_Description = true; // Kreslit poznamku
@@ -1420,7 +1434,9 @@ namespace BaseClasses
 
                         string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                        notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
                     // Top_Bar_y
@@ -1438,7 +1454,9 @@ namespace BaseClasses
 
                         string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                        notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
                     // Bottom_Bar_x
@@ -1456,7 +1474,9 @@ namespace BaseClasses
 
                         string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                        notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
 
                     // Bottom_Bar_y
@@ -1474,12 +1494,14 @@ namespace BaseClasses
 
                         string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
-                        notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, 0, 0, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
+                        relativePoint.Y += 0.05;
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
                     }
                 }
 
                 List<CNote2D> canvasNotes2D = notes2D;
-                canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(canvasNotes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(canvasNotes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor, width, height);
 
                 // Draw Notes
                 DrawNotes(bDrawNotes, canvasNotes2D, canvasForImage);
@@ -1523,7 +1545,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kb.pTip.X) < 1 ? kb.pTip.X / 10 : kb.pTip.X / 18;
                     double moveY = Math.Abs(kb.pTip.Y) < 1 ? kb.pTip.Y / 10 : kb.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, false, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", false, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
@@ -1534,7 +1556,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kc.pTip.X) < 1 ? kc.pTip.X / 10 : kc.pTip.X / 18;
                     double moveY = Math.Abs(kc.pTip.Y) < 1 ? kc.pTip.Y / 10 : kc.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", 0, 0, false, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", false, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
@@ -1545,7 +1567,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kd.pTip.X) < 1 ? kd.pTip.X / 10 : kd.pTip.X / 18;
                     double moveY = Math.Abs(kd.pTip.Y) < 1 ? kd.pTip.Y / 10 : kd.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", 0, 0, false, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", false, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
                 }
             }
             else if (plate is CConCom_Plate_KES)
@@ -1556,7 +1578,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(ke.pTip.X) < 1 ? ke.pTip.X / 10 : ke.pTip.X / 18;
                     double moveY = Math.Abs(ke.pTip.Y) < 1 ? ke.pTip.Y / 10 : ke.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", 0, 0, false, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", false, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
                 }
             }
             return note2D;
@@ -1783,7 +1805,8 @@ namespace BaseClasses
             note2D.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             return note2D;
         }
-        private static List<CNote2D> ConvertRealPointsToCanvasDrawingPoints(List<CNote2D> notes, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        private static List<CNote2D> ConvertRealPointsToCanvasDrawingPoints(List<CNote2D> notes, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor,
+            double canvasWidth, double canvasHeight)
         {
             if (notes == null) return new List<CNote2D>();
 
@@ -1791,6 +1814,7 @@ namespace BaseClasses
             foreach (CNote2D n in updatedNotes)
             {
                 n.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                n.SetRelativePoints(canvasWidth, canvasHeight);
             }
             return updatedNotes;
         }
@@ -3566,6 +3590,14 @@ namespace BaseClasses
             textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
             return txtSize.Width;
+        }
+        public static double GetTextHeight(string text, double fontSize)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.FontSize = fontSize;
+            Size txtSize = MeasureString(textBlock, text);
+            return txtSize.Height;
         }
 
         public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,

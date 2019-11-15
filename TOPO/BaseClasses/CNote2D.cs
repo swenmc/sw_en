@@ -14,7 +14,7 @@ namespace BaseClasses
         private Point MArrowPoint1;
         private Point MArrowPoint2;
         private Point MLineEndPoint;
-        //private Point MRefPoint;
+        private Point MRefPoint;
         private VerticalAlignment MValign;
         private HorizontalAlignment MHalign;
         private double MFontSize;
@@ -137,18 +137,18 @@ namespace BaseClasses
             }
         }
 
-        //public Point RefPoint
-        //{
-        //    get
-        //    {
-        //        return MRefPoint;
-        //    }
+        public Point RefPoint
+        {
+            get
+            {
+                return MRefPoint;
+            }
 
-        //    set
-        //    {
-        //        MRefPoint = value;
-        //    }
-        //}
+            set
+            {
+                MRefPoint = value;
+            }
+        }
 
         public VerticalAlignment Valign
         {
@@ -206,7 +206,7 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         public CNote2D() { }
-        public CNote2D(Point noteTextPoint, string text, double distanceX, double distanceY, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint, 
+        public CNote2D(Point noteTextPoint, string text, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint,
             bool bDrawLineUnderText = false, VerticalAlignment valign = VerticalAlignment.Center, HorizontalAlignment halign = HorizontalAlignment.Center, double fontSize = 12, bool useRelativePositions = false)
         {
             MNoteTextPoint = noteTextPoint;
@@ -216,7 +216,7 @@ namespace BaseClasses
             MDrawArrow = drawArrow;
             MArrowPoint1 = arrowPoint1;
             MArrowPoint2 = arrowPoint2;
-            //MRefPoint = RefPoint;
+            MRefPoint = RefPoint;
             MDrawLineUnderText = bDrawLineUnderText;
             MValign = valign;
             Halign = halign;
@@ -238,7 +238,7 @@ namespace BaseClasses
             if (!UseRelativePositions)
             {
                 MNoteTextPoint = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (MNoteTextPoint.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (MNoteTextPoint.Y - minY));
-                //MRefPoint = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (MRefPoint.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (MRefPoint.Y - minY));                
+                MRefPoint = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (MRefPoint.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (MRefPoint.Y - minY));
                 MArrowPoint2 = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (MArrowPoint2.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (MArrowPoint2.Y - minY));
                 MLineEndPoint = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (MLineEndPoint.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (MLineEndPoint.Y - minY));
             }
@@ -250,12 +250,11 @@ namespace BaseClasses
 
         public void SetRelativePoints(double canvasWidth, double canvasHeight)
         {
-            
-                MNoteTextPoint = new Point(NoteTextPoint.X * canvasWidth, NoteTextPoint.Y * canvasHeight - FontSize / 2);
-                      
-                MArrowPoint2 = new Point(NoteTextPoint.X * canvasWidth, NoteTextPoint.Y * canvasHeight);
-            
-                MLineEndPoint = new Point(NoteTextPoint.X * canvasWidth + Drawing2D.GetTextWidth(Text, FontSize), NoteTextPoint.Y * canvasHeight);
+            MArrowPoint2 = new Point(NoteTextPoint.X * canvasWidth, NoteTextPoint.Y * canvasHeight);
+
+            MLineEndPoint = new Point(NoteTextPoint.X * canvasWidth + Drawing2D.GetTextWidth(Text, FontSize), NoteTextPoint.Y * canvasHeight);
+
+            MNoteTextPoint = new Point(NoteTextPoint.X * canvasWidth, NoteTextPoint.Y * canvasHeight - Drawing2D.GetTextHeight(Text, FontSize) / 2);
         }
     }
 }
