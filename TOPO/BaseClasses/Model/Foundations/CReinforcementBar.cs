@@ -24,6 +24,8 @@ namespace BaseClasses
 
         private bool m_BarIsInXDirection; // TODO - toto urobit nejako krajsie (pouzit napriklad nejaky enum X,Y,Z)
 
+        private bool m_bIsStraight;
+
         public float Diameter
         {
             get
@@ -102,12 +104,25 @@ namespace BaseClasses
             }
         }
 
+         public bool IsStraight
+        {
+            get
+            {
+                return m_bIsStraight;
+            }
+
+            set
+            {
+                m_bIsStraight = value;
+            }
+        }
+
         public CReinforcementBar()
         {
         }
 
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsStraight, bool bIsDisplayed, float fTime)
         {
             ID = iBar_ID;
             Name = barName;
@@ -126,6 +141,7 @@ namespace BaseClasses
             m_fDim2 = fLength;
             //m_volColor_2 = volColor;
             m_fvolOpacity = fvolOpacity;
+            m_bIsStraight = bIsStraight;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 

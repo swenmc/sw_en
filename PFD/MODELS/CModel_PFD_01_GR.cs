@@ -2772,25 +2772,38 @@ namespace PFD
             float fConcreteCover = 0.075f
             )
         {
-            float fLengthTop_Bar_x = faX - 2 * fConcreteCover;
-            float fLengthTop_Bar_y = fbY - 2 * fConcreteCover;
-            float fLengthBottom_Bar_x = fLengthTop_Bar_x;
-            float fLengthBottom_Bar_y = fLengthTop_Bar_y;
+            bool bIsReinforcementBarStraight = false; // TODO mohlo by byt nastavitelne v GUI
+
+            // For each pad recalculate lengths of reference bars
+            float fLengthTop_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterTop_Bar_x;
+            float fLengthBottom_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterBottom_Bar_x;
+            float fLengthTop_Bar_y = bIsReinforcementBarStraight ? fbY - 2 * fConcreteCover : fbY - 2 * fConcreteCover - fDiameterTop_Bar_y;
+            float fLengthBottom_Bar_y = bIsReinforcementBarStraight ? fbY - 2 * fConcreteCover : fbY - 2 * fConcreteCover - fDiameterBottom_Bar_y;
 
             iNumberOfBarsTop_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterTop_Bar_x, fConcreteCover);
             iNumberOfBarsTop_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterTop_Bar_y, fConcreteCover);
             iNumberOfBarsBottom_x = GetDefaultNumberOfReinforcingBars(fbY, fDiameterBottom_Bar_x, fConcreteCover);
             iNumberOfBarsBottom_y = GetDefaultNumberOfReinforcingBars(faX, fDiameterBottom_Bar_y, fConcreteCover);
 
-            Point3D cp_Top_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterTop_Bar_x, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
-            Point3D cp_Top_y = new Point3D(fConcreteCover + 0.5f * fDiameterTop_Bar_y, fConcreteCover, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
-            Point3D cp_Bottom_x = new Point3D(fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_x, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
-            Point3D cp_Bottom_y = new Point3D(fConcreteCover + 0.5f * fDiameterBottom_Bar_y, fConcreteCover, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
+            // Reference / first bar coordinates
+            double cp_Top_x_coordX = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_x;
+            double cp_Top_x_coordY = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterTop_Bar_x : fConcreteCover + fDiameterTop_Bar_y + 0.5f * fDiameterTop_Bar_x;
+            double cp_Top_y_coordX = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterTop_Bar_y : fConcreteCover + fDiameterTop_Bar_x + 0.5f * fDiameterTop_Bar_y;
+            double cp_Top_y_coordY = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_y;
+            double cp_Bottom_x_coordX = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_x;
+            double cp_Bottom_x_coordY = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterBottom_Bar_x : fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x;
+            double cp_Bottom_y_coordX = bIsReinforcementBarStraight ? fConcreteCover + 0.5f * fDiameterBottom_Bar_y : fConcreteCover + fDiameterBottom_Bar_x + 0.5f * fDiameterBottom_Bar_y;
+            double cp_Bottom_y_coordY = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_y;
 
-            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, 0);
-            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, true, 0);
-            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, true, 0);
-            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, true, 0);
+            Point3D cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fhZ - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
+            Point3D cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fhZ - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
+            Point3D cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
+            Point3D cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
+
+            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, bIsReinforcementBarStraight, true, 0);
+            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, bIsReinforcementBarStraight, true, 0);
+            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, bIsReinforcementBarStraight, true, 0);
+            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, bIsReinforcementBarStraight, true, 0);
         }
     }
 }

@@ -498,10 +498,11 @@ namespace BaseClasses
             return model;
         }
 
-        private float GetDistanceBetweenReinforcementBars(float footingPadWidth, int iNumberOfBarsPerSection, float fBarDiameter, float fConcreteCover)
+        private float GetDistanceBetweenReinforcementBars(float footingPadWidth, int iNumberOfBarsPerSection, float fBarDiameter, float fPerpendicularBarDiameter, float fConcreteCover, bool bIsPerpendicularStraightBar)
         {
-            // Odpocitavam 3 priemery, kedze sa ocakavaju aj zvisle casti prutov, ak je vystuz len horizontalna ma sa odpocitat len jeden priemer
-            return (footingPadWidth - 2 * fConcreteCover - /*3 **/ fBarDiameter) / (iNumberOfBarsPerSection - 1);
+            // Odpocitavam 2 priemery kolmych prutov, kedze sa ocakavaju aj zvisle casti prutov, ak je vystuz len horizontalna ma sa odpocitat len jeden priemer
+            int iNumberOfDiameters = bIsPerpendicularStraightBar ? 0 : 2;
+            return (footingPadWidth - 2 * fConcreteCover - iNumberOfDiameters * fPerpendicularBarDiameter - fBarDiameter) / (iNumberOfBarsPerSection - 1);
         }
 
         public void CreateReinforcementBars()
@@ -518,25 +519,25 @@ namespace BaseClasses
 
             if (Count_Top_Bars_x > 0)
             {
-                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover);
+                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fDim1, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover, Reference_Top_Bar_y.IsStraight);
                 m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
             }
 
             if (Count_Top_Bars_y > 0)
             {
-                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, ConcreteCover);
+                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fDim1, 2 * Reference_Top_Bar_x.m_fDim1, ConcreteCover, Reference_Top_Bar_x.IsStraight);
                 m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
             }
 
             if (Count_Bottom_Bars_x > 0)
             {
-                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover);
+                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fDim1, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover, Reference_Bottom_Bar_y.IsStraight);
                 m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
             }
 
             if (Count_Bottom_Bars_y > 0)
             {
-                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, ConcreteCover);
+                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fDim1, 2 * Reference_Bottom_Bar_x.m_fDim1, ConcreteCover, Reference_Bottom_Bar_x.IsStraight);
                 m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
             }
         }
@@ -578,6 +579,7 @@ namespace BaseClasses
                         2 * referenceBar.m_fDim1, // Diameter
                         //referenceBar.m_volColor_2,
                         referenceBar.m_fvolOpacity,
+                        referenceBar.IsStraight,
                         referenceBar.BIsDisplayed,
                         referenceBar.FTime));
 

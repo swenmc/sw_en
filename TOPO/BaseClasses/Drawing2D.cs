@@ -432,15 +432,8 @@ namespace BaseClasses
             // - najprv pripravit vsetky realne suradnice, potom ich previest na canvas units a potom kreslit objekty // DrawPlateToCanvas
             // - pripravit realne suradnice pre dany bool (typ objektov ktore kreslime) , previest na canvas units, kreslit objekty a potom pokracovat pre dalsi bool // DrawFootingPadSideElevationToCanvas
 
-            // To Mato - je to asi jedno, ja by som mozno isiel podla bodu 2 - stale podla bool podla toho co prave ides kreslis
-
-            // 2. Prepocitat vertikalne suradnice -y za +y a opacne - urobit to analogicky ako je v DrawPlateToCanvas
-
             // 3. Vypocitat scalovaci faktor fReal_Model_Zoom_Factor z rozmerov canvas a toho co sa kresli - vid  DrawPlateToCanvas
             // Nieco som tu uz nadhodil
-
-            // 4. Urcit spravne hodnotu top margin a odsadenie modelu fmodelMarginTop_y
-            // Obrazok sa kresli na spodny okraj a nie do stredu, nepredpoklada tato funkcia ConvertRealPointsToCanvasDrawingPoints ze vsetky realne points su rovnakeho znamienka alebo nieco take?
 
             CConCom_Plate_B_basic basePlate = null;
 
@@ -709,48 +702,58 @@ namespace BaseClasses
                     if (pad.Top_Bars_y != null && pad.Top_Bars_y.Count > 0)
                     {
                         // Kreslime len prvy prut
-                        // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
-                        Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Top_Bars_y[0].StartPoint.Z);
-                        Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Top_Bars_y[0].TotalLength, pad.Top_Bars_y[0].EndPoint.Z);
 
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
+                        if (pad.Top_Bars_y.First().IsStraight)
+                        {
+                            Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Top_Bars_y.First().StartPoint.Z);
+                            Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Top_Bars_y.First().TotalLength, pad.Top_Bars_y.First().EndPoint.Z);
 
-                        reinforcement_top_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
 
-                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            reinforcement_top_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.WhiteSmoke, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
+                            pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        // Vyztuz v tvare U
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                        }
+                        else
+                        {
+                            // Vyztuz v tvare U
 
-                        // Posun aby boli viditelne zvisle ciary
-                        float fCenterLineHorizontalOffsetFromBottom = 0.5f * pad.Reference_Top_Bar_y.Diameter + 0.5f * pad.Reference_Bottom_Bar_y.Diameter;
-                        // Pridanie medzery medzi ciarami
-                        fCenterLineHorizontalOffsetFromBottom += 0.5f * fCenterLineHorizontalOffsetFromBottom;
+                            // Posun aby boli viditelne zvisle ciary
+                            float fCenterLineHorizontalOffsetFromBottom = 0.5f * pad.Reference_Top_Bar_y.Diameter + 0.5f * pad.Reference_Bottom_Bar_y.Diameter;
+                            // Pridanie medzery medzi ciarami
+                            fCenterLineHorizontalOffsetFromBottom += 0.5f * fCenterLineHorizontalOffsetFromBottom;
 
-                        DrawReincementBar_U_Shape(
-                            /*pad.Reference_Top_Bar_y*/ pad.Top_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
-                            pad,
-                            new Point(horizontalOffset + fCenterLineHorizontalOffsetFromBottom, 0), // Vkladaci bod vyztuze (lavy horny roh patky) // posun v smere x aby bolo vidno zvisle ciary spodneho aj horneho pruta vyztuze
-                            0.03f, // Netto polomer zakrivenia rohu
-                            true,
-                            Brushes.DarkOrange,
-                            fTempMin_X,
-                            fTempMin_Y,
-                            fmodelMarginLeft_x,
-                            fmodelMarginTop_y,
-                            dReal_Model_Zoom_Factor,
-                            canvasForImage);
+                            DrawReincementBar_U_Shape(
+                                /*pad.Reference_Top_Bar_y*/ pad.Top_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                                pad,
+                                new Point(horizontalOffset + fCenterLineHorizontalOffsetFromBottom, 0), // Vkladaci bod vyztuze (lavy horny roh patky) // posun v smere x aby bolo vidno zvisle ciary spodneho aj horneho pruta vyztuze
+                                0.03f, // Netto polomer zakrivenia rohu
+                                true,
+                                Brushes.DarkOrange,
+                                fTempMin_X,
+                                fTempMin_Y,
+                                fmodelMarginLeft_x,
+                                fmodelMarginTop_y,
+                                dReal_Model_Zoom_Factor,
+                                canvasForImage,
+                                out reinforcement_top_y_NotePoint);
+                        }
                     }
 
                     if (pad.Bottom_Bars_y != null && pad.Bottom_Bars_y.Count > 0)
                     {
-                        // Kreslime len prvy prut
-                        // TODO - potrebujeme prerobit z jednoduchej ciary na tvar U, alebo obecny tvar spline (striedanie oblucikov a rovnych segmentov)
-                        Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Bottom_Bars_y[0].StartPoint.Z);
-                        Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Bottom_Bars_y[0].TotalLength, pad.Bottom_Bars_y[0].EndPoint.Z);
+                        // Toto su vypocty pre rovnu vyztuz ale vybral som to pred if, aby sa nastavili suradnice bodov pre koty
+                        // TODO - Trebalo by sa s tym pohrat a oddelit urcenie tychto suradnic pre priame pruty a pre tvar U
+
+                        Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Bottom_Bars_y.First().StartPoint.Z);
+
+                        // Nezohladnujeme dlzku pruta kedze chceme kotovat sirku bez net cover (bY - 2 * c)
+                        // Pre pruty priame a U je dlzka horizontalneho priemetu ina, takze by sme to museli implementovat oddelene viz todo vyssie
+                        Point pEnd = new Point(horizontalOffset + pad.m_fDim2 - pad.ConcreteCover /*pad.ConcreteCover + pad.Bottom_Bars_y.First().TotalLength*/, pad.Bottom_Bars_y.First().EndPoint.Z);
 
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pStart);
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref pEnd);
@@ -760,27 +763,34 @@ namespace BaseClasses
 
                         bottomReinforcementLeftBottomPointForDimensions = new Point(pStart.X, pStart.Y + 0.5f * pad.Reference_Bottom_Bar_y.Diameter); // Pripocitana vzdialenost od stredu tyce smerom nadol (polovica priemeru), aby sme ziskali spodny okraj
 
-                        reinforcement_bottom_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
+                        // Kreslime len prvy prut
+                        if (pad.Bottom_Bars_y.First().IsStraight)
+                        {
+                            reinforcement_bottom_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
 
-                        pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                        pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                            pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.WhiteSmoke, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y[0].Diameter, canvasForImage, DashStyles.Solid, null);
-
-                        // Vyztuz v tvare U
-                        DrawReincementBar_U_Shape(
-                             /*pad.Reference_Bottom_Bar_y */ pad.Bottom_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
-                             pad,
-                             new Point(horizontalOffset, 0), // Vkladaci bod vyztuze (lavy horny roh patky)
-                             0.03f, // Netto polomer zakrivenia rohu
-                             false,
-                             Brushes.DarkViolet,
-                             fTempMin_X,
-                             fTempMin_Y,
-                             fmodelMarginLeft_x,
-                             fmodelMarginTop_y,
-                             dReal_Model_Zoom_Factor,
-                             canvasForImage);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                        }
+                        else
+                        {
+                            // Vyztuz v tvare U
+                            DrawReincementBar_U_Shape(
+                                 /*pad.Reference_Bottom_Bar_y */ pad.Bottom_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                                 pad,
+                                 new Point(horizontalOffset, 0), // Vkladaci bod vyztuze (lavy horny roh patky)
+                                 0.03f, // Netto polomer zakrivenia rohu
+                                 false,
+                                 Brushes.DarkViolet,
+                                 fTempMin_X,
+                                 fTempMin_Y,
+                                 fmodelMarginLeft_x,
+                                 fmodelMarginTop_y,
+                                 dReal_Model_Zoom_Factor,
+                                 canvasForImage,
+                                 out reinforcement_bottom_y_NotePoint);
+                        }
                     }
 
                     // Vyztuz v podlahovej doske
@@ -823,9 +833,9 @@ namespace BaseClasses
                             fmodelMarginLeft_x,
                             fmodelMarginTop_y,
                             dReal_Model_Zoom_Factor,
-                            canvasForImage, 
+                            canvasForImage,
                             out starter_NotePoint,
-                            out fStarterBarDiameter , // TODO Bolo by lepsie keby sa objekt starter implementoval priamo do floorSlab
+                            out fStarterBarDiameter, // TODO Bolo by lepsie keby sa objekt starter implementoval priamo do floorSlab
                             out startersSpacing
                             );
                     }
@@ -1011,27 +1021,31 @@ namespace BaseClasses
                     foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
                     {
                         if (MathF.d_equal(anchor.m_pControlPoint.X, basePlate.AnchorArrangement.Anchors[0].m_pControlPoint.X)) // Pridame do zoznamu len kotvy, ktore maju rovnaku suradnicu X (kolmo na zobrazovanu rovinu YZ) ako prva kotva
-                            anchorsToDraw.Add(anchor); //
+                            anchorsToDraw.Add(anchor);
                     }
 
                     anchorControlPointsForDimensions = new List<Point>(); // Inicializujeme zoznam bodov pre koty
 
-                    foreach (CAnchor anchor in anchorsToDraw) // Kreslime vyfiltrovane kotvy
+                    // Anchor Bar
+                    if (bDrawAnchors)
                     {
-                        // TODO Implementovat funckiu ktora vykresli jednu anchors + washers
+                        // Zoradim kotvy od najvacsej suradnice control point Y, to znamena ze ta ktora je s najvacsim Y je uplne vlavo, najmensie x v canvas
+                        // Robim to preto aby sa z poslednej kotvy upne napravo nastavili suradnice bodov pre poznamky a koty
+                        anchorsToDraw = anchorsToDraw.OrderByDescending(anchor => anchor.m_pControlPoint.Y).ToList();
 
-                        // Anchor Bar
-                        if (bDrawAnchors)
+                        foreach (CAnchor anchor in anchorsToDraw) // Kreslime vyfiltrovane kotvy
                         {
+                            // TODO Implementovat funckiu ktora vykresli jednu anchors + washers
+
                             float fAnchorDiameter = anchor.Diameter_shank;
                             float fAnchorLength = anchor.Length;
-                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Koty kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
+                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Kotvy kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
 
                             // Pridame bod do zoznamu bodov pre kotovanie
                             Point insertingPointForDimesnions = new Point(); // Vytvorime nezavisly objekt pre bod - klon :)
                             insertingPointForDimesnions.X = insertingPoint.X;
                             insertingPointForDimesnions.Y = insertingPoint.Y;
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref insertingPointForDimesnions); // Bod transofrmujeme
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref insertingPointForDimesnions); // Bod transformujeme
                             anchorControlPointsForDimensions.Add(insertingPointForDimesnions); // Bod pridame do zoznamu bodov pre koty
 
                             Point lt = new Point(insertingPoint.X - fAnchorDiameter * 0.5, insertingPoint.Y);
@@ -1230,7 +1244,7 @@ namespace BaseClasses
                 // Naplnime zoznamy pozicii
                 short numberOfNotePositions = 10;
 
-                for(int i = 0; i< numberOfNotePositions; i++)
+                for (int i = 0; i < numberOfNotePositions; i++)
                 {
                     notesVerticalPositionsAboveFloor.Add(dFirstNoteVerticalPositionsAboveFloor + i * dNotesVerticalOffset);
                     notesVerticalPositionsBelowFloor.Add(dFirstNoteVerticalPositionsBelowFloor - i * dNotesVerticalOffset);
@@ -2217,15 +2231,18 @@ namespace BaseClasses
             float fmodelMarginLeft_x,
             float fmodelMarginTop_y,
             double dReal_Model_Zoom_Factor,
-            Canvas canvasForImage)
+            Canvas canvasForImage,
+            out Point reinforcement_NotePoint)
         {
             float fBarDiameter = bar.Diameter;
             float fArcRadius = fArcNetRadius + 0.5f * fBarDiameter;
 
+            float fHorizontalStraightPartLength = pad.m_fDim2 - 2 * (pad.ConcreteCover + 0.5f * fBarDiameter + fArcRadius);
+
             Point start = new Point(pad.ConcreteCover + 0.5f * fBarDiameter, -pad.ConcreteCover);
             Point leftArcStart = new Point(start.X, start.Y - (pad.m_fDim3 - pad.ConcreteCover - pad.ConcreteCover - 0.5f * fBarDiameter - fArcRadius));
             Point leftArcEnd = new Point(start.X + fArcRadius, leftArcStart.Y - fArcRadius);
-            Point rightArcStart = new Point(leftArcEnd.X + (pad.m_fDim2 - 2 * (pad.ConcreteCover + 0.5f * fBarDiameter + fArcRadius)), leftArcEnd.Y);
+            Point rightArcStart = new Point(leftArcEnd.X + fHorizontalStraightPartLength, leftArcEnd.Y);
             Point rightArcEnd = new Point(rightArcStart.X + fArcRadius, rightArcStart.Y + fArcRadius);
             Point end = new Point(pad.m_fDim2 - pad.ConcreteCover - 0.5 * fBarDiameter, start.Y);
 
@@ -2247,6 +2264,16 @@ namespace BaseClasses
                 aux = ConvertRealPointToCanvasDrawingPoint(aux, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor); // Konverzia na zobrazovacie jednotky
                 listOfPoints[i] = aux;
             }
+
+            double reinforcement_NotePoint_Position_x = pControlPoint.X + rightArcStart.X - 0.05 * fHorizontalStraightPartLength;
+            double reinforcement_NotePoint_Position_y = pControlPoint.Y + rightArcStart.Y;
+
+            reinforcement_NotePoint = new Point(reinforcement_NotePoint_Position_x, reinforcement_NotePoint_Position_y);
+
+            if (bIsTopBar)
+                reinforcement_NotePoint = new Point(reinforcement_NotePoint_Position_x, -(pad.m_fDim3 + reinforcement_NotePoint_Position_y));
+
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref reinforcement_NotePoint);
 
             double dArcRadiusInCanvas = fArcRadius * dReal_Model_Zoom_Factor;
             double dBarDiameterInCanvas = fBarDiameter * dReal_Model_Zoom_Factor;
