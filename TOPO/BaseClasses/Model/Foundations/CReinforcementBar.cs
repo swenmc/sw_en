@@ -170,23 +170,23 @@ namespace BaseClasses
             m_Mat = mat;
         }
 
-        public /*override*/ Model3DGroup CreateModel3DGroup(float fOpacity, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(float fOpacity, Transform3DGroup temp, CFoundation pad /* docasne*/)
         {
             SolidColorBrush brush = new SolidColorBrush(ColorBar);
             brush.Opacity = fOpacity;
 
-            return CreateModel3DGroup(brush, temp);
+            return CreateModel3DGroup(brush, temp, pad /* docasne*/);
         }
 
-        public /*override*/ Model3DGroup CreateModel3DGroup(Color colorBrush, float fOpacity, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(Color colorBrush, float fOpacity, Transform3DGroup temp, CFoundation pad /* docasne*/)
         {
             SolidColorBrush brush = new SolidColorBrush(colorBrush);
             brush.Opacity = fOpacity;
-            Model3DGroup Visual_Object = CreateModel3DGroup(brush, temp);
+            Model3DGroup Visual_Object = CreateModel3DGroup(brush, temp, pad /* docasne*/);
             return Visual_Object;
         }
 
-        public /*override*/ Model3DGroup CreateModel3DGroup(SolidColorBrush brush, Transform3DGroup temp)
+        public /*override*/ Model3DGroup CreateModel3DGroup(SolidColorBrush brush, Transform3DGroup temp, CFoundation pad /* docasne*/)
         {
             Model3DGroup modelGroup = new Model3DGroup();
 
@@ -203,8 +203,8 @@ namespace BaseClasses
             {
                 CReinforcementBar_U bar = (CReinforcementBar_U)this;
                 CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, m_pControlPoint, Diameter, 0.03f, bar.IsTop_U, new DiffuseMaterial(brush));
-                // IN WORK TODO
-                //barModel.SetSegmentLengths(diameterOfBarInYdirection, pad);
+                float diameterOfBarInYdirection = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
+                barModel.SetSegmentLengths(diameterOfBarInYdirection, pad);
                 modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
             }
 

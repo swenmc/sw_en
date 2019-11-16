@@ -39,10 +39,12 @@ namespace BaseClasses.GraphObj.Objects_3D
         {
             Model3DGroup models = new Model3DGroup();
 
+            /*
             float cylinderVerticalLeft_Length = 0.075f;
             float cylinderHorizontal_Length = 0.6f;
             float cylinderVerticalRight_Length = 0.075f;
             float arcRadius = 0.03f;
+            */
 
             // Kreslime v rovine XZ
             Point3D cylinderVerticalLeft_ControlPoint = new Point3D(0, 0, -cylinderVerticalLeft_Length);

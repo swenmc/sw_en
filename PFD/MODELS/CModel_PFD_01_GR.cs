@@ -2299,7 +2299,7 @@ namespace PFD
                 int iMainColumnFootingNumberOfBarsBottom_x;
                 int iMainColumnFootingNumberOfBarsBottom_y;
 
-                bool bIsReinforcementBarStraight = true;
+                bool bIsReinforcementBarStraight = false;
                 CreateReferenceReinforcementBars(
                     bIsReinforcementBarStraight,
                     fMainColumnFooting_aX,
