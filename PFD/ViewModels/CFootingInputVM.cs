@@ -2332,7 +2332,7 @@ namespace PFD
             float fDiameterBottom_Bar_x = float.Parse(LongReinBottom_x_Phi) / 1000f;
             float fDiameterBottom_Bar_y = float.Parse(LongReinBottom_y_Phi) / 1000f;
 
-            bool bIsReinforcementBarStraight = false; // TODO - zaviest nastavitelne v GUI
+            bool bIsReinforcementBarStraight = true; // TODO - zaviest nastavitelne v GUI
 
             // Reference / first bar coordinates
             double cp_Top_x_coordX = bIsReinforcementBarStraight ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_x;
@@ -2393,7 +2393,6 @@ namespace PFD
                 ControlJointsSpacingInDirectionX = (fFloorSlab_aX - 2 * m_FirstControlJointPositionInDirectionX) / (m_NumberOfControlJointsInDirectionX - 1);
             if (m_NumberOfControlJointsInDirectionY >= 1)
                 ControlJointsSpacingInDirectionY = (fFloorSlab_bY - 2 * m_FirstControlJointPositionInDirectionY) / (m_NumberOfControlJointsInDirectionY - 1);
-                        
 
             IsSetFromCode = false;
         }
