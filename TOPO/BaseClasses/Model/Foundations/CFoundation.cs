@@ -20,15 +20,15 @@ namespace BaseClasses
         private float m_Eccentricity_y;
         private float m_RotationAboutZ_deg;
 
-        private CReinforcementBarNew m_Reference_Top_Bar_x;
-        private CReinforcementBarNew m_Reference_Top_Bar_y;
-        private CReinforcementBarNew m_Reference_Bottom_Bar_x;
-        private CReinforcementBarNew m_Reference_Bottom_Bar_y;
+        private CReinforcementBar m_Reference_Top_Bar_x;
+        private CReinforcementBar m_Reference_Top_Bar_y;
+        private CReinforcementBar m_Reference_Bottom_Bar_x;
+        private CReinforcementBar m_Reference_Bottom_Bar_y;
 
-        private List<CReinforcementBarNew> m_Top_Bars_x;
-        private List<CReinforcementBarNew> m_Top_Bars_y;
-        private List<CReinforcementBarNew> m_Bottom_Bars_x;
-        private List<CReinforcementBarNew> m_Bottom_Bars_y;
+        private List<CReinforcementBar> m_Top_Bars_x;
+        private List<CReinforcementBar> m_Top_Bars_y;
+        private List<CReinforcementBar> m_Bottom_Bars_x;
+        private List<CReinforcementBar> m_Bottom_Bars_y;
 
         private int m_Count_Top_Bars_x;
         private int m_Count_Top_Bars_y;
@@ -90,7 +90,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBarNew Reference_Top_Bar_x
+        public CReinforcementBar Reference_Top_Bar_x
         {
             get
             {
@@ -103,7 +103,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBarNew Reference_Top_Bar_y
+        public CReinforcementBar Reference_Top_Bar_y
         {
             get
             {
@@ -116,7 +116,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBarNew Reference_Bottom_Bar_x
+        public CReinforcementBar Reference_Bottom_Bar_x
         {
             get
             {
@@ -129,7 +129,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBarNew Reference_Bottom_Bar_y
+        public CReinforcementBar Reference_Bottom_Bar_y
         {
             get
             {
@@ -142,7 +142,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBarNew> Top_Bars_x
+        public List<CReinforcementBar> Top_Bars_x
         {
             get
             {
@@ -155,7 +155,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBarNew> Top_Bars_y
+        public List<CReinforcementBar> Top_Bars_y
         {
             get
             {
@@ -168,7 +168,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBarNew> Bottom_Bars_x
+        public List<CReinforcementBar> Bottom_Bars_x
         {
             get
             {
@@ -181,7 +181,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBarNew> Bottom_Bars_y
+        public List<CReinforcementBar> Bottom_Bars_y
         {
             get
             {
@@ -361,10 +361,10 @@ namespace BaseClasses
             float ey,
             float rotationAboiutZInDeg,
             float fConcreteCover,
-            CReinforcementBarNew refTopBar_x,
-            CReinforcementBarNew refTopBar_y,
-            CReinforcementBarNew refBottomBar_x,
-            CReinforcementBarNew refBottomBar_y,
+            CReinforcementBar refTopBar_x,
+            CReinforcementBar refTopBar_y,
+            CReinforcementBar refBottomBar_x,
+            CReinforcementBar refBottomBar_y,
             int iNumberOfBarsTop_x,
             int iNumberOfBarsTop_y,
             int iNumberOfBarsBottom_x,
@@ -542,12 +542,12 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBarNew> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBarNew referenceBar, float fDistanceOfBars)
+        public List<CReinforcementBar> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBar referenceBar, float fDistanceOfBars)
         {
             // Create liest of one layer of bar objects
             if (iCount_Bars_x > 1)
             {
-                List<CReinforcementBarNew> list = new List<CReinforcementBarNew>();
+                List<CReinforcementBar> list = new List<CReinforcementBar>();
 
                 double cp_X_coordinate = referenceBar.m_pControlPoint.X; // Set first bar control point
                 double cp_Y_coordinate = referenceBar.m_pControlPoint.Y;
@@ -586,7 +586,8 @@ namespace BaseClasses
                             refBar.IsTop_U,
                             referenceBar.BIsDisplayed,
                             referenceBar.FTime));
-                    }else
+                    }
+                    else
                     {
                         list.Add(new CReinforcementBarStraight(i + 1,
                              "500E",

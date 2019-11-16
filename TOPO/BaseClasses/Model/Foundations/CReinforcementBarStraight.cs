@@ -14,7 +14,7 @@ namespace BaseClasses
 {
     // Class CReinforcementBarStraight
     [Serializable]
-    public class CReinforcementBarStraight : CReinforcementBarNew
+    public class CReinforcementBarStraight : CReinforcementBar
     {
         // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
         public CReinforcementBarStraight(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)

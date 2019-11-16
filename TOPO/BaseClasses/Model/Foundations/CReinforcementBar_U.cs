@@ -14,7 +14,7 @@ namespace BaseClasses
 {
     // Class Reinforcement bar - shape U
     [Serializable]
-    public class CReinforcementBar_U : CReinforcementBarNew
+    public class CReinforcementBar_U : CReinforcementBar
     {
         private bool m_bIsTop_U;
 

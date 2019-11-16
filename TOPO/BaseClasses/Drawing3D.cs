@@ -2523,7 +2523,7 @@ namespace BaseClasses
             }
         }
 
-        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBarNew> bars)
+        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBar> bars)
         {
             List<Point3D> wireFramePoints = new List<Point3D>();
             if (bars != null && bars.Count > 0)

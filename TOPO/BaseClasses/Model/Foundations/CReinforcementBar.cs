@@ -13,7 +13,7 @@ using BaseClasses.GraphObj.Objects_3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CReinforcementBarNew : CEntity3D
+    public class CReinforcementBar : CEntity3D
     {
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
@@ -28,9 +28,6 @@ namespace BaseClasses
         private float m_fOpacity;
 
         private Color m_Color;
-
-        [NonSerialized]
-        public Model3DGroup Visual_Object;
 
         public float Diameter
         {
@@ -161,6 +158,9 @@ namespace BaseClasses
                 m_Color = value;
             }
         }
+
+        [NonSerialized]
+        public Model3DGroup Visual_Object;
 
         public void SetMaterialPropertiesFromDatabase(string matName)
         {

@@ -2289,10 +2289,10 @@ namespace PFD
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
-                CReinforcementBarNew MainColumnFootingReference_Top_Bar_x;
-                CReinforcementBarNew MainColumnFootingReference_Top_Bar_y;
-                CReinforcementBarNew MainColumnFootingReference_Bottom_Bar_x;
-                CReinforcementBarNew MainColumnFootingReference_Bottom_Bar_y;
+                CReinforcementBar MainColumnFootingReference_Top_Bar_x;
+                CReinforcementBar MainColumnFootingReference_Top_Bar_y;
+                CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
+                CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
 
                 int iMainColumnFootingNumberOfBarsTop_x;
                 int iMainColumnFootingNumberOfBarsTop_y;
@@ -2411,10 +2411,10 @@ namespace PFD
 
                     float fFrontColumnFooting_Eccentricity_y = 0.5f * fFrontColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h;
 
-                    CReinforcementBarNew FrontColumnFootingReference_Top_Bar_x;
-                    CReinforcementBarNew FrontColumnFootingReference_Top_Bar_y;
-                    CReinforcementBarNew FrontColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBarNew FrontColumnFootingReference_Bottom_Bar_y;
+                    CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
+                    CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
+                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_y;
 
                     int iFrontColumnFootingNumberOfBarsTop_x;
                     int iFrontColumnFootingNumberOfBarsTop_y;
@@ -2492,10 +2492,10 @@ namespace PFD
 
                     float fBackColumnFooting_Eccentricity_y = 0.5f * fBackColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h;
 
-                    CReinforcementBarNew BackColumnFootingReference_Top_Bar_x;
-                    CReinforcementBarNew BackColumnFootingReference_Top_Bar_y;
-                    CReinforcementBarNew BackColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBarNew BackColumnFootingReference_Bottom_Bar_y;
+                    CReinforcementBar BackColumnFootingReference_Top_Bar_x;
+                    CReinforcementBar BackColumnFootingReference_Top_Bar_y;
+                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_y;
 
                     int iBackColumnFootingNumberOfBarsTop_x;
                     int iBackColumnFootingNumberOfBarsTop_y;
@@ -2762,10 +2762,10 @@ namespace PFD
             float faX,
             float fbY,
             float fhZ,
-            out CReinforcementBarNew reference_Top_Bar_x,
-            out CReinforcementBarNew reference_Top_Bar_y,
-            out CReinforcementBarNew reference_Bottom_Bar_x,
-            out CReinforcementBarNew reference_Bottom_Bar_y,
+            out CReinforcementBar reference_Top_Bar_x,
+            out CReinforcementBar reference_Top_Bar_y,
+            out CReinforcementBar reference_Bottom_Bar_x,
+            out CReinforcementBar reference_Bottom_Bar_y,
             out int iNumberOfBarsTop_x,
             out int iNumberOfBarsTop_y,
             out int iNumberOfBarsBottom_x,
