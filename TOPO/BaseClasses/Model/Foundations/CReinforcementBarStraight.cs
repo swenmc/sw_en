@@ -36,6 +36,7 @@ namespace BaseClasses
 
             Diameter = fDiameter;
             TotalLength = fLength;
+            ProjectionLength = fLength;
 
             //m_volColor_2 = volColor;
             Opacity = fvolOpacity;
