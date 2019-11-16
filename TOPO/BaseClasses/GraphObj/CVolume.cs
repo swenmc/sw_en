@@ -419,7 +419,7 @@ namespace BaseClasses.GraphObj
 
             return CreateGM_3D_Volume_8EdgesOld(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1);
         }
-        public List<Point3D> GetWireFramePoints_Volume(GeometryModel3D volumeModel, bool bIsPointOnBase = false)
+        public static List<Point3D> GetWireFramePoints_Volume(GeometryModel3D volumeModel, bool bIsPointOnBase = false)
         {
             // Funguje len pre prizmaticke prvky pravidelneho tvaru (rovnaky pocet bodov na hornej aj spodnej podstave)
 

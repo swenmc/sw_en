@@ -2289,17 +2289,19 @@ namespace PFD
                 float fMainColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
                 float fConcreteCover = 0.075f; // Concrete Cover - UC - Footings
 
-                CReinforcementBar MainColumnFootingReference_Top_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Top_Bar_y;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_x;
-                CReinforcementBar MainColumnFootingReference_Bottom_Bar_y;
+                CReinforcementBarNew MainColumnFootingReference_Top_Bar_x;
+                CReinforcementBarNew MainColumnFootingReference_Top_Bar_y;
+                CReinforcementBarNew MainColumnFootingReference_Bottom_Bar_x;
+                CReinforcementBarNew MainColumnFootingReference_Bottom_Bar_y;
 
                 int iMainColumnFootingNumberOfBarsTop_x;
                 int iMainColumnFootingNumberOfBarsTop_y;
                 int iMainColumnFootingNumberOfBarsBottom_x;
                 int iMainColumnFootingNumberOfBarsBottom_y;
 
+                bool bIsReinforcementBarStraight = true;
                 CreateReferenceReinforcementBars(
+                    bIsReinforcementBarStraight,
                     fMainColumnFooting_aX,
                     fMainColumnFooting_bY,
                     fMainColumnFooting_h,
@@ -2409,10 +2411,10 @@ namespace PFD
 
                     float fFrontColumnFooting_Eccentricity_y = 0.5f * fFrontColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h;
 
-                    CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
-                    CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
-                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBar FrontColumnFootingReference_Bottom_Bar_y;
+                    CReinforcementBarNew FrontColumnFootingReference_Top_Bar_x;
+                    CReinforcementBarNew FrontColumnFootingReference_Top_Bar_y;
+                    CReinforcementBarNew FrontColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBarNew FrontColumnFootingReference_Bottom_Bar_y;
 
                     int iFrontColumnFootingNumberOfBarsTop_x;
                     int iFrontColumnFootingNumberOfBarsTop_y;
@@ -2420,6 +2422,7 @@ namespace PFD
                     int iFrontColumnFootingNumberOfBarsBottom_y;
 
                     CreateReferenceReinforcementBars(
+                        bIsReinforcementBarStraight,
                         fFrontColumnFooting_aX,
                         fFrontColumnFooting_bY,
                         fFrontColumnFooting_h,
@@ -2489,10 +2492,10 @@ namespace PFD
 
                     float fBackColumnFooting_Eccentricity_y = 0.5f * fBackColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h;
 
-                    CReinforcementBar BackColumnFootingReference_Top_Bar_x;
-                    CReinforcementBar BackColumnFootingReference_Top_Bar_y;
-                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_x;
-                    CReinforcementBar BackColumnFootingReference_Bottom_Bar_y;
+                    CReinforcementBarNew BackColumnFootingReference_Top_Bar_x;
+                    CReinforcementBarNew BackColumnFootingReference_Top_Bar_y;
+                    CReinforcementBarNew BackColumnFootingReference_Bottom_Bar_x;
+                    CReinforcementBarNew BackColumnFootingReference_Bottom_Bar_y;
 
                     int iBackColumnFootingNumberOfBarsTop_x;
                     int iBackColumnFootingNumberOfBarsTop_y;
@@ -2500,6 +2503,7 @@ namespace PFD
                     int iBackColumnFootingNumberOfBarsBottom_y;
 
                     CreateReferenceReinforcementBars(
+                        bIsReinforcementBarStraight,
                         fBackColumnFooting_aX,
                         fBackColumnFooting_bY,
                         fBackColumnFooting_h,
@@ -2754,13 +2758,14 @@ namespace PFD
         }
 
         private void CreateReferenceReinforcementBars(
+            bool bIsReinforcementBarStraight,
             float faX,
             float fbY,
             float fhZ,
-            out CReinforcementBar reference_Top_Bar_x,
-            out CReinforcementBar reference_Top_Bar_y,
-            out CReinforcementBar reference_Bottom_Bar_x,
-            out CReinforcementBar reference_Bottom_Bar_y,
+            out CReinforcementBarNew reference_Top_Bar_x,
+            out CReinforcementBarNew reference_Top_Bar_y,
+            out CReinforcementBarNew reference_Bottom_Bar_x,
+            out CReinforcementBarNew reference_Bottom_Bar_y,
             out int iNumberOfBarsTop_x,
             out int iNumberOfBarsTop_y,
             out int iNumberOfBarsBottom_x,
@@ -2772,8 +2777,6 @@ namespace PFD
             float fConcreteCover = 0.075f
             )
         {
-            bool bIsReinforcementBarStraight = false; // TODO mohlo by byt nastavitelne v GUI
-
             // For each pad recalculate lengths of reference bars
             float fLengthTop_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterTop_Bar_x;
             float fLengthBottom_Bar_x = bIsReinforcementBarStraight ? faX - 2 * fConcreteCover : faX - 2 * fConcreteCover - fDiameterBottom_Bar_x;
@@ -2808,10 +2811,20 @@ namespace PFD
                 cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fhZ - fConcreteCover);
             }
 
-            reference_Top_Bar_x = new CReinforcementBar(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, bIsReinforcementBarStraight, true, true, 0);
-            reference_Top_Bar_y = new CReinforcementBar(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, bIsReinforcementBarStraight, true, true, 0);
-            reference_Bottom_Bar_x = new CReinforcementBar(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, bIsReinforcementBarStraight, false, true, 0);
-            reference_Bottom_Bar_y = new CReinforcementBar(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, bIsReinforcementBarStraight, false, true, 0);
+            if (bIsReinforcementBarStraight)
+            {
+                reference_Top_Bar_x = new CReinforcementBarStraight(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, 0);
+                reference_Top_Bar_y = new CReinforcementBarStraight(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f,  true, 0);
+                reference_Bottom_Bar_x = new CReinforcementBarStraight(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, true, 0);
+                reference_Bottom_Bar_y = new CReinforcementBarStraight(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, true, 0);
+            }
+            else
+            {
+                reference_Top_Bar_x = new CReinforcementBar_U(1, "500E", "Top x", true, cp_Top_x, fLengthTop_Bar_x, fDiameterTop_Bar_x, /*Colors.CadetBlue,*/ 0.5f, true, true, 0);
+                reference_Top_Bar_y = new CReinforcementBar_U(2, "500E", "Top y", false, cp_Top_y, fLengthTop_Bar_y, fDiameterTop_Bar_y, /*Colors.Coral,*/ 0.5f, true, true, 0);
+                reference_Bottom_Bar_x = new CReinforcementBar_U(3, "500E", "Bottom x", true, cp_Bottom_x, fLengthBottom_Bar_x, fDiameterBottom_Bar_x, /*Colors.YellowGreen,*/ 0.5f, false, true, 0);
+                reference_Bottom_Bar_y = new CReinforcementBar_U(4, "500E", "Bottom y", false, cp_Bottom_y, fLengthBottom_Bar_y, fDiameterBottom_Bar_y, /*Colors.Purple,*/ 0.5f, false, true, 0);
+            }
         }
     }
 }

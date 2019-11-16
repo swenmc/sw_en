@@ -703,7 +703,7 @@ namespace BaseClasses
                     {
                         // Kreslime len prvy prut
 
-                        if (pad.Top_Bars_y.First().IsStraight)
+                        if (pad.Top_Bars_y.First() is CReinforcementBarStraight)
                         {
                             Point pStart = new Point(horizontalOffset + pad.ConcreteCover, pad.Top_Bars_y.First().StartPoint.Z);
                             Point pEnd = new Point(horizontalOffset + pad.ConcreteCover + pad.Top_Bars_y.First().TotalLength, pad.Top_Bars_y.First().EndPoint.Z);
@@ -728,7 +728,7 @@ namespace BaseClasses
                             fCenterLineHorizontalOffsetFromBottom += 0.5f * fCenterLineHorizontalOffsetFromBottom;
 
                             DrawReincementBar_U_Shape(
-                                /*pad.Reference_Top_Bar_y*/ pad.Top_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                                /*pad.Reference_Top_Bar_y*/ (CReinforcementBar_U)pad.Top_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
                                 pad,
                                 new Point(horizontalOffset + fCenterLineHorizontalOffsetFromBottom, 0), // Vkladaci bod vyztuze (lavy horny roh patky) // posun v smere x aby bolo vidno zvisle ciary spodneho aj horneho pruta vyztuze
                                 0.03f, // Netto polomer zakrivenia rohu
@@ -764,7 +764,7 @@ namespace BaseClasses
                         bottomReinforcementLeftBottomPointForDimensions = new Point(pStart.X, pStart.Y + 0.5f * pad.Reference_Bottom_Bar_y.Diameter); // Pripocitana vzdialenost od stredu tyce smerom nadol (polovica priemeru), aby sme ziskali spodny okraj
 
                         // Kreslime len prvy prut
-                        if (pad.Bottom_Bars_y.First().IsStraight)
+                        if (pad.Bottom_Bars_y.First() is CReinforcementBarStraight)
                         {
                             reinforcement_bottom_y_NotePoint = new Point(pEnd.X - 0.05, pEnd.Y); // Nastavime bod pre poznamku // uvazujeme otocene suradnice // suradnica x je znizena o 0.05 metra, aby nebola poznamku uplne na konci
 
@@ -777,7 +777,7 @@ namespace BaseClasses
                         {
                             // Vyztuz v tvare U
                             DrawReincementBar_U_Shape(
-                                 /*pad.Reference_Bottom_Bar_y */ pad.Bottom_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
+                                 /*pad.Reference_Bottom_Bar_y */ (CReinforcementBar_U)pad.Bottom_Bars_y.First(), // TODO - Ondrej - neupdatuju sa parametre reference bar len objektov v poli, mali sa updatovat aj vlastnosti reference bar podla GUI
                                  pad,
                                  new Point(horizontalOffset, 0), // Vkladaci bod vyztuze (lavy horny roh patky)
                                  0.03f, // Netto polomer zakrivenia rohu
@@ -2270,7 +2270,7 @@ namespace BaseClasses
         //}
 
         public static void DrawReincementBar_U_Shape(
-            CReinforcementBar bar,
+            CReinforcementBar_U bar,
             CFoundation pad,
             Point pControlPoint, // Left top point of footing pad
             float fArcNetRadius, // m

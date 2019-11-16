@@ -20,15 +20,15 @@ namespace BaseClasses
         private float m_Eccentricity_y;
         private float m_RotationAboutZ_deg;
 
-        private CReinforcementBar m_Reference_Top_Bar_x;
-        private CReinforcementBar m_Reference_Top_Bar_y;
-        private CReinforcementBar m_Reference_Bottom_Bar_x;
-        private CReinforcementBar m_Reference_Bottom_Bar_y;
+        private CReinforcementBarNew m_Reference_Top_Bar_x;
+        private CReinforcementBarNew m_Reference_Top_Bar_y;
+        private CReinforcementBarNew m_Reference_Bottom_Bar_x;
+        private CReinforcementBarNew m_Reference_Bottom_Bar_y;
 
-        private List<CReinforcementBar> m_Top_Bars_x;
-        private List<CReinforcementBar> m_Top_Bars_y;
-        private List<CReinforcementBar> m_Bottom_Bars_x;
-        private List<CReinforcementBar> m_Bottom_Bars_y;
+        private List<CReinforcementBarNew> m_Top_Bars_x;
+        private List<CReinforcementBarNew> m_Top_Bars_y;
+        private List<CReinforcementBarNew> m_Bottom_Bars_x;
+        private List<CReinforcementBarNew> m_Bottom_Bars_y;
 
         private int m_Count_Top_Bars_x;
         private int m_Count_Top_Bars_y;
@@ -90,7 +90,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Top_Bar_x
+        public CReinforcementBarNew Reference_Top_Bar_x
         {
             get
             {
@@ -103,7 +103,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Top_Bar_y
+        public CReinforcementBarNew Reference_Top_Bar_y
         {
             get
             {
@@ -116,7 +116,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Bottom_Bar_x
+        public CReinforcementBarNew Reference_Bottom_Bar_x
         {
             get
             {
@@ -129,7 +129,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Bottom_Bar_y
+        public CReinforcementBarNew Reference_Bottom_Bar_y
         {
             get
             {
@@ -142,7 +142,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Top_Bars_x
+        public List<CReinforcementBarNew> Top_Bars_x
         {
             get
             {
@@ -155,7 +155,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Top_Bars_y
+        public List<CReinforcementBarNew> Top_Bars_y
         {
             get
             {
@@ -168,7 +168,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Bottom_Bars_x
+        public List<CReinforcementBarNew> Bottom_Bars_x
         {
             get
             {
@@ -181,7 +181,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Bottom_Bars_y
+        public List<CReinforcementBarNew> Bottom_Bars_y
         {
             get
             {
@@ -361,10 +361,10 @@ namespace BaseClasses
             float ey,
             float rotationAboiutZInDeg,
             float fConcreteCover,
-            CReinforcementBar refTopBar_x,
-            CReinforcementBar refTopBar_y,
-            CReinforcementBar refBottomBar_x,
-            CReinforcementBar refBottomBar_y,
+            CReinforcementBarNew refTopBar_x,
+            CReinforcementBarNew refTopBar_y,
+            CReinforcementBarNew refBottomBar_x,
+            CReinforcementBarNew refBottomBar_y,
             int iNumberOfBarsTop_x,
             int iNumberOfBarsTop_y,
             int iNumberOfBarsBottom_x,
@@ -519,35 +519,35 @@ namespace BaseClasses
 
             if (Count_Top_Bars_x > 0)
             {
-                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, 2 * Reference_Top_Bar_x.m_fr, 2 * Reference_Top_Bar_y.m_fr, ConcreteCover, Reference_Top_Bar_y.IsStraight);
+                m_fDistanceOfBars_Top_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Top_Bars_x, Reference_Top_Bar_x.Diameter, Reference_Top_Bar_y.Diameter, ConcreteCover, Reference_Top_Bar_y is CReinforcementBarStraight);
                 m_Top_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Top_Bars_x, Reference_Top_Bar_x, m_fDistanceOfBars_Top_x_SpacingInyDirection);
             }
 
             if (Count_Top_Bars_y > 0)
             {
-                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, 2 * Reference_Top_Bar_y.m_fr, 2 * Reference_Top_Bar_x.m_fr, ConcreteCover, Reference_Top_Bar_x.IsStraight);
+                m_fDistanceOfBars_Top_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Top_Bars_y, Reference_Top_Bar_y.Diameter, Reference_Top_Bar_x.Diameter, ConcreteCover, Reference_Top_Bar_x is CReinforcementBarStraight);
                 m_Top_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Top_Bars_y, Reference_Top_Bar_y, m_fDistanceOfBars_Top_y_SpacingInxDirection);
             }
 
             if (Count_Bottom_Bars_x > 0)
             {
-                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, 2 * Reference_Bottom_Bar_x.m_fr, 2 * Reference_Bottom_Bar_y.m_fr, ConcreteCover, Reference_Bottom_Bar_y.IsStraight);
+                m_fDistanceOfBars_Bottom_x_SpacingInyDirection = GetDistanceBetweenReinforcementBars(m_fDim2, Count_Bottom_Bars_x, Reference_Bottom_Bar_x.Diameter, Reference_Bottom_Bar_y.Diameter, ConcreteCover, Reference_Bottom_Bar_y is CReinforcementBarStraight);
                 m_Bottom_Bars_x = GetReinforcementBarsOneLayer(true, m_Count_Bottom_Bars_x, Reference_Bottom_Bar_x, m_fDistanceOfBars_Bottom_x_SpacingInyDirection);
             }
 
             if (Count_Bottom_Bars_y > 0)
             {
-                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, 2 * Reference_Bottom_Bar_y.m_fr, 2 * Reference_Bottom_Bar_x.m_fr, ConcreteCover, Reference_Bottom_Bar_x.IsStraight);
+                m_fDistanceOfBars_Bottom_y_SpacingInxDirection = GetDistanceBetweenReinforcementBars(m_fDim1, Count_Bottom_Bars_y, Reference_Bottom_Bar_y.Diameter, Reference_Bottom_Bar_x.Diameter, ConcreteCover, Reference_Bottom_Bar_x is CReinforcementBarStraight);
                 m_Bottom_Bars_y = GetReinforcementBarsOneLayer(false, m_Count_Bottom_Bars_y, Reference_Bottom_Bar_y, m_fDistanceOfBars_Bottom_y_SpacingInxDirection);
             }
         }
 
-        public List<CReinforcementBar> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBar referenceBar, float fDistanceOfBars)
+        public List<CReinforcementBarNew> GetReinforcementBarsOneLayer(bool bBarIsInXDirection, int iCount_Bars_x, CReinforcementBarNew referenceBar, float fDistanceOfBars)
         {
             // Create liest of one layer of bar objects
             if (iCount_Bars_x > 1)
             {
-                List<CReinforcementBar> list = new List<CReinforcementBar>();
+                List<CReinforcementBarNew> list = new List<CReinforcementBarNew>();
 
                 double cp_X_coordinate = referenceBar.m_pControlPoint.X; // Set first bar control point
                 double cp_Y_coordinate = referenceBar.m_pControlPoint.Y;
@@ -570,19 +570,36 @@ namespace BaseClasses
                         m_pControlPoint.Y + cp_Y_coordinate,
                         m_pControlPoint.Z + referenceBar.m_pControlPoint.Z);
 
-                    list.Add(new CReinforcementBar(i + 1,
-                        "500E",
-                        referenceBar.Name,
-                        bBarIsInXDirection,
-                        controlPoint,
-                        referenceBar.m_fL, // Length
-                        2 * referenceBar.m_fr, // Diameter
-                        //referenceBar.m_volColor_2,
-                        referenceBar.m_fvolOpacity,
-                        referenceBar.IsStraight,
-                        referenceBar.IsTop_U,
-                        referenceBar.BIsDisplayed,
-                        referenceBar.FTime));
+                    if (referenceBar is CReinforcementBar_U)
+                    {
+                        CReinforcementBar_U refBar = (CReinforcementBar_U)referenceBar;
+
+                        list.Add(new CReinforcementBar_U(i + 1,
+                            "500E",
+                            referenceBar.Name,
+                            bBarIsInXDirection,
+                            controlPoint,
+                            referenceBar.TotalLength, // Length
+                            referenceBar.Diameter, // Diameter
+                            //referenceBar.m_volColor_2,
+                            referenceBar.Opacity,
+                            refBar.IsTop_U,
+                            referenceBar.BIsDisplayed,
+                            referenceBar.FTime));
+                    }else
+                    {
+                        list.Add(new CReinforcementBarStraight(i + 1,
+                             "500E",
+                             referenceBar.Name,
+                             bBarIsInXDirection,
+                             controlPoint,
+                             referenceBar.TotalLength, // Length
+                             referenceBar.Diameter, // Diameter
+                             //referenceBar.m_volColor_2,
+                             referenceBar.Opacity,
+                             referenceBar.BIsDisplayed,
+                             referenceBar.FTime));
+                    }
 
                     // Set next bar control point coordinates
                     if (bBarIsInXDirection) // Change control Point Coordinate Y

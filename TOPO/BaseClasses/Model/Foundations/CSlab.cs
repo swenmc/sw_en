@@ -17,15 +17,15 @@ namespace BaseClasses
         private float m_Eccentricity_y;
         private float m_RotationAboutZ_deg;
 
-        private CReinforcementBar m_Reference_Top_Bar_x;
-        private CReinforcementBar m_Reference_Top_Bar_y;
-        private CReinforcementBar m_Reference_Bottom_Bar_x;
-        private CReinforcementBar m_Reference_Bottom_Bar_y;
+        private CReinforcementBarNew m_Reference_Top_Bar_x;
+        private CReinforcementBarNew m_Reference_Top_Bar_y;
+        private CReinforcementBarNew m_Reference_Bottom_Bar_x;
+        private CReinforcementBarNew m_Reference_Bottom_Bar_y;
 
-        private List<CReinforcementBar> m_Top_Bars_x;
-        private List<CReinforcementBar> m_Top_Bars_y;
-        private List<CReinforcementBar> m_Bottom_Bars_x;
-        private List<CReinforcementBar> m_Bottom_Bars_y;
+        private List<CReinforcementBarNew> m_Top_Bars_x;
+        private List<CReinforcementBarNew> m_Top_Bars_y;
+        private List<CReinforcementBarNew> m_Bottom_Bars_x;
+        private List<CReinforcementBarNew> m_Bottom_Bars_y;
 
         private int m_Count_Top_Bars_x;
         private int m_Count_Top_Bars_y;
@@ -127,7 +127,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Top_Bar_x
+        public CReinforcementBarNew Reference_Top_Bar_x
         {
             get
             {
@@ -140,7 +140,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Top_Bar_y
+        public CReinforcementBarNew Reference_Top_Bar_y
         {
             get
             {
@@ -153,7 +153,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Bottom_Bar_x
+        public CReinforcementBarNew Reference_Bottom_Bar_x
         {
             get
             {
@@ -166,7 +166,7 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar Reference_Bottom_Bar_y
+        public CReinforcementBarNew Reference_Bottom_Bar_y
         {
             get
             {
@@ -179,7 +179,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Top_Bars_x
+        public List<CReinforcementBarNew> Top_Bars_x
         {
             get
             {
@@ -192,7 +192,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Top_Bars_y
+        public List<CReinforcementBarNew> Top_Bars_y
         {
             get
             {
@@ -205,7 +205,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Bottom_Bars_x
+        public List<CReinforcementBarNew> Bottom_Bars_x
         {
             get
             {
@@ -218,7 +218,7 @@ namespace BaseClasses
             }
         }
 
-        public List<CReinforcementBar> Bottom_Bars_y
+        public List<CReinforcementBarNew> Bottom_Bars_y
         {
             get
             {

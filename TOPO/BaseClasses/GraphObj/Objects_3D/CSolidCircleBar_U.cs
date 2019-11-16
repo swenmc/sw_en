@@ -17,6 +17,10 @@ namespace BaseClasses.GraphObj.Objects_3D
         DiffuseMaterial mat;
         public bool m_bIsTop_U;
 
+        public float cylinderVerticalLeft_Length;
+        public float cylinderHorizontal_Length;
+        public float cylinderVerticalRight_Length;
+
         //short iTotNoPoints = 13; // 1 auxialiary node in centroid / stredovy bod
 
         public CSolidCircleBar_U(bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fDiameter, float farcRadiusNet, bool bIsTop_U_temp, DiffuseMaterial mat_temp)
@@ -82,31 +86,22 @@ namespace BaseClasses.GraphObj.Objects_3D
             return ps.GeometryModel3D;
         }
 
-        public void GetDefinitionLengths(
-            float diameterOfBarInYdirection,
-            CFoundation pad,
-            out float cylinderVerticalLeft_Length,
-            out float cylinderHorizontal_Length,
-            out float cylinderVerticalRight_Length
-            )
+        public void SetSegmentLengths(float diameterOfBarInYdirection, CFoundation pad)
         {
-            // IN WORK
-
             cylinderVerticalLeft_Length =  pad.m_fDim3 - pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
 
             if(bBarIsInXDirection)
                 cylinderVerticalLeft_Length = pad.m_fDim3 - pad.ConcreteCover - diameterOfBarInYdirection - 0.5f * m_fDiameter - arcRadius;
-            /*
-            Point leftArcStart = new Point(start.X, start.Y - (pad.m_fDim3 - pad.ConcreteCover - pad.ConcreteCover - 0.5f * fBarDiameter - fArcRadius));
-            Point leftArcEnd = new Point(start.X + fArcRadius, leftArcStart.Y - fArcRadius);
-            Point rightArcStart = new Point(leftArcEnd.X + fHorizontalStraightPartLength, leftArcEnd.Y);
-            Point rightArcEnd = new Point(rightArcStart.X + fArcRadius, rightArcStart.Y + fArcRadius);
-            Point end = new Point(pad.m_fDim2 - pad.ConcreteCover - 0.5 * fBarDiameter, start.Y);
-            */
 
-            cylinderVerticalLeft_Length = 0.075f;
-            cylinderHorizontal_Length = 0.6f;
-            cylinderVerticalRight_Length = 0.075f;
+            if (bBarIsInXDirection)
+                cylinderHorizontal_Length = pad.m_fDim1 - 2 * (pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius);
+            else
+                cylinderHorizontal_Length = pad.m_fDim2 - 2 * (pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius);
+
+            cylinderVerticalRight_Length = pad.m_fDim3 - pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
+
+            if (bBarIsInXDirection)
+                cylinderVerticalRight_Length = pad.m_fDim3 - pad.ConcreteCover - diameterOfBarInYdirection - 0.5f * m_fDiameter - arcRadius;
         }
     }
 }

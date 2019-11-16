@@ -12,20 +12,25 @@ using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {
-    // Class CReinforcementBar
     [Serializable]
-    public class CReinforcementBar : Cylinder
+    public class CReinforcementBarNew : CEntity3D
     {
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
         private float m_diameter;
+        private float m_radius;
         private float m_fArea_As_1;
+        private float m_projectionLength;
         private float m_totalLength;
 
         private bool m_BarIsInXDirection; // TODO - toto urobit nejako krajsie (pouzit napriklad nejaky enum X,Y,Z)
 
-        private bool m_bIsStraight;
-        private bool m_bIsTop_U;
+        private float m_fOpacity;
+
+        private Color m_Color;
+
+        [NonSerialized]
+        public Model3DGroup Visual_Object;
 
         public float Diameter
         {
@@ -40,6 +45,19 @@ namespace BaseClasses
             }
         }
 
+        public float Radius
+        {
+            get
+            {
+                return m_radius;
+            }
+
+            set
+            {
+                m_radius = value;
+            }
+        }
+
         public float Area_As_1
         {
             get
@@ -50,6 +68,19 @@ namespace BaseClasses
             set
             {
                 m_fArea_As_1 = value;
+            }
+        }
+
+        public float ProjectionLength
+        {
+            get
+            {
+                return m_projectionLength;
+            }
+
+            set
+            {
+                m_projectionLength = value;
             }
         }
 
@@ -105,69 +136,30 @@ namespace BaseClasses
             }
         }
 
-         public bool IsStraight
+        public float Opacity
         {
             get
             {
-                return m_bIsStraight;
+                return m_fOpacity;
             }
 
             set
             {
-                m_bIsStraight = value;
+                m_fOpacity = value;
             }
         }
 
-        public bool IsTop_U
+        public Color ColorBar
         {
             get
             {
-                return m_bIsTop_U;
+                return m_Color;
             }
 
             set
             {
-                m_bIsTop_U = value;
+                m_Color = value;
             }
-        }
-
-        public CReinforcementBar()
-        {
-        }
-
-        // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-        public CReinforcementBar(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsStraight, bool bIsTop_U, bool bIsDisplayed, float fTime)
-        {
-            ID = iBar_ID;
-            Name = barName;
-            BarIsInXDirection = bBarIsInXDirection_temp;
-            m_pControlPoint = pControlEdgePoint;
-            m_StartPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
-            //m_EndPoint - závisi od pootocenia
-
-            m_EndPoint = new Point3D(m_pControlPoint.X + fLength, m_pControlPoint.Y, m_pControlPoint.Z);
-            if (!BarIsInXDirection)
-            {
-                m_EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fLength, m_pControlPoint.Z);
-            }
-
-            m_fr = 0.5f * fDiameter;
-            m_fL = fLength;
-            //m_volColor_2 = volColor;
-            m_fvolOpacity = fvolOpacity;
-            m_bIsStraight = bIsStraight;
-            m_bIsTop_U = bIsTop_U;
-            BIsDisplayed = bIsDisplayed;
-            FTime = fTime;
-
-            m_diameter = fDiameter;
-            m_totalLength = fLength;
-
-            //m_eShapeType = EVolumeShapeType.eShape3D_Cylinder;
-
-            m_fArea_As_1 = MathF.fPI * MathF.Pow2(m_diameter) / 4f; // Reinforcement bar cross-sectional area
-
-            SetMaterialPropertiesFromDatabase(materialName);
         }
 
         public void SetMaterialPropertiesFromDatabase(string matName)
@@ -190,11 +182,9 @@ namespace BaseClasses
             m_Mat = mat;
         }
 
-        // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
-
         public /*override*/ Model3DGroup CreateModel3DGroup(float fOpacity, Transform3DGroup temp)
         {
-            SolidColorBrush brush = new SolidColorBrush(m_volColor_2);
+            SolidColorBrush brush = new SolidColorBrush(ColorBar);
             brush.Opacity = fOpacity;
 
             return CreateModel3DGroup(brush, temp);
@@ -215,23 +205,26 @@ namespace BaseClasses
             DiffuseMaterial mat = new DiffuseMaterial(brush);
 
             // Vytvorime model ktory smeruje v ose X
-            if (m_bIsStraight) // Priamy prut
+            if (this is CReinforcementBarStraight) // Priamy prut
             {
                 GeometryModel3D model = new GeometryModel3D();
-                model = CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, m_fr, m_fL, new DiffuseMaterial(brush), 0);
+                model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, 0.5f * m_diameter, m_projectionLength, new DiffuseMaterial(brush), 0);
                 modelGroup.Children.Add(model);
             }
             else
             {
-                CSolidCircleBar_U bar = new CSolidCircleBar_U(m_BarIsInXDirection, m_pControlPoint, m_diameter, 0.03f, m_bIsTop_U, new DiffuseMaterial(brush));
-                modelGroup = bar.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
+                CReinforcementBar_U bar = (CReinforcementBar_U)this;
+                CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, m_pControlPoint, Diameter, 0.03f, bar.IsTop_U, new DiffuseMaterial(brush));
+                // IN WORK TODO
+                //barModel.SetSegmentLengths(diameterOfBarInYdirection, pad);
+                modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
             }
 
             double dRotationAngle_deg = 0;
 
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
 
-            if(!m_bIsStraight && m_bIsTop_U) // Is U shape and upper reinforcement
+            if (this is CReinforcementBar_U && ((CReinforcementBar_U)this).IsTop_U) // Is U shape and upper reinforcement
             {
                 // Model Rotation
                 // Rotate about X-axis
@@ -286,6 +279,11 @@ namespace BaseClasses
             //---------------------------------------------------------------------------
 
             return modelGroup;
+        }
+
+        public virtual List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
+        {
+            return new List<Point3D>();
         }
     }
 }

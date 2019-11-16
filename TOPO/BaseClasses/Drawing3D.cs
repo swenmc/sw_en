@@ -2523,15 +2523,15 @@ namespace BaseClasses
             }
         }
 
-        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBar> bars)
+        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBarNew> bars)
         {
             List<Point3D> wireFramePoints = new List<Point3D>();
             if (bars != null && bars.Count > 0)
             {
                 for (int m = 0; m < bars.Count; m++)
                 {
-                    GeometryModel3D geom = bars[m].Visual_Object;
-                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(geom, true);
+                    Model3DGroup geom = bars[m].Visual_Object;
+                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(geom);
                     wireFramePoints.AddRange(points);
                 }
             }
