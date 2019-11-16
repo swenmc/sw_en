@@ -16,6 +16,8 @@ namespace BaseClasses
     [Serializable]
     public class CReinforcementBarStraight : CReinforcementBar
     {
+        public CReinforcementBarStraight() { }
+
         public CReinforcementBarStraight(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, 
             float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
         {

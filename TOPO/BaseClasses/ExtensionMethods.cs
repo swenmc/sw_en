@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
@@ -103,7 +104,88 @@ namespace BaseClasses
                 CConnectionJoint_TD01 j = joint as CConnectionJoint_TD01;
                 clone = j.Clone();
             }
-            
+
+            return clone;
+        }
+
+        public static CFoundation GetClonedPad(this CFoundation pad)
+        {
+            if (pad == null) return null;
+
+            CFoundation clone;
+
+            CReinforcementBar Reference_Top_Bar_x = pad.Reference_Top_Bar_x.GetClonedReinforcementBar();
+            CReinforcementBar Reference_Top_Bar_y = pad.Reference_Top_Bar_y.GetClonedReinforcementBar();
+            CReinforcementBar Reference_Bottom_Bar_x = pad.Reference_Bottom_Bar_x.GetClonedReinforcementBar();
+            CReinforcementBar Reference_Bottom_Bar_y = pad.Reference_Bottom_Bar_y.GetClonedReinforcementBar();
+
+            List<CReinforcementBar> Top_Bars_x = new List<CReinforcementBar>();
+            List<CReinforcementBar> Top_Bars_y = new List<CReinforcementBar>();
+            List<CReinforcementBar> Bottom_Bars_x = new List<CReinforcementBar>();
+            List<CReinforcementBar> Bottom_Bars_y = new List<CReinforcementBar>();
+
+            if (pad.Top_Bars_x != null)
+                foreach (CReinforcementBar bar in pad.Top_Bars_x)
+                {
+                    Top_Bars_x.Add(bar.GetClonedReinforcementBar());
+                }
+
+            if (pad.Top_Bars_y != null)
+                foreach (CReinforcementBar bar in pad.Top_Bars_y)
+                {
+                    Top_Bars_y.Add(bar.GetClonedReinforcementBar());
+                }
+
+            if (pad.Bottom_Bars_x != null)
+                foreach (CReinforcementBar bar in pad.Bottom_Bars_x)
+                {
+                    Bottom_Bars_x.Add(bar.GetClonedReinforcementBar());
+                }
+
+            if (pad.Bottom_Bars_y != null)
+                foreach (CReinforcementBar bar in pad.Bottom_Bars_y)
+                {
+                    Bottom_Bars_y.Add(bar.GetClonedReinforcementBar());
+                }
+            //pad.Reference_Top_Bar_x = null;
+            //pad.Reference_Top_Bar_y = null;
+            //pad.Reference_Bottom_Bar_x = null;
+            //pad.Reference_Bottom_Bar_y = null;
+
+            //pad.Top_Bars_x = null;
+            //pad.Top_Bars_y = null;
+            //pad.Bottom_Bars_x = null;
+            //pad.Bottom_Bars_y = null;
+
+            clone = pad.Clone();
+
+            clone.Reference_Top_Bar_x = Reference_Top_Bar_x;
+            clone.Reference_Top_Bar_y = Reference_Top_Bar_y;
+            clone.Reference_Bottom_Bar_x = Reference_Bottom_Bar_x;
+            clone.Reference_Bottom_Bar_y = Reference_Bottom_Bar_y;
+
+            clone.Top_Bars_x = Top_Bars_x;
+            clone.Top_Bars_y = Top_Bars_y;
+            clone.Bottom_Bars_x = Bottom_Bars_x;
+            clone.Bottom_Bars_y = Bottom_Bars_y;
+
+            return clone;
+        }
+        public static CReinforcementBar GetClonedReinforcementBar(this CReinforcementBar bar)
+        {
+            CReinforcementBar clone = null;
+            if (bar is CReinforcementBarStraight)
+            {
+                CReinforcementBarStraight r = bar as CReinforcementBarStraight;
+                clone = r.Clone();
+                clone.BIsDisplayed = bar.BIsDisplayed;
+            }
+            else if (bar is CReinforcementBar_U)
+            {
+                CReinforcementBar_U r = bar as CReinforcementBar_U;                
+                clone = r.Clone();
+                clone.BIsDisplayed = bar.BIsDisplayed;
+            }
             return clone;
         }
 

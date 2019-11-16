@@ -31,6 +31,8 @@ namespace BaseClasses
             }
         }
 
+        public CReinforcementBar_U() { }
+
         public CReinforcementBar_U(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fProjectionLength, 
             float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsTop_U, bool bIsDisplayed, float fTime)
         {
