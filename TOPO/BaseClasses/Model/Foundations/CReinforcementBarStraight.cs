@@ -16,8 +16,11 @@ namespace BaseClasses
     [Serializable]
     public class CReinforcementBarStraight : CReinforcementBar
     {
-        public CReinforcementBarStraight(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
+        public CReinforcementBarStraight(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, 
+            float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
         {
+            if (materialName == null) return; // MessageBox.Show("tato co to");
+
             ID = iBar_ID;
             Name = barName;
             BarIsInXDirection = bBarIsInXDirection_temp;

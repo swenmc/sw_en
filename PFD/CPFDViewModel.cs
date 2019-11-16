@@ -1849,7 +1849,7 @@ namespace PFD
             set
             {
                 _footingVM = value;
-                _footingVM.PropertyChanged += _footingVM_PropertyChanged;
+                //_footingVM.PropertyChanged += _footingVM_PropertyChanged;
             }
         }
 

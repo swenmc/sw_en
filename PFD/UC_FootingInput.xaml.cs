@@ -37,7 +37,7 @@ namespace PFD
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
             InitializeComponent();
-
+            
             _pfdVM = pfdVM;
             _pfdVM.PropertyChanged += _pfdVM_PropertyChanged;
 
