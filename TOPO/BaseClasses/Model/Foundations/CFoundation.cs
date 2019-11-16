@@ -20,6 +20,8 @@ namespace BaseClasses
         private float m_Eccentricity_y;
         private float m_RotationAboutZ_deg;
 
+        //private bool m_UseStraightReinforcementBars; // Tu to nema zmysel nastavovat lebo do objektu uz vstupuju reference bars, takze uz pri ich vytvoreni / zmene musi byt jasne ci maju byt priame alebo U
+
         private CReinforcementBar m_Reference_Top_Bar_x;
         private CReinforcementBar m_Reference_Top_Bar_y;
         private CReinforcementBar m_Reference_Bottom_Bar_x;
@@ -89,6 +91,21 @@ namespace BaseClasses
                 m_RotationAboutZ_deg = value;
             }
         }
+
+        /*
+        public bool UseStraightReinforcementBars
+        {
+            get
+            {
+                return m_UseStraightReinforcementBars;
+            }
+
+            set
+            {
+                m_UseStraightReinforcementBars = value;
+            }
+        }
+        */
 
         public CReinforcementBar Reference_Top_Bar_x
         {

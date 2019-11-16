@@ -103,6 +103,8 @@ namespace PFD
                 e.PropertyName == "FootingPadSize_y_Or_b" ||
                 e.PropertyName == "FootingPadSize_z_Or_h" ||
 
+                e.PropertyName == "UseStraightReinforcementBars" ||
+
                 e.PropertyName == "LongReinTop_x_No" ||
                 e.PropertyName == "LongReinTop_x_Phi" ||
                 e.PropertyName == "LongReinTop_x_distance_s_y" ||

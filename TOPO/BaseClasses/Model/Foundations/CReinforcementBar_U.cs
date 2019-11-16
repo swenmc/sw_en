@@ -56,6 +56,7 @@ namespace BaseClasses
             //m_volColor_2 = volColor;
             Opacity = fvolOpacity;
 
+            m_bIsTop_U = bIsTop_U;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
 

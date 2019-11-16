@@ -4581,7 +4581,7 @@ namespace BaseClasses
         {
             CConnectionJointTypes jointClone = joint.GetClonedJoint();
 
-            CFoundation padClone = pad.Clone();
+            CFoundation padClone = pad.GetClonedPad();
             if (pad != null) padClone.Visual_Object = pad.Visual_Object;
 
             CModel jointModel = null;

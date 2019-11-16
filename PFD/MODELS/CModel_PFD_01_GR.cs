@@ -887,7 +887,8 @@ namespace PFD
             #endregion
 
             #region Foundations
-            if(foundations == null)
+
+            if (foundations == null)
             {
                 CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns);
             }
@@ -2262,6 +2263,7 @@ namespace PFD
         private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns)
         {
             bool bGenerateFoundations = true;
+            bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
 
             if (bGenerateFoundations)
             {
@@ -2299,7 +2301,6 @@ namespace PFD
                 int iMainColumnFootingNumberOfBarsBottom_x;
                 int iMainColumnFootingNumberOfBarsBottom_y;
 
-                bool bIsReinforcementBarStraight = false;
                 CreateReferenceReinforcementBars(
                     bIsReinforcementBarStraight,
                     fMainColumnFooting_aX,

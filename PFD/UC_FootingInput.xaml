@@ -136,6 +136,7 @@
                     <TextBlock Grid.Row="13" Grid.Column="6" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="30"/>
 
                     <TextBlock Grid.Row="15" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" Text="Reinforcement arrangement"/>
+                    <CheckBox Grid.Row="15" Grid.Column="2" Name="chbUseStraightReinforcementBars" IsChecked="{Binding Path=UseStraightReinforcementBars}" Grid.ColumnSpan="5" >Use straight reinforcement bars</CheckBox>
 
                     <!-- Top x -->
                     <TextBlock Grid.Row="16" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Top x-direction"/>
@@ -401,7 +402,7 @@
                     <!-- Perimeter and rebate -->
                     <!-- Left and right side of building -->
                     <TextBlock Grid.Row="16" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Left / Right Side" VerticalAlignment="Top" Width="120"/>
-                    
+
                     <TextBlock Grid.Row="17" Grid.Column="0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Perimeter Depth:" VerticalAlignment="Top" Width="120"/>
                     <TextBox Grid.Row="17" Grid.Column="1" Name="TextBoxPerimeterDepth_LRSide" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="60"
                   Text="{Binding Path=PerimeterDepth_LRSide, StringFormat=F1, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
