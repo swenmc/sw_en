@@ -88,22 +88,22 @@ namespace BaseClasses.GraphObj.Objects_3D
             return ps.GeometryModel3D;
         }
 
-        public void SetSegmentLengths(float diameterOfBarInYdirection, CFoundation pad)
+        public void SetSegmentLengths(float diameterOfBarInYdirectionTop, float diameterOfBarInYdirectionBottom, CFoundation pad)
         {
-            cylinderVerticalLeft_Length =  pad.m_fDim3 - pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
+            cylinderVerticalLeft_Length =  pad.m_fDim3 - 2 * pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
 
             if(bBarIsInXDirection)
-                cylinderVerticalLeft_Length = pad.m_fDim3 - pad.ConcreteCover - diameterOfBarInYdirection - 0.5f * m_fDiameter - arcRadius;
+                cylinderVerticalLeft_Length = pad.m_fDim3 - 2 * pad.ConcreteCover - diameterOfBarInYdirectionTop - diameterOfBarInYdirectionBottom - 0.5f * m_fDiameter - arcRadius;
 
             if (bBarIsInXDirection)
-                cylinderHorizontal_Length = pad.m_fDim1 - 2 * (pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius);
+                cylinderHorizontal_Length = pad.m_fDim1 - 2 * (pad.ConcreteCover + 0.5f * m_fDiameter + arcRadius);
             else
-                cylinderHorizontal_Length = pad.m_fDim2 - 2 * (pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius);
+                cylinderHorizontal_Length = pad.m_fDim2 - 2 * (pad.ConcreteCover + 0.5f * m_fDiameter + arcRadius);
 
-            cylinderVerticalRight_Length = pad.m_fDim3 - pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
+            cylinderVerticalRight_Length = pad.m_fDim3 - 2 * pad.ConcreteCover - 0.5f * m_fDiameter - arcRadius;
 
             if (bBarIsInXDirection)
-                cylinderVerticalRight_Length = pad.m_fDim3 - pad.ConcreteCover - diameterOfBarInYdirection - 0.5f * m_fDiameter - arcRadius;
+                cylinderVerticalRight_Length = pad.m_fDim3 - 2 * pad.ConcreteCover - diameterOfBarInYdirectionTop - diameterOfBarInYdirectionBottom - 0.5f * m_fDiameter - arcRadius;
         }
     }
 }

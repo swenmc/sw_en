@@ -597,6 +597,7 @@ namespace BaseClasses
                             bBarIsInXDirection,
                             controlPoint,
                             referenceBar.TotalLength, // Length
+                            refBar.ArcRadiusNet,
                             referenceBar.Diameter, // Diameter
                             //referenceBar.m_volColor_2,
                             referenceBar.Opacity,

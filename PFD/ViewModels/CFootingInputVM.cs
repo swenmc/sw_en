@@ -2371,6 +2371,11 @@ namespace PFD
             {
                 cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fConcreteCover + fDiameterTop_Bar_y);
                 cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fConcreteCover);
+
+                // Kedze sa vertikalne casti hornych a spodnych prutov prekryvaju posunieme horne pruty o sucet polovic priemeru
+                cp_Top_x.Y = cp_Top_x_coordY + 0.5 * fDiameterTop_Bar_x + 0.5 * fDiameterBottom_Bar_x;
+                cp_Top_y.X = cp_Top_y_coordX + 0.5 * fDiameterTop_Bar_y + 0.5 * fDiameterBottom_Bar_y;
+
                 cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, m_FootingPadSize_z_Or_h - fConcreteCover - fDiameterBottom_Bar_y);
                 cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, m_FootingPadSize_z_Or_h - fConcreteCover);
             }

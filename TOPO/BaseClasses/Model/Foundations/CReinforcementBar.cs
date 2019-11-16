@@ -202,9 +202,10 @@ namespace BaseClasses
             else
             {
                 CReinforcementBar_U bar = (CReinforcementBar_U)this;
-                CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, m_pControlPoint, Diameter, 0.03f, bar.IsTop_U, new DiffuseMaterial(brush));
-                float diameterOfBarInYdirection = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
-                barModel.SetSegmentLengths(diameterOfBarInYdirection, pad);
+                CSolidCircleBar_U barModel = new CSolidCircleBar_U(BarIsInXDirection, m_pControlPoint, Diameter, bar.ArcRadiusNet, bar.IsTop_U, new DiffuseMaterial(brush));
+                float diameterOfBarInYdirection_Top = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
+                float diameterOfBarInYdirection_Bottom = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
+                barModel.SetSegmentLengths(diameterOfBarInYdirection_Top, diameterOfBarInYdirection_Bottom, pad);
                 modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
             }
 

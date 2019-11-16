@@ -31,10 +31,40 @@ namespace BaseClasses
             }
         }
 
+        public float m_arcRadius;
+
+        public float ArcRadius
+        {
+            get
+            {
+                return m_arcRadius;
+            }
+
+            set
+            {
+                m_arcRadius = value;
+            }
+        }
+
+        public float m_arcRadiusNet;
+
+        public float ArcRadiusNet
+        {
+            get
+            {
+                return m_arcRadiusNet;
+            }
+
+            set
+            {
+                m_arcRadiusNet = value;
+            }
+        }
+
         public CReinforcementBar_U() { }
 
-        public CReinforcementBar_U(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fProjectionLength, 
-            float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsTop_U, bool bIsDisplayed, float fTime)
+        public CReinforcementBar_U(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fProjectionLength,
+            float farcRadiusNet, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsTop_U, bool bIsDisplayed, float fTime)
         {
             if (string.IsNullOrEmpty(materialName)) return;
             ID = iBar_ID;
@@ -50,6 +80,8 @@ namespace BaseClasses
                 EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fProjectionLength, m_pControlPoint.Z);
             }
 
+            m_arcRadiusNet = farcRadiusNet;
+            m_arcRadius = farcRadiusNet + 0.5f * fDiameter;
             Diameter = fDiameter;
             ProjectionLength = fProjectionLength;
 
