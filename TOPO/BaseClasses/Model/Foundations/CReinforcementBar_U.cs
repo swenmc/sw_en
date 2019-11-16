@@ -31,14 +31,8 @@ namespace BaseClasses
             }
         }
 
-        public CReinforcementBar_U(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsTop_U, bool bIsDisplayed, float fTime)
+        public CReinforcementBar_U(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fProjectionLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsTop_U, bool bIsDisplayed, float fTime)
         {
-            if(materialName == null)
-            {
-                float a = 5f;
-
-            }
-
             ID = iBar_ID;
             Name = barName;
             BarIsInXDirection = bBarIsInXDirection_temp;
@@ -46,15 +40,14 @@ namespace BaseClasses
             StartPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
             //m_EndPoint - závisi od pootocenia
 
-            EndPoint = new Point3D(m_pControlPoint.X + fLength, m_pControlPoint.Y, m_pControlPoint.Z);
+            EndPoint = new Point3D(m_pControlPoint.X + fProjectionLength, m_pControlPoint.Y, m_pControlPoint.Z);
             if (!BarIsInXDirection)
             {
-                EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fLength, m_pControlPoint.Z);
+                EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fProjectionLength, m_pControlPoint.Z);
             }
 
-            Radius = 0.5f * fDiameter;
             Diameter = fDiameter;
-            TotalLength = fLength;
+            ProjectionLength = fProjectionLength;
 
             //m_volColor_2 = volColor;
             Opacity = fvolOpacity;

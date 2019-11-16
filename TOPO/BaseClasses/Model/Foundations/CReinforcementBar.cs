@@ -18,7 +18,6 @@ namespace BaseClasses
         private Point3D m_StartPoint;
         private Point3D m_EndPoint;
         private float m_diameter;
-        private float m_radius;
         private float m_fArea_As_1;
         private float m_projectionLength;
         private float m_totalLength;
@@ -39,19 +38,6 @@ namespace BaseClasses
             set
             {
                 m_diameter = value;
-            }
-        }
-
-        public float Radius
-        {
-            get
-            {
-                return m_radius;
-            }
-
-            set
-            {
-                m_radius = value;
             }
         }
 

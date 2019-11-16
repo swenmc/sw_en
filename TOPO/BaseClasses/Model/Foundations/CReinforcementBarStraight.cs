@@ -16,15 +16,8 @@ namespace BaseClasses
     [Serializable]
     public class CReinforcementBarStraight : CReinforcementBar
     {
-        // TODO Ondrej - nahradit CVolume triedou Cylinder (zrusit dedenie od CVolume) a refaktorovat s CConnector, pripravit wireframe model pre reinforcement bars
         public CReinforcementBarStraight(int iBar_ID, string materialName, string barName, bool bBarIsInXDirection_temp, Point3D pControlEdgePoint, float fLength, float fDiameter, /*Color volColor,*/ float fvolOpacity, bool bIsDisplayed, float fTime)
         {
-            if (materialName == null)
-            {
-                float a = 5f;
-
-            }
-
             ID = iBar_ID;
             Name = barName;
             BarIsInXDirection = bBarIsInXDirection_temp;
@@ -38,7 +31,6 @@ namespace BaseClasses
                 EndPoint = new Point3D(m_pControlPoint.X, m_pControlPoint.Y + fLength, m_pControlPoint.Z);
             }
 
-            Radius = 0.5f * fDiameter;
             Diameter = fDiameter;
             TotalLength = fLength;
 
