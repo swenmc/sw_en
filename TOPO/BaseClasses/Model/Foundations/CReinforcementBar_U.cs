@@ -96,11 +96,5 @@ namespace BaseClasses
 
             SetMaterialPropertiesFromDatabase(materialName);
         }
-
-        public override List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
-        {
-            // TODO Ondrej - pripravit wireframe model pre cely tvar U (zlucit wireframe poinst z 5 objektov)
-            return new List<Point3D>(); // Not implemented - zatial vraciam prazdny list
-        }
     }
 }

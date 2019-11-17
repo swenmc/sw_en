@@ -2498,10 +2498,10 @@ namespace BaseClasses
 
                     if (sDisplayOptions.bDisplayReinforcementBarsWireFrame)
                     {
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_x));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_y));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_x));
-                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_y));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_x, model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Top_Bars_y,model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_x,model.m_arrFoundations[i].GetFoundationTransformGroup()));
+                        wireFramePoints.AddRange(GetReinforcementBarsWireframe(model.m_arrFoundations[i].Bottom_Bars_y,model.m_arrFoundations[i].GetFoundationTransformGroup()));
                     }
                 }
 
@@ -2511,7 +2511,8 @@ namespace BaseClasses
                     for (int i = 0; i < wireFramePoints.Count / 2; i++)
                     {
                         //To Mato - to je co toto za factor? nema sa brat nahodou podla velkosti modelu,alebo take nieco?
-                        float fFactor = 0.01f;                        
+                        // To Ondrej - to je taky faktor co prevada hodnotu line thickness v pointoch na metre ako rozmer valca pre 3D, takze napriklad 2 na 0.02 m
+                        float fFactor = 0.01f;
                         GeometryModel3D cylinder = Get3DLineReplacement(sDisplayOptions.wireFrameColor, fFactor * sDisplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
@@ -2523,7 +2524,7 @@ namespace BaseClasses
             }
         }
 
-        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBar> bars)
+        private static List<Point3D> GetReinforcementBarsWireframe(List<CReinforcementBar> bars, Transform3DGroup foundationTransformGroup)
         {
             List<Point3D> wireFramePoints = new List<Point3D>();
             if (bars != null && bars.Count > 0)
@@ -2531,7 +2532,17 @@ namespace BaseClasses
                 for (int m = 0; m < bars.Count; m++)
                 {
                     Model3DGroup geom = bars[m].Visual_Object;
-                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(geom);
+                    //List<Point3D> points = bars[m].GetWireFramePoints_Volume(bars[m].GetTransformGroup(foundationTransformGroup));
+                    //List<Point3D> points = bars[m].GetWireFramePoints_Volume((Transform3DGroup)geom.Transform);
+
+                    Transform3DGroup trGroup;
+                    if (geom == null) // Nebol vytvoreny 3D model group vyztuze (bDisplayReinforcement = false)
+                        trGroup = bars[m].GetTransformGroup(foundationTransformGroup);
+                    else
+                        trGroup = (Transform3DGroup)geom.Transform;
+
+                    // TO Ondrej - chcem zobrazit wireframe ale vsetko sa kresli do [0,0,0], chcelo by to urobit poriadok a zjednotit to napriek vsetkymi 3D objektami :)
+                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(trGroup);
                     wireFramePoints.AddRange(points);
                 }
             }

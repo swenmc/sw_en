@@ -1,5 +1,6 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -20,6 +21,9 @@ namespace BaseClasses.GraphObj.Objects_3D
         public float cylinderVerticalLeft_Length;
         public float cylinderHorizontal_Length;
         public float cylinderVerticalRight_Length;
+
+        List<Point3D> arcLeft_wireFramePoints = new List<Point3D>(); // TODO Ondrej - toto by trebalo nejako rozumne usporiadat, teraz taham body nekonzistentne pre priame casti a pre obluciky
+        List<Point3D> arcRight_wireFramePoints = new List<Point3D>(); // TODO Ondrej - toto by trebalo nejako rozumne usporiadat, teraz taham body nekonzistentne pre priame casti a pre obluciky
 
         //short iTotNoPoints = 13; // 1 auxialiary node in centroid / stredovy bod
 
@@ -54,9 +58,9 @@ namespace BaseClasses.GraphObj.Objects_3D
             Point3D cylinderVerticalRight_ControlPoint = new Point3D(arcRight_ControlPoint.X + arcRadius, 0, arcRight_ControlPoint.Z);
 
             GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, 13, 0.5f * m_fDiameter, cylinderVerticalLeft_Length, mat, 2, true, false);
-            GeometryModel3D leftArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, Math.PI, 1.5 * Math.PI, mat, arcLeft_ControlPoint);
+            GeometryModel3D leftArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, Math.PI, 1.5 * Math.PI, mat, arcLeft_ControlPoint, out arcLeft_wireFramePoints);
             GeometryModel3D cylinderHorizontal = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderHorizontal_ControlPoint, 13, 0.5f * m_fDiameter, cylinderHorizontal_Length, mat,0, false, false);
-            GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, 1.5 * Math.PI, 2 * Math.PI, mat, arcRight_ControlPoint);
+            GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, 1.5 * Math.PI, 2 * Math.PI, mat, arcRight_ControlPoint, out arcRight_wireFramePoints);
             GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, 13, 0.5f * m_fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
 
             // Add particular segments to the group
@@ -71,10 +75,9 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         // Refaktorovat s CurvedLineArrow3D
 
-        public static GeometryModel3D GetTorusGeometryModel3D(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, DiffuseMaterial mat, Point3D pCenter)
+        public static GeometryModel3D GetTorusGeometryModel3D(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, DiffuseMaterial mat, Point3D pCenter, out List<Point3D> wireFramePoints)
         {
             // Torus sa defaultne kresli do roviny XZ
-
             ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, pCenter);
 
             ps.Umin = fAngle_min_rad;
@@ -84,6 +87,8 @@ namespace BaseClasses.GraphObj.Objects_3D
             ps.Nu = 24; // delenie
             ps.Nv = 12;
             ps.CreateSurface(mat);
+
+            wireFramePoints = ps.WireframePoints;
 
             return ps.GeometryModel3D;
         }
@@ -104,6 +109,22 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             if (bBarIsInXDirection)
                 cylinderVerticalRight_Length = pad.m_fDim3 - 2 * pad.ConcreteCover - diameterOfBarInYdirectionTop - diameterOfBarInYdirectionBottom - 0.5f * m_fDiameter - arcRadius;
+        }
+
+        public List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
+        {
+            List<Point3D> models = new List<Point3D>();
+
+            // TODO Ondrej - pripravit wireframe model pre cely tvar U (zlucit wireframe poinst z 5 objektov)
+            // Urobil som to zatial takto ale nepaci sa mi to, lebo je to dost divoke a nejednotne pre priame casti a obluciky
+
+            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[0], true));
+            models.AddRange(arcLeft_wireFramePoints);
+            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[2], true));
+            models.AddRange(arcRight_wireFramePoints);
+            models.AddRange(CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[4], true));
+
+            return models;
         }
     }
 }

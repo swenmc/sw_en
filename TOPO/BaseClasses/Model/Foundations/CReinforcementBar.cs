@@ -28,6 +28,8 @@ namespace BaseClasses
 
         private Color m_Color;
 
+        private List<Point3D> m_WireFramePoints;
+
         public float Diameter
         {
             get
@@ -145,6 +147,19 @@ namespace BaseClasses
             }
         }
 
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                return m_WireFramePoints;
+            }
+
+            set
+            {
+                m_WireFramePoints = value;
+            }
+        }
+
         [NonSerialized]
         public Model3DGroup Visual_Object;
 
@@ -198,6 +213,8 @@ namespace BaseClasses
                 GeometryModel3D model = new GeometryModel3D();
                 model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, 0.5f * m_diameter, m_projectionLength, new DiffuseMaterial(brush), 0);
                 modelGroup.Children.Add(model);
+
+                m_WireFramePoints = CVolume.GetWireFramePoints_Volume(model, true);
             }
             else
             {
@@ -207,8 +224,23 @@ namespace BaseClasses
                 float diameterOfBarInYdirection_Bottom = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 barModel.SetSegmentLengths(diameterOfBarInYdirection_Top, diameterOfBarInYdirection_Bottom, pad);
                 modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
+
+                m_WireFramePoints = barModel.GetWireFramePoints_Volume(modelGroup);
             }
 
+            // Transformacia vyztuze vratane transformacie zakladu v GCS
+            Transform3DGroup myTransform3DGroup = GetTransformGroup(temp);
+
+            // Set the Transform property of the modelGroup to the Transform3DGroup which includes 
+            // both transformations. The 3D object now has two Transformations applied to it.
+            modelGroup.Transform = myTransform3DGroup;
+            //---------------------------------------------------------------------------
+
+            return modelGroup;
+        }
+
+        public Transform3DGroup GetTransformGroup(Transform3DGroup foundationTransGroup)
+        {
             double dRotationAngle_deg = 0;
 
             Transform3DGroup myTransform3DGroup = new Transform3DGroup();
@@ -260,19 +292,22 @@ namespace BaseClasses
             // Treba to prerobit tak ze sa budu transformovat vsetky objekty vyztuze v hornej aj dolnej vrstve spolu, asi na konci metody
             // CreateReinforcementBars() v CFoundation
             // Je tu podobna vec ako bola pri plechoch a spojoch, musime si zapamatat body po trasnformaciach line 152-168 a na tie body potom urobit tuto transformaciu
-            myTransform3DGroup.Children.Add(temp);
+            myTransform3DGroup.Children.Add(foundationTransGroup);
 
-            // Set the Transform property of the modelGroup to the Transform3DGroup which includes 
-            // both transformations. The 3D object now has two Transformations applied to it.
-            modelGroup.Transform = myTransform3DGroup;
-            //---------------------------------------------------------------------------
-
-            return modelGroup;
+            return myTransform3DGroup;
         }
 
-        public virtual List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
+        public List<Point3D> GetWireFramePoints_Volume(Transform3DGroup transGroup)
         {
-            return new List<Point3D>();
+            return TransformListOfPoints(transGroup, m_WireFramePoints);
+        }
+
+        private List<Point3D> TransformListOfPoints(Transform3D trans, List<Point3D> list)
+        {
+            foreach(Point3D p in list)
+              trans.Transform(p);
+
+            return list;
         }
     }
 }

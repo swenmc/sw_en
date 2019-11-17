@@ -50,11 +50,5 @@ namespace BaseClasses
 
             SetMaterialPropertiesFromDatabase(materialName);
         }
-
-        public override List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
-        {
-            // TO Ondrej - mozem takto previest prve children z Model3DGroup na  Geometry model pre priamu tyc?
-            return CVolume.GetWireFramePoints_Volume((GeometryModel3D)volumeModel.Children[0], true);
-        }
     }
 }
