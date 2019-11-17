@@ -223,6 +223,7 @@ namespace BaseClasses
                 float diameterOfBarInYdirection_Top = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 float diameterOfBarInYdirection_Bottom = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 barModel.SetSegmentLengths(diameterOfBarInYdirection_Top, diameterOfBarInYdirection_Bottom, pad);
+                TotalLength = bar.TotalLength = barModel.m_fTotalLength;
                 modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 6 + 1);
 
                 m_WireFramePoints = barModel.GetWireFramePoints_Volume(modelGroup);

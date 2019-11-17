@@ -12,6 +12,7 @@ namespace BaseClasses.GraphObj.Objects_3D
         public float m_fDiameter;
         public float arcRadius;
         public float arcRadiusNet;
+        public float m_fTotalLength;
 
         public Point3D m_pControlPoint;
 
@@ -109,6 +110,11 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             if (bBarIsInXDirection)
                 cylinderVerticalRight_Length = pad.m_fDim3 - 2 * pad.ConcreteCover - diameterOfBarInYdirectionTop - diameterOfBarInYdirectionBottom - 0.5f * m_fDiameter - arcRadius;
+
+            // Mozeme nastavit celkovu dlzku
+            float arcLeft_Length, arcRight_Length;
+            arcLeft_Length = arcRight_Length = arcRadius * MathF.fPI / 2;
+            m_fTotalLength = cylinderVerticalLeft_Length + arcLeft_Length+ cylinderHorizontal_Length + arcRight_Length + cylinderVerticalRight_Length;
         }
 
         public List<Point3D> GetWireFramePoints_Volume(Model3DGroup volumeModel)
