@@ -2532,17 +2532,7 @@ namespace BaseClasses
                 for (int m = 0; m < bars.Count; m++)
                 {
                     Model3DGroup geom = bars[m].Visual_Object;
-                    //List<Point3D> points = bars[m].GetWireFramePoints_Volume(bars[m].GetTransformGroup(foundationTransformGroup));
-                    //List<Point3D> points = bars[m].GetWireFramePoints_Volume((Transform3DGroup)geom.Transform);
-
-                    Transform3DGroup trGroup;
-                    if (geom == null) // Nebol vytvoreny 3D model group vyztuze (bDisplayReinforcement = false)
-                        trGroup = bars[m].GetTransformGroup(foundationTransformGroup);
-                    else
-                        trGroup = (Transform3DGroup)geom.Transform;
-
-                    // TO Ondrej - chcem zobrazit wireframe ale vsetko sa kresli do [0,0,0], chcelo by to urobit poriadok a zjednotit to napriek vsetkymi 3D objektami :)
-                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(trGroup);
+                    List<Point3D> points = bars[m].GetWireFramePoints_Volume(geom.Transform);
                     wireFramePoints.AddRange(points);
                 }
             }

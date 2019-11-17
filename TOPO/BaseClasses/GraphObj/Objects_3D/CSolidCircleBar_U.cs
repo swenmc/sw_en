@@ -57,11 +57,11 @@ namespace BaseClasses.GraphObj.Objects_3D
             Point3D arcRight_ControlPoint = new Point3D(cylinderHorizontal_ControlPoint.X + cylinderHorizontal_Length, 0, cylinderHorizontal_ControlPoint.Z + arcRadius);
             Point3D cylinderVerticalRight_ControlPoint = new Point3D(arcRight_ControlPoint.X + arcRadius, 0, arcRight_ControlPoint.Z);
 
-            GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, 13, 0.5f * m_fDiameter, cylinderVerticalLeft_Length, mat, 2, true, false);
-            GeometryModel3D leftArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, Math.PI, 1.5 * Math.PI, mat, arcLeft_ControlPoint, out arcLeft_wireFramePoints);
-            GeometryModel3D cylinderHorizontal = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderHorizontal_ControlPoint, 13, 0.5f * m_fDiameter, cylinderHorizontal_Length, mat,0, false, false);
-            GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, 1.5 * Math.PI, 2 * Math.PI, mat, arcRight_ControlPoint, out arcRight_wireFramePoints);
-            GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, 13, 0.5f * m_fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
+            GeometryModel3D cylinderVerticalLeft = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalLeft_ControlPoint, nPoints, 0.5f * m_fDiameter, cylinderVerticalLeft_Length, mat, 2, true, false);
+            GeometryModel3D leftArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, Math.PI, 1.5 * Math.PI, 2 * (nPoints - 1) + 1, (nPoints - 1) + 1, mat, arcLeft_ControlPoint, out arcLeft_wireFramePoints);
+            GeometryModel3D cylinderHorizontal = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderHorizontal_ControlPoint, nPoints, 0.5f * m_fDiameter, cylinderHorizontal_Length, mat,0, false, false);
+            GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, 1.5 * Math.PI, 2 * Math.PI, 2 * (nPoints - 1) + 1, (nPoints - 1) + 1, mat, arcRight_ControlPoint, out arcRight_wireFramePoints);
+            GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, nPoints, 0.5f * m_fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
 
             // Add particular segments to the group
             models.Children.Add((Model3D)cylinderVerticalLeft);
@@ -75,17 +75,17 @@ namespace BaseClasses.GraphObj.Objects_3D
 
         // Refaktorovat s CurvedLineArrow3D
 
-        public static GeometryModel3D GetTorusGeometryModel3D(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, DiffuseMaterial mat, Point3D pCenter, out List<Point3D> wireFramePoints)
+        public static GeometryModel3D GetTorusGeometryModel3D(float fLineRadius, float fRadius, double fAngle_min_rad, double fAngle_max_rad, int iLineRadius, int iRadius, DiffuseMaterial mat, Point3D pCenter, out List<Point3D> wireFramePoints)
         {
             // Torus sa defaultne kresli do roviny XZ
             ParametricSurface ps = new ParametricSurface(fLineRadius, fRadius, pCenter);
 
             ps.Umin = fAngle_min_rad;
             ps.Umax = fAngle_max_rad; // hlavny uhol
-            ps.Vmin = 0;
-            ps.Vmax = 2 * Math.PI;
-            ps.Nu = 24; // delenie
-            ps.Nv = 12;
+            ps.Vmin = 0 + 0.5 * Math.PI; // TODO - Posunul som uhly o 90 stupnov aby sedel wireframe so priamymi castami, ale aj tak to nesedi pre vertikalne segmenty
+            ps.Vmax = 2 * Math.PI + 0.5*Math.PI; // TODO - Posunul som uhly o 90 stupnov aby sedel wireframe so priamymi castami, ale aj tak to nesedi pre vertikalne segmenty
+            ps.Nu = iLineRadius; // delenie
+            ps.Nv = iRadius;
             ps.CreateSurface(mat);
 
             wireFramePoints = ps.WireframePoints;

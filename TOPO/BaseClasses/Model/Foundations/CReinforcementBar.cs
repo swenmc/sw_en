@@ -197,7 +197,7 @@ namespace BaseClasses
         {
             SolidColorBrush brush = new SolidColorBrush(colorBrush);
             brush.Opacity = fOpacity;
-            Model3DGroup Visual_Object = CreateModel3DGroup(brush, temp, pad /* docasne*/);
+            Visual_Object = CreateModel3DGroup(brush, temp, pad /* docasne*/);
             return Visual_Object;
         }
 
@@ -211,7 +211,7 @@ namespace BaseClasses
             if (this is CReinforcementBarStraight) // Priamy prut
             {
                 GeometryModel3D model = new GeometryModel3D();
-                model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 12 + 1, 0.5f * m_diameter, m_projectionLength, new DiffuseMaterial(brush), 0);
+                model = Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), 6 + 1, 0.5f * m_diameter, m_projectionLength, new DiffuseMaterial(brush), 0);
                 modelGroup.Children.Add(model);
 
                 m_WireFramePoints = CVolume.GetWireFramePoints_Volume(model, true);
@@ -223,7 +223,7 @@ namespace BaseClasses
                 float diameterOfBarInYdirection_Top = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 float diameterOfBarInYdirection_Bottom = 0.012f; // TODO - pre U bar v smere X sem potrebujeme dostat aj priemer vystuze v smere Y resp. upravit cover (smer X sa nachadza vertikalne blizsie k stredu patky)
                 barModel.SetSegmentLengths(diameterOfBarInYdirection_Top, diameterOfBarInYdirection_Bottom, pad);
-                modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 12 + 1);
+                modelGroup = barModel.CreateM_3D_G_Volume_U_Bar(new Point3D(0, 0, 0), 6 + 1);
 
                 m_WireFramePoints = barModel.GetWireFramePoints_Volume(modelGroup);
             }
@@ -236,6 +236,7 @@ namespace BaseClasses
             modelGroup.Transform = myTransform3DGroup;
             //---------------------------------------------------------------------------
 
+            Visual_Object = modelGroup;
             return modelGroup;
         }
 
@@ -297,17 +298,19 @@ namespace BaseClasses
             return myTransform3DGroup;
         }
 
-        public List<Point3D> GetWireFramePoints_Volume(Transform3DGroup transGroup)
+        public List<Point3D> GetWireFramePoints_Volume(Transform3D trans)
         {
-            return TransformListOfPoints(transGroup, m_WireFramePoints);
+            return TransformListOfPoints(trans, m_WireFramePoints);
         }
 
         private List<Point3D> TransformListOfPoints(Transform3D trans, List<Point3D> list)
         {
-            foreach(Point3D p in list)
-              trans.Transform(p);
+            List<Point3D> transformedPoints = new List<Point3D>();
 
-            return list;
+            foreach (Point3D p in list)
+                transformedPoints.Add(trans.Transform(p));
+
+            return transformedPoints;
         }
     }
 }
