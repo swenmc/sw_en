@@ -493,7 +493,15 @@ namespace BaseClasses
                 if (bDrawColumnOutline)
                 {
                     crscDepth = joint.m_MainMember.CrScStart.h;
-                    horizontalOffsetColumn = -0.5 * crscDepth; // Column
+                    horizontalOffsetColumn = -0.5 * crscDepth; // Column // Pozicia lavej hrany stlpa na obrazku
+
+                    if (joint.m_MainMember.EccentricityStart != null)
+                    {
+                        if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.ColumnBackSide)
+                            horizontalOffsetColumn -= joint.m_MainMember.EccentricityStart.MFz_local; // Odpocitavame, pretoze lokalny smer z pruta smeruje v opacnom smere ako x osa v canvas
+                        else // Pre wind post na zadnej strane je excentricita definovana zaporna v GCS, preto ju musime otocit
+                            horizontalOffsetColumn += joint.m_MainMember.EccentricityStart.MFz_local;
+                    }
 
                     fVerticalOffsetLeft = 0.3f * (float)crscDepth; // TODO - urobit nastavitelne odsadenie podla toho aku velku cast chceme kreslit
                     fTopLineSlope_rad = 15f * MathF.fPI / 180f; // slope in radians
@@ -520,7 +528,12 @@ namespace BaseClasses
             // Suradnica x = 0 je v polovici rozmeru patky 0.5f * fPadWidth_y
             // Suradnica y = 0 je v urovni hornej hrany floor slab
 
-            double horizontalOffset = -0.5 * fPadWidth_y;
+            double horizontalOffset = -0.5 * fPadWidth_y - pad.Eccentricity_y; // Opacne znamienko pre excentricity lebo LCS y v 3D smeruje tam, kam x v 2D
+
+            // Pre wind post na zadnej strane je excentricita definovana zaporna v GCS, preto ju musime otocit
+            if(pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                horizontalOffset = -0.5 * fPadWidth_y + pad.Eccentricity_y;
+
             List<Point> PointsFootingPad_real = new List<Point>
                 {
                     new Point(horizontalOffset + fFloorWidthPart + fPadWidth_y, -floorThickness),
@@ -957,14 +970,22 @@ namespace BaseClasses
 
             if (basePlate != null)
             {
+                Point insertingPoint_Plate = new Point(0, 0); // Stred plechu
+
+                if (joint.m_MainMember.EccentricityStart != null) // Napojenie na excentricity - ak je prutu nastavena excentricita, nastavime rovnaky posun stredu plate
+                {
+                    if (pad.m_ColumnMemberTypePosition != EMemberType_FS_Position.ColumnBackSide)
+                        insertingPoint_Plate.X = -joint.m_MainMember.EccentricityStart.MFz_local; // Odpocitavame, pretoze lokalny smer z pruta smeruje v opacnom smere ako x osa v canvas
+                    else
+                        insertingPoint_Plate.X = +joint.m_MainMember.EccentricityStart.MFz_local;
+                }
+
+                Point lt_Plate = new Point(insertingPoint_Plate.X - basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y + basePlate.Fl_Z); // lavy horny bod plechu v realnych suradniciach - preklopena
+                Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y);  // pravy spodny bod plechu v realnych suradniciach - preklopena
+
                 // Draw Plate Outline
                 if (bDrawBasePlate)
                 {
-                    Point insertingPoint_Plate = new Point(0, 0); // TODO - doplnit napojenie na excentricity
-
-                    Point lt_Plate = new Point(insertingPoint_Plate.X - basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y + basePlate.Fl_Z);
-                    Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
-
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_Plate);
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_Plate);
 
@@ -999,7 +1020,8 @@ namespace BaseClasses
                         for (int i = 0; i < PointsHolesScrews.Count / 2; i++) // Kreslime len polovicu bodov
                         {
                             // Potrebujeme zamenit suradnice x a y
-                            canvasPointsHolesScrews.Add(new Point(-lt_Plate.X - PointsHolesScrews[i].Y, -lt_Plate.Y - PointsHolesScrews[i].X)); // -lt_Plate.Y - uz bolo preklopene uvazujem kladnu hodnotu
+                            // x - sme na lavej hrane, pripocitame sirku plechu, takze sa dostaneme na pravu hranu plechu a potom odpocitavame suradnici skrutiek (su definovane zprava smerom dolava)
+                            canvasPointsHolesScrews.Add(new Point(lt_Plate.X + basePlate.Fh_Y - PointsHolesScrews[i].Y, -lt_Plate.Y - PointsHolesScrews[i].X)); // -lt_Plate.Y - uz bolo preklopene uvazujem kladnu hodnotu
                         }
 
                         Geom2D.MirrorAboutX_ChangeYCoordinates(ref canvasPointsHolesScrews);
@@ -1039,7 +1061,7 @@ namespace BaseClasses
 
                             float fAnchorDiameter = anchor.Diameter_shank;
                             float fAnchorLength = anchor.Length;
-                            Point insertingPoint = new Point(-basePlate.Fh_Y * 0.5 + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Kotvy kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
+                            Point insertingPoint = new Point(lt_Plate.X + basePlate.Fh_Y - anchor.m_pControlPoint.Y, anchor.m_pControlPoint.Z); // Kotvy kreslime zlava doprava(os +x v canvas smeruje doprava) ale ich suradnice v plate su definovane zprava dolava (os +Y smeruje nalavo), preto musime prepocitat suradnice v horizontalnom smere
 
                             // Pridame bod do zoznamu bodov pre kotovanie
                             Point insertingPointForDimesnions = new Point(); // Vytvorime nezavisly objekt pre bod - klon :)
@@ -1184,10 +1206,13 @@ namespace BaseClasses
                 }
 
                 // Footing pad to column edge
-                if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
-                    Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true, 20)); // Horizontal Dimension - footing pad edge to column
-                else // Kota v pripade ze nekotujeme ziadne anchors
-                    Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false, 20)); // Horizontal Dimension - footing pad edge to column
+                if (!MathF.d_equal(PointsFootingPad_real[5].X, bottomLeft_ColumnEdge.X)) // Ak hrana betonovej patky a oceloveho stlpa na lavej strane spolu licuju, tak tuto kotu nezobrazujeme
+                {
+                    if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
+                        Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true, 20)); // Horizontal Dimension - footing pad edge to column
+                    else // Kota v pripade ze nekotujeme ziadne anchors
+                        Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false, 20)); // Horizontal Dimension - footing pad edge to column
+                }
 
                 // Reinforcement
                 if (bDrawReinforcement)
