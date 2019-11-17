@@ -1223,8 +1223,9 @@ namespace BaseClasses
                 double dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
 
                 // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.1 m
-                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.1;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
-                double dNoteTextHorizontalPosition_x_rel = 0.56;
+                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.05;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+                //double dNoteTextHorizontalPosition_x_rel = 0.56; // To Ondrej tu nie je uplne dobre mat napevno relativnu poziciu, ale malo by tu byt nieco co sa viaze na pravu hranu patky (chcel by som aby boli poznamky vzdy napravo od tohto bodu a radsej urobit sirsi obrazok, aby donho vosli texty
+                double dNoteTextHorizontalPosition_x_rel = (dNoteTextHorizontalPosition_x - fTempMin_X) / fModel_Length_x_real;
 
                 bool bUseSameHorizontalPositions = true; // Vsetky notes u ktorych to bude zapnute mat rovnaku suradnicu x
 
