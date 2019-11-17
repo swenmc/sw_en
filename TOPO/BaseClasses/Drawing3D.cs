@@ -601,6 +601,8 @@ namespace BaseClasses
             for (char letter = 'A'; letter <= 'Z'; letter++)
             {
                 labelsY.Add(letter);
+
+                // TODO Ondrej - zapracovat dalsie symboly pre osi (AA, AB, AC, AD ....... ZA, ZB, ZC) , ak je budova obrovska a ma viac osi tak sa dostaneme mimo zoznamu
             }
 
             if (sDisplayOptions.bCreateHorizontalGridlines)
