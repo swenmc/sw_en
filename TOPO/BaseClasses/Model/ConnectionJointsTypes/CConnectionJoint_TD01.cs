@@ -30,9 +30,9 @@ namespace BaseClasses
 
             // Plate properties
             // Todo - set correct dimensions of plate acc. to column cross-section size
-            m_ft = 0.003f;
+            m_ft = 0.002f;
             m_flip = 0.075f;
-            float fAnchorLength = 0.2f; // Dlzka kotvy
+            float fAnchorLength = 0.15f; // Dlzka kotvy
 
             // Skratime prut v uzle spoja - base plate o hrubku plechu
             if (m_MainMember.NodeStart.Equals(m_Node)) m_MainMember.FAlignment_Start -= m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate - columns at the left side
@@ -44,15 +44,19 @@ namespace BaseClasses
             m_MainMember.Fill_Basic();
 
             float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
-            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b + 2 * fTolerance + 2 * m_ft);
-            float fh_plate = (float)(MainFrameColumn_temp.CrScStart.h);
+
+            // !!! Base plate je vo vnutri prierezu stlpika
+            // 100 - 0.75 - 0.75 - 2.75 - 2.75 = 93
+
+            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b - 2 * fTolerance - 2 * MainFrameColumn_temp.CrScStart.t_min - 2 * 0.00275f);
+            float fh_plate = fb_plate; //(float)(MainFrameColumn_temp.CrScStart.h);
 
             float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
 
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft - fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y + MainFrameColumn_temp.CrScStart.t_min + 0.00275 + fTolerance, -0.5f * fh_plate + flocaleccentricity_z); // 25 m od okraja plechu
             CAnchor referenceAnchor = new CAnchor("M16", "8.8", fAnchorLength, 0.8f * fAnchorLength, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
@@ -67,7 +71,7 @@ namespace BaseClasses
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft + fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
+                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y - MainFrameColumn_temp.CrScStart.t_min + 0.00275 - fTolerance, -0.5f * fh_plate + flocaleccentricity_z); // 25 m od okraja plechu
                 m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }

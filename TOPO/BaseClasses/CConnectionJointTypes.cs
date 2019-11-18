@@ -112,7 +112,8 @@ namespace BaseClasses
 
             if (sSectionNameDatabase == "10075")
             {
-                platePrefix = "BI";
+                //platePrefix = "BI";
+                platePrefix = "BH";
                 screwArrangement = screwArrangement1_10075; // TODO - definovat iny typ
             }
             else if (sSectionNameDatabase == "27055")
