@@ -541,7 +541,8 @@ namespace EXPIMP
                 double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
-                tf.DrawString($"{kvp.Key.Name} [{kvp.Key.JoinType}]", font, XBrushes.Black, new Rect(moveX + 35, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
+                // Nezobrazujeme nazov triedy / typu spoja
+                tf.DrawString(/*$"{kvp.Key.Name} [{kvp.Key.JoinType}]"*/ $"{kvp.Key.Name}", font, XBrushes.Black, new Rect(moveX + 35, moveY - 25, scaledImageWidth - 20, scaledImageHeight), format);
                 gfx.DrawEllipse(pen, new Rect(moveX, moveY - 30, 30, 30));
                 gfx.DrawString($"{counter++}", font2, XBrushes.Black, moveX + (counter > 10 ? 5 : 10), moveY - 9);
 
@@ -661,7 +662,9 @@ namespace EXPIMP
                 double scaledImageWidth = 430;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
-                gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
+                //gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
+                string columnTypeName = $"{kvp.Key}";
+                gfx.DrawString("Pad Type " + pad.Name + " - " + columnTypeName, font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
                 gfx.DrawImage(image, moveX, moveY, scaledImageWidth, scaledImageHeight);
                 image.Dispose();
                 viewPort.Dispose();
@@ -2225,18 +2228,48 @@ namespace EXPIMP
                 tableParams.Add(new string[2] { "Plates ", joint.m_arrPlates.Length.ToString() + " x " + joint.m_arrPlates.FirstOrDefault().Name.ToString() + " - " + "thickness " + (joint.m_arrPlates.FirstOrDefault().Ft * 1000).ToString() + " [mm]" });
                 //tableParams.Add(new string[2] { "Screws count in plate", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() });
                 //tableParams.Add(new string[2] { "Screw", "TEK " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge +"g").ToString() });
-                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " + "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() });
+                tableParams.Add(new string[2] { "Screws", joint.m_arrPlates.FirstOrDefault().ScrewArrangement.IHolesNumber.ToString() + " x " +
+                    "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() + " each plate" });
 
                 if (joint.m_arrPlates.FirstOrDefault().ScrewArrangement is CScrewArrangementCircleApexOrKnee) // Knee or apex with circle screw arrangement
                 {
                     CScrewArrangementCircleApexOrKnee circleArrangement = (CScrewArrangementCircleApexOrKnee)joint.m_arrPlates.FirstOrDefault().ScrewArrangement;
 
-                    tableParams.Add(new string[2] { "Number of circles", circleArrangement.INumberOfCirclesInGroup.ToString() });
+                    //tableParams.Add(new string[2] { "Number of circles", circleArrangement.INumberOfCirclesInGroup.ToString() });
 
-                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence)
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    // TODO 370
+                    // TODO - Ondrej toto by chcelo nejako zautomatizovat a zjednotit s tym ako vypisujeme v System Component Viewer parametre pre plate a pre screw arrangement
+                    // Chcel by som to urobit co najhutnejsie aby sme mali co najmenej riadkov v tabulke
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                    // Screws in circles
+                    // First circle
+                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[0] is CScrewHalfCircleSequence) // Radius parameters
                     {
                         CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[0];
-                        tableParams.Add(new string[2] { "Radius", (seq.Radius * 1000).ToString("F0") + " [mm]" });
+                        tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
+                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                            "\nradius: " + (seq.Radius * 1000).ToString("F0") + " [mm]" });
+                    }
+
+                    // Second circle
+                    if (circleArrangement.ListOfSequenceGroups[0].ListSequence[2] != null && circleArrangement.ListOfSequenceGroups[0].ListSequence[2] is CScrewHalfCircleSequence) // Radius parameters
+                    {
+                        CScrewHalfCircleSequence seq = (CScrewHalfCircleSequence)circleArrangement.ListOfSequenceGroups[0].ListSequence[2];
+                        tableParams.Add(new string[2] { "Circle screws", "4 x " + seq.INumberOfConnectors + " " +
+                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                            "\nradius: " + (seq.Radius * 1000).ToString("F0") + " [mm]" });
+                    }
+
+                    // Screws in corners
+                    if (circleArrangement.BUseAdditionalCornerScrews)
+                    {
+                        tableParams.Add(new string[2] { "Corner screws", "2 x 4 x " + circleArrangement.IAdditionalConnectorInCornerNumber + " " +
+                            "TEKs " + (joint.m_arrPlates.FirstOrDefault().ScrewArrangement.referenceScrew.Gauge + "g").ToString() +
+                            "\nspacing: "+
+                              (circleArrangement.FAdditionalScrewsDistance_x * 1000).ToString("F0") + " x "
+                            + (circleArrangement.FAdditionalScrewsDistance_y * 1000).ToString("F0") + " [mm]" });
                     }
                 }
 
