@@ -18,7 +18,7 @@
                     <TextBlock Text="Footing Pads" Foreground="Blue"/>
                 </StackPanel>
             </TabItem.Header>
-            <ScrollViewer Width="600" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Margin="5,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="160"/>
@@ -53,7 +53,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged" Grid.ColumnSpan="7" Margin="0,0,10,10">
+                    <TabControl Width="600" HorizontalAlignment="Left" Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged" Grid.ColumnSpan="7" Margin="0,0,10,10">
                         <TabItem Name="tabItem2D" Header="View 2D">
                             <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch"/>
