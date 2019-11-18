@@ -418,8 +418,9 @@ namespace PFD
             set
             {
                 m_UseStraightReinforcementBars = value;
+                _pfdVM.RecreateFoundations = true;
 
-                if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+                //if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
                 NotifyPropertyChanged("UseStraightReinforcementBars");
             }

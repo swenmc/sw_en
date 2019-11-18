@@ -892,7 +892,11 @@ namespace PFD
 
             if (foundations == null)
             {
-                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns);
+                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, true);
+                //To Mato - dajak nebavi task 394
+                //if(vm.FootingVM == null)
+                //    CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, true); //tu som myslel ze poslem ten bool dole, ale FootingVm je null
+                //else CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm.FootingVM.UseStraightReinforcementBars);
             }
             else
                 m_arrFoundations = foundations;
@@ -2262,10 +2266,10 @@ namespace PFD
             }
         }
 
-        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns)
+        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
         {
             bool bGenerateFoundations = true;
-            bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
+            //bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
 
             if (bGenerateFoundations)
             {
