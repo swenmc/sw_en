@@ -58,6 +58,9 @@ namespace PFD
         CMemberEccentricity eccentricityColumnFront_Z;
         CMemberEccentricity eccentricityColumnBack_Z;
 
+        CMemberEccentricity eccentricityGirtFront_Y0;
+        CMemberEccentricity eccentricityGirtBack_YL;
+
         public List<CBlock_3D_001_DoorInBay> DoorsModels;
         public List<CBlock_3D_002_WindowInBay> WindowsModels;
 
@@ -234,8 +237,8 @@ namespace PFD
             eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h));
             eccentricityColumnBack_Z = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h));
 
-            CMemberEccentricity eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
-            CMemberEccentricity eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
+            eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
+            eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
 
             // Member Intermediate Supports
             m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[1];
@@ -325,7 +328,6 @@ namespace PFD
             if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
                 bUseRafterFlyBracingPlates = false;
 
-            
             iFrontColumnNoInOneFrame = 0;
 
             bool bGenerateFrontColumns = componentList[(int)EMemberGroupNames.eFrontColumn].Generate.Value;
@@ -900,7 +902,7 @@ namespace PFD
 
             if (slabs == null)
             {
-                CreateFloorSlab();
+                CreateFloorSlab(bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts, bGenerateBackGirts);
             }
             else
                 m_arrSlabs = slabs;
@@ -2572,7 +2574,7 @@ namespace PFD
             }
         }
 
-        private void CreateFloorSlab()
+        private void CreateFloorSlab(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts)
         {
             bool bGenerateSlabs = true;
 
@@ -2586,17 +2588,59 @@ namespace PFD
                 materialConcrete.m_fE = 30e+9f;
 
                 // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.02f; // Rozmer o ktory doska presahuje od hrany stlpa
-                float fFloorSlab_AdditionalOffset_Y = 0.02f; // Rozmer o ktory doska presahuje od hrany stlpa
-                //float fh_GirtFront = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].h;
-                //float fh_GirtBack = (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirt].h;
-                float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
-                float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
-                ///float fFloorSlab_bY = fL_tot - (float)m_arrCrSc[0].b + fh_GirtFront + fh_GirtBack + 2 * fFloorSlab_AdditionalOffset_Y;
+                float fFloorSlab_AdditionalOffset_X = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
+                float fFloorSlab_AdditionalOffset_Y = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
+
+                float fFloorSlabOffset_x = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
+                float fFloorSlabOffset_y_Front = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
+                float fFloorSlabOffset_y_Back = 0.5f * (float)m_arrCrSc[0].b + fFloorSlab_AdditionalOffset_Y;
+
+                // Potrebujeme zapocitat odsadenie wind posts, excentricita pruta wind post + polovica vysky + pridavne odsadenie okraja dosky od hrany wind post
+                if (bGenerateFrontColumns)
+                {
+                    float fFloorSlabOffset_y_FrontColumns = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h - fFloorSlab_AdditionalOffset_Y;
+
+                    if (eccentricityColumnFront_Z != null)
+                        fFloorSlabOffset_y_FrontColumns -= eccentricityColumnFront_Z.MFz_local;
+
+                    float fFloorSlabOffset_y_FrontGirts = 0;
+
+                    if (bGenerateFrontGirts)
+                    {
+                        fFloorSlabOffset_y_FrontGirts = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].h - fFloorSlab_AdditionalOffset_Y;
+
+                        if (eccentricityGirtFront_Y0 != null)
+                            fFloorSlabOffset_y_FrontGirts += eccentricityGirtFront_Y0.MFz_local;
+                    }
+
+                    fFloorSlabOffset_y_Front = MathF.Min(fFloorSlabOffset_y_Front, fFloorSlabOffset_y_FrontColumns, fFloorSlabOffset_y_FrontGirts);
+                }
+
+                if (bGenerateBackColumns)
+                {
+                    float fFloorSlabOffset_y_BackColumns = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h + fFloorSlab_AdditionalOffset_Y;
+
+                    if (eccentricityColumnBack_Z != null)
+                        fFloorSlabOffset_y_BackColumns -= eccentricityColumnBack_Z.MFz_local;
+
+                    float fFloorSlabOffset_y_BackGirts = 0;
+
+                    if (bGenerateBackGirts)
+                    {
+                        fFloorSlabOffset_y_BackGirts = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirt].h + fFloorSlab_AdditionalOffset_Y;
+
+                        if (eccentricityGirtBack_YL != null)
+                            fFloorSlabOffset_y_BackGirts += eccentricityGirtBack_YL.MFz_local;
+                    }
+
+                    fFloorSlabOffset_y_Back = MathF.Max(fFloorSlabOffset_y_Back, fFloorSlabOffset_y_BackColumns, fFloorSlabOffset_y_BackGirts);
+                }
+
+                float fFloorSlab_aX = fW_frame + 2 * (-fFloorSlabOffset_x);
+                float fFloorSlab_bY = fL_tot + (-fFloorSlabOffset_y_Front) + fFloorSlabOffset_y_Back;
                 float fFloorSlab_h = 0.125f;
-                float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
-                float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
-                //float fFloorSlab_eY = + 0.5f * (float)m_arrCrSc[0].b - fh_GirtFront - fFloorSlab_AdditionalOffset_Y;
+                float fFloorSlab_eX = fFloorSlabOffset_x;
+                float fFloorSlab_eY = fFloorSlabOffset_y_Front;
 
                 float fConcreteCoverTop = 0.05f; // 50 mm
                 string sMeshGradeName = "SE92DE";
