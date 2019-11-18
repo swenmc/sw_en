@@ -22,10 +22,14 @@ namespace PFD
         {
             InitializeComponent();
 
-            SCVDisplayOptionsViewModel vm = new SCVDisplayOptionsViewModel(true, true, false, false, false, false, false, false, false);
+            bool drawOutLine = true; // Default
+            bool drawHoles = true; // Default
+
+            SCVDisplayOptionsViewModel vm = new SCVDisplayOptionsViewModel(false, drawOutLine, false, drawHoles, false, false, false, false, false);
             vm.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
             this.DataContext = vm;
         }
+
         public SCVDisplayOptionsWindow(bool drawPoints, bool drawOutLine, bool drawPointNumbers, bool drawHoles, bool drawHoleCentreSymbol, bool drawDrillingRoute,
                                 bool drawDimensions, bool drawMemberOutline, bool drawBendLines)
         {
@@ -37,7 +41,6 @@ namespace PFD
             this.DataContext = vm;
         }
 
-
         private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -47,7 +50,6 @@ namespace PFD
             }
         }
 
-        
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
             SCVDisplayOptionsViewModel vm = this.DataContext as SCVDisplayOptionsViewModel;

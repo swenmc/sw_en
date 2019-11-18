@@ -186,10 +186,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public SCVDisplayOptionsViewModel()
         {
-            DrawPoints2D = true;
-            DrawOutLine2D= true;
+            DrawPoints2D = false;
+            DrawOutLine2D= true; // Default
             DrawPointNumbers2D = false;
-            DrawHoles2D = false;
+            DrawHoles2D = true; // Default
             DrawHoleCentreSymbol2D = false;
             DrawDrillingRoute2D = false;
             DrawDimensions2D = true;
