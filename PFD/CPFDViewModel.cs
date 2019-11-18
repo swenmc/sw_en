@@ -333,6 +333,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("GableWidth");
             }
         }
@@ -360,6 +361,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("Length");
             }
         }
@@ -387,6 +389,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("WallHeight");
             }
         }
@@ -445,6 +448,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("Frames");
             }
         }
@@ -467,6 +471,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -489,6 +494,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -528,6 +534,7 @@ namespace PFD
                 RecreateJoints = true;
                 RecreateModel = true;
                 RecreateFloorSlab = true;
+                RecreateFoundations = true;
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
@@ -2483,11 +2490,11 @@ namespace PFD
             DisplayPlates = false;
             DisplayConnectors = false;
             DisplayNodes = false;
-            DisplayFoundations = false;
+            DisplayFoundations = true;
             DisplayReinforcementBars = false;
-            DisplayFloorSlab = false;
-            DisplaySawCuts = false;
-            DisplayControlJoints = false;
+            DisplayFloorSlab = true;
+            DisplaySawCuts = true;
+            DisplayControlJoints = true;
 
             DisplayMembersWireFrame = false;
             DisplayJointsWireFrame = false;
