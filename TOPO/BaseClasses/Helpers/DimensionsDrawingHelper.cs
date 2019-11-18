@@ -49,6 +49,11 @@ namespace BaseClasses.Helpers
                 DrawDimensionsBACK(_trackport, model, sDisplayOptions, gr);
             }
 
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.ROOF)
+            {
+                DrawDimensionsROOF(_trackport, model, sDisplayOptions, gr);
+            }
+
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.COLUMNS)
             {
                 DrawDimensionsCOLUMNS(_trackport, model, sDisplayOptions, gr);
@@ -234,7 +239,233 @@ namespace BaseClasses.Helpers
         }
         private static void DrawDimensionsROOF(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {
+            // Potrebujeme idenfikovat ktore pruty typu edge purlin a purlin a vyrobit medzi nimi koty
 
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TODO - tu by sme mali kotovat aj gridlines pre front ale kedze v modeli strechy nemame body wind post tak to nie je implementovane !!!
+            // Tieto body by sa museli nejako prevziat z inych layouts (napr. columns) alebo musime do modelu zahrnut aj wind post a vypnut im zobrazenie, pouziju sa len ich body pre kotovanie
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Purlins and edge purlins
+            CMember[] membersPurlinsAndEdgePurlinsFront = null;
+
+            membersPurlinsAndEdgePurlinsFront = ModelHelper.GetMembersInDistanceInterval(model, 0, model.fL1_frame, 1, false, false); // smer Y
+
+            // Left side
+            CMember[] membersLeftSide = null;
+
+            membersLeftSide = ModelHelper.GetMembersInDistanceInterval(model, 0, 0.5f * model.fW_frame, 0, false, false); // smer X // Hladame rafters - left side
+
+            // TO Ondrej - ak by sa toto zobecnilo mohlo by sa to pouzit aj v inych pohladoch alebo podorysoch
+
+            if (membersPurlinsAndEdgePurlinsFront != null)
+            {
+                // 1 kotovacia ciara - vsetky EP a P (len left)
+                // 2 kotovacia ciara - celkovy rozmer (len left a front)
+
+                bool bDrawDimension_1 = false;
+                bool bDrawDimension_2 = true;
+                // Pripravime si zoznamy kotovanych bodov
+                float fh = (float)model.m_arrMembers[0].CrScStart.h; // Docasne, prvy prut by mal byt Edge rafter
+
+                // Front side
+                List<CNode> membersNotesPurlinsAndEdgePurlins_FrontSide_1 = null; // Purlins and edge purlins
+                List<CNode> membersNodes_FrontSide_2 = null; // Edges
+
+                // Tuto celkovu kotu kreslime vzdy
+                membersNodes_FrontSide_2 = new List<CNode>();
+                membersNodes_FrontSide_2.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame, 0)); // Suradnice sa menia pre smer X
+                membersNodes_FrontSide_2.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, model.fH1_frame, 0));
+
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1 = new List<CNode>();
+
+                // Kedze chceme kotovat od hrany musime pridat uzly na krajoch + stred
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, -0.5f * fh, 0, model.fH1_frame, 0));
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, 0.5f * model.fW_frame, 0, model.fH1_frame, 0)); // Stred budovy
+                membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(0, model.fW_frame + 0.5f * fh, 0, model.fH1_frame, 0));
+
+                foreach (CMember m in membersPurlinsAndEdgePurlinsFront)
+                {
+                    // Selektujeme uzly, ktore su na zaciatku v suradnici Y = 0 a nad urovnou edge purlin v smere Z
+                    if (MathF.d_equal(m.NodeStart.Y, 0) && m.NodeStart.Z >= model.fH1_frame)
+                    {
+                        if (m.EMemberType == EMemberType_FS.eP || m.EMemberType == EMemberType_FS.eEP)
+                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeStart.ID, m.NodeStart.X, m.NodeStart.Y, model.fH1_frame, m.NodeStart.FTime));
+                    }
+
+                    if (MathF.d_equal(m.NodeEnd.Y, 0) && m.NodeEnd.Z >= model.fH1_frame)
+                    {
+                        if (m.EMemberType == EMemberType_FS.eP || m.EMemberType == EMemberType_FS.eEP)
+                            membersNotesPurlinsAndEdgePurlins_FrontSide_1.Add(new CNode(m.NodeEnd.ID, m.NodeEnd.X, m.NodeEnd.Y, model.fH1_frame, m.NodeEnd.FTime));
+                    }
+                }
+
+                // To Ondrej - toto by sa asi dalo zistit uz vopred este predtym nez vyrabam zoznamy uzlov
+                foreach (CMember m in membersPurlinsAndEdgePurlinsFront)
+                {
+                    if (!bDrawDimension_1 && (m.EMemberType == EMemberType_FS.eP || m.EMemberType == EMemberType_FS.eEP))
+                    {
+                        bDrawDimension_1 = true;
+                    }
+                }
+
+                if (bDrawDimension_1 == false)
+                    membersPurlinsAndEdgePurlinsFront = null;
+
+                // Mame pripravene 2 zoznamy bodov
+                // Body zoradime podla X od najvacsieho - koty kreslime zhora nadol, resp z +X smerom k 0
+
+                // TO Ondrej - toto momentalne neplati lebo to by sme museli implementovat rotaciu kot
+                // kreslim a radim od 0 smerom k +X
+                if (membersNotesPurlinsAndEdgePurlins_FrontSide_1 != null)
+                    membersNotesPurlinsAndEdgePurlins_FrontSide_1 = membersNotesPurlinsAndEdgePurlins_FrontSide_1.OrderBy(n => n.X).ToList();
+
+                if (membersNodes_FrontSide_2 != null)
+                    membersNodes_FrontSide_2 = membersNodes_FrontSide_2.OrderBy(n => n.X).ToList();
+
+                // Create Dimensions
+                List<CDimensionLinear3D> listOfDimensions = null;
+
+                float fExtensionLineLength = 0.2f;
+                //float fMainLinePosition = 0.4f;
+                float fExtensionLineOffset = 0.1f;
+                float fOffsetBehindMainLine = 0.05f;
+
+                float fDistanceBetweenMainLines = 0.2f;
+
+                 if (bDrawDimension_1 == true)
+                {
+                    if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                    for (int i = 0; i < membersNotesPurlinsAndEdgePurlins_FrontSide_1.Count - 1; i++)
+                    {
+                        CDimensionLinear3D dim = new CDimensionLinear3D(membersNotesPurlinsAndEdgePurlins_FrontSide_1[i].GetPoint3D(), membersNotesPurlinsAndEdgePurlins_FrontSide_1[i + 1].GetPoint3D(),
+                            EGlobalPlane.XY, 0, -1,
+                            fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersNotesPurlinsAndEdgePurlins_FrontSide_1[i + 1].X - membersNotesPurlinsAndEdgePurlins_FrontSide_1[i].X) * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim);
+                    }
+
+                    // Nastavime parametre pre dalsie koty
+                    //fExtensionLineLength += fDistanceBetweenMainLines;
+                    //fMainLinePosition = +fDistanceBetweenMainLines;
+                    fExtensionLineOffset += fDistanceBetweenMainLines;
+                }
+
+                if (bDrawDimension_2 == true)
+                {
+                    if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                    for (int i = 0; i < membersNodes_FrontSide_2.Count - 1; i++)
+                    {
+                        CDimensionLinear3D dim = new CDimensionLinear3D(membersNodes_FrontSide_2[i].GetPoint3D(), membersNodes_FrontSide_2[i + 1].GetPoint3D(),
+                            EGlobalPlane.XY, 0, -1,
+                            fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersNodes_FrontSide_2[i + 1].X - membersNodes_FrontSide_2[i].X) * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim);
+                    }
+                }
+
+                DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
+            }
+
+            if (membersLeftSide != null)
+            {
+                // 1 kotovacia ciara - vsetky MR a ER (len left)
+                // 2 kotovacia ciara - celkovy rozmer (len left a front)
+
+                bool bDrawDimension_1 = false;
+                bool bDrawDimension_2 = true;
+                // Pripravime si zoznamy kotovanych bodov
+                float fb = (float)model.m_arrMembers[0].CrScStart.b; // Docasne, prvy prut by mal byt Edge Rafter
+
+                // Left side
+                List<CNode> membersBaseNodes_LeftSide_1 = null; // Edge rafters and main rafters
+                List<CNode> membersBaseNodes_LeftSide_2 = null; // Edges
+
+                // Toto celkovu kotu kreslime vzdy
+                membersBaseNodes_LeftSide_2 = new List<CNode>();
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame, 0)); // Suradnice sa menia pre smer Y
+                membersBaseNodes_LeftSide_2.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, model.fH1_frame, 0));
+
+                membersBaseNodes_LeftSide_1 = new List<CNode>();
+
+                // Kedze chceme kotovat od hrany musime pridat uzly na krajoch
+                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, -0.5f * fb, model.fH1_frame, 0));
+                membersBaseNodes_LeftSide_1.Add(new CNode(0, 0, model.fL_tot + 0.5f * fb, model.fH1_frame, 0));
+
+                foreach (CMember m in membersLeftSide)
+                {
+                    if (MathF.d_equal(m.NodeStart.X, 0))
+                    {
+                        if (m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eER)
+                            membersBaseNodes_LeftSide_1.Add(m.NodeStart);
+                    }
+
+                    if (MathF.d_equal(m.NodeEnd.X, 0))
+                    {
+                        if (m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eER)
+                            membersBaseNodes_LeftSide_1.Add(m.NodeEnd);
+                    }
+                }
+
+                // To Ondrej - toto by sa asi dalo zistit uz vopred este predtym nez vyrabam zoznamy uzlov
+                foreach (CMember m in membersLeftSide)
+                {
+                    if (!bDrawDimension_1 && (m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eER))
+                    {
+                        bDrawDimension_1 = true;
+                    }
+                }
+
+                if (bDrawDimension_1 == false)
+                    membersBaseNodes_LeftSide_1 = null;
+
+                // Mame pripravene 2 zoznamy bodov
+                // Body zoradime podla Y od najmensieho - koty kreslime zlava smerom doprava, resp od 0 do +Y
+                if (membersBaseNodes_LeftSide_1 != null)
+                    membersBaseNodes_LeftSide_1 = membersBaseNodes_LeftSide_1.OrderBy(n => n.Y).ToList();
+
+                if (membersBaseNodes_LeftSide_2 != null)
+                    membersBaseNodes_LeftSide_2 = membersBaseNodes_LeftSide_2.OrderBy(n => n.Y).ToList();
+
+                // Create Dimensions
+                List<CDimensionLinear3D> listOfDimensions = null;
+
+                float fExtensionLineLength = 0.2f;
+                //float fMainLinePosition = 0.4f;
+                float fExtensionLineOffset = 0.1f;
+                float fOffsetBehindMainLine = 0.05f;
+
+                float fDistanceBetweenMainLines = 0.2f;
+
+                if (bDrawDimension_1 == true)
+                {
+                    if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                    for (int i = 0; i < membersBaseNodes_LeftSide_1.Count - 1; i++)
+                    {
+                        CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_1[i].GetPoint3D(), membersBaseNodes_LeftSide_1[i + 1].GetPoint3D(),
+                            EGlobalPlane.XY, 1, 0,
+                            fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_LeftSide_1[i + 1].Y - membersBaseNodes_LeftSide_1[i].Y) * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim);
+                    }
+
+                    // Nastavime parametre pre dalsie koty
+                    //fExtensionLineLength += fDistanceBetweenMainLines;
+                    //fMainLinePosition = +fDistanceBetweenMainLines;
+                    fExtensionLineOffset += fDistanceBetweenMainLines;
+                }
+
+                if (bDrawDimension_2 == true)
+                {
+                    if (listOfDimensions == null) listOfDimensions = new List<CDimensionLinear3D>();
+                    for (int i = 0; i < membersBaseNodes_LeftSide_2.Count - 1; i++)
+                    {
+                        CDimensionLinear3D dim = new CDimensionLinear3D(membersBaseNodes_LeftSide_2[i].GetPoint3D(), membersBaseNodes_LeftSide_2[i + 1].GetPoint3D(),
+                            EGlobalPlane.XY, 1, 0,
+                            fExtensionLineLength, fExtensionLineLength, fOffsetBehindMainLine, fExtensionLineOffset, ((membersBaseNodes_LeftSide_2[i + 1].Y - membersBaseNodes_LeftSide_2[i].Y) * 1000).ToString("F0"), false);
+                        listOfDimensions.Add(dim);
+                    }
+                }
+
+                DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
+            }
         }
         private static void DrawDimensionsMIDDLE(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
         {

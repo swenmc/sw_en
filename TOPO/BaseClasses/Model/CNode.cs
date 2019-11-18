@@ -25,7 +25,7 @@ namespace BaseClasses
             int iNode_ID,
             float fCoord_X,
             float fCoord_Y,
-            int fTime
+            float fTime
             )
         {
             ID = iNode_ID;
@@ -40,7 +40,7 @@ namespace BaseClasses
             float fCoord_X,
             float fCoord_Y,
             float fCoord_Z,
-            int fTime
+            float fTime
             )
         {
             ID = iNode_ID;

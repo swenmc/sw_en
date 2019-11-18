@@ -335,7 +335,7 @@ namespace EXPIMP
 
                     opts.bCreateHorizontalGridlines = true;
 
-                    // Notes - floor                    
+                    // Notes - floor
                     DrawNotes_Floor(gfx, data, (int)page.Width.Point - 275, (int)page.Height.Point - 250);
                 }
 
