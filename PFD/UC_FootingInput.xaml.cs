@@ -30,9 +30,9 @@ namespace PFD
         double Frame2DWidth;
         double Frame2DHeight;
 
-        CFoundation pad;
-        CConnectionJointTypes joint;
-        CSlab floorSlab;
+        //CFoundation pad;
+        //CConnectionJointTypes joint;
+        //CSlab floorSlab;
 
         public UC_FootingInput(CPFDViewModel pfdVM/*, CJointsVM jointsVM*/)
         {
@@ -46,15 +46,18 @@ namespace PFD
             this.DataContext = vm;
             vm.FootingPadMemberTypeIndex = 0;
 
-            pad = vm.GetSelectedFootingPad();
-            joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
-            floorSlab = vm.GetFloorSlab();
+            CFoundation pad = vm.GetSelectedFootingPad();
+            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
+            CSlab floorSlab = vm.GetFloorSlab();
             displayFootingPad(pad, joint, floorSlab);
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CPFDViewModel)) return;
+            CPFDViewModel pfdVM = sender as CPFDViewModel;
+            if (pfdVM.IsSetFromCode) return;
+            
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
             CSlab floorSlab = vm.GetFloorSlab();
@@ -417,7 +420,11 @@ namespace PFD
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CFootingInputVM vm = this.DataContext as CFootingInputVM;
+            //CFootingInputVM vm = this.DataContext as CFootingInputVM;
+            CFoundation pad = vm.GetSelectedFootingPad();
+            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
+            CSlab floorSlab = vm.GetFloorSlab();
+
             displayFootingPad(pad, joint, floorSlab);
         }
     }
