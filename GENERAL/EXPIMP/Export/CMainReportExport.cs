@@ -204,6 +204,10 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     // opts.bDisplayJoints = true; // Ak chceme zobrazovat znacky detailov, musime do filtrovaneho modelu exportovat aj spoje, bude to zavisiet na tom ci je zapnute ich zobrazenie, alebo to budeme robit vzdy
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
@@ -215,6 +219,10 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.BACK)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
@@ -225,6 +233,10 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.LEFT)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     opts.bDisplayGridlines = true;// Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
@@ -235,6 +247,10 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.RIGHT)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
@@ -245,6 +261,10 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.ROOF)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
@@ -252,9 +272,12 @@ namespace EXPIMP
                     opts.bCreateHorizontalGridlines = true;
                 }
 
-                // Toto je len pokus ako to vyzera :)
                 if (viewMembers == EViewModelMemberFilters.MIDDLE_FRAME)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+                    opts.bDisplayMemberRealLengthInMM = true;
+
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     //opts.bDisplayWireFrameModel = true;
                     //opts.bDisplayMembersWireFrame = true;
@@ -269,6 +292,9 @@ namespace EXPIMP
 
                 if (viewMembers == EViewModelMemberFilters.COLUMNS)
                 {
+                    opts.bDisplayMemberDescription = true;
+                    opts.bDisplayMemberPrefix = true;
+
                     // Chceme pre ucely exportu zobrazit wireframe a prerobit ciary wireframe na 3D valce
                     opts.bDisplayWireFrameModel = true;
                     opts.bDisplayFloorSlabWireFrame = true;
@@ -588,6 +614,7 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
+            opts.bDisplayMembersWireFrame = true;
             opts.fWireFrameLineThickness = 2;
             opts.bTransformScreenLines3DToCylinders3D = false;
             opts.bDisplayJointsWireFrame = true;
