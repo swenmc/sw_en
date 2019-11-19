@@ -399,7 +399,7 @@ namespace EXPIMP
             out fmodelBottomPosition_y
             );
 
-            //float fmodelMarginBottom_y = (float)(fCanvasHeight - fmodelMarginTop_y - dModel_Length_y_page); // TODO - Toto by sma mali zrusit
+            float fmodelMarginBottom_y = (float)(fCanvasHeight - fmodelMarginTop_y - dModel_Length_y_page); // TODO - Toto by sma mali zrusit
             int factorSwitchYAxis = -1;
 
             List<Canvas> canvases = new List<Canvas>();

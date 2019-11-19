@@ -541,17 +541,54 @@ namespace BaseClasses
                 new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset_DPC_DPM),  // Left Bottom point
                 new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
                 new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight), // Top Right Column Point
-                new Point(PointsFootingPad_real[0].X * 1.25, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM) // TODO Ondrej - tu by trebalo zohladnit aj koncovy bod ciary poznamky vpravo ????, texty poznamok, koty a pod
+                new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y - fRealOffset_DPC_DPM) // pravy okraj patky (bez floor slab)
             };
 
-            double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+            // Vypocitame zoom faktor v prvej iteracii
+            double fTempMax_X_F1 = 0, fTempMin_X_F1 = 0, fTempMax_Y_F1 = 0, fTempMin_Y_F1 = 0;
+            List<Point> PointsForEdgeCoord_real_Copy = PointsFootingPad_real.ToList();
 
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsForEdgeCoord_real_Copy);
+            CalculateModelLimits(PointsForEdgeCoord_real_Copy, out fTempMax_X_F1, out fTempMin_X_F1, out fTempMax_Y_F1, out fTempMin_Y_F1);
+
+            double dModel_Length_x_real_F1 = fTempMax_X_F1 - fTempMin_X_F1;
+            double dModel_Length_y_real_F1 = fTempMax_X_F1 - fTempMin_Y_F1;
+
+            double dscaleFactor = 0.8;
+            int scale_unit = 1000; // mm
+
+            double fModel_Length_x_page_F1;
+            double fModel_Length_y_page_F1;
+            double dFactor_x_F1;
+            double dFactor_y_F1;
+            double dReal_Model_Zoom_Factor_F1;
+
+            CalculateBasicValue_ZoomFactor(dModel_Length_x_real_F1,
+                dModel_Length_y_real_F1,
+                dscaleFactor,
+                scale_unit,
+                width, 
+                height, 
+                out fModel_Length_x_page_F1,
+                out fModel_Length_y_page_F1,
+                out dFactor_x_F1,
+                out dFactor_y_F1,
+                out dReal_Model_Zoom_Factor_F1);
+
+            // Maximalna dlzka textbloku pre vypisovanie poznamok (canvas page units - points)
+            double dNoteTextMaximumLength_Points = 232 + 18; // Dlzka je 232 bodov + rezerva 18 // PRI ZMENE TEXTOV JE POTREBNE PRENASTAVIT
+            // Vypocitame dlzku textu v realnych suradniciach [m]
+            double dNoteTextMaximumLength_meters = dNoteTextMaximumLength_Points / dReal_Model_Zoom_Factor_F1;
+            // Upravime pole bodov pre vypocet finalneho zoom faktora
+            // Pridame pravy koncovy bod textu najdlhsej poznamky
+            PointsForEdgeCoord_real.Add(new Point(PointsFootingPad_real[1].X + dNoteTextMaximumLength_meters, PointsFootingPad_real[1].Y - fRealOffset_DPC_DPM));
+
+            // Vypocitame finalny zoom faktor a nastavime dalsie parametre
+            double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsForEdgeCoord_real);
 
             CalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             //PointsForEdgeCoord_real = MovePointsToCenterCSAndCalculateModelLimits(PointsForEdgeCoord_real, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
-
-            int scale_unit = 1000; // mm
 
             double fModel_Length_x_real;
             double fModel_Length_y_real;
@@ -570,7 +607,7 @@ namespace BaseClasses
                     fTempMin_X,
                     fTempMax_Y,
                     fTempMin_Y,
-                    0.60f,
+                    dscaleFactor,
                     scale_unit,
                     width,
                     height,
@@ -1248,7 +1285,7 @@ namespace BaseClasses
                 double dVerticalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat
 
                 // Pozicia textu poznamok na pravej strane obrazku, hrana zalomenia floorSlab smerom do footing pad + 0.1 m
-                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.05;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
+                double dNoteTextHorizontalPosition_x = PointsFootingPad_real[1].X + 0.1;  //0.4; // Absolutna pozicia konca sipky alebo bodu textu // Ak chceme zaciatky poznamok / textov pekne pod sebou
                 //double dNoteTextHorizontalPosition_x_rel = 0.56; // To Ondrej tu nie je uplne dobre mat napevno relativnu poziciu, ale malo by tu byt nieco co sa viaze na pravu hranu patky (chcel by som aby boli poznamky vzdy napravo od tohto bodu a radsej urobit sirsi obrazok, aby donho vosli texty
                 double dNoteTextHorizontalPosition_x_rel = (dNoteTextHorizontalPosition_x - fTempMin_X) / fModel_Length_x_real;
 
