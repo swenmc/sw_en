@@ -1425,8 +1425,8 @@ namespace PFD
         }
         private void PDF_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
-            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
-            CModelData modelData = vmPFD.GetModelData();
+            //CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;            
+            CModelData modelData = vm.GetModelData();
 
             try
             {

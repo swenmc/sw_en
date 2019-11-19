@@ -1046,7 +1046,7 @@ namespace PFD
 
                 m_NumberOfSawCutsInDirectionX = value;
 
-                if(m_NumberOfSawCutsInDirectionX <= 0)
+                if (m_NumberOfSawCutsInDirectionX <= 0)
                     m_FirstSawCutPositionInDirectionX = 0;
 
                 if (m_NumberOfSawCutsInDirectionX <= 1)
@@ -1804,26 +1804,23 @@ namespace PFD
         {
             get
             {
-                if (m_DictFootings == null)
-                {
-                    m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
-                    CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
-                    CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
-                    m_DictFootings.Add("Main Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+                m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
+                CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
+                CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
+                m_DictFootings.Add("Main Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
-                    pad = GetFootingPad(EMemberType_FS_Position.EdgeColumn);
-                    joint = GetBaseJointForSelectedNode(pad.m_Node);
-                    m_DictFootings.Add("Edge Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+                pad = GetFootingPad(EMemberType_FS_Position.EdgeColumn);
+                joint = GetBaseJointForSelectedNode(pad.m_Node);
+                m_DictFootings.Add("Edge Column", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
-                    pad = GetFootingPad(EMemberType_FS_Position.ColumnFrontSide);
-                    joint = GetBaseJointForSelectedNode(pad.m_Node);
-                    m_DictFootings.Add("Wind Post - Front", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+                pad = GetFootingPad(EMemberType_FS_Position.ColumnFrontSide);
+                joint = GetBaseJointForSelectedNode(pad.m_Node);
+                m_DictFootings.Add("Wind Post - Front", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
 
-                    pad = GetFootingPad(EMemberType_FS_Position.ColumnBackSide);
-                    joint = GetBaseJointForSelectedNode(pad.m_Node);
-                    m_DictFootings.Add("Wind Post - Back", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
-                }
-
+                pad = GetFootingPad(EMemberType_FS_Position.ColumnBackSide);
+                joint = GetBaseJointForSelectedNode(pad.m_Node);
+                m_DictFootings.Add("Wind Post - Back", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
+                
                 return m_DictFootings;
             }
         }
@@ -1864,7 +1861,7 @@ namespace PFD
 
             // Set default GUI
             FootingPadMemberTypeIndex = 1;
-            
+
             ConcreteGrade = "30"; // MPa
             AggregateSize = "20"; // mm
 
@@ -2184,14 +2181,14 @@ namespace PFD
 
                 // Control Joints
                 _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionX = FirstControlJointPositionInDirectionX;
-                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = FirstControlJointPositionInDirectionY; 
+                _pfdVM.Model.m_arrSlabs.First().FirstControlJointPositionInDirectionY = FirstControlJointPositionInDirectionY;
                 _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionX = NumberOfControlJointsInDirectionX;
                 _pfdVM.Model.m_arrSlabs.First().NumberOfControlJointsInDirectionY = NumberOfControlJointsInDirectionY;
-                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX =  ControlJointsSpacingInDirectionX;
-                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = ControlJointsSpacingInDirectionY; 
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionX = ControlJointsSpacingInDirectionX;
+                _pfdVM.Model.m_arrSlabs.First().ControlJointsSpacingInDirectionY = ControlJointsSpacingInDirectionY;
                 //_pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Diameter_shank = (float.Parse(DowelDiameter)) / 1000f;
                 _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.ReferenceDowel.Length = DowelLength / 1000f;
-                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.DowelSpacing =DowelSpacing / 1000;
+                _pfdVM.Model.m_arrSlabs.First().ReferenceControlJoint.DowelSpacing = DowelSpacing / 1000;
 
                 // Perimeters
 
@@ -2203,7 +2200,7 @@ namespace PFD
                 //_pfdVM.Model.m_arrSlabs.First().Starters_Phi_LRSide = (float.Parse(Starters_Phi_LRSide)) / 1000f;
                 //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_TopAndBotom_Phi_LRSide = (float.Parse(Longitud_Reinf_TopAndBotom_Phi_LRSide)) / 1000f;
                 //_pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Phi_LRSide = (float.Parse(Longitud_Reinf_Intermediate_Phi_LRSide)) / 1000f;
-                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_LRSide =  Longitud_Reinf_Intermediate_Count_LRSide;
+                _pfdVM.Model.m_arrSlabs.First().Longitud_Reinf_Intermediate_Count_LRSide = Longitud_Reinf_Intermediate_Count_LRSide;
 
                 // Rebate
                 _pfdVM.Model.m_arrSlabs.First().RebateWidth_LRSide = RebateWidth_LRSide / 1000f;
@@ -2303,13 +2300,13 @@ namespace PFD
                 LongReinTop_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinTop_x_No), float.Parse(LongReinTop_x_Phi) * 0.001f, pad.Count_Top_Bars_y > 0 ? float.Parse(LongReinTop_y_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
 
             if (LongReinTop_y_No != "None")
-                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, pad.Count_Top_Bars_x > 0 ? float.Parse(LongReinTop_x_Phi) * 0.001f :0, ConcreteCover * 0.001f, false);
+                LongReinTop_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinTop_y_No), float.Parse(LongReinTop_y_Phi) * 0.001f, pad.Count_Top_Bars_x > 0 ? float.Parse(LongReinTop_x_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
 
             if (LongReinBottom_x_No != "None")
-                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, pad.Count_Bottom_Bars_y > 0 ? float.Parse(LongReinBottom_y_Phi) * 0.001f :0, ConcreteCover * 0.001f, false);
+                LongReinBottom_x_distance_s_y = GetDistanceBetweenReinforcementBars(FootingPadSize_y_Or_b, int.Parse(LongReinBottom_x_No), float.Parse(LongReinBottom_x_Phi) * 0.001f, pad.Count_Bottom_Bars_y > 0 ? float.Parse(LongReinBottom_y_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
 
             if (LongReinBottom_y_No != "None")
-                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, pad.Count_Bottom_Bars_x > 0 ? float.Parse(LongReinBottom_x_Phi) * 0.001f :0, ConcreteCover * 0.001f, false);
+                LongReinBottom_y_distance_s_x = GetDistanceBetweenReinforcementBars(FootingPadSize_x_Or_a, int.Parse(LongReinBottom_y_No), float.Parse(LongReinBottom_y_Phi) * 0.001f, pad.Count_Bottom_Bars_x > 0 ? float.Parse(LongReinBottom_x_Phi) * 0.001f : 0, ConcreteCover * 0.001f, false);
 
             LongReinTop_x_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             LongReinTop_y_ColorIndex = CComboBoxHelper.GetColorIndex(Colors.Coral);
@@ -2389,7 +2386,7 @@ namespace PFD
                 pad.Reference_Bottom_Bar_x.ProjectionLength = pad.Reference_Bottom_Bar_x is CReinforcementBarStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Bottom_Bar_x.Diameter;
 
                 pad.Reference_Top_Bar_y.ProjectionLength = pad.Reference_Top_Bar_y is CReinforcementBarStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Top_Bar_y.Diameter;
-                pad.Reference_Bottom_Bar_y.ProjectionLength = pad.Reference_Bottom_Bar_y is CReinforcementBarStraight? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Bottom_Bar_y.Diameter;
+                pad.Reference_Bottom_Bar_y.ProjectionLength = pad.Reference_Bottom_Bar_y is CReinforcementBarStraight ? m_FootingPadSize_y_Or_b - 2 * fConcreteCover : m_FootingPadSize_y_Or_b - 2 * fConcreteCover - pad.Reference_Bottom_Bar_y.Diameter;
 
                 // For each pad set for all reference bars current control point
                 pad.Reference_Top_Bar_x.m_pControlPoint = cp_Top_x;
@@ -2400,7 +2397,7 @@ namespace PFD
                 // Create sets of reinforcement bars
                 pad.CreateReinforcementBars();
             }
-            
+
             //Floor slab by som riesil v inej metode
             // Floor Slab
             float fFloorSlab_aX = _pfdVM.Model.m_arrSlabs.First().m_fDim1; // _pfdVM.GableWidth; // Tu by sme potrebovali dostat rozmery floor slab
