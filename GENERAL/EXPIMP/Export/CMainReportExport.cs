@@ -644,7 +644,7 @@ namespace EXPIMP
             XFont font = new XFont(fontFamily, fontSizeNormal, XFontStyle.Regular, options);
 
             double moveX = 0;
-            double moveY = 40;
+            double moveY = 30;
             int maxInRow = 2;
             int maxInColumn = 1;
             int numInRow = 0;
@@ -660,7 +660,7 @@ namespace EXPIMP
                 if (numInColumn == maxInColumn)
                 {
                     numInColumn = 0;
-                    moveY = 40;
+                    moveY = 30; // Toto je rovnaka hodnota ako ma default
                     gfx.Dispose();
                     page.Close();
 
@@ -687,8 +687,10 @@ namespace EXPIMP
                 //double scaledImageWidth = gfx.PageSize.Width / maxInRow;
                 //double scaledImageHeight = image.PointHeight * scaleFactor;
 
-                double scaleFactor = 430 / image.PointWidth;
+                // TO Ondrej - neda sa sem nejako prepasovat tie konstanty pre velkosti frames, aby sme to nemuseli rucne menit ked sa nejako zmeni GUI ???
+
                 double scaledImageWidth = 430;
+                double scaleFactor = scaledImageWidth / image.PointWidth;
                 double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 //gfx.DrawString($"{kvp.Key}", font, XBrushes.Black, new Rect(moveX, moveY - 15, scaledImageWidth, scaledImageHeight), XStringFormats.TopCenter);
@@ -699,22 +701,23 @@ namespace EXPIMP
                 viewPort.Dispose();
                 trackport.Dispose();
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
-                DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 30, moveY, pad);
+                DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 100, moveY, pad);
                 
                 double Frame2DWidth = 579;
                 double Frame2DHeight = 397;
+                double scaleFor2D = 0.85;
                 Canvas page2D = new Canvas();
                 page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
-                int margin = 10;
+                int margin = 2;
                 CSlab floorSlab = data.Model.m_arrSlabs.FirstOrDefault();
 
                 Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page2D, opts2D);
-                XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, 0.8));
-                gfx.DrawImage(image2, moveX, moveY + margin + Frame2DHeight * 0.8, Frame2DWidth * 0.8, Frame2DHeight * 0.8);
+                XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, scaleFor2D));
+                gfx.DrawImage(image2, moveX, moveY + margin + Frame2DHeight * scaleFor2D, Frame2DWidth * scaleFor2D, Frame2DHeight * scaleFor2D);
                 image2.Dispose();
 
-                moveX += scaledImageWidth + 90;
-                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
+                moveX += scaledImageWidth + 130; // Posun medzi stlpcami
+                if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 5; numInColumn++; }
             }
             
             gfx.Dispose();

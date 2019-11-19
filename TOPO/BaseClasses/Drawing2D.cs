@@ -696,15 +696,24 @@ namespace BaseClasses
                     // Vyztuz v smere x kreslime ako kruhy (v reze)
                     // Vyztuz v smere y kreslime ako ciary (v pohlade z boku)
 
+                    double dCircleScaleFactorFor2D = 1.3; // Faktor ktory zvacsi priemer vyztuze pre zobrazenie aby bola lepsie viditelna
+
+                    bool bIsReinforcementBarStraight = pad.Reference_Top_Bar_x is CReinforcementBarStraight || pad.Reference_Top_Bar_y is CReinforcementBarStraight ||
+                        pad.Reference_Bottom_Bar_x is CReinforcementBarStraight || pad.Reference_Bottom_Bar_y is CReinforcementBarStraight; // TODO - tento bool z UC Footing Input by sme sem potrebovali dostat
+
                     // Reinforcement in LCS x direction - circles
                     if (pad.Top_Bars_x != null && pad.Top_Bars_x.Count > 0)
                     {
                         float fFirstPosition_y = (float)pad.Reference_Top_Bar_x.m_pControlPoint.Y;
                         float fDistanceInLCS_y = pad.DistanceOfBars_Top_x_SpacingInyDirection;
+                        double VerticalPosition = pad.Top_Bars_x.First().m_pControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
+
+                        if (!bIsReinforcementBarStraight) // Tvar U - vkladaci bod je dole, vyztuz kreslime k hornemu okraju
+                            VerticalPosition = -pad.ConcreteCover - pad.Reference_Top_Bar_y.Diameter - 0.5 * pad.Reference_Top_Bar_x.Diameter;
 
                         for (int i = 0; i < pad.Top_Bars_x.Count; i++)
                         {
-                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, pad.Top_Bars_x[i].m_pControlPoint.Z);
+                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, VerticalPosition);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
                             if (i == pad.Top_Bars_x.Count - 1) // Consider only last bar
@@ -712,7 +721,7 @@ namespace BaseClasses
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
+                            DrawCircle(p, dCircleScaleFactorFor2D * dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
                         }
                     }
 
@@ -720,10 +729,14 @@ namespace BaseClasses
                     {
                         float fFirstPosition_y = (float)pad.Reference_Bottom_Bar_x.m_pControlPoint.Y;
                         float fDistanceInLCS_y = pad.DistanceOfBars_Bottom_x_SpacingInyDirection;
+                        double VerticalPosition = pad.Bottom_Bars_x.First().m_pControlPoint.Z; // Priama vyztuz - kreslime podla suradnic skutocneho bodu vlozenia
+
+                        if (!bIsReinforcementBarStraight) // Tvar U - vkladaci bod je dole, vyztuz kreslime k hornemu okraju
+                            VerticalPosition = -pad.m_fDim3 + pad.ConcreteCover + pad.Reference_Bottom_Bar_y.Diameter + 0.5 * pad.Reference_Bottom_Bar_x.Diameter;
 
                         for (int i = 0; i < pad.Bottom_Bars_x.Count; i++)
                         {
-                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, pad.Bottom_Bars_x[i].m_pControlPoint.Z);
+                            Point p = new Point(horizontalOffset + fFirstPosition_y + i * fDistanceInLCS_y, VerticalPosition);
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref p);
 
                             if (i == pad.Bottom_Bars_x.Count - 1) // Consider only last bar
@@ -731,7 +744,7 @@ namespace BaseClasses
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
+                            DrawCircle(p, dCircleScaleFactorFor2D * dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
                         }
                     }
 
@@ -853,7 +866,7 @@ namespace BaseClasses
                         pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                         DoubleCollection dashes = new DoubleCollection();
-                        dashes.Add(10); dashes.Add(10);
+                        dashes.Add(3); dashes.Add(3); // Kratsie a hustejsie ciarky
 
                         //opts.ReinforcementInSlabThickness = dLineThicknessFactor * reinfocementDiameter;
                         DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, opts.ReinforcementInSlabLineStyle, dashes);
