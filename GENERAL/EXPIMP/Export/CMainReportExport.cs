@@ -632,6 +632,8 @@ namespace EXPIMP
             double scale = 1;
             DisplayOptions opts = GetFootingTypesDisplayOptions(data);
 
+            DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefaultForExport();
+
             sheetNo++;
             AddPageToDocument(s_document, data.ProjectInfo, out page, out gfx, EPDFPageContentType.Details_Footing_Pads.GetFriendlyName());
             contents.Add(new string[] { $"fs{sheetNo.ToString("D2")}", EPDFPageContentType.Details_Footing_Pads.GetFriendlyName() });
@@ -704,9 +706,9 @@ namespace EXPIMP
                 Canvas page2D = new Canvas();
                 page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
                 int margin = 10;
-                CSlab floorSlab = data.Model.m_arrSlabs.FirstOrDefault();                
-
-                Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page2D);
+                CSlab floorSlab = data.Model.m_arrSlabs.FirstOrDefault();
+                
+                Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page2D, opts2D);
                 XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, 0.8));
                 gfx.DrawImage(image2, moveX, moveY + margin + Frame2DHeight * 0.8, Frame2DWidth * 0.8, Frame2DHeight * 0.8);
                 image2.Dispose();

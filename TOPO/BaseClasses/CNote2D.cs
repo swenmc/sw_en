@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 
 namespace BaseClasses
 {
     public class CNote2D
     {
         private Point MNoteTextPoint;
-        private string MText;
-        //private double MDistanceX;
-        //private double MDistanceY;
+        private string MText;        
         private bool MDrawArrow;
         private bool MDrawLineUnderText;
+        private double MLineThickness;
+        private SolidColorBrush MArrowFillColor;
+        private SolidColorBrush MArrowStrokeColor;
         private Point MArrowPoint1;
         private Point MArrowPoint2;
         private Point MLineEndPoint;
@@ -32,33 +34,7 @@ namespace BaseClasses
                 MNoteTextPoint = value;
             }
         }
-
-        //public double DistanceX
-        //{
-        //    get
-        //    {
-        //        return MDistanceX;
-        //    }
-
-        //    set
-        //    {
-        //        MDistanceX = value;
-        //    }
-        //}
-
-        //public double DistanceY
-        //{
-        //    get
-        //    {
-        //        return MDistanceY;
-        //    }
-
-        //    set
-        //    {
-        //        MDistanceY = value;
-        //    }
-        //}
-
+        
         public bool DrawArrow
         {
             get
@@ -202,12 +178,52 @@ namespace BaseClasses
             }
         }
 
+        public double LineThickness
+        {
+            get
+            {
+                return MLineThickness;
+            }
+
+            set
+            {
+                MLineThickness = value;
+            }
+        }
+
+        public SolidColorBrush ArrowFillColor
+        {
+            get
+            {
+                return MArrowFillColor;
+            }
+
+            set
+            {
+                MArrowFillColor = value;
+            }
+        }
+
+        public SolidColorBrush ArrowStrokeColor
+        {
+            get
+            {
+                return MArrowStrokeColor;
+            }
+
+            set
+            {
+                MArrowStrokeColor = value;
+            }
+        }
+
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         public CNote2D() { }
-        public CNote2D(Point noteTextPoint, string text, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint,
-            bool bDrawLineUnderText = false, VerticalAlignment valign = VerticalAlignment.Center, HorizontalAlignment halign = HorizontalAlignment.Center, double fontSize = 12, bool useRelativePositions = false)
+        public CNote2D(Point noteTextPoint, string text, bool drawArrow, Point arrowPoint1, Point arrowPoint2, Point refPoint, SolidColorBrush arrowFillColor, SolidColorBrush arrowStrokeColor,
+            bool bDrawLineUnderText = false, VerticalAlignment valign = VerticalAlignment.Center, HorizontalAlignment halign = HorizontalAlignment.Center, 
+            double fontSize = 12, bool useRelativePositions = false, double lineThickness = 1)
         {
             MNoteTextPoint = noteTextPoint;
             MText = text;
@@ -222,6 +238,10 @@ namespace BaseClasses
             Halign = halign;
             FontSize = fontSize;
             UseRelativePositions = useRelativePositions;
+
+            MLineThickness = lineThickness;
+            MArrowFillColor = arrowFillColor;
+            MArrowStrokeColor = arrowStrokeColor;
         }
 
         public void MirrorYCoordinates()

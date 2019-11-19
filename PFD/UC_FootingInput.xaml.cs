@@ -339,7 +339,7 @@ namespace PFD
             return new Page3Dmodel(padModel, sDisplayOptions, EModelType.eFooting);
         }
 
-        private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, CSlab floorSlab, bool bDisplayJointComponents = true)
+        private Canvas GetFootingPad2DPreview(CFoundation pad, CConnectionJointTypes joint, CSlab floorSlab, DisplayOptionsFootingPad2D opts2D)
         {
             Canvas page = new Canvas();
 
@@ -366,7 +366,7 @@ namespace PFD
              true);//  vm.DrawBendLines2D);
              */
 
-            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page);
+            Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page, opts2D);
 
             return page;
         }
@@ -392,8 +392,9 @@ namespace PFD
                 throw new ArgumentNullException("Error. Invalid size of canvas frame.");
             }
 
+            DisplayOptionsFootingPad2D opts2D = DisplayOptionsHelper.GetDefault();            
             // Create 2D page
-            Canvas page2D = GetFootingPad2DPreview(pad, joint, floorSlab);
+            Canvas page2D = GetFootingPad2DPreview(pad, joint, floorSlab, opts2D);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;

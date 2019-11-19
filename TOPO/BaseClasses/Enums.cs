@@ -1,4 +1,6 @@
-﻿namespace BaseClasses
+﻿using System.Windows.Media;
+
+namespace BaseClasses
 {
     //----------------------------------------------------------------------------
     // Solution Type - Type of Model (geometry, solver, etc.)
@@ -870,6 +872,60 @@
         public bool bCreateVerticalGridlinesBack;
         public bool bCreateVerticalGridlinesLeft;
         public bool bCreateVerticalGridlinesRight;
+
+        //public DisplayOptionsFootingPad2D footingPadDisplayOptions;
+    }
+
+    public struct DisplayOptionsFootingPad2D
+    {
+        public bool bDrawFootingPad;
+        public SolidColorBrush FootingPadColor;
+        public double FootingPadThickness;
+
+        public bool bDrawColumnOutline;
+        public SolidColorBrush ColumnOutlineColor;
+        public SolidColorBrush ColumnOutlineBehindColor;
+        public SolidColorBrush ColumnOutlineAboveColor;
+        public double ColumnOutlineThickness;
+        
+        public bool bDrawAnchors;
+
+        public bool bDrawBasePlate;
+        public SolidColorBrush BasePlateColor;
+        public double BasePlateThickness;
+
+        public bool bDrawScrews;
+
+        public bool bDrawPerimeter;
+        public SolidColorBrush PerimeterColor;
+        public double PerimeterThickness;
+
+        public bool bDrawReinforcement;
+        public SolidColorBrush ReinforcementFillColor;
+        public SolidColorBrush ReinforcementStrokeColor;
+        public double ReinforcementThickness;
+
+        public bool bDrawReinforcementInSlab;
+        public SolidColorBrush ReinforcementInSlabColor;
+        public double ReinforcementInSlabThickness;
+
+        public bool bDrawDPC_DPM;
+        public SolidColorBrush DPC_DPMColor;
+        public double DPC_DPMThickness;
+
+        public bool bDrawDimensions;
+        public SolidColorBrush DimensionsLinesColor;
+        public SolidColorBrush DimensionsTextColor;
+        public double DimensionsThickness;
+
+        public bool bDrawNotes;
+        public SolidColorBrush NotesArrowFillColor;
+        public SolidColorBrush NotesArrowStrokeColor;
+        public double NotesThickness;
+        
+        
+
+        
     }
 
     public struct BuildingDataInput

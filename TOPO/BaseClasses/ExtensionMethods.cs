@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
@@ -197,8 +198,7 @@ namespace BaseClasses
             viewPort = null;
         }
 
-
-
+        
         public static string GetFriendlyName(this EMemberType_FS_Position pos)
         {
             switch (pos)

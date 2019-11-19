@@ -381,7 +381,7 @@ namespace BaseClasses
                 }
 
                 // Dimensions
-                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1);
 
                 // Member Outline
                 DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
@@ -411,17 +411,18 @@ namespace BaseClasses
             double width,
             double height,
             ref Canvas canvasForImage,
-            bool bDrawFootingPad = true,
-            bool bDrawColumnOutline = true,
-            bool bDrawAnchors = true,
-            bool bDrawBasePlate = true,
-            bool bDrawScrews = true,
-            bool bDrawPerimeter = true,
-            bool bDrawReinforcement = true,
-            bool bDrawReinforcementInSlab = true,
-            bool bDrawDPC_DPM = true,
-            bool bDrawDimensions = true,
-            bool bDrawNotes = true
+            DisplayOptionsFootingPad2D opts
+            //bool bDrawFootingPad = true,
+            //bool bDrawColumnOutline = true,
+            //bool bDrawAnchors = true,
+            //bool bDrawBasePlate = true,
+            //bool bDrawScrews = true,
+            //bool bDrawPerimeter = true,
+            //bool bDrawReinforcement = true,
+            //bool bDrawReinforcementInSlab = true,
+            //bool bDrawDPC_DPM = true,
+            //bool bDrawDimensions = true,
+            //bool bDrawNotes = true
             )
         {
             // TODO Ondrej
@@ -490,7 +491,7 @@ namespace BaseClasses
                 if (joint.m_arrPlates.FirstOrDefault() is CConCom_Plate_B_basic)
                     basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates.FirstOrDefault();
 
-                if (bDrawColumnOutline)
+                if (opts.bDrawColumnOutline)
                 {
                     crscDepth = joint.m_MainMember.CrScStart.h;
                     horizontalOffsetColumn = -0.5 * crscDepth; // Column // Pozicia lavej hrany stlpa na obrazku
@@ -600,15 +601,15 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            if (bDrawFootingPad)
+            if (opts.bDrawFootingPad)
             {
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsFootingPad_real);
 
                 List<Point> PointsFootingPad_canvas = ConvertRealPointsToCanvasDrawingPoints(PointsFootingPad_real, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                DrawPolyLine(false, PointsFootingPad_canvas, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                DrawPolyLine(false, PointsFootingPad_canvas, opts.FootingPadColor, PenLineCap.Flat, PenLineCap.Flat, opts.FootingPadThickness, canvasForImage);
 
-                if (bDrawDPC_DPM)
+                if (opts.bDrawDPC_DPM)
                 {
                     float fLineSlope_rad = 45f * MathF.fPI / 180f; // slope in radians
                     float fAngleAux_rad = 0.5f * fLineSlope_rad;
@@ -630,10 +631,10 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsDPC_DPM, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, dashes);
+                    DrawPolyLine(false, PointsDPC_DPM, opts.DPC_DPMColor, PenLineCap.Flat, PenLineCap.Flat, opts.DPC_DPMThickness, canvasForImage, DashStyles.Dash, dashes);
                 }
 
-                if (bDrawPerimeter)
+                if (opts.bDrawPerimeter)
                 {
                     // TODO - sem potrebujeme dostat rozmery perimeter pre danu stranu floor slab kde sa nachadza patka (left/right, front/back)
 
@@ -662,10 +663,10 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsPerimeter, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, 0.8, canvasForImage, DashStyles.Dash, dashes);
+                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage, DashStyles.Dash, dashes);
                 }
 
-                if (bDrawReinforcement)
+                if (opts.bDrawReinforcement)
                 {
                     // Vyztuz v smere x kreslime ako kruhy (v reze)
                     // Vyztuz v smere y kreslime ako ciary (v pohlade z boku)
@@ -686,7 +687,7 @@ namespace BaseClasses
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, opts.ReinforcementStrokeColor, opts.ReinforcementFillColor, opts.ReinforcementThickness, canvasForImage);
                         }
                     }
 
@@ -808,7 +809,7 @@ namespace BaseClasses
 
                     // Vyztuz v podlahovej doske
                     // Kreslime len prvy prut
-                    if (bDrawReinforcementInSlab)
+                    if (opts.bDrawReinforcementInSlab)
                     {
                         double horizontalOffsetReinfocementInSlab = horizontalOffset + floorSlab.ConcreteCover;
 
@@ -829,7 +830,8 @@ namespace BaseClasses
                         DoubleCollection dashes = new DoubleCollection();
                         dashes.Add(10); dashes.Add(10);
 
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.BlueViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
+                        //opts.ReinforcementInSlabThickness = dLineThicknessFactor * reinfocementDiameter;
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
 
                         // Starter - reinforcement bar to connect with mesh in floor slab
                         bool bDrawReinforcement_Starter = true;
@@ -855,7 +857,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bDrawColumnOutline)
+            if (opts.bDrawColumnOutline)
             {
                 const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
                 double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
@@ -897,7 +899,7 @@ namespace BaseClasses
                         DoubleCollection dashes = new DoubleCollection();
                         dashes.Add(10); dashes.Add(10);
 
-                        DrawLine(l, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash, dashes);
+                        DrawLine(l, opts.ColumnOutlineBehindColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Dash, dashes);
                     }
 
                     bool bTopPartAbovePlate = true;
@@ -919,7 +921,7 @@ namespace BaseClasses
                         l.X2 = PointsLine[1].X;
                         l.Y2 = PointsLine[1].Y;
 
-                        DrawLine(l, Brushes.Turquoise, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+                        DrawLine(l, opts.ColumnOutlineAboveColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
                     }
                 }
 
@@ -938,7 +940,7 @@ namespace BaseClasses
                 l_Left.X2 = PointsLineLeft[1].X;
                 l_Left.Y2 = PointsLineLeft[1].Y;
 
-                DrawLine(l_Left, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+                DrawLine(l_Left, opts.ColumnOutlineColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
 
                 // Right Line
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottomRight_ColumnEdge);
@@ -955,7 +957,7 @@ namespace BaseClasses
                 l_Right.X2 = PointsLineRight[1].X;
                 l_Right.Y2 = PointsLineRight[1].Y;
 
-                DrawLine(l_Right, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+                DrawLine(l_Right, opts.ColumnOutlineColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
 
                 // Top Line
                 Line l_Top = new Line();
@@ -965,7 +967,7 @@ namespace BaseClasses
                 l_Top.X2 = PointsLineRight[1].X;
                 l_Top.Y2 = PointsLineRight[1].Y;
 
-                DrawLine(l_Top, Brushes.Tomato, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Solid);
+                DrawLine(l_Top, opts.ColumnOutlineColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
             }
 
             if (basePlate != null)
@@ -984,7 +986,7 @@ namespace BaseClasses
                 Point br_Plate = new Point(insertingPoint_Plate.X + basePlate.Fh_Y * 0.5, insertingPoint_Plate.Y);  // pravy spodny bod plechu v realnych suradniciach - preklopena
 
                 // Draw Plate Outline
-                if (bDrawBasePlate)
+                if (opts.bDrawBasePlate)
                 {
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_Plate);
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_Plate);
@@ -1006,9 +1008,9 @@ namespace BaseClasses
                     l.X2 = PointsPlateLine[1].X;
                     l.Y2 = PointsPlateLine[1].Y;
 
-                    DrawLine(l, Brushes.Brown, PenLineCap.Flat, PenLineCap.Flat, 0.7, canvasForImage, DashStyles.Dash);
+                    DrawLine(l, opts.BasePlateColor, PenLineCap.Flat, PenLineCap.Flat, opts.BasePlateThickness, canvasForImage, DashStyles.Dash);
 
-                    if (bDrawScrews)
+                    if (opts.bDrawScrews)
                     {
                         bool bDrawHoles = true;
                         bool bDrawHoleCentreSymbols = true;
@@ -1049,7 +1051,7 @@ namespace BaseClasses
                     anchorControlPointsForDimensions = new List<Point>(); // Inicializujeme zoznam bodov pre koty
 
                     // Anchor Bar
-                    if (bDrawAnchors)
+                    if (opts.bDrawAnchors)
                     {
                         // Zoradim kotvy od najvacsej suradnice control point Y, to znamena ze ta ktora je s najvacsim Y je uplne vlavo, najmensie x v canvas
                         // Robim to preto aby sa z poslednej kotvy upne napravo nastavili suradnice bodov pre poznamky a koty
@@ -1163,7 +1165,7 @@ namespace BaseClasses
                 }
             }
 
-            if (bDrawDimensions)
+            if (opts.bDrawDimensions)
             {
                 List<CDimension> Dimensions = new List<CDimension>(); // Real
 
@@ -1175,13 +1177,13 @@ namespace BaseClasses
                 Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[3].Y), PointsFootingPad_real[0], false, true, 50)); // Vertical Dimension - footing pad to floor slab bottom surface
 
                 // Reinforcement
-                if (bDrawReinforcement)
+                if (opts.bDrawReinforcement)
                     Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[4], new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftBottomPointForDimensions.Y), true, true, 20)); // Vertical Dimension - reinforcement cover bottom
 
-                if (bDrawReinforcement && bDrawReinforcementInSlab)
+                if (opts.bDrawReinforcement && opts.bDrawReinforcementInSlab)
                     Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[0].X, FloorMeshReinforcementRightPointForDimensions.Y), PointsFootingPad_real[6], false, true)); // Vertical Dimension - footing pad top surface to mesh - floor mesh cover
 
-                if (bDrawAnchors && anchorsToDraw != null && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
+                if (opts.bDrawAnchors && anchorsToDraw != null && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
                 {
                     CAnchor firstAnchor = anchorsToDraw.First(); // First from right
                     Point cPoint = anchorControlPointsForDimensions.Last(); // Last from left
@@ -1194,7 +1196,7 @@ namespace BaseClasses
                 // Horizontal Dimensions
 
                 // Anchors
-                if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
+                if (opts.bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Pridame koty pre anchors
                 {
                     for (int i = 0; i < anchorControlPointsForDimensions.Count; i++)
                     {
@@ -1208,14 +1210,14 @@ namespace BaseClasses
                 // Footing pad to column edge
                 if (!MathF.d_equal(PointsFootingPad_real[5].X, bottomLeft_ColumnEdge.X)) // Ak hrana betonovej patky a oceloveho stlpa na lavej strane spolu licuju, tak tuto kotu nezobrazujeme
                 {
-                    if (bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
+                    if (opts.bDrawAnchors && anchorControlPointsForDimensions != null && anchorControlPointsForDimensions.Count > 0) // Zarovnanie kot do roviny
                         Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[5].X, anchorControlPointsForDimensions[0].Y), new Point(bottomLeft_ColumnEdge.X, anchorControlPointsForDimensions[0].Y), true, true, 20)); // Horizontal Dimension - footing pad edge to column
                     else // Kota v pripade ze nekotujeme ziadne anchors
                         Dimensions.Add(new CDimensionLinear(center, PointsFootingPad_real[5], new Point(bottomLeft_ColumnEdge.X, PointsFootingPad_real[5].Y), true, false, 20)); // Horizontal Dimension - footing pad edge to column
                 }
 
                 // Reinforcement
-                if (bDrawReinforcement)
+                if (opts.bDrawReinforcement)
                 {
                     Dimensions.Add(new CDimensionLinear(center, new Point(PointsFootingPad_real[4].X, bottomReinforcementLeftPointForDimensions.Y), bottomReinforcementLeftPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement cover left
                     Dimensions.Add(new CDimensionLinear(center, bottomReinforcementLeftPointForDimensions, bottomReinforcementRightPointForDimensions, false, true, 53)); // Horizontal Dimension - reinforcement length
@@ -1230,10 +1232,10 @@ namespace BaseClasses
                 canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 // Dimensions
-                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+                DrawDimensions(opts.bDrawDimensions, canvasDimensions, canvasForImage, opts.DimensionsLinesColor, opts.DimensionsTextColor, opts.DimensionsThickness);
             }
 
-            if (bDrawNotes)
+            if (opts.bDrawNotes)
             {
                 List<CNote2D> notes2D = new List<CNote2D>(); // Real
 
@@ -1297,7 +1299,7 @@ namespace BaseClasses
                 Point relativePoint;
                 // Column Description
                 bool bDrawColumnDescription = true;
-                if (bDrawColumnOutline && bDrawColumnDescription)
+                if (opts.bDrawColumnOutline && bDrawColumnDescription)
                 {
                     Point pArrowStart = columnNotePoint;
                     double pTextPosition_x = bUseSameHorizontalPositions ? dNoteTextHorizontalPosition_x : pArrowStart.X + dHorizontalProjectionOfArrow;  // Pozicia konca sipky, resp bodu textu
@@ -1308,12 +1310,12 @@ namespace BaseClasses
                     Point pArrowEnd = new Point(pTextPosition_x, pTextPosition_y);
                     Point pTextNote = new Point(pArrowEnd.X, pArrowEnd.Y - dVerticalOffsetOfText);
                     //notes2D.Add(new CNote2D(pTextNote, joint.m_MainMember.CrScStart.Name_short, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    notes2D.Add(new CNote2D(relativePoint, joint.m_MainMember.CrScStart.Name_short, bDrawArrows, pArrowStart, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                    notes2D.Add(new CNote2D(relativePoint, joint.m_MainMember.CrScStart.Name_short, bDrawArrows, pArrowStart, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                 }
 
                 // Anchors Description
                 bool bDrawAnchorDescription = true;
-                if (bDrawAnchors && bDrawAnchorDescription)
+                if (opts.bDrawAnchors && bDrawAnchorDescription)
                 {
                     dVerticalProjectionOfArrow = 0.52; // m // TODO Ondrej - S tymto sa treba pohrat
 
@@ -1331,7 +1333,7 @@ namespace BaseClasses
 
                     //notes2D.Add(new CNote2D(pTextNote, sText, bDrawArrows, pArrowStart, pArrowEnd, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
 
-                    notes2D.Add(new CNote2D(relativePoint, sText, bDrawArrows, pArrowStart, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                    notes2D.Add(new CNote2D(relativePoint, sText, bDrawArrows, pArrowStart, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
 
                     bool bDrawAnchorTopWasherDescription = true;
 
@@ -1356,7 +1358,7 @@ namespace BaseClasses
 
                         //notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher,bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
    
-                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorTopWasher, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorTopWasher, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
 
                     bool bDrawAnchorBottomWasherDescription = true;
@@ -1382,14 +1384,14 @@ namespace BaseClasses
                             (fBearingWasherThickness * 1000).ToString("F0") + " mm washer at base";
 
                         //notes2D.Add(new CNote2D(pTextNote_AnchorBottomWasher, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, pArrowEnd_AnchorBottomWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_AnchorBottomWasher, bDrawAnchorBottomWasherDescription, pArrowStart_AnchorBottomWasher, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
                 }
 
                 bool bDrawMeshDescription = true; // Kreslit poznamku
                 bool bDrawArrowMeshDescription = true; // Kreslit sipku
 
-                if (bDrawReinforcementInSlab && bDrawMeshDescription)
+                if (opts.bDrawReinforcementInSlab && bDrawMeshDescription)
                 {
                     dHorizontalProjectionOfArrow = 0.20; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
                     dVerticalProjectionOfArrow = 0.10; // m // TODO Ondrej - S tymto sa treba pohrat
@@ -1407,7 +1409,7 @@ namespace BaseClasses
                     string sText_Mesh = floorSlab.MeshGradeName + " [" + floorSlab.RCMesh.m_Mat.Name + " Grade]" + " Mesh";
 
                     //notes2D.Add(new CNote2D(pTextNote_Mesh, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, pArrowEnd_Mesh, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    notes2D.Add(new CNote2D(relativePoint, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                    notes2D.Add(new CNote2D(relativePoint, sText_Mesh, bDrawArrowMeshDescription, pArrowStart_Mesh, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     // Starter
                     bool bDrawStarterDescription = true; // Kreslit poznamku
                     bool bDrawArrowStarterDescription = true; // Kreslit sipku
@@ -1429,14 +1431,14 @@ namespace BaseClasses
                         string sText_Starter = "HD" + (/*floorSlab.fStartersDiameter*/ fStarterBarDiameter * 1000).ToString("F0") + " Starters / " + (/*floorSlab.stafStartersSpacing*/ startersSpacing * 1000).ToString("F0") + " mm crs";
 
                         //notes2D.Add(new CNote2D(pTextNote_Starter, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, pArrowEnd_Starter, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_Starter, bDrawArrowStarterDescription, pArrowStart_Starter, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
                 }
 
                 bool bDraw_dpc_dpm_Description = true; // Kreslit poznamku
                 bool bDrawArrow_dpc_dpm_Description = true; // Kreslit sipku
 
-                if (bDrawDPC_DPM && bDraw_dpc_dpm_Description)
+                if (opts.bDrawDPC_DPM && bDraw_dpc_dpm_Description)
                 {
                     dHorizontalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
                     dVerticalProjectionOfArrow = -0.10; // m // TODO Ondrej - S tymto sa treba pohrat
@@ -1454,13 +1456,13 @@ namespace BaseClasses
                     string sText_dpc_dpm = "DPC to underside";
 
                     //notes2D.Add(new CNote2D(pTextNote_dpc_dpm, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, pArrowEnd_dpc_dpm, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                    notes2D.Add(new CNote2D(relativePoint, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                    notes2D.Add(new CNote2D(relativePoint, sText_dpc_dpm, bDrawArrow_dpc_dpm_Description, pArrowStart_dpc_dpm, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                 }
 
                 bool bDraw_reinforcement_Description = true; // Kreslit poznamku
                 bool bDrawArrow_reinforcement_Description = true; // Kreslit sipku
 
-                if (bDrawReinforcement && bDraw_reinforcement_Description)
+                if (opts.bDrawReinforcement && bDraw_reinforcement_Description)
                 {
                     dHorizontalProjectionOfArrow = 0.25; // m // TODO Ondrej - S tymto sa treba pohrat a urobit to rozne nastavitelne aby napriklad zacinali texty pekne pod sebou alebo sa neprekryvali vzajomne ani s nicim co je uz nakreslene
 
@@ -1485,7 +1487,7 @@ namespace BaseClasses
                         string sText_RC_Top_x = pad.Count_Top_Bars_x.ToString() + " x HD" + (pad.Top_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Top_x, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, pArrowEnd_RC_Top_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_x, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
 
                     // Top_Bar_y
@@ -1506,7 +1508,7 @@ namespace BaseClasses
                         string sText_RC_Top_y = pad.Count_Top_Bars_y.ToString() + " x HD" + (pad.Top_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Top_y, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, pArrowEnd_RC_Top_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Top_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Top_y, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
 
                     // Bottom_Bar_x
@@ -1527,7 +1529,7 @@ namespace BaseClasses
                         string sText_RC_Bottom_x = pad.Count_Bottom_Bars_x.ToString() + " x HD" + (pad.Bottom_Bars_x.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_x, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, pArrowEnd_RC_Bottom_x, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_x, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_x, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
 
                     // Bottom_Bar_y
@@ -1548,7 +1550,7 @@ namespace BaseClasses
                         string sText_RC_Bottom_y = pad.Count_Bottom_Bars_y.ToString() + " x HD" + (pad.Bottom_Bars_y.First().Diameter * 1000).ToString("F0") + " bars with standard hook each end";
 
                         //notes2D.Add(new CNote2D(pTextNote_RC_Bottom_y, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, pArrowEnd_RC_Bottom_y, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, relativePoint, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true));
+                        notes2D.Add(new CNote2D(relativePoint, sText_RC_Bottom_y, bDrawArrow_reinforcement_Description, pArrowStart_RC_Bottom_y, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
                 }
 
@@ -1556,7 +1558,7 @@ namespace BaseClasses
                 canvasNotes2D = ConvertRealPointsToCanvasDrawingPoints(canvasNotes2D, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor, width, height);
 
                 // Draw Notes
-                DrawNotes(bDrawNotes, canvasNotes2D, canvasForImage);
+                DrawNotes(opts.bDrawNotes, canvasNotes2D, canvasForImage);
             }
         }
 
@@ -1597,7 +1599,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kb.pTip.X) < 1 ? kb.pTip.X / 10 : kb.pTip.X / 18;
                     double moveY = Math.Abs(kb.pTip.Y) < 1 ? kb.pTip.Y / 10 : kb.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", false, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", false, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter, Brushes.Black, Brushes.Black);
                 }
             }
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
@@ -1608,7 +1610,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kc.pTip.X) < 1 ? kc.pTip.X / 10 : kc.pTip.X / 18;
                     double moveY = Math.Abs(kc.pTip.Y) < 1 ? kc.pTip.Y / 10 : kc.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", false, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", false, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter, Brushes.Black, Brushes.Black);
                 }
             }
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
@@ -1619,7 +1621,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(kd.pTip.X) < 1 ? kd.pTip.X / 10 : kd.pTip.X / 18;
                     double moveY = Math.Abs(kd.pTip.Y) < 1 ? kd.pTip.Y / 10 : kd.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", false, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", false, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter, Brushes.Black, Brushes.Black);
                 }
             }
             else if (plate is CConCom_Plate_KES)
@@ -1630,7 +1632,7 @@ namespace BaseClasses
                 {
                     double moveX = Math.Abs(ke.pTip.X) < 1 ? ke.pTip.X / 10 : ke.pTip.X / 18;
                     double moveY = Math.Abs(ke.pTip.Y) < 1 ? ke.pTip.Y / 10 : ke.pTip.Y / 25;
-                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", false, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter);
+                    note2D = new CNote2D(new Point(ke.pTip.X + moveX, ke.pTip.Y + moveY), "Trim Off", false, ke.pTip, new Point(ke.pTip.X + 40, ke.pTip.Y + 40), plateCenter, Brushes.Black, Brushes.Black);
                 }
             }
             return note2D;
@@ -1789,7 +1791,7 @@ namespace BaseClasses
             }
 
             // Dimensions
-            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1);
 
             // Member Outline
             DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
@@ -2492,7 +2494,7 @@ namespace BaseClasses
             canvasForImage.Children.Add(myPath);
         }
 
-        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage)
+        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness)
         {
             if (bDrawDimensions && Dimensions != null && Dimensions.Count > 0)
             {
@@ -2501,7 +2503,7 @@ namespace BaseClasses
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim, true, canvasForImage);
+                        DrawSimpleLinearDimension(dim, true, canvasForImage, linesColor, textColor, thickness);
                     }
                     else if (Dimensions[i] is CDimensionArc)
                     {
@@ -2518,7 +2520,6 @@ namespace BaseClasses
 
         public static void DrawNote(CNote2D note, Canvas canvasForImage)
         {
-            //double fontSize = 12;
             double lineThickness = 1;
 
             double textWidth;
@@ -2911,7 +2912,7 @@ namespace BaseClasses
         //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
         //}
 
-        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas)
+        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness)
         {
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
@@ -2926,7 +2927,7 @@ namespace BaseClasses
 
             double dLengtOfExtensionLineTotal = dLengtOfExtensionLineStartToPrimary + dLengtOfExtensionLinePrimaryToEnd;
 
-            double dPrimaryLineThickness = 1;
+            double dPrimaryLineThickness = thickness;
             double lPrimaryLinelength = Math.Sqrt(Math.Pow(dim.ControlPointEnd.X - dim.ControlPointStart.X, 2) + Math.Pow(dim.ControlPointEnd.Y - dim.ControlPointStart.Y, 2));
 
             if (dim.ControlPointStart.X > dim.ControlPointEnd.X) lPrimaryLinelength *= -1; //opposite direction
@@ -2989,7 +2990,7 @@ namespace BaseClasses
             lPrimaryLine.Y2 = lPrimaryLine.Y1;
 
             // Extension lines
-            double dExtensionLineThickness = 1;
+            double dExtensionLineThickness = thickness;
 
             Line lExtensionLine1 = new Line();
             lExtensionLine1.X1 = lPrimaryLine.X1;
@@ -3005,7 +3006,7 @@ namespace BaseClasses
 
             // Slope Symbol Lines
             double dSlopeLineLength = 10;
-            double dSlopeLineThickness = 1;
+            double dSlopeLineThickness = thickness;
 
             double coord = 0.5 * dSlopeLineLength / Math.Sqrt(2);
 
@@ -3028,17 +3029,17 @@ namespace BaseClasses
             double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
 
             // Draw dimension line
-            DrawLine(lPrimaryLine, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lPrimaryLine, linesColor, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid);
             // Draw extension line - start
-            DrawLine(lExtensionLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lExtensionLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
             // Draw extension line - end
-            DrawLine(lExtensionLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lExtensionLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
             // Draw slope line - start
-            DrawLine(lSlopeLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lSlopeLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
             // Draw slope line - end
-            DrawLine(lSlopeLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lSlopeLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
             // Draw text            
-            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, Brushes.DarkGreen, imageCanvas);
+            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, textColor, imageCanvas);
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)

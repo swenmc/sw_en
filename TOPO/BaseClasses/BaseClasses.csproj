@@ -107,6 +107,7 @@
     <Compile Include="GraphObj\Objects_3D\CSphere.cs" />
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
+    <Compile Include="Helpers\DisplayOptionsHelper.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar_U.cs" />
