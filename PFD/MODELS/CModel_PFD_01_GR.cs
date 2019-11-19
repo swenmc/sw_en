@@ -527,7 +527,6 @@ namespace PFD
                 CreateAndAssignReversedIrregularTransverseSupportGroupAndLTBsegmentGroup(bUseRafterFlyBracingPlates, iRafterFlyBracing_EveryXXPurlin, fFirstPurlinPosition, fDist_Purlin, ref m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2]);
 
                 // Main Column
-                // To Mato - ta zamena fMainColumnStart a end v parametroch nerobi dobrotu
                 m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[iCrscColumnIndex], eColumnType, eColumnType_Position, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
 
                 // Reversed sequence of ILS
@@ -892,8 +891,11 @@ namespace PFD
 
             if (foundations == null)
             {
-                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, true);
+                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, false);
                 //To Mato - dajak nebavi task 394
+                // TO Ondrej , No tak asi je null preto ze sa toto vytvorenie modelu vola skor nez sa vytvori GUI
+                // Asi v tomto bloku if nemozeme nastavovat nic z GUI, ale musime to vyrobit resp nastavit ako default a podla toho nastavit aj ten checkbox UseStraightReinforcementBars do VM a do GUI
+
                 //if(vm.FootingVM == null)
                 //    CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, true); //tu som myslel ze poslem ten bool dole, ale FootingVm je null
                 //else CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm.FootingVM.UseStraightReinforcementBars);

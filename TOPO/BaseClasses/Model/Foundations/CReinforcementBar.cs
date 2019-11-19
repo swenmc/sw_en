@@ -165,7 +165,6 @@ namespace BaseClasses
 
         public void SetMaterialPropertiesFromDatabase(string matName)
         {
-            //To Mato...tu to koncilo.
             if (string.IsNullOrEmpty(matName)) return; 
             // Vytvorim material typu steel
             MATERIAL.CMat_03_00 mat = new MATERIAL.CMat_03_00();

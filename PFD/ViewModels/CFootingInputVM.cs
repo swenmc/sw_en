@@ -1871,6 +1871,10 @@ namespace PFD
 
 
             //To Mato - toto su tie soil capacity parametre?
+            // TO Ondrej - Tieto 2 parametre nizsie su konkretne parametre pre vypocet a posudenie tlaku v zemine pod zakladom.
+            // Co myslis co je lepsie mat ich zadavane v dialogoch pri objektoch alebo urobit samostatny dialog,
+            // kde budu len nastavenia parametrov tykajucich sa vypoctu a posudenia?
+
             SoilReductionFactor_Phi = 0.5f;
             SoilReductionFactorEQ_Phi = 0.8f;
 
