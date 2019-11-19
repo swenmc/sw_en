@@ -1431,6 +1431,8 @@ namespace PFD
             try
             {
                 //Viewport3D viewPort = ((Page3Dmodel)Frame1.Content)._trackport.ViewPort;
+                //Canvas canvas = ((UC_FootingInput)Footing_Input.Content).Frame2D.Content as Canvas;
+
                 CMainReportExport.ReportAllDataToPDFFile(modelData);
             }
             catch (Exception ex)

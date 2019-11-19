@@ -64,21 +64,21 @@ namespace EXPIMP
 
             contents = new List<string[]>();
 
-            XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
+            //XGraphics TitlePage_gfx = DrawTitlePage(s_document, projectInfo, modelData);
 
-            DrawModel3D(s_document, modelData);
+            //DrawModel3D(s_document, modelData);
 
-            DrawModelViews(s_document, modelData);
+            //DrawModelViews(s_document, modelData);
 
-            DrawJointTypes(s_document, modelData);
+            //DrawJointTypes(s_document, modelData);
 
             DrawFootingTypes(s_document, modelData);
 
-            DrawFloorDetails(s_document, modelData);
+            //DrawFloorDetails(s_document, modelData);
 
-            DrawStandardDetails(s_document, modelData);
+            //DrawStandardDetails(s_document, modelData);
 
-            AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
+            //AddTitlePageContentTableToDocument(TitlePage_gfx, contents);
 
             string fileName = GetReportPDFName();
             // Save the s_document...
@@ -644,7 +644,7 @@ namespace EXPIMP
             double moveX = 0;
             double moveY = 40;
             int maxInRow = 2;
-            int maxInColumn = 2;
+            int maxInColumn = 1;
             int numInRow = 0;
             int numInColumn = 0;
             //var tf = new XTextFormatter(gfx);
@@ -655,7 +655,7 @@ namespace EXPIMP
             foreach (KeyValuePair<string, Tuple<CFoundation, CConnectionJointTypes>> kvp in data.FootingsDict)
             {
                 //add new page when whole page is used
-                if (numInColumn > maxInColumn)
+                if (numInColumn == maxInColumn)
                 {
                     numInColumn = 0;
                     moveY = 40;
@@ -698,15 +698,27 @@ namespace EXPIMP
                 trackport.Dispose();
                 //DrawFootingTableToDocument(gfx, moveX, moveY + scaledImageHeight + 4, pad);
                 DrawFootingTableToDocument(gfx, moveX + scaledImageWidth - 30, moveY, pad);
+                
+                double Frame2DWidth = 579;
+                double Frame2DHeight = 397;
+                Canvas page2D = new Canvas();
+                page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
+                int margin = 10;
+                CSlab floorSlab = data.Model.m_arrSlabs.FirstOrDefault();                
+
+                Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page2D);
+                XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, 0.8));
+                gfx.DrawImage(image2, moveX, moveY + margin + Frame2DHeight * 0.8, Frame2DWidth * 0.8, Frame2DHeight * 0.8);
+                image2.Dispose();
 
                 moveX += scaledImageWidth + 90;
                 if (numInRow == maxInRow) { numInRow = 0; moveX = 0; moveY += scaledImageHeight + 50; numInColumn++; }
             }
-
+            
             gfx.Dispose();
             page.Close();
         }
-
+        
         private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
         {
             DisplayOptions opts = data.DisplayOptions;

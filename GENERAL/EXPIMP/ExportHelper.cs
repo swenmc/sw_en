@@ -105,7 +105,8 @@ namespace EXPIMP
             bitmap.Render(elt);
             elt = null;
 
-            //temp
+            // temp
+            // tento kod si nepamatam naco tu je :-(
             var bitmapImage = new BitmapImage();
             var bitmapEncoder = new PngBitmapEncoder();
             bitmapEncoder.Frames.Add(BitmapFrame.Create(bitmap));
@@ -121,7 +122,7 @@ namespace EXPIMP
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
             }
-            SaveBitmapImage(bitmap, DateTime.Now.Ticks + ".png");
+            //SaveBitmapImage(bitmap, DateTime.Now.Ticks + ".png");
             return bitmapImage;
             //end temp
             //return bitmap;
