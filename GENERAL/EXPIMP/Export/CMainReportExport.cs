@@ -707,7 +707,7 @@ namespace EXPIMP
                 page2D.RenderSize = new Size(Frame2DWidth, Frame2DHeight);
                 int margin = 10;
                 CSlab floorSlab = data.Model.m_arrSlabs.FirstOrDefault();
-                
+
                 Drawing2D.DrawFootingPadSideElevationToCanvas(pad, joint, floorSlab, Frame2DWidth, Frame2DHeight, ref page2D, opts2D);
                 XImage image2 = XImage.FromBitmapSource(ExportHelper.RenderVisual(page2D, 0.8));
                 gfx.DrawImage(image2, moveX, moveY + margin + Frame2DHeight * 0.8, Frame2DWidth * 0.8, Frame2DHeight * 0.8);

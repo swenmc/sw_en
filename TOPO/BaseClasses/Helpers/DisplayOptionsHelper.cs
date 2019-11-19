@@ -24,9 +24,8 @@ namespace BaseClasses.Helpers
             opts.ColumnOutlineColor = Brushes.Tomato;
             opts.ColumnOutlineBehindColor = Brushes.Tomato;
             opts.ColumnOutlineAboveColor = Brushes.Turquoise;
+            opts.ColumnOutlineBehindLineStyle = DashStyles.Dash;
             opts.ColumnOutlineThickness = 0.7;
-
-            opts.bDrawAnchors = true;
 
             opts.bDrawBasePlate = true;
             opts.BasePlateColor = Brushes.Brown;
@@ -34,21 +33,53 @@ namespace BaseClasses.Helpers
 
             opts.bDrawScrews = true;
 
+            opts.bDrawHoles = true;
+            opts.bHoleColor = Brushes.Black;
+            opts.HoleLineThickness = 0.5;
+
+            opts.bDrawHoleCentreSymbols = true;
+            opts.bHoleCenterSymbolColor = Brushes.Red;
+            opts.HoleCenterSymbolLineThickness = 0.5;
+
+            opts.bDrawAnchors = true;
+            opts.AnchorStrokeColor = Brushes.Green;
+            opts.AnchorLineThickness = 0.5;
+
+            opts.bDrawWashers = true;
+            opts.WasherStrokeColor = Brushes.DarkOliveGreen;
+            opts.WasherLineThickness = 0.5;
+
+            opts.bDrawNuts = true;
+            opts.NutStrokeColor = Brushes.Blue;
+            opts.NutLineThickness = 0.5;
+
             opts.bDrawPerimeter = true;
             opts.PerimeterColor = Brushes.DarkOrange;
+            opts.PerimeterLineStyle = DashStyles.Dash;
             opts.PerimeterThickness = 0.8;
 
             opts.bDrawReinforcement = true;
-            opts.ReinforcementFillColor = Brushes.LightGray;
-            opts.ReinforcementStrokeColor = Brushes.Black;
-            opts.ReinforcementThickness = 1;
+            opts.ReinforcementInSectionFillColor = Brushes.LightGray;
+            opts.ReinforcementInSectionStrokeColor = Brushes.Black;
+            opts.ReinforcementInSectionThickness = 0.5;
+
+            opts.ReinforcementInWiewColorTop = Brushes.Coral;
+            opts.ReinforcementInViewThicknessTop = 2;
+
+            opts.ReinforcementInWiewColorBottom = Brushes.Purple;
+            opts.ReinforcementInViewThicknessBottom = 2;
+
+            opts.ReinforcementInWiewColorStarter = Brushes.LightGreen;
+            opts.ReinforcementInViewThicknessStarter = 2;
 
             opts.bDrawReinforcementInSlab = true;
             opts.ReinforcementInSlabColor = Brushes.BlueViolet;
-            //opts.ReinforcementInSlabThickness = 1;
+            opts.ReinforcementInSlabLineStyle = DashStyles.Dash;
+            opts.ReinforcementInSlabThickness = 1;
 
             opts.bDrawDPC_DPM = true;
             opts.DPC_DPMColor = Brushes.Green;
+            opts.DPC_DPMLineStyle = DashStyles.Dash;
             opts.DPC_DPMThickness = 0.7;
 
             opts.bDrawDimensions = true;
@@ -73,9 +104,8 @@ namespace BaseClasses.Helpers
             opts.ColumnOutlineColor = Brushes.Black;
             opts.ColumnOutlineBehindColor = Brushes.Black;
             opts.ColumnOutlineAboveColor = Brushes.Black;
+            opts.ColumnOutlineBehindLineStyle = DashStyles.Dash;
             opts.ColumnOutlineThickness = 0.7;
-
-            opts.bDrawAnchors = true;
 
             opts.bDrawBasePlate = true;
             opts.BasePlateColor = Brushes.Black;
@@ -83,21 +113,53 @@ namespace BaseClasses.Helpers
 
             opts.bDrawScrews = true;
 
+            opts.bDrawHoles = true;
+            opts.bHoleColor = Brushes.Black;
+            opts.HoleLineThickness = 0.7;
+
+            opts.bDrawHoleCentreSymbols = true;
+            opts.bHoleCenterSymbolColor = Brushes.Black;
+            opts.HoleCenterSymbolLineThickness = 0.7;
+
+            opts.bDrawAnchors = true;
+            opts.AnchorStrokeColor = Brushes.Black;
+            opts.AnchorLineThickness = 0.7;
+
+            opts.bDrawWashers = true;
+            opts.WasherStrokeColor = Brushes.Black;
+            opts.WasherLineThickness = 0.7;
+
+            opts.bDrawNuts = true;
+            opts.NutStrokeColor = Brushes.Black;
+            opts.NutLineThickness = 0.7;
+
             opts.bDrawPerimeter = true;
             opts.PerimeterColor = Brushes.Black;
+            opts.PerimeterLineStyle = DashStyles.Dash;
             opts.PerimeterThickness = 0.8;
 
             opts.bDrawReinforcement = true;
-            opts.ReinforcementFillColor = Brushes.Black;
-            opts.ReinforcementStrokeColor = Brushes.Black;
-            opts.ReinforcementThickness = 1;
+            opts.ReinforcementInSectionFillColor = Brushes.Black;
+            opts.ReinforcementInSectionStrokeColor = Brushes.Black;
+            opts.ReinforcementInSectionThickness = 1;
+
+            opts.ReinforcementInWiewColorTop = Brushes.Black;
+            opts.ReinforcementInViewThicknessTop = 2;
+
+            opts.ReinforcementInWiewColorBottom = Brushes.Black;
+            opts.ReinforcementInViewThicknessBottom = 2;
+
+            opts.ReinforcementInWiewColorStarter = Brushes.Black;
+            opts.ReinforcementInViewThicknessStarter = 2;
 
             opts.bDrawReinforcementInSlab = true;
             opts.ReinforcementInSlabColor = Brushes.Black;
-            //opts.ReinforcementInSlabThickness = 1;
+            opts.ReinforcementInSlabLineStyle = DashStyles.Dash;
+            opts.ReinforcementInSlabThickness = 1;
 
             opts.bDrawDPC_DPM = true;
             opts.DPC_DPMColor = Brushes.Black;
+            opts.DPC_DPMLineStyle = DashStyles.Dash;
             opts.DPC_DPMThickness = 0.7;
 
             opts.bDrawDimensions = true;
@@ -109,6 +171,7 @@ namespace BaseClasses.Helpers
             opts.NotesArrowFillColor = Brushes.Black;
             opts.NotesArrowStrokeColor = Brushes.Black;
             opts.NotesThickness = 1;
+
             return opts;
         }
     }

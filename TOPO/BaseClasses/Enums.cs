@@ -886,31 +886,62 @@ namespace BaseClasses
         public SolidColorBrush ColumnOutlineColor;
         public SolidColorBrush ColumnOutlineBehindColor;
         public SolidColorBrush ColumnOutlineAboveColor;
+        public DashStyle ColumnOutlineBehindLineStyle;
         public double ColumnOutlineThickness;
         
-        public bool bDrawAnchors;
-
         public bool bDrawBasePlate;
         public SolidColorBrush BasePlateColor;
         public double BasePlateThickness;
 
         public bool bDrawScrews;
 
+        public bool bDrawHoles;
+        public SolidColorBrush bHoleColor;
+        public double HoleLineThickness;
+
+        public bool bDrawHoleCentreSymbols;
+        public SolidColorBrush bHoleCenterSymbolColor;
+        public double HoleCenterSymbolLineThickness;
+
+        public bool bDrawAnchors;
+        public SolidColorBrush AnchorStrokeColor;
+        public double AnchorLineThickness;
+
+        public bool bDrawWashers;
+        public SolidColorBrush WasherStrokeColor;
+        public double WasherLineThickness;
+
+        public bool bDrawNuts;
+        public SolidColorBrush NutStrokeColor;
+        public double NutLineThickness;
+
         public bool bDrawPerimeter;
         public SolidColorBrush PerimeterColor;
+        public DashStyle PerimeterLineStyle;
         public double PerimeterThickness;
 
         public bool bDrawReinforcement;
-        public SolidColorBrush ReinforcementFillColor;
-        public SolidColorBrush ReinforcementStrokeColor;
-        public double ReinforcementThickness;
+        public SolidColorBrush ReinforcementInSectionFillColor;
+        public SolidColorBrush ReinforcementInSectionStrokeColor;
+        public double ReinforcementInSectionThickness;
+
+        public SolidColorBrush ReinforcementInWiewColorTop;
+        public double ReinforcementInViewThicknessTop;
+
+        public SolidColorBrush ReinforcementInWiewColorBottom;
+        public double ReinforcementInViewThicknessBottom;
+
+        public SolidColorBrush ReinforcementInWiewColorStarter;
+        public double ReinforcementInViewThicknessStarter;
 
         public bool bDrawReinforcementInSlab;
         public SolidColorBrush ReinforcementInSlabColor;
+        public DashStyle ReinforcementInSlabLineStyle;
         public double ReinforcementInSlabThickness;
 
         public bool bDrawDPC_DPM;
         public SolidColorBrush DPC_DPMColor;
+        public DashStyle DPC_DPMLineStyle;
         public double DPC_DPMThickness;
 
         public bool bDrawDimensions;
@@ -922,10 +953,6 @@ namespace BaseClasses
         public SolidColorBrush NotesArrowFillColor;
         public SolidColorBrush NotesArrowStrokeColor;
         public double NotesThickness;
-        
-        
-
-        
     }
 
     public struct BuildingDataInput

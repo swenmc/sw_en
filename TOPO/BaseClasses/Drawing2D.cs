@@ -371,13 +371,13 @@ namespace BaseClasses
                 // Holes
                 if (pHolesCentersPointsScrews2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, fDiameter_screwPreDrilledHoles * scale_unit, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, fDiameter_screwPreDrilledHoles * scale_unit, canvasForImage);
                     DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
                 }
 
                 if (pHolesCentersPointsAnchors2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, fDiameter_anchorPreDrilledHoles * scale_unit, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, fDiameter_anchorPreDrilledHoles * scale_unit, canvasForImage);
                 }
 
                 // Dimensions
@@ -411,19 +411,7 @@ namespace BaseClasses
             double width,
             double height,
             ref Canvas canvasForImage,
-            DisplayOptionsFootingPad2D opts
-            //bool bDrawFootingPad = true,
-            //bool bDrawColumnOutline = true,
-            //bool bDrawAnchors = true,
-            //bool bDrawBasePlate = true,
-            //bool bDrawScrews = true,
-            //bool bDrawPerimeter = true,
-            //bool bDrawReinforcement = true,
-            //bool bDrawReinforcementInSlab = true,
-            //bool bDrawDPC_DPM = true,
-            //bool bDrawDimensions = true,
-            //bool bDrawNotes = true
-            )
+            DisplayOptionsFootingPad2D opts)
         {
             // TODO Ondrej
 
@@ -631,7 +619,7 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsDPC_DPM, opts.DPC_DPMColor, PenLineCap.Flat, PenLineCap.Flat, opts.DPC_DPMThickness, canvasForImage, DashStyles.Dash, dashes);
+                    DrawPolyLine(false, PointsDPC_DPM, opts.DPC_DPMColor, PenLineCap.Flat, PenLineCap.Flat, opts.DPC_DPMThickness, canvasForImage, opts.DPC_DPMLineStyle, dashes);
                 }
 
                 if (opts.bDrawPerimeter)
@@ -663,7 +651,7 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage, DashStyles.Dash, dashes);
+                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage, opts.PerimeterLineStyle, dashes);
                 }
 
                 if (opts.bDrawReinforcement)
@@ -687,7 +675,7 @@ namespace BaseClasses
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, opts.ReinforcementStrokeColor, opts.ReinforcementFillColor, opts.ReinforcementThickness, canvasForImage);
+                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Top_Bars_x[i].Diameter /*pad.Reference_Top_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
                         }
                     }
 
@@ -706,7 +694,7 @@ namespace BaseClasses
 
                             p = ConvertRealPointToCanvasDrawingPoint(p, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, Brushes.Black, Brushes.LightGray, 1, canvasForImage);
+                            DrawCircle(p, dReal_Model_Zoom_Factor * pad.Bottom_Bars_x[i].Diameter /*pad.Reference_Bottom_Bar_x.Diameter*/, opts.ReinforcementInSectionStrokeColor, opts.ReinforcementInSectionFillColor, opts.ReinforcementInSectionThickness, canvasForImage);
                         }
                     }
 
@@ -730,7 +718,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkOrange, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorTop, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
                         }
                         else
                         {
@@ -747,7 +735,7 @@ namespace BaseClasses
                                 new Point(horizontalOffset + fCenterLineHorizontalOffsetFromBottom, 0), // Vkladaci bod vyztuze (lavy horny roh patky) // posun v smere x aby bolo vidno zvisle ciary spodneho aj horneho pruta vyztuze
                                 0.03f, // Netto polomer zakrivenia rohu
                                 true,
-                                Brushes.DarkOrange,
+                                opts.ReinforcementInWiewColorTop,
                                 fTempMin_X,
                                 fTempMin_Y,
                                 fmodelMarginLeft_x,
@@ -785,7 +773,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, Brushes.DarkViolet, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorBottom, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
                         }
                         else
                         {
@@ -796,7 +784,7 @@ namespace BaseClasses
                                  new Point(horizontalOffset, 0), // Vkladaci bod vyztuze (lavy horny roh patky)
                                  0.03f, // Netto polomer zakrivenia rohu
                                  false,
-                                 Brushes.DarkViolet,
+                                 opts.ReinforcementInWiewColorBottom,
                                  fTempMin_X,
                                  fTempMin_Y,
                                  fmodelMarginLeft_x,
@@ -831,7 +819,7 @@ namespace BaseClasses
                         dashes.Add(10); dashes.Add(10);
 
                         //opts.ReinforcementInSlabThickness = dLineThicknessFactor * reinfocementDiameter;
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, DashStyles.Dash, dashes);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, opts.ReinforcementInSlabLineStyle, dashes);
 
                         // Starter - reinforcement bar to connect with mesh in floor slab
                         bool bDrawReinforcement_Starter = true;
@@ -842,7 +830,7 @@ namespace BaseClasses
                             floorSlab,
                             new Point(horizontalOffset - 0.01, -0.01), // Vkladaci bod vyztuze (lavy horny roh patky) // Posunieme o trosku nahor, aby sa neprekvyvali
                             0.03f, // m
-                            Brushes.DarkSeaGreen,
+                            opts.ReinforcementInWiewColorStarter,
                             fTempMin_X,
                             fTempMin_Y,
                             fmodelMarginLeft_x,
@@ -899,7 +887,7 @@ namespace BaseClasses
                         DoubleCollection dashes = new DoubleCollection();
                         dashes.Add(10); dashes.Add(10);
 
-                        DrawLine(l, opts.ColumnOutlineBehindColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Dash, dashes);
+                        DrawLine(l, opts.ColumnOutlineBehindColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, opts.ColumnOutlineBehindLineStyle, dashes);
                     }
 
                     bool bTopPartAbovePlate = true;
@@ -992,7 +980,7 @@ namespace BaseClasses
                     Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_Plate);
 
                     List<Point> PointsPlate = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_Plate, br_Plate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                    DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsPlate[0], PointsPlate[1]);
+                    DrawRectangle(opts.BasePlateColor, null, opts.BasePlateThickness, canvasForImage, PointsPlate[0], PointsPlate[1]);
 
                     // Obrys vnutornej hrany
 
@@ -1008,13 +996,11 @@ namespace BaseClasses
                     l.X2 = PointsPlateLine[1].X;
                     l.Y2 = PointsPlateLine[1].Y;
 
+                    // Spodna neviditelna hrana
                     DrawLine(l, opts.BasePlateColor, PenLineCap.Flat, PenLineCap.Flat, opts.BasePlateThickness, canvasForImage, DashStyles.Dash);
 
                     if (opts.bDrawScrews)
                     {
-                        bool bDrawHoles = true;
-                        bool bDrawHoleCentreSymbols = true;
-
                         List<Point> PointsHolesScrews = basePlate.ScrewArrangement.HolesCentersPoints2D.ToList();
 
                         List<Point> canvasPointsHolesScrews = new List<Point>();
@@ -1031,7 +1017,7 @@ namespace BaseClasses
 
                         double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * dReal_Model_Zoom_Factor;
 
-                        DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, dHolesDiameterScrews, canvasForImage, 2);
+                        DrawHoles(opts.bDrawHoles, opts.bDrawHoleCentreSymbols, canvasPointsHolesScrews, opts.bHoleColor, opts.bHoleCenterSymbolColor, opts.HoleLineThickness, opts.HoleCenterSymbolLineThickness, dHolesDiameterScrews, canvasForImage, 1);
                     }
                 }
 
@@ -1081,7 +1067,7 @@ namespace BaseClasses
                             Geom2D.MirrorAboutX_ChangeYCoordinates(ref anchorNotePoint);
 
                             List<Point> PointsAnchor = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt, br }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkGreen, null, 1, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
+                            DrawRectangle(opts.AnchorStrokeColor, null, opts.AnchorLineThickness, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
                             // Washers & Nuts
                             CNut nut = new CNut(anchor.Name); // TODO - docasne - vytvorit databazu a napojit
@@ -1089,77 +1075,89 @@ namespace BaseClasses
                             float fNutHeight = nut.fC_headHeight;
 
                             // Washer - Plate
-                            fPlateWasherWidth_x = anchor.x_washer_plate; // Kolmo na rovinu
-                            fPlateWasherWidth_y = anchor.y_washer_plate;
-                            fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
+                            if (opts.bDrawWashers)
+                            {
+                                fPlateWasherWidth_x = anchor.x_washer_plate; // Kolmo na rovinu
+                                fPlateWasherWidth_y = anchor.y_washer_plate;
+                                fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
 
-                            float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
+                                float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
 
-                            Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
-                            Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                                Point lt_WasherPlate = new Point(insertingPoint.X - fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop);
+                                Point br_WasherPlate = new Point(insertingPoint.X + fPlateWasherWidth_y * 0.5, insertingPoint.Y - fPlateWasherOffsetFromTop - fPlateWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlate);
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlate);
+                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlate);
+                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlate);
 
-                            plateWasherNotePoint = new Point(br_WasherPlate.X, lt_WasherPlate.Y);
+                                plateWasherNotePoint = new Point(br_WasherPlate.X, lt_WasherPlate.Y);
 
-                            List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
+                                List<Point> PointsPlateWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlate, br_WasherPlate }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                DrawRectangle(opts.WasherStrokeColor, null, opts.WasherLineThickness, canvasForImage, PointsPlateWasher[0], PointsPlateWasher[1]);
 
-                            // Nut - Plate
-                            float fPlateWasherNutOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness - fNutHeight;
+                                // Nut - Plate
+                                if (opts.bDrawNuts)
+                                {
+                                    float fPlateWasherNutOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness - fNutHeight;
 
-                            Point lt_WasherPlateNut = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop);
-                            Point br_WasherPlateNut = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop - fNutHeight);
+                                    Point lt_WasherPlateNut = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop);
+                                    Point br_WasherPlateNut = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fPlateWasherNutOffsetFromTop - fNutHeight);
 
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlateNut);
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlateNut);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherPlateNut);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherPlateNut);
 
-                            List<Point> PointsPlateWasherNut = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlateNut, br_WasherPlateNut }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsPlateWasherNut[0], PointsPlateWasherNut[1]);
+                                    List<Point> PointsPlateWasherNut = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherPlateNut, br_WasherPlateNut }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                    DrawRectangle(opts.NutStrokeColor, null, opts.NutLineThickness, canvasForImage, PointsPlateWasherNut[0], PointsPlateWasherNut[1]);
+                                }
+                            }
 
                             // Washer - Bearing
-                            fBearingWasherWidth_x = anchor.x_washer_bearing; // Kolmo na rovinu
-                            fBearingWasherWidth_y = anchor.y_washer_bearing;
-                            fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
-                            float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
+                            if (opts.bDrawWashers)
+                            {
+                                fBearingWasherWidth_x = anchor.x_washer_bearing; // Kolmo na rovinu
+                                fBearingWasherWidth_y = anchor.y_washer_bearing;
+                                fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
+                                float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
 
-                            Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
-                            Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
+                                Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);
+                                Point br_BearingWasher = new Point(insertingPoint.X + fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop - fBearingWasherThickness); // TODO - ??? Toto by y malo byt zaporne a potom sa preklopit
 
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
+                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_BearingWasher);
+                                Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_BearingWasher);
 
-                            bearingWasherNotePoint = new Point(br_BearingWasher.X, lt_BearingWasher.Y);
+                                bearingWasherNotePoint = new Point(br_BearingWasher.X, lt_BearingWasher.Y);
 
-                            List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkMagenta, null, 1, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
+                                List<Point> PointsBearingWasher = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_BearingWasher, br_BearingWasher }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                DrawRectangle(opts.WasherStrokeColor, null, opts.WasherLineThickness, canvasForImage, PointsBearingWasher[0], PointsBearingWasher[1]);
 
-                            // Nuts - Bearing
-                            // Top nut
+                                // Nuts - Bearing
+                                if (opts.bDrawNuts)
+                                {
+                                    // Top nut
 
-                            float fBearingWasherNut_Top_OffsetFromTop = fBearingWasherOffsetFromTop - fNutHeight;
+                                    float fBearingWasherNut_Top_OffsetFromTop = fBearingWasherOffsetFromTop - fNutHeight;
 
-                            Point lt_WasherBearingNut_Top = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop);
-                            Point br_WasherBearingNut_Top = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop - fNutHeight);
+                                    Point lt_WasherBearingNut_Top = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop);
+                                    Point br_WasherBearingNut_Top = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Top_OffsetFromTop - fNutHeight);
 
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Top);
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Top);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Top);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Top);
 
-                            List<Point> PointsBearingWasherNut_Top = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Top, br_WasherBearingNut_Top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsBearingWasherNut_Top[0], PointsBearingWasherNut_Top[1]);
+                                    List<Point> PointsBearingWasherNut_Top = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Top, br_WasherBearingNut_Top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                    DrawRectangle(opts.NutStrokeColor, null, opts.NutLineThickness, canvasForImage, PointsBearingWasherNut_Top[0], PointsBearingWasherNut_Top[1]);
 
-                            // Bottom nut
-                            float fBearingWasherNut_Bottom_OffsetFromTop = fBearingWasherOffsetFromTop + fBearingWasherThickness;
+                                    // Bottom nut
+                                    float fBearingWasherNut_Bottom_OffsetFromTop = fBearingWasherOffsetFromTop + fBearingWasherThickness;
 
-                            Point lt_WasherBearingNut_Bottom = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop);
-                            Point br_WasherBearingNut_Bottom = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop - fNutHeight);
+                                    Point lt_WasherBearingNut_Bottom = new Point(insertingPoint.X - fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop);
+                                    Point br_WasherBearingNut_Bottom = new Point(insertingPoint.X + fNutWidth * 0.5, insertingPoint.Y - fBearingWasherNut_Bottom_OffsetFromTop - fNutHeight);
 
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Bottom);
-                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Bottom);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref lt_WasherBearingNut_Bottom);
+                                    Geom2D.MirrorAboutX_ChangeYCoordinates(ref br_WasherBearingNut_Bottom);
 
-                            List<Point> PointsBearingWasherNut_Bottom = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Bottom, br_WasherBearingNut_Bottom }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                            DrawRectangle(Brushes.DarkBlue, null, 1, canvasForImage, PointsBearingWasherNut_Bottom[0], PointsBearingWasherNut_Bottom[1]);
+                                    List<Point> PointsBearingWasherNut_Bottom = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { lt_WasherBearingNut_Bottom, br_WasherBearingNut_Bottom }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                                    DrawRectangle(opts.NutStrokeColor, null, opts.NutLineThickness, canvasForImage, PointsBearingWasherNut_Bottom[0], PointsBearingWasherNut_Bottom[1]);
+                                }
+                            }
                         }
                     }
                 }
@@ -1781,13 +1779,13 @@ namespace BaseClasses
             // Holes
             if (PointsHolesScrews != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, dHolesDiameterScrews, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterScrews, canvasForImage);
                 DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
             }
 
             if (PointsHolesAnchors != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, dHolesDiameterAnchors, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterAnchors, canvasForImage);
             }
 
             // Dimensions
@@ -2210,7 +2208,7 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, double dHolesDiameter, Canvas canvasForImage, double SymbolOffsetFromHoleCircle = 5)
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, SolidColorBrush ColorHoles, SolidColorBrush ColorHoleCenterSymbols, double ThicknessHoleLine, double ThicknessHoleCenterSymbolLine, double dHolesDiameter, Canvas canvasForImage, double SymbolOffsetFromHoleCircle = 5)
         {
             if (bDrawHoles)
             {
@@ -2220,10 +2218,10 @@ namespace BaseClasses
                     for (int i = 0; i < PointsHoles.Count; i++)
                     {
                         // Draw Hole
-                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, 1, canvasForImage);
+                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, ThicknessHoleLine, canvasForImage);
 
                         // Draw Symbol of Center
-                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, Brushes.Red, 1, canvasForImage);
+                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, ColorHoleCenterSymbols, ThicknessHoleCenterSymbolLine, canvasForImage);
                     }
                 }
             }
