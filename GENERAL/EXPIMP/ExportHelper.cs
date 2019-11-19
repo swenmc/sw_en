@@ -373,11 +373,11 @@ namespace EXPIMP
 
             float fModel_Length_x_real = (float)(dTempMax_X - dTempMin_X);
             float fModel_Length_y_real = (float)(dTempMax_Y - dTempMin_Y);
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double dModel_Length_x_page;
+            double dModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
-            float fReal_Model_Zoom_Factor;
+            double dReal_Model_Zoom_Factor;
             float fmodelMarginLeft_x;
             float fmodelMarginTop_y;
             float fmodelBottomPosition_y;
@@ -389,17 +389,17 @@ namespace EXPIMP
             scale_unit,
             fCanvasWidth,
             fCanvasHeight,
-            out fModel_Length_x_page,
-            out fModel_Length_y_page,
+            out dModel_Length_x_page,
+            out dModel_Length_y_page,
             out dFactor_x,
             out dFactor_y,
-            out fReal_Model_Zoom_Factor,
+            out dReal_Model_Zoom_Factor,
             out fmodelMarginLeft_x,
             out fmodelMarginTop_y,
             out fmodelBottomPosition_y
             );
 
-            float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
+            //float fmodelMarginBottom_y = (float)(fCanvasHeight - fmodelMarginTop_y - dModel_Length_y_page); // TODO - Toto by sma mali zrusit
             int factorSwitchYAxis = -1;
 
             List<Canvas> canvases = new List<Canvas>();
@@ -460,7 +460,7 @@ namespace EXPIMP
                 bool IncludeResults = false;
 
                 double bestScaleRatio = GetBestScaleRatio(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
-                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor,/* dReal_Model_Zoom_Factor,*/ UseCRSCGeometricalAxes);
 
                 // Draw each member in the model and selected internal force diagram
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
@@ -471,10 +471,10 @@ namespace EXPIMP
                     
                     // Get list of points from Dictionary, if not exist then calculate
                     List<Point> listMemberInternalForcePoints = GetMemberInternalForcePoints(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
-                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, dReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
 
-                    double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
-                    double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
+                    double translationOffset_x = fmodelMarginLeft_x + dReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
+                    double translationOffset_y = fmodelBottomPosition_y + dReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
 
                     RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
                     TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
@@ -560,7 +560,7 @@ namespace EXPIMP
                     Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
                     
                     // Draw Member on the Internal forces polygon
-                    DrawMember(model, DiagramCanvas, i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                    DrawMember(model, DiagramCanvas, i, dReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
                 }
 
                 if (IncludeResults)
@@ -599,11 +599,11 @@ namespace EXPIMP
 
             float fModel_Length_x_real = (float)(dTempMax_X - dTempMin_X);
             float fModel_Length_y_real = (float)(dTempMax_Y - dTempMin_Y);
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double dModel_Length_x_page;
+            double dModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
-            float fReal_Model_Zoom_Factor;
+            double dReal_Model_Zoom_Factor;
             float fmodelMarginLeft_x;
             float fmodelMarginTop_y;
             float fmodelBottomPosition_y;
@@ -615,17 +615,17 @@ namespace EXPIMP
             scale_unit,
             fCanvasWidth,
             fCanvasHeight,
-            out fModel_Length_x_page,
-            out fModel_Length_y_page,
+            out dModel_Length_x_page,
+            out dModel_Length_y_page,
             out dFactor_x,
             out dFactor_y,
-            out fReal_Model_Zoom_Factor,
+            out dReal_Model_Zoom_Factor,
             out fmodelMarginLeft_x,
             out fmodelMarginTop_y,
             out fmodelBottomPosition_y
             );
 
-            float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
+            float fmodelMarginBottom_y = (float)(fCanvasHeight - fmodelMarginTop_y - dModel_Length_y_page);
             int factorSwitchYAxis = -1;
 
             List<Canvas> canvases = new List<Canvas>();
@@ -686,7 +686,7 @@ namespace EXPIMP
                 bool IncludeResults = false;
 
                 double bestScaleRatio = GetBestScaleRatio(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
-                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+                        model.m_arrMembers, lcomb, IFtypeIndex, fUnitFactor, /*dReal_Model_Zoom_Factor,*/ UseCRSCGeometricalAxes);
 
                 // Draw each member in the model and selected internal force diagram
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
@@ -697,10 +697,10 @@ namespace EXPIMP
 
                     // Get list of points from Dictionary, if not exist then calculate
                     List<Point> listMemberInternalForcePoints = GetMemberInternalForcePoints(model, ListMemberInternalForcesInLoadCombinations, ListMemberDeflectionsInLoadCombinations,
-                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, fReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
+                        model.m_arrMembers[i], lcomb, IFtypeIndex, fUnitFactor, bestScaleRatio, dReal_Model_Zoom_Factor, UseCRSCGeometricalAxes);
 
-                    double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
-                    double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
+                    double translationOffset_x = fmodelMarginLeft_x + dReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X;
+                    double translationOffset_y = fmodelBottomPosition_y + dReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z;
 
                     RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
                     TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
@@ -786,7 +786,7 @@ namespace EXPIMP
                     Drawing2D.DrawPolygon(points, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3, DiagramCanvas);
 
                     // Draw Member on the Internal forces polygon
-                    DrawMember(model, DiagramCanvas, i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                    DrawMember(model, DiagramCanvas, i, dReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
                 }
 
                 if (IncludeResults)
@@ -801,7 +801,7 @@ namespace EXPIMP
         }
 
         private static List<Point> GetMemberInternalForcePoints(CModel model, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations,
-            CMember member, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
+            CMember member, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, double dInternalForceScale_user, double dReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
         {
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
@@ -855,7 +855,7 @@ namespace EXPIMP
             // Internal force diagram points
             for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
             {
-                double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * member.FLength;
+                double xlocationCoordinate = dReal_Model_Zoom_Factor * xLocations_rel[j] * member.FLength;
 
                 float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(IFtypeIndex, sBIF_x[j], sBDef_x[j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
@@ -865,13 +865,13 @@ namespace EXPIMP
             }
 
             // Last point (end at [L,0])
-            listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * member.FLength, 0));
+            listMemberInternalForcePoints.Add(new Point(dReal_Model_Zoom_Factor * member.FLength, 0));
 
             return listMemberInternalForcePoints;
         }
 
         private static double GetBestScaleRatio(CModel model, List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations, List<CMemberDeflectionsInLoadCombinations> ListMemberDeflectionsInLoadCombinations,
-            CMember[] members, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, float fReal_Model_Zoom_Factor, bool UseCRSCGeometricalAxes)
+            CMember[] members, CLoadCombination lcomb, int IFtypeIndex, double dInternalForceScale, /*double dReal_Model_Zoom_Factor,*/ bool UseCRSCGeometricalAxes)
         {
             double maxLocationValue = 100;
             double minRatio = double.MaxValue;
@@ -945,16 +945,16 @@ namespace EXPIMP
             }
         }
 
-        private static void DrawMember(CModel model, Canvas canvas, int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
+        private static void DrawMember(CModel model, Canvas canvas, int memberIndex, double dReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
             float fmodelMarginLeft_x, float fmodelBottomPosition_y, SolidColorBrush color, double thickness)
         {
             // Draw member
             List<Point> listMemberPoints = new List<Point>(2);
             listMemberPoints.Add(new Point(0, 0));
-            listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+            listMemberPoints.Add(new Point(dReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
 
-            double translationOffxet_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
-            double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
+            double translationOffxet_x = fmodelMarginLeft_x + dReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
+            double translationOffset_y = fmodelBottomPosition_y + dReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
 
             RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
             TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);

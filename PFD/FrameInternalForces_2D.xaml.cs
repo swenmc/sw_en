@@ -85,11 +85,11 @@ namespace PFD
 
             float fModel_Length_x_real = (float)(dTempMax_X - dTempMin_X);
             float fModel_Length_y_real = (float)(dTempMax_Y - dTempMin_Y);
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double dModel_Length_x_page;
+            double dModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
-            float fReal_Model_Zoom_Factor;
+            double dReal_Model_Zoom_Factor;
             float fmodelMarginLeft_x;
             float fmodelMarginTop_y;
             float fmodelBottomPosition_y;
@@ -101,18 +101,18 @@ namespace PFD
             scale_unit,
             fCanvasWidth,
             fCanvasHeight,
-            out fModel_Length_x_page,
-            out fModel_Length_y_page,
+            out dModel_Length_x_page,
+            out dModel_Length_y_page,
             out dFactor_x,
             out dFactor_y,
-            out fReal_Model_Zoom_Factor,
+            out dReal_Model_Zoom_Factor,
             out fmodelMarginLeft_x,
             out fmodelMarginTop_y,
             out fmodelBottomPosition_y
             );
 
             //float fmodelMarginRight_x = fCanvasWidth - fmodelMarginLeft_x - fModel_Length_x_page;
-            float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
+            //float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - dModel_Length_y_page;
 
             // TO Ondrej
             // Tento diagram by chcelo vylepsit a sprehladnit.
@@ -148,11 +148,11 @@ namespace PFD
                 }
                 else
                 {
-                    listMemberInternalForcePoints = GetMemberInternalForcePoints(i, fUnitFactor, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
+                    listMemberInternalForcePoints = GetMemberInternalForcePoints(i, fUnitFactor, vm.InternalForceScale_user, dReal_Model_Zoom_Factor, key);
                 }
 
-                double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
-                double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
+                double translationOffset_x = fmodelMarginLeft_x + dReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
+                double translationOffset_y = fmodelBottomPosition_y + dReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
 
                 RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
                 TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
@@ -259,7 +259,7 @@ namespace PFD
 
                 if(vm.ShowMembers)
                     // Draw Member on the Internal forces polygon
-                    DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                    DrawMember(i, dReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
             }
         }
 
@@ -281,16 +281,16 @@ namespace PFD
             }
         }
 
-        private void DrawMember(int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
+        private void DrawMember(int memberIndex, double dReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
             float fmodelMarginLeft_x, float fmodelBottomPosition_y, SolidColorBrush color, double thickness)
         {
             // Draw member
             List<Point> listMemberPoints = new List<Point>(2);
             listMemberPoints.Add(new Point(0, 0));
-            listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+            listMemberPoints.Add(new Point(dReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
 
-            double translationOffxet_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
-            double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
+            double translationOffxet_x = fmodelMarginLeft_x + dReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
+            double translationOffset_y = fmodelBottomPosition_y + dReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
 
             RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
             TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
@@ -307,7 +307,7 @@ namespace PFD
             //Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
-        private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
+        private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale, double dInternalForceScale_user, double dReal_Model_Zoom_Factor, string key)
         {
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
@@ -361,7 +361,7 @@ namespace PFD
             // Internal force diagram points
             for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
             {
-                double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
+                double xlocationCoordinate = dReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
 
                 float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(sBIF_x[j], sBDef_x[j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
@@ -371,7 +371,7 @@ namespace PFD
             }
 
             // Last point (end at [L,0])
-            listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+            listMemberInternalForcePoints.Add(new Point(dReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
 
             DictMemberInternalForcePoints.Add(key, listMemberInternalForcePoints);
 

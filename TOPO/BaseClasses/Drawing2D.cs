@@ -537,11 +537,11 @@ namespace BaseClasses
             // Vytvorime pole bodov v ktorom budu vsetky relevantne krajne body potrebne pre urcenie velkosti vykreslovaneho obrazku
             List<Point> PointsForEdgeCoord_real = new List<Point>
             {
-                new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM), // Right
-                new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y + fRealOffset_DPC_DPM),  // Left Bottom point
+                new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM), // Right
+                new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset_DPC_DPM),  // Left Bottom point
                 new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
                 new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight), // Top Right Column Point
-                new Point(PointsFootingPad_real[0].X * 1.25, PointsFootingPad_real[0].Y + fRealOffset_DPC_DPM) // TODO Ondrej - tu by trebalo zohladnit aj koncovy bod ciary poznamky vpravo ????, texty poznamok, koty a pod
+                new Point(PointsFootingPad_real[0].X * 1.25, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM) // TODO Ondrej - tu by trebalo zohladnit aj koncovy bod ciary poznamky vpravo ????, texty poznamok, koty a pod
             };
 
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
@@ -1641,11 +1641,11 @@ namespace BaseClasses
             float fScaleFactor = 0.5f; // 50% of canvas
             int scale_unit = 1000; // mm
 
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double dModel_Length_x_page;
+            double dModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
-            float fReal_Model_Zoom_Factor;
+            double dReal_Model_Zoom_Factor;
             float fmodelMarginLeft_x;
             float fmodelMarginTop_y;
             float fmodelMarginBottom_y;
@@ -1657,11 +1657,11 @@ namespace BaseClasses
                 scale_unit,
                 width,
                 height,
-                out fModel_Length_x_page,
-                out fModel_Length_y_page,
+                out dModel_Length_x_page,
+                out dModel_Length_y_page,
                 out dFactor_x,
                 out dFactor_y,
-                out fReal_Model_Zoom_Factor,
+                out dReal_Model_Zoom_Factor,
                 out fmodelMarginLeft_x,
                 out fmodelMarginTop_y,
                 out fmodelMarginBottom_y
@@ -1670,7 +1670,7 @@ namespace BaseClasses
             Point pCenterPoint = new Point(width / 2, height / 2);
 
             // Head Inside Circle
-            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, null, 1, canvasForImage);
+            DrawCircle(pCenterPoint, dReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, null, 1, canvasForImage);
 
             // Head Hexagon
             float a = (0.5f * screw.D_h_headdiameter) / (float)Math.Cos(30f / 180f * Math.PI);
@@ -1679,16 +1679,16 @@ namespace BaseClasses
             // TODO - upravit podla toho ci bude v databaze vnutorny alebo vonkajsi rozmer sesthrannej hlavy (opisana alebo vpisana kruznica)
             float fInsideDiameterFactor = 0.5f / (float)Math.Tan(30f / 180f * Math.PI); // Radius of inside circle of hexagon
 
-            double dCanvasTop = (height - (fReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
-            double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2 * a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
-            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            double dCanvasTop = (height - (dReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
+            double dCanvasLeft = (width - (dReal_Model_Zoom_Factor * 2 * a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
+            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, dReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Washer Circle
-            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, null, 1, canvasForImage);
+            DrawCircle(pCenterPoint, dReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, null, 1, canvasForImage);
 
             // Draw Symbol of Center
             if (bDrawCentreSymbol)
-                DrawSymbol_Cross(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter + 20, Brushes.Red, 1, canvasForImage);
+                DrawSymbol_Cross(pCenterPoint, dReal_Model_Zoom_Factor * screw.D_w_washerdiameter + 20, Brushes.Red, 1, canvasForImage);
         }
 
         public static void DrawComponent(bool bDrawPoints,
@@ -1887,7 +1887,7 @@ namespace BaseClasses
             double fTempMin_X,
             double fTempMax_Y,
             double fTempMin_Y,
-            double fScale_Factor, // 0-1
+            double dScale_Factor, // 0-1
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
@@ -1910,16 +1910,18 @@ namespace BaseClasses
             dModel_Length_x_real = fTempMax_X - fTempMin_X;
             dModel_Length_y_real = fTempMax_Y - fTempMin_Y;
 
-            dModel_Length_x_page = scale_unit * dModel_Length_x_real;
-            dModel_Length_y_page = scale_unit * dModel_Length_y_real;
-
-            // Calculate maximum zoom factor
-            // Original ratio
-            dFactor_x = dModel_Length_x_page / dPageWidth;
-            dFactor_y = dModel_Length_y_page / dPageHeight;
-
-            // Calculate new model dimensions (zoom of model size is 80%)
-            dReal_Model_Zoom_Factor = fScale_Factor / Math.Max(dFactor_x, dFactor_y) * scale_unit;
+            CalculateBasicValue_ZoomFactor(
+                dModel_Length_x_real,
+                dModel_Length_y_real,
+                dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+                scale_unit,
+                dPageWidth,
+                dPageHeight,
+                out dModel_Length_x_page,
+                out dModel_Length_y_page,
+                out dFactor_x,
+                out dFactor_y,
+                out dReal_Model_Zoom_Factor);
 
             // Set new size of model on the page
             dModel_Length_x_page = dReal_Model_Zoom_Factor * dModel_Length_x_real;
@@ -1938,42 +1940,72 @@ namespace BaseClasses
             }
         }
 
+        // TODO Ondrej - tento variant funkcie sa pouziva len na vykreslenie skrutky, chcelo by to prerobit a zjednotit
+        // je potrebne zrusit fmodelMarginBottom_y a prerobit funkciu na vykreslovanie skrutky tak aby sa zadavalo fmodelMarginTop_y
         public static void CalculateBasicValue(
             float fModel_Length_x_real,
             float fModel_Length_y_real,
-            float fScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+            double dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
-            out float fModel_Length_x_page,
-            out float fModel_Length_y_page,
+            out double dModel_Length_x_page,
+            out double dModel_Length_y_page,
             out double dFactor_x,
             out double dFactor_y,
-            out float fReal_Model_Zoom_Factor,
+            out double dReal_Model_Zoom_Factor,
             out float fmodelMarginLeft_x,
             out float fmodelMarginTop_y,
-            out float fmodelMarginBottom_y
+            out float fmodelMarginBottom_y  // Treba rorzlisovat fmodelMarginBottom_y a fmodelBottomPosition_y a vycistit to
             )
         {
-            fModel_Length_x_page = scale_unit * fModel_Length_x_real;
-            fModel_Length_y_page = scale_unit * fModel_Length_y_real;
+            CalculateBasicValue_ZoomFactor(
+                fModel_Length_x_real,
+                fModel_Length_y_real,
+                dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+                scale_unit,
+                dPageWidth,
+                dPageHeight,
+                out dModel_Length_x_page,
+                out dModel_Length_y_page,
+                out dFactor_x,
+                out dFactor_y,
+                out dReal_Model_Zoom_Factor);
+
+            // Set new size of model on the page
+            dModel_Length_x_page = dReal_Model_Zoom_Factor * fModel_Length_x_real;
+            dModel_Length_y_page = dReal_Model_Zoom_Factor * fModel_Length_y_real;
+
+            fmodelMarginLeft_x = (float)(0.5 * (dPageWidth - dModel_Length_x_page));
+            fmodelMarginTop_y = (float)(0.5 * (dPageHeight - dModel_Length_y_page));
+
+            // TODO Ondrej - zrusit toto odsadenie a prerobit vsade na top margin
+            fmodelMarginBottom_y = (float)(dModel_Length_y_page + 0.5 * (dPageHeight - dModel_Length_y_page));
+        }
+
+        public static void CalculateBasicValue_ZoomFactor(
+        double dModel_Length_x_real,
+        double dModel_Length_y_real,
+        double dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+        int scale_unit,
+        double dPageWidth,
+        double dPageHeight,
+        out double dModel_Length_x_page,
+        out double dModel_Length_y_page,
+        out double dFactor_x,
+        out double dFactor_y,
+        out double dReal_Model_Zoom_Factor)
+        {
+            dModel_Length_x_page = scale_unit * dModel_Length_x_real;
+            dModel_Length_y_page = scale_unit * dModel_Length_y_real;
 
             // Calculate maximum zoom factor
             // Original ratio
-            dFactor_x = fModel_Length_x_page / dPageWidth;
-            dFactor_y = fModel_Length_y_page / dPageHeight;
+            dFactor_x = dModel_Length_x_page / dPageWidth;
+            dFactor_y = dModel_Length_y_page / dPageHeight;
 
-            // Calculate new model dimensions (zoom of model is defined by factor 0.0 - 1.0)
-            fReal_Model_Zoom_Factor = fScale_Factor / (float)MathF.Max(dFactor_x, dFactor_y) * scale_unit;
-
-            // Set new size of model on the page
-            fModel_Length_x_page = fReal_Model_Zoom_Factor * fModel_Length_x_real;
-            fModel_Length_y_page = fReal_Model_Zoom_Factor * fModel_Length_y_real;
-
-            fmodelMarginLeft_x = (float)(0.5 * (dPageWidth - fModel_Length_x_page));
-            fmodelMarginTop_y = (float)(0.5 * (dPageHeight - fModel_Length_y_page));
-
-            fmodelMarginBottom_y = (float)(fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page));
+            // Calculate new model dimensions (zoom of model is defined by factor 0.0 - 1.0), default 0.8 (80%)
+            dReal_Model_Zoom_Factor = dScale_Factor / (float)Math.Max(dFactor_x, dFactor_y) * scale_unit;
         }
 
         //public static void DrawPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)

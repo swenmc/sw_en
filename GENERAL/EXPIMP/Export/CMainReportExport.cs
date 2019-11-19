@@ -614,12 +614,12 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
-            opts.bDisplayMembersWireFrame = true;
             opts.fWireFrameLineThickness = 2;
             opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.bDisplayMembersWireFrame = true;
             opts.bDisplayJointsWireFrame = true;
             opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayConnectorsWireFrame = false;
+            opts.bDisplayConnectorsWireFrame = true;
             opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
             return opts;
@@ -751,9 +751,10 @@ namespace EXPIMP
             opts.bDisplayWireFrameModel = true; //default treba mat false, lebo to robi len problemy a wireframe budeme povolovat len tam kde ho naozaj aj chceme
             opts.fWireFrameLineThickness = 2;
             opts.bTransformScreenLines3DToCylinders3D = false;
+            opts.bDisplayMembersWireFrame = true;
             opts.bDisplayJointsWireFrame = true;
             opts.bDisplayPlatesWireFrame = true;
-            opts.bDisplayConnectorsWireFrame = false;
+            opts.bDisplayConnectorsWireFrame = true;
             opts.wireFrameColor = System.Windows.Media.Colors.Black;
 
             // Foundations
@@ -2357,14 +2358,17 @@ namespace EXPIMP
             if (pad.m_Mat != null) tableParams.Add(new string[2] { "Concrete Grade", pad.m_Mat.Name + " [MPa]" }); // !!! vzdy by mal byt priradeny material
             tableParams.Add(new string[2] { "Reinforcement Grade", pad.Reference_Bottom_Bar_x.m_Mat.Name });
 
+            // Popis vyztuze nezobrazujeme, lebo je v 2D obrazku
+
             //tableParams.Add(new string[2] { "Count Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() });
             //tableParams.Add(new string[2] { "Count Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() });
             //tableParams.Add(new string[2] { "Count Top Bars x", pad.Count_Top_Bars_x.ToString() });
             //tableParams.Add(new string[2] { "Count Top Bars y", pad.Count_Top_Bars_y.ToString() });
-            tableParams.Add(new string[2] { "Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_x.Diameter * 1000).ToString("F0") });
-            tableParams.Add(new string[2] { "Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_y.Diameter * 1000).ToString("F0") });
-            tableParams.Add(new string[2] { "Top Bars x", pad.Count_Top_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_x.Diameter * 1000).ToString("F0") });
-            tableParams.Add(new string[2] { "Top Bars y", pad.Count_Top_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_y.Diameter * 1000).ToString("F0") });
+
+            //tableParams.Add(new string[2] { "Bottom Bars x", pad.Count_Bottom_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_x.Diameter * 1000).ToString("F0") });
+            //tableParams.Add(new string[2] { "Bottom Bars y", pad.Count_Bottom_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Bottom_Bar_y.Diameter * 1000).ToString("F0") });
+            //tableParams.Add(new string[2] { "Top Bars x", pad.Count_Top_Bars_x.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_x.Diameter * 1000).ToString("F0") });
+            //tableParams.Add(new string[2] { "Top Bars y", pad.Count_Top_Bars_y.ToString() + " x " + " HD" + (pad.Reference_Top_Bar_y.Diameter * 1000).ToString("F0") });
 
             tableParams.Add(new string[2] { "Concrete Cover", (pad.ConcreteCover * 1000).ToString("F0") + " [mm]" });
 
