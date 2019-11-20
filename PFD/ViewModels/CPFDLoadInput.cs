@@ -36,6 +36,10 @@ namespace PFD
         private int MWindRegionIndex;
         private int MTerrainCategoryIndex;
         private int MAngleWindDirectionIndex;
+
+        private float MInternalPressureCoefficientCpiMaximumPressure; // Cpi.max
+        private float MInternalPressureCoefficientCpiMaximumSuction; // Cpi.min
+
         private int MSiteSubSoilClassIndex;
         private float MFaultDistanceDmin;
         private float MFaultDistanceDmax;
@@ -305,6 +309,44 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("AngleWindDirectionIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressureCoefficientCpiMaximumPressure
+        {
+            get
+            {
+                return MInternalPressureCoefficientCpiMaximumPressure;
+            }
+
+            set
+            {
+                if (value < 0.00f || value > 0.70f)
+                    throw new ArgumentException("Coefficient value must be between 0.00 and 0.70");
+                MInternalPressureCoefficientCpiMaximumPressure = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("InternalPressureCoefficientCpiMaximumPressure");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressureCoefficientCpiMaximumSuction
+        {
+            get
+            {
+                return MInternalPressureCoefficientCpiMaximumSuction;
+            }
+
+            set
+            {
+                if (value < -0.65f || value > 0.00f)
+                    throw new ArgumentException("Coefficient value must be between -0.65 and 0.00");
+                MInternalPressureCoefficientCpiMaximumSuction = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("InternalPressureCoefficientCpiMaximumSuction");
             }
         }
 
@@ -760,6 +802,9 @@ namespace PFD
             SiteSubSoilClassIndex = sloadInputComboBoxes.SiteSubSoilClassIndex;
             TerrainCategoryIndex = sloadInputComboBoxes.TerrainCategoryIndex;
             AngleWindDirectionIndex = sloadInputComboBoxes.AngleWindDirectionIndex;
+
+            InternalPressureCoefficientCpiMaximumPressure = sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure;
+            InternalPressureCoefficientCpiMaximumSuction = sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction;
 
             SiteElevation = sloadInputTextBoxes.SiteElevation;
             FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin_km;

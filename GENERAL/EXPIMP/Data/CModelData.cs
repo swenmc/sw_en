@@ -55,7 +55,9 @@ namespace EXPIMP
         private string m_WindRegion;
         private string m_TerrainCategory;
         private string m_SiteSubSoilClass;
-        
+
+        private float m_InternalPressureCoefficientCpiMaximumSuction;
+        private float m_InternalPressureCoefficientCpiMaximumPressure;
         private float m_AnnualProbabilityULS_Snow;
         private float m_AnnualProbabilityULS_Wind;
         private float m_AnnualProbabilityULS_EQ;
@@ -119,8 +121,6 @@ namespace EXPIMP
 
         public Dictionary<CConnectionDescription, CConnectionJointTypes> JointsDict;
         public Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>> FootingsDict;
-
-
 
         private CModel MModel;
 
@@ -619,6 +619,32 @@ namespace EXPIMP
             }
         }
 
+        public float InternalPressureCoefficientCpiMaximumSuction
+        {
+            get
+            {
+                return m_InternalPressureCoefficientCpiMaximumSuction;
+            }
+
+            set
+            {
+                m_InternalPressureCoefficientCpiMaximumSuction = value;
+            }
+        }
+
+        public float InternalPressureCoefficientCpiMaximumPressure
+        {
+            get
+            {
+                return m_InternalPressureCoefficientCpiMaximumPressure;
+            }
+
+            set
+            {
+                m_InternalPressureCoefficientCpiMaximumPressure = value;
+            }
+        }
+
         public float AnnualProbabilityULS_Snow
         {
             get
@@ -875,7 +901,7 @@ namespace EXPIMP
 
             set
             {
-                m_SoilBearingCapacity = value;                
+                m_SoilBearingCapacity = value;
             }
         }
 

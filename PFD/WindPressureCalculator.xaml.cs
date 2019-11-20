@@ -103,6 +103,9 @@ namespace PFD
             sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(input.TerrainCategoryIndex);
 
+            sWindInputData.fInternalPressureCoefficientCpiMaximumPressure = input.InternalPressureCoefficientCpiMaximumPressure;
+            sWindInputData.fInternalPressureCoefficientCpiMaximumSuction = input.InternalPressureCoefficientCpiMaximumSuction;
+
             WindLoadDataSpecificInput sWindInputSpecificData;
             //sWindInputSpecificData.fz = input.AverageStructureHeight_h; //input.ApexHeigth_H_2; // Generally, the wind speed is determined at the average roof height (h).
             //sWindInputSpecificData.fh = input.AverageStructureHeight_h;
@@ -142,9 +145,9 @@ namespace PFD
             vm.LocalPressureFactorUpwind_Kl = windCalcResults.fK_l_upwind;
             vm.LocalPressureFactorDownwind_Kl = windCalcResults.fK_l_downwind;
 
-            // Cp
-            vm.InternalPressureCoefficient_Cpimin = windCalcResults.fC_pi_min;
-            vm.InternalPressureCoefficient_Cpimax = windCalcResults.fC_pi_max;
+            // Cp  - nemusime nastavovat ako vystup, nastavilo sa pri vstupe do vypoctu
+            //vm.InternalPressureCoefficientCpiMaximumSuction = windCalcResults.fC_pi_min;
+            //vm.InternalPressureCoefficientCpiMaximumPressure = windCalcResults.fC_pi_max;
 
             // ROOF
             float fExternalPressureCoefficient_Cpemin_U = MathF.Min(windCalcResults.fC_pe_U_roof_values_min);
@@ -290,6 +293,9 @@ namespace PFD
                 "HillShapeMultiplier_Mh",
                 "ShieldingMultiplier_Ms",
                 //"WindDirectionMultiplier_Md", // neaktivovat
+
+                "InternalPressureCoefficientCpiMaximumPressure",
+                "InternalPressureCoefficientCpiMaximumSuction",
 
                 "LocalPressureReferenceUpwindIndex",
                 "LocalPressureReferenceDownwindIndex",

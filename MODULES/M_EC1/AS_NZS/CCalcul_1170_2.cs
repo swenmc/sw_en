@@ -236,7 +236,21 @@ namespace M_EC1.AS_NZS
 
             fK_p = 1.0f;
 
-            SetInternalPressureFactors_Cpi_min_C_pi_max();
+            /*
+            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
+            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
+            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
+            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
+            */
+
+            // Internal pressure
+            fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
+            fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
+
+            // TODO - kedze sanie ma znamienko (-) a tlak (+), tak je trosku problem v tom ze pre vysledne zatazenie musime tie znamienka prehodit
+            // aby napriklad tlak zhora (Cpe +) posobil rovnakym smerom ako sanie zdola (Cpi -) a opacne tlak zdola (Cpi +) posobilo rovnakym smerom ako sanie zhora (Cpe -)
+
+            // Treba poriadne skontrolovat ci zatiazenie posobi v spravnom smere a ci sa zatazenia od vnutorneho a vonkajsieho tlaku spravne kombinuju
 
             bConsiderAreaReductionFactor_Kci_and_Kce = false; // Zohladnuje sa az v generatore prutovych zatazeni
 
@@ -300,7 +314,16 @@ namespace M_EC1.AS_NZS
 
             fK_p = sWinDataSpecific_temp.fK_p;
 
-            SetInternalPressureFactors_Cpi_min_C_pi_max();
+            /*
+            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
+            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
+            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
+            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
+            */
+
+            // Internal pressure
+            fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
+            fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
 
             bConsiderAreaReductionFactor_Kci_and_Kce = true;
 
@@ -1236,21 +1259,6 @@ namespace M_EC1.AS_NZS
                 return (fb + 2 * fh) / (fd - 4 * fh);
             else
                 return (fb + 2 * fh) / (fd - 4 * fb);
-        }
-
-        public void SetInternalPressureFactors_Cpi_min_C_pi_max()
-        {
-            /*
-            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
-            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
-            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
-            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
-            */
-
-            // TODO - urobit nastavitelne v GUI
-            // Internal pressure
-            fC_pi_min = -0.3f; // Underpressure
-            fC_pi_max = 0.0f; // Overpressure
         }
 
         public float Get_AreaReductionFactor_Ka(float fTributaryArea)

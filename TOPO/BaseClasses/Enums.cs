@@ -1013,6 +1013,8 @@ namespace BaseClasses
         public int iAngleWindDirection; // Clockwise angle between Notrth  cardinal direction (Beta = 0) and Theta = 0 (building side L)
         //public int iTerrainCategoryIndex;
         public float fTerrainCategory;  // float value 1-4 see Tab 4.2
+        public float fInternalPressureCoefficientCpiMaximumPressure;
+        public float fInternalPressureCoefficientCpiMaximumSuction;
     }
 
     public struct WindLoadDataSpecificInput
@@ -1102,6 +1104,8 @@ namespace BaseClasses
 
     public struct loadInputTextBoxValues
     {
+        public float InternalPressureCoefficientCpiMaximumPressure;
+        public float InternalPressureCoefficientCpiMaximumSuction;
         public float SiteElevation;
         public float FaultDistanceDmin_km;
         public float FaultDistanceDmax_km;

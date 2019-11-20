@@ -549,6 +549,9 @@ namespace PFD
             sWindInputData.iAngleWindDirection = loadInput.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(loadInput.TerrainCategoryIndex);
 
+            sWindInputData.fInternalPressureCoefficientCpiMaximumPressure = loadInput.InternalPressureCoefficientCpiMaximumPressure;
+            sWindInputData.fInternalPressureCoefficientCpiMaximumSuction = loadInput.InternalPressureCoefficientCpiMaximumSuction;
+
             vm.Wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 

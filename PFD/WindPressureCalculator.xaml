@@ -271,13 +271,13 @@
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressureCoefficient_Cpimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=InternalPressureCoefficientCpiMaximumSuction, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="3" Text="Internal Pressure Coefficient Cpi.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressureCoefficient_Cpimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=InternalPressureCoefficientCpiMaximumPressure, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="3" Text="External Pressure Coefficient Cpe.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

@@ -68,7 +68,9 @@ namespace PFD
             sloadInputComboBoxes.TerrainCategoryIndex = 4;     // Default terrain category 3
             sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
 
-            loadInputTextBoxValues sloadInputTextBoxes;            
+            loadInputTextBoxValues sloadInputTextBoxes;
+            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure = 0.2f; // 0 - 0.7
+            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction = -0.3f; //-0.65 - 0
             sloadInputTextBoxes.SiteElevation = 30;               // m  // nastavovat tu - zavisi od Location Index
             sloadInputTextBoxes.FaultDistanceDmin_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
             sloadInputTextBoxes.FaultDistanceDmax_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
@@ -125,6 +127,8 @@ namespace PFD
             sWindInputData.eWindRegion = loadinput.WindRegion;
             sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(loadinput.TerrainCategoryIndex);
+            sWindInputData.fInternalPressureCoefficientCpiMaximumPressure = loadinput.InternalPressureCoefficientCpiMaximumPressure;
+            sWindInputData.fInternalPressureCoefficientCpiMaximumSuction = loadinput.InternalPressureCoefficientCpiMaximumSuction;
 
             M_EC1.AS_NZS.CCalcul_1170_2 wind = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
 

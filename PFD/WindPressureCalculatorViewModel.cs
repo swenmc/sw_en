@@ -58,8 +58,8 @@ namespace PFD
         private float MCombinationFactorExternalPressures_Kce_upwind;
         private float MCombinationFactorExternalPressures_Kce_downwind;
 
-        private float MInternalPressureCoefficient_Cpimin;
-        private float MInternalPressureCoefficient_Cpimax;
+        private float MInternalPressureCoefficientCpiMaximumSuction;
+        private float MInternalPressureCoefficientCpiMaximumPressure;
         private float MExternalPressureCoefficient_Cpemin;
         private float MExternalPressureCoefficient_Cpemax;
         private float MAerodynamicShapeFactor_Cfigimin;
@@ -513,34 +513,34 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float InternalPressureCoefficient_Cpimin
+        public float InternalPressureCoefficientCpiMaximumSuction
         {
             get
             {
-                return MInternalPressureCoefficient_Cpimin;
+                return MInternalPressureCoefficientCpiMaximumSuction;
             }
 
             set
             {
-                MInternalPressureCoefficient_Cpimin = value;
+                MInternalPressureCoefficientCpiMaximumSuction = value;
 
-                NotifyPropertyChanged("InternalPressureCoefficient_Cpimin");
+                NotifyPropertyChanged("InternalPressureCoefficientCpiMaximumSuction");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float InternalPressureCoefficient_Cpimax
+        public float InternalPressureCoefficientCpiMaximumPressure
         {
             get
             {
-                return MInternalPressureCoefficient_Cpimax;
+                return MInternalPressureCoefficientCpiMaximumPressure;
             }
 
             set
             {
-                MInternalPressureCoefficient_Cpimax = value;
+                MInternalPressureCoefficientCpiMaximumPressure = value;
 
-                NotifyPropertyChanged("InternalPressureCoefficient_Cpimax");
+                NotifyPropertyChanged("InternalPressureCoefficientCpiMaximumPressure");
             }
         }
 
@@ -1096,6 +1096,9 @@ namespace PFD
             CombinationFactorExternalPressures_Kci_downwind = 0.9f;
             CombinationFactorExternalPressures_Kce_upwind = 1.0f;
             CombinationFactorExternalPressures_Kce_downwind = 0.9f;
+
+            InternalPressureCoefficientCpiMaximumSuction = -0.3f;
+            InternalPressureCoefficientCpiMaximumPressure = 0.2f;
 
             GableWidth = 20f; // m
             Length = 40f; // m

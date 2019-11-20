@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="1140" d:DesignWidth="385">
+        d:DesignHeight="1140" d:DesignWidth="770">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -14,6 +14,9 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">        
         <Grid Name="LoadParamsGrid" Margin="5,10,5,5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="170"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="50"/>
@@ -128,6 +131,22 @@
             <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_AngleWindDirection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=AngleWindDirectionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
+            <TextBlock Grid.Row="12" Grid.Column="3" Text="Internal Pressure Coefficients" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="13" Grid.Column="3" Text="Maximum Pressure Cpi (+ve):" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="13" Grid.Column="4" Name ="InternalPressureCoefficientCpiMaximumPressure" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=InternalPressureCoefficientCpiMaximumPressure, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="13" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            
+            <TextBlock Grid.Row="14" Grid.Column="3" Text="Maximum Suction Cpi (-ve):" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="14" Grid.Column="4" Name ="InternalPressureCoefficientCpiMaximumSuction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=InternalPressureCoefficientCpiMaximumSuction, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="14" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
             <TextBlock Grid.Row="16" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_SiteSubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -176,23 +195,23 @@
                          Text="{Binding Path=SpectralShapeFactorChTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 -->
             <!--Additional dead and imposed actions -->
-            <TextBlock Grid.Row="25" Grid.Column="0" Text="Additional Dead Action - Roof:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="25" Grid.Column="1" Name ="AdditionalDeadActionRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Additional Dead Action - Roof:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="20" Grid.Column="1" Name ="AdditionalDeadActionRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AdditionalDeadActionRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="25" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="20" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-            <TextBlock Grid.Row="26" Grid.Column="0" Text="Additional Dead Action - Wall:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="26" Grid.Column="1" Name ="AdditionalDeadActionWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="21" Grid.Column="0" Text="Additional Dead Action - Wall:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="21" Grid.Column="1" Name ="AdditionalDeadActionWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AdditionalDeadActionWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="26" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="21" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-            <TextBlock Grid.Row="27" Grid.Column="0" Text="Imposed Action - Roof:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="27" Grid.Column="1" Name ="ImposedActionRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="22" Grid.Column="0" Text="Imposed Action - Roof:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBox Grid.Row="22" Grid.Column="1" Name ="ImposedActionRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ImposedActionRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="27" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="22" Grid.Column="2" Text="[kN / m²]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
         </Grid>
     </ScrollViewer>

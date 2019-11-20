@@ -2928,6 +2928,10 @@ namespace PFD
             data.SiteElevation = _loadInput.SiteElevation;
             data.R_SLS = _loadInput.R_SLS;
             data.AnnualProbabilitySLS = _loadInput.AnnualProbabilitySLS;
+
+            data.InternalPressureCoefficientCpiMaximumPressure = _loadInput.InternalPressureCoefficientCpiMaximumPressure;
+            data.InternalPressureCoefficientCpiMaximumSuction = _loadInput.InternalPressureCoefficientCpiMaximumSuction;
+
             data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall;
             data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof;
             data.ImposedActionRoof = _loadInput.ImposedActionRoof;
@@ -2963,7 +2967,6 @@ namespace PFD
             //tu treba dat vsetky data ktore si chces hore dole prenasat z PFDViewModelu
             //Task 366
             data.SoilBearingCapacity = FootingVM.SoilBearingCapacity;
-
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();

@@ -453,6 +453,10 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", data.Wind.fp_basic_ULS_Theta_4[0].ToString(nfi));
             document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", data.Wind.fp_basic_SLS_Theta_4[0].ToString(nfi));
 
+            // External and internal pressure coefficients
+            document.ReplaceText("[Cpi_max]", data.InternalPressureCoefficientCpiMaximumPressure.ToString(nfi));
+            document.ReplaceText("[Cpi_min]", data.InternalPressureCoefficientCpiMaximumSuction.ToString(nfi));
+
             // Seismic Load
             document.ReplaceText("[AnnualProbabilityULS_EQ]", data.AnnualProbabilityULS_EQ.ToString(nfi));
             document.ReplaceText("[R_ULS_EQ]", data.R_ULS_EQ.ToString(nfi));
