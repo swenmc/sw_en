@@ -333,8 +333,44 @@
                             <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
                         </StackPanel>
 
+                        <!-- Displacement / Deflection Limits - presunut do samostatneho okna "Design parameters" ??? -->
+                        <TextBlock Grid.Row="15" Grid.Column="3" Text="Displacement Limits" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         
+                        <TextBlock Grid.Row="16" Grid.Column="3" Text="Rafter - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitRafter_PL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitRafter_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="16" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
+                        <TextBlock Grid.Row="17" Grid.Column="3" Text="Rafter - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitRafter_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitRafter_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="18" Grid.Column="3" Text="Column - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="18" Grid.Column="4" Name ="TextBox_HorizontalDisplacementLimitColumn_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=HorizontalDisplacementLimitColumn_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="18" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="19" Grid.Column="3" Text="Purlin - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="19" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitPurlin_PL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitPurlin_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="20" Grid.Column="3" Text="Purlin - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="20" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitPurlin_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitPurlin_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="20" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="21" Grid.Column="3" Text="Girt - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_HorizotnalDisplacementLimitGirt_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=HorizotnalDisplacementLimitGirt_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                        <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
                         <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
