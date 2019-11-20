@@ -897,69 +897,137 @@ namespace BaseClasses
 
             if (opts.bDrawColumnOutline)
             {
-                const short numberOfStiffeners = 2; // TODO napojit na parametre a pozicie prierezu
-                double[] stiffenersHorizontalPositions = new double[numberOfStiffeners] { 0.4 * crscDepth, 0.6 * crscDepth }; // TODO - napojit na pole pozicii hran alebo vyztuh prierezu
+                int iSectionDatabaseID = joint.m_MainMember.CrScStart.DatabaseID;
+                //string sSectionName = joint.m_MainMember.CrScStart.Name_short;
+
+                // TODO Ondrej - potreboval by som toto pridat do databazy - je to pole medzier medi zlomami hran / rebrami prierezu, mal by to byt string s ciarkami alebo bodkociarkami ktory potom prevedieme na cisla ???
+                // Kazdy prierez moze mat iny pocet hran / rebier
+                /*
+                1  10075
+                2  27055
+                3  27095
+                4  27095n
+                5  270115
+                6  270115btb
+                7  270115n
+                8  50020
+                9  50020n
+                10 63020
+                11 63020s1
+                12 63020s2
+                */
+
+                List<double> crscWebSegmentsWidths = null;
+
+                // Hodnoty su v [mm]
+                switch (iSectionDatabaseID)
+                {
+                    case 1:
+                        crscWebSegmentsWidths = new List<double>() { 6, 14, 4.5, 14, 4.5, 14, 4.5, 14, 4.5, 14, 6 };
+                        break;
+                    case 2:
+                    case 3:
+                    case 5:
+                    case 6: // Neplati pri pohlade z boku ale mne to nevadi :)
+                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8 };
+                        break;
+                    case 4:
+                    case 7:
+                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8,     5, 7, 8 };
+                        break;
+                    case 8:
+                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8 };
+                        break;
+                    case 9:
+                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8,    8 , 34, 8 };
+                        break;
+                    case 10:
+                    case 11:
+                    case 12:
+                        crscWebSegmentsWidths = new List<double>() { 25, 51.8, 16, 14.9, 16, 98, 46.8, 93, 46.8, 98, 16, 14.9, 16, 51.8, 25 };
+                        break;
+                    default:
+                        new Exception("Cross section is not implemented");
+                        break;
+                }
+
+                List<double> stiffenersHorizontalPositions = null;
+                if (crscWebSegmentsWidths != null) // Konverzia na suradnice positions a z mm na m
+                {
+                    stiffenersHorizontalPositions = new List<double>();
+
+                    double dCurrentCoordinate = 0;
+
+                    for(int i = 0; i < crscWebSegmentsWidths.Count - 1; i++) // Pocet pozicii vnutornych vyztuh je pocet segmentov - 1
+                    {
+                        stiffenersHorizontalPositions.Add((dCurrentCoordinate + crscWebSegmentsWidths[i]) / 1000); // Pridanie absolutnej pozicie hrany a konverzia na mm
+                        dCurrentCoordinate += crscWebSegmentsWidths[i]; // nastavenie novej hodnoty pre hranu
+                    }
+                }
 
                 List<Point> PointsStiffenersBottom = new List<Point>();
                 List<Point> PointsStiffenersIntermediate = new List<Point>();
                 List<Point> PointsStiffenersTop = new List<Point>();
 
                 // Sfiffeners Edges
-                for (int i = 0; i < stiffenersHorizontalPositions.Length; i++)
+                if (stiffenersHorizontalPositions != null)
                 {
-                    PointsStiffenersBottom.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Ft));
-                    PointsStiffenersIntermediate.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
-                    //double fVerticalOffset_x = fVerticalOffsetRight + ((float)crscDepth - stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // pozicie zadane zdola (kreslene zprava)
-                    double fVerticalOffset_x = fVerticalOffsetLeft + (stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // Pozicie zadane zhora (kreslene zlava)
-                    PointsStiffenersTop.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z + fVerticalOffset_x));
-
-                    // Draw Lines
-
-                    bool bBottomPartBehindPlate = true;
-
-                    if (bBottomPartBehindPlate)
+                    for (int i = 0; i < stiffenersHorizontalPositions.Count; i++)
                     {
-                        Point bottom = new Point(PointsStiffenersBottom[i].X, PointsStiffenersBottom[i].Y);
-                        Point top = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
+                        PointsStiffenersBottom.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Ft));
+                        PointsStiffenersIntermediate.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z));
+                        //double fVerticalOffset_x = fVerticalOffsetRight + ((float)crscDepth - stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // pozicie zadane zdola (kreslene zprava)
+                        double fVerticalOffset_x = fVerticalOffsetLeft + (stiffenersHorizontalPositions[i]) * (float)Math.Tan(fTopLineSlope_rad); // Pozicie zadane zhora (kreslene zlava)
+                        PointsStiffenersTop.Add(new Point(horizontalOffsetColumn + stiffenersHorizontalPositions[i], basePlate.Fl_Z + fVerticalOffset_x));
 
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
+                        // Draw Lines
 
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                        bool bBottomPartBehindPlate = true;
 
-                        Line l = new Line();
-                        l.X1 = PointsLine[0].X;
-                        l.Y1 = PointsLine[0].Y;
+                        if (bBottomPartBehindPlate)
+                        {
+                            Point bottom = new Point(PointsStiffenersBottom[i].X, PointsStiffenersBottom[i].Y);
+                            Point top = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
 
-                        l.X2 = PointsLine[1].X;
-                        l.Y2 = PointsLine[1].Y;
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
 
-                        DoubleCollection dashes = new DoubleCollection();
-                        dashes.Add(10); dashes.Add(10);
+                            List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                        DrawLine(l, opts.ColumnOutlineBehindColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, opts.ColumnOutlineBehindLineStyle, dashes);
-                    }
+                            Line l = new Line();
+                            l.X1 = PointsLine[0].X;
+                            l.Y1 = PointsLine[0].Y;
 
-                    bool bTopPartAbovePlate = true;
+                            l.X2 = PointsLine[1].X;
+                            l.Y2 = PointsLine[1].Y;
 
-                    if (bTopPartAbovePlate)
-                    {
-                        Point bottom = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
-                        Point top = new Point(PointsStiffenersTop[i].X, PointsStiffenersTop[i].Y);
+                            DoubleCollection dashes = new DoubleCollection();
+                            dashes.Add(10); dashes.Add(10);
 
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
-                        Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
+                            DrawLine(l, opts.ColumnOutlineBehindColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, opts.ColumnOutlineBehindLineStyle, dashes);
+                        }
 
-                        List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                        bool bTopPartAbovePlate = true;
 
-                        Line l = new Line();
-                        l.X1 = PointsLine[0].X;
-                        l.Y1 = PointsLine[0].Y;
+                        if (bTopPartAbovePlate)
+                        {
+                            Point bottom = new Point(PointsStiffenersIntermediate[i].X, PointsStiffenersIntermediate[i].Y);
+                            Point top = new Point(PointsStiffenersTop[i].X, PointsStiffenersTop[i].Y);
 
-                        l.X2 = PointsLine[1].X;
-                        l.Y2 = PointsLine[1].Y;
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref bottom);
+                            Geom2D.MirrorAboutX_ChangeYCoordinates(ref top);
 
-                        DrawLine(l, opts.ColumnOutlineAboveColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
+                            List<Point> PointsLine = ConvertRealPointsToCanvasDrawingPoints(new List<Point> { bottom, top }, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+
+                            Line l = new Line();
+                            l.X1 = PointsLine[0].X;
+                            l.Y1 = PointsLine[0].Y;
+
+                            l.X2 = PointsLine[1].X;
+                            l.Y2 = PointsLine[1].Y;
+
+                            DrawLine(l, opts.ColumnOutlineAboveColor, PenLineCap.Flat, PenLineCap.Flat, opts.ColumnOutlineThickness, canvasForImage, DashStyles.Solid);
+                        }
                     }
                 }
 
