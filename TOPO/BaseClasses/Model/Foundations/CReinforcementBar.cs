@@ -200,10 +200,11 @@ namespace BaseClasses
             return Visual_Object;
         }
 
+        //tato metoda by mohla vracat GeometryModel3D
         public /*override*/ Model3DGroup CreateModel3DGroup(SolidColorBrush brush, Transform3DGroup temp, CFoundation pad /* docasne*/)
         {
             Model3DGroup modelGroup = new Model3DGroup();
-
+            //GeometryModel3D model;
             //DiffuseMaterial mat = new DiffuseMaterial(brush);
 
             // Vytvorime model ktory smeruje v ose X
@@ -230,7 +231,7 @@ namespace BaseClasses
 
             // Transformacia vyztuze vratane transformacie zakladu v GCS
             Transform3DGroup myTransform3DGroup = GetTransformGroup(temp);
-
+            
             // Set the Transform property of the modelGroup to the Transform3DGroup which includes 
             // both transformations. The 3D object now has two Transformations applied to it.
             modelGroup.Transform = myTransform3DGroup;

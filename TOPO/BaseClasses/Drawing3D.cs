@@ -1747,6 +1747,9 @@ namespace BaseClasses
                     {
                         if (sDisplayOptions.bDisplayReinforcementBars || sDisplayOptions.bDisplayReinforcementBarsWireFrame)
                         {
+                            //tu by bolo mozne asi vytvorit jeden GeometryModel3D pre vsetky Bars
+                            //GeometryModel3D modelReinforcementBars;
+
                             // TODO - Ondrej - vykreslujeme vystuz hore a dole v smere x a y, takze su to 4 zoznamy, asi by sa do dalo refaktorovat
                             // Top layer - x
                             if (cmodel.m_arrFoundations[i].Top_Bars_x != null)
@@ -1803,6 +1806,9 @@ namespace BaseClasses
                                     }
                                 }
                             }
+
+                            //spolocny model pre vsetky reinforcementBars
+                            //model3D_group.Children.Add(modelReinforcementBars)
                         }
 
                         //!!!!!!! POZOR PRIEHLADNOST ZAVISI NA PORADI VYKRESLOVANIA OBJEKTOV!!!!!!!!!

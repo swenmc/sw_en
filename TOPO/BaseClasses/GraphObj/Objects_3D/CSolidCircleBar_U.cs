@@ -64,6 +64,10 @@ namespace BaseClasses.GraphObj.Objects_3D
             GeometryModel3D rightArc = GetTorusGeometryModel3D(arcRadius, 0.5f * m_fDiameter, 1.5 * Math.PI, 2 * Math.PI, 2 * (nPoints - 1) + 1, (nPoints - 1) + 1, mat, arcRight_ControlPoint, out arcRight_wireFramePoints);
             GeometryModel3D cylinderVerticalRight = Cylinder.CreateM_G_M_3D_Volume_Cylinder(cylinderVerticalRight_ControlPoint, nPoints, 0.5f * m_fDiameter, cylinderVerticalRight_Length, mat, 2, true, false);
 
+            //toto by sa mohlo prepisat tak aby vznikol jeden GeometryModel3D
+            //MeshGeometry3D geometry3D = new MeshGeometry3D();
+            //geometry3D.Positions.Add(((MeshGeometry3D)cylinderVerticalLeft.Geometry).TriangleIndices)
+
             // Add particular segments to the group
             models.Children.Add((Model3D)cylinderVerticalLeft);
             models.Children.Add((Model3D)leftArc);
