@@ -183,32 +183,61 @@ namespace PFD
             listOfModelMemberGroups = new List<CMemberGroup>(11);
 
             //CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
-                                                                           // See UC component list
+            // See UC component list
 
             // TODO - nastavovat v GUI - zaviest databazu pre rozne typy prutov a typy load combinations
+            /*
             int iLimitFractionDenominator_PermanentLoad = 250;
             int iLimitFractionDenominator_Total = 150;
 
             int iLimitFractionDenominator_Total_FrameColumn = 150;
             int iLimitFractionDenominator_Total_FrameRafter = 250;
+            */
 
-            float fLimitPermanentLoad = 1f / 250f;
-            float fLimitTotal = 1 / 150f;
+            // TODO - doplnit potrebne vstupne hodnoty
+            float fVerticalDisplacementLimitDenominator_Rafter_PL = vm.VerticalDisplacementLimitDenominator_Rafter_PL;
+            float fVerticalDisplacementLimitDenominator_Rafter_IL = 150f;
+            float fVerticalDisplacementLimitDenominator_Rafter_TL = vm.VerticalDisplacementLimitDenominator_Rafter_TL;
+            float fHorizontalDisplacementLimitDenominator_Column_PL = 50f;
+            float fHorizontalDisplacementLimitDenominator_Column_IL = 50f;
+            float fHorizontalDisplacementLimitDenominator_Column_TL = vm.HorizontalDisplacementLimitDenominator_Column_TL;
+            float fVerticalDisplacementLimitDenominator_Purlin_PL = vm.VerticalDisplacementLimitDenominator_Purlin_PL;
+            float fVerticalDisplacementLimitDenominator_Purlin_IL = 100f;
+            float fVerticalDisplacementLimitDenominator_Purlin_TL = vm.VerticalDisplacementLimitDenominator_Purlin_TL;
+            float fHorizontalDisplacementLimitDenominator_Girt_PL = 50f;
+            float fHorizontalDisplacementLimitDenominator_Girt_IL = 100f;
+            float fHorizontalDisplacementLimitDenominator_Girt_TL = vm.HorizontalDisplacementLimitDenominator_Girt_TL;
+            float fHorizontalDisplacementLimitDenominator_WindPost_PL = 50f;
+            float fHorizontalDisplacementLimitDenominator_WindPost_IL = 100f;
+            float fHorizontalDisplacementLimitDenominator_WindPost_TL = 100f;
 
-            float fLimitTotal_FrameColumn = 1f / 150f;
-            float fLimitTotal_FrameRafter = 1f / 250f;
+            float fVerticalDisplacementLimit_Rafter_PL = 1f / fVerticalDisplacementLimitDenominator_Rafter_PL;
+            float fVerticalDisplacementLimit_Rafter_IL = 1f / fVerticalDisplacementLimitDenominator_Rafter_IL;
+            float fVerticalDisplacementLimit_Rafter_TL = 1f / fVerticalDisplacementLimitDenominator_Rafter_TL;
+            float fHorizontalDisplacementLimit_Column_PL = 1f / fHorizontalDisplacementLimitDenominator_Column_PL;
+            float fHorizontalDisplacementLimit_Column_IL = 1f / fHorizontalDisplacementLimitDenominator_Column_IL;
+            float fHorizontalDisplacementLimit_Column_TL = 1f / fHorizontalDisplacementLimitDenominator_Column_TL;
+            float fVerticalDisplacementLimit_Purlin_PL = 1f / fVerticalDisplacementLimitDenominator_Purlin_PL;
+            float fVerticalDisplacementLimit_Purlin_IL = 1f / fVerticalDisplacementLimitDenominator_Purlin_IL;
+            float fVerticalDisplacementLimit_Purlin_TL = 1f / fVerticalDisplacementLimitDenominator_Purlin_TL;
+            float fHorizontalDisplacementLimit_Girt_PL = 1f / fHorizontalDisplacementLimitDenominator_Girt_PL;
+            float fHorizontalDisplacementLimit_Girt_IL = 1f / fHorizontalDisplacementLimitDenominator_Girt_IL;
+            float fHorizontalDisplacementLimit_Girt_TL = 1f / fHorizontalDisplacementLimitDenominator_Girt_TL;
+            float fHorizontalDisplacementLimit_WindPost_PL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_PL;
+            float fHorizontalDisplacementLimit_WindPost_IL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_IL;
+            float fHorizontalDisplacementLimit_WindPost_TL = 1f / fHorizontalDisplacementLimitDenominator_WindPost_TL;
 
-            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameColumn, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameRafter, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameColumn, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total_FrameRafter, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, EMemberType_FS.eP, EMemberType_FS_Position.Purlin, m_arrCrSc[(int)EMemberGroupNames.ePurlin], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontColumn].ComponentName, EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackColumn].ComponentName, EMemberType_FS.eC, EMemberType_FS_Position.ColumnBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], iLimitFractionDenominator_PermanentLoad, iLimitFractionDenominator_Total, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, componentList[(int)EMemberGroupNames.eMainColumn].ComponentName, EMemberType_FS.eMC, EMemberType_FS_Position.MainColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, componentList[(int)EMemberGroupNames.eRafter].ComponentName, EMemberType_FS.eMR, EMemberType_FS_Position.MainRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, componentList[(int)EMemberGroupNames.eMainColumn_EF].ComponentName, EMemberType_FS.eEC, EMemberType_FS_Position.EdgeColumn, m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], fHorizontalDisplacementLimitDenominator_Column_PL, fHorizontalDisplacementLimitDenominator_Column_IL, fHorizontalDisplacementLimitDenominator_Column_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, componentList[(int)EMemberGroupNames.eRafter_EF].ComponentName, EMemberType_FS.eER, EMemberType_FS_Position.EdgeRafter, m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], fVerticalDisplacementLimitDenominator_Rafter_PL, fVerticalDisplacementLimitDenominator_Rafter_IL, fVerticalDisplacementLimitDenominator_Rafter_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, componentList[(int)EMemberGroupNames.eEavesPurlin].ComponentName, EMemberType_FS.eEP, EMemberType_FS_Position.EdgePurlin, m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, componentList[(int)EMemberGroupNames.eGirtWall].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[(int)EMemberGroupNames.eGirtWall], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, componentList[(int)EMemberGroupNames.ePurlin].ComponentName, EMemberType_FS.eP, EMemberType_FS_Position.Purlin, m_arrCrSc[(int)EMemberGroupNames.ePurlin], fVerticalDisplacementLimitDenominator_Purlin_PL, fVerticalDisplacementLimitDenominator_Purlin_IL, fVerticalDisplacementLimitDenominator_Purlin_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, componentList[(int)EMemberGroupNames.eFrontColumn].ComponentName, EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, componentList[(int)EMemberGroupNames.eBackColumn].ComponentName, EMemberType_FS.eC, EMemberType_FS_Position.ColumnBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fHorizontalDisplacementLimitDenominator_WindPost_PL, fHorizontalDisplacementLimitDenominator_WindPost_IL, fHorizontalDisplacementLimitDenominator_WindPost_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, componentList[(int)EMemberGroupNames.eFrontGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, componentList[(int)EMemberGroupNames.eBackGirt].ComponentName, EMemberType_FS.eG, EMemberType_FS_Position.GirtBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fHorizontalDisplacementLimitDenominator_Girt_PL, fHorizontalDisplacementLimitDenominator_Girt_IL, fHorizontalDisplacementLimitDenominator_Girt_TL, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)

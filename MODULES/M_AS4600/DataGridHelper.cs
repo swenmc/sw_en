@@ -593,7 +593,7 @@ namespace M_AS4600
             // Limit value denominator
             //string sLimitFraction = MATH.FractionConverter.Convert((decimal)obj_CalcDesign.fLimitDeflectionRatio,true,(decimal)0.001);
             listPhysicalQuantity_Symbols.Add("Limit\tL/");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.iLimitDeflectionFraction_Denominator.ToString());
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fLimitDeflectionFraction_Denominator.ToString());
             listPhysicalQuantity_Units.Add(sUnit_Factor);
 
             listPhysicalQuantity_Symbols.Add("δ lim");

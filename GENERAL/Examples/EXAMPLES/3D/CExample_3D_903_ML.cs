@@ -59,7 +59,7 @@ namespace Examples
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(1);
-            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
 
             // Members
             m_arrMembers[000] = new CMember(001, m_arrNodes[01], m_arrNodes[00], m_arrCrSc[0], EMemberType_FS.eP, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0); // Opacny smer ako x plochy

@@ -152,6 +152,14 @@ namespace PFD
 
         private float MDisplayIn3DRatio;
 
+        // Displacement / Deflection Limits
+        private float MVerticalDisplacementLimitDenominator_Rafter_PL;
+        private float MVerticalDisplacementLimitDenominator_Rafter_TL;
+        private float MHorizontalDisplacementLimitDenominator_Column_TL;
+        private float MVerticalDisplacementLimitDenominator_Purlin_PL;
+        private float MVerticalDisplacementLimitDenominator_Purlin_TL;
+        private float MHorizontalDisplacementLimitDenominator_Girt_TL;
+
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
         private bool MUseFEMSolverCalculationForSimpleBeam;
@@ -2278,6 +2286,97 @@ namespace PFD
             }
         }
 
+        // Displacement / Deflection Limits
+        public float VerticalDisplacementLimitDenominator_Rafter_PL
+        {
+            get
+            {
+                return MVerticalDisplacementLimitDenominator_Rafter_PL;
+            }
+
+            set
+            {
+                MVerticalDisplacementLimitDenominator_Rafter_PL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Rafter_PL");
+            }
+        }
+
+        public float VerticalDisplacementLimitDenominator_Rafter_TL
+        {
+            get
+            {
+                return MVerticalDisplacementLimitDenominator_Rafter_TL;
+            }
+
+            set
+            {
+                MVerticalDisplacementLimitDenominator_Rafter_TL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Rafter_TL");
+            }
+        }
+
+        public float HorizontalDisplacementLimitDenominator_Column_TL
+        {
+            get
+            {
+                return MHorizontalDisplacementLimitDenominator_Column_TL;
+            }
+
+            set
+            {
+                MHorizontalDisplacementLimitDenominator_Column_TL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Column_TL");
+            }
+        }
+
+        public float VerticalDisplacementLimitDenominator_Purlin_PL
+        {
+            get
+            {
+                return MVerticalDisplacementLimitDenominator_Purlin_PL;
+            }
+
+            set
+            {
+                MVerticalDisplacementLimitDenominator_Purlin_PL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Purlin_PL");
+            }
+        }
+
+        public float VerticalDisplacementLimitDenominator_Purlin_TL
+        {
+            get
+            {
+                return MVerticalDisplacementLimitDenominator_Purlin_TL;
+            }
+
+            set
+            {
+                MVerticalDisplacementLimitDenominator_Purlin_TL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Purlin_TL");
+            }
+        }
+
+        public float HorizontalDisplacementLimitDenominator_Girt_TL
+        {
+            get
+            {
+                return MHorizontalDisplacementLimitDenominator_Girt_TL;
+            }
+
+            set
+            {
+                MHorizontalDisplacementLimitDenominator_Girt_TL = value;
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Girt_TL");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2549,6 +2648,15 @@ namespace PFD
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = false;
 
+            // Displacement / Deflection Limits
+            // V pripade potreby vytvorit samostatny dialog pre Design parameters / options
+            MVerticalDisplacementLimitDenominator_Rafter_PL = 300;
+            MVerticalDisplacementLimitDenominator_Rafter_TL = 250;
+            MHorizontalDisplacementLimitDenominator_Column_TL = 150;
+            MVerticalDisplacementLimitDenominator_Purlin_PL = 300;
+            MVerticalDisplacementLimitDenominator_Purlin_TL = 150;
+            MHorizontalDisplacementLimitDenominator_Girt_TL = 150;
+
             DisplayIn3DRatio = 0.003f;
 
             GenerateNodalLoads = true;
@@ -2571,7 +2679,7 @@ namespace PFD
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
             MSynchronizeGUI = true;
-                        
+
             IsSetFromCode = false;
 
             _worker.DoWork += CalculateInternalForces;
@@ -3019,7 +3127,7 @@ namespace PFD
             CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
 
             // Limit zavisi od typu zatazenia (load combination) a typu pruta
-            int iDelfectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total;
+            float fDelfectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total;
             float fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_Total;
 
             //Mato??? toto nechapem, potrebujem vysvetlit
@@ -3029,11 +3137,11 @@ namespace PFD
 
             if (loadCombID == 41) // TODO Combination of permanent load (TODO - nacitat/zistit spravne parametre kombinacie (je typu SLS a obsahuje len load cases typu permanent), neurcovat podla cisla ID)
             {
-                iDelfectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad;
+                fDelfectionLimitFraction_Denominator = GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad;
                 fDeflectionLimit = GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad;
             }
 
-            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, iDelfectionLimitFraction_Denominator, fDeflectionLimit);
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m, fDelfectionLimitFraction_Denominator, fDeflectionLimit);
         }
 
         public void GetGoverningMemberJointsDesignDetails(out Dictionary<EMemberType_FS_Position, CCalculJoint> dictStartJointResults, out Dictionary<EMemberType_FS_Position, CCalculJoint> dictEndJointResults)

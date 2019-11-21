@@ -494,7 +494,7 @@ namespace PFD.Infrastructure
                         // Set basic deflections for member and load combination
                         CMemberDeflectionsInLoadCombinations mDeflections = MemberDeflectionsInLoadCombinations.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
 
-                        int iDeflectionLimitDenominator_Fraction = 1; // int 25-1000
+                        float fDeflectionLimitDenominator_Fraction = 1; // 25-1000
                         float fDeflectionLimit = 0f;
 
                         // Find group of current member (definition of member type)
@@ -508,12 +508,12 @@ namespace PFD.Infrastructure
                             // Set deflection limit depending of member type and load combination type
                             if (lcomb.IsCombinationOfPermanentLoadCasesOnly())
                             {
-                                iDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_PermanentLoad;
+                                fDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_PermanentLoad;
                                 fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_PermanentLoad;
                             }
                             else
                             {
-                                iDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_Total;
+                                fDeflectionLimitDenominator_Fraction = currentMemberTypeGroupOfMembers.DeflectionLimitFraction_Denominator_Total;
                                 fDeflectionLimit = currentMemberTypeGroupOfMembers.DeflectionLimit_Total;
                             }
                         }
@@ -522,7 +522,7 @@ namespace PFD.Infrastructure
                         memberDesignModel.SetDesignDeflections_PFD(MUseCRSCGeometricalAxes,
                             iNumberOfDesignSections,
                             m,
-                            iDeflectionLimitDenominator_Fraction,
+                            fDeflectionLimitDenominator_Fraction,
                             fDeflectionLimit,
                             mDeflections.Deflections,
                             out sMemberDDeflection_x);
