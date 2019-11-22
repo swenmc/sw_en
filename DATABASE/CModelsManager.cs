@@ -97,6 +97,11 @@ namespace DATABASE
                         model.DoorLintel = reader["doorLintel"].ToString();
                         model.WindowFrame = reader["windowFrame"].ToString();
 
+                        model.BracingBlockGirts = reader["bracingBlockGirts"].ToString();
+                        model.BracingBlockPurlins = reader["bracingBlockPurlins"].ToString();
+                        model.BracingBlocksGirtsFrontSide = reader["bracingBlocksGirtsFrontSide"].ToString();
+                        model.BracingBlocksGirtsBackSide = reader["bracingBlocksGirtsBackSide"].ToString();
+
                         model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
                         model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
                         model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();

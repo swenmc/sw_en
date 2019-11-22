@@ -31,6 +31,12 @@ namespace DATABASE.DTO
         string MDoorTrimmer;
         string MDoorLintel;
         string MWindowFrame;
+
+        string MBracingBlockGirts;
+        string MBracingBlockPurlins;
+        string MBracingBlocksGirtsFrontSide;
+        string MBracingBlocksGirtsBackSide;
+
         string MRafterFlyBracingEveryXXPurlin;
         string MEdgePurlin_ILS_Number;
         string MGirt_ILS_Number;
@@ -415,6 +421,58 @@ namespace DATABASE.DTO
             set
             {
                 MGirtBackSide_ILS_Number = value;
+            }
+        }
+
+        public string BracingBlockGirts
+        {
+            get
+            {
+                return MBracingBlockGirts;
+            }
+
+            set
+            {
+                MBracingBlockGirts = value;
+            }
+        }
+
+        public string BracingBlockPurlins
+        {
+            get
+            {
+                return MBracingBlockPurlins;
+            }
+
+            set
+            {
+                MBracingBlockPurlins = value;
+            }
+        }
+
+        public string BracingBlocksGirtsFrontSide
+        {
+            get
+            {
+                return MBracingBlocksGirtsFrontSide;
+            }
+
+            set
+            {
+                MBracingBlocksGirtsFrontSide = value;
+            }
+        }
+
+        public string BracingBlocksGirtsBackSide
+        {
+            get
+            {
+                return MBracingBlocksGirtsBackSide;
+            }
+
+            set
+            {
+                MBracingBlocksGirtsBackSide = value;
             }
         }
 

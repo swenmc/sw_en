@@ -378,6 +378,11 @@ namespace PFD
             MembersSectionsDict.Add(EMemberType_FS_Position.DoorTrimmer, model.DoorTrimmer);
             MembersSectionsDict.Add(EMemberType_FS_Position.DoorLintel, model.DoorLintel);
             MembersSectionsDict.Add(EMemberType_FS_Position.WindowFrame, model.WindowFrame);
+
+            MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockGirts, model.BracingBlockGirts);
+            MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlockPurlins, model.BracingBlockPurlins);
+            MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlocksGirtsFrontSide, model.BracingBlocksGirtsFrontSide);
+            MembersSectionsDict.Add(EMemberType_FS_Position.BracingBlocksGirtsBackSide, model.BracingBlocksGirtsBackSide);
         }
     }
 }

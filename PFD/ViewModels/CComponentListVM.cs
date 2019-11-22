@@ -476,6 +476,25 @@ namespace PFD
                 SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.GirtBackSide);
             MComponentList.Add(ci);
 
+
+            //4 new types
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eBBG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eBBG].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eBBG].ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
+                SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.BracingBlockGirts);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eBBP].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eBBP].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eBBP].ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
+                SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.BracingBlockPurlins);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eBBFG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eBBFG].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eBBFG].ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
+                SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
+            MComponentList.Add(ci);
+            ci = new CComponentInfo(list_CompPref[(int)EMemberType_FS.eBBBG].ComponentPrefix, MColors.Find(x => x.Name.Equals(list_CompPref[(int)EMemberType_FS.eBBBG].ComponentColorName)),
+                list_CompPref[(int)EMemberType_FS.eBBBG].ComponentName, "27095", "Green", "G550‡", "None", true, true, true, true, true,
+                SectionsForGirtsOrPurlins, DefaultILS_Items, Colors, EMemberType_FS_Position.BracingBlocksGirtsBackSide);
+            MComponentList.Add(ci);
+
             SetComponentSectionsColors();
 
             foreach (CComponentInfo cInfo in MComponentList)
@@ -534,6 +553,16 @@ namespace PFD
             if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirtFrontSide_ILS_Number];
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
             if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirtBackSide_ILS_Number];
+
+            //To Mato - netusim co tu ma byt
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
+            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number]; //To Mato - netusim co tu ma byt???
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iPurlin_ILS_Number]; //To Mato - netusim co tu ma byt???
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
+            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number]; //To Mato - netusim co tu ma byt???
+            ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide);
+            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number]; //To Mato - netusim co tu ma byt???
         }
 
         //-------------------------------------------------------------------------------------------------------------

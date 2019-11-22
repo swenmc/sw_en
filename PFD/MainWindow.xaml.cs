@@ -95,54 +95,49 @@ namespace PFD
 
         public MainWindow()
         {
-            try
-            {
-                // Initial Screen
-                SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
-                splashScreen.Show(false);
-                InitializeComponent();
-                splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
-                // Set items in comboboxes and default values
-                SetInitialItemsInComboboxes();
+            // Initial Screen
+            SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
+            splashScreen.Show(false);
+            InitializeComponent();
+            splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
-                // Prepare data for generating of door blocks
-                DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
+            // Set items in comboboxes and default values
+            SetInitialItemsInComboboxes();
 
-                // Prepare data for generating of window blocks
-                WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
+            // Prepare data for generating of door blocks
+            DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
 
-                CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
-                SetLoadInput();
+            // Prepare data for generating of window blocks
+            WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
 
-                projectInfoVM = new CProjectInfoVM();
-                displayOptionsVM = new DisplayOptionsViewModel();
+            CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
+            SetLoadInput();
 
-                // Model Geometry
-                vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
-                vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
-                this.DataContext = vm;
-                vm.PFDMainWindow = this;
+            projectInfoVM = new CProjectInfoVM();
+            displayOptionsVM = new DisplayOptionsViewModel();
 
-                SetUIElementsVisibility();
+            // Model Geometry
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
+            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            this.DataContext = vm;
+            vm.PFDMainWindow = this;
 
-                Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
-                Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            SetUIElementsVisibility();
 
-                FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
-                FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+            Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
-                UpdateAll(true);
+            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
 
-                vm.Model.GroupModelMembers();
-                vm.RecreateJoints = false;
+            UpdateAll(true);
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            
+            vm.Model.GroupModelMembers();
+            vm.RecreateJoints = false;
+
+
+
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
@@ -205,7 +200,7 @@ namespace PFD
                 vm.RecreateJoints = true;
             }
             else if (sender is CComponentInfo)
-            {   
+            {
                 CComponentInfo cInfo = sender as CComponentInfo;
                 if (cInfo.IsSetFromCode) return;
                 if (e.PropertyName == "IsSetFromCode") return;
@@ -260,7 +255,7 @@ namespace PFD
 
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
-            
+
             //kvoli Doors Models,  najprv musi byt update
             if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
             {
@@ -271,7 +266,7 @@ namespace PFD
                 Datagrid_Windows_SelectionChanged(null, null);
             }
 
-            if(vm.RecreateJoints) vm.RecreateJoints = false;
+            if (vm.RecreateJoints) vm.RecreateJoints = false;
         }
 
         private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)
@@ -388,7 +383,7 @@ namespace PFD
                 MessageBox.Show(ValidationHelper.GetErrorsString(errors));
                 return;
             }
-            
+
             //DateTime start = DateTime.Now;
             // Clear results of previous calculation
             DeleteCalculationResults();
@@ -673,7 +668,7 @@ namespace PFD
                 crsc.i_yz_rg = Math.Sqrt(crsc.I_yz / crsc.A_g);
             }
         }
-        
+
         private void UpdateAll(bool programStart = false)
         {
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
@@ -682,7 +677,7 @@ namespace PFD
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
-            else if(vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
+            else if (vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
 
             List<CFoundation> foundations = null;
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
@@ -749,7 +744,7 @@ namespace PFD
                 // Create 3D window
                 //UpdateDisplayOptions();
                 sDisplayOptions = vm.GetDisplayOptions();
-                
+
                 Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex], vm.JointsVM.DictJoints);
 
                 // Display model in 3D preview frame
@@ -1039,7 +1034,7 @@ namespace PFD
                 MessageBox.Show(text);
             });
         }
-        
+
 
         public void UpdateResults()
         {
@@ -1085,7 +1080,7 @@ namespace PFD
                 if (Joint_Design.Content != null)
                 {
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
-                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                     CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
                     vmJD.IsSetFromCode = true;
                     vmJD.LimitStateIndex = 0;
@@ -1121,7 +1116,7 @@ namespace PFD
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
         }
-        
+
 
         private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
         {
@@ -1454,11 +1449,11 @@ namespace PFD
             finally
             {
                 WaitWindow ww = sender as WaitWindow;
-                if(ww != null) ww.Close();
+                if (ww != null) ww.Close();
             }
         }
 
-       
+
 
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
@@ -1599,7 +1594,7 @@ namespace PFD
             //if (props == null) model = new CModel();
             //else model = new CBlock_3D_002_WindowInBay(props, 0.5f, 0.3f, 0.8f, refgirt, mColumnLeft, mColumnRight, 6.0f, 2.8f, 0.3f);
 
-            
+
             CModel_PFD_01_GR modelPFD = vm.Model as CModel_PFD_01_GR;
             if (modelPFD.WindowsModels == null) return;
 
