@@ -288,9 +288,16 @@ namespace _3DTools
             else
                 scale = 1.2;
 
-            _scale.ScaleX *= scale;
-            _scale.ScaleY *= scale;
-            _scale.ScaleZ *= scale;
+            if (step > 0 && _scale.ScaleX < 0.01)
+            {
+                //do nothing
+            }
+            else
+            {
+                _scale.ScaleX *= scale;
+                _scale.ScaleY *= scale;
+                _scale.ScaleZ *= scale;
+            }
         }
     }
 }

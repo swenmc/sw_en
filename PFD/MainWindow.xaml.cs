@@ -95,45 +95,54 @@ namespace PFD
 
         public MainWindow()
         {
-            // Initial Screen
-            SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
-            splashScreen.Show(false);
-            InitializeComponent();
-            splashScreen.Close(TimeSpan.FromMilliseconds(1000));
+            try
+            {
+                // Initial Screen
+                SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
+                splashScreen.Show(false);
+                InitializeComponent();
+                splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
-            // Set items in comboboxes and default values
-            SetInitialItemsInComboboxes();
+                // Set items in comboboxes and default values
+                SetInitialItemsInComboboxes();
 
-            // Prepare data for generating of door blocks
-            DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
+                // Prepare data for generating of door blocks
+                DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
 
-            // Prepare data for generating of window blocks
-            WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
+                // Prepare data for generating of window blocks
+                WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
 
-            CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
-            SetLoadInput();
+                CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
+                SetLoadInput();
 
-            projectInfoVM = new CProjectInfoVM();
-            displayOptionsVM = new DisplayOptionsViewModel();
+                projectInfoVM = new CProjectInfoVM();
+                displayOptionsVM = new DisplayOptionsViewModel();
 
-            // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
-            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
-            this.DataContext = vm;
-            vm.PFDMainWindow = this;
+                // Model Geometry
+                vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
+                vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+                this.DataContext = vm;
+                vm.PFDMainWindow = this;
 
-            SetUIElementsVisibility();
+                SetUIElementsVisibility();
 
-            Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
-            Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+                Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+                Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
-            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
-            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+                FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+                FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
 
-            UpdateAll(true);
+                UpdateAll(true);
 
-            vm.Model.GroupModelMembers();
-            vm.RecreateJoints = false;
+                vm.Model.GroupModelMembers();
+                vm.RecreateJoints = false;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli

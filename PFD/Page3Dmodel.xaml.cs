@@ -60,7 +60,16 @@ namespace PFD
                 sDisplayOptions.bCreateHorizontalGridlines = true;
             }
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
+            try
+            {
+                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
