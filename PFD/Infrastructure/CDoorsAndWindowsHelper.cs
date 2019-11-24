@@ -13,7 +13,11 @@ namespace PFD.Infrastructure
         public static ObservableCollection<DoorProperties> GetDefaultDoorProperties()
         {
             ObservableCollection<DoorProperties> DoorBlocks = new ObservableCollection<DoorProperties>();
-            DoorProperties doorProps = new DoorProperties();
+            DoorProperties doorProps;
+
+            /* Martin - komentujem kvoli prehladnosti
+
+            doorProps = new DoorProperties();
             doorProps.sBuildingSide = "Front";
             doorProps.iBayNumber = 2;
             doorProps.sDoorType = "Roller Door";
@@ -48,7 +52,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsWidth = 0.9f;
             doorProps.fDoorCoordinateXinBlock = 0.4f;
             DoorBlocks.Add(doorProps);
-
+            */
             doorProps = new DoorProperties();
             doorProps.sBuildingSide = "Back";
             doorProps.iBayNumber = 3;
@@ -85,7 +89,7 @@ namespace PFD.Infrastructure
         {
             ObservableCollection<WindowProperties> WindowBlocks = new ObservableCollection<WindowProperties>();
             WindowProperties windowProps = new WindowProperties();
-            windowProps.sBuildingSide = "Front";
+            windowProps.sBuildingSide = "Left"; // "Front"
             windowProps.iBayNumber = 1;
             windowProps.fWindowsHeight = 0.6f;
             windowProps.fWindowsWidth = 0.6f;
