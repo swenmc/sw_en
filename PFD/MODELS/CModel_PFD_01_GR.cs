@@ -477,7 +477,7 @@ namespace PFD
             int iNumberOfGBSideWallsMembersInOneBay = 0;
             int iGBSideWallsMembersNo = 0;
 
-            bool bUseGBSideWallInEverySecondGUI = true;
+            bool bUseGBSideWallInEverySecondGUI = false; // TODO - Prebrat s Ondrejom a dopracovat
             bool bUseGBSideWallInEverySecond = bUseGBSideWallInEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             // Temp - zmazat
@@ -505,7 +505,7 @@ namespace PFD
             int iNumberOfPBMembersInOneBay = 0;
             int iPBMembersNo = 0;
 
-            bool bUsePBInEverySecondGUI = true;
+            bool bUsePBInEverySecondGUI = false; // TODO - Prebrat s Ondrejom a dopracovat
             bool bUsePBInEverySecond = bUsePBInEverySecondGUI && ( iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
             // Temp - zmazat
