@@ -428,12 +428,7 @@ namespace BaseClasses
         eWF, // Window Frame
         eBG, // Base Girt
         eMR, // Main Rafter
-        eMC, // Main Column
-
-        eBBG, // Bracing Block - Girts
-        eBBP, // Bracing Block - Purlins
-        eBBFG, // Bracing Blocks - Girts Front Side
-        eBBBG // Bracing Blocks - Girts Back Side
+        eMC // Main Column
     }
 
     public enum EMemberType_FS_Position
@@ -449,16 +444,14 @@ namespace BaseClasses
         ColumnBackSide = 9,
         GirtFrontSide = 10,
         GirtBackSide = 11,
-
-        DoorFrame = 12,
-        WindowFrame = 13,
-        DoorTrimmer = 14,
-        DoorLintel = 15,
-
-        BracingBlockGirts = 16,
-        BracingBlockPurlins = 17,
-        BracingBlocksGirtsFrontSide = 18,
-        BracingBlocksGirtsBackSide = 19
+        BracingBlockGirts = 12,
+        BracingBlockPurlins = 13,
+        BracingBlocksGirtsFrontSide = 14,
+        BracingBlocksGirtsBackSide = 15,
+        DoorFrame = 16,
+        WindowFrame = 17,
+        DoorTrimmer = 18,
+        DoorLintel = 19
     }
 
     // TODO - Ondrej TOTO je asi zbytocna duplicita
@@ -476,7 +469,11 @@ namespace BaseClasses
         eFrontColumn = 7,
         eBackColumn = 8,
         eFrontGirt = 9,
-        eBackGirt = 10
+        eBackGirt = 10,
+        eGirtBracing = 11,
+        ePurlinBracing = 12,
+        eFrontGirtBracing = 13,
+        eBackGirtBracing = 14
     }
 
     public enum ECountry

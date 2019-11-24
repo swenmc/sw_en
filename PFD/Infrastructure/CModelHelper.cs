@@ -438,7 +438,6 @@ namespace PFD
                         m.CrScStart.ID = (int)cInfo.MemberTypePosition;
                     }
 
-
                     // Ak deaktivujeme prut kvoli tomu, ze bol na jeho miesto vlozeny blok, tak tu mu uz nesmieme nastavit ze je znova aktivny
                     // Myslel som ze taky prut bude mat nastavene BIsGenerated na false ale bude v m_arrMembers existovat, aby mi sedeli cisla pri generovani prutov blokov atd
                     if (m.Prefix == cInfo.Prefix &&
@@ -461,7 +460,7 @@ namespace PFD
                         m.BIsSelectedForDesign = cInfo.Design;
                         m.BIsSelectedForMaterialList = cInfo.MaterialList;
 
-                        //set member Color
+                        // Set Member Color
                         m.Color = (Color)ColorConverter.ConvertFromString(cInfo.Color.Name);
                         if(m.CrScStart != null) m.CrScStart.CSColor = (Color)ColorConverter.ConvertFromString(cInfo.SectionColor);
                         break;
