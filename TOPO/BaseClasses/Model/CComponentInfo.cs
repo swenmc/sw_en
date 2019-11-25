@@ -427,12 +427,12 @@ namespace BaseClasses
         }
         private void SetCalculateIsEnabled()
         {
-            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") IsCalculateEnabled = false;
+            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL" || MPrefix == "GB" || MPrefix == "PB") IsCalculateEnabled = false;
             else IsCalculateEnabled = true;
         }
         private void SetDesignIsEnabled()
         {
-            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL") IsDesignEnabled = false;
+            if (MPrefix == "DF" || MPrefix == "WF" || MPrefix == "DT" || MPrefix == "DL" || MPrefix == "GB" || MPrefix == "PB") IsDesignEnabled = false;
             else IsDesignEnabled = true;
         }
 

@@ -207,7 +207,16 @@ namespace PFD
                 if (e.PropertyName == "GenerateIsEnabled") return;
                 if (e.PropertyName == "GenerateIsReadonly") return;
                 if (e.PropertyName == "ILS_Items") return;
-                if (e.PropertyName == "ILS") return;
+                if (e.PropertyName == "ILS")
+                {
+                    //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model a vygenerovat pruty bracing blocks nanovo. 
+                    if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt || 
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                    {
+                        vm.RecreateModel = true;
+                    }                    
+                    else return;
+                } 
                 if (e.PropertyName == "Section")
                 {
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed

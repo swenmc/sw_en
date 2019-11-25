@@ -173,6 +173,43 @@ namespace PFD
                 CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
                 if (columnBack.Generate != cInfo.Generate) columnBack.Generate = cInfo.Generate;
             }
+
+            //task 505
+            //volba generate by mala byt viazana na bool generate pre purlins resp. girts na jednotlivych stranach budovy, podobne ako su girts viazane na columns.
+
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
+            {
+                CComponentInfo purlinBlock = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
+                if (purlinBlock.Generate != cInfo.Generate) purlinBlock.Generate = cInfo.Generate;
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
+            {
+                CComponentInfo purlin = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
+                if (purlin.Generate != cInfo.Generate) purlin.Generate = cInfo.Generate;
+            }
+
+
+            if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide) 
+            {
+                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
+                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+            {
+                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide);
+                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt front
+            {
+                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
+                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+            }
+            else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt back
+            {
+                CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
+                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+            }
+
         }
 
         public List<CSectionPropertiesText> ComponentDetailsList
