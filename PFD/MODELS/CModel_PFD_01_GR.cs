@@ -2273,6 +2273,22 @@ namespace PFD
                     m.BIsSelectedForIFCalculation = false;
                     m.BIsSelectedForDesign = false;
                     m.BIsSelectedForMaterialList = false;
+
+                    //pokus vypnut bracing blocks
+                    if (m.IntermediateNodes == null) continue;
+
+                    foreach (CNode n in m.IntermediateNodes)
+                    {
+                        IEnumerable<CMember> bracingMembers = m_arrMembers.Where(bm => bm.NodeStart.ID == n.ID || bm.NodeEnd.ID == n.ID);
+                        foreach (CMember bm in bracingMembers)
+                        {
+                            bm.BIsGenerated = false;
+                            bm.BIsDisplayed = false;
+                            bm.BIsSelectedForIFCalculation = false;
+                            bm.BIsSelectedForDesign = false;
+                            bm.BIsSelectedForMaterialList = false;
+                        }
+                    }
                 }
 
                 // Deactivate Member Joints
