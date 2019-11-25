@@ -126,8 +126,8 @@ namespace PFD
             iOneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            m_arrMat = new CMat[14];
-            m_arrCrSc = new CCrSc[14];
+            m_arrMat = new CMat[15];
+            m_arrCrSc = new CCrSc[15];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -146,6 +146,7 @@ namespace PFD
             m_arrMat[(int)EMemberGroupNames.eGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eGirtBracing].Material);
             m_arrMat[(int)EMemberGroupNames.ePurlinBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.ePurlinBracing].Material);
             m_arrMat[(int)EMemberGroupNames.eFrontGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Material);
+            m_arrMat[(int)EMemberGroupNames.eBackGirtBracing] = MaterialFactory.GetMaterial(componentList[(int)EMemberGroupNames.eBackGirtBracing].Material);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
@@ -167,6 +168,7 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.eGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eGirtBracing].Section);
             m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.ePurlinBracing].Section);
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eFrontGirtBracing].Section);
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing] = CrScFactory.GetCrSc(componentList[(int)EMemberGroupNames.eBackGirtBracing].Section);
 
             for (int i = 0; i < m_arrCrSc.Length; i++)
             {
@@ -186,10 +188,11 @@ namespace PFD
             m_arrCrSc[(int)EMemberGroupNames.eBackGirt].CSColor = Colors.YellowGreen;       // 11 Back Girt
             m_arrCrSc[(int)EMemberGroupNames.eGirtBracing].CSColor = Colors.Orange;         // 12 Girt Bracing
             m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing].CSColor = Colors.DarkOrange;   // 13 Purlin Bracing
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].CSColor = Colors.LimeGreen; // 14 Grit Bracing - Front Side
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].CSColor = Colors.LimeGreen; // 14 Girt Bracing - Front Side
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].CSColor = Colors.LightSeaGreen; // 15 Girt Bracing - Back Side
 
             // Member Groups
-            listOfModelMemberGroups = new List<CMemberGroup>(14);
+            listOfModelMemberGroups = new List<CMemberGroup>(15);
 
             //CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
@@ -250,6 +253,7 @@ namespace PFD
             listOfModelMemberGroups.Add(new CMemberGroup(12, componentList[(int)EMemberGroupNames.eGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(13, componentList[(int)EMemberGroupNames.ePurlinBracing].ComponentName, EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], 0, 0, 0, 0));
             listOfModelMemberGroups.Add(new CMemberGroup(14, componentList[(int)EMemberGroupNames.eFrontGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlocksGirtsFrontSide, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing], 0, 0, 0, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(15, componentList[(int)EMemberGroupNames.eBackGirtBracing].ComponentName, EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlocksGirtsBackSide, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing], 0, 0, 0, 0));
 
             // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
             if (m_arrMat.Length >= m_arrCrSc.Length)
@@ -557,8 +561,45 @@ namespace PFD
                 iNumberOfGB_FSMembersInOneFrame -= iArrGB_FS_NumberOfMembersPerBay[iOneRafterFrontColumnNo];
             }
 
-            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame];
+            // Back side girts bracing blocks
+            bool bGenerateGirtBracingBackSide = true;
+
+            int[] iArrGB_BS_NumberOfNodesPerBay = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
+            int[] iArrGB_BS_NumberOfNodesPerBayFirstNode = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
+            int[] iArrGB_BS_NumberOfMembersPerBay = new int[iArrNumberOfNodesPerBackColumn.Length + 1];
+            int iNumberOfGB_BSNodesInOneFrame = 0;
+            int iNumberOfGB_BSMembersInOneFrame = 0;
+
+            if (bGenerateGirtBracingBackSide)
+            {
+                // First bay - pocet girts urcime podla poctu uzlov pre girts na edge / main column
+                iArrGB_BS_NumberOfNodesPerBay[0] = (iOneColumnGirtNo + 1) * iNumberOfTransverseSupports_BackGirts; // Pridame o jeden rad uzlov viac - nachadzaju sa na edge rafter
+                iArrGB_BS_NumberOfNodesPerBayFirstNode[0] = (iOneColumnGirtNo + 1);
+                iArrGB_BS_NumberOfMembersPerBay[0] = iOneColumnGirtNo * iNumberOfTransverseSupports_BackGirts;
+
+                iNumberOfGB_BSNodesInOneFrame = iArrGB_BS_NumberOfNodesPerBay[0];
+                iNumberOfGB_BSMembersInOneFrame = iArrGB_BS_NumberOfMembersPerBay[0];
+
+                for (int i = 0; i < iArrNumberOfNodesPerBackColumn.Length; i++)
+                {
+                    iArrGB_BS_NumberOfNodesPerBay[i + 1] = (iArrNumberOfNodesPerBackColumn[i] + 1) * iNumberOfTransverseSupports_BackGirts;
+                    iArrGB_BS_NumberOfNodesPerBayFirstNode[i + 1] = iArrNumberOfNodesPerBackColumn[i] + 1;
+                    iArrGB_BS_NumberOfMembersPerBay[i + 1] = iArrNumberOfNodesPerBackColumn[i] * iNumberOfTransverseSupports_BackGirts;
+
+                    iNumberOfGB_BSNodesInOneFrame += iArrGB_BS_NumberOfNodesPerBay[i + 1];
+                    iNumberOfGB_BSMembersInOneFrame += iArrGB_BS_NumberOfMembersPerBay[i + 1];
+                }
+
+                iNumberOfGB_BSNodesInOneFrame *= 2;
+                iNumberOfGB_BSMembersInOneFrame *= 2;
+                // Girt bracing block nodes / members in the middle are considered twice - remove one set
+
+                iNumberOfGB_BSNodesInOneFrame -= iArrGB_BS_NumberOfNodesPerBay[iOneRafterFrontColumnNo];
+                iNumberOfGB_BSMembersInOneFrame -= iArrGB_BS_NumberOfMembersPerBay[iOneRafterFrontColumnNo];
+            }
+
+            m_arrNodes = new CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo + iGBSideWallsNodesNo + iPBNodesNo + iNumberOfGB_FSNodesInOneFrame + iNumberOfGB_BSNodesInOneFrame];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + iNumberOfGB_BSMembersInOneFrame];
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
@@ -591,6 +632,9 @@ namespace PFD
 
             float fGBFrontSideStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].y_max - fCutOffOneSide;
             float fGBFrontSideEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].y_min - fCutOffOneSide;
+
+            float fGBBackSideStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eBackGirt].y_max - fCutOffOneSide;
+            float fGBBackSideEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirt].y_min - fCutOffOneSide;
 
             float fColumnsRotation = MathF.fPI / 2.0f;
             float fGirtsRotation = MathF.fPI / 2.0f;
@@ -1127,6 +1171,117 @@ namespace PFD
                     }
                     iTemp += iArrGB_FS_NumberOfNodesPerBay[i];
                     iTemp2 += iArrGB_FS_NumberOfMembersPerBay[i];
+                }
+            }
+
+            // Girt Bracing - Back side
+            // Nodes - Girt Bracing - Back side
+
+            i_temp_numberofNodes += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSNodesInOneFrame : 0;
+            int iNumberOfGB_BSNodesInOneSideAndMiddleBay = 0;
+
+            if (bGenerateGirtBracingBackSide)
+            {
+                int iTemp = 0;
+
+                for (int i = 0; i < iArrGB_BS_NumberOfNodesPerBay.Length; i++) // Left side
+                {
+                    for (int j = 0; j < iArrGB_BS_NumberOfNodesPerBayFirstNode[i]; j++) // Bay
+                    {
+                        for (int k = 0; k < iNumberOfTransverseSupports_BackGirts; k++)
+                        {
+                            float x_glob = i * fDist_BackColumns + (k + 1) * fIntermediateSupportSpacingGirtsBackSide;
+                            float z_glob;
+
+                            if (j < iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1)
+                                z_glob = (fBottomGirtPosition + j * fDist_BackGirts);
+                            else
+                                CalcColumnNodeCoord_Z(x_glob, out z_glob); // Top bracing blocks under the edge rafter
+
+                            m_arrNodes[i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports_BackGirts + k] = new CNode(i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports_BackGirts + k + 1, x_glob, fL_tot, z_glob, 0);
+                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports_BackGirts + k]);
+                        }
+                    }
+                    iTemp += iArrGB_BS_NumberOfNodesPerBay[i];
+                }
+
+                iNumberOfGB_BSNodesInOneSideAndMiddleBay = iTemp;
+                iTemp = 0;
+
+                for (int i = 0; i < iArrGB_BS_NumberOfNodesPerBay.Length - 1; i++) // Right side
+                {
+                    for (int j = 0; j < iArrGB_BS_NumberOfNodesPerBayFirstNode[i]; j++) // Bay
+                    {
+                        for (int k = 0; k < iNumberOfTransverseSupports_BackGirts; k++)
+                        {
+                            float x_glob = i * fDist_BackColumns + (k + 1) * fIntermediateSupportSpacingGirtsBackSide;
+                            float z_glob;
+
+                            if (j < iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1)
+                                z_glob = (fBottomGirtPosition + j * fDist_BackGirts);
+                            else
+                                CalcColumnNodeCoord_Z(x_glob, out z_glob); // Top bracing blocks under the edge rafter
+
+                            m_arrNodes[i_temp_numberofNodes + iNumberOfGB_BSNodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports_BackGirts + k] = new CNode(i_temp_numberofNodes + iNumberOfGB_BSNodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports_BackGirts + k + 1, fW_frame - x_glob, fL_tot, z_glob, 0);
+                            RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofNodes + iNumberOfGB_BSNodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports_BackGirts + k]);
+                        }
+                    }
+                    iTemp += iArrGB_BS_NumberOfNodesPerBay[i];
+                }
+            }
+
+            // Members - Girt Bracing - Back side
+
+            i_temp_numberofMembers += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSMembersInOneFrame : 0;
+            if (bGenerateGirtBracingBackSide)
+            {
+                int iTemp = 0;
+                int iTemp2 = 0;
+
+                for (int i = 0; i < iArrGB_BS_NumberOfMembersPerBay.Length; i++) // Left side
+                {
+                    for (int j = 0; j < (iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1); j++) // Bay
+                    {
+                        float fGBBackSideEnd_Current = fGBBackSideEnd;
+
+                        if (j == iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1 - 1) // Last
+                            fGBBackSideEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_BackGirts; k++)
+                        {
+                            int memberIndex = i_temp_numberofMembers + iTemp2 + j * iNumberOfTransverseSupports_BackGirts + k;
+                            int startNodeIndex = i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports_BackGirts + k;
+                            int endNodeIndex = i_temp_numberofNodes + iTemp + (j + 1) * iNumberOfTransverseSupports_BackGirts + k;
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlocksGirtsBackSide, eccentricityGirtBack_YL, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd_Current, fColumnsRotation, 0);
+                        }
+                    }
+                    iTemp += iArrGB_BS_NumberOfNodesPerBay[i];
+                    iTemp2 += iArrGB_BS_NumberOfMembersPerBay[i];
+                }
+
+                int iNumberOfGB_BSMembersInOneSideAndMiddleBay = iTemp2;
+                iTemp = 0;
+                iTemp2 = 0;
+
+                for (int i = 0; i < iArrGB_BS_NumberOfMembersPerBay.Length - 1; i++) // Right side
+                {
+                    for (int j = 0; j < (iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1); j++) // Bay
+                    {
+                        float fGBBackSideEnd_Current = fGBBackSideEnd;
+
+                        if (j == iArrGB_BS_NumberOfNodesPerBayFirstNode[i] - 1 - 1) // Last
+                            fGBBackSideEnd_Current = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing].y_max * (float)Math.Tan(fRoofPitch_rad) - fCutOffOneSide;
+
+                        for (int k = 0; k < iNumberOfTransverseSupports_BackGirts; k++)
+                        {
+                            int memberIndex = i_temp_numberofMembers + iNumberOfGB_BSMembersInOneSideAndMiddleBay + iTemp2 + j * iNumberOfTransverseSupports_BackGirts + k;
+                            int startNodeIndex = i_temp_numberofNodes + iNumberOfGB_BSNodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports_BackGirts + k;
+                            int endNodeIndex = i_temp_numberofNodes + iNumberOfGB_BSNodesInOneSideAndMiddleBay + iTemp + (j + 1) * iNumberOfTransverseSupports_BackGirts + k;
+                            m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlocksGirtsBackSide, eccentricityGirtBack_YL, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd_Current, fColumnsRotation, 0);
+                        }
+                    }
+                    iTemp += iArrGB_BS_NumberOfNodesPerBay[i];
+                    iTemp2 += iArrGB_BS_NumberOfMembersPerBay[i];
                 }
             }
 
