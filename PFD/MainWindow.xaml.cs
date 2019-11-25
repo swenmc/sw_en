@@ -211,7 +211,11 @@ namespace PFD
                 {
                     //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model a vygenerovat pruty bracing blocks nanovo. 
                     if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt || 
-                        cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide ||
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.MainColumn || cInfo.MemberTypePosition == EMemberType_FS_Position.MainRafter || 
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
+                        cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                     {
                         vm.RecreateModel = true;
                     }                    
