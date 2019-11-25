@@ -1190,8 +1190,8 @@ namespace PFD
                     {
                         if (secMem.BIsGenerated == false)
                         {
-                            m_arrConnectionJoints[i].BIsGenerated = false;
-                            m_arrConnectionJoints[i].BIsDisplayed = false;
+                            CConnectionJointTypes joint = m_arrConnectionJoints[i];
+                            DeactivateJoint(ref joint);
                         }
                     }
                 }
@@ -1840,6 +1840,8 @@ namespace PFD
             int iNumberOfGB_NodesInOneSideAndMiddleBay, int iNumberOfTransverseSupports, CMemberEccentricity eGirtEccentricity, float fGBAlignmentStart, float fGBAlignmentEnd, float fGBAlignmentEndToRafter, CCrSc section,
             EMemberType_FS_Position eMemberType_FS_Position, float fColumnsRotation)
         {
+            float fRealLengthLimit = 0.25f; // Limit pre dlzku pruta, ak je prut kratsi ako limit, nastavimme mu bGenerate na false
+
             int iTemp = 0;
             int iTemp2 = 0;
 
@@ -1858,6 +1860,9 @@ namespace PFD
                         int startNodeIndex = i_temp_numberofNodes + iTemp + j * iNumberOfTransverseSupports + k;
                         int endNodeIndex = i_temp_numberofNodes + iTemp + (j + 1) * iNumberOfTransverseSupports + k;
                         m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], section, EMemberType_FS.eGB, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGBAlignmentStart, fGBAlignmentEnd_Current, fColumnsRotation, 0);
+
+                        if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
+                            DeactivateMember(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -1883,6 +1888,9 @@ namespace PFD
                         int startNodeIndex = i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + j * iNumberOfTransverseSupports + k;
                         int endNodeIndex = i_temp_numberofNodes + iNumberOfGB_NodesInOneSideAndMiddleBay + iTemp + (j + 1) * iNumberOfTransverseSupports + k;
                         m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], section, EMemberType_FS.eGB, eMemberType_FS_Position, eGirtEccentricity, eGirtEccentricity, fGBAlignmentStart, fGBAlignmentEnd_Current, fColumnsRotation, 0);
+
+                        if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
+                            DeactivateMember(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -2197,14 +2205,7 @@ namespace PFD
             {
                 // Deactivate Members
                 CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
-                if (m != null)
-                {
-                    m.BIsGenerated = false;
-                    m.BIsDisplayed = false;
-                    m.BIsSelectedForIFCalculation = false;
-                    m.BIsSelectedForDesign = false;
-                    m.BIsSelectedForMaterialList = false;
-                }
+                DeactivateMember(ref m);
 
                 // Deactivate Member Joints
                 // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
@@ -2213,23 +2214,8 @@ namespace PFD
                 CConnectionJointTypes jEnd;
                 GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
 
-                if (jStart != null)
-                {
-                    jStart.BIsGenerated = false;
-                    jStart.BIsDisplayed = false;
-                    jStart.BIsSelectedForIFCalculation = false;
-                    jStart.BIsSelectedForDesign = false;
-                    jStart.BIsSelectedForMaterialList = false;
-                }
-
-                if (jEnd != null)
-                {
-                    jEnd.BIsGenerated = false;
-                    jEnd.BIsDisplayed = false;
-                    jEnd.BIsSelectedForIFCalculation = false;
-                    jEnd.BIsSelectedForDesign = false;
-                    jEnd.BIsSelectedForMaterialList = false;
-                }
+                DeactivateJoint(ref jStart);
+                DeactivateJoint(ref jEnd);
             }
 
             float fBlockRotationAboutZaxis_rad = 0;
@@ -2764,6 +2750,30 @@ namespace PFD
                     if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
                         throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
                 }
+            }
+        }
+
+        public void DeactivateMember(ref CMember m)
+        {
+            if (m != null)
+            {
+                m.BIsGenerated = false;
+                m.BIsDisplayed = false;
+                m.BIsSelectedForIFCalculation = false;
+                m.BIsSelectedForDesign = false;
+                m.BIsSelectedForMaterialList = false;
+            }
+        }
+
+        public void DeactivateJoint(ref CConnectionJointTypes j)
+        {
+            if (j != null)
+            {
+                j.BIsGenerated = false;
+                j.BIsDisplayed = false;
+                j.BIsSelectedForIFCalculation = false;
+                j.BIsSelectedForDesign = false;
+                j.BIsSelectedForMaterialList = false;
             }
         }
 
