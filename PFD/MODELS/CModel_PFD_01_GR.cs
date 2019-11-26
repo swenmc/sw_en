@@ -2187,6 +2187,26 @@ namespace PFD
         //uz by sa nemal vytvarat novy
         public void AddDoorOrWindowBlockProperties(Point3D pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
         {
+            float fBlockRotationAboutZaxis_rad = 0;
+
+            if (block.BuildingSide == "Left" || block.BuildingSide == "Right")
+                fBlockRotationAboutZaxis_rad = MathF.fPI / 2.0f; // Parameter of block - depending on side of building (front, back (0 deg), left, right (90 deg))
+
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
+            // TODO 405 - TO Ondrej - tu sa znazim pripravit obrysove body otvoru v 3D - GCS
+            // Opening definition points
+            // Transformation from LCS of block to GCS // Create definition points in 3D
+
+            List<Point3D> openningPointsInGCS = new List<Point3D>();
+
+            foreach (System.Windows.Point p2D in block.openningPoints)
+            {
+                Point3D p3D = new Point3D(p2D.X, 0, p2D.Y);
+                RotateAndTranslatePointAboutZ_CCW(pControlPointBlock, ref p3D, fBlockRotationAboutZaxis_rad);
+                openningPointsInGCS.Add(p3D); // Output - s tymito suradnicami by sa mala porovnavat pozicia girt bracing na jednotlivych stranach budovy
+            }
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
+
             int arraysizeoriginal;
             
             // Cross-sections
@@ -2226,12 +2246,66 @@ namespace PFD
 
                 DeactivateJoint(ref jStart);
                 DeactivateJoint(ref jEnd);
+
+                // TODO 405 - Ondrej pozri sa na to, pripadne vylepsi
+                // -------------------------------------------------------------------------------------------------
+                // Deactivate bracing blocks
+                // Find bracing blocks for girt
+
+                // Fill list of bracing blocks on member
+                for (int j = 0; j < m_arrMembers.Length; j++)
+                {
+                    if (m_arrMembers[j].EMemberType == EMemberType_FS.eGB)
+                    {
+                        if (m.IsIntermediateNode(m_arrMembers[j].NodeStart) || m.IsIntermediateNode(m_arrMembers[j].NodeEnd))
+                        {
+                            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace bola hned vela door alebo window
+                            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Porovnavame suradnice GCS Y
+                            {
+                                if (m_arrMembers[j].NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && m_arrMembers[j].NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
+                                {
+                                    CMember brace = m_arrMembers[j]; // Member to deactivate
+
+                                    DeactivateMember(ref brace);
+
+                                    try
+                                    {
+                                        CConnectionJointTypes jStart2;
+                                        CConnectionJointTypes jEnd2;
+                                        GetModelMemberStartEndConnectionJoints(brace, out jStart2, out jEnd2);
+
+                                        DeactivateJoint(ref jStart2);
+                                        DeactivateJoint(ref jEnd2);
+                                    }
+                                    catch { };
+                                }
+                            }
+                            else // // Porovnavame suradnice GCS X
+                            {
+                                if (m_arrMembers[j].NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && m_arrMembers[j].NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
+                                {
+                                    CMember brace = m_arrMembers[j]; // Member to deactivate
+
+                                    DeactivateMember(ref brace);
+
+                                    try
+                                    {
+                                        CConnectionJointTypes jStart2;
+                                        CConnectionJointTypes jEnd2;
+                                        GetModelMemberStartEndConnectionJoints(brace, out jStart2, out jEnd2);
+
+                                        DeactivateJoint(ref jStart2);
+                                        DeactivateJoint(ref jEnd2);
+                                    }
+                                    catch { };
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // -------------------------------------------------------------------------------------------------
             }
-
-            float fBlockRotationAboutZaxis_rad = 0;
-
-            if (block.BuildingSide == "Left" || block.BuildingSide == "Right")
-                fBlockRotationAboutZaxis_rad = MathF.fPI / 2.0f; // Parameter of block - depending on side of building (front, back (0 deg), left, right (90 deg))
 
             // Copy block nodes into the model
             for (int i = 0; i < block.m_arrNodes.Length; i++)
@@ -2255,21 +2329,6 @@ namespace PFD
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
             }
-
-            //----------------------------------------------------------------------------------------------------------------------------------------------------
-            // TODO 405 - TO Ondrej - tu sa znazim pripravit obrysove body otvoru v 3D - GCS
-            // Opening definition points
-            // Transformation from LCS of block to GCS // Create definition points in 3D
-
-            List<Point3D> openningPointsInGCS = new List<Point3D>();
-
-            foreach(System.Windows.Point p2D in block.openningPoints)
-            {
-                Point3D p3D = new Point3D(p2D.X, 0, p2D.Y);
-                RotateAndTranslatePointAboutZ_CCW(pControlPointBlock, ref p3D, fBlockRotationAboutZaxis_rad);
-                openningPointsInGCS.Add(p3D); // Output - s tymito suradnicami by sa mala porovnavat pozicia girt bracing na jednotlivych stranach budovy
-            }
-            //----------------------------------------------------------------------------------------------------------------------------------------------------
 
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
