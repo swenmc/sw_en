@@ -1574,19 +1574,28 @@ namespace PFD
             }
         }
 
-        public void RotateAndTranslateNodeAboutZ_CCW(Point3D pControlPoint, CNode node, float fAngle_rad)
+        public void RotateAndTranslateNodeAboutZ_CCW(Point3D pControlPoint, ref CNode node, float fAngle_rad)
+        {
+            Point3D p = node.GetPoint3D();
+            RotateAndTranslatePointAboutZ_CCW(pControlPoint, ref p, fAngle_rad);
+
+            node.X = (float)p.X;
+            node.Y = (float)p.Y;
+        }
+
+        public void RotateAndTranslatePointAboutZ_CCW(Point3D pControlPoint, ref Point3D point, float fAngle_rad)
         {
             // Rotate node
-            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(node.X, node.Y, fAngle_rad);
-            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(node.X, node.Y, fAngle_rad);
+            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(point.X, point.Y, fAngle_rad);
+            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(point.X, point.Y, fAngle_rad);
 
             // Set rotated coordinates
-            node.X = fx;
-            node.Y = fy;
+            point.X = fx;
+            point.Y = fy;
 
             // Translate node
-            node.X += (float)pControlPoint.X;
-            node.Y += (float)pControlPoint.Y;
+            point.X += (float)pControlPoint.X;
+            point.Y += (float)pControlPoint.Y;
         }
 
         public void AddColumnsNodes(int i_temp_numberofNodes, int i_temp_numberofMembers, int iOneRafterColumnNo, int iColumnNoInOneFrame, float fDist_Columns, float fy_Global_Coord)
@@ -2227,7 +2236,7 @@ namespace PFD
             // Copy block nodes into the model
             for (int i = 0; i < block.m_arrNodes.Length; i++)
             {
-                RotateAndTranslateNodeAboutZ_CCW(pControlPointBlock, block.m_arrNodes[i], fBlockRotationAboutZaxis_rad);
+                RotateAndTranslateNodeAboutZ_CCW(pControlPointBlock, ref block.m_arrNodes[i], fBlockRotationAboutZaxis_rad);
                 m_arrNodes[arraysizeoriginal + i] = block.m_arrNodes[i];
                 m_arrNodes[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
             }
@@ -2246,6 +2255,21 @@ namespace PFD
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
             }
+
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
+            // TODO 405 - TO Ondrej - tu sa znazim pripravit obrysove body otvoru v 3D - GCS
+            // Opening definition points
+            // Transformation from LCS of block to GCS // Create definition points in 3D
+
+            List<Point3D> openningPointsInGCS = new List<Point3D>();
+
+            foreach(System.Windows.Point p2D in block.openningPoints)
+            {
+                Point3D p3D = new Point3D(p2D.X, 0, p2D.Y);
+                RotateAndTranslatePointAboutZ_CCW(pControlPointBlock, ref p3D, fBlockRotationAboutZaxis_rad);
+                openningPointsInGCS.Add(p3D); // Output - s tymito suradnicami by sa mala porovnavat pozicia girt bracing na jednotlivych stranach budovy
+            }
+            //----------------------------------------------------------------------------------------------------------------------------------------------------
 
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)

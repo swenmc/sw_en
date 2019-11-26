@@ -372,6 +372,27 @@ namespace PFD
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates,  true));
             }
+
+            /*
+
+            4------------3
+            |            |
+            |            |
+            |            |
+            |            |
+            |            |
+            1------------2
+
+            */
+
+            // x horizontalna os, y-zvisla os (z)
+
+            openningPoints = new List<System.Windows.Point>(4) {
+                new System.Windows.Point(prop.fDoorCoordinateXinBlock, 0),
+                new System.Windows.Point(prop.fDoorCoordinateXinBlock + prop.fDoorsWidth, 0),
+                new System.Windows.Point(prop.fDoorCoordinateXinBlock + prop.fDoorsWidth, 0 + prop.fDoorsHeight),
+                new System.Windows.Point(prop.fDoorCoordinateXinBlock, 0 + prop.fDoorsHeight)
+            };
         }
     }
 }
