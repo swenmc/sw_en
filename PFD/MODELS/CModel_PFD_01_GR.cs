@@ -1111,6 +1111,20 @@ namespace PFD
                 EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation);
             }
 
+            // Validacia generovanych prutov a uzlov (overime ci vsetky generovane nodes a members maju ID o 1 vacsie ako je index v poli
+
+            for(int i = 0; i< m_arrNodes.Length; i++)
+            {
+                if (m_arrNodes[i].ID != i + 1)
+                    throw new Exception("Invalid ID - Node Index:" + i.ToString() + " Node ID: " + m_arrNodes[i].ID);
+            }
+
+            for (int i = 0; i < m_arrMembers.Length; i++)
+            {
+                if (m_arrMembers[i].ID != i + 1)
+                    throw new Exception("Invalid ID - Member Index:" + i.ToString() + " Member ID: " + m_arrMembers[i].ID);
+            }
+
             FillIntermediateNodesForMembers();
 
             #region Joints
@@ -2249,18 +2263,18 @@ namespace PFD
 
                 // TODO 405 - Ondrej pozri sa na to, pripadne vylepsi
                 // -------------------------------------------------------------------------------------------------
-                // Deactivate bracing blocks
-                // Find bracing blocks for girt
+                // Deactivate bracing blocks and joints
+                // Find bracing blocks for deactivated girt
 
-                // Fill list of bracing blocks on member
                 for (int j = 0; j < m_arrMembers.Length; j++)
                 {
                     if (m_arrMembers[j].EMemberType == EMemberType_FS.eGB)
                     {
                         if (m.IsIntermediateNode(m_arrMembers[j].NodeStart) || m.IsIntermediateNode(m_arrMembers[j].NodeEnd))
                         {
-                            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace bola hned vela door alebo window
-                            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Porovnavame suradnice GCS Y
+                            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
+
+                            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
                             {
                                 if (m_arrMembers[j].NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && m_arrMembers[j].NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
                                 {
@@ -2268,19 +2282,22 @@ namespace PFD
 
                                     DeactivateMember(ref brace);
 
-                                    try
+                                    try // To Ondrej - Skusime najst spoje pre brace a zmazat ich, niekde sa to nepodari, ak boli spoje uz predtym z nejakeho dovodu zmazane ??? Mozno su niekde zle IDs ???
                                     {
-                                        CConnectionJointTypes jStart2;
-                                        CConnectionJointTypes jEnd2;
-                                        GetModelMemberStartEndConnectionJoints(brace, out jStart2, out jEnd2);
+                                        CConnectionJointTypes jBraceStart;
+                                        CConnectionJointTypes jBraceEnd;
+                                        GetModelMemberStartEndConnectionJoints(brace, out jBraceStart, out jBraceEnd);
 
-                                        DeactivateJoint(ref jStart2);
-                                        DeactivateJoint(ref jEnd2);
+                                        DeactivateJoint(ref jBraceStart);
+                                        DeactivateJoint(ref jBraceEnd);
                                     }
-                                    catch { };
+                                    catch
+                                    {
+
+                                    };
                                 }
                             }
-                            else // // Porovnavame suradnice GCS X
+                            else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
                             {
                                 if (m_arrMembers[j].NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && m_arrMembers[j].NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
                                 {
@@ -2288,16 +2305,19 @@ namespace PFD
 
                                     DeactivateMember(ref brace);
 
-                                    try
+                                    try // To Ondrej - Skusime najst spoje pre brace a zmazat ich, niekde sa to nepodari, ak boli spoje uz predtym z nejakeho dovodu zmazane ??? Mozno su niekde zle IDs ???
                                     {
-                                        CConnectionJointTypes jStart2;
-                                        CConnectionJointTypes jEnd2;
-                                        GetModelMemberStartEndConnectionJoints(brace, out jStart2, out jEnd2);
+                                        CConnectionJointTypes jBraceStart;
+                                        CConnectionJointTypes jBraceEnd;
+                                        GetModelMemberStartEndConnectionJoints(brace, out jBraceStart, out jBraceEnd);
 
-                                        DeactivateJoint(ref jStart2);
-                                        DeactivateJoint(ref jEnd2);
+                                        DeactivateJoint(ref jBraceStart);
+                                        DeactivateJoint(ref jBraceEnd);
                                     }
-                                    catch { };
+                                    catch
+                                    {
+
+                                    };
                                 }
                             }
                         }
