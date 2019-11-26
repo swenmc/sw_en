@@ -21,17 +21,15 @@ namespace BaseClasses
         public float m_fPlate_Angle_Height;
         public string m_sPlateType_F;
         public EPlateNumberAndPositionInJoint m_ePlateNumberAndPosition;
-        public bool m_bIsAlignmentMainMemberWidth;
 
         public CConnectionJoint_T003() { }
 
-        public CConnectionJoint_T003(string sPlateType_F, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition, bool bIsAlignmentMainMemberWidth, bool bIsDisplayed_temp)
+        public CConnectionJoint_T003(string sPlateType_F, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float ft_temp_main_plate, EPlateNumberAndPositionInJoint ePlateNumberAndPosition, bool bIsDisplayed_temp)
         {
             bIsJointDefinedinGCS = false;
 
             m_sPlateType_F = sPlateType_F;
             m_ePlateNumberAndPosition = ePlateNumberAndPosition;
-            m_bIsAlignmentMainMemberWidth = bIsAlignmentMainMemberWidth;
             m_Node = Node_temp;
             m_pControlPoint = m_Node.GetPoint3D();
             m_MainMember = MainMember_temp;
@@ -49,16 +47,12 @@ namespace BaseClasses
 
             if (MainMember_temp != null && MainMember_temp.CrScStart != null)
                 m_fPlate_Angle_Height = (float)MainMember_temp.CrScStart.h;
-            
+
+            float fCutOffOneSide = 0.005f;
             float fAlignment_x = 0.0f;
 
-            if (m_MainMember != null)
-            {
-                if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
-                    fAlignment_x = (float)m_MainMember.CrScStart.y_max /*0.5f * (float)m_MainMember.CrScStart.b*/ + m_ft_main_plate;
-                else
-                    fAlignment_x = (float)m_MainMember.CrScStart.z_max /*0.5f * (float)m_MainMember.CrScStart.h*/ + m_ft_main_plate;
-            }
+            if (m_SecondaryMembers[0] != null)
+                fAlignment_x = -m_SecondaryMembers[0].FAlignment_Start + m_ft_main_plate - fCutOffOneSide;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
@@ -92,14 +86,8 @@ namespace BaseClasses
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
-                //18/06/2019 Ked otocime plechy spoja zo start do end joint je potrebne predovsetkym u nesymetrickeho hlavneho pruta nastavit ine odsadenie na konci
-                if (m_MainMember != null)
-                {
-                    if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
-                        fAlignment_x = -(float)m_MainMember.CrScStart.y_min + m_ft_main_plate;
-                    else
-                        fAlignment_x = -(float)m_MainMember.CrScStart.z_min + m_ft_main_plate;
-                }
+                if (m_SecondaryMembers[0] != null)
+                    fAlignment_x = -m_SecondaryMembers[0].FAlignment_End + m_ft_main_plate - fCutOffOneSide;
 
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -m_fPlate_Angle_Height + m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z);
@@ -138,7 +126,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_T003(m_sPlateType_F, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, m_bIsAlignmentMainMemberWidth, BIsDisplayed);
+            return new CConnectionJoint_T003(m_sPlateType_F, m_Node, m_MainMember, m_SecondaryMembers[0], m_ft_main_plate, m_ePlateNumberAndPosition, BIsDisplayed);
         }
     }
 }

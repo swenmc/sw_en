@@ -425,7 +425,7 @@ namespace PFD
             }
             set
             {
-                MColumnFlyBracingPosition_Items = value;                
+                MColumnFlyBracingPosition_Items = value;
                 NotifyPropertyChanged("ColumnFlyBracingPosition_Items");
             }
         }

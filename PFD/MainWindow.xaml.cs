@@ -209,7 +209,7 @@ namespace PFD
                 if (e.PropertyName == "ILS_Items") return;
                 if (e.PropertyName == "ILS")
                 {
-                    //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model a vygenerovat pruty bracing blocks nanovo. 
+                    //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model (pruty aj spoje) a pripadne vygenerovat pruty bracing blocks nanovo ak sa zmenil ich pocet. 
                     if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt || 
                         cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide ||
@@ -218,7 +218,8 @@ namespace PFD
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                     {
                         vm.RecreateModel = true;
-                    }                    
+                        vm.RecreateJoints = true;
+                    }
                     else return;
                 } 
                 if (e.PropertyName == "Section")

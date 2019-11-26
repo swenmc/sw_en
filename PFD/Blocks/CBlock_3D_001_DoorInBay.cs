@@ -325,28 +325,16 @@ namespace PFD
                 {
                     CMember currentColumnToConnectStart = ColumnLeft; // Column
                     CMember currentColumnToConnectEnd = m_arrMembers[iMembersGirts]; // Door Column
-                    bool bConsiderMainMemberWidthStart = true;
-                    bool bConsiderMainMemberWidthEnd = true;
                     CMember current_member = m_arrMembers[i * INumberOfGirtsToDeactivate + j]; // Girt
-
-                    if (bIsFirstBayInFrontorBackSide)
-                    {
-                        bConsiderMainMemberWidthStart = false;
-                    }
 
                     if (i == 1 || bDoorToCloseToLeftColumn) // If just right sequence of girts is generated
                     {
                         currentColumnToConnectStart = m_arrMembers[iMembersGirts + 1]; // Door Column
                         currentColumnToConnectEnd = ColumnRight;
-
-                        if (bIsLastBayInFrontorBackSide) // Different columns on bay sides
-                        {
-                            bConsiderMainMemberWidthEnd = false;
-                        }
                     }
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bConsiderMainMemberWidthStart, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bConsiderMainMemberWidthEnd, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, currentColumnToConnectStart, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, currentColumnToConnectEnd, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
                 }
             }
 
@@ -368,23 +356,21 @@ namespace PFD
 
                 // Top
                 CMember mainMemberForColumnJoint = GirtToConnectDoorTrimmers;
-                bool bIsAlignmentMainMemberWidth = true;
 
                 if (bDoorColumnIsConnectedtoEavePurlin && (BuildingSide == "Left" || BuildingSide == "Right")) // Connection to the eave purlin Only Left and Right Side
                 {
                     mainMemberForColumnJoint = referenceEavePurlin;
-                    bIsAlignmentMainMemberWidth = false;
                 }
 
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bIsAlignmentMainMemberWidth, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, mainMemberForColumnJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
             }
 
             // Lintel (header) Joint
             if (iNumberOfLintels > 0)
             {
                 CMember current_member = m_arrMembers[iMembersGirts + iNumberOfColumns];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates,  true));
             }
         }
     }
