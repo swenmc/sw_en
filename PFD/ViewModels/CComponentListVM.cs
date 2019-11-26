@@ -581,41 +581,41 @@ namespace PFD
         {
             //TO Mato - lepsie ak by z Db chodila hned hodnota a nie index do nejakeho pola
             CComponentInfo ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainColumn);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeColumn);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (ci != null) ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin);
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ci != null) ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin);
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iEdgePurlin_ILS_Number];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iEdgePurlin_ILS_Number]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Girt);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirt_ILS_Number]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iPurlin_ILS_Number];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iPurlin_ILS_Number]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnFrontSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iFrontColumnFlyBracingEveryXXGirt];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iFrontColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.ColumnBackSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iBackColumnFlyBracingEveryXXGirt];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iBackColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirtFrontSide_ILS_Number];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirtFrontSide_ILS_Number]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[dmodel.iGirtBackSide_ILS_Number];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iGirtBackSide_ILS_Number]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockGirts);
-            if (ci != null) ci.ILS = ci.ILS_Items[0];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
-            if (ci != null) ci.ILS = ci.ILS_Items[0];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[0];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide);
-            if (ci != null) ci.ILS = ci.ILS_Items[0];
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[0]; ci.IsSetFromCode = false; }
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -764,9 +764,9 @@ namespace PFD
             }
             RafterFlyBracingPosition_Items = items;
             CComponentInfo MR = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (MR != null) MR.ILS_Items = items;
+            if (MR != null) { MR.IsSetFromCode = true; MR.ILS_Items = items; MR.ILS = items.First(); MR.IsSetFromCode = false; }
             CComponentInfo ER = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ER != null) ER.ILS_Items = items;
+            if (ER != null) { ER.IsSetFromCode = true; ER.ILS_Items = items; ER.ILS = items.First(); ER.IsSetFromCode = false; }
         }
         
         public void SetColumnFlyBracingPosition_Items(int iGirtsNum)

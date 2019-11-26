@@ -209,6 +209,7 @@ namespace PFD
                 if (e.PropertyName == "ILS_Items") return;
                 if (e.PropertyName == "ILS")
                 {
+                    if (cInfo.ILS == null) return;
                     //Pri zmene poctu ILS pre purlin alebo girt je potrebne pregenerovat model (pruty aj spoje) a pripadne vygenerovat pruty bracing blocks nanovo ak sa zmenil ich pocet. 
                     if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin || cInfo.MemberTypePosition == EMemberType_FS_Position.Girt || 
                         cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide || cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide ||
