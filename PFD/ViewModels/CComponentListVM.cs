@@ -119,7 +119,12 @@ namespace PFD
                 cInfo2 = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
             }
 
-            if (cInfo2 != null && cInfo.ILS != cInfo2.ILS) cInfo2.ILS = cInfo.ILS;
+            if (cInfo2 != null && cInfo.ILS != cInfo2.ILS)
+            {
+                cInfo2.IsSetFromCode = true;
+                cInfo2.ILS = cInfo.ILS;
+                cInfo2.IsSetFromCode = false;
+            } 
         }
 
 

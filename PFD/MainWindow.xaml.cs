@@ -217,8 +217,8 @@ namespace PFD
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeRafter || cInfo.MemberTypePosition == EMemberType_FS_Position.EdgeColumn ||
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                     {
-                        vm.RecreateModel = true;
-                        //vm.RecreateJoints = true; // TO Ondrej Vyzera to tak ze ak nastavim iba Recreate model tak sa spoje nepregeneruju. Ma byt nastaveny aj tento druhy bool alebo je problem inde
+                        vm.RecreateJoints = true;
+                        vm.RecreateModel = true;                        
                     }
                     else return;
                 } 
