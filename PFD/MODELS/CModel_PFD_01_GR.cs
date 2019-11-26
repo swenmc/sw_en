@@ -488,7 +488,7 @@ namespace PFD
             int iNumberOfGBSideWallsMembersInOneBayOneSide = 0;
             int iNumberOfGBSideWallsMembersInOneBay = 0;
 
-            bool bUseGBSideWallInEverySecondGUI = false; // TODO - Prebrat s Ondrejom a dopracovat
+            bool bUseGBSideWallInEverySecondGUI = false; // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
             bool bUseGBSideWallInEverySecond = bUseGBSideWallInEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
