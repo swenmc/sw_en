@@ -234,6 +234,10 @@ namespace PFD
         public string[] arr_Serie_M_Names = new string[1]
         {"M"};
 
+        public string[] arr_Serie_M_ScrewArrangement_Names = new string[2]
+        {"Undefined",
+          "Arrangement M"};
+
         public string[] arr_Serie_N_Names = new string[1]
         {"N"};
 

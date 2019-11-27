@@ -1151,6 +1151,7 @@ namespace PFD
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
                 CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
@@ -1394,7 +1395,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_M:
                         {
                             // b, h, t, iHoles, bBeam, slope_rad
-                            plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, fb, fh, ft, iNumberofHoles, fb_B, fRoofPitch_rad, 0, 0, 0, screwArrangement_M, true); // M
+                            plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f*(fb- fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, 0, 0, 0, screwArrangement_M, true); // M
                             break;
                         }
                     case ESerieTypePlate.eSerie_N:

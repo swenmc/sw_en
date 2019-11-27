@@ -428,7 +428,7 @@ namespace BaseClasses
             DrawCaraLaterals_CW(secNum, TriangleIndices);
         }
 
-         public override ScreenSpaceLines3D CreateWireFrameModel()
+        public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 

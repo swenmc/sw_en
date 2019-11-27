@@ -1239,6 +1239,10 @@ namespace PFD
                         return dc.arr_Serie_K_ScrewArrangement_Names;
                         //ScrewArrangementIndex = 2;
                     }
+                case ESerieTypePlate.eSerie_M:
+                    {
+                        return dc.arr_Serie_M_ScrewArrangement_Names;
+                    }
                 case ESerieTypePlate.eSerie_N:
                     {
                         return new string[] { "Undefined" };
@@ -1322,6 +1326,12 @@ namespace PFD
                         if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) return 2;
+                        else return 0;
+                    }
+                case ESerieTypePlate.eSerie_M:
+                    {
+                        if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_M) return 1;
                         else return 0;
                     }
                 case ESerieTypePlate.eSerie_N:
