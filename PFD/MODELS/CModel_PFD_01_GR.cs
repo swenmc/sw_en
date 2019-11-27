@@ -490,7 +490,7 @@ namespace PFD
             
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
-            bool bUseGBSideWallInEverySecondGUI = true; 
+            bool bUseGBSideWallInEverySecondGUI = vm.BracingEverySecondSideWalls; 
             bool bUseGBSideWallInEverySecond = bUseGBSideWallInEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
@@ -515,7 +515,7 @@ namespace PFD
             int iNumberOfPBMembersInOneBayOneSide = 0;
             int iNumberOfPBMembersInOneBay = 0;
 
-            bool bUsePBInEverySecondGUI = false; // TODO - Prebrat s Ondrejom a dopracovat
+            bool bUsePBInEverySecondGUI = vm.BracingEverySecondPurlins; // TODO - Prebrat s Ondrejom a dopracovat
             bool bUsePBInEverySecond = bUsePBInEverySecondGUI && ( iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
             if (bGeneratePurlinBracing)
@@ -524,7 +524,8 @@ namespace PFD
                 iNumberOfPBNodesInOneBay = 2 * iNumberOfPBNodesInOneBayOneSide;
                 iPBNodesNo = iNumberOfPBNodesInOneBay * (iFrameNo - 1);
 
-                iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (bUsePBInEverySecond ? (iOneRafterPurlinNo / 2 + 1) : iOneRafterPurlinNo);
+                //iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (bUsePBInEverySecond ? (iOneRafterPurlinNo / 2 + 1) : iOneRafterPurlinNo);
+                iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * iOneRafterPurlinNo;
                 iNumberOfPBMembersInOneBay = 2 * iNumberOfPBMembersInOneBayOneSide;
                 iPBMembersNo = iNumberOfPBMembersInOneBay * (iFrameNo - 1);
             }
@@ -1039,7 +1040,10 @@ namespace PFD
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneRafterPurlinNo; j++) // Left side
-                    {
+                    {                        
+                        bool bDeactivateMember = false;
+                        if (bUsePBInEverySecondGUI && j % 2 == 1) bDeactivateMember = true;
+
                         float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
                         float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
 
@@ -1054,11 +1058,16 @@ namespace PFD
                             int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + j * iNumberOfTransverseSupports_Purlins + k;
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, 0, 0);
+
+                            if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
                         }
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
                     {
+                        bool bDeactivateMember = false;
+                        if (bUsePBInEverySecondGUI && j % 2 == 1) bDeactivateMember = true;
+
                         // Opacna orientacia osi LCS y na pravej strane
                         float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
                         float fPBEnd = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
@@ -1074,6 +1083,8 @@ namespace PFD
                             int startNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + iNumberOfPBNodesInOneBayOneSide + j * iNumberOfTransverseSupports_Purlins + k;
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
+
+                            if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
                         }
                     }
                 }
@@ -1082,6 +1093,7 @@ namespace PFD
             // Girt Bracing - Front side
             // Nodes - Girt Bracing - Front side
 
+            //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?
             i_temp_numberofNodes += bGeneratePurlinBracing ? iPBNodesNo : 0;
             int iNumberOfGB_FSNodesInOneSideAndMiddleBay = 0;
 
@@ -1092,7 +1104,7 @@ namespace PFD
             }
 
             // Members - Girt Bracing - Front side
-
+            //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?            
             i_temp_numberofMembers += bGeneratePurlinBracing ? iPBMembersNo : 0;
             if (bGenerateGirtBracingFrontSide)
             {
@@ -1100,12 +1112,12 @@ namespace PFD
 
                AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
                iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing],
-               EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation);
+               EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation, vm.BracingEverySecondFrontBackWalls);
             }
 
             // Girt Bracing - Back side
             // Nodes - Girt Bracing - Back side
-
+            //TO Mato - to co to tu je?  bGenerateGirtBracingFrontSide??? asi skor bGenerateGirtBracingBackSide nie?
             i_temp_numberofNodes += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSNodesInOneFrame : 0;
             int iNumberOfGB_BSNodesInOneSideAndMiddleBay = 0;
 
@@ -1116,7 +1128,7 @@ namespace PFD
             }
 
             // Members - Girt Bracing - Back side
-
+            //TO Mato - to co to tu je?  bGenerateGirtBracingFrontSide??? asi skor bGenerateGirtBracingBackSide nie?
             i_temp_numberofMembers += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSMembersInOneFrame : 0;
             if (bGenerateGirtBracingBackSide)
             {
@@ -1124,7 +1136,7 @@ namespace PFD
 
                 AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode, iArrGB_BS_NumberOfMembersPerBay,
                 iNumberOfGB_BSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_BackGirts, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd, fGBBackSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing],
-                EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation);
+                EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation, vm.BracingEverySecondFrontBackWalls);
             }
 
             // Validacia generovanych prutov a uzlov (overime ci vsetky generovane nodes a members maju ID o 1 vacsie ako je index v poli
@@ -1878,7 +1890,7 @@ namespace PFD
 
         public void AddFrontOrBackGirtsBracingBlocksMembers(int i_temp_numberofNodes, int i_temp_numberofMembers, int[] iArrGB_NumberOfNodesPerBay, int[] iArrGB_NumberOfNodesPerBayFirstNode, int[] iArrGB_NumberOfMembersPerBay,
             int iNumberOfGB_NodesInOneSideAndMiddleBay, int iNumberOfTransverseSupports, CMemberEccentricity eGirtEccentricity, float fGBAlignmentStart, float fGBAlignmentEnd, float fGBAlignmentEndToRafter, CCrSc section,
-            EMemberType_FS_Position eMemberType_FS_Position, float fColumnsRotation)
+            EMemberType_FS_Position eMemberType_FS_Position, float fColumnsRotation, bool bUseBraicingEverySecond)
         {
             float fRealLengthLimit = 0.25f; // Limit pre dlzku pruta, ak je prut kratsi ako limit, nastavimme mu bGenerate na false
 
@@ -1889,6 +1901,9 @@ namespace PFD
             {
                 for (int j = 0; j < (iArrGB_NumberOfNodesPerBayFirstNode[i] - 1); j++) // Bay
                 {
+                    bool bDeactivateMember = false;
+                    if (bUseBraicingEverySecond && j % 2 == 1) bDeactivateMember = true;
+
                     float fGBAlignmentEnd_Current = fGBAlignmentEnd;
 
                     if (j == iArrGB_NumberOfNodesPerBayFirstNode[i] - 1 - 1) // Last
@@ -1903,6 +1918,8 @@ namespace PFD
 
                         if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
                             DeactivateMember(ref m_arrMembers[memberIndex]);
+
+                        if(bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -1917,6 +1934,9 @@ namespace PFD
             {
                 for (int j = 0; j < (iArrGB_NumberOfNodesPerBayFirstNode[i] - 1); j++) // Bay
                 {
+                    bool bDeactivateMember = false;
+                    if (bUseBraicingEverySecond && j % 2 == 1) bDeactivateMember = true;
+
                     float fGBAlignmentEnd_Current = fGBAlignmentEnd;
 
                     if (j == iArrGB_NumberOfNodesPerBayFirstNode[i] - 1 - 1) // Last
@@ -1931,6 +1951,8 @@ namespace PFD
 
                         if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
                             DeactivateMember(ref m_arrMembers[memberIndex]);
+
+                        if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];

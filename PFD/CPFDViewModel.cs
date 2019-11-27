@@ -103,6 +103,10 @@ namespace PFD
         private bool m_DisplayReinforcementBarsWireFrame;
         private bool m_DisplayFloorSlabWireFrame;
 
+        private bool m_BracingEverySecondSideWalls;
+        private bool m_BracingEverySecondPurlins;
+        private bool m_BracingEverySecondFrontBackWalls;
+
         // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
@@ -151,6 +155,7 @@ namespace PFD
         private bool MShowSlabRebates;
 
         private float MDisplayIn3DRatio;
+        
 
         // Displacement / Deflection Limits
         private float MVerticalDisplacementLimitDenominator_Rafter_PL;
@@ -2377,6 +2382,48 @@ namespace PFD
             }
         }
 
+        public bool BracingEverySecondSideWalls
+        {
+            get
+            {
+                return m_BracingEverySecondSideWalls;
+            }
+
+            set
+            {
+                m_BracingEverySecondSideWalls = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondSideWalls");
+            }
+        }
+
+        public bool BracingEverySecondPurlins
+        {
+            get
+            {
+                return m_BracingEverySecondPurlins;
+            }
+
+            set
+            {
+                m_BracingEverySecondPurlins = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondPurlins");
+            }
+        }
+
+        public bool BracingEverySecondFrontBackWalls
+        {
+            get
+            {
+                return m_BracingEverySecondFrontBackWalls;
+            }
+
+            set
+            {
+                m_BracingEverySecondFrontBackWalls = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondFrontBackWalls");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2647,6 +2694,10 @@ namespace PFD
             ShowGlobalAxis = true;
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = false;
+
+            BracingEverySecondSideWalls = true;
+            BracingEverySecondPurlins = true;
+            BracingEverySecondFrontBackWalls = true;
 
             // Displacement / Deflection Limits
             // V pripade potreby vytvorit samostatny dialog pre Design parameters / options
