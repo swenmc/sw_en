@@ -394,6 +394,7 @@ namespace BaseClasses
         eSerie_Y,
         eSerie_J,
         eSerie_K,
+        eSerie_M,
         eSerie_N,
         eSerie_O
     };
