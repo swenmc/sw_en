@@ -490,8 +490,9 @@ namespace PFD
             
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
-            bool bUseGBSideWallInEverySecondGUI = vm.BracingEverySecondSideWalls; 
-            bool bUseGBSideWallInEverySecond = bUseGBSideWallInEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
+
+            bool bUseGBEverySecondGUI = vm.BracingEverySecondRowOfGirts; 
+            bool bUseGBEverySecond = bUseGBEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
             {
@@ -499,7 +500,6 @@ namespace PFD
                 iNumberOfGBSideWallsNodesInOneBay = 2 * iNumberOfGBSideWallsNodesInOneBayOneSide;
                 iGBSideWallsNodesNo = iNumberOfGBSideWallsNodesInOneBay * (iFrameNo - 1);
 
-                //iNumberOfGBSideWallsMembersInOneBayOneSide = iNumberOfTransverseSupports_Girts * (bUseGBSideWallInEverySecond ? (iOneColumnGirtNo / 2 + 1) : iOneColumnGirtNo);
                 iNumberOfGBSideWallsMembersInOneBayOneSide = iNumberOfTransverseSupports_Girts * iOneColumnGirtNo;
                 iNumberOfGBSideWallsMembersInOneBay = 2 * iNumberOfGBSideWallsMembersInOneBayOneSide;
                 iGBSideWallsMembersNo = iNumberOfGBSideWallsMembersInOneBay * (iFrameNo - 1);
@@ -515,8 +515,8 @@ namespace PFD
             int iNumberOfPBMembersInOneBayOneSide = 0;
             int iNumberOfPBMembersInOneBay = 0;
 
-            bool bUsePBInEverySecondGUI = vm.BracingEverySecondPurlins; // TODO - Prebrat s Ondrejom a dopracovat
-            bool bUsePBInEverySecond = bUsePBInEverySecondGUI && ( iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
+            bool bUsePBEverySecondGUI = vm.BracingEverySecondRowOfPurlins;
+            bool bUsePBEverySecond = bUsePBEverySecondGUI && (iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
             if (bGeneratePurlinBracing)
             {
@@ -524,7 +524,6 @@ namespace PFD
                 iNumberOfPBNodesInOneBay = 2 * iNumberOfPBNodesInOneBayOneSide;
                 iPBNodesNo = iNumberOfPBNodesInOneBay * (iFrameNo - 1);
 
-                //iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * (bUsePBInEverySecond ? (iOneRafterPurlinNo / 2 + 1) : iOneRafterPurlinNo);
                 iNumberOfPBMembersInOneBayOneSide = iNumberOfTransverseSupports_Purlins * iOneRafterPurlinNo;
                 iNumberOfPBMembersInOneBay = 2 * iNumberOfPBMembersInOneBayOneSide;
                 iPBMembersNo = iNumberOfPBMembersInOneBay * (iFrameNo - 1);
@@ -942,14 +941,12 @@ namespace PFD
             i_temp_numberofMembers += bGenerateBackGirts ? iBackGirtsNoInOneFrame : 0;
             if (bGenerateGirtBracingSideWalls)
             {
-                //(bUseGBSideWallInEverySecond ? (iOneColumnGirtNo / 2 + 1) : iOneColumnGirtNo)
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneColumnGirtNo; j++) // Left side
-                    //for (int j = 0; j < (bUseGBSideWallInEverySecond ? (iOneColumnGirtNo / 2 + 1) : iOneColumnGirtNo); j++) // Left side
                     {
                         bool bDeactivateMember = false;
-                        if (bUseGBSideWallInEverySecond && j % 2 == 1) bDeactivateMember = true;
+                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
                         float fGBSideWallEnd_Current = fGBSideWallEnd;
 
@@ -968,10 +965,9 @@ namespace PFD
                     }
 
                     for (int j = 0; j < iOneColumnGirtNo; j++) // Right side
-                    //for (int j = 0; j < (bUseGBSideWallInEverySecond ? (iOneColumnGirtNo / 2 + 1) : iOneColumnGirtNo); j++) // Right side
                     {
                         bool bDeactivateMember = false;
-                        if (bUseGBSideWallInEverySecond && j % 2 == 1) bDeactivateMember = true;
+                        if (bUseGBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
                         float fGBSideWallEnd_Current = fGBSideWallEnd;
 
@@ -1040,9 +1036,9 @@ namespace PFD
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneRafterPurlinNo; j++) // Left side
-                    {                        
+                    {
                         bool bDeactivateMember = false;
-                        if (bUsePBInEverySecondGUI && j % 2 == 1) bDeactivateMember = true;
+                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
                         float fPBStart = (float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_min - fCutOffOneSide;
                         float fPBEnd = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
@@ -1066,7 +1062,7 @@ namespace PFD
                     for (int j = 0; j < iOneRafterPurlinNo; j++) // Right side
                     {
                         bool bDeactivateMember = false;
-                        if (bUsePBInEverySecondGUI && j % 2 == 1) bDeactivateMember = true;
+                        if (bUsePBEverySecond && j % 2 == 1) bDeactivateMember = true;
 
                         // Opacna orientacia osi LCS y na pravej strane
                         float fPBStart = -(float)m_arrCrSc[(int)EMemberGroupNames.ePurlin].y_max - fCutOffOneSide;
@@ -1094,6 +1090,9 @@ namespace PFD
             // Nodes - Girt Bracing - Front side
 
             //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?
+            // To Ondrej - funguje to tak, ze sa tu nastavi aktualny pocet existujucich uzlov a to tak, ze sa pripocita pocet, ktory vznikol v predchadzajucom if
+            // Mas pravdu, ze by sa to asi malo pripocitat uz v tom predchadzajucom if a tu by potom netrebalo kontrolovat ci je true a ci sa ma nieco pripocitat alebo nic - 0
+
             i_temp_numberofNodes += bGeneratePurlinBracing ? iPBNodesNo : 0;
             int iNumberOfGB_FSNodesInOneSideAndMiddleBay = 0;
 
@@ -1104,7 +1103,6 @@ namespace PFD
             }
 
             // Members - Girt Bracing - Front side
-            //TO Mato - to co to tu je?  bGeneratePurlinBracing??? asi skor bGenerateGirtBracingFrontSide nie?            
             i_temp_numberofMembers += bGeneratePurlinBracing ? iPBMembersNo : 0;
             if (bGenerateGirtBracingFrontSide)
             {
@@ -1112,12 +1110,11 @@ namespace PFD
 
                AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_FS_NumberOfNodesPerBay, iArrGB_FS_NumberOfNodesPerBayFirstNode, iArrGB_FS_NumberOfMembersPerBay,
                iNumberOfGB_FSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_FrontGirts, eccentricityGirtFront_Y0, fGBFrontSideStart, fGBFrontSideEnd, fGBFrontSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eFrontGirtBracing],
-               EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation, vm.BracingEverySecondFrontBackWalls);
+               EMemberType_FS_Position.BracingBlocksGirtsFrontSide, fColumnsRotation, bUseGBEverySecond);
             }
 
             // Girt Bracing - Back side
             // Nodes - Girt Bracing - Back side
-            //TO Mato - to co to tu je?  bGenerateGirtBracingFrontSide??? asi skor bGenerateGirtBracingBackSide nie?
             i_temp_numberofNodes += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSNodesInOneFrame : 0;
             int iNumberOfGB_BSNodesInOneSideAndMiddleBay = 0;
 
@@ -1128,7 +1125,6 @@ namespace PFD
             }
 
             // Members - Girt Bracing - Back side
-            //TO Mato - to co to tu je?  bGenerateGirtBracingFrontSide??? asi skor bGenerateGirtBracingBackSide nie?
             i_temp_numberofMembers += bGenerateGirtBracingFrontSide ? iNumberOfGB_FSMembersInOneFrame : 0;
             if (bGenerateGirtBracingBackSide)
             {
@@ -1136,21 +1132,25 @@ namespace PFD
 
                 AddFrontOrBackGirtsBracingBlocksMembers(i_temp_numberofNodes, i_temp_numberofMembers, iArrGB_BS_NumberOfNodesPerBay, iArrGB_BS_NumberOfNodesPerBayFirstNode, iArrGB_BS_NumberOfMembersPerBay,
                 iNumberOfGB_BSNodesInOneSideAndMiddleBay, iNumberOfTransverseSupports_BackGirts, eccentricityGirtBack_YL, fGBBackSideStart, fGBBackSideEnd, fGBBackSideEndToRafter, m_arrCrSc[(int)EMemberGroupNames.eBackGirtBracing],
-                EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation, vm.BracingEverySecondFrontBackWalls);
+                EMemberType_FS_Position.BracingBlocksGirtsBackSide, fColumnsRotation, bUseGBEverySecond);
             }
 
             // Validacia generovanych prutov a uzlov (overime ci vsetky generovane nodes a members maju ID o 1 vacsie ako je index v poli
+            bool bValidateIDs = false;
 
-            for(int i = 0; i< m_arrNodes.Length; i++)
+            if (bValidateIDs)
             {
-                if (m_arrNodes[i].ID != i + 1)
-                    throw new Exception("Invalid ID - Node Index:" + i.ToString() + " Node ID: " + m_arrNodes[i].ID);
-            }
+                for (int i = 0; i < m_arrNodes.Length; i++)
+                {
+                    if (m_arrNodes[i].ID != i + 1)
+                        throw new Exception("Invalid ID - Node Index:" + i.ToString() + " Node ID: " + m_arrNodes[i].ID);
+                }
 
-            for (int i = 0; i < m_arrMembers.Length; i++)
-            {
-                if (m_arrMembers[i].ID != i + 1)
-                    throw new Exception("Invalid ID - Member Index:" + i.ToString() + " Member ID: " + m_arrMembers[i].ID);
+                for (int i = 0; i < m_arrMembers.Length; i++)
+                {
+                    if (m_arrMembers[i].ID != i + 1)
+                        throw new Exception("Invalid ID - Member Index:" + i.ToString() + " Member ID: " + m_arrMembers[i].ID);
+                }
             }
 
             FillIntermediateNodesForMembers();
@@ -2884,13 +2884,16 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + i];
 
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    if (current_member.BIsGenerated)
+                    {
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    }
                 }
             }
 
@@ -2901,13 +2904,16 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + i];
 
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    if (current_member.BIsGenerated)
+                    {
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    }
                 }
             }
 
@@ -2918,13 +2924,16 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + i];
 
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    if (current_member.BIsGenerated)
+                    {
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    }
                 }
             }
 
@@ -2935,13 +2944,16 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + i];
 
-                    // Joint at member start
-                    CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    if (current_member.BIsGenerated)
+                    {
+                        // Joint at member start
+                        CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
 
-                    // Joint at member end
-                    CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        // Joint at member end
+                        CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                    }
                 }
             }
 

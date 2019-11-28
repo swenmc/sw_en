@@ -27,7 +27,7 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;
-        private readonly BackgroundWorker _worker = new BackgroundWorker();        
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public MainWindow PFDMainWindow;
         public Solver SolverWindow;
@@ -103,9 +103,8 @@ namespace PFD
         private bool m_DisplayReinforcementBarsWireFrame;
         private bool m_DisplayFloorSlabWireFrame;
 
-        private bool m_BracingEverySecondSideWalls;
-        private bool m_BracingEverySecondPurlins;
-        private bool m_BracingEverySecondFrontBackWalls;
+        private bool m_BracingEverySecondRowOfGirts;
+        private bool m_BracingEverySecondRowOfPurlins;
 
         // Load Case - display options
         private bool MShowLoads;
@@ -2382,45 +2381,31 @@ namespace PFD
             }
         }
 
-        public bool BracingEverySecondSideWalls
+        public bool BracingEverySecondRowOfGirts
         {
             get
             {
-                return m_BracingEverySecondSideWalls;
+                return m_BracingEverySecondRowOfGirts;
             }
 
             set
             {
-                m_BracingEverySecondSideWalls = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondSideWalls");
+                m_BracingEverySecondRowOfGirts = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfGirts");
             }
         }
 
-        public bool BracingEverySecondPurlins
+        public bool BracingEverySecondRowOfPurlins
         {
             get
             {
-                return m_BracingEverySecondPurlins;
+                return m_BracingEverySecondRowOfPurlins;
             }
 
             set
             {
-                m_BracingEverySecondPurlins = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondPurlins");
-            }
-        }
-
-        public bool BracingEverySecondFrontBackWalls
-        {
-            get
-            {
-                return m_BracingEverySecondFrontBackWalls;
-            }
-
-            set
-            {
-                m_BracingEverySecondFrontBackWalls = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondFrontBackWalls");
+                m_BracingEverySecondRowOfPurlins = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfPurlins");
             }
         }
 
@@ -2695,9 +2680,8 @@ namespace PFD
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = false;
 
-            BracingEverySecondSideWalls = true;
-            BracingEverySecondPurlins = true;
-            BracingEverySecondFrontBackWalls = true;
+            BracingEverySecondRowOfGirts = true;
+            BracingEverySecondRowOfPurlins = true;
 
             // Displacement / Deflection Limits
             // V pripade potreby vytvorit samostatny dialog pre Design parameters / options

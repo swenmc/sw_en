@@ -333,10 +333,10 @@
                             <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="14" Grid.Column="4" Grid.RowSpan="2">
-                            <CheckBox Name="chbBracingEverySecondSideWalls" IsChecked="{Binding Path=BracingEverySecondSideWalls}">Bracing Every Second Side Walls</CheckBox>
-                            <CheckBox Name="chbBracingEverySecondPurlins" IsChecked="{Binding Path=BracingEverySecondPurlins}">Bracing Every Second Purlins</CheckBox>
-                            <CheckBox Name="chbBracingEverySecondFrontBackWalls" IsChecked="{Binding Path=BracingEverySecondFrontBackWalls}">Bracing Every Second FrontBack Walls</CheckBox>
+                        <StackPanel Grid.Row="14" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                            <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
+                            <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
                         </StackPanel>
 
                         <!-- Displacement / Deflection Limits - presunut do samostatneho okna "Design parameters" ??? -->
