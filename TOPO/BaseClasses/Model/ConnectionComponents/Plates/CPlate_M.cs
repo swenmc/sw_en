@@ -86,6 +86,8 @@ namespace BaseClasses
             }
         }
 
+        float fGamma1 = MathF.fPI / 6f; // Uhol medzi vonkajsou hranou plechu a hranou prierezu
+
         public CConCom_Plate_M()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -136,13 +138,13 @@ namespace BaseClasses
 
             if (screwArrangement_temp != null)
             {
-                //arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
+                arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
                 screwArrangement_temp.Calc_HolesCentersCoord2D(Ft, Fb_X1, Fb_X2, Fb_X3, Fh_Y);
-                //Calc_HolesControlPointsCoord3D(screwArrangement_temp);
-                //GenerateConnectors(screwArrangement_temp);
+                Calc_HolesControlPointsCoord3D(screwArrangement_temp);
+                GenerateConnectors(screwArrangement_temp);
             }
 
-            Width_bx = 2 * m_fbX1 + 2 * m_fbX2 + 2 * m_fbX3;
+            Width_bx = 2 * m_fbX1 + m_fbX2 + 2 * m_fbX3;
             Height_hy = m_fhY;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
@@ -206,7 +208,6 @@ namespace BaseClasses
         public override void Calc_Coord3D()
         {
             // Auxiliary values;
-            float fGamma1 = MathF.fPI / 6f;
             float fGamma2 = 0.5f * MathF.fPI - fGamma1;
 
             //Priemetry
@@ -305,6 +306,112 @@ namespace BaseClasses
             arrPoints3D[15].X = arrPoints3D[6].X + ft_x;
             arrPoints3D[15].Y = arrPoints3D[6].Y - ft_y;
             arrPoints3D[15].Z = arrPoints3D[6].Z;
+        }
+
+        void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
+        {
+            // TODO - nie je to velmi presne spocitane, ale nechcem s tym stravit vela casu
+
+            // 3 x 2 screws = 6 screws in the plate
+            float fOffSetOfScrewAndPlate = Ft;
+
+            float fx_edge = 0.015f;  // x-direction
+            float fy_edge = 0.015f;  // y-direction in 2D
+
+            // Middle
+            arrConnectorControlPoints3D[0].X = 0;
+            arrConnectorControlPoints3D[0].Y = fy_edge;
+            arrConnectorControlPoints3D[0].Z = -fOffSetOfScrewAndPlate; // TODO Position depends on screw length
+
+            arrConnectorControlPoints3D[1].X = 0;
+            arrConnectorControlPoints3D[1].Y = m_fhY - fy_edge;
+            arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
+
+            // Auxiliary calculations
+            // Left
+
+            float fS3OffSetGCS_X, fS3OffSetGCS_Yb, fS3OffSetGCS_Yabove, fS3OffSetGCS_Z;
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
+
+            float fS4OffSetGCS_X, fS4OffSetGCS_Yb, fS4OffSetGCS_Yabove, fS4OffSetGCS_Z;
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
+
+            arrConnectorControlPoints3D[2].X = arrPoints3D[15].X + fS3OffSetGCS_X;
+            arrConnectorControlPoints3D[2].Y = arrPoints3D[15].Y + fS3OffSetGCS_Yb + fS3OffSetGCS_Yabove;
+            arrConnectorControlPoints3D[2].Z = arrPoints3D[15].Z + fS3OffSetGCS_Z;
+
+            arrConnectorControlPoints3D[3].X = arrPoints3D[15].X + fS4OffSetGCS_X;
+            arrConnectorControlPoints3D[3].Y = arrPoints3D[15].Y + fS4OffSetGCS_Yb + fS4OffSetGCS_Yabove;
+            arrConnectorControlPoints3D[3].Z = arrPoints3D[15].Z + fS4OffSetGCS_Z;
+
+            // Right
+            float fS5OffSetGCS_X, fS5OffSetGCS_Yb, fS5OffSetGCS_Yabove, fS5OffSetGCS_Z;
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
+
+            float fS6OffSetGCS_X, fS6OffSetGCS_Yb, fS6OffSetGCS_Yabove, fS6OffSetGCS_Z;
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
+
+            arrConnectorControlPoints3D[4].X = arrPoints3D[12].X - fS5OffSetGCS_X;
+            arrConnectorControlPoints3D[4].Y = arrPoints3D[12].Y - fS5OffSetGCS_Yb + fS5OffSetGCS_Yabove;
+            arrConnectorControlPoints3D[4].Z = arrPoints3D[12].Z + fS5OffSetGCS_Z;
+
+            arrConnectorControlPoints3D[5].X = arrPoints3D[12].X - fS6OffSetGCS_X;
+            arrConnectorControlPoints3D[5].Y = arrPoints3D[12].Y - fS6OffSetGCS_Yb + fS6OffSetGCS_Yabove;
+            arrConnectorControlPoints3D[5].Z = arrPoints3D[12].Z + fS6OffSetGCS_Z;
+        }
+
+        void GetScrewPositionCoordinates(
+            float fx_edge,
+            float fy_position,
+            float fOffSetOfScrewAndPlate,
+            float fGamma,
+            out float fOffSetGCS_X,
+            out float fOffSetGCS_Ybasic,
+            out float fOffSetGCS_YabovePlate,
+            out float fOffSetGCS_Z
+            )
+        {
+            float fGamma_s11 = (float)Math.Atan(fy_position / fx_edge);
+            float fGamma_s12 = 0.5f * MathF.fPI - fGamma_s11 - fGamma;
+            float fc_s1 = MathF.Sqrt(MathF.Pow2(fx_edge) + MathF.Pow2(fy_position));
+
+            float fx_s1 = fc_s1 * (float)Math.Cos(fGamma_s12);
+            float fy_s1 = fc_s1 * (float)Math.Sin(fGamma_s12);
+
+            float fz_s1 = fx_s1 * (float)Math.Sin(m_fRoofPitch_rad);
+            float fx_s1_p = fx_s1 * (float)Math.Cos(m_fRoofPitch_rad);
+
+            float fz_s1_a = (fOffSetOfScrewAndPlate + Ft) * (float)Math.Cos(m_fRoofPitch_rad);
+            float fx_s1_p_a = (fOffSetOfScrewAndPlate + Ft) * (float)Math.Sin(m_fRoofPitch_rad);
+
+            fOffSetGCS_X = fx_s1_p - fx_s1_p_a;
+            fOffSetGCS_Ybasic = fz_s1;
+            fOffSetGCS_YabovePlate = fz_s1_a;
+            fOffSetGCS_Z = fy_s1;
+        }
+
+        void GenerateConnectors(CScrewArrangement screwArrangement)
+        {
+            if (screwArrangement.IHolesNumber > 0)
+            {
+                screwArrangement.Screws = new CScrew[screwArrangement.IHolesNumber];
+
+                for (int i = 0; i < screwArrangement.IHolesNumber; i++)
+                {
+                    Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
+
+                    float fAngle_y_deg = -90; // Default 1 a 2 skrutka v strede
+                    float fAngle_z_deg = 0;
+
+                    if (i > 1) // 3-6 skrutka
+                    {
+                        fAngle_y_deg = 0;
+                        fAngle_z_deg = -90 + (float)Geom2D.RadiansToDegrees(m_fRoofPitch_rad);
+                    }
+
+                    screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, fAngle_y_deg, fAngle_z_deg, true);
+                }
+            }
         }
 
         protected override void loadIndices()
