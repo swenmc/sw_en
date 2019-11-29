@@ -406,8 +406,13 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="5,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
-                        <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
+                            <Button Name="btnDoorGenerator" VerticalAlignment="Top" ToolTip="Add Doors" Margin="0 0 0 0" Width="20" Height="20" Click="BtnDoorGenerator_Click">
+                                <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
+                        </StackPanel>                        
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
                                   HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
@@ -435,6 +440,8 @@
                                 <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
                             </DataGrid.Columns>
                         </DataGrid>
+
+                        
 
                         <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Windows" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />

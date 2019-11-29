@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Display Options" Height="890" Width="800">
+        Title="Door Generator" Height="890" Width="800">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -57,7 +57,23 @@
             <TextBlock Grid.Row="1" Grid.Column="1" Text="Door height" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Text="Door width" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="3" Text="Coordinate in x block" HorizontalAlignment="Left"/>
-            
+
+            <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_DoorsType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=DoorType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
+            <TextBox Grid.Row="2" Grid.Column="1" Name="DoorsHeight" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorsHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBox Grid.Row="2" Grid.Column="2" Name="DoorsWidth" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorsWidth, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBox Grid.Row="2" Grid.Column="3" Name="DoorCoordinateXinBlock" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+
             <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>
             </StackPanel>

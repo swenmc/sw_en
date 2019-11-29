@@ -1654,5 +1654,11 @@ namespace PFD
             DisplayOptionsWindow w = new DisplayOptionsWindow(vm);
             w.ShowDialog();
         }
+
+        private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
+        {
+            DoorGeneratorWindow generatorWindow = new DoorGeneratorWindow();
+            generatorWindow.ShowDialog();
+        }
     }
 }

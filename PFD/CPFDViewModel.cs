@@ -2649,7 +2649,7 @@ namespace PFD
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
 
-            ShowNodesDescription = true;
+            ShowNodesDescription = false;
             ShowMemberDescription = false;
             ShowMemberID = true;
             ShowMemberPrefix = true;
