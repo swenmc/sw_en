@@ -218,8 +218,8 @@ namespace BaseClasses
             float fy1 = fx1 * (float)Math.Tan(m_fRoofPitch_rad);
             float fy3 = fx3 * (float)Math.Tan(m_fRoofPitch_rad);
 
-            float fz1 = MathF.Sqrt(MathF.Pow2(m_fbX1) + MathF.Pow2(fy1));
-            float fz3 = MathF.Sqrt(MathF.Pow2(m_fbX3) + MathF.Pow2(fy3));
+            float fz1 = MathF.Sqrt(MathF.Pow2(m_fbX1) - MathF.Pow2(fy1));
+            float fz3 = MathF.Sqrt(MathF.Pow2(m_fbX3) - MathF.Pow2(fy3));
 
             float fx11 = m_fhY * (float)Math.Cos(fGamma1);
             float fx31 = m_fhY * (float)Math.Cos(fGamma1);
@@ -236,7 +236,14 @@ namespace BaseClasses
             float fy12 = fy1 - fy11;
             float fy32 = fy3 - fy31;
 
-            float fy2 = m_fbX2 * (float)Math.Tan(m_fRoofPitch_rad);
+            float fy2_right = 0, fy2_left = 0;
+
+            if (m_fRoofPitch_rad > 0)
+                fy2_right = m_fbX2 * (float)Math.Tan(m_fRoofPitch_rad);
+            else if (m_fRoofPitch_rad < 0)
+                fy2_left = m_fbX2 * (float)Math.Tan(m_fRoofPitch_rad);
+            else
+                fy2_right = fy2_left = 0;
 
             float ft_x = Ft * (float)Math.Sin(m_fRoofPitch_rad);
             float ft_y = Ft * (float)Math.Cos(m_fRoofPitch_rad);
@@ -251,11 +258,11 @@ namespace BaseClasses
             arrPoints3D[1].Z = 0;
 
             arrPoints3D[2].X = + 0.5 * m_fbX2 + fx32 - ft_x;
-            arrPoints3D[2].Y = m_fhY + fy2 + fy32 + ft_y;
+            arrPoints3D[2].Y = m_fhY + fy2_right + fy32 + ft_y;
             arrPoints3D[2].Z = - fz3 - fz31;
 
             arrPoints3D[3].X = arrPoints3D[2].X + fx31 - ft_x;
-            arrPoints3D[3].Y = m_fhY + fy2 + fy3 + ft_y;
+            arrPoints3D[3].Y = m_fhY + fy2_right + fy3 + ft_y;
             arrPoints3D[3].Z = -fz3;
 
             arrPoints3D[4].X = arrPoints3D[1].X;
@@ -267,16 +274,16 @@ namespace BaseClasses
             arrPoints3D[5].Z = arrPoints3D[0].Z;
 
             arrPoints3D[6].X = arrPoints3D[0].X - fx1 - ft_x;
-            arrPoints3D[6].Y = m_fhY - fy1 + ft_y;
+            arrPoints3D[6].Y = m_fhY - fy2_left - fy1 + ft_y;
             arrPoints3D[6].Z = - fz1;
 
             arrPoints3D[7].X = arrPoints3D[0].X - fx12 - ft_x;
-            arrPoints3D[7].Y = m_fhY - fy12 + ft_y;
+            arrPoints3D[7].Y = m_fhY - fy2_left - fy12 + ft_y;
             arrPoints3D[7].Z = -fz1 - fz11;
 
             // Second layer
-            arrPoints3D[8].X = arrPoints3D[0].X - fx12;
-            arrPoints3D[8].Y = m_fhY - fy12;
+            arrPoints3D[8].X = arrPoints3D[7].X + ft_x;
+            arrPoints3D[8].Y = arrPoints3D[7].Y - ft_y;
             arrPoints3D[8].Z = -fz1 - fz11;
 
             arrPoints3D[9].X = arrPoints3D[0].X - Ft * Math.Tan(fGamma2);
