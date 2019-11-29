@@ -141,12 +141,21 @@ namespace BaseClasses
                 // Zaporna suradnica x posuva plech pred zaciatok pruta
                 Point3D ControlPoint_P1 = new Point3D(-fAlignment_x - fOffsetAboveRafter - fhY, fControlPointPosition_y_start, fControlPointPosition_z_start);
 
+                float fbPlate2 = 0.05f;
+                float fhPlate2 = 0.27f;
+                Point3D ControlPoint_P2 = new Point3D(-fAlignment_x - fOffsetAboveRafter - fhPlate2, fControlPointPosition_y_start + (float)m_SecondaryMembers[0].CrScStart.y_min - fbPlate2, fControlPointPosition_z_start);
+                Point3D ControlPoint_P3 = new Point3D(-fAlignment_x - fOffsetAboveRafter - fhPlate2, fControlPointPosition_y_start + (float)m_SecondaryMembers[0].CrScStart.y_max, fControlPointPosition_z_start);
+
                 int iConnectorNumberinOnePlate = 6;
 
                 CScrew referenceScrew = new CScrew("TEK", "12");
                 CScrewArrangement_M screwArrangement = new CScrewArrangement_M(iConnectorNumberinOnePlate, referenceScrew);
+                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew);
 
                 CConCom_Plate_M pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1, fbX1, fhY, m_ft, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+
+                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, 0, 90, screwArrangement_L, true);
+                CConCom_Plate_F_or_L pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, 0, 90, screwArrangement_L, true);
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -154,11 +163,19 @@ namespace BaseClasses
                     // Rotate and move joint defined in the start point [0,0,0] to the end point
                     ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength + fAlignment_x + fOffsetAboveRafter - fhY, fControlPointPosition_y_end, fControlPointPosition_z_start);
 
+                    ControlPoint_P2 = new Point3D(m_SecondaryMembers[0].FLength + fAlignment_x + fOffsetAboveRafter - fhPlate2, fControlPointPosition_y_end, fControlPointPosition_z_start);
+                    ControlPoint_P3 = new Point3D(m_SecondaryMembers[0].FLength + fAlignment_x + fOffsetAboveRafter - fhPlate2, fControlPointPosition_y_end, fControlPointPosition_z_start);
+
                     pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1, fbX1, fhY, m_ft, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+
+                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, 0, -90, screwArrangement_L, true);
+                    pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, 0, -90, screwArrangement_L, true);
                 }
 
-                m_arrPlates = new CPlate[1]; //  One plate in joint
-                m_arrPlates[0] = pPlate1;
+                m_arrPlates = new CPlate[3]; // Three plates in joint (1 + 2)
+                m_arrPlates[0] = pPlate2;
+                m_arrPlates[1] = pPlate3;
+                m_arrPlates[2] = pPlate1; // TODO ??? Dlhy pasik plate M posielam do pola ako posledny, lebo z prvej plate sa urcuju rozmery prutov pre preview a je lepsie tam mat plate s kratkymi stranami
             }
         }
 
