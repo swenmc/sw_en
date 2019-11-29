@@ -2275,7 +2275,10 @@ namespace PFD
                 m_arrCrSc[arraysizeoriginal] = block.m_arrCrSc[i];
                 //m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
             }
-            
+
+            //task 405 - je to hotove, ale chcelo by to mozno aj zistit ako je to narocne na pamat, lebo su tam vyhladavacky
+            DeactivateBracingBlocksThroughtBlock(block, openningPointsInGCS);
+
             // Nodes
             arraysizeoriginal = m_arrNodes.Length;
             Array.Resize(ref m_arrNodes, m_arrNodes.Length + block.m_arrNodes.Length);
@@ -2289,43 +2292,11 @@ namespace PFD
                 // Deactivate Member Joints
                 CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
                 DeactivateMemberAndItsJoints(ref m);
-                
-                // TODO 405 - Ondrej pozri sa na to, pripadne vylepsi
+
                 // -------------------------------------------------------------------------------------------------
                 // Deactivate bracing blocks and joints
                 // Find bracing blocks for deactivated girt
-
-                for (int j = 0; j < m_arrMembers.Length; j++)
-                {
-                    if (m_arrMembers[j].EMemberType == EMemberType_FS.eGB)
-                    {
-                        if (m.IsIntermediateNode(m_arrMembers[j].NodeStart) || m.IsIntermediateNode(m_arrMembers[j].NodeEnd))
-                        {
-                            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
-
-                            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
-                            {
-                                if (m_arrMembers[j].NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && m_arrMembers[j].NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
-                                {
-                                    CMember brace = m_arrMembers[j]; // Member to deactivate
-
-                                    DeactivateMemberAndItsJoints(ref brace);
-                                }
-                            }
-                            else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
-                            {
-                                if (m_arrMembers[j].NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && m_arrMembers[j].NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
-                                {
-                                    CMember brace = m_arrMembers[j]; // Member to deactivate
-
-                                    DeactivateMemberAndItsJoints(ref brace);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // -------------------------------------------------------------------------------------------------
+                DeactivateMemberBracingBlocks(m, block, openningPointsInGCS);                
             }
 
             // Copy block nodes into the model
@@ -2354,6 +2325,86 @@ namespace PFD
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
                 m_arrConnectionJoints.Add(joint);
+        }
+
+        private void DeactivateMemberBracingBlocks(CMember m, CBlock block, List<Point3D> openningPointsInGCS)
+        {
+            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
+            IEnumerable<CMember> bracingBlocks = m_arrMembers.Where(mGB => mGB.EMemberType == EMemberType_FS.eGB && (m.IntermediateNodes.Contains(mGB.NodeStart) || m.IntermediateNodes.Contains(mGB.NodeEnd)));
+            foreach (CMember mBB in bracingBlocks)
+            {
+                if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
+                {
+                    if (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
+                    {
+                        DeactivateMemberAndItsJoints(mBB);
+                    }
+                }
+                else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
+                {
+                    if (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
+                    {
+                        DeactivateMemberAndItsJoints(mBB);
+                    }
+                }
+            }
+            
+            //to Mato - toto je povodny kod pred refaktoringom ak je to hore OK, tak toto asi zmazat
+            //for (int j = 0; j < m_arrMembers.Length; j++)
+            //{
+            //    if (m_arrMembers[j].EMemberType == EMemberType_FS.eGB)
+            //    {
+            //        if (m.IsIntermediateNode(m_arrMembers[j].NodeStart) || m.IsIntermediateNode(m_arrMembers[j].NodeEnd))
+            //        {
+            //            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
+
+            //            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
+            //            {
+            //                if (m_arrMembers[j].NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && m_arrMembers[j].NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
+            //                {
+            //                    CMember brace = m_arrMembers[j]; // Member to deactivate
+
+            //                    DeactivateMemberAndItsJoints(ref brace);
+            //                }
+            //            }
+            //            else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
+            //            {
+            //                if (m_arrMembers[j].NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && m_arrMembers[j].NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
+            //                {
+            //                    CMember brace = m_arrMembers[j]; // Member to deactivate
+
+            //                    DeactivateMemberAndItsJoints(ref brace);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        private void DeactivateBracingBlocksThroughtBlock(CBlock block, List<Point3D> openningPointsInGCS)
+        {
+            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
+            //vyberieme podla Z suradnice tie,ktore pretinaju okno
+            IEnumerable<CMember> bracingBlocks = m_arrMembers.Where(mGB => mGB.EMemberType == EMemberType_FS.eGB && 
+                ((mGB.NodeStart.Z <= openningPointsInGCS[0].Z && mGB.NodeEnd.Z >= openningPointsInGCS[3].Z)
+                || (mGB.NodeStart.Z >= openningPointsInGCS[0].Z && mGB.NodeEnd.Z <= openningPointsInGCS[3].Z)));
+            foreach (CMember mBB in bracingBlocks)
+            {
+                if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
+                {
+                    if (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
+                    {
+                        DeactivateMemberAndItsJoints(mBB);
+                    }
+                }
+                else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
+                {
+                    if (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
+                    {
+                        DeactivateMemberAndItsJoints(mBB);
+                    }
+                }
+            }
         }
 
         // Load model component cross-sections
@@ -2991,8 +3042,12 @@ namespace PFD
 
             };
         }
+        public void DeactivateMemberAndItsJoints(CMember m)
+        {
+            DeactivateMemberAndItsJoints(ref m);
+        }
 
-        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
+            private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
         {
             bool bGenerateFoundations = true;
             //bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
