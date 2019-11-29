@@ -2391,6 +2391,7 @@ namespace PFD
             set
             {
                 m_BracingEverySecondRowOfGirts = value;
+                RecreateJoints = true;
                 if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfGirts");
             }
         }
@@ -2405,6 +2406,7 @@ namespace PFD
             set
             {
                 m_BracingEverySecondRowOfPurlins = value;
+                RecreateJoints = true;
                 if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfPurlins");
             }
         }

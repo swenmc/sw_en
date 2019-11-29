@@ -2286,19 +2286,10 @@ namespace PFD
             for (int i = 0; i < iNumberofMembersToDeactivate; i++)
             {
                 // Deactivate Members
-                CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
-                DeactivateMember(ref m);
-
                 // Deactivate Member Joints
-                // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
-                // Doplnene 16.3.2019 - potrebne otestovat, ci funguje
-                CConnectionJointTypes jStart;
-                CConnectionJointTypes jEnd;
-                GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
-
-                DeactivateJoint(ref jStart);
-                DeactivateJoint(ref jEnd);
-
+                CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
+                DeactivateMemberAndItsJoints(ref m);
+                
                 // TODO 405 - Ondrej pozri sa na to, pripadne vylepsi
                 // -------------------------------------------------------------------------------------------------
                 // Deactivate bracing blocks and joints
@@ -2318,21 +2309,7 @@ namespace PFD
                                 {
                                     CMember brace = m_arrMembers[j]; // Member to deactivate
 
-                                    DeactivateMember(ref brace);
-
-                                    try // To Ondrej - Skusime najst spoje pre brace a zmazat ich, niekde sa to nepodari, ak boli spoje uz predtym z nejakeho dovodu zmazane ??? Mozno su niekde zle IDs ???
-                                    {
-                                        CConnectionJointTypes jBraceStart;
-                                        CConnectionJointTypes jBraceEnd;
-                                        GetModelMemberStartEndConnectionJoints(brace, out jBraceStart, out jBraceEnd);
-
-                                        DeactivateJoint(ref jBraceStart);
-                                        DeactivateJoint(ref jBraceEnd);
-                                    }
-                                    catch
-                                    {
-
-                                    };
+                                    DeactivateMemberAndItsJoints(ref brace);
                                 }
                             }
                             else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
@@ -2341,21 +2318,7 @@ namespace PFD
                                 {
                                     CMember brace = m_arrMembers[j]; // Member to deactivate
 
-                                    DeactivateMember(ref brace);
-
-                                    try // To Ondrej - Skusime najst spoje pre brace a zmazat ich, niekde sa to nepodari, ak boli spoje uz predtym z nejakeho dovodu zmazane ??? Mozno su niekde zle IDs ???
-                                    {
-                                        CConnectionJointTypes jBraceStart;
-                                        CConnectionJointTypes jBraceEnd;
-                                        GetModelMemberStartEndConnectionJoints(brace, out jBraceStart, out jBraceEnd);
-
-                                        DeactivateJoint(ref jBraceStart);
-                                        DeactivateJoint(ref jBraceEnd);
-                                    }
-                                    catch
-                                    {
-
-                                    };
+                                    DeactivateMemberAndItsJoints(ref brace);
                                 }
                             }
                         }
@@ -2884,6 +2847,8 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + i];
 
+                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start
@@ -2904,6 +2869,8 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + i];
 
+                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start
@@ -2924,6 +2891,8 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + i];
 
+                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start
@@ -2944,6 +2913,8 @@ namespace PFD
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame + iGBSideWallsMembersNo + iPBMembersNo + iNumberOfGB_FSMembersInOneFrame + i];
 
+                    //To Mato - toto je podla mna problem preco niekedy pada metoda na disablovanie member Joints - lebo sa proste tie joints pre vypnuty member proste vobec negeneruju
+                    // vo vysledku teda musime stale pregenerovat joints, aby to sedelo
                     if (current_member.BIsGenerated)
                     {
                         // Joint at member start

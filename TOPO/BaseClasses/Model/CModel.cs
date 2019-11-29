@@ -218,6 +218,7 @@ namespace BaseClasses
         {
             jStart = null;
             jEnd = null;
+            if (m_arrConnectionJoints == null) return;
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
             {
                 CMember[] secondary_members = cj.m_SecondaryMembers;
