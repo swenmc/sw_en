@@ -2392,14 +2392,16 @@ namespace PFD
             {
                 if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
                 {
-                    if (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
+                    // Bug 411 - pridana prva podmienka - musime kontrolovat aj to na ktorej strane budovy sme
+                    if (MathF.d_equal(mBB.NodeStart.X, openningPointsInGCS[0].X) && (mBB.NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && mBB.NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset))
                     {
                         DeactivateMemberAndItsJoints(mBB);
                     }
                 }
                 else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
                 {
-                    if (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
+                    // Bug 411 - pridana prva podmienka - musime kontrolovat aj to na ktorej strane budovy sme
+                    if (MathF.d_equal(mBB.NodeStart.Y, openningPointsInGCS[0].Y) && (mBB.NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && mBB.NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset))
                     {
                         DeactivateMemberAndItsJoints(mBB);
                     }
