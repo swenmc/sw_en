@@ -960,7 +960,7 @@ namespace PFD
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Girts + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
 
-                            if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
 
@@ -981,7 +981,7 @@ namespace PFD
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfGBSideWallsNodesInOneBay + +iNumberOfGBSideWallsNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Girts + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.eGirtBracing], EMemberType_FS.eGB, EMemberType_FS_Position.BracingBlockGirts, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGBSideWallStart, fGBSideWallEnd_Current, MathF.fPI, 0);
 
-                            if(bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                            if(bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
                 }
@@ -1055,7 +1055,7 @@ namespace PFD
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, 0, 0);
 
-                            if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
 
@@ -1080,7 +1080,7 @@ namespace PFD
                             int endNodeIndex = i_temp_numberofNodes + i * iNumberOfPBNodesInOneBay + +iNumberOfPBNodesInOneBayOneSide + (j + 1) * iNumberOfTransverseSupports_Purlins + k;
                             m_arrMembers[memberIndex] = new CMember(memberIndex + 1, m_arrNodes[startNodeIndex], m_arrNodes[endNodeIndex], m_arrCrSc[(int)EMemberGroupNames.ePurlinBracing], EMemberType_FS.ePB, EMemberType_FS_Position.BracingBlockPurlins, eccentricityPurlin, eccentricityPurlin, fPBStart_Current, fPBEnd, MathF.fPI, 0);
 
-                            if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                            if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                         }
                     }
                 }
@@ -1919,7 +1919,7 @@ namespace PFD
                         if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
                             DeactivateMember(ref m_arrMembers[memberIndex]);
 
-                        if(bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                        if(bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -1952,7 +1952,7 @@ namespace PFD
                         if (m_arrMembers[memberIndex].FLength_real < fRealLengthLimit)
                             DeactivateMember(ref m_arrMembers[memberIndex]);
 
-                        if (bDeactivateMember) DeactivateMember(ref m_arrMembers[memberIndex]);
+                        if (bDeactivateMember) DeactivateMemberAndItsJoints(ref m_arrMembers[memberIndex]);
                     }
                 }
                 iTemp += iArrGB_NumberOfNodesPerBay[i];
@@ -2998,6 +2998,27 @@ namespace PFD
                 j.BIsSelectedForDesign = false;
                 j.BIsSelectedForMaterialList = false;
             }
+        }
+
+        public void DeactivateMemberAndItsJoints(ref CMember m)
+        {
+            DeactivateMember(ref m);
+
+            try
+            {
+                CConnectionJointTypes jStart;
+                CConnectionJointTypes jEnd;
+                GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
+
+                DeactivateJoint(ref jStart);
+                DeactivateJoint(ref jEnd);
+            }
+            catch(Exception ex)
+            {
+                bool debugging = true;
+                if (debugging) System.Diagnostics.Trace.WriteLine($"DeactivateMemberAndItsJoints: Error: [{ex.Message}] m.ID:{m.ID}  Prefix: {m.Prefix}");
+
+            };
         }
 
         private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
