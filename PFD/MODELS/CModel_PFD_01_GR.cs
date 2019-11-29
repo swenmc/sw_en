@@ -283,8 +283,8 @@ namespace PFD
             float feccentricityEavePurlin_z = - fallignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
             CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), feccentricityEavePurlin_z);
 
-            eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h));
-            eccentricityColumnBack_Z = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].b + 0.5 * m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h));
+            eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter].y_max + m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].z_max));
+            eccentricityColumnBack_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min + m_arrCrSc[(int)EMemberGroupNames.eBackColumn].z_min));
 
             eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
             eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
@@ -618,17 +618,17 @@ namespace PFD
             float fPurlinStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_max - fCutOffOneSide;
             float fPurlinEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min - fCutOffOneSide;
             float fFrontColumnStart = 0.0f;
-            float fFrontColumnEnd = 0.08f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;         // TODO - Calculate according to h of rafter and roof pitch
+            float fFrontColumnEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max / (float)Math.Cos(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fBackColumnStart = 0.0f;
-            float fBackColumnEnd = 0.08f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;          // TODO - Calculate according to h of rafter and roof pitch
-            float fFrontGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].b - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].b - fCutOffOneSide;        // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtStart_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;  // Connection to the main frame column (column symmetrical about y-y)
-            float fFrontGirtEnd_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;    // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtStart_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;   // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtEnd_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;     // Connection to the main frame column (column symmetrical about y-y)
+            float fBackColumnEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max / (float)Math.Cos(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fFrontGirtStart = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtStart = (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min - fCutOffOneSide;        // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtStart_MC = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].z_min - fCutOffOneSide;  // Connection to the main frame column (column symmetrical about y-y)
+            float fFrontGirtEnd_MC = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].z_min - fCutOffOneSide;    // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtStart_MC = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].z_min - fCutOffOneSide;   // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtEnd_MC = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].z_min - fCutOffOneSide;     // Connection to the main frame column (column symmetrical about y-y)
 
             float fGBSideWallStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eGirtWall].y_max - fCutOffOneSide;
             float fGBSideWallEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eGirtWall].y_min - fCutOffOneSide;
@@ -2783,9 +2783,9 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
 
                     if (i < (int)(iFrontColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, true, true)); // Front Left Main Rafter (0 to 0.5*W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, -fRoofPitch_rad, true, true)); // Front Left Main Rafter (0 to 0.5*W)
                     else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, true, true)); // Front Right Main Rafter(0.5*W to W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, fRoofPitch_rad, true, true)); // Front Right Main Rafter(0.5*W to W)
                 }
             }
 
@@ -2798,9 +2798,9 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
 
                     if (i < (int)(iBackColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, false, true)); // Back Left Main Rafter (0 to 0.5*W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, fRoofPitch_rad, false, true)); // Back Left Main Rafter (0 to 0.5*W)
                     else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, false, true)); // Back Right Main Rafter(0.5*W to W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, -fRoofPitch_rad, false, true)); // Back Right Main Rafter(0.5*W to W)
                 }
             }
 

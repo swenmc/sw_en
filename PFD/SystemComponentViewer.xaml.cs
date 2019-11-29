@@ -57,6 +57,7 @@ namespace PFD
         float fb_fl; // Flange - Z-section
         float fc_lip1; // LIP - Z-section
         float fRoofPitch_rad;
+        float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
         int iNumberofHoles = 0;
 
         string sGauge_Screw;
@@ -833,6 +834,7 @@ namespace PFD
                             iNumberofHoles = (int)dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 3];
                             fb_B = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 4] / 1000f;
                             fRoofPitch_rad = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 5] / 180 * MathF.fPI;
+                            fGamma_rad = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 6] / 180 * MathF.fPI;
                             break;
                         }
                     case ESerieTypePlate.eSerie_O:
@@ -1395,7 +1397,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_M:
                         {
                             // b, h, t, iHoles, bBeam, slope_rad
-                            plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f*(fb- fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, 0, 0, 0, screwArrangement_M, true); // M
+                            plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f*(fb- fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, fGamma_rad, 0, 0, 0, screwArrangement_M, true); // M
                             break;
                         }
                     case ESerieTypePlate.eSerie_N:

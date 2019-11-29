@@ -86,7 +86,20 @@ namespace BaseClasses
             }
         }
 
-        float fGamma1 = MathF.fPI / 6f; // Uhol medzi vonkajsou hranou plechu a hranou prierezu
+        private float m_fGamma1_rad; // Uhol medzi vonkajsou hranou plechu a hranou prierezu
+
+        public float Gamma1_rad
+        {
+            get
+            {
+                return m_fGamma1_rad;
+            }
+
+            set
+            {
+                m_fGamma1_rad = value;
+            }
+        }
 
         public CConCom_Plate_M()
         {
@@ -103,6 +116,7 @@ namespace BaseClasses
             float ft_platethickness,
             float fbX2_temp, // Wind post width
             float fRoofPitch_rad,
+            float fGamma_1_rad,
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
@@ -124,6 +138,7 @@ namespace BaseClasses
             Ft = ft_platethickness; //0.02f;
             m_fbX2 = fbX2_temp;
             m_fRoofPitch_rad = fRoofPitch_rad;
+            m_fGamma1_rad = fGamma_1_rad;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -208,24 +223,24 @@ namespace BaseClasses
         public override void Calc_Coord3D()
         {
             // Auxiliary values;
-            float fGamma2 = 0.5f * MathF.fPI - fGamma1;
+            float fGamma2 = 0.5f * MathF.fPI - m_fGamma1_rad;
 
             //Priemetry
             // x priblizne ???
-            float fx1 = m_fbX1 * (float)Math.Sin(fGamma1);
-            float fx3 = m_fbX3 * (float)Math.Sin(fGamma1);
+            float fx1 = m_fbX1 * (float)Math.Sin(m_fGamma1_rad);
+            float fx3 = m_fbX3 * (float)Math.Sin(m_fGamma1_rad);
 
             float fy1 = fx1 * (float)Math.Tan(m_fRoofPitch_rad);
             float fy3 = fx3 * (float)Math.Tan(m_fRoofPitch_rad);
 
-            float fz1 = MathF.Sqrt(MathF.Pow2(m_fbX1) - MathF.Pow2(fy1));
-            float fz3 = MathF.Sqrt(MathF.Pow2(m_fbX3) - MathF.Pow2(fy3));
+            float fz1 = m_fbX1 * (float)Math.Cos(m_fGamma1_rad);
+            float fz3 = m_fbX3 * (float)Math.Cos(m_fGamma1_rad);
 
-            float fx11 = m_fhY * (float)Math.Cos(fGamma1);
-            float fx31 = m_fhY * (float)Math.Cos(fGamma1);
+            float fx11 = m_fhY * (float)Math.Cos(m_fGamma1_rad);
+            float fx31 = m_fhY * (float)Math.Cos(m_fGamma1_rad);
 
-            float fz11 = m_fhY * (float)Math.Sin(fGamma1);
-            float fz31 = m_fhY * (float)Math.Sin(fGamma1);
+            float fz11 = m_fhY * (float)Math.Sin(m_fGamma1_rad);
+            float fz31 = m_fhY * (float)Math.Sin(m_fGamma1_rad);
 
             float fx12 = fx1 - fx11;
             float fx32 = fx3 - fx31;
@@ -338,10 +353,10 @@ namespace BaseClasses
             // Left
 
             float fS3OffSetGCS_X, fS3OffSetGCS_Yb, fS3OffSetGCS_Yabove, fS3OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
 
             float fS4OffSetGCS_X, fS4OffSetGCS_Yb, fS4OffSetGCS_Yabove, fS4OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
 
             arrConnectorControlPoints3D[2].X = arrPoints3D[15].X + fS3OffSetGCS_X;
             arrConnectorControlPoints3D[2].Y = arrPoints3D[15].Y + fS3OffSetGCS_Yb + fS3OffSetGCS_Yabove;
@@ -353,10 +368,10 @@ namespace BaseClasses
 
             // Right
             float fS5OffSetGCS_X, fS5OffSetGCS_Yb, fS5OffSetGCS_Yabove, fS5OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
 
             float fS6OffSetGCS_X, fS6OffSetGCS_Yb, fS6OffSetGCS_Yabove, fS6OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, fGamma1, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
 
             arrConnectorControlPoints3D[4].X = arrPoints3D[12].X - fS5OffSetGCS_X;
             arrConnectorControlPoints3D[4].Y = arrPoints3D[12].Y - fS5OffSetGCS_Yb + fS5OffSetGCS_Yabove;

@@ -328,10 +328,10 @@ namespace PFD
                 {200, 630, 1250, 800, 1400, 50, 3, 20, 4} // KK
         };
 
-        public float[,] arr_Serie_M_Dimension = new float[1, 6]
+        public float[,] arr_Serie_M_Dimension = new float[1, 7]
         {
-                // b, h, t, iHoles, bBeam, slope_deg
-                {1000, 100, 1, 6, 70, 5}
+                // b, h, t, iHoles, bBeam, slope_deg, gamma_deg
+                {1000, 100, 1, 6, 70, 5, 30}
         };
 
         public float[,] arr_Serie_N_Dimension = new float[1, 6]
