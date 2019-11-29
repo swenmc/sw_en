@@ -339,7 +339,7 @@ namespace PFD
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
-                    iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -529,7 +529,7 @@ namespace PFD
                 {
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
-                    iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+                    IFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     // Update value of distance between columns
 
                     // Todo
@@ -540,7 +540,7 @@ namespace PFD
                     // chcel som tam mat toho co najmenej a len najnutnejsie hodnoty
                     // Mozes to tak upravit ak je to logickejsie a spravnejsie
 
-                    MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));
+                    MColumnDistance = (MGableWidth / (IFrontColumnNoInOneFrame + 1));
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -1320,6 +1320,7 @@ namespace PFD
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                 }
                 RecreateModel = true;
+                RecreateJoints = true;
                 RecreateFloorSlab = true;
                 NotifyPropertyChanged("DoorBlocksProperties");
             }
@@ -2411,6 +2412,19 @@ namespace PFD
             }
         }
 
+        public int IFrontColumnNoInOneFrame
+        {
+            get
+            {
+                return iFrontColumnNoInOneFrame;
+            }
+
+            set
+            {
+                iFrontColumnNoInOneFrame = value;
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2429,12 +2443,12 @@ namespace PFD
                 leftRightBays.Add((++i));
             }
             i = 0;
-            while (i < iFrontColumnNoInOneFrame + 1)
+            while (i < IFrontColumnNoInOneFrame + 1)
             {
                 frontBays.Add((++i));
             }
             i = 0;
-            while (i < iFrontColumnNoInOneFrame + 1)
+            while (i < IFrontColumnNoInOneFrame + 1)
             {
                 backBays.Add((++i));
             }
@@ -3045,7 +3059,7 @@ namespace PFD
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.SupportTypeIndex = MSupportTypeIndex;
             data.LoadCaseIndex = MLoadCaseIndex;
-            data.IFrontColumnNoInOneFrame = iFrontColumnNoInOneFrame;
+            data.IFrontColumnNoInOneFrame = IFrontColumnNoInOneFrame;
             data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;
 
             data.GeneralLoad = GeneralLoad;

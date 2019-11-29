@@ -106,8 +106,8 @@ namespace PFD
         {
             IsSetFromCode = true;
             DoorType = "Roller Door";
-            DoorsHeight = 1;
-            DoorsWidth = 1;
+            DoorsHeight = 2.1f;
+            DoorsWidth = 0.6f;
             DoorCoordinateXinBlock = 0.5f;
 
 

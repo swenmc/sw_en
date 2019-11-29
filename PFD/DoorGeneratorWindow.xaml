@@ -73,6 +73,25 @@
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="LEFT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="leftBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="leftBaysAll" Checked="LeftBaysAll_Checked" Unchecked="LeftBaysAll_Unchecked">All left bays</CheckBox>
+                
+            </StackPanel>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="RIGHT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Name="rightBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="rightBaysAll" Checked="RightBaysAll_Checked" Unchecked="RightBaysAll_Unchecked">All right bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="FRONT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Name="frontBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="frontBaysAll" Checked="FrontBaysAll_Checked" Unchecked="FrontBaysAll_Unchecked">All front bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="BACK" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="backBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="backBaysAll" Checked="BackBaysAll_Checked" Unchecked="BackBaysAll_Unchecked">All back bays</CheckBox>
+            </StackPanel>
+
+            
 
             <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>

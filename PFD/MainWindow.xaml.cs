@@ -79,8 +79,8 @@ namespace PFD
 
         bool bDebugging = false;
 
-        public ObservableCollection<DoorProperties> DoorBlocksProperties;
-        public ObservableCollection<WindowProperties> WindowBlocksProperties;
+        ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
+        //public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
@@ -106,10 +106,10 @@ namespace PFD
             SetInitialItemsInComboboxes();
 
             // Prepare data for generating of door blocks
-            DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
+            ObservableCollection<DoorProperties> DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
 
             // Prepare data for generating of window blocks
-            WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
+            ObservableCollection<WindowProperties> WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
             SetLoadInput();
@@ -716,8 +716,8 @@ namespace PFD
                     vm.BottomGirtPosition,
                     vm.FrontFrameRakeAngle,
                     vm.BackFrameRakeAngle,
-                    DoorBlocksProperties,
-                    WindowBlocksProperties,
+                    vm.DoorBlocksProperties,
+                    vm.WindowBlocksProperties,
                     compList,
                     joints,
                     foundations,
@@ -1657,8 +1657,17 @@ namespace PFD
 
         private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
         {
-            DoorGeneratorWindow generatorWindow = new DoorGeneratorWindow();
+            DoorGeneratorWindow generatorWindow = new DoorGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1);
             generatorWindow.ShowDialog();
+
+            List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
+            foreach (DoorProperties dp in vm.DoorBlocksProperties)
+            {
+                bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                if (!existsSameItem) doorProperties.Add(dp);
+                
+            }
+            vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
         }
     }
 }
