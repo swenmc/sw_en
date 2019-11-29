@@ -119,7 +119,7 @@ namespace BaseClasses
                 float fGamma_rad = MathF.fPI / 6f;
                 float fColumnDepth = (float)m_SecondaryMembers[0].CrScStart.h;
                 float fhY = 0.05f; // 
-                float fbX1 = fColumnDepth / (float)Math.Cos(fGamma_rad) + Math.Min(0.5f * fhY, 0.5f * (float)m_MainMember.CrScStart.b);
+                float fbX1 = fColumnDepth / (float)Math.Cos(fGamma_rad) + 0.5f * fhY;
                 float fOffsetAboveRafter = 0.01f; // Dodatocny posun plechu smerom hore nad rafter tak, aby sa neprekryvali plochy plechu a rafteru. Bolo by potrebne predefinovat plechy, aby mal konce kde sa prekryva s rafterom uplne ploche
 
                 float fbPlate2 = 0.05f;
