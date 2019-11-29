@@ -142,6 +142,9 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="DoorGeneratorWindow.xaml.cs">
+      <DependentUpon>DoorGeneratorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SCVDisplayOptionsWindow.xaml.cs">
       <DependentUpon>SCVDisplayOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,7 @@
     <Compile Include="CParamsResources.cs" />
     <Compile Include="CComponentParamsView.cs" />
     <Compile Include="CDatabaseModels.cs" />
+    <Compile Include="ViewModels\DoorGeneratorViewModel.cs" />
     <Compile Include="ViewModels\DisplayOptionsViewModel.cs" />
     <Compile Include="ViewModels\CPFDFootingDesign.cs" />
     <Compile Include="ViewModels\CPFDJointsDesign.cs" />
@@ -284,6 +288,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DoorGeneratorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SCVDisplayOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
