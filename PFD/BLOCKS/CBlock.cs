@@ -3,6 +3,7 @@ using CRSC;
 using MATERIAL;
 using System;
 using BaseClasses;
+using System.Collections.Generic;
 using System.Windows.Media.Media3D;
 
 namespace PFD
@@ -76,6 +77,11 @@ namespace PFD
                 m_sBuildingSide = value;
             }
         }
+
+        // Zoznam hranicnych bodov otvoru
+        // TO Ondrej - toto by nemalo byt asi v triede CBlock ale v nejakom jej potomkovi COpenning alebo nieco take lebo nie vsetky bloky budu pre otvory
+        // Od COpenning by potom mali asi dedit doors a windows
+        public List<System.Windows.Point> openningPoints; // TO Ondrej - Taks 405 - neviem ci to pomoze ale takto nejako by to malo fungovat // suradnice [0,0] su na lavej strane - zaciatok bay
 
         // Physical Model / Structural data
         // Collection of references to objects

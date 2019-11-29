@@ -324,13 +324,19 @@
                             <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="11" Grid.Column="4" Grid.RowSpan="3">
+                        <StackPanel Grid.Row="11" Grid.Column="4" Grid.RowSpan="2">
                             <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Color Members</CheckBox>
                             <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
 
                             <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
                             <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
                             <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="14" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                            <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
+                            <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
                         </StackPanel>
 
                         <!-- Displacement / Deflection Limits - presunut do samostatneho okna "Design parameters" ??? -->

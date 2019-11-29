@@ -1005,7 +1005,7 @@ namespace EXPIMP
 
             for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
             {
-                fMainMemberLength = Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
                 fSecondaryMemberLength = fMainMemberLength;
             }
 
@@ -1249,7 +1249,7 @@ namespace EXPIMP
 
                 for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
                 {
-                    fMainMemberLength = Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                    fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
                     fSecondaryMemberLength = fMainMemberLength;
                 }
 

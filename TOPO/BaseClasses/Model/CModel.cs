@@ -51,6 +51,7 @@ namespace BaseClasses
         public CNode[] m_arrNodes;
         // 1D Elements (not FEM)
         public CMember[] m_arrMembers;
+        //public List<CMember> m_arrMembers; takto by to bolo lepsie ale vzhladom na 27682 pouziti, to by bolo tazke refaktorovat :-)
         // Nodal Supports
         public CNSupport[] m_arrNSupports;
         // Member Releases

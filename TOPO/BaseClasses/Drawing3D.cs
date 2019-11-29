@@ -1760,7 +1760,7 @@ namespace BaseClasses
                                         cmodel.m_arrFoundations[i].Top_Bars_x[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
-                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                        if(sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
                             }
@@ -1774,7 +1774,7 @@ namespace BaseClasses
                                         cmodel.m_arrFoundations[i].Top_Bars_y[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Top_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Top_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
-                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                        if (sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
                             }
@@ -1788,7 +1788,7 @@ namespace BaseClasses
                                         cmodel.m_arrFoundations[i].Bottom_Bars_x[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_x[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_x, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
-                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                        if (sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
                             }
@@ -1802,7 +1802,7 @@ namespace BaseClasses
                                         cmodel.m_arrFoundations[i].Bottom_Bars_y[j].BIsDisplayed)
                                     {
                                         Model3DGroup modelReinforcementBar = cmodel.m_arrFoundations[i].Bottom_Bars_y[j].CreateModel3DGroup(sDisplayOptions.ReinforcementBarColor_Bottom_y, sDisplayOptions.fReinforcementBarSolidModelOpacity, cmodel.m_arrFoundations[i].GetFoundationTransformGroup(), cmodel.m_arrFoundations[i]);
-                                        model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
+                                        if (sDisplayOptions.bDisplayReinforcementBars) model3D_group.Children.Add(modelReinforcementBar); // Add reinforcement bar to the model group
                                     }
                                 }
                             }
@@ -4615,7 +4615,7 @@ namespace BaseClasses
 
                 for (int i = 0; i < jointClone.m_arrPlates.Length; i++)
                 {
-                    fMainMemberLength = Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
+                    fMainMemberLength = Math.Max(jointClone.m_arrPlates.First().Width_bx, jointClone.m_arrPlates.First().Height_hy); //Math.Max(jointClone.m_arrPlates[i].Width_bx, jointClone.m_arrPlates[i].Height_hy);
                     fSecondaryMemberLength = fMainMemberLength;
                 }
 

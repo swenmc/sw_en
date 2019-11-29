@@ -108,7 +108,9 @@
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\DisplayOptionsHelper.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar_U.cs" />
     <Compile Include="Model\Foundations\CReinforcementMesh.cs" />

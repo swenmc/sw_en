@@ -45,6 +45,7 @@ namespace PFD
         Point3D controlpoint = new Point3D(0, 0, 0);
         System.Windows.Media.Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
+        float fb_B; // Wind Post Width
         float fb; // in plane XY -X coord
         float fb2; // in plane XY - X coord
         float fh; // in plane XY - Y coord
@@ -55,6 +56,8 @@ namespace PFD
         int iNumberOfStiffeners = 0;
         float fb_fl; // Flange - Z-section
         float fc_lip1; // LIP - Z-section
+        float fRoofPitch_rad;
+        float fGamma_rad; // Plate M alebo N uhol medzi hranou prierezu a vonkajsou hranou plechu
         int iNumberofHoles = 0;
 
         string sGauge_Screw;
@@ -822,6 +825,18 @@ namespace PFD
                             iNumberofHoles = (int)dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 5];
                             break;
                         }
+                    case ESerieTypePlate.eSerie_M:
+                        {
+                            // b, h, t, iHoles, bBeam, slope_deg
+                            fb = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            ft = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            iNumberofHoles = (int)dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 3];
+                            fb_B = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 4] / 1000f;
+                            fRoofPitch_rad = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 5] / 180 * MathF.fPI;
+                            fGamma_rad = dcomponents.arr_Serie_M_Dimension[vm.ComponentIndex, 6] / 180 * MathF.fPI;
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_O:
                         {
                             fb = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 0] / 1000f;
@@ -1138,6 +1153,7 @@ namespace PFD
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
                 CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
@@ -1376,6 +1392,12 @@ namespace PFD
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_KK(dcomponents.arr_Serie_K_Names[6], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_M:
+                        {
+                            // b, h, t, iHoles, bBeam, slope_rad
+                            plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f*(fb- fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, fGamma_rad, 0, 0, 0, screwArrangement_M, true); // M
                             break;
                         }
                     case ESerieTypePlate.eSerie_N:

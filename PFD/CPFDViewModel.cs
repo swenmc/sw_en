@@ -27,7 +27,7 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;
-        private readonly BackgroundWorker _worker = new BackgroundWorker();        
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public MainWindow PFDMainWindow;
         public Solver SolverWindow;
@@ -103,6 +103,9 @@ namespace PFD
         private bool m_DisplayReinforcementBarsWireFrame;
         private bool m_DisplayFloorSlabWireFrame;
 
+        private bool m_BracingEverySecondRowOfGirts;
+        private bool m_BracingEverySecondRowOfPurlins;
+
         // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
@@ -151,6 +154,7 @@ namespace PFD
         private bool MShowSlabRebates;
 
         private float MDisplayIn3DRatio;
+        
 
         // Displacement / Deflection Limits
         private float MVerticalDisplacementLimitDenominator_Rafter_PL;
@@ -2377,6 +2381,34 @@ namespace PFD
             }
         }
 
+        public bool BracingEverySecondRowOfGirts
+        {
+            get
+            {
+                return m_BracingEverySecondRowOfGirts;
+            }
+
+            set
+            {
+                m_BracingEverySecondRowOfGirts = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfGirts");
+            }
+        }
+
+        public bool BracingEverySecondRowOfPurlins
+        {
+            get
+            {
+                return m_BracingEverySecondRowOfPurlins;
+            }
+
+            set
+            {
+                m_BracingEverySecondRowOfPurlins = value;
+                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfPurlins");
+            }
+        }
+
         private List<int> frontBays;
         private List<int> backBays;
         private List<int> leftRightBays;
@@ -2585,8 +2617,8 @@ namespace PFD
             MaterialDiffuse = true;
             MaterialEmissive = false;
             DisplayMembers = true;
-            DisplayJoints = false;
-            DisplayPlates = false;
+            DisplayJoints = true;
+            DisplayPlates = true;
             DisplayConnectors = false;
             DisplayNodes = false;
             DisplayFoundations = true;
@@ -2645,6 +2677,9 @@ namespace PFD
             ShowGlobalAxis = true;
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = false;
+
+            BracingEverySecondRowOfGirts = true;
+            BracingEverySecondRowOfPurlins = true;
 
             // Displacement / Deflection Limits
             // V pripade potreby vytvorit samostatny dialog pre Design parameters / options

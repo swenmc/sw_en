@@ -231,6 +231,13 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
+        public string[] arr_Serie_M_Names = new string[1]
+        {"M"};
+
+        public string[] arr_Serie_M_ScrewArrangement_Names = new string[2]
+        {"Undefined",
+          "Arrangement M"};
+
         public string[] arr_Serie_N_Names = new string[1]
         {"N"};
 
@@ -319,6 +326,12 @@ namespace PFD
                 {0, 630, 1250, 800, 1400, 50, 3, 20, 4},  // KE
                 {0, 630, 1280, 800, 1430, 50, 3, 20, 4},  // KF
                 {200, 630, 1250, 800, 1400, 50, 3, 20, 4} // KK
+        };
+
+        public float[,] arr_Serie_M_Dimension = new float[1, 7]
+        {
+                // b, h, t, iHoles, bBeam, slope_deg, gamma_deg
+                {1000, 100, 1, 6, 70, 5, 30}
         };
 
         public float[,] arr_Serie_N_Dimension = new float[1, 6]
