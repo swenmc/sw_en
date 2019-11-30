@@ -111,7 +111,11 @@ namespace BaseClasses
             else
             {
                 // Plate position in x-direction on the secondary member
-                float fAlignment_x = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].FAlignment_End; // Posun plechu v smere osi x LCS pruta (kladna hodnota je posun v smere +x)
+                float fAlignment_x;
+                    fAlignment_x = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].FAlignment_Start; // Posun v smere osi x LCS pruta
+
+                if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // End node
+                    fAlignment_x = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].FAlignment_End; // Posun v smere osi x LCS pruta
 
                 float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
                 float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
@@ -125,43 +129,47 @@ namespace BaseClasses
                 float fbPlate2 = 0.05f;
                 float fhPlate2 = 0.27f;
 
+                float fPlateOffset_y = 0.5f * (float)m_SecondaryMembers[0].CrScStart.b + (float)m_SecondaryMembers[0].CrScStart.y_min;
+
                 // Rotation about longitudinal axis
                 // Front Side of Building
                 float fRotationAboutLCS_x_deg = 0;
-                float fControlPointPosition_y_start = flocaleccentricity_y;
-                float fControlPointPosition_y_end = flocaleccentricity_y;
+                float fControlPointPosition_x_start = -fAlignment_x - fOffsetAboveRafter + fhY;
+                float fControlPointPosition_x_end = m_SecondaryMembers[0].FLength + fAlignment_x + fOffsetAboveRafter - fhY;
+                float fControlPointPosition_y_start = flocaleccentricity_y + fPlateOffset_y;
+                float fControlPointPosition_y_end = flocaleccentricity_y + fPlateOffset_y;
                 float fControlPointPosition_z_start = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z;
                 float fControlPointPosition_z_end = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z;
 
                 float fRotation2AboutLCS_y_deg = 0;
                 float fRotation2AboutLCS_z_deg = -90;
-                float fControlPoint2Position_x_start = -fAlignment_x - fhPlate2;
+                float fControlPoint2Position_x_start = -fAlignment_x;
                 float fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
                 float fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
                 float fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
-                float fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                float fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
                 float fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
 
                 float fRotation3AboutLCS_y_deg = 180 + 90;
                 float fRotation3AboutLCS_z_deg = -90;
-                float fControlPoint3Position_x_start = -fAlignment_x - fhPlate2;
+                float fControlPoint3Position_x_start = -fAlignment_x;
                 float fControlPoint3Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
                 float fControlPoint3Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
                 float fControlPoint3Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
-                float fControlPoint3Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                float fControlPoint3Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
                 float fControlPoint3Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
 
                 if (bSwitchConnectedSide_Z) // Back Side of Building
                 {
                     fRotationAboutLCS_x_deg = 180;
-                    fControlPointPosition_y_start = flocaleccentricity_y;
-                    fControlPointPosition_y_end = flocaleccentricity_y;
+                    fControlPointPosition_y_start = flocaleccentricity_y + fPlateOffset_y;
+                    fControlPointPosition_y_end = flocaleccentricity_y + fPlateOffset_y;
                     fControlPointPosition_z_start = -0.5f * (float)m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z;
                     fControlPointPosition_z_end = -0.5f * (float)m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z;
 
                     fRotation2AboutLCS_y_deg = 90;
                     fRotation2AboutLCS_z_deg = -90;
-                    fControlPoint2Position_x_start = -fAlignment_x - fhPlate2;
+                    fControlPoint2Position_x_start = -fAlignment_x;
                     fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
                     fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
                     fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
@@ -170,7 +178,7 @@ namespace BaseClasses
 
                     fRotation3AboutLCS_y_deg = 180;
                     fRotation3AboutLCS_z_deg = -90;
-                    fControlPoint3Position_x_start = -fAlignment_x - fhPlate2;
+                    fControlPoint3Position_x_start = -fAlignment_x;
                     fControlPoint3Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
                     fControlPoint3Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
                     fControlPoint3Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
@@ -179,7 +187,7 @@ namespace BaseClasses
                 }
 
                 // Zaporna suradnica x posuva plech pred zaciatok pruta
-                Point3D ControlPoint_P1 = new Point3D(-fAlignment_x - fOffsetAboveRafter - fhY, fControlPointPosition_y_start, fControlPointPosition_z_start);
+                Point3D ControlPoint_P1 = new Point3D(fControlPointPosition_x_start, fControlPointPosition_y_start, fControlPointPosition_z_start);
                 Point3D ControlPoint_P2 = new Point3D(fControlPoint2Position_x_start, fControlPoint2Position_y_start, fControlPoint3Position_z_start);
                 Point3D ControlPoint_P3 = new Point3D(fControlPoint3Position_x_start, fControlPoint3Position_y_start, fControlPoint3Position_z_start);
 
@@ -198,7 +206,7 @@ namespace BaseClasses
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
                 {
                     // Rotate and move joint defined in the start point [0,0,0] to the end point
-                    ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength + fAlignment_x + fOffsetAboveRafter - fhY, fControlPointPosition_y_end, fControlPointPosition_z_start);
+                    ControlPoint_P1 = new Point3D(fControlPointPosition_x_end, fControlPointPosition_y_end, fControlPointPosition_z_start);
 
                     ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
                     ControlPoint_P3 = new Point3D(fControlPoint3Position_x_end, fControlPoint3Position_y_end, fControlPoint3Position_z_end);

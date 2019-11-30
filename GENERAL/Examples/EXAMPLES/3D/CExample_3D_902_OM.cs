@@ -66,8 +66,8 @@ namespace Examples
 
             // Member eccentricity
 
-            //CMemberEccentricity eccmember = new CMemberEccentricity(-0.2f, -0.3f);
-            CMemberEccentricity eccmember = new CMemberEccentricity(0f, 0f);
+            CMemberEccentricity eccmember = new CMemberEccentricity(-0.2f, -0.3f);
+            //CMemberEccentricity eccmember = new CMemberEccentricity(0f, 0f);
             // Members Automatic Generation
             // Members List - Members Array
 
@@ -80,7 +80,7 @@ namespace Examples
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
 
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
             //m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FS.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
@@ -115,7 +115,8 @@ namespace Examples
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eOneLeftPlate, true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.2f, false, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.3f, true, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.2f, false, true));
 
             // Nodal loads
             m_arrNLoads = new CNLoad[1];
