@@ -579,12 +579,29 @@ namespace M_AS4600
             bool bDisplayWarningForContitions5434and5435 = false;
             designDetails.iNumberOfScrewsInTension = plate.ScrewArrangement.IHolesNumber * 2 / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
 
-            CConCom_Plate_N plateN = (CConCom_Plate_N)joint_temp.m_arrPlates[0];
-
             // Tension force in plate (metal strip)
+            float fDIF_N_plate =0;
+            float fDIF_V_connection_one_side = 0;
             designDetails.fPhi_N_screw = 0.5f;
-            float fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
-            float fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
+
+            if (joint_temp.m_arrPlates[0] is CConCom_Plate_N)
+            {
+                CConCom_Plate_N plateN = (CConCom_Plate_N)joint_temp.m_arrPlates[0];
+
+                fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
+                fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
+            }
+            else if (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1] is CConCom_Plate_M) // Plate M - strip is last plate
+            {
+                CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
+
+                fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Cos(plateM.Gamma1_rad);
+                fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
+            }
+            else
+            {
+                throw new Exception("Invalid plate type.");
+            }
 
             // 5.4.3 Screwed connections in tension
             // 5.4.3.2 Pull-out and pull-over (pull-through)
