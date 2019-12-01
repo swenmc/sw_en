@@ -37,12 +37,12 @@ namespace PFD.ViewModels
         int iNumberOfDecimalPlacesMass = 4;
         int iNumberOfDecimalPlacesPrice = 3;
 
-        float fCFS_PricePerKg_Members_Material = 2.5f;     // NZD / kg
+        float fCFS_PricePerKg_Members_Material = 2.08f;     // NZD / kg
         float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-        float fCFS_PricePerKg_Members_Manufacture = 1.0f;  // NZD / kg
+        float fCFS_PricePerKg_Members_Manufacture = 2.0f;  // NZD / kg
         float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
 
-        float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
+        float fTEK_PricePerPiece_Screws_Total = 0.20f;         // NZD / piece
 
         public CMaterialListViewModel(CModel_PFD model)
         {
@@ -76,7 +76,12 @@ namespace PFD.ViewModels
                             float fMassPerPiece = fLength * fMassPerLength;
                             float fTotalLength = iQuantity * fLength;
                             float fTotalMass = fTotalLength * fMassPerLength;
-                            float fTotalPrice = fTotalMass * fCFS_PricePerKg_Members_Total;
+                            float fTotalPrice;
+
+                            if(model.m_arrCrSc[i].price_PPLM_NZD > 0)
+                                fTotalPrice = fTotalLength * (float)model.m_arrCrSc[i].price_PPLM_NZD;
+                            else
+                                fTotalPrice = fTotalMass * fCFS_PricePerKg_Members_Total;
 
                             bool bMemberwasAdded = false; // Member was added to the group
 
@@ -84,8 +89,6 @@ namespace PFD.ViewModels
                             {
                                 for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                                 {
-                                    //if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0]) &&
-                                    //(MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
                                     if (ListOfMemberGroups[k].EMemberType == assignedMembersList[j].EMemberType &&
                                     (MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
                                     {
@@ -93,17 +96,15 @@ namespace PFD.ViewModels
                                         membersMatList[iLastItemIndex + k].Quantity += 1;
                                         membersMatList[iLastItemIndex + k].TotalLength = Math.Round(membersMatList[iLastItemIndex + k].Quantity * membersMatList[iLastItemIndex + k].Length, iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
                                         membersMatList[iLastItemIndex + k].TotalMass = Math.Round(membersMatList[iLastItemIndex + k].TotalLength * membersMatList[iLastItemIndex + k].MassPerLength, iNumberOfDecimalPlacesMass); // Recalculate total weight of all members in the group
-                                        membersMatList[iLastItemIndex + k].TotalPrice = Math.Round(membersMatList[iLastItemIndex + k].TotalMass * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
 
-                                        //listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
-                                        //listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
-                                        //listMemberTotalMass[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberMassPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesMass); // Recalculate total weight of all members in the group
-                                        //listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalMass[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+                                        if(ListOfMemberGroups[k].CrScStart.price_PPLM_NZD > 0)
+                                            membersMatList[iLastItemIndex + k].TotalPrice = Math.Round(membersMatList[iLastItemIndex + k].TotalLength * ListOfMemberGroups[k].CrScStart.price_PPLM_NZD, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+                                        else
+                                           membersMatList[iLastItemIndex + k].TotalPrice = Math.Round(membersMatList[iLastItemIndex + k].TotalMass * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
 
                                         bMemberwasAdded = true;
                                         break;
                                     }
-
                                 }
                             }
 
@@ -145,7 +146,12 @@ namespace PFD.ViewModels
                     dTotalMembersLength_Model += member.FLength_real;
                     dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
                     dTotalMembersMass_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
-                    dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
+
+                    if(member.CrScStart.price_PPLM_NZD > 0)
+                        dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.price_PPLM_NZD;
+                    else
+                        dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
+
                     iTotalMembersNumber_Model += 1;
                 }
             }

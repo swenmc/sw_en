@@ -89,103 +89,17 @@ namespace PFD
             // Clear all lists
             DeleteAllLists();
 
-            int iNumberOfDecimalPlacesLength = 3;
             int iNumberOfDecimalPlacesPlateDim = 3;
             int iNumberOfDecimalPlacesArea = 5;
             int iNumberOfDecimalPlacesVolume = 5;
             int iNumberOfDecimalPlacesMass = 4;
             int iNumberOfDecimalPlacesPrice = 3;
 
-            float fCFS_PricePerKg_Members_Material = 2.5f;     // NZD / kg
             float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-            float fCFS_PricePerKg_Members_Manufacture = 1.0f;  // NZD / kg
             float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
 
             float fTEK_PricePerPiece_Screws_Total = 0.05f;     // NZD / piece
-
-            float fCFS_PricePerKg_Members_Total = fCFS_PricePerKg_Members_Material + fCFS_PricePerKg_Members_Manufacture;        // NZD / kg
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
-
-            //// Create Table
-            //DataTable table = new DataTable("Table");
-            //// Create Table Rows
-
-            //table.Columns.Add("Prefix", typeof(String));
-            //table.Columns.Add("Section", typeof(String));
-            //table.Columns.Add("Quantity", typeof(Int32));
-            //table.Columns.Add("Material", typeof(String));
-            //table.Columns.Add("Length", typeof(String));
-            //table.Columns.Add("Mass_per_m", typeof(String));
-            //table.Columns.Add("Mass_per_Piece", typeof(String));
-            //table.Columns.Add("Total_Length", typeof(Decimal));
-            //table.Columns.Add("Total_Mass", typeof(Decimal));
-            //table.Columns.Add("Total_Price", typeof(Decimal));
-
-            //// Set Column Caption
-            //table.Columns["Prefix"].Caption = "Prefix";
-            //table.Columns["Section"].Caption = "Section";
-            //table.Columns["Quantity"].Caption = "Quantity";
-            //table.Columns["Material"].Caption = "Material";
-            //table.Columns["Length"].Caption = "Length";
-            //table.Columns["Mass_per_m"].Caption = "Mass_per_m";
-            //table.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
-            //table.Columns["Total_Length"].Caption = "Total_Length";
-            //table.Columns["Total_Mass"].Caption = "Total_Mass";
-            //table.Columns["Total_Price"].Caption = "Total_Price";
-
-            //// Create Datases
-            //ds = new DataSet();
-            //// Add Table to Dataset
-            //ds.Tables.Add(table);
-
-            //for (int i = 0; i < listMemberPrefix.Count; i++)
-            //{
-            //    DataRow row = table.NewRow();
-
-            //    try
-            //    {
-            //        row["Prefix"] = listMemberPrefix[i];
-            //        row["Section"] = listMemberCrScName[i];
-            //        row["Quantity"] = listMemberQuantity[i];
-            //        row["Material"] = listMemberMaterialName[i];
-            //        row["Length"] = listMemberLength[i];
-            //        row["Mass_per_m"] = listMemberMassPerLength[i];
-            //        row["Mass_per_Piece"] = listMemberMassPerPiece[i];
-            //        row["Total_Length"] = listMemberTotalLength[i];
-            //        row["Total_Mass"] = listMemberTotalMass[i];
-            //        row["Total_Price"] = listMemberTotalPrice[i];
-            //    }
-            //    catch (ArgumentOutOfRangeException) { }
-            //    table.Rows.Add(row);
-            //}
-
-            //Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
-            // Set Column Header
-            /*
-            Datagrid_Members.Columns[0].Header = "Prefix";
-            Datagrid_Members.Columns[1].Header = "Section";
-            Datagrid_Members.Columns[2].Header = "Quantity";
-            Datagrid_Members.Columns[3].Header = "Material";
-            Datagrid_Members.Columns[4].Header = "Length";
-            Datagrid_Members.Columns[5].Header = "Mass / m";
-            Datagrid_Members.Columns[6].Header = "Mass / piece";
-            Datagrid_Members.Columns[7].Header = "Total Length";
-            Datagrid_Members.Columns[8].Header = "Total Mass";
-            */
-
-            // Set Column Width
-            /*
-            Datagrid_Members.Columns[0].Width = 100;
-            Datagrid_Members.Columns[1].Width = 100;
-            Datagrid_Members.Columns[2].Width = 100;
-            Datagrid_Members.Columns[3].Width = 100;
-            Datagrid_Members.Columns[4].Width = 100;
-            Datagrid_Members.Columns[5].Width = 100;
-            Datagrid_Members.Columns[6].Width = 100;
-            Datagrid_Members.Columns[7].Width = 100;
-            Datagrid_Members.Columns[8].Width = 100;
-            */
 
             // Plates
 
@@ -201,8 +115,6 @@ namespace PFD
                     count++;
                     for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
-
-
                         // Define current plate properties
                         // Not used - could be used to compare names in database with user-defined in the future
 
@@ -675,10 +587,6 @@ namespace PFD
             //Todo - asi sa to da jednoduchsie
             DeleteLists();
 
-            //Datagrid_Members.ItemsSource = null;
-            //Datagrid_Members.Items.Clear();
-            //Datagrid_Members.Items.Refresh();
-
             Datagrid_Plates.ItemsSource = null;
             Datagrid_Plates.Items.Clear();
             Datagrid_Plates.Items.Refresh();
@@ -691,16 +599,6 @@ namespace PFD
         // Deleting lists for updating actual values
         private void DeleteLists()
         {
-            //listMemberPrefix.Clear();
-            //listMemberCrScName.Clear();
-            //listMemberQuantity.Clear();
-            //listMemberMaterialName.Clear();
-            //dlistMemberLength.Clear();
-            //dlistMemberMassPerLength.Clear();
-            //dlistMemberMassPerPiece.Clear();
-            //listMemberTotalLength.Clear();
-            //listMemberTotalMass.Clear();
-
             listPlatePrefix.Clear();
             listPlateQuantity.Clear();
             listPlateMaterialName.Clear();

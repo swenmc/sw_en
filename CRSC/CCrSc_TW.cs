@@ -431,6 +431,8 @@ namespace CRSC
             this.i_z_rg = Math.Sqrt(I_z / A_g);
             this.i_epsilon_rg = Math.Sqrt(I_epsilon / A_g);
             this.i_mikro_rg = Math.Sqrt(I_mikro / A_g);
+
+            this.price_PPLM_NZD = dto.dPrice_PPLM_NZD;
         }
 
         // Calculate properties

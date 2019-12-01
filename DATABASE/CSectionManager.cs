@@ -387,6 +387,9 @@ namespace DATABASE
             crsc.iScrewsGauge = int.Parse(reader["screwsGauge"].ToString());
             crsc.dScrewDistance = double.Parse(reader["screwsDistance"].ToString(), nfi);
 
+            crsc.ribsProjectionSpacing_mm = reader["ribsProjectionSpacing_mm"].ToString();
+            crsc.dPrice_PPLM_NZD = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
+
             return crsc;
         }
         private static List<string> FillListOfSectionPropertiesString(CSectionProperties properties)

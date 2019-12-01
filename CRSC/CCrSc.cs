@@ -255,6 +255,8 @@ namespace CRSC
         m_d_y_s,                // Vzdalenost stredu smyku a teziste // (J.25)
         m_d_z_s;                // (J.25)
 
+        private double _price_PPLM_NZD;
+
         public double S_y0
         {
             get { return m_S_y0; }
@@ -664,6 +666,12 @@ namespace CRSC
         {
             get { return m_d_y_s; }
             set { m_d_y_s = value; }
+        }
+
+        public double price_PPLM_NZD
+        {
+            get { return _price_PPLM_NZD; }
+            set { _price_PPLM_NZD = value; }
         }
 
         public CMat m_Mat = new CMat();
