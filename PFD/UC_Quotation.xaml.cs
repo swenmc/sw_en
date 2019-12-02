@@ -37,6 +37,8 @@ namespace PFD
             // Cross-section | Total Length [m] | Price PLM | Total Price
             // 270115 | 245.54 | 4.54 | Total Price
 
+            // !!!!! Cisla v datagridoch zarovnavat napravo
+
             // DG 2
             // Plates
 
@@ -91,17 +93,26 @@ namespace PFD
                 fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
             }
 
+            // TODO Ondrej
+            // Zobrazit Datagrid
+            // Rovnake dvere / okna budu v jednom riadku
+            // !!!!! Cisla v datagridoch zarovnavat napravo
+
+            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP| Total Price
+            // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
+            // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
+
             // DG 9
             // Cladding
 
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
             List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
 
-            float fWallArea_Left = MATH.Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
+            float fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
             float fWallArea_Right = fWallArea_Left;
 
             // Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
-            float fWallArea_Front = MATH.Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+            float fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
             float fWallArea_Back = fWallArea_Front;
 
             float fWallArea_Total = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
