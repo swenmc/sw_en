@@ -27,6 +27,7 @@ namespace PFD
             InitializeComponent();
 
             CModel model = vm.Model;
+            // DG 1
             // Members
 
             // TODO Ondrej
@@ -36,21 +37,26 @@ namespace PFD
             // Cross-section | Total Length [m] | Price PLM | Total Price
             // 270115 | 245.54 | 4.54 | Total Price
 
+            // DG 2
             // Plates
 
             // TODO Ondrej - sem dat Plates presne ako su v UC_Material
 
             // TODO - dopracovat apex brace plates
 
+            // DG 3
             // Screws
 
+            // DG 4
             // Anchors
 
+            // DG 5
             // Washers
 
+            // DG 6
             // Bolts
 
-
+            // DG 7
             // Doors and windows
             float fTotalAreaOfOpennings = 0;
 
@@ -85,6 +91,7 @@ namespace PFD
                 fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
             }
 
+            // DG 9
             // Cladding
 
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
@@ -126,6 +133,7 @@ namespace PFD
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
 
+            // DG 10
             // Gutters
             float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
             float fRoofGutterPrice_PLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
@@ -135,6 +143,7 @@ namespace PFD
             // Roof Gutter | Total Length | Price PLM | Total Price
             float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD; // TODO Ondrej
 
+            // DG 11
             // FibreGlass
             // TODO Ondrej
             // Zobrazit Datagrid s 2 riadkami
@@ -147,6 +156,7 @@ namespace PFD
             float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
             float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
 
+            // DG 12
             // Roof Netting and Sisalation
             // Roof Sisalation Foil
             // Roof Safe Net
@@ -161,6 +171,7 @@ namespace PFD
             float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD; // TODO Ondrej
             float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD; // TODO Ondrej
 
+            // DG 13
             // Flashing and Packers
             float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
             float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
@@ -173,6 +184,7 @@ namespace PFD
             float fPADoorLintelFlashingPrice_PLM_NZD = 1.80f; // Cena PA door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
             float fWindowFlashingPrice_PLM_NZD = 1.90f; // Cena window flashing za 1 m dlzky // TODO - zapracovat do databazy
 
+            // TODO Ondrej
             // Zobrazit Datagrid
             // Flashing | Total Length | Price PLM | Total Price
             // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
@@ -187,6 +199,7 @@ namespace PFD
             float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD;
             float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
 
+            // DG 14
             // Footing pads
 
             // Floor Slab
