@@ -36,7 +36,7 @@ namespace PFD
         private List<string> MComponentTypes;
         private List<string> MComponentSeries;
         private string[] MComponents;
-        private string[] MScrewArrangements;
+        private List<string> MScrewArrangements;
 
         private List<CComponentParamsView> MScrewArrangementParameters;
         private List<CComponentParamsView> MComponentGeometry;
@@ -190,7 +190,7 @@ namespace PFD
             }
         }
 
-        public string[] ScrewArrangements
+        public List<string> ScrewArrangements
         {
             get
             {
@@ -706,35 +706,35 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Q:
                         {
                             Components = databaseComponents.arr_Serie_Q_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_S:
                         {
                             Components = databaseComponents.arr_Serie_S_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
                             Components = databaseComponents.arr_Serie_T_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_X:
                         {
                             Components = databaseComponents.arr_Serie_X_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
                             Components = databaseComponents.arr_Serie_Y_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
@@ -755,14 +755,14 @@ namespace PFD
                     case ESerieTypePlate.eSerie_M:
                         {
                             Components = databaseComponents.arr_Serie_M_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
                     case ESerieTypePlate.eSerie_N:
                         {
                             Components = databaseComponents.arr_Serie_N_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }

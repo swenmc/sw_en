@@ -1188,7 +1188,7 @@ namespace PFD
             }
         }
 
-        public static string[] GetPlateScrewArangementTypes(CPlate plate)
+        public static List<string> GetPlateScrewArangementTypes(CPlate plate)
         {
             CDatabaseComponents dc = new CDatabaseComponents();
             switch (plate.m_ePlateSerieType_FS)
@@ -1211,23 +1211,23 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_S:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_T:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_X:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_Y:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_J:
                     {
@@ -1245,7 +1245,7 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_N:
                     {
-                        return new string[] { "Undefined" };
+                        return new List<string>(1) { "Undefined" };
                     }
                 case ESerieTypePlate.eSerie_O:
                     {
@@ -1254,7 +1254,7 @@ namespace PFD
                 default:
                     {
                         // Not implemented
-                        return new string[] { "" };
+                        return new List<string>(1) { " " };
                     }
             }
         }

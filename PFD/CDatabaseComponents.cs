@@ -26,7 +26,7 @@ namespace PFD
 
         public string[] arr_Serie_B_Names = CJointsManager.GetArrayPlateB_Names();
 
-        public string[] arr_Serie_B_ScrewArrangement_Names = CJointsManager.GetArrayPlateB_ArrangementNames();
+        public List<string> arr_Serie_B_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("B");
 
         public string[] arr_Serie_L_Names = new string[11]
             {"LA",
@@ -41,22 +41,15 @@ namespace PFD
              "LJ",
              "LK"};
 
-        public string[] arr_Serie_L_ScrewArrangement_Names = new string[3]
-         {"Undefined",
-          "Arrangement LH/LI/LK",
-          "Arrangement LJ"};
+        public List<string> arr_Serie_L_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("L");
 
-        public string[] arr_Serie_F_ScrewArrangement_Names = new string[2]
-         {"Undefined",
-          "Arrangement F"};
+        public List<string> arr_Serie_F_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("F");
 
         public string[] arr_Serie_LL_Names = new string[2]
             {"LLH",
              "LLK"};
 
-        public string[] arr_Serie_LL_ScrewArrangement_Names = new string[2]
-            {"Undefined",
-             "Arrangement LLH/LLK"};
+        public List<string> arr_Serie_LL_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("LL");
 
         public string[] arr_Serie_F_Names = new string[10]
             {"FA - LH",
@@ -88,7 +81,7 @@ namespace PFD
         public string[] arr_Serie_J_Names = new string[3]
         {"JA", "JB", "JC"};
 
-        public string[] arr_Serie_J_ScrewArrangement_Names = new string[3]
+        public List<string> arr_Serie_J_ScrewArrangement_Names = new List<string>(3)
         {"Undefined",
          "Rectangular",
          "Circle"};
@@ -102,7 +95,7 @@ namespace PFD
          "KF",
          "KK"};
 
-        public string[] arr_Serie_K_ScrewArrangement_Names = new string[3]
+        public List<string> arr_Serie_K_ScrewArrangement_Names = new List<string>(3)
         {"Undefined",
          "Rectangular",
          "Circle"};
@@ -110,9 +103,7 @@ namespace PFD
         public string[] arr_Serie_M_Names = new string[1]
         {"M"};
 
-        public string[] arr_Serie_M_ScrewArrangement_Names = new string[2]
-        {"Undefined",
-          "Arrangement M"};
+        public List<string> arr_Serie_M_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("M");
 
         public string[] arr_Serie_N_Names = new string[1]
         {"N"};
@@ -120,9 +111,7 @@ namespace PFD
         public string[] arr_Serie_O_Names = new string[1]
         {"O"};
 
-        public string[] arr_Serie_O_ScrewArrangement_Names = new string[2]
-        {"Undefined",
-         "Rectangular"};
+        public List<string> arr_Serie_O_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("O");
 
         public float[,] arr_Serie_L_Dimension = new float[11, 5]
             {

@@ -171,9 +171,7 @@ namespace DATABASE
             return properties;
         }
 
-
-
-        public static List<CPlate_ScrewArrangementProperties> LoadPlate_B_ArrangementDescriptions()
+        public static List<CPlate_ScrewArrangementProperties> LoadPlate_ArrangementDescriptions(string sPlateSerie)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -184,7 +182,7 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieB_screwArrangement", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerie"+ sPlateSerie +"_screwArrangement", conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -197,9 +195,9 @@ namespace DATABASE
             return items;
         }
 
-        public static List<string> GetPlateB_ArrangementNames()
+        public static List<string> GetPlate_ArrangementNames(string sPlateSerie)
         {
-            List<CPlate_ScrewArrangementProperties> items = LoadPlate_B_ArrangementDescriptions();
+            List<CPlate_ScrewArrangementProperties> items = LoadPlate_ArrangementDescriptions(sPlateSerie);
 
             List<string> names = new List<string>();
 
@@ -209,14 +207,11 @@ namespace DATABASE
             return names;
         }
 
-        public static string[] GetArrayPlateB_ArrangementNames()
+        public static List<string> GetArrayPlate_ArrangementNames(string sPlateSerie)
         {
-            string[] arr_Serie_B_Names = new string[8];
-            List<string> list_Serie_B_Names = CJointsManager.GetPlateB_ArrangementNames();
+            List<string> list_Serie_Names = CJointsManager.GetPlate_ArrangementNames(sPlateSerie);
 
-            arr_Serie_B_Names = list_Serie_B_Names.ToArray();
-
-            return arr_Serie_B_Names;
+            return list_Serie_Names;
         }
 
         private static CPlate_ScrewArrangementProperties GetPlate_ScrewArrangementProperties(SQLiteDataReader reader)

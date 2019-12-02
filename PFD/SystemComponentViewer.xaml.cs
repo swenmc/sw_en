@@ -1215,6 +1215,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
+                            CPlate
                             plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_L, true); // L
                             break;
                         }
