@@ -94,39 +94,61 @@ namespace PFD
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
 
-            float fRoofCladdingPrice_PPSM_NZD = 5.20f; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
-            float fWallCladdingPrice_PPSM_NZD = 4.20f; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
+            float fRoofCladdingPrice_PSM_NZD = 5.20f; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
+            float fWallCladdingPrice_PSM_NZD = 4.20f; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
 
             // TODO Ondrej
             // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
             // Cladding | Thickness | Color | Total Area | Price PSM | Total Price
             // PurlinDek | 0.75 mm | Titania | 324.4 | 5.20 | Total Price
             // SmartDek  | 0.55 mm | Black   | 245.9 | 4.20 | Total Price
-            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PPSM_NZD; // TODO Ondrej
-            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PPSM_NZD; // TODO Ondrej
+            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
+            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
 
             // Gutters
             float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
-            float fRoofGutterPrice_PPLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
+            float fRoofGutterPrice_PLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
 
             // TODO Ondrej
             // Zobrazit Datagrid
             // Roof Gutter | Total Length | Price PLM | Total Price
-            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PPLM_NZD; // TODO Ondrej
+            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD; // TODO Ondrej
 
             // FibreGlass
             // TODO Ondrej
             // Zobrazit Datagrid s 2 riadkami
-            // FibreGlass Roof | Total Area | Price PQM | Total Price
-            // FibreGlass Walls | Total Area | Price PQM | Total Price
+            // FibreGlass Roof | Total Area | Price PSM | Total Price
+            // FibreGlass Walls | Total Area | Price PSM | Total Price
 
-            float fRoofFibreGlassPrice_PPSM_NZD = 10.40f; // Cena roof fibreglass za 1 m^2 // TODO - zapracovat do databazy
-            float fWallFibreGlassPrice_PPSM_NZD = 9.10f; // Cena wall fibreglass za 1 m^2 // TODO - zapracovat do databazy
+            float fRoofFibreGlassPrice_PSM_NZD = 10.40f; // Cena roof fibreglass za 1 m^2 // TODO - zapracovat do databazy
+            float fWallFibreGlassPrice_PSM_NZD = 9.10f; // Cena wall fibreglass za 1 m^2 // TODO - zapracovat do databazy
 
-            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PPSM_NZD; // TODO Ondrej
-            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PPSM_NZD; // TODO Ondrej
+            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
+            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
 
-            // Packers
+            // Roof Netting and Sisalation
+            // Roof Sisalation Foil
+            // Roof Safe Net
+
+            float fRoofSisalationFoilPrice_PSM_NZD = 0.90f; // Cena roof foil za 1 m^2 // TODO - zapracovat do databazy
+            float fRoofSafeNetPrice_PSM_NZD = 1.10f; // Cena roof net za 1 m^2 // TODO - zapracovat do databazy
+
+            // TODO Ondrej
+            // Zobrazit Datagrid s 2 riadkami
+            // Roof Sisalation Foil | Total Area | Price PSM | Total Price
+            // Roof Safe Net | Total Area | Price PSM | Total Price
+            float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD; // TODO Ondrej
+            float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD; // TODO Ondrej
+
+            // Flashing and Packers
+            float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
+
+            // Zobrazit Datagrid
+            // Flashing | Total Length | Price PLM | Total Price
+            // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
+            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
 
             // Footing pads
 
