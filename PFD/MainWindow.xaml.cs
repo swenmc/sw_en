@@ -1036,6 +1036,10 @@ namespace PFD
             {
                 Part_List.Content = new UC_MaterialList(vm.Model);
             }
+            else if(MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
+            {
+                Quotation.Content = new UC_Quotation(vm.Model);
+            }
             else
             {
                 // Not implemented like UC;
