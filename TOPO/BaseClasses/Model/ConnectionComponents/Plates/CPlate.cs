@@ -638,12 +638,12 @@ namespace BaseClasses
 
         public float GetSurfaceIgnoringHoles()
         {
-            return 2 * PolygonArea() + Ft * GetCuttingRouteDistance(); // front side, back side, lateral area
+            return 2 * Geom2D.PolygonArea(PointsOut2D) + Ft * GetCuttingRouteDistance(); // front side, back side, lateral area
         }
 
         public float GetVolumeIgnoringHoles()
         {
-            return Ft * PolygonArea();
+            return Ft * Geom2D.PolygonArea(PointsOut2D);
         }
 
         public float GetMassIgnoringHoles()
@@ -656,43 +656,6 @@ namespace BaseClasses
         // Return the polygon's area in "square units."
         // The value will be negative if the polygon is
         // oriented clockwise.
-
-        private float SignedPolygonArea()
-        {
-            // Add the first point to the end.
-            int num_points = PointsOut2D.Length;
-            Point[] pts = new Point[num_points + 1];
-
-            for (int i = 0; i < num_points; i++)
-            {
-                pts[i].X = PointsOut2D[i].X;
-                pts[i].Y = PointsOut2D[i].Y;
-            }
-
-            pts[num_points].X = PointsOut2D[0].X;
-            pts[num_points].Y = PointsOut2D[0].Y;
-
-            // Get the areas.
-            float area = 0;
-            for (int i = 0; i < num_points; i++)
-            {
-                area += (float)(
-                    (pts[i + 1].X - pts[i].X) *
-                    (pts[i + 1].Y + pts[i].Y) / 2);
-            }
-
-            // Return the result.
-            return area;
-        }
-
-        // Return the polygon's area in "square units."
-        public float PolygonArea()
-        {
-            // Return the absolute value of the signed area.
-            // The signed area is negative if the polyogn is
-            // oriented clockwise.
-            return Math.Abs(SignedPolygonArea());
-        }
 
         public float Get_A_rect(float ft, float fh)
         {

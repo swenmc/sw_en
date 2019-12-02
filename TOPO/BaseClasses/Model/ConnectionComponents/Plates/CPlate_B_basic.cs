@@ -152,7 +152,7 @@ namespace BaseClasses
         {
             Width_bx = Fb_X + 2 * m_flZ; // Total width
             Height_hy = Fh_Y;
-            fArea = PolygonArea();
+            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();

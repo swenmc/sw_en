@@ -191,7 +191,7 @@ namespace PFD
                         float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].Width_bx;
                         float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].Height_hy;
                         float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
-                        float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
+                        float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].fArea;
                         float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
                         float fTotalArea = iQuantity * fArea;
                         float fTotalMass = iQuantity * fMassPerPiece;

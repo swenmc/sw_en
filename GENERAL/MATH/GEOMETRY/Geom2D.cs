@@ -1104,7 +1104,7 @@ namespace MATH
             m_ListPointsCoord2D = GetPolygonPointCoord(fa, 11);
             return m_ListPointsCoord2D;
         }
-        #endregion        
+        #endregion
         #region Dodecagon
         // Dodecagon (12)
         public static float[,] GetDodecagonPointCoordArray(float fa)
@@ -1150,6 +1150,45 @@ namespace MATH
             return EdgePointsAndCentroid;
         }
         #endregion
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Returns polygonal area - consider orientation (positive or negative)
+        public static float SignedPolygonArea(Point [] Points2D)
+        {
+            // Add the first point to the end.
+            int num_points = Points2D.Length;
+            Point[] pts = new Point[num_points + 1];
+
+            for (int i = 0; i < num_points; i++)
+            {
+                pts[i].X = Points2D[i].X;
+                pts[i].Y = Points2D[i].Y;
+            }
+
+            pts[num_points].X = Points2D[0].X;
+            pts[num_points].Y = Points2D[0].Y;
+
+            // Get the areas.
+            float area = 0;
+            for (int i = 0; i < num_points; i++)
+            {
+                area += (float)(
+                    (pts[i + 1].X - pts[i].X) *
+                    (pts[i + 1].Y + pts[i].Y) / 2);
+            }
+
+            // Return the result.
+            return area;
+        }
+
+        // Return the polygon's area in "square units."
+        public static float PolygonArea(Point[] Points2D)
+        {
+            // Return the absolute value of the signed area.
+            // The signed area is negative if the polyogn is
+            // oriented clockwise.
+            return Math.Abs(SignedPolygonArea(Points2D));
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Get rotation angle (degree) in 2D environment

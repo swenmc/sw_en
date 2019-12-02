@@ -1038,7 +1038,7 @@ namespace PFD
             }
             else if(MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
             {
-                Quotation.Content = new UC_Quotation(vm.Model);
+                Quotation.Content = new UC_Quotation(vm);
             }
             else
             {
