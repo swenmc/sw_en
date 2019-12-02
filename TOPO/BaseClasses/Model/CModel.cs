@@ -215,7 +215,7 @@ namespace BaseClasses
         }
         public List<CMember> GetListOfMembersWithCrscDatabaseID(int databaseID)
         {
-            return m_arrMembers.Where(m => m.CrScStart.ID == databaseID || (m.CrScEnd != null && m.CrScEnd.DatabaseID == databaseID)).ToList();
+            return m_arrMembers.Where(m => m.CrScStart.DatabaseID == databaseID || (m.CrScEnd != null && m.CrScEnd.DatabaseID == databaseID)).ToList();
         }
 
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
