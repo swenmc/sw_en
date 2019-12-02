@@ -1,0 +1,90 @@
+﻿<Window x:Class="PFD.WindowsGeneratorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Window Generator" Height="320" Width="700">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridDisplayOptions" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Windows Properties:" FontSize="15" FontWeight="Bold" HorizontalAlignment="Left"/>
+            
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Window height" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="Window width" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="x [m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="z [m]" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" Text="Muntin Number" HorizontalAlignment="Left"/>
+            
+            
+
+            <TextBox Grid.Row="2" Grid.Column="0" Name="WindowHeight" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindowHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <TextBox Grid.Row="2" Grid.Column="1" Name="WindowWidth" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindowWidth, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBox Grid.Row="2" Grid.Column="2" Name="WindowCoordinateXinBay" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindowCoordinateXinBay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBox Grid.Row="2" Grid.Column="3" Name="WindowCoordinateZinBay" HorizontalAlignment="Left" 
+                     Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindowCoordinateZinBay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_ColumnsNumber" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=WindowColumns, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  SelectedValue="{Binding Path=NumberOfWindowColumns, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="LEFT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="leftBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="leftBaysAll" Checked="LeftBaysAll_Checked" Unchecked="LeftBaysAll_Unchecked">All left bays</CheckBox>
+                
+            </StackPanel>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="RIGHT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Name="rightBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="rightBaysAll" Checked="RightBaysAll_Checked" Unchecked="RightBaysAll_Unchecked">All right bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="FRONT" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Name="frontBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="frontBaysAll" Checked="FrontBaysAll_Checked" Unchecked="FrontBaysAll_Unchecked">All front bays</CheckBox>
+            </StackPanel>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="BACK" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="backBays" Orientation="Horizontal">
+                <CheckBox Margin="0 0 20 0" Name="backBaysAll" Checked="BackBaysAll_Checked" Unchecked="BackBaysAll_Unchecked">All back bays</CheckBox>
+            </StackPanel>
+
+            
+
+            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

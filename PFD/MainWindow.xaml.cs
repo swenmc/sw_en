@@ -1669,7 +1669,57 @@ namespace PFD
                 if (!existsSameItem) doorProperties.Add(dp);
                 
             }
+            
+            //door and windows collision detection
+            List<WindowProperties> windowProperties = new List<WindowProperties>();
+            bool doorWindowColision = false;
+            foreach (WindowProperties wp in vm.WindowBlocksProperties)
+            {
+                bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
+                if (!existsSameItem) windowProperties.Add(wp);
+                else doorWindowColision = true;
+            }
+            if (doorWindowColision)
+            {
+                vm.IsSetFromCode = true;
+                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+                vm.IsSetFromCode = false;
+            }
+
             vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+        }
+
+        private void btnWindowsGenerator_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.fL1, vm.ColumnDistance);
+            generatorWindow.ShowDialog();
+
+            List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();
+            if (windowProperties.Count == 0) return;
+
+            foreach (WindowProperties dp in vm.WindowBlocksProperties)
+            {
+                bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                if (!existsSameItem) windowProperties.Add(dp);
+            }
+
+            //door and windows collision detection
+            List<DoorProperties> doorProperties = new List<DoorProperties>();
+            bool doorWindowColision = false;
+            foreach (DoorProperties dp in vm.DoorBlocksProperties)
+            {
+                bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                if (!existsSameItem) doorProperties.Add(dp);
+                else doorWindowColision = true;
+            }
+            if (doorWindowColision)
+            {
+                vm.IsSetFromCode = true;
+                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+                vm.IsSetFromCode = false;
+            }
+
+            vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
         }
     }
 }

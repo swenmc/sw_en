@@ -1369,6 +1369,7 @@ namespace PFD
                     w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                 }
                 RecreateModel = true;
+                RecreateJoints = true;
                 NotifyPropertyChanged("WindowBlocksProperties");
             }
         }
