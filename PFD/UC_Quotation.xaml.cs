@@ -54,14 +54,35 @@ namespace PFD
             // Doors and windows
             float fTotalAreaOfOpennings = 0;
 
-            foreach(DoorProperties dp in vm.DoorBlocksProperties)
+            float fRollerDoorTrimmerFlashing_TotalLength = 0;
+            float fRollerDoorLintelFlashing_TotalLength = 0;
+            float fRollerDoorLintelCapFlashing_TotalLength = 0;
+            float fPADoorTrimmerFlashing_TotalLength = 0;
+            float fPADoorLintelFlashing_TotalLength = 0;
+            float fWindowFlashing_TotalLength = 0;
+
+            foreach (DoorProperties dp in vm.DoorBlocksProperties)
             {
                 fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
+
+                if (dp.sDoorType == "Roller Door")
+                {
+                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2); 
+                    fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                    fRollerDoorLintelCapFlashing_TotalLength = dp.fDoorsWidth;
+                }
+                else
+                {
+                    fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                    fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                }
             }
 
             foreach (WindowProperties wp in vm.WindowBlocksProperties)
             {
                 fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
+
+                fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
             }
 
             // Cladding
@@ -143,6 +164,8 @@ namespace PFD
             // Flashing and Packers
             float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
             float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fBargeFlashingPrice_PLM_NZD = 3.90f; // Cena barge flashing za 1 m dlzky // TODO - zapracovat do databazy
+
             float fRollerDoorTrimmerFlashingPrice_PLM_NZD = 3.90f; // Cena roller door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
             float fRollerDoorLintelFlashingPrice_PLM_NZD = 3.80f; // Cena roller door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
             float fRollerDoorLintelCapFlashingPrice_PLM_NZD = 1.90f; // Cena cap flashing za 1 m dlzky // TODO - zapracovat do databazy
@@ -155,6 +178,14 @@ namespace PFD
             // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
             float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
             float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fBargeFlashingFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD; // TODO Ondrej
+
+            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD;
+            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD;
+            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD;
+            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD;
+            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD;
+            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
 
             // Footing pads
 
