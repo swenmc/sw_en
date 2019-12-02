@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MATH;
 using BaseClasses;
+using System.Data;
+using CRSC;
 
 namespace PFD
 {
@@ -28,6 +30,9 @@ namespace PFD
 
             CModel model = vm.Model;
             // Members
+            CreateTableMembers(model);
+
+
 
             // TODO Ondrej
             // Sem dat members podla Crsc, alebo podla MemberType_FS alebo podla MemberType_FS_Position
@@ -167,6 +172,63 @@ namespace PFD
 
 
 
+        }
+
+
+
+        private void CreateTableMembers(CModel model)
+        {
+            //crsc, celkova dlzka vsetkych , cena za meter, celkova cena za dany prierez
+
+            // Create Table
+            DataTable dt = new DataTable("TableMembers");
+            // Create Table Rows
+            dt.Columns.Add("Crsc", typeof(String));
+            dt.Columns.Add("TotalLength", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+            
+
+            // Set Column Caption
+            dt.Columns["Crsc"].Caption = "Crsc";
+            dt.Columns["TotalLength"].Caption = "Total Length";
+            dt.Columns["UnitPrice"].Caption = "Unit Price";
+            dt.Columns["Price"].Caption = "Price";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            double totalPrice = 0;
+            DataRow row;
+            foreach (CCrSc crsc in model.m_arrCrSc.GroupBy(m => m.Name_short).Select(g => g.First()))
+            {
+                row = dt.NewRow();                
+                List<CMember> membersList = model.GetListOfMembersWithCrsc(crsc);
+                double totalLength = membersList.Where(m => m.BIsGenerated).Sum(m => m.FLength_real);
+                double price = 0;
+                try
+                {
+                    row["Crsc"] = crsc.Name_short;
+                    row["TotalLength"] = totalLength.ToString("F3");
+                    row["UnitPrice"] = crsc.price_PPLM_NZD.ToString("F2");
+                    price = totalLength * crsc.price_PPLM_NZD;
+                    totalPrice += price;
+                    row["Price"] = price.ToString("F3");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            row = dt.NewRow();
+            row["Crsc"] = "Total:";
+            row["TotalLength"] = "";
+            row["UnitPrice"] = "";
+            row["Price"] = totalPrice.ToString("F3");
+            dt.Rows.Add(row);
+
+            Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
         }
     }
 }
