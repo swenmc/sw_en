@@ -262,7 +262,8 @@ namespace PFD
             dt.Columns.Add("TotalLength", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-            
+            dt.Columns.Add("MemCount", typeof(String));
+
 
             // Set Column Caption
             dt.Columns["Crsc"].Caption = "Crsc";
@@ -291,6 +292,7 @@ namespace PFD
                     price = totalLength * crsc.price_PPLM_NZD;
                     totalPrice += price;
                     row["Price"] = price.ToString("F3");
+                    row["MemCount"] = membersList.Where(m => m.BIsGenerated).Count();
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
