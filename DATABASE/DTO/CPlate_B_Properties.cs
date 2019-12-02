@@ -23,6 +23,14 @@ namespace DATABASE.DTO
         private double m_dist_y1;
         private double m_dist_x2;
         private double m_dist_y2;
+        private double m_totalDim_x;
+        private double m_totalDim_y;
+        private double m_area;
+        private double m_volume;
+        private double m_mass;
+        private double m_price_PPSM_NZD;
+        private double m_price_PPKG_NZD;
+        private double m_price_PPP_NZD;
 
         public int ID
         {
@@ -216,6 +224,110 @@ namespace DATABASE.DTO
             set
             {
                 m_dist_y2 = value;
+            }
+        }
+
+        public double TotalDim_x
+        {
+            get
+            {
+                return m_totalDim_x;
+            }
+
+            set
+            {
+                m_totalDim_x = value;
+            }
+        }
+
+        public double TotalDim_y
+        {
+            get
+            {
+                return m_totalDim_y;
+            }
+
+            set
+            {
+                m_totalDim_y = value;
+            }
+        }
+
+        public double Area
+        {
+            get
+            {
+                return m_area;
+            }
+
+            set
+            {
+                m_area = value;
+            }
+        }
+
+        public double Volume
+        {
+            get
+            {
+                return m_volume;
+            }
+
+            set
+            {
+                m_volume = value;
+            }
+        }
+
+        public double Mass
+        {
+            get
+            {
+                return m_mass;
+            }
+
+            set
+            {
+                m_mass = value;
+            }
+        }
+
+        public double Price_PPSM_NZD
+        {
+            get
+            {
+                return m_price_PPSM_NZD;
+            }
+
+            set
+            {
+                m_price_PPSM_NZD = value;
+            }
+        }
+
+        public double Price_PPKG_NZD
+        {
+            get
+            {
+                return m_price_PPKG_NZD;
+            }
+
+            set
+            {
+                m_price_PPKG_NZD = value;
+            }
+        }
+
+        public double Price_PPP_NZD
+        {
+            get
+            {
+                return m_price_PPP_NZD;
+            }
+
+            set
+            {
+                m_price_PPP_NZD = value;
             }
         }
 

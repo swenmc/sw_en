@@ -726,11 +726,11 @@ namespace PFD
                         {
                             CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);
 
-                            fb = (float)prop.dim1 / 1000f;
+                            fb = (float)prop.dim1;
                             fb2 = fb;
-                            fh = (float)prop.dim2y / 1000f;
-                            fl = (float)prop.dim3 / 1000f;
-                            ft = (float)prop.t / 1000f;
+                            fh = (float)prop.dim2y;
+                            fl = (float)prop.dim3;
+                            ft = (float)prop.t;
                             iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors
 
                             break;
@@ -739,11 +739,11 @@ namespace PFD
                         {
                             CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(vm.ComponentIndex + 1);
 
-                            fb = (float)prop.dim1 / 1000f;
+                            fb = (float)prop.dim1;
                             fb2 = fb;
-                            fh = (float)prop.dim2y / 1000f;
-                            fl = (float)prop.dim3 / 1000f;
-                            ft = (float)prop.thickness / 1000f;
+                            fh = (float)prop.dim2y;
+                            fl = (float)prop.dim3;
+                            ft = (float)prop.thickness;
                             iNumberofHoles = prop.NumberOfHolesScrews;
                             break;
                         }
@@ -751,11 +751,11 @@ namespace PFD
                         {
                             CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(vm.ComponentIndex + 1);
 
-                            fb = (float)prop.dim11 / 1000f;
-                            fb2 = (float)prop.dim12 / 1000f;
-                            fh = (float)prop.dim2y / 1000f;
-                            fl = (float)prop.dim3 / 1000f;
-                            ft = (float)prop.thickness / 1000f;
+                            fb = (float)prop.dim11;
+                            fb2 = (float)prop.dim12;
+                            fh = (float)prop.dim2y;
+                            fl = (float)prop.dim3;
+                            ft = (float)prop.thickness;
                             iNumberofHoles = prop.NumberOfHolesScrews;
                             break;
                         }
@@ -763,11 +763,11 @@ namespace PFD
                         {
                             CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
 
-                            fb = (float)prop.dim11 / 1000f;
-                            fb2 = (float)prop.dim12 / 1000f;
-                            fh = (float)prop.dim2y / 1000f;
-                            fl = (float)prop.dim3 / 1000f;
-                            ft = (float)prop.thickness / 1000f;
+                            fb = (float)prop.dim11;
+                            fb2 = (float)prop.dim12;
+                            fh = (float)prop.dim2y;
+                            fl = (float)prop.dim3;
+                            ft = (float)prop.thickness;
                             iNumberofHoles = prop.NumberOfHolesScrews;
                             break;
                         }
@@ -1227,12 +1227,14 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
+                            CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(vm.ComponentIndex + 1);
+                            plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
+                            CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

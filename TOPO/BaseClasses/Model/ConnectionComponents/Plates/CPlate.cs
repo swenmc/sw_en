@@ -75,6 +75,8 @@ namespace BaseClasses
         public float fVolume;
         public float fMass;
 
+        private double _price_PPKG_NZD;
+
         [NonSerialized]
         public GeometryModel3D Visual_Plate;
         //[NonSerialized]
@@ -191,20 +193,18 @@ namespace BaseClasses
             }
         }
 
-        public ObservableCollection<string> Series = new ObservableCollection<string>()
+        public double Price_PPKG_NZD
         {
-             "Serie B",
-             "Serie L",
-             "Serie LL",
-             "Serie F",
-             "Serie Q",
-             "Serie S",
-             "Serie T",
-             "Serie X",
-             "Serie Y",
-             "Serie J",
-             "Serie K"
-        };
+            get
+            {
+                return _price_PPKG_NZD;
+            }
+
+            set
+            {
+                _price_PPKG_NZD = value;
+            }
+        }
 
         public CPlate()
         {
@@ -978,6 +978,88 @@ namespace BaseClasses
         public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             //to override
+        }
+
+        public void SetParams(string plateDatabaseName, ESerieTypePlate plateDatabaseSerie)
+        {
+            // Tato funckia by mala nastavit parametre plate z databazy, mohla by byt override podla jednotlivych parametrov plate
+
+            switch (plateDatabaseSerie)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        CPlate_B_Properties prop = new CPlate_B_Properties();
+                        prop = CJointsManager.GetPlate_B_Properties(plateDatabaseName);
+
+                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        m_ft = (float)prop.t; // Thickness
+                        fArea = (float)prop.Area;
+
+                        // Doplnit do databazy obvod a povrch
+                        fVolume = (float)prop.Volume;
+                        fMass = (float)prop.Mass;
+
+                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        CPlate_L_Properties prop = new CPlate_L_Properties();
+                        prop = CJointsManager.GetPlate_L_Properties(plateDatabaseName);
+
+                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        m_ft = (float)prop.thickness; // Thickness
+                        fArea = (float)prop.Area;
+
+                        // Doplnit do databazy obvod a povrch
+                        fVolume = (float)prop.Volume;
+                        fMass = (float)prop.Mass;
+
+                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        CPlate_F_Properties prop = new CPlate_F_Properties();
+                        prop = CJointsManager.GetPlate_F_Properties(plateDatabaseName);
+
+                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        m_ft = (float)prop.thickness; // Thickness
+                        fArea = (float)prop.Area;
+
+                        // Doplnit do databazy obvod a povrch
+                        fVolume = (float)prop.Volume;
+                        fMass = (float)prop.Mass;
+
+                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        CPlate_LL_Properties prop = new CPlate_LL_Properties();
+                        prop = CJointsManager.GetPlate_LL_Properties(plateDatabaseName);
+
+                        fWidth_bx = (float)prop.TotalDim_x / 1000; // Rozvinuta sirka - horizontalny smer
+                        fHeight_hy = (float)prop.TotalDim_y / 1000; // Rozvinuta vyska - vertikalny smer
+                        m_ft = (float)prop.thickness / 1000; // Thickness
+                        fArea = (float)prop.Area / 1000000;
+
+                        // Doplnit do databazy obvod a povrch
+                        fVolume = (float)prop.Volume / 1000000000;
+                        fMass = (float)prop.Mass;
+
+                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        break;
+                    }
+                default:
+                    {
+                        // Doimplementovat
+                        break;
+                    }
+            }
         }
     }
 }
