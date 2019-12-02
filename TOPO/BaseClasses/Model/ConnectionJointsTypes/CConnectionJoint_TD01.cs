@@ -43,7 +43,7 @@ namespace BaseClasses
             // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
-            float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
+            float fTolerance = 0.0001f; // Gap between cross-section surface and plate surface
 
             // !!! Base plate je vo vnutri prierezu stlpika
             // 100 - 0.75 - 0.75 - 2.75 - 2.75 = 93

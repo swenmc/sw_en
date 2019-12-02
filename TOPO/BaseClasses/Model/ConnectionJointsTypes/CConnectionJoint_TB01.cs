@@ -42,7 +42,7 @@ namespace BaseClasses
             // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
-            float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
+            float fTolerance = 0.0001f; // Gap between cross-section surface and plate surface
             float fb_plate = (float)(Column_temp.CrScStart.b + 2 * fTolerance + 2 * m_ft);
             float fh_plate = (float)(Column_temp.CrScStart.h);
 

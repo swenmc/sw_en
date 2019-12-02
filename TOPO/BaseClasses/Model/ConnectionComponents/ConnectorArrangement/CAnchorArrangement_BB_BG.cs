@@ -40,12 +40,12 @@ namespace BaseClasses
             // Parametre sekvencie
             iNumberOfScrewsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
             iNumberOfScrewsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
-            fx_c_SQ1 = (float)prop.a1_pos_cp_x / 1000f;
-            fy_c_SQ1 = (float)prop.a1_pos_cp_y / 1000f;
-            float dist_x1 = (float)prop.dist_x1 / 1000f;
-            float dist_y1 = (float)prop.dist_y1 / 1000f;
-            float dist_x2 = (float)prop.dist_x2 / 1000f;
-            float dist_y2 = (float)prop.dist_y2 / 1000f;
+            fx_c_SQ1 = (float)prop.a1_pos_cp_x;
+            fy_c_SQ1 = (float)prop.a1_pos_cp_y;
+            float dist_x1 = (float)prop.dist_x1;
+            float dist_y1 = (float)prop.dist_y1;
+            float dist_x2 = (float)prop.dist_x2;
+            float dist_y2 = (float)prop.dist_y2;
 
             if (float.IsNaN(dist_x2) || float.IsNaN(dist_y2))
             {
