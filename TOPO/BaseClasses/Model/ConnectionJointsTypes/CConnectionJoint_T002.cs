@@ -31,7 +31,7 @@ namespace BaseClasses
             BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
-            m_ft = 0.003f;
+            m_ft = 0.001f; // Plate serie LL ???
             m_fPlate_Angle_Leg = 0.05f;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]

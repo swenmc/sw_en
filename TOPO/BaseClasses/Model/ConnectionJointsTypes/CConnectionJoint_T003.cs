@@ -39,7 +39,7 @@ namespace BaseClasses
             BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
-            m_ft = 0.003f;
+            m_ft = 0.002f; // Plate serie F
             m_fPlate_Angle_LeftLeg = 0.05f;
             m_fPlate_Angle_RightLeg_BX1 = 0.035f;
             m_fPlate_Angle_RightLeg_BX2 = 0.120f;

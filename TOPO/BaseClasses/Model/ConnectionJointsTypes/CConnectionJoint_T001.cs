@@ -36,7 +36,7 @@ namespace BaseClasses
             BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
-            m_ft = 0.002f;
+            m_ft = 0.001f; // Plate serie L
             m_fPlate_Angle_Leg = 0.05f;
 
             float fCutOffOneSide = 0.005f;

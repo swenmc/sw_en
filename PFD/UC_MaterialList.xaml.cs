@@ -178,13 +178,11 @@ namespace PFD
                         // Nie vsetky plechy budu mat parametre definovane v databaze
                         // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
 
-                        /*
                         try
                         {
                             model.m_arrConnectionJoints[i].m_arrPlates[j].SetParams(model.m_arrConnectionJoints[i].m_arrPlates[j].Name, model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS);
                         }
                         catch { };
-                        */
 
                         string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
                         int iQuantity = 1;
@@ -199,9 +197,9 @@ namespace PFD
                         float fTotalMass = iQuantity * fMassPerPiece;
 
                         float fTotalPrice;
-                        //if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                        //     fTotalPrice = fTotalMass * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD;
-                        //else
+                        if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
+                             fTotalPrice = fTotalMass * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD;
+                        else
                             fTotalPrice = fTotalMass * fCFS_PricePerKg_Plates_Total;
 
                         bool bPlatewasAdded = false; // Plate was added to the group
@@ -224,9 +222,9 @@ namespace PFD
 
                                     // Recalculate total price of all plates in the group
 
-                                    //if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                                    //    listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD, iNumberOfDecimalPlacesPrice);
-                                    //else
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
+                                        listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD, iNumberOfDecimalPlacesPrice);
+                                    else
                                         listPlateTotalPrice[k] = Math.Round(listPlateTotalMass[k] * fCFS_PricePerKg_Plates_Total, iNumberOfDecimalPlacesPrice);
 
                                     bPlatewasAdded = true;
@@ -275,9 +273,9 @@ namespace PFD
                         dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
                         dTotalPlatesMass_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
 
-                        //if (plate.Price_PPKG_NZD > 0)
-                        //    dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * plate.Price_PPKG_NZD;
-                        //else
+                        if (plate.Price_PPKG_NZD > 0)
+                            dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * plate.Price_PPKG_NZD;
+                        else
                             dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
 
                         iTotalPlatesNumber_Model += 1;

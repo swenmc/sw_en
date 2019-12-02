@@ -30,7 +30,7 @@ namespace BaseClasses
 
             // Plate properties
             // Todo - set correct dimensions of plate acc. to column cross-section size
-            m_ft = 0.002f;
+            m_ft = 0.002f; // Plate BH
             m_flip = 0.075f;
             float fAnchorLength = 0.15f; // Dlzka kotvy
 

@@ -991,14 +991,15 @@ namespace BaseClasses
                         CPlate_B_Properties prop = new CPlate_B_Properties();
                         prop = CJointsManager.GetPlate_B_Properties(plateDatabaseName);
 
-                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
-                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
-                        m_ft = (float)prop.t; // Thickness
-                        fArea = (float)prop.Area;
+                        // Doriesit identicku geometriu v modeli a v database a presnost
+                        //fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        //fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        //m_ft = (float)prop.t; // Thickness
+                        //fArea = (float)prop.Area;
 
                         // Doplnit do databazy obvod a povrch
-                        fVolume = (float)prop.Volume;
-                        fMass = (float)prop.Mass;
+                        //fVolume = (float)prop.Volume;
+                        //fMass = (float)prop.Mass;
 
                         Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
@@ -1008,14 +1009,15 @@ namespace BaseClasses
                         CPlate_L_Properties prop = new CPlate_L_Properties();
                         prop = CJointsManager.GetPlate_L_Properties(plateDatabaseName);
 
-                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
-                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
-                        m_ft = (float)prop.thickness; // Thickness
-                        fArea = (float)prop.Area;
+                        // Doriesit identicku geometriu v modeli a v database a presnost
+                        //fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        //fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        //m_ft = (float)prop.thickness; // Thickness
+                        //fArea = (float)prop.Area;
 
                         // Doplnit do databazy obvod a povrch
-                        fVolume = (float)prop.Volume;
-                        fMass = (float)prop.Mass;
+                        //fVolume = (float)prop.Volume;
+                        //fMass = (float)prop.Mass;
 
                         Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
@@ -1025,14 +1027,15 @@ namespace BaseClasses
                         CPlate_F_Properties prop = new CPlate_F_Properties();
                         prop = CJointsManager.GetPlate_F_Properties(plateDatabaseName);
 
-                        fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
-                        fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
-                        m_ft = (float)prop.thickness; // Thickness
-                        fArea = (float)prop.Area;
+                        // Doriesit identicku geometriu v modeli a v database a presnost
+                        //fWidth_bx = (float)prop.TotalDim_x; // Rozvinuta sirka - horizontalny smer
+                        //fHeight_hy = (float)prop.TotalDim_y; // Rozvinuta vyska - vertikalny smer
+                        //m_ft = (float)prop.thickness; // Thickness
+                        //fArea = (float)prop.Area;
 
                         // Doplnit do databazy obvod a povrch
-                        fVolume = (float)prop.Volume;
-                        fMass = (float)prop.Mass;
+                        //fVolume = (float)prop.Volume;
+                        //fMass = (float)prop.Mass;
 
                         Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
@@ -1042,14 +1045,15 @@ namespace BaseClasses
                         CPlate_LL_Properties prop = new CPlate_LL_Properties();
                         prop = CJointsManager.GetPlate_LL_Properties(plateDatabaseName);
 
-                        fWidth_bx = (float)prop.TotalDim_x / 1000; // Rozvinuta sirka - horizontalny smer
-                        fHeight_hy = (float)prop.TotalDim_y / 1000; // Rozvinuta vyska - vertikalny smer
-                        m_ft = (float)prop.thickness / 1000; // Thickness
-                        fArea = (float)prop.Area / 1000000;
+                        // Doriesit identicku geometriu v modeli a v database a presnost
+                        //fWidth_bx = (float)prop.TotalDim_x / 1000; // Rozvinuta sirka - horizontalny smer
+                        //fHeight_hy = (float)prop.TotalDim_y / 1000; // Rozvinuta vyska - vertikalny smer
+                        //m_ft = (float)prop.thickness / 1000; // Thickness
+                        //fArea = (float)prop.Area / 1000000;
 
                         // Doplnit do databazy obvod a povrch
-                        fVolume = (float)prop.Volume / 1000000000;
-                        fMass = (float)prop.Mass;
+                        //fVolume = (float)prop.Volume / 1000000000;
+                        //fMass = (float)prop.Mass;
 
                         Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
