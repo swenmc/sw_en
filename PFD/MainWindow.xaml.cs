@@ -1661,6 +1661,8 @@ namespace PFD
             generatorWindow.ShowDialog();
 
             List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
+            if (doorProperties.Count == 0) return;
+
             foreach (DoorProperties dp in vm.DoorBlocksProperties)
             {
                 bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
