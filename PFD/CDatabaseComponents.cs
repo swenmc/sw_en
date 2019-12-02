@@ -12,46 +12,30 @@ namespace PFD
 {
     public class CDatabaseComponents
     {
-        public float fbXR_mm; // Rafter Width
-        public float fbX_mm;
-        public float fbX2_mm;
-        public float fhY_mm;
-        public float fhY2_mm;
-        public float flZ_mm; // Not used in 2D model
-        public float flZ2_mm;
-        public float ft_mm; // Not used in 2D model
-        public int iHolesNumber;
+        // Task 413
+        // Toto som zatial prerobil ale nie som si isty ci fakt takto mam prerabat kazdu seriu
 
         public List<string> arr_SeriesNames = CJointsManager.GetPlateSeries();
 
-        public List<string> arr_Serie_B_Names = CJointsManager.GetArrayPlateB_Names();
+        public List<string> arr_Serie_B_Names = CJointsManager.GetPlateB_Names();
 
         public List<string> arr_Serie_B_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("B");
 
-        public List<string> arr_Serie_L_Names = CJointsManager.GetArrayPlateL_Names();
+        public List<string> arr_Serie_L_Names = CJointsManager.GetPlateL_Names();
 
         public List<string> arr_Serie_L_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("L");
 
+        public List<string> arr_Serie_F_Names = CJointsManager.GetPlateF_Names();
+
         public List<string> arr_Serie_F_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("F");
 
-        public List<string> arr_Serie_LL_Names = new List<string>(2)
-            {"LLH",
-             "LLK"};
+        public List<string> arr_Serie_LL_Names = CJointsManager.GetPlateLL_Names();
 
         public List<string> arr_Serie_LL_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("LL");
 
-        public List<string> arr_Serie_F_Names = new List<string>(10)
-            {"FA - LH",
-             "FA - RH",
-             "FB - LH",
-             "FB - RH",
-             "FC - LH",
-             "FC - RH",
-             "FD - LH",
-             "FD - RH",
-             "FE - LH",
-             "FE - RH"};
-
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public List<string> arr_Serie_Q_Names = new List<string>(1)
             {"Q"};
 
@@ -66,6 +50,7 @@ namespace PFD
 
         public List<string> arr_Serie_Y_Names = new List<string>(1)
             {"Y"};
+        //------------------------------------------------------------------------------------------------
 
         public List<string> arr_Serie_J_Names = new List<string>(3)
         {"JA", "JB", "JC"};
@@ -89,54 +74,31 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public List<string> arr_Serie_M_Names = new List<string>(1)
         {"M"};
 
         public List<string> arr_Serie_M_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("M");
 
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public List<string> arr_Serie_N_Names = new List<string>(1)
         {"N"};
 
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public List<string> arr_Serie_O_Names = new List<string>(1)
         {"O"};
 
         public List<string> arr_Serie_O_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("O");
 
-        public float[,] arr_Serie_L_Dimension = new float[11, 5]
-            {
-                {050, 268, 120, 3, 0},
-                {075, 288, 150, 3, 0},
-                {085, 268, 085, 3, 0},
-                {085, 288, 085, 3, 0},
-                {100, 495, 100, 3, 0},
-                {100, 545, 100, 3, 0},
-                {150, 545, 150, 3, 0},
-                {050, 268, 050, 3, 16},
-                {050, 340, 050, 3, 16},
-                {050, 100, 050, 3, 8},
-                {050, 288, 050, 3, 16}
-            };
-
-        public float[,] arr_Serie_LL_Dimension = new float[2, 6]
-            {
-                {050, 072, 268, 050, 2, 32},
-                {050, 072, 288, 050, 2, 32}
-            };
-
-        public float[,] arr_Serie_F_Dimension = new float[10, 6]
-            {
-                {035, 120, 600, 065, 2, 14},
-                {035, 120, 600, 065, 2, 14},
-                {035, 110, 545, 065, 2, 14},
-                {035, 110, 545, 065, 2, 14},
-                {035, 110, 490, 065, 2, 14},
-                {035, 110, 490, 065, 2, 14},
-                {035, 200, 545, 050, 2, 14},
-                {035, 200, 545, 050, 2, 14},
-                {035, 200, 490, 050, 2, 14},
-                {035, 200, 490, 050, 2, 14}
-            };
-
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public float[,] arr_Serie_Q_Dimension = new float[1, 5]
         {
                 {272, 200, 70, 2, 0}
@@ -161,6 +123,7 @@ namespace PFD
         {
                 {140, 600, 270, 40, 3, 0}
         };
+        //------------------------------------------------------------------------------------------------
 
         public float[,] arr_Serie_J_Dimension = new float[3, 7]
         {
@@ -182,6 +145,9 @@ namespace PFD
                 {200, 630, 1250, 800, 1400, 50, 3, 20, 4} // KK
         };
 
+        //------------------------------------------------------------------------------------------------
+        // Task 413
+        // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
         public float[,] arr_Serie_M_Dimension = new float[1, 7]
         {
                 // b, h, t, iHoles, bBeam, slope_deg, gamma_deg
@@ -199,6 +165,7 @@ namespace PFD
                 // b1, b2, h1, h2, t, iHoles
                 {200, 100, 500, 800, 3, 20}
         };
+        //------------------------------------------------------------------------------------------------
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
         public List<string> arr_Serie_CrSc_FS_Names = new List<string>

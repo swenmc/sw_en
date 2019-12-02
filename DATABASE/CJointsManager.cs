@@ -96,13 +96,6 @@ namespace DATABASE
             return names;
         }
 
-        public static List<string> GetArrayPlateB_Names()
-        {
-            List<string> list_Serie_B_Names = CJointsManager.GetPlateB_Names();
-
-            return list_Serie_B_Names;
-        }
-
         public static CPlate_B_Properties GetPlate_B_Properties(int id)
         {
             CPlate_B_Properties properties = null;
@@ -168,6 +161,32 @@ namespace DATABASE
             return properties;
         }
 
+        // Task 413
+        // TO Ondrej - Dalo by sa to nejako zjednodusit alebo zrefaktorovat? aby som tu nemal tolko podobnych a skoro rovnakych funkcii
+        // Pozri sa na plates v databaze joints
+        // Plate Serie B ma viac premmenych ale ostatne maju skoro vsetko rovnake
+
+        // Rozdiel u jednotlivych plate series je v tom, ze niektore maju ine parametre, 80% je rovnakych
+        // Dalo by sa to urobit tak ze by som vyrobil string s nazvami premmennych ktore chcem z databazy, zadal by som nazov tabulky a univerzalne by mi to vracalo nejaky zoznam hodnot ?
+
+        // TOTO maju vsetky plates
+
+        /*
+        private int m_ID;
+        private string m_Name;
+        private double m_thickness;
+        private int m_iNumberOfHolesScrews;
+        private double m_totalDim_x;
+        private double m_totalDim_y;
+        private double m_area;
+        private double m_volume;
+        private double m_mass;
+        private double m_price_PPSM_NZD;
+        private double m_price_PPKG_NZD;
+        private double m_price_PPP_NZD;
+        */
+
+
         // PLATE SERIES L
 
         public static List<CPlate_L_Properties> LoadPlate_L_Descriptions()
@@ -204,13 +223,6 @@ namespace DATABASE
                 names.Add(item.Name);
 
             return names;
-        }
-
-        public static List<string> GetArrayPlateL_Names()
-        {
-            List<string> list_Serie_L_Names = CJointsManager.GetPlateL_Names();
-
-            return list_Serie_L_Names;
         }
 
         public static CPlate_L_Properties GetPlate_L_Properties(int id)
@@ -262,6 +274,214 @@ namespace DATABASE
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             properties.Name = reader["plateName"].ToString();
             properties.dim1 = double.Parse(reader["dim1"].ToString(), nfi);
+            properties.dim2y = double.Parse(reader["dim2y"].ToString(), nfi);
+            properties.dim3 = double.Parse(reader["dim3"].ToString(), nfi);
+            properties.thickness = double.Parse(reader["t"].ToString(), nfi);
+            properties.NumberOfHolesScrews = Int32.Parse(reader["iNumberHolesScrews"].ToString());
+            properties.TotalDim_x = double.Parse(reader["totalDim_x"].ToString(), nfi);
+            properties.TotalDim_y = double.Parse(reader["totalDim_y"].ToString(), nfi);
+            properties.Area = double.Parse(reader["area"].ToString(), nfi);
+            properties.Volume = double.Parse(reader["volume"].ToString(), nfi);
+            properties.Mass = double.Parse(reader["mass"].ToString(), nfi);
+            properties.Price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
+            properties.Price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
+            properties.Price_PPP_NZD = double.Parse(reader["price_PPP_NZD"].ToString(), nfi);
+
+            return properties;
+        }
+
+        // PLATE SERIES F
+
+        public static List<CPlate_F_Properties> LoadPlate_F_Descriptions()
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_F_Properties item;
+            List<CPlate_F_Properties> items = new List<CPlate_F_Properties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieF", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        item = GetPlate_F_Properties(reader);
+                        items.Add(item);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static List<string> GetPlateF_Names()
+        {
+            List<CPlate_F_Properties> items = LoadPlate_F_Descriptions();
+
+            List<string> names = new List<string>();
+
+            foreach (CPlate_F_Properties item in items)
+                names.Add(item.Name);
+
+            return names;
+        }
+
+        public static CPlate_F_Properties GetPlate_F_Properties(int id)
+        {
+            CPlate_F_Properties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieF WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetPlate_F_Properties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CPlate_F_Properties GetPlate_F_Properties(string name)
+        {
+            CPlate_F_Properties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieF WHERE plateName = @name", conn);
+                command.Parameters.AddWithValue("@name", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetPlate_F_Properties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private static CPlate_F_Properties GetPlate_F_Properties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_F_Properties properties = new CPlate_F_Properties();
+            properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            properties.Name = reader["plateName"].ToString();
+            properties.dim11 = double.Parse(reader["dim11"].ToString(), nfi);
+            properties.dim12 = double.Parse(reader["dim12"].ToString(), nfi);
+            properties.dim2y = double.Parse(reader["dim2y"].ToString(), nfi);
+            properties.dim3 = double.Parse(reader["dim3"].ToString(), nfi);
+            properties.thickness = double.Parse(reader["t"].ToString(), nfi);
+            properties.NumberOfHolesScrews = Int32.Parse(reader["iNumberHolesScrews"].ToString());
+            properties.TotalDim_x = double.Parse(reader["totalDim_x"].ToString(), nfi);
+            properties.TotalDim_y = double.Parse(reader["totalDim_y"].ToString(), nfi);
+            properties.Area = double.Parse(reader["area"].ToString(), nfi);
+            properties.Volume = double.Parse(reader["volume"].ToString(), nfi);
+            properties.Mass = double.Parse(reader["mass"].ToString(), nfi);
+            properties.Price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
+            properties.Price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
+            properties.Price_PPP_NZD = double.Parse(reader["price_PPP_NZD"].ToString(), nfi);
+
+            return properties;
+        }
+
+        // PLATE SERIES LL
+
+        public static List<CPlate_LL_Properties> LoadPlate_LL_Descriptions()
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_LL_Properties item;
+            List<CPlate_LL_Properties> items = new List<CPlate_LL_Properties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieLL", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        item = GetPlate_LL_Properties(reader);
+                        items.Add(item);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static List<string> GetPlateLL_Names()
+        {
+            List<CPlate_LL_Properties> items = LoadPlate_LL_Descriptions();
+
+            List<string> names = new List<string>();
+
+            foreach (CPlate_LL_Properties item in items)
+                names.Add(item.Name);
+
+            return names;
+        }
+
+        public static CPlate_LL_Properties GetPlate_LL_Properties(int id)
+        {
+            CPlate_LL_Properties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieLL WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetPlate_LL_Properties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CPlate_LL_Properties GetPlate_LL_Properties(string name)
+        {
+            CPlate_LL_Properties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieLL WHERE plateName = @name", conn);
+                command.Parameters.AddWithValue("@name", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetPlate_LL_Properties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private static CPlate_LL_Properties GetPlate_LL_Properties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_LL_Properties properties = new CPlate_LL_Properties();
+            properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            properties.Name = reader["plateName"].ToString();
+            properties.dim11 = double.Parse(reader["dim11"].ToString(), nfi);
+            properties.dim12 = double.Parse(reader["dim12"].ToString(), nfi);
             properties.dim2y = double.Parse(reader["dim2y"].ToString(), nfi);
             properties.dim3 = double.Parse(reader["dim3"].ToString(), nfi);
             properties.thickness = double.Parse(reader["t"].ToString(), nfi);

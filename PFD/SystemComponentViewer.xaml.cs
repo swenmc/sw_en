@@ -749,22 +749,26 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            fb = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fb2 = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fh = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            fl = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            ft = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 4] / 1000f;
-                            iNumberofHoles = (int)dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 5];
+                            CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(vm.ComponentIndex + 1);
+
+                            fb = (float)prop.dim11 / 1000f;
+                            fb2 = (float)prop.dim12 / 1000f;
+                            fh = (float)prop.dim2y / 1000f;
+                            fl = (float)prop.dim3 / 1000f;
+                            ft = (float)prop.thickness / 1000f;
+                            iNumberofHoles = prop.NumberOfHolesScrews;
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            fb = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fb2 = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fh = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            fl = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            ft = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 4] / 1000f;
-                            iNumberofHoles = (int)dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 5];
+                            CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
+
+                            fb = (float)prop.dim11 / 1000f;
+                            fb2 = (float)prop.dim12 / 1000f;
+                            fh = (float)prop.dim2y / 1000f;
+                            fl = (float)prop.dim3 / 1000f;
+                            ft = (float)prop.thickness / 1000f;
+                            iNumberofHoles = prop.NumberOfHolesScrews;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
