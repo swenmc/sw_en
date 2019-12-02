@@ -37,7 +37,7 @@ namespace PFD
             // Cross-section | Total Length [m] | Price PLM | Total Price
             // 270115 | 245.54 | 4.54 | Total Price
 
-            // !!!!! Cisla v datagridoch zarovnavat napravo
+            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
 
             // DG 2
             // Plates
@@ -96,11 +96,12 @@ namespace PFD
             // TODO Ondrej
             // Zobrazit Datagrid
             // Rovnake dvere / okna budu v jednom riadku
-            // !!!!! Cisla v datagridoch zarovnavat napravo
+            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
 
-            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP| Total Price
+            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
             // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
             // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
+            // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
 
             // DG 9
             // Cladding
@@ -111,7 +112,7 @@ namespace PFD
             float fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
             float fWallArea_Right = fWallArea_Left;
 
-            // Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
+            // TO Ondrej - Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
             float fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
             float fWallArea_Back = fWallArea_Front;
 
@@ -124,7 +125,7 @@ namespace PFD
 
             float fRoofArea = 2 * fRoofSideLength * model.fL_tot;
 
-            float fFibreGlassArea_Roof = 0.2f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Roof = 0.20f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = 0.05f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
             // Plocha stien bez otvorov a fibre glass
@@ -138,9 +139,11 @@ namespace PFD
 
             // TODO Ondrej
             // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
-            // Cladding | Thickness | Color | Total Area | Price PSM | Total Price
-            // PurlinDek | 0.75 mm | Titania | 324.4 | 5.20 | Total Price
-            // SmartDek  | 0.55 mm | Black   | 245.9 | 4.20 | Total Price
+            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
+
+            // Cladding  | Thickness | Color   | Total Area | Price PSM | Total Price
+            // PurlinDek | 0.75 mm   | Titania | 324.4      | 5.20      | Total Price
+            // SmartDek  | 0.55 mm   | Black   | 245.9      | 4.20      | Total Price
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
 
@@ -199,29 +202,46 @@ namespace PFD
             // Zobrazit Datagrid
             // Flashing | Total Length | Price PLM | Total Price
             // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
+
             float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
             float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
             float fBargeFlashingFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD; // TODO Ondrej
 
-            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD;
-            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD;
-            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD;
-            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD;
-            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD;
-            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
+            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD; // TODO Ondrej
+
+            // TODO - for later
 
             // DG 14
             // Footing pads
 
+            // DG 15
+            // Reinforcement
+
+            // DG 16
             // Floor Slab
 
+            // DG 17
+            // Floor Slab Mesh
+
+            // DG 18
             // Perimeters
 
+            // DG 19
+            // Perimeter Reinforcement
 
+            // DG 20
+            // Rebates (area)
 
+            // DG 21
+            // Saw Cuts
 
-
-
+            // DG 22
+            // Control Joints
         }
     }
 }
