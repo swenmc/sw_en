@@ -135,7 +135,7 @@ namespace BaseClasses
             {
                 for (int j = 0; j < ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    arrConnectorControlPoints3D[iLastItemIndex + j].X = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].X - flZ;
+                    arrConnectorControlPoints3D[iLastItemIndex + j].X = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].X - flZ + ft;
                     arrConnectorControlPoints3D[iLastItemIndex + j].Y = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].Y;
                     arrConnectorControlPoints3D[iLastItemIndex + j].Z = fPortionOtAnchorAbovePlate_abs;
                 }

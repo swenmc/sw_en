@@ -43,12 +43,12 @@ namespace BaseClasses
             // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
-            float fTolerance = 0.0001f; // Gap between cross-section surface and plate surface
+            float fTolerance = 1e-6f; // Gap between cross-section surface and plate surface
 
             // !!! Base plate je vo vnutri prierezu stlpika
             // 100 - 0.75 - 0.75 - 2.75 - 2.75 = 93
 
-            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b - 2 * fTolerance - 2 * MainFrameColumn_temp.CrScStart.t_min - 2 * 0.00275f);
+            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b - 2 * fTolerance - 2 * MainFrameColumn_temp.CrScStart.t_min - 2 * m_ft - 2 * 0.00075f);
             float fh_plate = fb_plate; //(float)(MainFrameColumn_temp.CrScStart.h);
 
             float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
@@ -56,7 +56,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
 
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y + MainFrameColumn_temp.CrScStart.t_min + 0.00275 + fTolerance, -0.5f * fh_plate + flocaleccentricity_z); // 25 m od okraja plechu
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y + MainFrameColumn_temp.CrScStart.t_min + 0.00075 + fTolerance, -0.5f * fh_plate + flocaleccentricity_z); // 25 m od okraja plechu
             CAnchor referenceAnchor = new CAnchor("M16", "8.8", fAnchorLength, 0.8f * fAnchorLength, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 

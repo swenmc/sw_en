@@ -160,8 +160,8 @@ namespace PFD
 
             cs.m_Mat = mat; // Set material from GUI to the cross-section
 
-            calcModel.YieldStrength_fy = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
-            calcModel.TensileStrength_fu = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
+            calcModel.YieldStrength_fy = mat.Get_f_yk_by_thickness((float)cs.t_min);
+            calcModel.TensileStrength_fu = mat.Get_f_uk_by_thickness((float)cs.t_min);
 
             ////////////////////////////////////////////////////////////////////////////////
             // TO ONDREJ - neviem ci ten komentar plati aj na tomto mieste :)

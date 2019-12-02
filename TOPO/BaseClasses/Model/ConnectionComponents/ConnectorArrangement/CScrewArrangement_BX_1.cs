@@ -309,7 +309,7 @@ namespace BaseClasses
             {
                 for (int j = 0; j < ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].X = fbX + ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].X = fbX + 2 * ft + ft; // TODO Position depends on screw length
                     arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].Y = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].Y;
                     arrConnectorControlPoints3D[IHolesNumber / 2 + iLastItemIndex + j].Z = ListOfSequenceGroups[iGroupIndex].ListSequence[i].HolesCentersPoints[j].X - flZ - fbX;
                 }

@@ -78,8 +78,8 @@ namespace CRSC
 
         public double[] d_omega_s;          // Vysecove souradnice ktere jsou vztazeny ke stredu smyku (J.23) // (J.23)
         public double m_Beta_y, m_Beta_z;      // Monosymmetry constant AS / NZS standards
-        public double m_t_min;
-        public double m_t_max;
+        //public double m_t_min; // Uz je definovane v CRSC
+        //public double m_t_max;
 
         public double dBending_curve_stress_x1;
         public double dBending_curve_stress_x2;
@@ -199,7 +199,7 @@ namespace CRSC
             get { return m_Beta_z; }
             set { m_Beta_z = value; }
         }
-
+        /* // Uz je definovane v CRSC
         public double t_min
         {
             get { return m_t_min; }
@@ -211,7 +211,7 @@ namespace CRSC
             get { return m_t_max; }
             set { m_t_max = value; }
         }
-
+        */
         public double Bending_curve_stress_x1
         {
             get { return dBending_curve_stress_x1; }

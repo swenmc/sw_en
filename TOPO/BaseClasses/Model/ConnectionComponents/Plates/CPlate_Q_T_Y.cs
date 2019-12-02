@@ -190,15 +190,15 @@ namespace BaseClasses
             arrPoints3D[1].Y = 0;
             arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = m_fbX;
+            arrPoints3D[2].X = m_fbX + 2 * Ft;
             arrPoints3D[2].Y = 0;
             arrPoints3D[2].Z = 0;
 
-            arrPoints3D[3].X = m_fbX;
+            arrPoints3D[3].X = arrPoints3D[2].X;
             arrPoints3D[3].Y = 0;
             arrPoints3D[3].Z = m_flZ2;
 
-            arrPoints3D[4].X = m_fbX;
+            arrPoints3D[4].X = arrPoints3D[3].X;
             arrPoints3D[4].Y = m_fhY;
             arrPoints3D[4].Z = arrPoints3D[3].Z;
 
@@ -222,7 +222,7 @@ namespace BaseClasses
             arrPoints3D[9].Y = 0;
             arrPoints3D[9].Z = Ft;
 
-            arrPoints3D[10].X = m_fbX - Ft;
+            arrPoints3D[10].X = m_fbX + Ft;
             arrPoints3D[10].Y = 0;
             arrPoints3D[10].Z = Ft;
 
