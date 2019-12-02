@@ -280,7 +280,7 @@ namespace PFD
             foreach (CCrSc crsc in model.m_arrCrSc.GroupBy(m => m.Name_short).Select(g => g.First()))
             {
                 row = dt.NewRow();                
-                List<CMember> membersList = model.GetListOfMembersWithCrsc(crsc);
+                List<CMember> membersList = model.GetListOfMembersWithCrscDatabaseID(crsc.DatabaseID);
                 double totalLength = membersList.Where(m => m.BIsGenerated).Sum(m => m.FLength_real);
                 double price = 0;
                 try

@@ -213,6 +213,10 @@ namespace BaseClasses
         {
             return m_arrMembers.Where(m => m.CrScStart.ID == crsc.ID || (m.CrScEnd != null && m.CrScEnd.ID == crsc.ID)).ToList();            
         }
+        public List<CMember> GetListOfMembersWithCrscDatabaseID(int databaseID)
+        {
+            return m_arrMembers.Where(m => m.CrScStart.ID == databaseID || (m.CrScEnd != null && m.CrScEnd.DatabaseID == databaseID)).ToList();
+        }
 
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
         {
