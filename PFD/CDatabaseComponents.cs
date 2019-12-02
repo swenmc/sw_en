@@ -24,34 +24,23 @@ namespace PFD
 
         public List<string> arr_SeriesNames = CJointsManager.GetPlateSeries();
 
-        public string[] arr_Serie_B_Names = CJointsManager.GetArrayPlateB_Names();
+        public List<string> arr_Serie_B_Names = CJointsManager.GetArrayPlateB_Names();
 
         public List<string> arr_Serie_B_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("B");
 
-        public string[] arr_Serie_L_Names = new string[11]
-            {"LA",
-             "LB",
-             "LC",
-             "LD",
-             "LE",
-             "LF",
-             "LG",
-             "LH",
-             "LI",
-             "LJ",
-             "LK"};
+        public List<string> arr_Serie_L_Names = CJointsManager.GetArrayPlateL_Names();
 
         public List<string> arr_Serie_L_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("L");
 
         public List<string> arr_Serie_F_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("F");
 
-        public string[] arr_Serie_LL_Names = new string[2]
+        public List<string> arr_Serie_LL_Names = new List<string>(2)
             {"LLH",
              "LLK"};
 
         public List<string> arr_Serie_LL_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("LL");
 
-        public string[] arr_Serie_F_Names = new string[10]
+        public List<string> arr_Serie_F_Names = new List<string>(10)
             {"FA - LH",
              "FA - RH",
              "FB - LH",
@@ -63,22 +52,22 @@ namespace PFD
              "FE - LH",
              "FE - RH"};
 
-        public string[] arr_Serie_Q_Names = new string[1]
+        public List<string> arr_Serie_Q_Names = new List<string>(1)
             {"Q"};
 
-        public string[] arr_Serie_S_Names = new string[1]
+        public List<string> arr_Serie_S_Names = new List<string>(1)
             {"S"};
 
-        public string[] arr_Serie_T_Names = new string[1]
+        public List<string> arr_Serie_T_Names = new List<string>(1)
             {"T"};
 
-        public string[] arr_Serie_X_Names = new string[1]
+        public List<string> arr_Serie_X_Names = new List<string>(1)
             {"X"};
 
-        public string[] arr_Serie_Y_Names = new string[1]
+        public List<string> arr_Serie_Y_Names = new List<string>(1)
             {"Y"};
 
-        public string[] arr_Serie_J_Names = new string[3]
+        public List<string> arr_Serie_J_Names = new List<string>(3)
         {"JA", "JB", "JC"};
 
         public List<string> arr_Serie_J_ScrewArrangement_Names = new List<string>(3)
@@ -86,7 +75,7 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
-        public string[] arr_Serie_K_Names = new string[7]
+        public List<string> arr_Serie_K_Names = new List<string>(7)
         {"KA",
          "KB",
          "KC",
@@ -100,15 +89,15 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
-        public string[] arr_Serie_M_Names = new string[1]
+        public List<string> arr_Serie_M_Names = new List<string>(1)
         {"M"};
 
         public List<string> arr_Serie_M_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("M");
 
-        public string[] arr_Serie_N_Names = new string[1]
+        public List<string> arr_Serie_N_Names = new List<string>(1)
         {"N"};
 
-        public string[] arr_Serie_O_Names = new string[1]
+        public List<string> arr_Serie_O_Names = new List<string>(1)
         {"O"};
 
         public List<string> arr_Serie_O_ScrewArrangement_Names = CJointsManager.GetArrayPlate_ArrangementNames("O");
@@ -224,7 +213,7 @@ namespace PFD
                 "Purlindek"
         };
 
-        public string[] arr_Serie_Box_FS_Names = new string[1]
+        public List<string> arr_Serie_Box_FS_Names = new List<string>(1)
         {
                 "10075"
         };
@@ -239,9 +228,9 @@ namespace PFD
                 {100, 100, 0.75f}
         };
 
-        public string[] arr_Serie_Z_FS_Names = new string[1]
+        public List<string> arr_Serie_Z_FS_Names = new List<string>(1)
         {
-                "TeC-singlemplate Z"
+                "Template Z"
         };
 
         public Color[] arr_Serie_Z_FS_Colors = new Color[1]
@@ -255,7 +244,7 @@ namespace PFD
                 {200, 100, 20, 0.95f}
         };
 
-        public string[] arr_Serie_C_FS_Names = new string[4]
+        public List<string> arr_Serie_C_FS_Names = new List<string>(4)
         {
                 "27095",
                 "270115",
@@ -279,7 +268,7 @@ namespace PFD
                 {100,500,1.95f}
         };
 
-        public string[] arr_Serie_C_BtoB_FS_Names = new string[1]
+        public List<string> arr_Serie_C_BtoB_FS_Names = new List<string>(1)
         {
                 "270115 back to back"
         };
@@ -294,7 +283,7 @@ namespace PFD
                 {2*70,270,40,1.15f}
         };
 
-        public string[] arr_Serie_C_Nested_FS_Names = new string[2]
+        public List<string> arr_Serie_C_Nested_FS_Names = new List<string>(2)
         {
                 "270115 nested",
                 "50020 nested"
@@ -312,7 +301,7 @@ namespace PFD
                 {102,550,1.95f},
         };
 
-        public string[] arr_Serie_Box63020_FS_Names = new string[3]
+        public List<string> arr_Serie_Box63020_FS_Names = new List<string>(3)
         {
                 "63020-Without Stiffener",
                 "63020-Single Stiffened",
@@ -333,7 +322,7 @@ namespace PFD
                 {180, 630, 1.95f, 7.90f, 2}  // 3.00 mm
         };
 
-        public List<string> arr_Serie_Screws_Names = new List<string>
+        public List<string> arr_Serie_Screws_Names = new List<string>(1)
         {
                "Hex Head Tek"
         };

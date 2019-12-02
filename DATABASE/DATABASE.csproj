@@ -98,6 +98,7 @@
     <Compile Include="DTO\CMaterialProperties_RC.cs" />
     <Compile Include="DTO\CMatPropertiesBOLT.cs" />
     <Compile Include="DTO\CMeshProperties.cs" />
+    <Compile Include="DTO\CPlate_L_Properties.cs" />
     <Compile Include="DTO\CPlate_ScrewArrangementProperties.cs" />
     <Compile Include="DTO\CPlate_B_Properties.cs" />
     <Compile Include="DTO\CReinforcementBarProperties.cs" />

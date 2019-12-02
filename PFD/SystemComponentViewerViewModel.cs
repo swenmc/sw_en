@@ -35,7 +35,7 @@ namespace PFD
 
         private List<string> MComponentTypes;
         private List<string> MComponentSeries;
-        private string[] MComponents;
+        private List<string> MComponents;
         private List<string> MScrewArrangements;
 
         private List<CComponentParamsView> MScrewArrangementParameters;
@@ -176,7 +176,7 @@ namespace PFD
             }
         }
 
-        public string[] Components
+        public List<string> Components
         {
             get
             {
@@ -538,7 +538,7 @@ namespace PFD
                 {
                     MAmountLH = value;
                     MAmountRH = Amount - AmountLH;
-                }                    
+                }
                 NotifyPropertyChanged("AmountRH");
                 NotifyPropertyChanged("AmountLH");
             }
@@ -620,10 +620,7 @@ namespace PFD
                 ComponentSeries = databaseComponents.arr_Serie_Screws_Names; // Screws
 
                 Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
-                string [] arr_Serie_TEK_Names = new string[dict.Count];
-
-                arr_Serie_TEK_Names =  dict.Keys.ToArray();
-
+                List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
             }
         }
@@ -784,10 +781,7 @@ namespace PFD
             else // Screws
             {
                 Dictionary<string, CTEKScrewProperties> dict = CTEKScrewsManager.DictTEKScrewProperties;
-                string[] arr_Serie_TEK_Names = new string[dict.Count];
-
-                arr_Serie_TEK_Names = dict.Keys.ToArray();
-
+                List<string> arr_Serie_TEK_Names = dict.Keys.ToList();
                 Components = arr_Serie_TEK_Names;
             }
         }

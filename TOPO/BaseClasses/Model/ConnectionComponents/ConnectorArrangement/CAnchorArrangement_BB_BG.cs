@@ -28,7 +28,7 @@ namespace BaseClasses
 
         public CAnchorArrangement_BB_BG(string plateName_temp, CAnchor referenceAnchor_temp)
         {
-            CPlate_B_Properties prop = CJointsManager.GetSPlate_B_Properties(plateName_temp);
+            CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(plateName_temp);
 
             // TODO - nacitat z databazy parametre
 
