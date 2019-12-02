@@ -11,7 +11,7 @@ namespace DATABASE.DTO
         private int m_ID;
         private string m_Name;
         private double m_dim1;
-        private double m_dim2;
+        private double m_dim2y;
         private double m_dim3;
         private double m_t;
         private int m_iNumberHolesAnchors;
@@ -63,16 +63,16 @@ namespace DATABASE.DTO
             }
         }
 
-        public double dim2
+        public double dim2y
         {
             get
             {
-                return m_dim2;
+                return m_dim2y;
             }
 
             set
             {
-                m_dim2 = value;
+                m_dim2y = value;
             }
         }
 

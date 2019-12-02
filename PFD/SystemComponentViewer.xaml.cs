@@ -728,7 +728,7 @@ namespace PFD
 
                             fb = (float)prop.dim1 / 1000f;
                             fb2 = fb;
-                            fh = (float)prop.dim2 / 1000f;
+                            fh = (float)prop.dim2y / 1000f;
                             fl = (float)prop.dim3 / 1000f;
                             ft = (float)prop.t / 1000f;
                             iNumberofHoles = prop.iNumberHolesAnchors; // !!!! - rozlisovat medzi otvormi pre skrutky a pre anchors

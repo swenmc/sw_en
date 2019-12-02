@@ -155,7 +155,7 @@ namespace DATABASE
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             properties.Name = reader["plateName"].ToString();
             properties.dim1 = double.Parse(reader["dim1"].ToString(), nfi);
-            properties.dim2 = double.Parse(reader["dim2"].ToString(), nfi);
+            properties.dim2y = double.Parse(reader["dim2y"].ToString(), nfi);
             properties.dim3 = double.Parse(reader["dim3"].ToString(), nfi);
             properties.t = double.Parse(reader["t"].ToString(), nfi);
             properties.iNumberHolesAnchors = Int32.Parse(reader["iNumberHolesAnchors"].ToString());
@@ -167,6 +167,66 @@ namespace DATABASE
             properties.dist_y1 = double.Parse(reader["dist_y1"].ToString(), nfi);
             properties.dist_x2 = reader["dist_x2"].ToString() == "" ? double.NaN : double.Parse(reader["dist_x2"].ToString(), nfi);
             properties.dist_y2 = reader["dist_y2"].ToString() == "" ? double.NaN : double.Parse(reader["dist_y2"].ToString(), nfi);
+
+            return properties;
+        }
+
+
+
+        public static List<CPlate_ScrewArrangementProperties> LoadPlate_B_ArrangementDescriptions()
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_ScrewArrangementProperties item;
+            List<CPlate_ScrewArrangementProperties> items = new List<CPlate_ScrewArrangementProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from plateSerieB_screwArrangement", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        item = GetPlate_ScrewArrangementProperties(reader);
+                        items.Add(item);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static List<string> GetPlateB_ArrangementNames()
+        {
+            List<CPlate_ScrewArrangementProperties> items = LoadPlate_B_ArrangementDescriptions();
+
+            List<string> names = new List<string>();
+
+            foreach (CPlate_ScrewArrangementProperties item in items)
+                names.Add(item.Name);
+
+            return names;
+        }
+
+        public static string[] GetArrayPlateB_ArrangementNames()
+        {
+            string[] arr_Serie_B_Names = new string[8];
+            List<string> list_Serie_B_Names = CJointsManager.GetPlateB_ArrangementNames();
+
+            arr_Serie_B_Names = list_Serie_B_Names.ToArray();
+
+            return arr_Serie_B_Names;
+        }
+
+        private static CPlate_ScrewArrangementProperties GetPlate_ScrewArrangementProperties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CPlate_ScrewArrangementProperties properties = new CPlate_ScrewArrangementProperties();
+            properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            properties.Name = reader["arrangementName"].ToString();
 
             return properties;
         }
