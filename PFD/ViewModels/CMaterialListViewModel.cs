@@ -30,12 +30,12 @@ namespace PFD.ViewModels
             }
         }
 
-        int iNumberOfDecimalPlacesLength = 3;
-        int iNumberOfDecimalPlacesPlateDim = 3;
-        int iNumberOfDecimalPlacesArea = 5;
-        int iNumberOfDecimalPlacesVolume = 5;
-        int iNumberOfDecimalPlacesMass = 4;
-        int iNumberOfDecimalPlacesPrice = 3;
+        //int iNumberOfDecimalPlacesLength = 3;
+        //int iNumberOfDecimalPlacesPlateDim = 3;
+        //int iNumberOfDecimalPlacesArea = 5;
+        //int iNumberOfDecimalPlacesVolume = 5;
+        //int iNumberOfDecimalPlacesMass = 4;
+        //int iNumberOfDecimalPlacesPrice = 3;
 
         float fCFS_PricePerKg_Members_Material = 2.08f;     // NZD / kg
         float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
@@ -94,13 +94,13 @@ namespace PFD.ViewModels
                                     {
                                         // Add member to the one from already created groups
                                         membersMatList[iLastItemIndex + k].Quantity += 1;
-                                        membersMatList[iLastItemIndex + k].TotalLength = Math.Round(membersMatList[iLastItemIndex + k].Quantity * membersMatList[iLastItemIndex + k].Length, iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
-                                        membersMatList[iLastItemIndex + k].TotalMass = Math.Round(membersMatList[iLastItemIndex + k].TotalLength * membersMatList[iLastItemIndex + k].MassPerLength, iNumberOfDecimalPlacesMass); // Recalculate total weight of all members in the group
+                                        membersMatList[iLastItemIndex + k].TotalLength = membersMatList[iLastItemIndex + k].Quantity * membersMatList[iLastItemIndex + k].Length; // Recalculate total length of all members in the group
+                                        membersMatList[iLastItemIndex + k].TotalMass = membersMatList[iLastItemIndex + k].TotalLength * membersMatList[iLastItemIndex + k].MassPerLength; // Recalculate total weight of all members in the group
 
                                         if(ListOfMemberGroups[k].CrScStart.price_PPLM_NZD > 0)
-                                            membersMatList[iLastItemIndex + k].TotalPrice = Math.Round(membersMatList[iLastItemIndex + k].TotalLength * ListOfMemberGroups[k].CrScStart.price_PPLM_NZD, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+                                            membersMatList[iLastItemIndex + k].TotalPrice = membersMatList[iLastItemIndex + k].TotalLength * ListOfMemberGroups[k].CrScStart.price_PPLM_NZD; // Recalculate total price of all members in the group
                                         else
-                                           membersMatList[iLastItemIndex + k].TotalPrice = Math.Round(membersMatList[iLastItemIndex + k].TotalMass * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+                                           membersMatList[iLastItemIndex + k].TotalPrice = membersMatList[iLastItemIndex + k].TotalMass * fCFS_PricePerKg_Members_Total; // Recalculate total price of all members in the group
 
                                         bMemberwasAdded = true;
                                         break;
@@ -115,12 +115,12 @@ namespace PFD.ViewModels
                                 mlm.CrScName = sCrScName;
                                 mlm.Quantity = iQuantity;
                                 mlm.MaterialName = sMaterialName;
-                                mlm.Length = (Math.Round(fLength, iNumberOfDecimalPlacesLength));
-                                mlm.MassPerLength = (Math.Round(fMassPerLength, iNumberOfDecimalPlacesMass));
-                                mlm.MassPerPiece = (Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                                mlm.TotalLength = (Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
-                                mlm.TotalMass = (Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                                mlm.TotalPrice = (Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+                                mlm.Length = fLength;
+                                mlm.MassPerLength =fMassPerLength;
+                                mlm.MassPerPiece = fMassPerPiece;
+                                mlm.TotalLength = fTotalLength;
+                                mlm.TotalMass = fTotalMass;
+                                mlm.TotalPrice = fTotalPrice;
                                 membersMatList.Add(mlm);
                                 // Add first member in the group to the list of member groups
                                 ListOfMemberGroups.Add(assignedMembersList[j]);
@@ -169,11 +169,6 @@ namespace PFD.ViewModels
                 iTotalMembersNumber_Table += membersMatList[i].Quantity;
             }
 
-            dTotalMembersLength_Model = Math.Round(dTotalMembersLength_Model, iNumberOfDecimalPlacesLength);
-            dTotalMembersLength_Table = Math.Round(dTotalMembersLength_Table, iNumberOfDecimalPlacesLength);
-            dTotalMembersMass_Model = Math.Round(dTotalMembersMass_Model, iNumberOfDecimalPlacesMass);
-            dTotalMembersMass_Table = Math.Round(dTotalMembersMass_Table, iNumberOfDecimalPlacesMass);
-
             if (!MathF.d_equal(dTotalMembersLength_Model, dTotalMembersLength_Table) ||
                 !MathF.d_equal(dTotalMembersVolume_Model, dTotalMembersVolume_Table) ||
                 !MathF.d_equal(dTotalMembersMass_Model, dTotalMembersMass_Table) ||
@@ -192,9 +187,9 @@ namespace PFD.ViewModels
             for (int i = 0; i < membersMatList.Count; i++)
             {
                 // Change output data format
-                membersMatList[i].LengthStr = membersMatList[i].Length.ToString();
-                membersMatList[i].MassPerLengthStr = membersMatList[i].MassPerLength.ToString();
-                membersMatList[i].MassPerPieceStr = membersMatList[i].MassPerPiece.ToString();
+                membersMatList[i].LengthStr = membersMatList[i].Length.ToString("F2");
+                membersMatList[i].MassPerLengthStr = membersMatList[i].MassPerLength.ToString("F2");
+                membersMatList[i].MassPerPieceStr = membersMatList[i].MassPerPiece.ToString("F2");
             }
 
             // Add Sum
@@ -215,12 +210,10 @@ namespace PFD.ViewModels
             MembersMaterialList = membersMatList;
         }
 
-
         protected void NotifyPropertyChanged(string propertyName)
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

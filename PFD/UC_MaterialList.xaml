@@ -28,9 +28,9 @@
                     <DataGridTextColumn Binding="{Binding LengthStr}" Header="Length" Width="Auto"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding MassPerLengthStr}" Header="MassPerLength" Width="Auto"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding MassPerPieceStr}" Header="MassPerPiece" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalLength}" Header="TotalLength" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="TotalMass" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalPrice}" Header="TotalPrice" Width="Auto"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalLength, StringFormat={}{0:0.00}}" Header="TotalLength" Width="Auto"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass, StringFormat={}{0:0.00}}" Header="TotalMass" Width="Auto"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalPrice, StringFormat={}{0:0.00}}" Header="TotalPrice" Width="Auto"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
