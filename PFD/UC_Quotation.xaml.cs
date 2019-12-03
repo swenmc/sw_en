@@ -30,25 +30,31 @@ namespace PFD
         {
             InitializeComponent();
 
-            float fBuildingArea_Gross;
-            float fBuildingVolume_Gross;
-
-
             CModel model = vm.Model;
 
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
             List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
 
-            // TODO Ondrej - refaktoring - funckia CreateTableCladding
-            float fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
-            float fWallArea_Right = fWallArea_Left;
-
             // TO Ondrej - Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
-            float fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
-            float fWallArea_Back = fWallArea_Front;
+            // TODO Ondrej - refaktoring - funckia CreateTableCladding
 
-            fBuildingArea_Gross = model.fW_frame * model.fL_tot;
-            fBuildingVolume_Gross = fWallArea_Front * model.fL_tot;
+            float fWallArea_Left = 0; float fWallArea_Right = 0;
+            if (vm.ComponentList[(int)EMemberType_FS_Position.Girt].Generate == true)
+            {
+                fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
+                fWallArea_Right = fWallArea_Left;
+            }
+
+            float fWallArea_Front = 0;
+            if (vm.ComponentList[(int)EMemberType_FS_Position.GirtFrontSide].Generate == true)
+                fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+
+            float fWallArea_Back = 0;
+            if (vm.ComponentList[(int)EMemberType_FS_Position.GirtBackSide].Generate == true)
+                fWallArea_Back = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+
+            float fBuildingArea_Gross = model.fW_frame * model.fL_tot;
+            float fBuildingVolume_Gross = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray()) * model.fL_tot;
 
             // DG 1
             // Members
