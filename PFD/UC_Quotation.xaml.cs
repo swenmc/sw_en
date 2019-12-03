@@ -141,13 +141,7 @@ namespace PFD
 
             // DG 10
             // Gutters
-            float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
-            float fRoofGutterPrice_PLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
-
-            // TODO Ondrej
-            // Zobrazit Datagrid
-            // Roof Gutter | Total Length | Price PLM | Total Price
-            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD; // TODO Ondrej
+            CreateTableGutters(model);
 
             // DG 11
             // FibreGlass
@@ -274,7 +268,7 @@ namespace PFD
                     row["Count"] = count.ToString();
                     SumCount += count;
 
-                    row["TotalLength"] = totalLength.ToString("F3");
+                    row["TotalLength"] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
 
                     row["UnitMass"] = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL).ToString("F2");
@@ -390,7 +384,7 @@ namespace PFD
                     row["Thickness"] = vm.RoofCladdingThicknessIndex;
                     row["Color"] = vm.RoofCladdingColorIndex;
 
-                    row["TotalArea"] = fRoofArea_Total_Netto.ToString("F3");
+                    row["TotalArea"] = fRoofArea_Total_Netto.ToString("F2");
                     SumTotalArea += fRoofArea_Total_Netto;
 
                     row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
@@ -423,7 +417,7 @@ namespace PFD
                     row["Thickness"] = vm.WallCladdingThicknessIndex;
                     row["Color"] = vm.WallCladdingColorIndex;
 
-                    row["TotalArea"] = fWallArea_Total_Netto.ToString("F3");
+                    row["TotalArea"] = fWallArea_Total_Netto.ToString("F2");
                     SumTotalArea += fWallArea_Total_Netto;
 
                     row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
@@ -526,7 +520,8 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Roof Ridge Flashing",
                         model.fL_tot,
                         0.2, // TODO - database
@@ -537,7 +532,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Wall Corner Flashing",
                         4 * model.fH1_frame,
                         0.2, // TODO - database
@@ -548,7 +544,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Barge Flashing",
                         4 * fRoofSideLength,
                         0.2, // TODO - database
@@ -559,7 +556,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Roller Door Trimmer Flashing",
                         fRollerDoorTrimmerFlashing_TotalLength,
                         0.2, // TODO - database
@@ -570,7 +568,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Roller Door Lintel Flashing",
                         fRollerDoorLintelFlashing_TotalLength,
                         0.2, // TODO - database
@@ -581,7 +580,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Roller Door Lintel Cap Flashing",
                         fRollerDoorLintelCapFlashing_TotalLength,
                         0.2, // TODO - database
@@ -592,7 +592,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "PA Door Trimmer Flashing",
                         fPADoorTrimmerFlashing_TotalLength,
                         0.2, // TODO - database
@@ -603,7 +604,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "PA Door Lintel Flashing",
                         fPADoorLintelFlashing_TotalLength,
                         0.2, // TODO - database
@@ -614,7 +616,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            AddFlashingRow(dt,
+            AddLengthItemRow(dt,
+                        "Flashing",
                         "Window Flashing",
                         fWindowFlashing_TotalLength,
                         0.2, // TODO - database
@@ -639,8 +642,79 @@ namespace PFD
             Datagrid_Flashing.ItemsSource = ds.Tables[0].AsDataView();
         }
 
-        private void AddFlashingRow(DataTable dt,
-            string Flashing,
+        private void CreateTableGutters(CModel model)
+        {
+            float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
+            float fRoofGutterPrice_PLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
+
+            // TODO Ondrej
+            // Zobrazit Datagrid
+            // Roof Gutter | Total Length | Price PLM | Total Price
+            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD; // TODO Ondrej
+
+            // Create Table
+            DataTable dt = new DataTable("TableGutter");
+            // Create Table Rows
+            dt.Columns.Add("Gutter", typeof(String));
+            dt.Columns.Add("TotalLength", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String));
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            dt.Columns["Gutter"].Caption = "Gutter";
+            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            double SumTotalLength = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            AddLengthItemRow(dt,
+                        "Gutter",
+                        "Drip Edge Gutter",
+                        fGuttersTotalLength,
+                        0.2, // TODO - database
+                        0.2 * fGuttersTotalLength,
+                        fRoofGutterPrice_PLM_NZD,
+                        fGuttersPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Komentujem, inak by bol problem spocitat celkovu sumu
+            //{
+                // Last row
+                DataRow row;
+                row = dt.NewRow();
+                row["Gutter"] = "Total:";
+                row["TotalLength"] = SumTotalLength.ToString("F2");
+                row["UnitMass"] = "";
+                row["TotalMass"] = SumTotalMass.ToString("F2");
+                row["UnitPrice"] = "";
+                row["Price"] = SumTotalPrice.ToString("F2");
+                dt.Rows.Add(row);
+            //}
+
+          Datagrid_Gutters.ItemsSource = ds.Tables[0].AsDataView();
+        }
+
+        private void AddLengthItemRow(DataTable dt,
+            string itemColumnName,
+            string itemName,
             double totalLength,
             double unitMass,
             double totalMass,
@@ -658,9 +732,9 @@ namespace PFD
 
                 try
                 {
-                    row["Flashing"] = Flashing;
+                    row[itemColumnName] = itemName;
 
-                    row["TotalLength"] = totalLength.ToString("F3");
+                    row["TotalLength"] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
 
                     row["UnitMass"] = unitMass.ToString("F2");

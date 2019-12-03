@@ -39,7 +39,9 @@
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
 
             <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-
+            <DataGrid Name ="Datagrid_Gutters" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                IsReadOnly="True">
+            </DataGrid>
             <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Flashing" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Flashing" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
