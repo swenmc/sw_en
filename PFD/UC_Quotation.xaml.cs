@@ -33,8 +33,6 @@ namespace PFD
             // Members
             CreateTableMembers(model);
 
-
-
             // TODO Ondrej
             // Sem dat members podla Crsc, alebo podla MemberType_FS alebo podla MemberType_FS_Position
             // V jednom riadku spocitat dlzku pre vsetky pruty daneho typu
@@ -192,32 +190,14 @@ namespace PFD
 
             // DG 13
             // Flashing and Packers
-            float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fBargeFlashingPrice_PLM_NZD = 3.90f; // Cena barge flashing za 1 m dlzky // TODO - zapracovat do databazy
-
-            float fRollerDoorTrimmerFlashingPrice_PLM_NZD = 3.90f; // Cena roller door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fRollerDoorLintelFlashingPrice_PLM_NZD = 3.80f; // Cena roller door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fRollerDoorLintelCapFlashingPrice_PLM_NZD = 1.90f; // Cena cap flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fPADoorTrimmerFlashingPrice_PLM_NZD = 1.90f; // Cena PA door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fPADoorLintelFlashingPrice_PLM_NZD = 1.80f; // Cena PA door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fWindowFlashingPrice_PLM_NZD = 1.90f; // Cena window flashing za 1 m dlzky // TODO - zapracovat do databazy
-
-            // TODO Ondrej
-            // Zobrazit Datagrid
-            // Flashing | Total Length | Price PLM | Total Price
-            // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
-
-            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fBargeFlashingFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD; // TODO Ondrej
-
-            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD; // TODO Ondrej
+            CreateTableFlashing(model,
+                fRoofSideLength,
+                fRollerDoorTrimmerFlashing_TotalLength,
+                fRollerDoorLintelFlashing_TotalLength,
+                fRollerDoorLintelCapFlashing_TotalLength,
+                fPADoorTrimmerFlashing_TotalLength,
+                fPADoorLintelFlashing_TotalLength,
+                fWindowFlashing_TotalLength);
 
             // TODO - for later
 
@@ -253,8 +233,6 @@ namespace PFD
 
         private void CreateTableMembers(CModel model)
         {
-            //crsc, celkova dlzka vsetkych , cena za meter, celkova cena za dany prierez
-
             // Create Table
             DataTable dt = new DataTable("TableMembers");
             // Create Table Rows
@@ -336,6 +314,225 @@ namespace PFD
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
+        }
+
+        private void CreateTableFlashing(CModel model,
+        float fRoofSideLength,
+        float fRollerDoorTrimmerFlashing_TotalLength,
+        float fRollerDoorLintelFlashing_TotalLength,
+        float fRollerDoorLintelCapFlashing_TotalLength,
+        float fPADoorTrimmerFlashing_TotalLength,
+        float fPADoorLintelFlashing_TotalLength,
+        float fWindowFlashing_TotalLength)
+        {
+            float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fBargeFlashingPrice_PLM_NZD = 3.90f; // Cena barge flashing za 1 m dlzky // TODO - zapracovat do databazy
+
+            float fRollerDoorTrimmerFlashingPrice_PLM_NZD = 3.90f; // Cena roller door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fRollerDoorLintelFlashingPrice_PLM_NZD = 3.80f; // Cena roller door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fRollerDoorLintelCapFlashingPrice_PLM_NZD = 1.90f; // Cena cap flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fPADoorTrimmerFlashingPrice_PLM_NZD = 1.90f; // Cena PA door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fPADoorLintelFlashingPrice_PLM_NZD = 1.80f; // Cena PA door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
+            float fWindowFlashingPrice_PLM_NZD = 1.90f; // Cena window flashing za 1 m dlzky // TODO - zapracovat do databazy
+
+            // TODO Ondrej
+            // Zobrazit Datagrid
+            // Flashing | Total Length | Price PLM | Total Price
+            // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
+
+            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fBargeFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD; // TODO Ondrej
+
+            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD; // TODO Ondrej
+
+            // Create Table
+            DataTable dt = new DataTable("TableFlashing");
+            // Create Table Rows
+            dt.Columns.Add("Flashing", typeof(String));
+            dt.Columns.Add("TotalLength", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String));
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            dt.Columns["Flashing"].Caption = "Flashing";
+            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            double SumTotalLength = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            AddFlashingRow(dt,
+                        "Roof Ridge Flashing",
+                        model.fL_tot,
+                        0.2, // TODO - database
+                        0.2 * model.fL_tot,
+                        fRoofRidgeFlashingPrice_PLM_NZD,
+                        fRoofRidgeFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Wall Corner Flashing",
+                        4 * model.fH1_frame,
+                        0.2, // TODO - database
+                        0.2 * 4 * model.fH1_frame,
+                        fWallCornerFlashingPrice_PLM_NZD,
+                        fWallCornerFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Barge Flashing",
+                        4 * fRoofSideLength,
+                        0.2, // TODO - database
+                        0.2 * 4 * fRoofSideLength,
+                        fBargeFlashingPrice_PLM_NZD,
+                        fBargeFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Roller Door Trimmer Flashing",
+                        fRollerDoorTrimmerFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fRollerDoorTrimmerFlashing_TotalLength,
+                        fRollerDoorTrimmerFlashingPrice_PLM_NZD,
+                        fRollerDoorTrimmerFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Roller Door Lintel Flashing",
+                        fRollerDoorLintelFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fRollerDoorLintelFlashing_TotalLength,
+                        fRollerDoorLintelFlashingPrice_PLM_NZD,
+                        fRollerDoorLintelFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Roller Door Lintel Cap Flashing",
+                        fRollerDoorLintelCapFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fRollerDoorLintelCapFlashing_TotalLength,
+                        fRollerDoorLintelCapFlashingPrice_PLM_NZD,
+                        fRollerDoorLintelCapFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "PA Door Trimmer Flashing",
+                        fPADoorTrimmerFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fPADoorTrimmerFlashing_TotalLength,
+                        fPADoorTrimmerFlashingPrice_PLM_NZD,
+                        fPADoorTrimmerFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "PA Door Lintel Flashing",
+                        fPADoorLintelFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fPADoorLintelFlashing_TotalLength,
+                        fPADoorLintelFlashingPrice_PLM_NZD,
+                        fPADoorLintelFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddFlashingRow(dt,
+                        "Window Flashing",
+                        fWindowFlashing_TotalLength,
+                        0.2, // TODO - database
+                        0.2 * fWindowFlashing_TotalLength,
+                        fWindowFlashingPrice_PLM_NZD,
+                        fWindowFlashingPrice_Total_NZD,
+                        ref SumTotalLength,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            // Last row
+            DataRow row;
+            row = dt.NewRow();
+            row["Flashing"] = "Total:";
+            row["TotalLength"] = SumTotalLength.ToString("F2");
+            row["UnitMass"] = "";
+            row["TotalMass"] = SumTotalMass.ToString("F2");
+            row["UnitPrice"] = "";
+            row["Price"] = SumTotalPrice.ToString("F2");
+            dt.Rows.Add(row);
+
+            Datagrid_Flashing.ItemsSource = ds.Tables[0].AsDataView();
+        }
+
+        private void AddFlashingRow(DataTable dt,
+            string Flashing,
+            double totalLength,
+            double unitMass,
+            double totalMass,
+            double unitPrice,
+            double price,
+            ref double SumTotalLength,
+            ref double SumTotalMass,
+            ref double SumTotalPrice)
+        {
+            if (totalLength > 0 && price > 0) // Add new row only if length and price are more than zero
+            {
+                DataRow row;
+
+                row = dt.NewRow();
+
+                try
+                {
+                    row["Flashing"] = Flashing;
+
+                    row["TotalLength"] = totalLength.ToString("F3");
+                    SumTotalLength += totalLength;
+
+                    row["UnitMass"] = unitMass.ToString("F2");
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row["UnitPrice"] = unitPrice.ToString("F2");
+
+                    row["Price"] = price.ToString("F2");
+                    SumTotalPrice += price;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
         }
     }
 }

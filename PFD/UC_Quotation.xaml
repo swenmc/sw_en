@@ -21,6 +21,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
@@ -36,7 +38,10 @@
 
             <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
 
-            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Packers" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Flashing" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_Flashing" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                IsReadOnly="True">
+            </DataGrid>
         </Grid>
     </ScrollViewer>
 </UserControl>
