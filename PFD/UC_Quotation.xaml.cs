@@ -24,11 +24,32 @@ namespace PFD
     /// </summary>
     public partial class UC_Quotation : UserControl
     {
+        double fBuildingPrice_WithoutGST = 0;
+
         public UC_Quotation(CPFDViewModel vm)
         {
             InitializeComponent();
 
+            float fBuildingArea_Gross;
+            float fBuildingVolume_Gross;
+
+
             CModel model = vm.Model;
+
+            List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
+            List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
+
+            // TODO Ondrej - refaktoring - funckia CreateTableCladding
+            float fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
+            float fWallArea_Right = fWallArea_Left;
+
+            // TO Ondrej - Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
+            float fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
+            float fWallArea_Back = fWallArea_Front;
+
+            fBuildingArea_Gross = model.fW_frame * model.fL_tot;
+            fBuildingVolume_Gross = fWallArea_Front * model.fL_tot;
+
             // DG 1
             // Members
 
@@ -106,18 +127,6 @@ namespace PFD
 
             // DG 9
             // Cladding
-
-            // TODO Ondrej - refaktoring - funckia CreateTableCladding
-            List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
-            List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
-
-            float fWallArea_Left = Geom2D.PolygonArea(fWallDefinitionPoints_Left.ToArray());
-            float fWallArea_Right = fWallArea_Left;
-
-            // TO Ondrej - Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
-            float fWallArea_Front = Geom2D.PolygonArea(fWallDefinitionPoints_Front.ToArray());
-            float fWallArea_Back = fWallArea_Front;
-
             float fWallArea_Total = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
 
             // Dlzka hrany strechy
@@ -144,16 +153,7 @@ namespace PFD
 
             // DG 11
             // FibreGlass
-            // TODO Ondrej
-            // Zobrazit Datagrid s 2 riadkami
-            // FibreGlass Roof | Total Area | Price PSM | Total Price
-            // FibreGlass Walls | Total Area | Price PSM | Total Price
-
-            float fRoofFibreGlassPrice_PSM_NZD = 10.40f; // Cena roof fibreglass za 1 m^2 // TODO - zapracovat do databazy
-            float fWallFibreGlassPrice_PSM_NZD = 9.10f; // Cena wall fibreglass za 1 m^2 // TODO - zapracovat do databazy
-
-            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
-            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
+            CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
 
             // DG 12
             // Roof Netting and Sisalation
@@ -182,10 +182,12 @@ namespace PFD
                 fWindowFlashing_TotalLength);
 
 
+            // TODO Ondrej
+            // Na zaver potrebujeme spocitat vsetky sumy z datagridov a vypocitat cenu za meter stvorcovy a meter kubicky.
 
-
-
-
+            // Tieto hodnoty spolu s plochou, objemom a celkovou cenou zobrazime v tabe
+            double buildingPrice_PSM = fBuildingPrice_WithoutGST / fBuildingArea_Gross;
+            double buildingPrice_PCM = fBuildingPrice_WithoutGST / fBuildingVolume_Gross;
 
 
 
@@ -295,6 +297,8 @@ namespace PFD
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
             }
+
+            fBuildingPrice_WithoutGST += SumTotalPrice;
 
             // Last row
             row = dt.NewRow();
@@ -447,6 +451,8 @@ namespace PFD
 
             if (SumTotalPrice > 0)
             {
+                fBuildingPrice_WithoutGST += SumTotalPrice;
+
                 // Last row
                 row = dt.NewRow();
                 row["Cladding"] = "Total:";
@@ -461,6 +467,100 @@ namespace PFD
                 dt.Rows.Add(row);
 
                 Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
+            }
+        }
+
+        private void CreateTableFibreglass(CPFDViewModel vm,
+            float fFibreGlassArea_Roof,
+            float fFibreGlassArea_Walls)
+            {
+            // Zobrazit Datagrid s 2 riadkami
+            // FibreGlass Roof | Total Area | Price PSM | Total Price
+            // FibreGlass Walls | Total Area | Price PSM | Total Price
+
+            float fRoofFibreGlassPrice_PSM_NZD = 10.40f; // Cena roof fibreglass za 1 m^2 // TODO - zapracovat do databazy
+            float fWallFibreGlassPrice_PSM_NZD = 9.10f; // Cena wall fibreglass za 1 m^2 // TODO - zapracovat do databazy
+
+            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
+            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
+
+            // Create Table
+            DataTable dt = new DataTable("TableFibreglass");
+            // Create Table Rows
+            dt.Columns.Add("Fibreglass", typeof(String));
+            //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
+            dt.Columns.Add("TotalArea", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
+
+            dt.Columns["Fibreglass"].Caption = "Fibreglass";
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            // double SumTotalLength = 0;
+            double SumTotalArea = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            AddSurfaceItemRow(dt,
+                        "Fibreglass",
+                        "Roof Fibreglass",
+                        fFibreGlassArea_Roof,
+                        0.2, // TODO - database
+                        0.2 * fFibreGlassArea_Roof,
+                        fRoofFibreGlassPrice_PSM_NZD,
+                        fRoofFibreGlassPrice_Total_NZD,
+                        ref SumTotalArea,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddSurfaceItemRow(dt,
+                        "Fibreglass",
+                        "Wall Fibreglass",
+                        fFibreGlassArea_Walls,
+                        0.2, // TODO - database
+                        0.2 * fFibreGlassArea_Walls,
+                        fWallFibreGlassPrice_PSM_NZD,
+                        fWallFibreGlassPrice_Total_NZD,
+                        ref SumTotalArea,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            DataRow row;
+            if (SumTotalPrice > 0)
+            {
+                fBuildingPrice_WithoutGST += SumTotalPrice;
+
+                // Last row
+                row = dt.NewRow();
+                row["Fibreglass"] = "Total:";
+                //row["TotalLength"] = SumTotalLength.ToString("F2");
+                row["TotalArea"] = SumTotalArea.ToString("F2");
+                row["UnitMass"] = "";
+                row["TotalMass"] = SumTotalMass.ToString("F2");
+                row["UnitPrice"] = "";
+                row["Price"] = SumTotalPrice.ToString("F2");
+                dt.Rows.Add(row);
+
+                Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
             }
         }
 
@@ -639,6 +739,8 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
+            fBuildingPrice_WithoutGST += SumTotalPrice;
+
             // Last row
             DataRow row;
             row = dt.NewRow();
@@ -706,10 +808,12 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
+            fBuildingPrice_WithoutGST += SumTotalPrice;
+
             //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Komentujem, inak by bol problem spocitat celkovu sumu
             //{
-                // Last row
-                DataRow row;
+            // Last row
+            DataRow row;
                 row = dt.NewRow();
                 row["Gutter"] = "Total:";
                 row["TotalLength"] = SumTotalLength.ToString("F2");
@@ -747,6 +851,46 @@ namespace PFD
 
                     row["TotalLength"] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
+
+                    row["UnitMass"] = unitMass.ToString("F2");
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row["UnitPrice"] = unitPrice.ToString("F2");
+
+                    row["Price"] = price.ToString("F2");
+                    SumTotalPrice += price;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+        }
+
+        private void AddSurfaceItemRow(DataTable dt,
+            string itemColumnName,
+            string itemName,
+            double totalArea,
+            double unitMass,
+            double totalMass,
+            double unitPrice,
+            double price,
+            ref double SumTotalArea,
+            ref double SumTotalMass,
+            ref double SumTotalPrice)
+        {
+            if (totalArea > 0 && price > 0) // Add new row only if area and price are more than zero
+            {
+                DataRow row;
+
+                row = dt.NewRow();
+
+                try
+                {
+                    row[itemColumnName] = itemName;
+
+                    row["TotalArea"] = totalArea.ToString("F2");
+                    SumTotalArea += totalArea;
 
                     row["UnitMass"] = unitMass.ToString("F2");
 
