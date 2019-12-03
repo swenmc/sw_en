@@ -871,16 +871,36 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength,
         float fWindowFlashing_TotalLength)
         {
-            float fRoofRidgeFlashingPrice_PLM_NZD = 3.90f; // Cena roof ridge flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fWallCornerFlashingPrice_PLM_NZD = 2.90f; // Cena corner flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fBargeFlashingPrice_PLM_NZD = 3.90f; // Cena barge flashing za 1 m dlzky // TODO - zapracovat do databazy
+            List<CFlashingProperties> listOfProperties = CFlashingsManager.LoadFlashingsProperties();
+            //CFlashingsManager.LoadFlashingsPropertiesDictionary();
+            //Dictionary<string, CFlashingProperties> dict = CFlashingsManager.DictFlashingProperties;
 
-            float fRollerDoorTrimmerFlashingPrice_PLM_NZD = 3.90f; // Cena roller door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fRollerDoorLintelFlashingPrice_PLM_NZD = 3.80f; // Cena roller door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fRollerDoorLintelCapFlashingPrice_PLM_NZD = 1.90f; // Cena cap flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fPADoorTrimmerFlashingPrice_PLM_NZD = 1.90f; // Cena PA door trimmer flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fPADoorLintelFlashingPrice_PLM_NZD = 1.80f; // Cena PA door lintel flashing za 1 m dlzky // TODO - zapracovat do databazy
-            float fWindowFlashingPrice_PLM_NZD = 1.90f; // Cena window flashing za 1 m dlzky // TODO - zapracovat do databazy
+            // TODO Ondrej - toto by chcelo naplnat a pouzivat nejako krajsie, mozno by sa to dalo cele zabalit do nejakeho systemu, kde zadam len flashing name a dlzku a vsetko ostatne
+            // sa udeje automaticky v cykle cez jednotlive polozky, teraz nizsie 9 krat naplnam parametre funkcie AddLengthItemRow, co je tiez dost skarede
+
+            // Price LM
+            float fRoofRidgeFlashingPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof ridge flashing za 1 m dlzky 
+            float fWallCornerFlashingPrice_PLM_NZD = (float)listOfProperties[1].Price_PPLM_NZD; // Cena corner flashing za 1 m dlzky
+            float fBargeFlashingPrice_PLM_NZD = (float)listOfProperties[2].Price_PPLM_NZD; // Cena barge flashing za 1 m dlzky
+
+            float fRollerDoorTrimmerFlashingPrice_PLM_NZD = (float)listOfProperties[3].Price_PPLM_NZD; // Cena roller door trimmer flashing za 1 m dlzky
+            float fRollerDoorLintelFlashingPrice_PLM_NZD = (float)listOfProperties[4].Price_PPLM_NZD; // Cena roller door lintel flashing za 1 m dlzky
+            float fRollerDoorLintelCapFlashingPrice_PLM_NZD = (float)listOfProperties[5].Price_PPLM_NZD; // Cena cap flashing za 1 m dlzky
+            float fPADoorTrimmerFlashingPrice_PLM_NZD = (float)listOfProperties[6].Price_PPLM_NZD; // Cena PA door trimmer flashing za 1 m dlzky
+            float fPADoorLintelFlashingPrice_PLM_NZD = (float)listOfProperties[7].Price_PPLM_NZD; // Cena PA door lintel flashing za 1 m dlzky
+            float fWindowFlashingPrice_PLM_NZD = (float)listOfProperties[8].Price_PPLM_NZD; // Cena window flashing za 1 m dlzky
+
+            // Mass LM
+            float fRoofRidgeFlashingUnitMass_LM = (float)listOfProperties[0].Mass_kg_lm;
+            float fWallCornerFlashingUnitMass_LM = (float)listOfProperties[1].Mass_kg_lm;
+            float fBargeFlashingUnitMass_LM = (float)listOfProperties[2].Mass_kg_lm;
+
+            float fRollerDoorTrimmerFlashingUnitMass_LM = (float)listOfProperties[3].Mass_kg_lm;
+            float fRollerDoorLintelFlashingUnitMass_LM = (float)listOfProperties[4].Mass_kg_lm;
+            float fRollerDoorLintelCapFlashingUnitMass_LM = (float)listOfProperties[5].Mass_kg_lm;
+            float fPADoorTrimmerFlashingUnitMass_LM = (float)listOfProperties[6].Mass_kg_lm;
+            float fPADoorLintelFlashingUnitMass_LM = (float)listOfProperties[7].Mass_kg_lm;
+            float fWindowFlashingUnitMass_LM = (float)listOfProperties[8].Mass_kg_lm;
 
             // TODO Ondrej
             // Zobrazit Datagrid
@@ -933,8 +953,8 @@ namespace PFD
                         "Flashing",
                         "Roof Ridge Flashing",
                         model.fL_tot,
-                        0.2, // TODO - database
-                        0.2 * model.fL_tot,
+                        fRoofRidgeFlashingUnitMass_LM,
+                        fRoofRidgeFlashingUnitMass_LM * model.fL_tot,
                         fRoofRidgeFlashingPrice_PLM_NZD,
                         fRoofRidgeFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -945,8 +965,8 @@ namespace PFD
                         "Flashing",
                         "Wall Corner Flashing",
                         4 * model.fH1_frame,
-                        0.2, // TODO - database
-                        0.2 * 4 * model.fH1_frame,
+                        fWallCornerFlashingUnitMass_LM,
+                        fWallCornerFlashingUnitMass_LM * 4 * model.fH1_frame,
                         fWallCornerFlashingPrice_PLM_NZD,
                         fWallCornerFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -957,8 +977,8 @@ namespace PFD
                         "Flashing",
                         "Barge Flashing",
                         4 * fRoofSideLength,
-                        0.2, // TODO - database
-                        0.2 * 4 * fRoofSideLength,
+                        fBargeFlashingUnitMass_LM,
+                        fBargeFlashingUnitMass_LM * 4 * fRoofSideLength,
                         fBargeFlashingPrice_PLM_NZD,
                         fBargeFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -969,8 +989,8 @@ namespace PFD
                         "Flashing",
                         "Roller Door Trimmer Flashing",
                         fRollerDoorTrimmerFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fRollerDoorTrimmerFlashing_TotalLength,
+                        fRollerDoorTrimmerFlashingUnitMass_LM,
+                        fRollerDoorTrimmerFlashingUnitMass_LM * fRollerDoorTrimmerFlashing_TotalLength,
                         fRollerDoorTrimmerFlashingPrice_PLM_NZD,
                         fRollerDoorTrimmerFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -981,8 +1001,8 @@ namespace PFD
                         "Flashing",
                         "Roller Door Lintel Flashing",
                         fRollerDoorLintelFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fRollerDoorLintelFlashing_TotalLength,
+                        fRollerDoorLintelFlashingUnitMass_LM,
+                        fRollerDoorLintelFlashingUnitMass_LM * fRollerDoorLintelFlashing_TotalLength,
                         fRollerDoorLintelFlashingPrice_PLM_NZD,
                         fRollerDoorLintelFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -993,8 +1013,8 @@ namespace PFD
                         "Flashing",
                         "Roller Door Lintel Cap Flashing",
                         fRollerDoorLintelCapFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fRollerDoorLintelCapFlashing_TotalLength,
+                        fRollerDoorLintelCapFlashingUnitMass_LM,
+                        fRollerDoorLintelCapFlashingUnitMass_LM * fRollerDoorLintelCapFlashing_TotalLength,
                         fRollerDoorLintelCapFlashingPrice_PLM_NZD,
                         fRollerDoorLintelCapFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -1005,8 +1025,8 @@ namespace PFD
                         "Flashing",
                         "PA Door Trimmer Flashing",
                         fPADoorTrimmerFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fPADoorTrimmerFlashing_TotalLength,
+                        fPADoorTrimmerFlashingUnitMass_LM,
+                        fPADoorTrimmerFlashingUnitMass_LM * fPADoorTrimmerFlashing_TotalLength,
                         fPADoorTrimmerFlashingPrice_PLM_NZD,
                         fPADoorTrimmerFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -1017,8 +1037,8 @@ namespace PFD
                         "Flashing",
                         "PA Door Lintel Flashing",
                         fPADoorLintelFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fPADoorLintelFlashing_TotalLength,
+                        fPADoorLintelFlashingUnitMass_LM,
+                        fPADoorLintelFlashingUnitMass_LM * fPADoorLintelFlashing_TotalLength,
                         fPADoorLintelFlashingPrice_PLM_NZD,
                         fPADoorLintelFlashingPrice_Total_NZD,
                         ref SumTotalLength,
@@ -1029,8 +1049,8 @@ namespace PFD
                         "Flashing",
                         "Window Flashing",
                         fWindowFlashing_TotalLength,
-                        0.2, // TODO - database
-                        0.2 * fWindowFlashing_TotalLength,
+                        fWindowFlashingUnitMass_LM,
+                        fWindowFlashingUnitMass_LM * fWindowFlashing_TotalLength,
                         fWindowFlashingPrice_PLM_NZD,
                         fWindowFlashingPrice_Total_NZD,
                         ref SumTotalLength,
