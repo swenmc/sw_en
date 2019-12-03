@@ -251,13 +251,13 @@ namespace PFD
 
             // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
 
-            dt.Columns["Crsc"].Caption = "Cross-section";
-            dt.Columns["Count"].Caption = "Count";
-            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
+            //dt.Columns["Crsc"].Caption = "Cross-section";
+            //dt.Columns["Count"].Caption = "Count";
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            //dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
+            //dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            //dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
+            //dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -318,6 +318,9 @@ namespace PFD
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
+
+            //styling
+            
         }
 
         private void CreateTableCladding(CPFDViewModel vm,
