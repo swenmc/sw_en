@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CFlashingsManager.cs" />
     <Compile Include="CBoltsManager.cs" />
     <Compile Include="CComponentManager.cs" />
     <Compile Include="CJointsManager.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\CFlashingProperties.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
     <Compile Include="DTO\CBoltProperties.cs" />
     <Compile Include="DTO\CMaterialProperties_RC.cs" />
@@ -148,6 +150,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Content Include="Resources\MDB.db3" />
+    <Content Include="Resources\MDBAccessories.db3" />
     <Content Include="Resources\MDBBolts.db3" />
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBMeshesRC.db3" />
