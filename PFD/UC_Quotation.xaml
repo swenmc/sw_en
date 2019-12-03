@@ -33,7 +33,9 @@
             <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Plates" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
 
             <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cladding" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-
+            <DataGrid Name ="Datagrid_Cladding" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                IsReadOnly="True">
+            </DataGrid>
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
 
             <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>

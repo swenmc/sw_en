@@ -131,24 +131,13 @@ namespace PFD
             float fFibreGlassArea_Roof = 0.20f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = 0.05f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
-            // Plocha stien bez otvorov a fibre glass
-            float fWallArea_Total_Netto = fWallArea_Total - fTotalAreaOfOpennings - fFibreGlassArea_Walls;
-
-            // Plocha strechy bez fibre glass
-            float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
-
-            float fRoofCladdingPrice_PSM_NZD = 5.20f; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
-            float fWallCladdingPrice_PSM_NZD = 4.20f; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
-
-            // TODO Ondrej
-            // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
-            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
-
-            // Cladding  | Thickness | Color   | Total Area | Price PSM | Total Price
-            // PurlinDek | 0.75 mm   | Titania | 324.4      | 5.20      | Total Price
-            // SmartDek  | 0.55 mm   | Black   | 245.9      | 4.20      | Total Price
-            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
-            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
+            CreateTableCladding(vm,
+                fWallArea_Total,
+                fTotalAreaOfOpennings,
+                fFibreGlassArea_Walls,
+                fRoofArea,
+                fFibreGlassArea_Roof
+               );
 
             // DG 10
             // Gutters
@@ -229,8 +218,6 @@ namespace PFD
             // Control Joints
         }
 
-
-
         private void CreateTableMembers(CModel model)
         {
             // Create Table
@@ -248,6 +235,8 @@ namespace PFD
             // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
             // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
             // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
 
             dt.Columns["Crsc"].Caption = "Cross-section";
             dt.Columns["Count"].Caption = "Count";
@@ -314,6 +303,160 @@ namespace PFD
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
+        }
+
+        private void CreateTableCladding(CPFDViewModel vm,
+             float fWallArea_Total,
+             float fTotalAreaOfOpennings,
+             float fFibreGlassArea_Walls,
+             float fRoofArea,
+             float fFibreGlassArea_Roof
+            )
+        {
+            // Plocha stien bez otvorov a fibre glass
+            float fWallArea_Total_Netto = fWallArea_Total - fTotalAreaOfOpennings - fFibreGlassArea_Walls;
+
+            // Plocha strechy bez fibre glass
+            float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
+
+            float fRoofCladdingPrice_PSM_NZD = 5.20f; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
+            float fWallCladdingPrice_PSM_NZD = 4.20f; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
+
+            // TODO Ondrej
+            // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
+            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
+
+            // Cladding  | Thickness | Color   | Total Area | Price PSM | Total Price
+            // PurlinDek | 0.75 mm   | Titania | 324.4      | 5.20      | Total Price
+            // SmartDek  | 0.55 mm   | Black   | 245.9      | 4.20      | Total Price
+            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
+            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
+
+            // Create Table
+            DataTable dt = new DataTable("TableCladding");
+            // Create Table Rows
+            dt.Columns.Add("Cladding", typeof(String));
+            dt.Columns.Add("Thickness", typeof(String));
+            dt.Columns.Add("Color", typeof(String));
+            //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
+            dt.Columns.Add("TotalArea", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
+
+            dt.Columns["Cladding"].Caption = "Cladding";
+            dt.Columns["Thickness"].Caption = "Thickness\t [mm]";
+            dt.Columns["Color"].Caption = "Color";
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            // double SumTotalLength = 0;
+            double SumTotalArea = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            DataRow row;
+
+            if (fRoofArea_Total_Netto > 0) // Roof Cladding
+            {
+                row = dt.NewRow();
+
+                float fUnitMass = 4.5f;// TODO - napojit na databazu
+                float totalMass = fRoofArea_Total_Netto * fUnitMass; // TODO - napojit na databazu
+                try
+                {
+                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding jednotkovej hmotnosti a dalsich hodnot je mozne pouzit
+                    // Ceny plechov v databaze este nie su
+                    // DATABASE.CTrapezoidalSheetingManager
+
+                    row["Cladding"] = vm.RoofCladdingIndex; // TODO - napojit na GUI - Tab General
+                    row["Thickness"] = vm.RoofCladdingThicknessIndex;
+                    row["Color"] = vm.RoofCladdingColorIndex;
+
+                    row["TotalArea"] = fRoofArea_Total_Netto.ToString("F3");
+                    SumTotalArea += fRoofArea_Total_Netto;
+
+                    row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row["UnitPrice"] = fRoofCladdingPrice_PSM_NZD.ToString("F2");
+
+                    row["Price"] = fRoofCladdingPrice_Total_NZD.ToString("F2");
+                    SumTotalPrice += fRoofCladdingPrice_Total_NZD;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            if (fWallArea_Total_Netto > 0) // Wall Cladding
+            {
+                row = dt.NewRow();
+
+                // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding jednotkovej hmotnosti a dalsich hodnot je mozne pouzit
+                // Ceny plechov v databaze este nie su
+                // DATABASE.CTrapezoidalSheetingManager
+
+                float fUnitMass = 4.5f;// TODO - napojit na databazu
+                float totalMass = fWallArea_Total_Netto * fUnitMass; // TODO - napojit na databazu
+                try
+                {
+                    row["Cladding"] = vm.WallCladdingIndex; // TODO - napojit na GUI - Tab General
+                    row["Thickness"] = vm.WallCladdingThicknessIndex;
+                    row["Color"] = vm.WallCladdingColorIndex;
+
+                    row["TotalArea"] = fWallArea_Total_Netto.ToString("F3");
+                    SumTotalArea += fWallArea_Total_Netto;
+
+                    row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row["UnitPrice"] = fWallCladdingPrice_PSM_NZD.ToString("F2");
+
+                    row["Price"] = fWallCladdingPrice_Total_NZD.ToString("F2");
+                    SumTotalPrice += fWallCladdingPrice_Total_NZD;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            if (SumTotalPrice > 0)
+            {
+                // Last row
+                row = dt.NewRow();
+                row["Cladding"] = "Total:";
+                row["Thickness"] = "";
+                row["Color"] = "";
+                //row["TotalLength"] = SumTotalLength.ToString("F2");
+                row["TotalArea"] = SumTotalArea.ToString("F2");
+                row["UnitMass"] = "";
+                row["TotalMass"] = SumTotalMass.ToString("F2");
+                row["UnitPrice"] = "";
+                row["Price"] = SumTotalPrice.ToString("F2");
+                dt.Rows.Add(row);
+
+                Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
+            }
         }
 
         private void CreateTableFlashing(CModel model,
