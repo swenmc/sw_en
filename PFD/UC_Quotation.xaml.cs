@@ -259,50 +259,80 @@ namespace PFD
             DataTable dt = new DataTable("TableMembers");
             // Create Table Rows
             dt.Columns.Add("Crsc", typeof(String));
+            dt.Columns.Add("Count", typeof(String));
             dt.Columns.Add("TotalLength", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String));
+            dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-            dt.Columns.Add("MemCount", typeof(String));
-
 
             // Set Column Caption
-            dt.Columns["Crsc"].Caption = "Crsc";
-            dt.Columns["TotalLength"].Caption = "Total Length";
-            dt.Columns["UnitPrice"].Caption = "Unit Price";
-            dt.Columns["Price"].Caption = "Price";
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            dt.Columns["Crsc"].Caption = "Cross-section";
+            dt.Columns["Count"].Caption = "Count";
+            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
             ds.Tables.Add(dt);
 
-            double totalPrice = 0;
+            int SumCount = 0;
+            double SumTotalLength = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
             DataRow row;
             foreach (CCrSc crsc in model.m_arrCrSc.GroupBy(m => m.Name_short).Select(g => g.First()))
             {
-                row = dt.NewRow();                
+                row = dt.NewRow();
                 List<CMember> membersList = model.GetListOfMembersWithCrscDatabaseID(crsc.DatabaseID);
+
+                int count = membersList.Where(m => m.BIsGenerated).Count();
                 double totalLength = membersList.Where(m => m.BIsGenerated).Sum(m => m.FLength_real);
-                double price = 0;
+                double totalMass = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL * totalLength);
+                double totalPrice = totalLength * crsc.price_PPLM_NZD;
+
                 try
                 {
                     row["Crsc"] = crsc.Name_short;
+
+                    row["Count"] = count.ToString();
+                    SumCount += count;
+
                     row["TotalLength"] = totalLength.ToString("F3");
+                    SumTotalLength += totalLength;
+
+                    row["UnitMass"] = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL).ToString("F2");
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
                     row["UnitPrice"] = crsc.price_PPLM_NZD.ToString("F2");
-                    price = totalLength * crsc.price_PPLM_NZD;
-                    totalPrice += price;
-                    row["Price"] = price.ToString("F3");
-                    row["MemCount"] = membersList.Where(m => m.BIsGenerated).Count();
+
+                    row["Price"] = totalPrice.ToString("F2");
+                    SumTotalPrice += totalPrice;
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
             }
 
+            // Last row
             row = dt.NewRow();
             row["Crsc"] = "Total:";
-            row["TotalLength"] = "";
+            row["Count"] =SumCount.ToString();
+            row["TotalLength"] = SumTotalLength.ToString("F2");
+            row["UnitMass"] = "";
+            row["TotalMass"] = SumTotalMass.ToString("F2");
             row["UnitPrice"] = "";
-            row["Price"] = totalPrice.ToString("F3");
+            row["Price"] = SumTotalPrice.ToString("F2");
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
