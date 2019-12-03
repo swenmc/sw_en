@@ -31,16 +31,14 @@ namespace PFD
             CModel model = vm.Model;
             // DG 1
             // Members
-            CreateTableMembers(model);
 
-            // TODO Ondrej
             // Sem dat members podla Crsc, alebo podla MemberType_FS alebo podla MemberType_FS_Position
             // V jednom riadku spocitat dlzku pre vsetky pruty daneho typu
 
             // Cross-section | Total Length [m] | Price PLM | Total Price
             // 270115 | 245.54 | 4.54 | Total Price
-
             //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
+            CreateTableMembers(model);
 
             // DG 2
             // Plates
@@ -109,6 +107,7 @@ namespace PFD
             // DG 9
             // Cladding
 
+            // TODO Ondrej - refaktoring - funckia CreateTableCladding
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
             List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
 
@@ -181,6 +180,18 @@ namespace PFD
                 fPADoorTrimmerFlashing_TotalLength,
                 fPADoorLintelFlashing_TotalLength,
                 fWindowFlashing_TotalLength);
+
+
+
+
+
+
+
+
+
+
+
+
 
             // TODO - for later
 
