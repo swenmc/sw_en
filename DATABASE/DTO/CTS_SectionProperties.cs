@@ -21,6 +21,9 @@ namespace DATABASE.DTO
        public string thickness_m;
        public string mass_kg_m2;
        public string mass_kg_lm;
+       //public string price_PPSM_NZD;
+       //public string price_PPLM_NZD;
+       //public string price_PPKG_NZD;
        public string maxSimpleSpan;
        public string maxEavesOverhang;
        public string A_g;

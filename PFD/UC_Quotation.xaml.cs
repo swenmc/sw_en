@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MATH;
+using DATABASE;
+using DATABASE.DTO;
 using BaseClasses;
 using System.Data;
 using CRSC;
@@ -337,8 +339,32 @@ namespace PFD
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
 
-            float fRoofCladdingPrice_PSM_NZD = 5.20f; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
-            float fWallCladdingPrice_PSM_NZD = 4.20f; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
+            // TODO Ondrej - potrebujeme nacitat parametre podla mena v comboboxe v Tabe General zluceneho s hrubkou
+
+            // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
+            // DATABASE.CTrapezoidalSheetingManager
+            // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
+            // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
+
+            /*
+            SmartDek-0.40 mm
+            SmartDek-0.55 mm
+            PurlinDek-0.40 mm
+            PurlinDek-0.55 mm
+            PurlinDek-0.75 mm
+            SpeedClad-0.40 mm
+            SpeedClad-0.55 mm
+            SpeedClad-0.75 mm
+            */
+
+            CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties("PurlinDek-0.55 mm"); // TODO Ondrej
+
+            CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties("SmartDek-0.40 mm"); // TODO Ondrej
+
+            float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
+            float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
 
             // TODO Ondrej
             // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
@@ -396,13 +422,14 @@ namespace PFD
             {
                 row = dt.NewRow();
 
-                float fUnitMass = 4.5f;// TODO - napojit na databazu
-                float totalMass = fRoofArea_Total_Netto * fUnitMass; // TODO - napojit na databazu
+                float fUnitMass = (float)prop_RoofCladding.mass_kg_m2;
+                float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
-                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding jednotkovej hmotnosti a dalsich hodnot je mozne pouzit
-                    // Ceny plechov v databaze este nie su
+                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
                     // DATABASE.CTrapezoidalSheetingManager
+                    // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
+                    // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
 
                     row["Cladding"] = vm.RoofCladdingIndex; // TODO - napojit na GUI - Tab General
                     row["Thickness"] = vm.RoofCladdingThicknessIndex;
@@ -429,14 +456,15 @@ namespace PFD
             {
                 row = dt.NewRow();
 
-                // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding jednotkovej hmotnosti a dalsich hodnot je mozne pouzit
-                // Ceny plechov v databaze este nie su
-                // DATABASE.CTrapezoidalSheetingManager
-
-                float fUnitMass = 4.5f;// TODO - napojit na databazu
-                float totalMass = fWallArea_Total_Netto * fUnitMass; // TODO - napojit na databazu
+                float fUnitMass = (float)prop_WallCladding.mass_kg_m2;
+                float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
+                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
+                    // DATABASE.CTrapezoidalSheetingManager
+                    // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
+                    // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
+
                     row["Cladding"] = vm.WallCladdingIndex; // TODO - napojit na GUI - Tab General
                     row["Thickness"] = vm.WallCladdingThicknessIndex;
                     row["Color"] = vm.WallCladdingColorIndex;
