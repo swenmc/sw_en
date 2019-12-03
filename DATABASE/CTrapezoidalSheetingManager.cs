@@ -232,7 +232,7 @@ namespace DATABASE
             properties.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
             properties.name = reader["name"].ToString();
             properties.material_Name = reader["material_Name"].ToString();
-            properties.widthTot_m = reader["widthTot_m "].ToString();
+            properties.widthTot_m = reader["widthTot_m"].ToString();
             properties.widthModular_m = reader["widthModular_m"].ToString();
             properties.widthRib_m = reader["widthRib_m"].ToString();
             properties.widthUpRib_m = reader["widthUpRib_m"].ToString();
@@ -240,6 +240,9 @@ namespace DATABASE
             properties.thickness_m = reader["thickness_m"].ToString();
             properties.mass_kg_m2 = reader["mass_kg_m2"].ToString();
             properties.mass_kg_lm = reader["mass_kg_lm"].ToString();
+            //properties.price_PPSM_NZD = reader["price_PPSM_NZD"].ToString();
+            //properties.price_PPLM_NZD = reader["price_PPLM_NZD"].ToString();
+            //properties.price_PPKG_NZD = reader["price_PPKG_NZD"].ToString();
             properties.maxSimpleSpan = reader["maxSimpleSpan"].ToString();
             properties.maxEavesOverhang = reader["maxEavesOverhang"].ToString();
             properties.A_g = reader["A_g"].ToString();
@@ -274,7 +277,7 @@ namespace DATABASE
             crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
             crsc.name = reader["name"].ToString();
             crsc.material_Name = reader["material_Name"].ToString();
-            crsc.widthTot_m = double.Parse(reader["widthTot_m "].ToString(), nfi);
+            crsc.widthTot_m = double.Parse(reader["widthTot_m"].ToString(), nfi);
             crsc.widthModular_m = double.Parse(reader["widthModular_m"].ToString(), nfi);
             crsc.widthRib_m = double.Parse(reader["widthRib_m"].ToString(), nfi);
             crsc.widthUpRib_m = double.Parse(reader["widthUpRib_m"].ToString(), nfi);
@@ -282,6 +285,9 @@ namespace DATABASE
             crsc.thickness_m = double.Parse(reader["thickness_m"].ToString(), nfi);
             crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
             crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
+            crsc.price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
+            crsc.price_PPLM_NZ = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
+            crsc.price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
             crsc.maxSimpleSpan = double.Parse(reader["maxSimpleSpan"].ToString(), nfi);
             crsc.maxEavesOverhang = double.Parse(reader["maxEavesOverhang"].ToString(), nfi);
             crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
