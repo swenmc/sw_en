@@ -312,8 +312,19 @@ namespace PFD
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Members.Loaded += Datagrid_Members_Loaded;
+
         }
 
+        private void Datagrid_Members_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataGridRow dtrow = (DataGridRow)Datagrid_Members.ItemContainerGenerator.ContainerFromIndex(Datagrid_Members.Items.Count - 1);
+            Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
+            Style newStyle = new Style(dtrow.GetType());
+
+            newStyle.Setters.Add(bold);
+            dtrow.Style = newStyle;            
+        }
 
         private void CreateTablePlates(CModel model)
         {
