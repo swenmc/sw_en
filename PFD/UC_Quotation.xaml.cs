@@ -277,8 +277,8 @@ namespace PFD
                 row = dt.NewRow();
                 List<CMember> membersList = model.GetListOfMembersWithCrscDatabaseID(crsc.DatabaseID);
 
-                int count = membersList.Where(m => m.BIsGenerated).Count();
-                double totalLength = membersList.Where(m => m.BIsGenerated).Sum(m => m.FLength_real);
+                int count = membersList.Where(m => m.BIsGenerated && m.BIsSelectedForMaterialList).Count();
+                double totalLength = membersList.Where(m => m.BIsGenerated && m.BIsSelectedForMaterialList).Sum(m => m.FLength_real);
                 double totalMass = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL * totalLength);
                 double totalPrice = totalLength * crsc.price_PPLM_NZD;
 
