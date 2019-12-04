@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>                
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="430"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -36,8 +36,6 @@
                         SelectedIndex="{Binding Path=SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                 </TabControl>
             <!--</ScrollViewer>-->
-
         </Grid>
     </ScrollViewer>
-    
 </UserControl>

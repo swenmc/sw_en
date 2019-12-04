@@ -14,7 +14,6 @@ namespace PFD
         private string MValue;
         private List<string> MValues;
 
-
         public string Value
         {
             get
@@ -28,6 +27,7 @@ namespace PFD
                 NotifyPropertyChanged("Value");
             }
         }
+
         public List<string> Values
         {
             get
@@ -49,9 +49,5 @@ namespace PFD
             MValue = value;
             MValues = values;
         }
-
-        
-
-
     }
 }

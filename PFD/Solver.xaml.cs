@@ -44,6 +44,7 @@ namespace PFD
         //        SolverProgressBar.Value = progressValue;
         //    });
         //}
+
         public void UpdateProgress()
         {
             Dispatcher.Invoke(() =>

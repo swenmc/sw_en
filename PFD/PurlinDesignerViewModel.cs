@@ -121,7 +121,6 @@ namespace PFD
         private float MDesignRatioDeflectionTotal_eta;
         #endregion
 
-
         #region Properties
         //-------------------------------------------------------------------------------------------------------------
         public float Length_L
@@ -1454,6 +1453,5 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-        
     }
 }

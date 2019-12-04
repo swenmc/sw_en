@@ -2280,7 +2280,6 @@ namespace PFD
         //{
         //    splashScreen.Close(TimeSpan.FromSeconds(0.1));
         //}
-        
 
         private void BtnSavePlate_Click(object sender, RoutedEventArgs e)
         {

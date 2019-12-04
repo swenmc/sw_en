@@ -616,9 +616,7 @@ namespace PFD
                     // Member is outside the box (do not draw)
                 }
             }
-
             CanvasSection2D = canvasForImage;
-
         }
 
         public void DrawTopView_ModelToCanvas(CModel_PFD model)
@@ -756,9 +754,7 @@ namespace PFD
                     // Member is outside the box (do not draw)
                 }
             }
-
             CanvasSection2D = canvasForImage;
-
         }
 
         public void DrawMember2D(SolidColorBrush strokeColor, SolidColorBrush fillColor, Point pA, double Width, double Length, double fRotationAboutX_rad, Canvas imageCanvas)
@@ -866,6 +862,7 @@ namespace PFD
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
         }
+
         public void DrawPolyLine(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             PointCollection points = new PointCollection();

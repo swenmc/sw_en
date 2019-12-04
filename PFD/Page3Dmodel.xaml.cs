@@ -68,8 +68,6 @@ namespace PFD
             {
                 MessageBox.Show(ex.Message);
             }
-
-            
         }
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, EModelType modelType)
         {
@@ -258,7 +256,6 @@ namespace PFD
                 _trackport.PerspectiveCamera.FieldOfView = camera.FieldOfView;
             } 
             LoadXAMLResource(pathToModel);
-            
         }
 
         private void LoadXAMLResource(string path)

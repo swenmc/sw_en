@@ -345,7 +345,6 @@ namespace PFD
 
             if (pad == null || joint == null) return page;
 
-
             // TO Ondrej - toto je funkcia ktorou kreslime plech 
             // podobne by malo byt pre kreslenie detailu patky
             // bool hodnoty su zatial vo vnutri funkcie DrawFootingPadSideElevationToCanvas
