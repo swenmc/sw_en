@@ -291,9 +291,9 @@ namespace PFD
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                 RoofCladdingIndex = 1;
-                RoofCladdingColorIndex = 22;
+                RoofCladdingColorIndex = 8;
                 WallCladdingIndex = 0;
-                WallCladdingColorIndex = 22;
+                WallCladdingColorIndex = 8;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
                 //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
                 BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);

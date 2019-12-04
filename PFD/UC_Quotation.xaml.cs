@@ -318,12 +318,7 @@ namespace PFD
 
         private void Datagrid_Members_Loaded(object sender, RoutedEventArgs e)
         {
-            DataGridRow dtrow = (DataGridRow)Datagrid_Members.ItemContainerGenerator.ContainerFromIndex(Datagrid_Members.Items.Count - 1);
-            Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
-            Style newStyle = new Style(dtrow.GetType());
-
-            newStyle.Setters.Add(bold);
-            dtrow.Style = newStyle;
+            SetLastRowBold(Datagrid_Members);            
         }
 
         private void CreateTablePlates(CModel model)
@@ -628,7 +623,8 @@ namespace PFD
 
             string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
             string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
-            
+
+            List<CTrapezoidalSheetingColours> colours = CTrapezoidalSheetingManager.LoadTrapezoidalSheetingColours();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
             prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}"); // TODO Ondrej "PurlinDek-0.55 mm"
@@ -661,24 +657,7 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
-
-            dt.Columns["Cladding"].Caption = "Cladding";
-            dt.Columns["Thickness"].Caption = "Thickness\t [mm]";
-            dt.Columns["Color"].Caption = "Color";
-            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
-
+            
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -704,9 +683,9 @@ namespace PFD
                     // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
                     // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
 
-                    row["Cladding"] = vm.RoofCladdingIndex; // TODO - napojit na GUI - Tab General
-                    row["Thickness"] = vm.RoofCladdingThicknessIndex;
-                    row["Color"] = vm.RoofCladdingColorIndex;
+                    row["Cladding"] = roofCladding;
+                    row["Thickness"] = roofCladdingThickness;
+                    row["Color"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
 
                     row["TotalArea"] = fRoofArea_Total_Netto.ToString("F2");
                     SumTotalArea += fRoofArea_Total_Netto;
@@ -738,9 +717,9 @@ namespace PFD
                     // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
                     // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
 
-                    row["Cladding"] = vm.WallCladdingIndex; // TODO - napojit na GUI - Tab General
-                    row["Thickness"] = vm.WallCladdingThicknessIndex;
-                    row["Color"] = vm.WallCladdingColorIndex;
+                    row["Cladding"] = wallCladding;
+                    row["Thickness"] = wallCladdingThickness;
+                    row["Color"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
 
                     row["TotalArea"] = fWallArea_Total_Netto.ToString("F2");
                     SumTotalArea += fWallArea_Total_Netto;
@@ -777,7 +756,23 @@ namespace PFD
                 dt.Rows.Add(row);
 
                 Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
+                Datagrid_Cladding.Loaded += Datagrid_Cladding_Loaded;
             }
+        }
+
+        private void Datagrid_Cladding_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Cladding);
+        }
+
+        private void SetLastRowBold(DataGrid datagrid)
+        {
+            DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
+            Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
+            Style newStyle = new Style(dtrow.GetType());
+
+            newStyle.Setters.Add(bold);
+            dtrow.Style = newStyle;
         }
 
         private void CreateTableDoorsAndWindows(List<COpeningProperties> list)
