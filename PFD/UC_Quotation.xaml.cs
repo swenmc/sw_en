@@ -61,19 +61,10 @@ namespace PFD
 
             // DG 1
             // Members
-
-            // Sem dat members podla Crsc, alebo podla MemberType_FS alebo podla MemberType_FS_Position
-            // V jednom riadku spocitat dlzku pre vsetky pruty daneho typu
-
-            // Cross-section | Total Length [m] | Price PLM | Total Price
-            // 270115 | 245.54 | 4.54 | Total Price
-            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
             CreateTableMembers(model);
 
             // DG 2
             // Plates
-
-            // TODO Ondrej - sem dat Plates presne ako su v UC_Material
             CreateTablePlates(model);
 
             // TODO - dopracovat apex brace plates
@@ -330,8 +321,6 @@ namespace PFD
         {
             float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
             float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
-
-            float fTEK_PricePerPiece_Screws_Total = 0.05f;     // NZD / piece
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             List<string> listPlatePrefix = new List<string>(1);
@@ -366,7 +355,7 @@ namespace PFD
                     count++;
                     for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
-                        
+               
                         // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
                         // Nie vsetky plechy budu mat parametre definovane v databaze
                         // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
@@ -776,8 +765,13 @@ namespace PFD
             // FibreGlass Roof | Total Area | Price PSM | Total Price
             // FibreGlass Walls | Total Area | Price PSM | Total Price
 
-            float fRoofFibreGlassPrice_PSM_NZD = 10.40f; // Cena roof fibreglass za 1 m^2 // TODO - zapracovat do databazy
-            float fWallFibreGlassPrice_PSM_NZD = 9.10f; // Cena wall fibreglass za 1 m^2 // TODO - zapracovat do databazy
+            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Fibreglass");
+
+            float fRoofFibreGlassPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
+            float fWallFibreGlassPrice_PSM_NZD = (float)listOfProperties[1].Price_PPSM_NZD; ; // Cena wall fibreglass za 1 m^2
+
+            float fRoofFibreGlassUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
+            float fWallFibreGlassUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
 
             float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
             float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
@@ -822,8 +816,8 @@ namespace PFD
                         "Fibreglass",
                         "Roof Fibreglass",
                         fFibreGlassArea_Roof,
-                        0.2, // TODO - database
-                        0.2 * fFibreGlassArea_Roof,
+                        fRoofFibreGlassUnitMass_SM,
+                        fRoofFibreGlassUnitMass_SM * fFibreGlassArea_Roof,
                         fRoofFibreGlassPrice_PSM_NZD,
                         fRoofFibreGlassPrice_Total_NZD,
                         ref SumTotalArea,
@@ -834,8 +828,8 @@ namespace PFD
                         "Fibreglass",
                         "Wall Fibreglass",
                         fFibreGlassArea_Walls,
-                        0.2, // TODO - database
-                        0.2 * fFibreGlassArea_Walls,
+                        fWallFibreGlassUnitMass_SM,
+                        fWallFibreGlassUnitMass_SM * fFibreGlassArea_Walls,
                         fWallFibreGlassPrice_PSM_NZD,
                         fWallFibreGlassPrice_Total_NZD,
                         ref SumTotalArea,
@@ -871,9 +865,9 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength,
         float fWindowFlashing_TotalLength)
         {
-            List<CFlashingProperties> listOfProperties = CFlashingsManager.LoadFlashingsProperties();
+            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Flashing");
             //CFlashingsManager.LoadFlashingsPropertiesDictionary();
-            //Dictionary<string, CFlashingProperties> dict = CFlashingsManager.DictFlashingProperties;
+            //Dictionary<string, CLengthItemProperties> dict = CFlashingsManager.DictFlashingProperties;
 
             // TODO Ondrej - toto by chcelo naplnat a pouzivat nejako krajsie, mozno by sa to dalo cele zabalit do nejakeho systemu, kde zadam len flashing name a dlzku a vsetko ostatne
             // sa udeje automaticky v cykle cez jednotlive polozky, teraz nizsie 9 krat naplnam parametre funkcie AddLengthItemRow, co je tiez dost skarede
@@ -1075,13 +1069,17 @@ namespace PFD
 
         private void CreateTableGutters(CModel model)
         {
+            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Gutters");
+
             float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
-            float fRoofGutterPrice_PLM_NZD = 2.20f; // Cena roof gutter za 1 m dlzky // TODO - zapracovat do databazy podla sirok
+            float fRoofGutterPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof gutter za 1 m dlzky
+
+            float fRoofGutterUnitMass_LM = (float)listOfProperties[0].Mass_kg_lm;
 
             // TODO Ondrej
             // Zobrazit Datagrid
             // Roof Gutter | Total Length | Price PLM | Total Price
-            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD; // TODO Ondrej
+            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD;
 
             // Create Table
             DataTable dt = new DataTable("TableGutter");
@@ -1118,8 +1116,8 @@ namespace PFD
                         "Gutter",
                         "Drip Edge Gutter",
                         fGuttersTotalLength,
-                        0.2, // TODO - database
-                        0.2 * fGuttersTotalLength,
+                        fRoofGutterUnitMass_LM, 
+                        fRoofGutterUnitMass_LM * fGuttersTotalLength,
                         fRoofGutterPrice_PLM_NZD,
                         fGuttersPrice_Total_NZD,
                         ref SumTotalLength,

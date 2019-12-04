@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
-    public class CFlashingProperties
+    public class CLengthItemProperties
     {
         private int m_ID;
         private string m_Name;
@@ -149,6 +149,6 @@ namespace DATABASE.DTO
             }
         }
 
-        public CFlashingProperties() { }
+        public CLengthItemProperties() { }
     }
 }
