@@ -602,24 +602,6 @@ namespace PFD
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
 
-            // TODO Ondrej - potrebujeme nacitat parametre podla mena v comboboxe v Tabe General zluceneho s hrubkou
-
-            // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
-            // DATABASE.CTrapezoidalSheetingManager
-            // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
-            // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
-
-            /*
-            SmartDek-0.40 mm
-            SmartDek-0.55 mm
-            PurlinDek-0.40 mm
-            PurlinDek-0.55 mm
-            PurlinDek-0.75 mm
-            SpeedClad-0.40 mm
-            SpeedClad-0.55 mm
-            SpeedClad-0.75 mm
-            */
-
             List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
             string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
             string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
@@ -633,23 +615,16 @@ namespace PFD
             List<CTrapezoidalSheetingColours> colours = CTrapezoidalSheetingManager.LoadTrapezoidalSheetingColours();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}"); // TODO Ondrej "PurlinDek-0.55 mm"
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}");
 
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}"); // TODO Ondrej "SmartDek-0.40 mm"
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
 
             float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
             float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
 
-            // TODO Ondrej
-            // Zobrazit Datagrid s 2 riadkami - wall cladding a roof cladding - zobrazit nazov, hrubku, farbu (vid UC_General), celkovu plochu, cenu za meter stvorcovy a celkovu cenu
-            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
-
-            // Cladding  | Thickness | Color   | Total Area | Price PSM | Total Price
-            // PurlinDek | 0.75 mm   | Titania | 324.4      | 5.20      | Total Price
-            // SmartDek  | 0.55 mm   | Black   | 245.9      | 4.20      | Total Price
-            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD; // TODO Ondrej
-            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD; // TODO Ondrej
+            float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
+            float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
 
             // Create Table
             DataTable dt = new DataTable("TableCladding");
@@ -657,6 +632,7 @@ namespace PFD
             dt.Columns.Add("Cladding", typeof(String));
             dt.Columns.Add("Thickness", typeof(String));
             dt.Columns.Add("Color", typeof(String));
+            dt.Columns.Add("ColorName", typeof(String));
             //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
             dt.Columns.Add("TotalArea", typeof(String));
             dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
@@ -684,19 +660,14 @@ namespace PFD
                 float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
-                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
-                    // DATABASE.CTrapezoidalSheetingManager
-                    // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
-                    // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
-
                     row["Cladding"] = roofCladding;
                     row["Thickness"] = roofCladdingThickness;
                     row["Color"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
-
+                    row["ColorName"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
                     row["TotalArea"] = fRoofArea_Total_Netto.ToString("F2");
                     SumTotalArea += fRoofArea_Total_Netto;
 
-                    row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
+                    row["UnitMass"] = fUnitMass.ToString("F2");
 
                     row["TotalMass"] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
@@ -718,19 +689,15 @@ namespace PFD
                 float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
-                    // TO Ondrej - pre napojenie a nacitanie parametrov plechu cladding je mozne pouzit
-                    // DATABASE.CTrapezoidalSheetingManager
-                    // Bude potrebne nacitavat parametre pre farbu a potom pre nazov profilu a hrubku z inych tabuliek
-                    // K dispozicii su v databaze tabulka pre vsetky typy cladding a vsetky hrubky ale aj samostatne tabulky podla typov
-
                     row["Cladding"] = wallCladding;
                     row["Thickness"] = wallCladdingThickness;
                     row["Color"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
+                    row["ColorName"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
 
                     row["TotalArea"] = fWallArea_Total_Netto.ToString("F2");
                     SumTotalArea += fWallArea_Total_Netto;
 
-                    row["UnitMass"] = fUnitMass.ToString("F2"); // Todo - napojit na databazu
+                    row["UnitMass"] = fUnitMass.ToString("F2");
 
                     row["TotalMass"] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
@@ -753,6 +720,7 @@ namespace PFD
                 row["Cladding"] = "Total:";
                 row["Thickness"] = "";
                 row["Color"] = "";
+                row["ColorName"] = "";
                 //row["TotalLength"] = SumTotalLength.ToString("F2");
                 row["TotalArea"] = SumTotalArea.ToString("F2");
                 row["UnitMass"] = "";

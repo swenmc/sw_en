@@ -127,6 +127,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ColorName}" Header="Color Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
