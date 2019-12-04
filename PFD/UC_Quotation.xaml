@@ -96,9 +96,9 @@
                     <DataGridTextColumn Binding="{Binding Width}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Height}" Header="Height [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Thickness}" Header="Thickness [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Area}" Header="Area [m2]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Mass_per_Piece}" Header="Unit Mass [kg/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Total_Area}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Area}" Header="Area [m²]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Mass_per_Piece}" Header="Unit Mass [kg/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Total_Area}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Total_Mass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Total_Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
@@ -130,10 +130,10 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding ColorName}" Header="Color Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
@@ -155,7 +155,7 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Fibreglass}" Header="Fibreglass" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
                     <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -180,7 +180,7 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Component}" Header="Component" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -208,11 +208,11 @@
                     <DataGridTextColumn Binding="{Binding Width}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Height}" Header="Height [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Area}" Header="Area [m2]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Area}" Header="Area [m²]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding UnitPrice_PPSM}" Header="Unit Price [NZD/m2]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice_PPSM}" Header="Unit Price [NZD/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitPrice_PPP}" Header="Unit Price [NZD/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
