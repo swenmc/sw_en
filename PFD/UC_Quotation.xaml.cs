@@ -164,12 +164,12 @@ namespace PFD
             // Dlzka hrany strechy
             float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame));
 
-            // Tato plocha by sa mala zohladnovat len ak su zapnute purlins - bGenerate
+            float fRoofArea = 0;
+            if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
+                fRoofArea = 2 * fRoofSideLength * model.fL_tot; // Tato plocha by sa mala zohladnovat len ak su zapnute purlins - bGenerate
 
-            float fRoofArea = 2 * fRoofSideLength * model.fL_tot;
-
-            float fFibreGlassArea_Roof = 0.20f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
-            float fFibreGlassArea_Walls = 0.05f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
+            float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
             CreateTableCladding(vm,
                 fWallArea_Total,
@@ -188,9 +188,7 @@ namespace PFD
             CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
 
             // DG 12
-            // Roof Netting and Sisalation
-            // Roof Sisalation Foil
-            // Roof Safe Net
+            // Roof Netting
             CreateTableRoofNetting(fRoofArea);
 
             // DG 13
@@ -203,7 +201,6 @@ namespace PFD
                 fPADoorTrimmerFlashing_TotalLength,
                 fPADoorLintelFlashing_TotalLength,
                 fWindowFlashing_TotalLength);
-
 
             // TODO Ondrej
             // Na zaver potrebujeme spocitat vsetky sumy z datagridov a vypocitat cenu za meter stvorcovy a meter kubicky.

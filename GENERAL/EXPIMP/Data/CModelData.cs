@@ -36,9 +36,12 @@ namespace EXPIMP
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
+        private float MFibreglassAreaRoof;
+        private float MFibreglassAreaWall;
+
         private int MLoadCaseIndex;
         private int iFrontColumnNoInOneFrame;
-        
+
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
         private ObservableCollection<CComponentInfo> MComponentList;
@@ -369,6 +372,32 @@ namespace EXPIMP
             set
             {
                 MSupportTypeIndex = value;
+            }
+        }
+
+        public float FibreglassAreaRoof
+        {
+            get
+            {
+                return MFibreglassAreaRoof;
+            }
+
+            set
+            {
+                MFibreglassAreaRoof = value;
+            }
+        }
+
+        public float FibreglassAreaWall
+        {
+            get
+            {
+                return MFibreglassAreaWall;
+            }
+
+            set
+            {
+                MFibreglassAreaWall = value;
             }
         }
 

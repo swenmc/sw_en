@@ -95,7 +95,6 @@ namespace PFD
 
         public MainWindow()
         {
-
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
             splashScreen.Show(false);
@@ -135,9 +134,6 @@ namespace PFD
 
             vm.Model.GroupModelMembers();
             vm.RecreateJoints = false;
-
-
-
         }
 
         //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli

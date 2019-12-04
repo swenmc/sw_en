@@ -56,6 +56,10 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
+
+        private float MFibreglassAreaRoof;
+        private float MFibreglassAreaWall;
+
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
         private int MBackgroundColorIndex;
@@ -295,6 +299,10 @@ namespace PFD
                 WallCladdingIndex = 0;
                 WallCladdingColorIndex = 8;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
+
+                FibreglassAreaRoof = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+                FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
+
                 //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
                 BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
                 ModelCalculatedResultsValid = false;
@@ -562,7 +570,7 @@ namespace PFD
             set
             {
                 if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
-                    throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
+                    throw new ArgumentException("Bottom Girt Position must be between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -634,8 +642,8 @@ namespace PFD
             set
             {
                 MRoofCladdingIndex = value;
-                SetResultsAreNotValid();
-                RecreateJoints = true;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
@@ -668,7 +676,7 @@ namespace PFD
             set
             {
                 MRoofCladdingThicknessIndex = value;
-                SetResultsAreNotValid();
+                //SetResultsAreNotValid();
                 RecreateModel = false;
                 NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
@@ -685,8 +693,8 @@ namespace PFD
             set
             {
                 MWallCladdingIndex = value;
-                SetResultsAreNotValid();
-                RecreateJoints = true;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingIndex");
             }
@@ -719,7 +727,7 @@ namespace PFD
             set
             {
                 MWallCladdingThicknessIndex = value;
-                SetResultsAreNotValid();
+                //SetResultsAreNotValid();
                 RecreateModel = false;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
@@ -742,6 +750,47 @@ namespace PFD
             }
         }
 
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FibreglassAreaRoof
+        {
+            get
+            {
+                return MFibreglassAreaRoof;
+            }
+
+            set
+            {
+                if (value < 0.0 || value > 99.0) // Limit is 99% of area
+                    throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
+                MFibreglassAreaRoof = value;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
+                RecreateModel = true;
+                NotifyPropertyChanged("FibreglassAreaRoof");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float FibreglassAreaWall
+        {
+            get
+            {
+                return MFibreglassAreaWall;
+            }
+
+            set
+            {
+                if (value < 0.0 || value > 99.0) // Limit is 99% of area
+                    throw new ArgumentException("Fibreglass area must be between 0.0 and 99 [%]");
+                MFibreglassAreaWall = value;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
+                RecreateModel = true;
+                NotifyPropertyChanged("FibreglassAreaWall");
+            }
+        }
+
         //premiestnene do DisplayOptions Window
         //-------------------------------------------------------------------------------------------------------------
         //public int WireframeColorIndex
@@ -754,7 +803,7 @@ namespace PFD
         //    set
         //    {
         //        MWireframeColorIndex = value;
-                
+
         //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
         //        WireframeColor = listOfMediaColours[MWireframeColorIndex].Color;
@@ -2724,8 +2773,6 @@ namespace PFD
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
 
-            //SupportTypeIndex = 1; // Defaultna hodnota indexu v comboboxe To Ondrej - moze to byt tu?
-
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
             MSynchronizeGUI = true;
@@ -2734,7 +2781,6 @@ namespace PFD
 
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
-
         }
 
         private void _jointsVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -3059,6 +3105,8 @@ namespace PFD
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.SupportTypeIndex = MSupportTypeIndex;
+            data.FibreglassAreaRoof = MFibreglassAreaRoof;
+            data.FibreglassAreaWall = MFibreglassAreaWall;
             data.LoadCaseIndex = MLoadCaseIndex;
             data.IFrontColumnNoInOneFrame = IFrontColumnNoInOneFrame;
             data.UseCRSCGeometricalAxes = UseCRSCGeometricalAxes;
