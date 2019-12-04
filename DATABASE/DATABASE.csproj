@@ -82,7 +82,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CFlashingsAndGuttersManager.cs" />
+    <Compile Include="CPlaneItemManager.cs" />
+    <Compile Include="CLengthItemManager.cs" />
     <Compile Include="CBoltsManager.cs" />
     <Compile Include="CComponentManager.cs" />
     <Compile Include="CJointsManager.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\CPlaneItemProperties.cs" />
     <Compile Include="DTO\CLengthItemProperties.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
     <Compile Include="DTO\CBoltProperties.cs" />

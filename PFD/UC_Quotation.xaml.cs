@@ -117,6 +117,14 @@ namespace PFD
             }
 
             // TODO Ondrej
+
+            // Refaktorovat kody
+            // Skus to popozerat a pripadne nejako zautomatizovat
+            // V principe mame 2 typy poloziek
+            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
+            // 2 - definovene plochou (doors, windows, roof netting)
+
+            // TODO Ondrej
             // Zobrazit Datagrid
             // Rovnake dvere / okna budu v jednom riadku
             //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
@@ -160,16 +168,7 @@ namespace PFD
             // Roof Netting and Sisalation
             // Roof Sisalation Foil
             // Roof Safe Net
-
-            float fRoofSisalationFoilPrice_PSM_NZD = 0.90f; // Cena roof foil za 1 m^2 // TODO - zapracovat do databazy
-            float fRoofSafeNetPrice_PSM_NZD = 1.10f; // Cena roof net za 1 m^2 // TODO - zapracovat do databazy
-
-            // TODO Ondrej
-            // Zobrazit Datagrid s 2 riadkami
-            // Roof Sisalation Foil | Total Area | Price PSM | Total Price
-            // Roof Safe Net | Total Area | Price PSM | Total Price
-            float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD; // TODO Ondrej
-            float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD; // TODO Ondrej
+            CreateTableRoofNetting(fRoofArea);
 
             // DG 13
             // Flashing and Packers
@@ -504,6 +503,8 @@ namespace PFD
                 listPlateMassPerPiece.Add(dlistPlateMassPerPiece[i].ToString("F3"));
             }
 
+            fBuildingPrice_WithoutGST += dTotalPlatesPrice_Table;
+
             // Add Sum
             listPlatePrefix.Add("Total:");
             listPlateQuantity.Add(iTotalPlatesNumber_Table);
@@ -575,6 +576,7 @@ namespace PFD
 
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
         }
+
         private void CreateTableCladding(CPFDViewModel vm,
              float fWallArea_Total,
              float fTotalAreaOfOpennings,
@@ -765,7 +767,7 @@ namespace PFD
             // FibreGlass Roof | Total Area | Price PSM | Total Price
             // FibreGlass Walls | Total Area | Price PSM | Total Price
 
-            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Fibreglass");
+            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Fibreglass");
 
             float fRoofFibreGlassPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
             float fWallFibreGlassPrice_PSM_NZD = (float)listOfProperties[1].Price_PPSM_NZD; ; // Cena wall fibreglass za 1 m^2
@@ -856,6 +858,102 @@ namespace PFD
             }
         }
 
+        private void CreateTableRoofNetting(float fRoofArea)
+        {
+            List<CPlaneItemProperties> listOfProperties = CPlaneItemManager.LoadPlaneItemsProperties("RoofNetting");
+
+            // Roof Netting and Sisalation
+            // Roof Sisalation Foil
+            // Roof Safe Net
+            float fRoofSisalationFoilPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof foil za 1 m^2
+            float fRoofSafeNetPrice_PSM_NZD = (float)listOfProperties[1].Price_PPSM_NZD; // Cena roof net za 1 m^2
+
+            float fRoofSisalationFoilUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
+            float fRoofSafeNetUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
+
+            // TODO Ondrej
+            // Zobrazit Datagrid s 2 riadkami
+            // Roof Sisalation Foil | Total Area | Price PSM | Total Price
+            // Roof Safe Net | Total Area | Price PSM | Total Price
+            float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD;
+            float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD;
+
+            // Create Table
+            DataTable dt = new DataTable("TableRoofNetting");
+            // Create Table Rows
+            dt.Columns.Add("Component", typeof(String));
+            dt.Columns.Add("TotalArea", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            dt.Columns["Component"].Caption = "Component";
+            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price\t [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            // double SumTotalLength = 0;
+            double SumTotalArea = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            AddSurfaceItemRow(dt,
+                        "Component",
+                        listOfProperties[0].Name,
+                        fRoofArea,
+                        fRoofSisalationFoilUnitMass_SM,
+                        fRoofSisalationFoilUnitMass_SM * fRoofArea,
+                        fRoofSisalationFoilPrice_PSM_NZD,
+                        fRoofSisalationFoilPrice_Total_NZD,
+                        ref SumTotalArea,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            AddSurfaceItemRow(dt,
+                        "Component",
+                        listOfProperties[1].Name,
+                        fRoofArea,
+                        fRoofSafeNetUnitMass_SM,
+                        fRoofSafeNetUnitMass_SM * fRoofArea,
+                        fRoofSafeNetPrice_PSM_NZD,
+                        fRoofSafeNetPrice_Total_NZD,
+                        ref SumTotalArea,
+                        ref SumTotalMass,
+                        ref SumTotalPrice);
+
+            DataRow row;
+            if (SumTotalPrice > 0)
+            {
+                fBuildingPrice_WithoutGST += SumTotalPrice;
+
+                // Last row
+                row = dt.NewRow();
+                row["Component"] = "Total:";
+                //row["TotalLength"] = SumTotalLength.ToString("F2");
+                row["TotalArea"] = SumTotalArea.ToString("F2");
+                row["UnitMass"] = "";
+                row["TotalMass"] = SumTotalMass.ToString("F2");
+                row["UnitPrice"] = "";
+                row["Price"] = SumTotalPrice.ToString("F2");
+                dt.Rows.Add(row);
+
+                Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
+            }
+        }
+
         private void CreateTableFlashing(CModel model,
         float fRoofSideLength,
         float fRollerDoorTrimmerFlashing_TotalLength,
@@ -865,7 +963,7 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength,
         float fWindowFlashing_TotalLength)
         {
-            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Flashing");
+            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Flashing");
             //CFlashingsManager.LoadFlashingsPropertiesDictionary();
             //Dictionary<string, CLengthItemProperties> dict = CFlashingsManager.DictFlashingProperties;
 
@@ -897,20 +995,27 @@ namespace PFD
             float fWindowFlashingUnitMass_LM = (float)listOfProperties[8].Mass_kg_lm;
 
             // TODO Ondrej
+
+            // Refaktorovat kody
+            // Skus to popozerat a pripadne nejako zautomatizovat
+            // V principe mame 2 typy poloziek
+            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
+            // 2 - definovene plochou (doors, windows, roof netting)
+            
             // Zobrazit Datagrid
             // Flashing | Total Length | Price PLM | Total Price
             // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
 
-            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fBargeFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD;
+            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD;
+            float fBargeFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD;
 
-            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD; // TODO Ondrej
-            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD; // TODO Ondrej
+            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD;
+            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD;
+            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD;
+            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD;
+            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD;
+            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
 
             // Create Table
             DataTable dt = new DataTable("TableFlashing");
@@ -1069,7 +1174,7 @@ namespace PFD
 
         private void CreateTableGutters(CModel model)
         {
-            List<CLengthItemProperties> listOfProperties = CFlashingsAndGuttersManager.LoadFlashingsProperties("Gutters");
+            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Gutters");
 
             float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
             float fRoofGutterPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof gutter za 1 m dlzky

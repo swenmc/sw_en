@@ -8,19 +8,18 @@ using DATABASE.DTO;
 
 namespace DATABASE
 {
-    // TODO Prerobit na obecne nacitanie cien elementov ktore su definovane primarne dlzkou
-    // 1D items
-    // Flashing and gutters
-    // Mozno aj Fibreglass ???
+    // TODO Prerobit na obecne nacitanie cien elementov ktore su definovane primarne plochou
+    // 2D items
+    // Doors, Windows, Roof Netting
 
-    public static class CFlashingsAndGuttersManager
+    public static class CPlaneItemManager
     {
-        public static Dictionary<string, CLengthItemProperties> DictFlashingProperties;
+        public static Dictionary<string, CPlaneItemProperties> DictPlaneItemProperties;
 
-        public static List<CLengthItemProperties> LoadFlashingsProperties(string TableName)
+        public static List<CPlaneItemProperties> LoadPlaneItemsProperties(string TableName)
         {
-            CLengthItemProperties properties = null;
-            List<CLengthItemProperties> items = new List<CLengthItemProperties>();
+            CPlaneItemProperties properties = null;
+            List<CPlaneItemProperties> items = new List<CPlaneItemProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["AccessoriesSQLiteDB"].ConnectionString))
             {
@@ -30,7 +29,7 @@ namespace DATABASE
                 {
                     while (reader.Read())
                     {
-                        properties = GetFlashingProperties(reader);
+                        properties = GetPlaneItemProperties(reader);
 
                         items.Add(properties);
                     }
@@ -39,9 +38,9 @@ namespace DATABASE
             return items;
         }
 
-        public static void LoadFlashingsPropertiesDictionary(string TableName)
+        public static void LoadPlaneItemsPropertiesDictionary(string TableName)
         {
-            DictFlashingProperties = new Dictionary<string, CLengthItemProperties>();
+            DictPlaneItemProperties = new Dictionary<string, CPlaneItemProperties>();
             
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["AccessoriesSQLiteDB"].ConnectionString))
             {
@@ -51,26 +50,26 @@ namespace DATABASE
                 {
                     while (reader.Read())
                     {
-                        CLengthItemProperties properties = GetFlashingProperties(reader);
-                        DictFlashingProperties.Add(properties.Name, properties);
+                        CPlaneItemProperties properties = GetPlaneItemProperties(reader);
+                        DictPlaneItemProperties.Add(properties.Name, properties);
                     }
                 }
             }
         }
 
-        public static CLengthItemProperties GetFlashingProperties(string name, string TableName)
+        public static CPlaneItemProperties GetPlaneItemProperties(string name, string TableName)
         {
-            if (DictFlashingProperties == null) LoadFlashingsPropertiesDictionary(TableName);
+            if (DictPlaneItemProperties == null) LoadPlaneItemsPropertiesDictionary(TableName);
 
-            CLengthItemProperties prop = null;
-            DictFlashingProperties.TryGetValue(name, out prop);
+            CPlaneItemProperties prop = null;
+            DictPlaneItemProperties.TryGetValue(name, out prop);
 
             return prop;
         }
 
-        public static CLengthItemProperties GetFlashingProperties(int id, string TableName)
+        public static CPlaneItemProperties GetPlaneItemProperties(int id, string TableName)
         {
-            CLengthItemProperties properties = null;
+            CPlaneItemProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["AccessoriesSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -81,35 +80,32 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        properties = GetFlashingProperties(reader);
+                        properties = GetPlaneItemProperties(reader);
                     }
                 }
             }
             return properties;
         }
 
-        private static CLengthItemProperties GetFlashingProperties(SQLiteDataReader reader)
+        private static CPlaneItemProperties GetPlaneItemProperties(SQLiteDataReader reader)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            CLengthItemProperties properties = new CLengthItemProperties();
+            CPlaneItemProperties properties = new CPlaneItemProperties();
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             properties.Name = reader["name"].ToString();
-            properties.Thickness = double.Parse(reader["thickness_mm"].ToString(), nfi) / 1000f;
 
-            try // TODO - doriesit ci dame do databazy len rozvinutu sirku width_total_mm alebo aj width_mm pre fibreglass
+            try
             {
-                properties.Width_total = double.Parse(reader["width_total_mm"].ToString(), nfi) / 1000f;
+                properties.Thickness = double.Parse(reader["thickness_mm"].ToString(), nfi) / 1000f;
             }
             catch
             {
-                properties.Width_total = double.Parse(reader["width_mm"].ToString(), nfi) / 1000f;
+                properties.Thickness = 0; // TODO - nie vsetky plosne elementy maju definovanu hrubku
             }
 
             properties.Mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
-            properties.Mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
-            properties.Price_PPLM_NZD = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
             properties.Price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
             properties.Price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
             properties.Note = reader["note"].ToString();
