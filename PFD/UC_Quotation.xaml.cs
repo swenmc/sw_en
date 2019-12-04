@@ -348,7 +348,7 @@ namespace PFD
             // Plates
 
             List<CPlate> ListOfPlateGroups = new List<CPlate>();
-            System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
+            //System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
             int count = 0;
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
@@ -439,7 +439,7 @@ namespace PFD
                     }
                 }
             }
-            System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
+            //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
 
             // Check Data
             double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
@@ -524,42 +524,28 @@ namespace PFD
             listPlateTotalPrice.Add(dTotalPlatesPrice_Table);
 
             // Create Table
-            DataTable table2 = new DataTable("Table2");
+            DataTable table = new DataTable("TablePlates");
             // Create Table Rows
-
-            table2.Columns.Add("Prefix", typeof(String));
-            table2.Columns.Add("Quantity", typeof(Int32));
-            table2.Columns.Add("Material", typeof(String));
-            table2.Columns.Add("Width", typeof(String));
-            table2.Columns.Add("Height", typeof(String));
-            table2.Columns.Add("Thickness", typeof(String));
-            table2.Columns.Add("Area", typeof(String));
-            table2.Columns.Add("Mass_per_Piece", typeof(String));
-            table2.Columns.Add("Total_Area", typeof(Decimal));
-            table2.Columns.Add("Total_Mass", typeof(Decimal));
-            table2.Columns.Add("Total_Price", typeof(Decimal));
-
-            // Set Column Caption
-            table2.Columns["Prefix"].Caption = "Prefix1";
-            table2.Columns["Quantity"].Caption = "Quantity";
-            table2.Columns["Material"].Caption = "Material";
-            table2.Columns["Width"].Caption = "Width";
-            table2.Columns["Height"].Caption = "Height";
-            table2.Columns["Thickness"].Caption = "Thickness";
-            table2.Columns["Area"].Caption = "Area";
-            table2.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
-            table2.Columns["Total_Area"].Caption = "Total_Area";
-            table2.Columns["Total_Mass"].Caption = "Total_Mass";
-            table2.Columns["Total_Price"].Caption = "Total_Price";
-
+            table.Columns.Add("Prefix", typeof(String));
+            table.Columns.Add("Quantity", typeof(Int32));
+            table.Columns.Add("Material", typeof(String));
+            table.Columns.Add("Width", typeof(String));
+            table.Columns.Add("Height", typeof(String));
+            table.Columns.Add("Thickness", typeof(String));
+            table.Columns.Add("Area", typeof(String));
+            table.Columns.Add("Mass_per_Piece", typeof(String));
+            table.Columns.Add("Total_Area", typeof(Decimal));
+            table.Columns.Add("Total_Mass", typeof(Decimal));
+            table.Columns.Add("Total_Price", typeof(Decimal));
+            
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
-            ds.Tables.Add(table2);
+            ds.Tables.Add(table);
 
             for (int i = 0; i < listPlatePrefix.Count; i++)
             {
-                DataRow row = table2.NewRow();
+                DataRow row = table.NewRow();
 
                 try
                 {
@@ -576,10 +562,16 @@ namespace PFD
                     row["Total_Price"] = listPlateTotalPrice[i].ToString("F3");
                 }
                 catch (ArgumentOutOfRangeException) { }
-                table2.Rows.Add(row);
+                table.Rows.Add(row);
             }
 
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            Datagrid_Plates.Loaded += Datagrid_Plates_Loaded;
+        }
+
+        private void Datagrid_Plates_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Plates);
         }
 
         private void CreateTableCladding(CPFDViewModel vm,
