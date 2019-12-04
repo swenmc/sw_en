@@ -136,27 +136,132 @@
             </DataGrid>
             
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                IsReadOnly="True">
+            <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True" CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Fibreglass}" Header="Fibreglass" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
 
             <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Roof Netting" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_RoofNetting" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                IsReadOnly="True">
+            <DataGrid Name ="Datagrid_RoofNetting" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True" CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Component}" Header="Component" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
 
             <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                IsReadOnly="True">
+            <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True" CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Opening}" Header="Opening" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Width}" Header="Width" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Height}" Header="Height" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Count}" Header="Count" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Area}" Header="Area" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding TotalArea}" Header="Total Area" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice_PPSM}" Header="Unit Price PPSM [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice_PPP}" Header="Unit Price PPP [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
             
             <TextBlock Grid.Row="12" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Gutters" Grid.Row="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                IsReadOnly="True">
+            <DataGrid Name ="Datagrid_Gutters" Grid.Row="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True" CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Gutter}" Header="Gutter" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalLength}" Header="Total Length" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
             <TextBlock Grid.Row="14" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Flashing" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Flashing" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                IsReadOnly="True">
+            <DataGrid Name ="Datagrid_Flashing" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+                IsReadOnly="True"  CanUserSortColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Flashing}" Header="Flashing" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalLength}" Header="Total Length" Width="Auto" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                </DataGrid.Columns>
             </DataGrid>
 
             <TextBlock Grid.Row="16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>

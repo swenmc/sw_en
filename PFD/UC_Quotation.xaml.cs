@@ -861,7 +861,13 @@ namespace PFD
                 dt.Rows.Add(row);
 
                 Datagrid_DoorsAndWindows.ItemsSource = ds.Tables[0].AsDataView();
+                Datagrid_DoorsAndWindows.Loaded += Datagrid_DoorsAndWindows_Loaded;
             }
+        }
+
+        private void Datagrid_DoorsAndWindows_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_DoorsAndWindows);
         }
 
         private void CreateTableFibreglass(CPFDViewModel vm,
@@ -960,7 +966,13 @@ namespace PFD
                 dt.Rows.Add(row);
 
                 Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
+                Datagrid_Fibreglass.Loaded += Datagrid_Fibreglass_Loaded; 
             }
+        }
+
+        private void Datagrid_Fibreglass_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Fibreglass);
         }
 
         private void CreateTableRoofNetting(float fRoofArea)
@@ -1056,7 +1068,13 @@ namespace PFD
                 dt.Rows.Add(row);
 
                 Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
+                Datagrid_RoofNetting.Loaded += Datagrid_RoofNetting_Loaded;
             }
+        }
+
+        private void Datagrid_RoofNetting_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_RoofNetting);
         }
 
         private void CreateTableFlashing(CModel model,
@@ -1275,6 +1293,12 @@ namespace PFD
             dt.Rows.Add(row);
 
             Datagrid_Flashing.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Flashing.Loaded += Datagrid_Flashing_Loaded;
+        }
+
+        private void Datagrid_Flashing_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Flashing);
         }
 
         private void CreateTableGutters(CModel model)
@@ -1351,6 +1375,12 @@ namespace PFD
             //}
 
             Datagrid_Gutters.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Gutters.Loaded += Datagrid_Gutters_Loaded;
+        }
+
+        private void Datagrid_Gutters_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Gutters);
         }
 
         private void AddLengthItemRow(DataTable dt,
