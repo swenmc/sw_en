@@ -430,10 +430,10 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
-                            <Button Name="btnDoorGenerator" VerticalAlignment="Top" ToolTip="Add Doors" Margin="0 5 0 0" Width="20" Height="20" Click="BtnDoorGenerator_Click">
-                                <Image Source="Resources/door.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            <Button Name="btnDoorGenerator" VerticalAlignment="Top" ToolTip="Add Doors" Margin="223 5 0 0" Width="20" Height="20" Click="BtnDoorGenerator_Click">
+                                <Image Source="Resources/doors.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
-                        </StackPanel>                        
+                        </StackPanel>
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
                                   HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
@@ -462,15 +462,11 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        
-
-                        
-
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Windows" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
-                            <Button Name="btnWindowsGenerator" VerticalAlignment="Top" ToolTip="Add Windows" Margin="0 10 0 0" Width="20" Height="20" Click="btnWindowsGenerator_Click">
-                                <Image Source="Resources/window.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            <Button Name="btnWindowsGenerator" VerticalAlignment="Top" ToolTip="Add Windows" Margin="223 12 0 0" Width="20" Height="20" Click="btnWindowsGenerator_Click">
+                                <Image Source="Resources/windows.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" 
