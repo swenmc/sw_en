@@ -141,7 +141,21 @@ namespace PFD
             // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
             // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
 
-            CreateTableDoorsAndWindows(listOfOpenings);
+            List<COpeningProperties> groupedOpenings = new List<COpeningProperties>();
+            foreach (COpeningProperties op in listOfOpenings)
+            {
+                if (groupedOpenings.Contains(op))
+                {
+                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];
+                    //grOP.Area += op.Area;
+                    //grOP.Perimeter += op.Perimeter;
+                    grOP.Count++;
+                }
+                else groupedOpenings.Add(op);
+            }
+            
+
+            CreateTableDoorsAndWindows(groupedOpenings);
 
             // DG 9
             // Cladding
@@ -794,17 +808,17 @@ namespace PFD
             // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
             // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
 
-            dt.Columns["Opening"].Caption = "Opening";
-            dt.Columns["Width"].Caption = "Width [m]";
-            dt.Columns["Height"].Caption = "Height [m]";
-            dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["Area"].Caption = "Area [m2]";
-            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice_PPSM"].Caption = "Unit Price [NZD/m2]";
-            dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
+            //dt.Columns["Opening"].Caption = "Opening";
+            //dt.Columns["Width"].Caption = "Width [m]";
+            //dt.Columns["Height"].Caption = "Height [m]";
+            //dt.Columns["Count"].Caption = "Count [-]";
+            //dt.Columns["Area"].Caption = "Area [m2]";
+            //dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            //dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            //dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            //dt.Columns["UnitPrice_PPSM"].Caption = "Unit Price [NZD/m2]";
+            //dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
+            //dt.Columns["Price"].Caption = "Price [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -817,7 +831,7 @@ namespace PFD
             double SumTotalPrice = 0;
 
             // TO Ondrej - toto nie je spravne, treba vyfiltrovat medzi opening rovnake podla typu a rozmeru a pridat ich vsetky do jedneho riadku + ich pocet
-            int iCount = 1; // Toto treba urcit podla poctu rovnakych otvorov v zozname
+            //int iCount = 1; // Toto treba urcit podla poctu rovnakych otvorov v zozname
 
             foreach (COpeningProperties prop in list)
             {
@@ -826,14 +840,14 @@ namespace PFD
                             prop.Type,
                             prop.fWidth,
                             prop.fHeight,
-                            iCount,
+                            prop.Count,
                             prop.Area,
-                            prop.Area * iCount,
+                            prop.Area * prop.Count,
                             prop.UnitMass_SM,
                             prop.UnitMass_SM * prop.Area,
                             prop.Price_PPSM_NZD,
                             prop.Price_PPP_NZD,
-                            prop.Price_PPSM_NZD * prop.Area * iCount,
+                            prop.Price_PPSM_NZD * prop.Area * prop.Count,
                             ref SumCount,
                             ref SumTotalArea,
                             ref SumTotalMass,
@@ -1518,196 +1532,6 @@ namespace PFD
         }
     }
 
-    // To Ondrej
-    // Neviem ci je toto dobry napad :)
-    // Mala by to byt struktura spolocna pre door a window
-    // Mozno by to mal byt skor predok tried BaseClasses DoorProperties a WindowProperties, ale nebol som si isty ci to nerozbijem, tak som to dal len tu
-    class COpeningProperties
-    {
-        // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
-        // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
-        // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
-        // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
+    
 
-        private string m_sType; // Roller Door, Personnel Door, Window
-        private string m_sBuildingSide;
-        private int m_iBayNumber;
-        private float m_fHeight;
-        private float m_fWidth;
-
-        private float m_fPerimeter;
-        private float m_fArea;
-
-        private float m_fUnitMass_SM; // Unit mass per square meter
-        private float m_fPrice_PPSM_NZD; // Price per square meter
-        private float m_fPrice_PPKG_NZD; // Price per kilogram
-        private float m_fPrice_PPP_NZD; // Price per piece
-
-        public string Type
-        {
-            get
-            {
-                return m_sType;
-            }
-
-            set
-            {
-                m_sType = value;
-            }
-        }
-
-        public string sBuildingSide
-        {
-            get
-            {
-                return m_sBuildingSide;
-            }
-
-            set
-            {
-                m_sBuildingSide = value;
-            }
-        }
-
-        public int iBayNumber
-        {
-            get
-            {
-                return m_iBayNumber;
-            }
-
-            set
-            {
-                m_iBayNumber = value;
-
-            }
-        }
-
-        public float fHeight
-        {
-            get
-            {
-                return m_fHeight;
-            }
-
-            set
-            {
-                m_fHeight = value;
-            }
-        }
-
-        public float fWidth
-        {
-            get
-            {
-                return m_fWidth;
-            }
-
-            set
-            {
-                m_fWidth = value;
-            }
-        }
-
-        public float Perimeter
-        {
-            get
-            {
-                return m_fPerimeter;
-            }
-
-            set
-            {
-                m_fPerimeter = value;
-            }
-        }
-
-        public float Area
-        {
-            get
-            {
-                return m_fArea;
-            }
-
-            set
-            {
-                m_fArea = value;
-            }
-        }
-
-        public float UnitMass_SM
-        {
-            get
-            {
-                return m_fUnitMass_SM;
-            }
-
-            set
-            {
-                m_fUnitMass_SM = value;
-            }
-        }
-
-        public float Price_PPSM_NZD
-        {
-            get
-            {
-                return m_fPrice_PPSM_NZD;
-            }
-
-            set
-            {
-                m_fPrice_PPSM_NZD = value;
-            }
-        }
-
-        public float Price_PPKG_NZD
-        {
-            get
-            {
-                return m_fPrice_PPKG_NZD;
-            }
-
-            set
-            {
-                m_fPrice_PPKG_NZD = value;
-            }
-        }
-
-        public float Price_PPP_NZD
-        {
-            get
-            {
-                return m_fPrice_PPP_NZD;
-            }
-
-            set
-            {
-                m_fPrice_PPP_NZD = value;
-            }
-        }
-
-        public COpeningProperties(string type, float width, float height)
-        {
-            m_sType = type;
-            m_fWidth = width;
-            m_fHeight = height;
-
-            if(m_sType == "Window")
-            m_fPerimeter = 2 * width + 2 * height;
-            else
-                m_fPerimeter = width + 2 * height; // ??? Uvazovat pre dvere prah  - zatial sa nikde nepouziva
-
-            m_fArea = width * height;
-
-            CPlaneItemProperties prop = CPlaneItemManager.GetPlaneItemProperties(m_sType, "DoorsAndWindows");
-
-            m_fUnitMass_SM = (float)prop.Mass_kg_m2;
-
-            m_fPrice_PPSM_NZD = (float)prop.Price_PPSM_NZD;
-            m_fPrice_PPKG_NZD = (float)prop.Price_PPKG_NZD;
-
-            m_fPrice_PPP_NZD = m_fPrice_PPSM_NZD * m_fArea;
-        }
-    }
 }
