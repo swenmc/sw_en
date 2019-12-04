@@ -92,13 +92,16 @@ namespace PFD
             float fPADoorLintelFlashing_TotalLength = 0;
             float fWindowFlashing_TotalLength = 0;
 
+
+            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>(); // Tu vyrobim zoznam vsetkeho co chcem vlozit do datagridu, ale su v tom jednotlivo polozky, nie zlucene podla rovnakeho typu a rozmeru - tj jeden riadok a prislusny pocet poloziek (count)
+
             foreach (DoorProperties dp in vm.DoorBlocksProperties)
             {
                 fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
 
                 if (dp.sDoorType == "Roller Door")
                 {
-                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2); 
+                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
                     fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
                     fRollerDoorLintelCapFlashing_TotalLength = dp.fDoorsWidth;
                 }
@@ -107,6 +110,8 @@ namespace PFD
                     fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
                     fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
                 }
+
+                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight));
             }
 
             foreach (WindowProperties wp in vm.WindowBlocksProperties)
@@ -114,6 +119,8 @@ namespace PFD
                 fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
 
                 fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
+
+                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight));
             }
 
             // TODO Ondrej
@@ -133,6 +140,8 @@ namespace PFD
             // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
             // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
             // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
+
+            CreateTableDoorsAndWindows(listOfOpenings);
 
             // DG 9
             // Cladding
@@ -189,7 +198,8 @@ namespace PFD
             double buildingPrice_PSM = fBuildingPrice_WithoutGST / fBuildingArea_Gross;
             double buildingPrice_PCM = fBuildingPrice_WithoutGST / fBuildingVolume_Gross;
 
-
+            // Vypiseme celkovu cenu
+            TotalPrice.Text = fBuildingPrice_WithoutGST.ToString("F2");
 
 
 
@@ -293,7 +303,7 @@ namespace PFD
             // Last row
             row = dt.NewRow();
             row["Crsc"] = "Total:";
-            row["Count"] =SumCount.ToString();
+            row["Count"] = SumCount.ToString();
             row["TotalLength"] = SumTotalLength.ToString("F2");
             row["UnitMass"] = "";
             row["TotalMass"] = SumTotalMass.ToString("F2");
@@ -313,7 +323,7 @@ namespace PFD
             Style newStyle = new Style(dtrow.GetType());
 
             newStyle.Setters.Add(bold);
-            dtrow.Style = newStyle;            
+            dtrow.Style = newStyle;
         }
 
         private void CreateTablePlates(CModel model)
@@ -354,7 +364,7 @@ namespace PFD
                     count++;
                     for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
-               
+
                         // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
                         // Nie vsetky plechy budu mat parametre definovane v databaze
                         // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
@@ -759,10 +769,107 @@ namespace PFD
             }
         }
 
+        private void CreateTableDoorsAndWindows(List<COpeningProperties> list)
+        {
+            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
+            // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
+            // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
+            // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
+
+            // Create Table
+            DataTable dt = new DataTable("TableDoorsAndWindows");
+            // Create Table Rows
+            dt.Columns.Add("Opening", typeof(String));
+            dt.Columns.Add("Width", typeof(String));
+            dt.Columns.Add("Height", typeof(String));
+            dt.Columns.Add("Count", typeof(String));
+            dt.Columns.Add("Area", typeof(String));
+            dt.Columns.Add("TotalArea", typeof(String));
+            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
+            dt.Columns.Add("TotalMass", typeof(String));
+            dt.Columns.Add("UnitPrice_PPSM", typeof(String));
+            dt.Columns.Add("UnitPrice_PPP", typeof(String));
+            dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
+            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
+            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
+
+            dt.Columns["Opening"].Caption = "Opening";
+            dt.Columns["Width"].Caption = "Width [m]";
+            dt.Columns["Height"].Caption = "Height [m]";
+            dt.Columns["Count"].Caption = "Count [-]";
+            dt.Columns["Area"].Caption = "Area [m2]";
+            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice_PPSM"].Caption = "Unit Price [NZD/m2]";
+            dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            int SumCount = 0;
+            double SumTotalArea = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            // TO Ondrej - toto nie je spravne, treba vyfiltrovat medzi opening rovnake podla typu a rozmeru a pridat ich vsetky do jedneho riadku + ich pocet
+            int iCount = 1; // Toto treba urcit podla poctu rovnakych otvorov v zozname
+
+            foreach (COpeningProperties prop in list)
+            {
+                AddOpeningItemRow(dt,
+                            "Opening",
+                            prop.Type,
+                            prop.fWidth,
+                            prop.fHeight,
+                            iCount,
+                            prop.Area,
+                            prop.Area * iCount,
+                            prop.UnitMass_SM,
+                            prop.UnitMass_SM * prop.Area,
+                            prop.Price_PPSM_NZD,
+                            prop.Price_PPP_NZD,
+                            prop.Price_PPSM_NZD * prop.Area * iCount,
+                            ref SumCount,
+                            ref SumTotalArea,
+                            ref SumTotalMass,
+                            ref SumTotalPrice);
+            }
+
+            DataRow row;
+            if (SumTotalPrice > 0)
+            {
+                fBuildingPrice_WithoutGST += SumTotalPrice;
+
+                // Last row
+                row = dt.NewRow();
+                row["Opening"] = "Total:";
+                row["Width"] = "";
+                row["Height"]= "";
+                row["Count"] = SumCount.ToString(); // TODO Ondrej - sem by sa mohol zapisat celkovy pocet openings
+                row["Area"] = "";
+                row["TotalArea"] = SumTotalArea.ToString("F2");
+                row["UnitMass"] = "";
+                row["TotalMass"] = SumTotalMass.ToString("F2");
+                row["UnitPrice_PPSM"] = "";
+                row["UnitPrice_PPP"] = "";
+                row["Price"] = SumTotalPrice.ToString("F2");
+                dt.Rows.Add(row);
+
+                Datagrid_DoorsAndWindows.ItemsSource = ds.Tables[0].AsDataView();
+            }
+        }
+
         private void CreateTableFibreglass(CPFDViewModel vm,
             float fFibreGlassArea_Roof,
             float fFibreGlassArea_Walls)
-            {
+        {
             // Zobrazit Datagrid s 2 riadkami
             // FibreGlass Roof | Total Area | Price PSM | Total Price
             // FibreGlass Walls | Total Area | Price PSM | Total Price
@@ -1001,7 +1108,7 @@ namespace PFD
             // V principe mame 2 typy poloziek
             // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
             // 2 - definovene plochou (doors, windows, roof netting)
-            
+
             // Zobrazit Datagrid
             // Flashing | Total Length | Price PLM | Total Price
             // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
@@ -1221,7 +1328,7 @@ namespace PFD
                         "Gutter",
                         "Drip Edge Gutter",
                         fGuttersTotalLength,
-                        fRoofGutterUnitMass_LM, 
+                        fRoofGutterUnitMass_LM,
                         fRoofGutterUnitMass_LM * fGuttersTotalLength,
                         fRoofGutterPrice_PLM_NZD,
                         fGuttersPrice_Total_NZD,
@@ -1235,17 +1342,17 @@ namespace PFD
             //{
             // Last row
             DataRow row;
-                row = dt.NewRow();
-                row["Gutter"] = "Total:";
-                row["TotalLength"] = SumTotalLength.ToString("F2");
-                row["UnitMass"] = "";
-                row["TotalMass"] = SumTotalMass.ToString("F2");
-                row["UnitPrice"] = "";
-                row["Price"] = SumTotalPrice.ToString("F2");
-                dt.Rows.Add(row);
+            row = dt.NewRow();
+            row["Gutter"] = "Total:";
+            row["TotalLength"] = SumTotalLength.ToString("F2");
+            row["UnitMass"] = "";
+            row["TotalMass"] = SumTotalMass.ToString("F2");
+            row["UnitPrice"] = "";
+            row["Price"] = SumTotalPrice.ToString("F2");
+            dt.Rows.Add(row);
             //}
 
-          Datagrid_Gutters.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Gutters.ItemsSource = ds.Tables[0].AsDataView();
         }
 
         private void AddLengthItemRow(DataTable dt,
@@ -1326,6 +1433,253 @@ namespace PFD
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
             }
+        }
+
+        private void AddOpeningItemRow(DataTable dt,
+                string itemColumnName,
+                string itemName,
+                double width,
+                double height,
+                int count,
+                double area,
+                double totalArea,
+                double unitMass,
+                double totalMass,
+                double unitPrice_PPSM,
+                double unitPrice_PPP,
+                double price,
+                ref int SumCount,
+                ref double SumTotalArea,
+                ref double SumTotalMass,
+                ref double SumTotalPrice)
+        {
+            if (totalArea > 0 && price > 0) // Add new row only if area and price are more than zero
+            {
+                DataRow row;
+
+                row = dt.NewRow();
+
+                try
+                {
+                    row[itemColumnName] = itemName;
+
+                    row["Width"] = width.ToString("F2");
+                    row["Height"] = height.ToString("F2");
+                    row["Count"] = count.ToString();
+                    SumCount += count;
+
+                    row["Area"] = area.ToString("F2");
+
+                    row["TotalArea"] = totalArea.ToString("F2");
+                    SumTotalArea += totalArea;
+
+                    row["UnitMass"] = unitMass.ToString("F2");
+
+                    row["TotalMass"] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row["UnitPrice_PPSM"] = unitPrice_PPSM.ToString("F2");
+                    row["UnitPrice_PPP"] = unitPrice_PPP.ToString("F2");
+
+                    row["Price"] = price.ToString("F2");
+                    SumTotalPrice += price;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+        }
+    }
+
+    // To Ondrej
+    // Neviem ci je toto dobry napad :)
+    // Mala by to byt struktura spolocna pre door a window
+    // Mozno by to mal byt skor predok tried BaseClasses DoorProperties a WindowProperties, ale nebol som si isty ci to nerozbijem, tak som to dal len tu
+    class COpeningProperties
+    {
+        // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
+        // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
+        // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
+        // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
+
+        private string m_sType; // Roller Door, Personnel Door, Window
+        private string m_sBuildingSide;
+        private int m_iBayNumber;
+        private float m_fHeight;
+        private float m_fWidth;
+
+        private float m_fPerimeter;
+        private float m_fArea;
+
+        private float m_fUnitMass_SM; // Unit mass per square meter
+        private float m_fPrice_PPSM_NZD; // Price per square meter
+        private float m_fPrice_PPKG_NZD; // Price per kilogram
+        private float m_fPrice_PPP_NZD; // Price per piece
+
+        public string Type
+        {
+            get
+            {
+                return m_sType;
+            }
+
+            set
+            {
+                m_sType = value;
+            }
+        }
+
+        public string sBuildingSide
+        {
+            get
+            {
+                return m_sBuildingSide;
+            }
+
+            set
+            {
+                m_sBuildingSide = value;
+            }
+        }
+
+        public int iBayNumber
+        {
+            get
+            {
+                return m_iBayNumber;
+            }
+
+            set
+            {
+                m_iBayNumber = value;
+
+            }
+        }
+
+        public float fHeight
+        {
+            get
+            {
+                return m_fHeight;
+            }
+
+            set
+            {
+                m_fHeight = value;
+            }
+        }
+
+        public float fWidth
+        {
+            get
+            {
+                return m_fWidth;
+            }
+
+            set
+            {
+                m_fWidth = value;
+            }
+        }
+
+        public float Perimeter
+        {
+            get
+            {
+                return m_fPerimeter;
+            }
+
+            set
+            {
+                m_fPerimeter = value;
+            }
+        }
+
+        public float Area
+        {
+            get
+            {
+                return m_fArea;
+            }
+
+            set
+            {
+                m_fArea = value;
+            }
+        }
+
+        public float UnitMass_SM
+        {
+            get
+            {
+                return m_fUnitMass_SM;
+            }
+
+            set
+            {
+                m_fUnitMass_SM = value;
+            }
+        }
+
+        public float Price_PPSM_NZD
+        {
+            get
+            {
+                return m_fPrice_PPSM_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPSM_NZD = value;
+            }
+        }
+
+        public float Price_PPKG_NZD
+        {
+            get
+            {
+                return m_fPrice_PPKG_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPKG_NZD = value;
+            }
+        }
+
+        public float Price_PPP_NZD
+        {
+            get
+            {
+                return m_fPrice_PPP_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPP_NZD = value;
+            }
+        }
+
+        public COpeningProperties(string type, float width, float height)
+        {
+            m_sType = type;
+            m_fWidth = width;
+            m_fHeight = height;
+
+            if(m_sType == "Window")
+            m_fPerimeter = 2 * width + 2 * height;
+            else
+                m_fPerimeter = width + 2 * height; // ??? Uvazovat pre dvere prah  - zatial sa nikde nepouziva
+
+            m_fArea = width * height;
+
+            CPlaneItemProperties prop = CPlaneItemManager.GetPlaneItemProperties(m_sType, "DoorsAndWindows");
+
+            m_fUnitMass_SM = (float)prop.Mass_kg_m2;
+
+            m_fPrice_PPSM_NZD = (float)prop.Price_PPSM_NZD;
+            m_fPrice_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+
+            m_fPrice_PPP_NZD = m_fPrice_PPSM_NZD * m_fArea;
         }
     }
 }

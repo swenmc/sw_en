@@ -42,6 +42,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
@@ -78,6 +80,7 @@
             <DataGrid Name ="Datagrid_Cladding" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
             </DataGrid>
+            
             <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
@@ -87,9 +90,12 @@
             <DataGrid Name ="Datagrid_RoofNetting" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
             </DataGrid>
-            
-            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
 
+            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                IsReadOnly="True">
+            </DataGrid>
+            
             <TextBlock Grid.Row="12" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Gutters" Grid.Row="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
@@ -98,6 +104,9 @@
             <DataGrid Name ="Datagrid_Flashing" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 IsReadOnly="True">
             </DataGrid>
+
+            <TextBlock Grid.Row="16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="17" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
