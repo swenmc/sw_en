@@ -27,7 +27,7 @@ namespace PFD
     /// </summary>
     public partial class UC_Quotation : UserControl
     {
-        double fBuildingPrice_WithoutGST = 0;
+        double dBuildingPrice_WithoutGST = 0;
 
         public UC_Quotation(CPFDViewModel vm)
         {
@@ -206,15 +206,23 @@ namespace PFD
             // Na zaver potrebujeme spocitat vsetky sumy z datagridov a vypocitat cenu za meter stvorcovy a meter kubicky.
 
             // Tieto hodnoty spolu s plochou, objemom a celkovou cenou zobrazime v tabe
-            double buildingPrice_PSM = fBuildingPrice_WithoutGST / fBuildingArea_Gross;
-            double buildingPrice_PCM = fBuildingPrice_WithoutGST / fBuildingVolume_Gross;
+            double buildingPrice_PSM = dBuildingPrice_WithoutGST / fBuildingArea_Gross;
+            double buildingPrice_PCM = dBuildingPrice_WithoutGST / fBuildingVolume_Gross;
 
-            // Vypiseme celkovu cenu
-            TotalPrice.Text = fBuildingPrice_WithoutGST.ToString("F2");
+            double dGST_Percentage = 15f; // TODO - urobit nastavitelne v GUI ???
+            double dGST_Absolute = dGST_Percentage / 100f * dBuildingPrice_WithoutGST;
+            double dTotalBuildingPrice_IncludingGST = dBuildingPrice_WithoutGST + dGST_Absolute;
 
+            // Vypiseme celkovu cenu a dalsie parametre
+            SubTotalPrice.Text = dBuildingPrice_WithoutGST.ToString("F2");
+            GST_Absolute.Text = dGST_Absolute.ToString("F2");
+            TotalPrice.Text = dTotalBuildingPrice_IncludingGST.ToString("F2");
 
+            BuildingArea.Text = fBuildingArea_Gross.ToString("F2");
+            BuildingVolume.Text = fBuildingVolume_Gross.ToString("F2");
 
-
+            UnitPricePerBuildingArea.Text = buildingPrice_PSM.ToString("F2");
+            UnitPricePerBuildingVolume.Text = buildingPrice_PCM.ToString("F2");
 
             // TODO - for later
 
@@ -309,7 +317,7 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
-            fBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingPrice_WithoutGST += SumTotalPrice;
 
             // Last row
             row = dt.NewRow();
@@ -519,7 +527,7 @@ namespace PFD
                 listPlateMassPerPiece.Add(dlistPlateMassPerPiece[i].ToString("F3"));
             }
 
-            fBuildingPrice_WithoutGST += dTotalPlatesPrice_Table;
+            dBuildingPrice_WithoutGST += dTotalPlatesPrice_Table;
 
             // Add Sum
             listPlatePrefix.Add("Total:");
@@ -710,7 +718,7 @@ namespace PFD
 
             if (SumTotalPrice > 0)
             {
-                fBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -822,7 +830,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
-                fBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -931,7 +939,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
-                fBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1033,7 +1041,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
-                fBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1258,7 +1266,7 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            fBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingPrice_WithoutGST += SumTotalPrice;
 
             // Last row
             DataRow row;
@@ -1337,7 +1345,7 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
-            fBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingPrice_WithoutGST += SumTotalPrice;
 
             //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Komentujem, inak by bol problem spocitat celkovu sumu
             //{
