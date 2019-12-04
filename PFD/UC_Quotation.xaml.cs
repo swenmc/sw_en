@@ -619,11 +619,22 @@ namespace PFD
             SpeedClad-0.75 mm
             */
 
+            List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+            string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
+            string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
+
+            List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
+            List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
+
+            string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
+            string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
+            
+
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties("PurlinDek-0.55 mm"); // TODO Ondrej
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}"); // TODO Ondrej "PurlinDek-0.55 mm"
 
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties("SmartDek-0.40 mm"); // TODO Ondrej
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}"); // TODO Ondrej "SmartDek-0.40 mm"
 
             float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
             float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
