@@ -138,7 +138,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             
-            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name="FibreglassLabel" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
@@ -188,7 +188,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name ="DoorsAndWindowsLabel" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>

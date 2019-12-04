@@ -38,7 +38,6 @@ namespace PFD
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
             List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
 
-            // TO Ondrej - Tieto plochy by sa mali zohladnovat len ak su zapnute girt na prislusnych stranach - bGenerate
             // TODO Ondrej - refaktoring - funckia CreateTableCladding
 
             float fWallArea_Left = 0; float fWallArea_Right = 0;
@@ -93,7 +92,7 @@ namespace PFD
             float fWindowFlashing_TotalLength = 0;
 
 
-            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>(); // Tu vyrobim zoznam vsetkeho co chcem vlozit do datagridu, ale su v tom jednotlivo polozky, nie zlucene podla rovnakeho typu a rozmeru - tj jeden riadok a prislusny pocet poloziek (count)
+            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 
             foreach (DoorProperties dp in vm.DoorBlocksProperties)
             {
@@ -131,16 +130,6 @@ namespace PFD
             // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
             // 2 - definovene plochou (doors, windows, roof netting)
 
-            // TODO Ondrej
-            // Zobrazit Datagrid
-            // Rovnake dvere / okna budu v jednom riadku
-            //  !!!!! Cisla v datagridoch zarovnavat napravo (rovnaky pocet desatinnych miest aby boli desatinne  ciarky pod sebou
-
-            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
-            // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
-            // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
-            // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
-
             List<COpeningProperties> groupedOpenings = new List<COpeningProperties>();
             foreach (COpeningProperties op in listOfOpenings)
             {
@@ -153,20 +142,17 @@ namespace PFD
                 }
                 else groupedOpenings.Add(op);
             }
-            
 
             CreateTableDoorsAndWindows(groupedOpenings);
 
             // DG 9
             // Cladding
             float fWallArea_Total = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
-
-            // Dlzka hrany strechy
-            float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame));
+            float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
 
             float fRoofArea = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.Purlin].Generate == true)
-                fRoofArea = 2 * fRoofSideLength * model.fL_tot; // Tato plocha by sa mala zohladnovat len ak su zapnute purlins - bGenerate
+                fRoofArea = 2 * fRoofSideLength * model.fL_tot;
 
             float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
@@ -202,10 +188,7 @@ namespace PFD
                 fPADoorLintelFlashing_TotalLength,
                 fWindowFlashing_TotalLength);
 
-            // TODO Ondrej
-            // Na zaver potrebujeme spocitat vsetky sumy z datagridov a vypocitat cenu za meter stvorcovy a meter kubicky.
-
-            // Tieto hodnoty spolu s plochou, objemom a celkovou cenou zobrazime v tabe
+            // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
             double buildingPrice_PSM = dBuildingPrice_WithoutGST / fBuildingArea_Gross;
             double buildingPrice_PCM = dBuildingPrice_WithoutGST / fBuildingVolume_Gross;
 
@@ -266,11 +249,6 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -625,8 +603,8 @@ namespace PFD
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
             prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
 
-            float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2 // TODO - zapracovat do databazy
-            float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2 // TODO - zapracovat do databazy
+            float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2
+            float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -756,11 +734,6 @@ namespace PFD
 
         private void CreateTableDoorsAndWindows(List<COpeningProperties> list)
         {
-            // Type           | Width | Height | Count | Area  | Total Area | Price PSM | Price PP  | Total Price
-            // Roller Door    | 3.3   | 4.5    | 5     | 12.20 | 62.21      | 301       | 3000      | 18000
-            // Personnel Door | 1.0   | 2.1    | 4     |  2.20 |  8.21      | 350       | 700       |  2800
-            // Personnel Door | 0.8   | 2.0    | 2     |  1.80 |  3.60      | 350       | 650       |  1300
-
             // Create Table
             DataTable dt = new DataTable("TableDoorsAndWindows");
             // Create Table Rows
@@ -776,23 +749,6 @@ namespace PFD
             dt.Columns.Add("UnitPrice_PPP", typeof(String));
             dt.Columns.Add("Price", typeof(String));
 
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            //dt.Columns["Opening"].Caption = "Opening";
-            //dt.Columns["Width"].Caption = "Width [m]";
-            //dt.Columns["Height"].Caption = "Height [m]";
-            //dt.Columns["Count"].Caption = "Count [-]";
-            //dt.Columns["Area"].Caption = "Area [m2]";
-            //dt.Columns["TotalArea"].Caption = "Total Area [m2]";
-            //dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
-            //dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            //dt.Columns["UnitPrice_PPSM"].Caption = "Unit Price [NZD/m2]";
-            //dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
-            //dt.Columns["Price"].Caption = "Price [NZD]";
-
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -802,9 +758,6 @@ namespace PFD
             double SumTotalArea = 0;
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
-
-            // TO Ondrej - toto nie je spravne, treba vyfiltrovat medzi opening rovnake podla typu a rozmeru a pridat ich vsetky do jedneho riadku + ich pocet
-            //int iCount = 1; // Toto treba urcit podla poctu rovnakych otvorov v zozname
 
             foreach (COpeningProperties prop in list)
             {
@@ -837,7 +790,7 @@ namespace PFD
                 row["Opening"] = "Total:";
                 row["Width"] = "";
                 row["Height"]= "";
-                row["Count"] = SumCount.ToString(); // TODO Ondrej - sem by sa mohol zapisat celkovy pocet openings
+                row["Count"] = SumCount.ToString();
                 row["Area"] = "";
                 row["TotalArea"] = SumTotalArea.ToString("F2");
                 row["UnitMass"] = "";
@@ -850,6 +803,14 @@ namespace PFD
                 Datagrid_DoorsAndWindows.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_DoorsAndWindows.Loaded += Datagrid_DoorsAndWindows_Loaded;
             }
+            else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
+            {
+                DoorsAndWindowsLabel.IsEnabled = false;
+                DoorsAndWindowsLabel.Visibility = Visibility.Hidden;
+
+                Datagrid_DoorsAndWindows.IsEnabled = false;
+                Datagrid_DoorsAndWindows.Visibility = Visibility.Hidden;
+            }
         }
 
         private void Datagrid_DoorsAndWindows_Loaded(object sender, RoutedEventArgs e)
@@ -861,10 +822,6 @@ namespace PFD
             float fFibreGlassArea_Roof,
             float fFibreGlassArea_Walls)
         {
-            // Zobrazit Datagrid s 2 riadkami
-            // FibreGlass Roof | Total Area | Price PSM | Total Price
-            // FibreGlass Walls | Total Area | Price PSM | Total Price
-
             List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Fibreglass");
 
             float fRoofFibreGlassPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
@@ -873,8 +830,8 @@ namespace PFD
             float fRoofFibreGlassUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
             float fWallFibreGlassUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
 
-            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD; // TODO Ondrej
-            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD; // TODO Ondrej
+            float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD;
+            float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD;
 
             // Create Table
             DataTable dt = new DataTable("TableFibreglass");
@@ -886,21 +843,6 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            // TODO Ondrej - zakazat sortovanie v stlpci gridu pre vsetky taketo datagridy s vysledkami a podobne.
-
-            dt.Columns["Fibreglass"].Caption = "Fibreglass";
-            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -955,6 +897,14 @@ namespace PFD
                 Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_Fibreglass.Loaded += Datagrid_Fibreglass_Loaded; 
             }
+            else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
+            {
+                FibreglassLabel.IsEnabled = false;
+                FibreglassLabel.Visibility = Visibility.Hidden;
+
+                Datagrid_Fibreglass.IsEnabled = false;
+                Datagrid_Fibreglass.Visibility= Visibility.Hidden;
+            }
         }
 
         private void Datagrid_Fibreglass_Loaded(object sender, RoutedEventArgs e)
@@ -975,10 +925,6 @@ namespace PFD
             float fRoofSisalationFoilUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
             float fRoofSafeNetUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
 
-            // TODO Ondrej
-            // Zobrazit Datagrid s 2 riadkami
-            // Roof Sisalation Foil | Total Area | Price PSM | Total Price
-            // Roof Safe Net | Total Area | Price PSM | Total Price
             float fRoofSisalationFoilPrice_Total_NZD = fRoofArea * fRoofSisalationFoilPrice_PSM_NZD;
             float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD;
 
@@ -991,18 +937,6 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            dt.Columns["Component"].Caption = "Component";
-            dt.Columns["TotalArea"].Caption = "Total Area\t [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1112,10 +1046,6 @@ namespace PFD
             // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
             // 2 - definovene plochou (doors, windows, roof netting)
 
-            // Zobrazit Datagrid
-            // Flashing | Total Length | Price PLM | Total Price
-            // Roof Ridge Flashing | 41.12 | 3.90 | Total Price
-
             float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD;
             float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD;
             float fBargeFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD;
@@ -1136,18 +1066,6 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            dt.Columns["Flashing"].Caption = "Flashing";
-            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1292,14 +1210,10 @@ namespace PFD
         {
             List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Gutters");
 
-            float fGuttersTotalLength = 2 * model.fL_tot; // na 2 okrajoch strechy
+            float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
             float fRoofGutterPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof gutter za 1 m dlzky
 
             float fRoofGutterUnitMass_LM = (float)listOfProperties[0].Mass_kg_lm;
-
-            // TODO Ondrej
-            // Zobrazit Datagrid
-            // Roof Gutter | Total Length | Price PLM | Total Price
             float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD;
 
             // Create Table
@@ -1311,18 +1225,6 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-
-            // Set Column Caption
-            // TO Ondrej - myslim ze tieto captions sa z datatable nepreberaju do datagrid
-            // Skusil som to nastavit priamo pre datagrid, ale neuspesne lebo sa to tam nastavuje ako itemsource takze samotny datagrid nema column
-            // Tento problem mame skoro vo vsetkych tabulkach, nezobrazujeme pre nazvy stlpcov formatovane texty s medzerami, ale zdrojovy nazov stlpca z kodu
-
-            dt.Columns["Gutter"].Caption = "Gutter";
-            dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass\t [kg/m]";
-            dt.Columns["TotalMass"].Caption = "Total Mass\t [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price\t [NZD/m]";
-            dt.Columns["Price"].Caption = "Price\t [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1347,7 +1249,7 @@ namespace PFD
 
             dBuildingPrice_WithoutGST += SumTotalPrice;
 
-            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Komentujem, inak by bol problem spocitat celkovu sumu
+            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Zatial komentujem, dal by sa tym usetrit jeden riadok
             //{
             // Last row
             DataRow row;
