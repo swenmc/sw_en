@@ -70,15 +70,22 @@ namespace PFD
 
             // DG 3
             // Screws
+            // Bolts
+            // Anchors
+
+            // TODO Ondrej - zobrazit zoznam screws a anchors - vid Material List
+            // Treba spravne naformatovat stlpce a pocty desatinnych miest
+            // Pridat vsetky anchors zo vsetkych base plate "plate typu B" Plate AnchorArrangement
 
             // DG 4
-            // Anchors
+            // Bolt Nuts
+
+            // TODO
 
             // DG 5
             // Washers
 
-            // DG 6
-            // Bolts
+            // TODO
 
             // DG 7
             // Doors and windows
@@ -90,7 +97,6 @@ namespace PFD
             float fPADoorTrimmerFlashing_TotalLength = 0;
             float fPADoorLintelFlashing_TotalLength = 0;
             float fWindowFlashing_TotalLength = 0;
-
 
             List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
 

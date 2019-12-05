@@ -41,6 +41,8 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
@@ -104,8 +106,10 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cladding" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Cladding" Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Connectors (Anchors, Bolts, Screws, Rivets)" VerticalAlignment="Top" Width="320" Margin="10,2,0,0" FontSize="16"/>
+
+            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Cladding" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_Cladding" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -138,8 +142,8 @@
                 </DataGrid.Columns>
             </DataGrid>
             
-            <TextBlock Grid.Row="6" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name="FibreglassLabel" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name="FibreglassLabel" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -163,8 +167,8 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Roof Netting" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_RoofNetting" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Roof Netting" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_RoofNetting" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -188,8 +192,8 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="10" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name ="DoorsAndWindowsLabel" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="12" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name ="DoorsAndWindowsLabel" Text="Doors and Windows" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_DoorsAndWindows" Grid.Row="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -218,8 +222,8 @@
                 </DataGrid.Columns>
             </DataGrid>
             
-            <TextBlock Grid.Row="12" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Gutters" Grid.Row="13" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="14" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_Gutters" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -242,8 +246,8 @@
                     <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock Grid.Row="14" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Flashing" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <DataGrid Name ="Datagrid_Flashing" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+            <TextBlock Grid.Row="16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Flashing" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <DataGrid Name ="Datagrid_Flashing" Grid.Row="17" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True"  CanUserSortColumns="False">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
@@ -267,33 +271,33 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="17" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="17" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="17" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="19" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
-            <TextBlock Grid.Row="18" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST (15%):" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="18" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="18" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST (15%):" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
-            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="19" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="21" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
 
-            <TextBlock Grid.Row="17" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Area:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="17" Name="BuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="17" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Area:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="19" Name="BuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="18" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Volume:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="18" Name="BuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="18" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Volume:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="20" Name="BuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="19" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="21" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="20" Name="UnitPricePerBuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="22" Name="UnitPricePerBuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

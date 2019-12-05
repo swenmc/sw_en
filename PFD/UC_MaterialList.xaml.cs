@@ -80,7 +80,7 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
             float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
 
-            float fTEK_PricePerPiece_Screws_Total = 0.05f;     // NZD / piece
+            float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             // Plates
@@ -416,7 +416,12 @@ namespace PFD
                                 string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
                                 float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
                                 float fTotalMass = iQuantity * fMassPerPiece;
-                                float fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
+
+                                float fTotalPrice;
+                                if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
+                                    fTotalPrice = iQuantity * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD;
+                                else
+                                    fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
 
                                 bool bConnectorwasAdded = false; // Connector was added to the group
 
@@ -432,8 +437,12 @@ namespace PFD
                                             // Add connector to the one from already created groups
 
                                             listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
-                                            listConnectorTotalMass[m] = Math.Round(listConnectorQuantity[m] * dlistConnectorMassPerPiece[m], iNumberOfDecimalPlacesMass); // Recalculate total mass of all connectors in the group
-                                            listConnectorTotalPrice[m] = Math.Round(listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all connectors in the group
+                                            listConnectorTotalMass[m] = listConnectorQuantity[m] * dlistConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
+
+                                            if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
+                                                listConnectorTotalPrice[m] = listConnectorQuantity[m] * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD; // Recalculate total price of all connectors in the group
+                                            else
+                                                listConnectorTotalPrice[m] = listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total;
 
                                             bConnectorwasAdded = true;
                                         }
@@ -447,9 +456,9 @@ namespace PFD
                                     listConnectorQuantity.Add(iQuantity);
                                     listConnectorMaterialName.Add(sMaterialName);
                                     listConnectorSize.Add(size);
-                                    dlistConnectorMassPerPiece.Add(Math.Round(fMassPerPiece, iNumberOfDecimalPlacesMass));
-                                    listConnectorTotalMass.Add(Math.Round(fTotalMass, iNumberOfDecimalPlacesMass));
-                                    listConnectorTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+                                    dlistConnectorMassPerPiece.Add(fMassPerPiece);
+                                    listConnectorTotalMass.Add(fTotalMass);
+                                    listConnectorTotalPrice.Add(fTotalPrice);
 
                                     // Add first plate in the group to the list of plate groups
                                     ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
@@ -477,7 +486,12 @@ namespace PFD
                             foreach (CConnector connector in plate.ScrewArrangement.Screws)
                             {
                                 dTotalConnectorsMass_Model += connector.Mass;
-                                dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
+
+                                if (connector.Price_PPP_NZD > 0)
+                                    dTotalConnectorsPrice_Model += connector.Price_PPP_NZD;
+                                else
+                                    dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
+
                                 iTotalConnectorsNumber_Model += 1;
                             }
                         }
@@ -492,9 +506,6 @@ namespace PFD
                 iTotalConnectorsNumber_Table += listConnectorQuantity[i];
             }
 
-            dTotalConnectorsMass_Model = Math.Round(dTotalConnectorsMass_Model, iNumberOfDecimalPlacesMass);
-            dTotalConnectorsPrice_Model = Math.Round(dTotalConnectorsPrice_Model, iNumberOfDecimalPlacesPrice);
-
             if (!MathF.d_equal(dTotalConnectorsMass_Model, dTotalConnectorsMass_Table) ||
                     (iTotalConnectorsNumber_Model != iTotalConnectorsNumber_Table)) // Error
                 MessageBox.Show(
@@ -507,7 +518,7 @@ namespace PFD
             for (int i = 0; i < listConnectorPrefix.Count; i++)
             {
                 // Change output data format
-                listConnectorMassPerPiece.Add(dlistConnectorMassPerPiece[i].ToString());
+                listConnectorMassPerPiece.Add(dlistConnectorMassPerPiece[i].ToString("F2"));
             }
 
             // Add Sum

@@ -12,6 +12,7 @@ namespace DATABASE.DTO
         public string gauge;
         public string threadDiameter;
         public string shankDiameter;
+        public string shankLength;
         public string threadType1;
         public string threadsPerInch1;
         public string threadType2;
@@ -20,12 +21,14 @@ namespace DATABASE.DTO
         public string threadsPerInch3;
         public string headSizeInch;
         public string headSizemm;
+        public string headThicknessmm;
         public string washerSizemm;
         public string washerThicknessmm;
         public string preDrillHoleDiametermm_3mmthickness;
         public string shearStrength_N;
         public string axialTensileStrength_N;
         public string torsionalStrength_Nm;
+        public string mass_kg;
 
         public CTEKScrewProperties() { }
     }

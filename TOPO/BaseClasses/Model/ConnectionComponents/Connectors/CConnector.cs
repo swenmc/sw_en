@@ -95,6 +95,34 @@ namespace BaseClasses
             }
         }
 
+        private float m_fPrice_PPP_NZD;
+        public float Price_PPP_NZD
+        {
+            get
+            {
+                return m_fPrice_PPP_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPP_NZD = value;
+            }
+        }
+
+        private float m_fPrice_PPKG_NZD;
+        public float Price_PPKG_NZD
+        {
+            get
+            {
+                return m_fPrice_PPKG_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPKG_NZD = value;
+            }
+        }
+
         public float m_iNumberOfThreads;
         [NonSerialized]
         public DiffuseMaterial m_DiffuseMat;

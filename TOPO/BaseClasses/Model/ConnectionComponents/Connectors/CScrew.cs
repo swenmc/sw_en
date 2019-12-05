@@ -27,7 +27,7 @@ namespace BaseClasses
             }
         }
 
-        private int m_iGauge;
+        private int m_iGauge;  // Gauge v mm
         public int Gauge
         {
             get
@@ -168,124 +168,41 @@ namespace BaseClasses
             //m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
-        public CScrew(string sName_temp, CTEKScrewProperties screwproperties)
-        {
-            Name = sName_temp;
-            SetScrewValuesFromDatabase(screwproperties);
-        }
-
         public CScrew(string sName_temp, string gauge)
         {
             Name = sName_temp;
-            CTEKScrewProperties screwProperties = CTEKScrewsManager.GetScrewProperties(gauge);
+            CTEKScrewProp screwProperties = CTEKScrewsManager.GetScrewProperties2(gauge);
             SetScrewValuesFromDatabase(screwProperties);
         }
 
-        public void SetScrewValuesFromDatabase(CTEKScrewProperties properties)
+        public void SetScrewValuesFromDatabase(CTEKScrewProp properties)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            Gauge = int.Parse(properties.gauge, nfi);
-            try
-            {
-                Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                Diameter_thread = 0;
-            }
-
-            try
-            {
-                Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                Diameter_shank = 0;
-            }
-
-            /*
-            properties.threadType1
-            properties.threadsPerInch1
-            properties.threadType2
-            properties.threadsPerInch2
-            properties.threadType3
-            properties.threadsPerInch3
-            properties.headSizeInch
-            */
-
-            // Temporary - chybajuce data v databaze
-
-            try
-            {
-                D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                D_h_headdiameter = 0;
-            }
-
-            try
-            {
-                D_w_washerdiameter = float.Parse(properties.washerSizemm, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                D_w_washerdiameter = 0;
-            }
-
-            try
-            {
-                T_w_washerthickness = float.Parse(properties.washerThicknessmm, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                T_w_washerthickness = 0;
-            }
-
-            try
-            {
-                D_holediameter = float.Parse(properties.preDrillHoleDiametermm_3mmthickness, nfi) / 1000f; // mm to m
-            }
-            catch
-            {
-                D_holediameter = 0;
-            }
-
-            try
-            {
-                ShearStrength_nominal = float.Parse(properties.shearStrength_N, nfi); // N
-            }
-            catch
-            {
-                ShearStrength_nominal = 0;
-            }
-
-            try
-            {
-                AxialTensileStrength_nominal = float.Parse(properties.axialTensileStrength_N, nfi); // N
-            }
-            catch
-            {
-                AxialTensileStrength_nominal = 0;
-            }
-
-            try
-            {
-                TorsionalStrength_nominal = float.Parse(properties.torsionalStrength_Nm, nfi); // Nm
-            }
-            catch
-            {
-                TorsionalStrength_nominal = 0;
-            }
-
-            // Default
-            Length = 0.009f; // m
-            Mass = 0.015f; // kg
+            m_iGauge = properties.gauge;  // Gauge v mm
+            Diameter_thread = (float)properties.threadDiameter;
+            Diameter_shank = (float)properties.shankDiameter;
+            Length = (float)properties.shankLength;
+            //threadType1;
+            //threadsPerInch1;
+            //threadType2;
+            //threadsPerInch2;
+            //threadType3;
+            //threadsPerInch3;
+            //headSizeInch;
+            m_fd_h_headdiameter = (float)properties.headSize;
+            //headThicknessmm;
+            m_fd_w_washerdiameter = (float)properties.washerSize;
+            m_ft_w_washerthickness = (float)properties.washerThickness;
+            m_fd_predrillholediameter = (float)properties.preDrillHoleDiameter_3mmthickness;
+            m_fShearStrength_nominal = (float)properties.shearStrength_N;
+            m_fAxialTensileStrength_nominal = (float)properties.axialTensileStrength_N;
+            m_fTorsionalStrength_nominal = (float)properties.torsionalStrength_Nm;
+            Mass = (float)properties.mass_kg;
+            Price_PPP_NZD = (float)properties.price_PPP_NZD;
+            Price_PPKG_NZD = (float)properties.price_PPKG_NZD;
         }
-
-        //float fScrewMass = 0.012f;
 
         /*
         protected override void loadIndices()
