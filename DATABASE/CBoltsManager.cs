@@ -12,7 +12,7 @@ namespace DATABASE
     {
         public static Dictionary<string, CBoltProperties> DictBoltProperties;
 
-        public static List<CBoltProperties> LoadBoltsProperties()
+        public static List<CBoltProperties> LoadBoltsProperties(string TableName)
         {
             CBoltProperties properties = null;
             List<CBoltProperties> items = new List<CBoltProperties>();
@@ -20,7 +20,7 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Bolts", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from "+TableName, conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -34,14 +34,14 @@ namespace DATABASE
             return items;
         }
 
-        private static void LoadBoltsPropertiesDictionary()
+        private static void LoadBoltsPropertiesDictionary(string TableName)
         {
             DictBoltProperties = new Dictionary<string, CBoltProperties>();
             
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Bolts", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from " + TableName, conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -53,9 +53,9 @@ namespace DATABASE
             }
         }
 
-        public static CBoltProperties GetBoltProperties(string name)
+        public static CBoltProperties GetBoltProperties(string name, string TableName)
         {
-            if (DictBoltProperties == null) LoadBoltsPropertiesDictionary();
+            if (DictBoltProperties == null) LoadBoltsPropertiesDictionary(TableName);
 
             CBoltProperties prop = null;
             DictBoltProperties.TryGetValue(name, out prop);
@@ -63,13 +63,13 @@ namespace DATABASE
             return prop;
         }
 
-        public static CBoltProperties GetBoltProperties(int id)
+        public static CBoltProperties GetBoltProperties(int id, string TableName)
         {
             CBoltProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["BoltsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from Bolts WHERE ID = @id", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from" + TableName +" WHERE ID = @id", conn);
                 command.Parameters.AddWithValue("@id", id);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -100,6 +100,10 @@ namespace DATABASE
             properties.Code = reader["code"].ToString();
             properties.ThreadAngle_deg = reader["threadAngle"].ToString() == "" ? double.NaN : double.Parse(reader["threadAngle"].ToString(), nfi);
             properties.H = reader["H"].ToString() == "" ? double.NaN : double.Parse(reader["H"].ToString(), nfi) / 1000f;
+
+            properties.Mass_kg_LM = reader["mass_kg_LM"].ToString() == "" ? double.NaN : double.Parse(reader["mass_kg_LM"].ToString(), nfi);
+            properties.Price_PPLM_NZD = reader["price_PPLM_NZD"].ToString() == "" ? double.NaN : double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
+            properties.Price_PPKG_NZD = reader["price_PPKG_NZD"].ToString() == "" ? double.NaN : double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
 
             return properties;
         }

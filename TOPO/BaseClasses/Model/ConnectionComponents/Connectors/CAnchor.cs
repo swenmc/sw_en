@@ -368,6 +368,21 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        private float m_Price_PPLM_NZD;
+        public float Price_PPLM_NZD
+        {
+            get
+            {
+                return m_Price_PPLM_NZD;
+            }
+
+            set
+            {
+                m_Price_PPLM_NZD = value;
+            }
+        }
+
         public CAnchor() : base()
         {
         }
@@ -379,11 +394,16 @@ namespace BaseClasses
             m_pControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
-            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
 
             Diameter_shank = (float)properties.ShankDiameter;
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
+
+            Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+            Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
+            Price_PPP_NZD = (float)properties.Price_PPLM_NZD * fLength_temp;
+            Mass = (float)properties.Mass_kg_LM * fLength_temp;
 
             Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
@@ -428,11 +448,16 @@ namespace BaseClasses
             m_pControlPoint = new Point3D(0, 0, 0);
             Length = fLength_temp;
 
-            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
 
             Diameter_shank = (float)properties.ShankDiameter;
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
+
+            Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+            Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
+            Price_PPP_NZD = (float)properties.Price_PPLM_NZD * fLength_temp;
+            Mass = (float)properties.Mass_kg_LM * fLength_temp;
 
             Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
@@ -477,11 +502,16 @@ namespace BaseClasses
             m_pControlPoint = controlpoint;
             Length = fLength_temp;
 
-            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name);
+            CBoltProperties properties = CBoltsManager.GetBoltProperties(Name, "ThreadedBars");
 
             Diameter_shank = (float)properties.ShankDiameter;
             Diameter_thread = (float)properties.ThreadDiameter;
             Diameter_pitch = (float)properties.PitchDiameter;
+
+            Price_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+            Price_PPLM_NZD = (float)properties.Price_PPLM_NZD;
+            Price_PPP_NZD = (float)properties.Price_PPLM_NZD * fLength_temp;
+            Mass = (float)properties.Mass_kg_LM * fLength_temp;
 
             Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area

@@ -20,6 +20,11 @@ namespace DATABASE.DTO
         private double m_threadAngle_deg;
         private double m_H;
 
+        // ThreadedBars
+        private double m_mass_kg_LM;
+        private double m_price_PPLM_NZD;
+        private double m_price_PPKG_NZD;
+
         public int ID
         {
             get
@@ -160,6 +165,45 @@ namespace DATABASE.DTO
             set
             {
                 m_H = value;
+            }
+        }
+
+        public double Mass_kg_LM
+        {
+            get
+            {
+                return m_mass_kg_LM;
+            }
+
+            set
+            {
+                m_mass_kg_LM = value;
+            }
+        }
+
+        public double Price_PPLM_NZD
+        {
+            get
+            {
+                return m_price_PPLM_NZD;
+            }
+
+            set
+            {
+                m_price_PPLM_NZD = value;
+            }
+        }
+
+        public double Price_PPKG_NZD
+        {
+            get
+            {
+                return m_price_PPKG_NZD;
+            }
+
+            set
+            {
+                m_price_PPKG_NZD = value;
             }
         }
 
