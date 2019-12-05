@@ -383,11 +383,41 @@ namespace BaseClasses
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        private CWasher_W m_WasherPlateTop;
+        public CWasher_W WasherPlateTop
+        {
+            get
+            {
+                return m_WasherPlateTop;
+            }
+
+            set
+            {
+                m_WasherPlateTop = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        private CWasher_W m_WasherBearing;
+        public CWasher_W WasherBearing
+        {
+            get
+            {
+                return m_WasherBearing;
+            }
+
+            set
+            {
+                m_WasherBearing = value;
+            }
+        }
+
         public CAnchor() : base()
         {
         }
 
-        public CAnchor(string name_temp, float fLength_temp, bool bIsDisplayed)
+        public CAnchor(string name_temp, float fLength_temp, /*CWasher_W washerPlateTop, CWasher_W washerBearing,*/ bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -411,15 +441,16 @@ namespace BaseClasses
 
             // Washer size
             // Plate washer
-            // TODO - zavisi od rozmerov plechu
-            x_washer_plate = 0.08f; // 80 mm
-            y_washer_plate = 0.08f; // 80 mm
+            //m_WasherPlateTop = washerPlateTop;
+            //x_washer_plate = washerPlateTop.Width_bx; // 80 mm
+            //y_washer_plate = washerPlateTop.Height_hy; // 80 mm
 
             // Bearing washer
-            x_washer_bearing = 0.06f; // 60 mm
-            y_washer_bearing = 0.06f; // 60 mm
+            //m_WasherBearing = washerBearing;
+            //x_washer_bearing = washerBearing.Width_bx; // 60 mm
+            //y_washer_bearing = washerBearing.Height_hy; // 60 mm
 
-            h_effective = 0.330f; // 330 mm (efektivna dlzka tyce zabetonovana v zaklade)
+            h_effective = 0.90909f * fLength_temp; // 300 mm (efektivna dlzka tyce zabetonovana v zaklade)
 
             ((CMat_03_00)m_Mat).Name = "8.8";
             ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
@@ -441,7 +472,7 @@ namespace BaseClasses
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, float fh_eff_temp, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, float fLength_temp, float fh_eff_temp, /*CWasher_W washerPlateTop, CWasher_W washerBearing,*/ bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -465,13 +496,14 @@ namespace BaseClasses
 
             // Washer size
             // Plate washer
-            // TODO - zavisi od rozmerov plechu
-            x_washer_plate = 0.08f; // 80 mm
-            y_washer_plate = 0.08f; // 80 mm
+            //m_WasherPlateTop = washerPlateTop;
+            //x_washer_plate = washerPlateTop.Width_bx; // 80 mm
+            //y_washer_plate = washerPlateTop.Height_hy; // 80 mm
 
             // Bearing washer
-            x_washer_bearing = 0.06f; // 60 mm
-            y_washer_bearing = 0.06f; // 60 mm
+            //m_WasherBearing = washerBearing;
+            //x_washer_bearing = washerBearing.Width_bx; // 60 mm
+            //y_washer_bearing = washerBearing.Height_hy; // 60 mm
 
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
@@ -495,7 +527,7 @@ namespace BaseClasses
             //m_cylinder = new Cylinder(0.5f * Diameter_shank, Length, m_DiffuseMat);
         }
 
-        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CAnchor(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fLength_temp, float fh_eff_temp, CWasher_W washerPlateTop, CWasher_W washerBearing, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Prefix = "Anchor";
             Name = name_temp;
@@ -519,13 +551,20 @@ namespace BaseClasses
 
             // Washer size
             // Plate washer
-            // TODO - zavisi od rozmerov plechu
-            x_washer_plate = 0.08f; // 80 mm
-            y_washer_plate = 0.08f; // 80 mm
+            if (washerPlateTop != null)
+            {
+                m_WasherPlateTop = washerPlateTop;
+                x_washer_plate = washerPlateTop.Width_bx; // 80 mm
+                y_washer_plate = washerPlateTop.Height_hy; // 80 mm
+            }
 
             // Bearing washer
-            x_washer_bearing = 0.06f; // 60 mm
-            y_washer_bearing = 0.06f; // 60 mm
+            if (washerBearing != null)
+            {
+                m_WasherBearing = washerBearing;
+                x_washer_bearing = washerBearing.Width_bx; // 60 mm
+                y_washer_bearing = washerBearing.Height_hy; // 60 mm
+            }
 
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 

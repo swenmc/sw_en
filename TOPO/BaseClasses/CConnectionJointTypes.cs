@@ -88,7 +88,8 @@ namespace BaseClasses
         }
 
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
-        protected void SetPlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew, float fh_plate, out string platePrefix, out CScrewArrangement screwArrangement)
+        protected void SetPlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew,
+            float fh_plate, out string platePrefix, out CScrewArrangement screwArrangement, out CWasher_W washerPlateTop, out CWasher_W washerBearing)
         {
             // TODO - Urobit nastavovanie rozmerov dynamicky podla velkosti prierezu / vyztuh a plechu
             // Nacitat velkosti vyztuh z parametrov prierezu, medzery a polohu skrutiek urcovat dynamicky
@@ -110,74 +111,92 @@ namespace BaseClasses
                     3, 1, 0.025f, 0.14f, 0.03f, 0.05f,
                     3, 1, 0.025f, 0.26f, 0.03f, 0.05f);
 
+            string washerPlateTopName;
+            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, 0, 0, true);
+
             if (sSectionNameDatabase == "10075")
             {
                 //platePrefix = "BI";
                 platePrefix = "BH";
                 screwArrangement = screwArrangement1_10075; // TODO - definovat iny typ
+                washerPlateTopName = "";
             }
             else if (sSectionNameDatabase == "27055")
             {
                 platePrefix = "BG";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095")
             {
                 platePrefix = "BG";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095n")
             {
                 platePrefix = "BB";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115")
             {
                 platePrefix = "BG";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115btb")
             {
                 platePrefix = "BA";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115n")
             {
                 platePrefix = "BB";
                 screwArrangement = screwArrangement2;
+                washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "50020")
             {
                 platePrefix = "BD";
                 screwArrangement = screwArrangement1_50020;
+                washerPlateTopName = "WD";
             }
             else if (sSectionNameDatabase == "50020n")
             {
                 platePrefix = "BE-3 holes";
                 screwArrangement = screwArrangement1_50020;
+                washerPlateTopName = "WD";
             }
             else if (sSectionNameDatabase == "63020")
             {
                 platePrefix = "BF-4 holes";
                 screwArrangement = screwArrangement1_63020;
+                washerPlateTopName = "WF";
             }
             else if (sSectionNameDatabase == "63020s1")
             {
                 platePrefix = "BF-6 holes";
                 screwArrangement = screwArrangement1_63020;
+                washerPlateTopName = "WF";
             }
             else if (sSectionNameDatabase == "63020s2")
             {
                 platePrefix = "BF-6 holes";
                 screwArrangement = screwArrangement1_63020;
+                washerPlateTopName = "WF";
             }
             else
             {
                 platePrefix = "";
+                washerPlateTopName = "";
                 screwArrangement = null;
                 throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
                                                   "Base plate of cross-section with this name is not implemented");
             }
+
+            washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, 0, 0, true);
         }
 
         public virtual CConnectionJointTypes RecreateJoint()

@@ -113,6 +113,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CWasher_W.cs" />
     <Compile Include="Model\COpeningProperties.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar.cs" />
     <Compile Include="Model\Foundations\CReinforcementBar_U.cs" />

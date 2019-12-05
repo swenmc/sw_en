@@ -176,7 +176,7 @@ namespace BaseClasses
             {
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
-                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, 0, 90 , 0, true);
+                Anchors[i] = new CAnchor(referenceAnchor.Name, referenceAnchor.m_Mat.Name, controlpoint, referenceAnchor.Length, referenceAnchor.h_effective, referenceAnchor.WasherPlateTop, referenceAnchor.WasherBearing, 0, 90 , 0, true);
             }
         }
     }
