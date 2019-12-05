@@ -628,7 +628,18 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
-            
+
+            dt.Columns["Cladding"].Caption = "Cladding";
+            dt.Columns["Thickness"].Caption = "Thickness [mm]";
+            dt.Columns["Color"].Caption = "Color";
+            dt.Columns["ColorName"].Caption = "Color Name";
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
