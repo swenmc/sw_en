@@ -89,7 +89,7 @@ namespace EXPIMP
                 {
                     Table t = GetTable(document, dt);
                     par = par.InsertParagraphAfterSelf("");
-                    AddSimpleTableAfterParagraph(t, par);
+                    AddSimpleTableAfterParagraph(t, par, true);
                 }
                 
                 
@@ -1260,11 +1260,12 @@ namespace EXPIMP
             }
         }
 
-        private static void AddSimpleTableAfterParagraph(Table t, Paragraph p)
+        private static void AddSimpleTableAfterParagraph(Table t, Paragraph p, bool autofit = false)
         {
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
-            //t.AutoFit = AutoFit.Window;
+            
+            if(autofit) t.AutoFit = AutoFit.Window;
 
             p.InsertTableBeforeSelf(t);
         }
