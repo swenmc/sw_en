@@ -76,6 +76,7 @@ namespace BaseClasses
         public float fMass;
 
         private double _price_PPKG_NZD;
+        private double _price_PPP_NZD;
 
         [NonSerialized]
         public GeometryModel3D Visual_Plate;
@@ -203,6 +204,19 @@ namespace BaseClasses
             set
             {
                 _price_PPKG_NZD = value;
+            }
+        }
+
+        public double Price_PPP_NZD
+        {
+            get
+            {
+                return _price_PPP_NZD;
+            }
+
+            set
+            {
+                _price_PPP_NZD = value;
             }
         }
 

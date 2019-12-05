@@ -396,7 +396,8 @@ namespace BaseClasses
         eSerie_K,
         eSerie_M,
         eSerie_N,
-        eSerie_O
+        eSerie_O,
+        eSerie_W
     };
 
     public enum ESerieTypeCrSc_FS

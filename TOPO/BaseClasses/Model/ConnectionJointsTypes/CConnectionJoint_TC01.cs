@@ -57,8 +57,13 @@ namespace BaseClasses
 
             CScrewArrangement screwArrangement;
             string sPlatePrefix;
+            CWasher_W washerPlateTop;
+            CWasher_W washerBearing;
 
-            SetPlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, fh_plate, out sPlatePrefix, out screwArrangement);
+            SetPlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, fh_plate, out sPlatePrefix, out screwArrangement, out washerPlateTop, out washerBearing);
+
+            referenceAnchor.WasherPlateTop = washerPlateTop;
+            referenceAnchor.WasherBearing = washerBearing;
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees

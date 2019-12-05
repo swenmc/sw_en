@@ -36,7 +36,7 @@ namespace DATABASE
             return items;
         }
 
-        public static List<string> GetPlateLL_Names()
+        public static List<string> GetPlateW_Names()
         {
             List<CRectWasher_W_Properties> items = LoadPlate_W_Descriptions();
 
@@ -95,10 +95,10 @@ namespace DATABASE
 
             CRectWasher_W_Properties properties = new CRectWasher_W_Properties();
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-            properties.Name = reader["plateName"].ToString();
-            properties.dim1x = double.Parse(reader["dim1x"].ToString(), nfi) / 1000;
-            properties.dim2y = double.Parse(reader["dim2y"].ToString(), nfi) / 1000;
-            properties.thickness = double.Parse(reader["t"].ToString(), nfi) / 1000;
+            properties.Name = reader["washerName"].ToString();
+            properties.dim1x = double.Parse(reader["dim1x_mm"].ToString(), nfi) / 1000;
+            properties.dim2y = double.Parse(reader["dim2y_mm"].ToString(), nfi) / 1000;
+            properties.thickness = double.Parse(reader["thickness_mm"].ToString(), nfi) / 1000;
             properties.NumberOfHoles = Int32.Parse(reader["iNumberHoles"].ToString());
             properties.Area = double.Parse(reader["area"].ToString(), nfi) / 1000000;
             properties.Volume = double.Parse(reader["volume"].ToString(), nfi) / 1000000000;
