@@ -95,6 +95,7 @@
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="CWashersManager.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
     <Compile Include="DTO\CLengthItemProperties.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="DTO\CMatPropertiesBOLT.cs" />
     <Compile Include="DTO\CMeshProperties.cs" />
     <Compile Include="DTO\CPlate_F_Properties.cs" />
+    <Compile Include="DTO\CRectWasher_W_Properties.cs" />
     <Compile Include="DTO\CPlate_LL_Properties.cs" />
     <Compile Include="DTO\CPlate_L_Properties.cs" />
     <Compile Include="DTO\CPlate_ScrewArrangementProperties.cs" />
@@ -163,6 +165,7 @@
     <None Include="Resources\MDBStrings.db3" />
     <None Include="Resources\MDBTEKScrews.db3" />
     <None Include="Resources\MDBTrapezoidalSheeting.db3" />
+    <None Include="Resources\MDBWashers.db3" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
