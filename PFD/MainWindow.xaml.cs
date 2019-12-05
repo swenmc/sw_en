@@ -1721,5 +1721,70 @@ namespace PFD
 
             vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
         }
+
+        private void ExportQuotation_Click(object sender, RoutedEventArgs e)
+        {
+            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
+            
+            WaitWindow ww = new WaitWindow("DOC");
+            ww.ContentRendered += Quotation_WaitWindow_ContentRendered;
+            ww.Show();
+        }
+                
+        private void Quotation_WaitWindow_ContentRendered(object sender, EventArgs e)
+        {
+            UC_Quotation uc_quotation = null;
+            if (Quotation.Content == null)            
+                uc_quotation = new UC_Quotation(vm);            
+            else uc_quotation = Quotation.Content as UC_Quotation;
+
+            List<DataTable> tables = new List<DataTable>();
+
+            DataGrid dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;            
+            DataView dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_Plates") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_Cladding") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_Fibreglass") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if(dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_RoofNetting") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_DoorsAndWindows") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_Gutters") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            dataGrid = uc_quotation.FindName("Datagrid_Flashing") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
+            try
+            {
+                ExportToWordDocument.ReportQuotationToWordDoc(tables);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                WaitWindow ww = sender as WaitWindow;
+                if (ww != null) ww.Close();
+            }
+        }
     }
 }

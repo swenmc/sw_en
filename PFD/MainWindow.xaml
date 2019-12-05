@@ -604,8 +604,9 @@
                 <Button Content="Wind Pressure" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="WindPressureButton_Click"/>
                 <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="PurlinDesignerButton_Click"/>
 
-                <Button Name="ExportPDF" Content="Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportPDF_Click"/>
-                <Button Name="ExportWord" Content="Report Word" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportWord_Click"/>
+                <Button Name="ExportPDF" Content="Export Layouts" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportPDF_Click"/>
+                <Button Name="ExportWord" Content="Export Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportWord_Click"/>
+                <Button Name="ExportQuotation" Content="Export Quotation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportQuotation_Click"/>
 
                 
 

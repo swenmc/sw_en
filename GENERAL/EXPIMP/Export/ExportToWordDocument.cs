@@ -77,6 +77,37 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
+        public static void ReportQuotationToWordDoc(List<DataTable> tables)
+        {
+            string fileName = GetQuotationName();
+            // Create a new document.
+            using (DocX document = DocX.Create(fileName))
+            {
+                Paragraph par = document.InsertParagraph("Quotation");
+
+                foreach (DataTable dt in tables)
+                {
+                    Table t = GetTable(document, dt);
+                    par = par.InsertParagraphAfterSelf("");
+                    AddSimpleTableAfterParagraph(t, par);
+                }
+                
+                
+                
+                //// The path to a template document,
+                //string templatePath = resourcesFolderPath + "TemplateReport.docx";
+                //// Apply a template to the document based on a path.
+                //document.ApplyTemplate(templatePath);
+                //DrawProjectInfo(document, modelData.ProjectInfo);
+                //CreateTOC(document);
+
+
+                // Save this document to disk.
+                document.Save();
+            }
+            Process.Start(fileName);
+        }
+
         private static string GetReportName()
         {
             int count = 0;
@@ -85,6 +116,19 @@ namespace EXPIMP
             while (!nameOK)
             {
                 fileName = $"Report_{++count}.docx";
+
+                if (!System.IO.File.Exists(fileName)) nameOK = true;
+            }
+            return fileName;
+        }
+        private static string GetQuotationName()
+        {
+            int count = 0;
+            string fileName = null;
+            bool nameOK = false;
+            while (!nameOK)
+            {
+                fileName = $"Quotation_{++count}.docx";
 
                 if (!System.IO.File.Exists(fileName)) nameOK = true;
             }
