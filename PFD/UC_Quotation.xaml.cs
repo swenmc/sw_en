@@ -265,6 +265,22 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
+            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 30f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 20f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+
+            dt.Columns["Crsc"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -563,6 +579,31 @@ namespace PFD
             table.Columns["Total_Mass"].Caption = "Total Mass [kg]";
             table.Columns["Total_Price"].Caption = "Total Price [NZD]";
 
+            table.Columns["Prefix"].ExtendedProperties.Add("Width", 10f);
+            table.Columns["Quantity"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Material"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Width"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Height"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Thickness"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Area"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Mass_per_Piece"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Total_Area"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Total_Mass"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["Total_Price"].ExtendedProperties.Add("Width", 9f);
+            
+            table.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            table.Columns["Quantity"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Height"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Mass_per_Piece"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Total_Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Total_Mass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Total_Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -661,6 +702,18 @@ namespace PFD
             dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
+            
+            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 20f);
+            dt.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Color"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 10f);
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -801,6 +854,18 @@ namespace PFD
             dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
+            dt.Columns["Opening"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Width"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Height"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Area"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 9f);
+                        
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -904,6 +969,14 @@ namespace PFD
             dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
+            
+            dt.Columns["Fibreglass"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1007,6 +1080,13 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
+            dt.Columns["Component"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -1144,6 +1224,13 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
+            dt.Columns["Flashing"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+                        
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -1311,6 +1398,13 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
+            dt.Columns["Gutter"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+                        
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset

@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xceed.Words.NET;
 
@@ -30,6 +31,8 @@ namespace EXPIMP
         private const string resourcesFolderPath = "./../../Resources/";
         private const double fontSizeInTable = 8;
         private const int imageMaxWidth = 720;
+
+        private const float quotationTableWidth = 520;
 
         public static void ReportAllDataToWordDoc(CModelData modelData)
         {
@@ -87,9 +90,9 @@ namespace EXPIMP
 
                 foreach (DataTable dt in tables)
                 {
-                    Table t = GetTable(document, dt);
+                    Table t = GetTableFromDataTable(document, dt);
                     par = par.InsertParagraphAfterSelf("");
-                    AddSimpleTableAfterParagraph(t, par, true);
+                    par.InsertTableBeforeSelf(t);
                 }
                 
                 
@@ -1294,6 +1297,64 @@ namespace EXPIMP
             SetFontSizeForTable(t);
 
             return t;
+        }
+
+        private static Table GetTableFromDataTable(DocX document, DataTable dt)
+        {
+            var t = document.AddTable(dt.Rows.Count + 1, dt.Columns.Count);
+            t.Design = TableDesign.TableGrid;
+            t.Alignment = Alignment.left;
+
+            List<float> columnsWidths = new List<float>();
+            //header
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j].Caption);                
+                t.Rows[0].Cells[j].Paragraphs[0].Bold();
+                if (dt.Columns[j].ExtendedProperties["Width"] != null)
+                {
+                    columnsWidths.Add((float)dt.Columns[j].ExtendedProperties["Width"]);
+                }
+                else columnsWidths.Add(100f / dt.Columns.Count);
+
+                SetAlignment(dt.Columns[j], t.Rows[0].Cells[j].Paragraphs[0]);
+            }
+
+            // For each load case add one row
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j].ToString());
+                    SetAlignment(dt.Columns[j], t.Rows[i + 1].Cells[j].Paragraphs[0]);
+                }
+            }
+
+            SetFontSizeForTable(t);
+            
+            t.AutoFit = AutoFit.ColumnWidth;
+            t.SetWidthsPercentage(columnsWidths.ToArray(), quotationTableWidth);
+
+            return t;
+        }
+
+        private static void SetAlignment(DataColumn col, Paragraph p)
+        {
+            if (col.ExtendedProperties["Align"] != null)
+            {
+                if ((AlignmentX)col.ExtendedProperties["Align"] == AlignmentX.Left)
+                {
+                    p.Alignment = Alignment.left;
+                }
+                else if ((AlignmentX)col.ExtendedProperties["Align"] == AlignmentX.Right)
+                {
+                    p.Alignment = Alignment.right;
+                }
+                else if ((AlignmentX)col.ExtendedProperties["Align"] == AlignmentX.Center)
+                {
+                    p.Alignment = Alignment.center;
+                }
+            }
         }
 
         private static void CreateTOC(DocX document)
