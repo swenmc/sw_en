@@ -236,6 +236,16 @@ namespace MATH
             p.Y = py;
         }
 
+        public static Point GetTransformedPoint_CCW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, Point p)
+        {
+            double px = p.X;
+            double py = p.Y;
+
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
+
+            return new Point(px, py);
+        }
+
         // Transform array
         //public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
         //{
@@ -281,7 +291,18 @@ namespace MATH
                     points[i] = GetTransformedPoint_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
                 }
             }
-        }        
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref List<Point> points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    points[i] = GetTransformedPoint_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                }
+            }
+        }
 
         // Mirror
         //public static void MirrorAboutY_ChangeXCoordinatesArray(ref float[,] array)
@@ -773,7 +794,7 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
-        public static List<Point> GetPolygonPointCoord(float fa, short iNumEdges)
+        public static List<Point> GetPolygonPointCoord_CW(float fa, short iNumEdges)
         {
             m_ListPointsCoord2D = new List<Point>(iNumEdges);
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
@@ -873,7 +894,7 @@ namespace MATH
         }
         public static List<Point> GetTrianEqLatPointCoord2(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 3);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 3);
             return m_ListPointsCoord2D;
         }
         // Isosceles
@@ -963,7 +984,7 @@ namespace MATH
         }
         public static List<Point> GetSquarePointCoord2(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 4);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 4);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1023,7 +1044,7 @@ namespace MATH
         }
         public static List<Point> GetPentagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 5);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 5);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1036,7 +1057,7 @@ namespace MATH
         }
         public static List<Point> GetHexagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 6);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 6);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1049,7 +1070,7 @@ namespace MATH
         }
         public static List<Point> GetHeptagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 7);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 7);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1062,7 +1083,7 @@ namespace MATH
         }
         public static List<Point> GetOctagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 8);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 8);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1075,7 +1096,7 @@ namespace MATH
         }
         public static List<Point> GetNonagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 9);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 9);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1088,7 +1109,7 @@ namespace MATH
         }
         public static List<Point> GetDecagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 10);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 10);
             return m_ListPointsCoord2D;
         }
         #endregion        
@@ -1101,7 +1122,7 @@ namespace MATH
         }
         public static List<Point> GetHendecagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 11);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 11);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1114,7 +1135,7 @@ namespace MATH
         }
         public static List<Point> GetDodecagonPointCoord(float fa)
         {
-            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 12);
+            m_ListPointsCoord2D = GetPolygonPointCoord_CW(fa, 12);
             return m_ListPointsCoord2D;
         }
         #endregion
@@ -1150,6 +1171,58 @@ namespace MATH
             return EdgePointsAndCentroid;
         }
         #endregion
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Returns list of polygon points including regulary placed points on sides
+        // Can be used for to define positions or triangle indices of polygon with opening (other polygon) in cases that number of edges is not equal
+        public static List<Point> GetPolygonPointsIncludingIntermediateOnSides_CW(float fRadius, int iPolygonEdges, int iSegmentsPerOneSide)
+        {
+            List<Point> pointsOutBasic = GetPolygonPointCoord_CW(fRadius, (short)iPolygonEdges);
+
+            int iPointsTotal = iPolygonEdges * iSegmentsPerOneSide;
+
+            float fAngleBasic_rad = MathF.fPI / iPolygonEdges;
+            float fAngleIncrement_rad = MathF.fPI / iPointsTotal;
+
+            List<Point> pointsOut = new List<Point>();
+
+            for (int i = 0; i < pointsOutBasic.Count; i++) // Each Side
+            {
+                double dDeltaSegment_x, dDeltaSegment_y, dSegmentLength; // Priemety segmentu a dlzka segmentu
+
+                if (i < pointsOutBasic.Count - 1)
+                {
+                    dDeltaSegment_x = pointsOutBasic[i + 1].X - pointsOutBasic[i].X;
+                    dDeltaSegment_y = pointsOutBasic[i + 1].Y - pointsOutBasic[i].Y;
+                }
+                else // Last segment
+                {
+                    dDeltaSegment_x = pointsOutBasic[0].X - pointsOutBasic[i].X;
+                    dDeltaSegment_y = pointsOutBasic[0].Y - pointsOutBasic[i].Y;
+                }
+
+                dSegmentLength = Math.Sqrt(MathF.Pow2(dDeltaSegment_x) + MathF.Pow2(dDeltaSegment_y)); // Dlzka strany polygonu (hlavneho segmentu)
+
+                for (int j = 0; j < iSegmentsPerOneSide; j++) // Each Segment in One Side
+                {
+                    // Dielcie segmenty v ramci jednej strany
+
+                    double dAngle = j * fAngleIncrement_rad;
+                    double dParticularSegmentAngleToBasicAngleRatio = dAngle / fAngleBasic_rad;
+                    double dAbsolutePositionOnSide = dParticularSegmentAngleToBasicAngleRatio * dSegmentLength;
+
+                    double dDelta_x = dAbsolutePositionOnSide / dSegmentLength * dDeltaSegment_x; // Priemety bodu v ramci segmentu
+                    double dDelta_y = dAbsolutePositionOnSide / dSegmentLength * dDeltaSegment_y;
+
+                    double x = pointsOutBasic[i].X + dDelta_x; // Suradnice bodu na strane
+                    double y = pointsOutBasic[i].Y + dDelta_y;
+
+                    pointsOut.Add(new Point(x, y));
+                }
+            }
+
+            return pointsOut;
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Returns polygonal area - consider orientation (positive or negative)
