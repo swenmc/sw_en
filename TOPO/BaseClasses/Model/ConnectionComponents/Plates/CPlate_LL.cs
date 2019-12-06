@@ -615,6 +615,7 @@ namespace BaseClasses
         }
 
         // TODO Ondrej - Indices pre wireframe plechu
+        /*
         public override void loadWireFrameIndices()
         {
             Int32Collection wireFrameIndices = new Int32Collection();
@@ -736,6 +737,6 @@ namespace BaseClasses
 
             wireFrameIndices.Add(9);
             wireFrameIndices.Add(17);
-        }
+        }*/
     }
 }

@@ -1,13 +1,15 @@
 ﻿using System;
-using _3DTools;
-using BaseClasses.GraphObj;
-using BaseClasses.GraphObj.Objects_3D;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using MATH;
+using System.Collections.Generic;
+using System.Windows;
 using DATABASE;
 using DATABASE.DTO;
 using MATERIAL;
+using MATH;
+using _3DTools;
+using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {
@@ -154,6 +156,15 @@ namespace BaseClasses
             }
         }
 
+        List<Point> pointsIn_2D;
+        List<Point> pointsOut_2D;
+
+        short iEdgesOutBasic = 6;
+        short iNumberOfSegmentsPerSideOut = 4;
+
+        int INoPoints2Dfor3D;
+        int ITotNoPointsin3D;
+
         [NonSerialized]
         public DiffuseMaterial m_DiffuseMat;
         [NonSerialized]
@@ -172,17 +183,27 @@ namespace BaseClasses
 
             m_pControlPoint = controlpoint;
 
-            CBoltNutProperties properties = CBoltNutsManager.GetBoltNutProperties(Name, "Nuts");
+            // Load properties from the database
+            if (name_temp != null)
+            {
+                CBoltNutProperties properties = CBoltNutsManager.GetBoltNutProperties(name_temp, "Nuts");
 
-            m_fPitch_coarse = (float)properties.Pitch_coarse;
-            m_fSizeAcrossFlats_max = (float)properties.SizeAcrossFlats_max;
-            m_fSizeAcrossFlats_min = (float)properties.SizeAcrossFlats_min;
-            m_fSizeAcrossCorners = (float)properties.SizeAcrossCorners;
-            m_fThickness_max = (float)properties.Thickness_max;
-            m_fThickness_min = (float)properties.Thickness_min;
-            m_fMass = (float)properties.Mass;
-            m_fPrice_PPKG_NZD = (float)properties.Price_PPKG_NZD;
-            m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
+                m_fPitch_coarse = (float)properties.Pitch_coarse;
+                m_fSizeAcrossFlats_max = (float)properties.SizeAcrossFlats_max;
+                m_fSizeAcrossFlats_min = (float)properties.SizeAcrossFlats_min;
+                m_fSizeAcrossCorners = (float)properties.SizeAcrossCorners;
+                m_fThickness_max = (float)properties.Thickness_max;
+                m_fThickness_min = (float)properties.Thickness_min;
+                m_fMass = (float)properties.Mass;
+                m_fPrice_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+                m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
+            }
+
+            INoPoints2Dfor3D = 24 + 24;
+            ITotNoPointsin3D = 48 + 48;
+
+            // Create Array - allocate memory
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             m_Mat.Name = nameMaterial_temp;
             ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
@@ -192,38 +213,133 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
+
+
             BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
+            // Calculate point positions
+            Calc_Coord2D();
+            Calc_Coord3D();
+
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
+        }
+
+        //----------------------------------------------------------------------------
+        // TODO Ondrej Refactoring Washer
+        public void Calc_Coord2D()
+        {
+            // Outline Points
+            // Outline Edges
+            float fRadiusOut = 0.5f * m_fSizeAcrossCorners;  // Toto ta ma nastavit ako polovica dlzky uhlopriecky maximalneho rozmeru nut
+            float fRadiusIn = 0.008f; // TODO - toto ta ma nastavit podla priemeru anchor
+
+            int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
+            int iEdgesInBasic = iEdgeOut;
+
+            float fAngleBasic_rad = MathF.fPI / iEdgesOutBasic;
+
+            List<Point> pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusOut, iEdgesOutBasic);
+            pointsIn_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
+            pointsOut_2D = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut); // Stvorec (TODO - zamysliet sa ako dorobit vynimku pre obldznik, uhol medzi uhloprieckami nie je rovnaky)
+        }
+
+        // TODO Ondrej Refactoring Washer
+        public void Calc_Coord3D()
+        {
+            int iNumberOfPointsPerPolygon = INoPoints2Dfor3D / 2;
+
+            // First layer
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                // Vonkajsi obvod
+                arrPoints3D[i].X = pointsOut_2D[i].X;
+                arrPoints3D[i].Y = pointsOut_2D[i].Y;
+                arrPoints3D[i].Z = 0;
+
+                // Vnutorny kruh
+                arrPoints3D[iNumberOfPointsPerPolygon + i].X = pointsIn_2D[i].X;
+                arrPoints3D[iNumberOfPointsPerPolygon + i].Y = pointsIn_2D[i].Y;
+                arrPoints3D[iNumberOfPointsPerPolygon + i].Z = 0;
+            }
+
+            // Second layer
+            for (int i = 0; i < INoPoints2Dfor3D; i++)
+            {
+                arrPoints3D[INoPoints2Dfor3D + i].X = arrPoints3D[i].X;
+                arrPoints3D[INoPoints2Dfor3D + i].Y = arrPoints3D[i].Y;
+                arrPoints3D[INoPoints2Dfor3D + i].Z = m_fThickness_max;
+            }
         }
 
         protected override void loadIndices()
         {
-
+            LoadIndicesPrismWithOpening(iEdgesOutBasic * iNumberOfSegmentsPerSideOut);
         }
+
+        // TODO Ondrej - refaktorovat s CConnector
 
         protected override Point3DCollection GetDefinitionPoints()
         {
-            Point3DCollection pointCollection = new Point3DCollection();
-            return pointCollection;
+            Point3DCollection pMeshPositions = new Point3DCollection();
+
+            foreach (Point3D point in arrPoints3D)
+                pMeshPositions.Add(point);
+
+            return pMeshPositions;
+        }
+
+        public void TransformCoord(GeometryModel3D model)
+        {
+            model.Transform = CreateTransformCoordGroup();
+        }
+
+        public Transform3DGroup CreateTransformCoordGroup()
+        {
+            RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
+
+            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), m_fRotationX_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), m_fRotationY_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
+
+            // Move 0,0,0 to the control point
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+
+            Transform3DGroup Trans3DGroup = new Transform3DGroup();
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Y);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
+            Trans3DGroup.Children.Add(Translate3D_AUX);
+            return Trans3DGroup;
         }
 
         public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
         {
+            m_DiffuseMat = new DiffuseMaterial(brush);
             GeometryModel3D geometryModel = new GeometryModel3D();
+
+            MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
+            meshGeom3D.Positions = GetDefinitionPoints();
+            meshGeom3D.TriangleIndices = TriangleIndices;
+
+            geometryModel.Geometry = meshGeom3D; // Set mesh to model
+            geometryModel.Material = m_DiffuseMat;
+
+            TransformCoord(geometryModel);
+
             return geometryModel;
         }
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
-            ScreenSpaceLines3D geometryWireFrameModel = new ScreenSpaceLines3D();
-            return geometryWireFrameModel;
+            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut);
         }
 
-        public override void loadWireFrameIndices()
-        { }
+        /*public override void loadWireFrameIndices()
+        { }*/
     }
 }

@@ -78,12 +78,13 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
+        // TODO Ondrej Refactoring CNut
         public override void Calc_Coord2D()
         {
             // Outline Points
             // Outline Edges
-            float fRadiusOut = 0.08f;
-            float fRadiusIn = 0.008f;
+            float fRadiusOut = 0.08f;  // TODO - toto ta ma nastavit ako polovica dlzky uhlopriecky
+            float fRadiusIn = 0.008f; // TODO - toto ta ma nastavit podla priemeru anchor
 
             int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
             int iEdgesInBasic = iEdgeOut;
@@ -109,6 +110,7 @@ namespace BaseClasses
             PointsOut2D = pointsOutBasic_2D.ToArray();
         }
 
+        // TODO Ondrej Refactoring CNut
         public override void Calc_Coord3D()
         {
             int iNumberOfPointsPerPolygon = INoPoints2Dfor3D / 2;
@@ -138,132 +140,12 @@ namespace BaseClasses
 
         protected override void loadIndices()
         {
-            int secNum = 16;
-            TriangleIndices = new Int32Collection();
-
-            // Bottom Side
-            for (int i = 0; i < secNum; i++)
-            {
-                if(i < secNum - 1)
-                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + i + 1, i + 1);
-                else
-                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + 0 + 1, 0);
-            }
-
-            // Top Side
-            for (int i = 0; i < secNum; i++)
-            {
-                if (i < secNum - 1)
-                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + i + 1, INoPoints2Dfor3D + i + 1);
-                else
-                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + 0 + 1, INoPoints2Dfor3D + 0);
-            }
-
-            // Shell Surface
-            // External surface
-            for (int i = 0; i < secNum; i++)
-            {
-                if (i < secNum - 1)
-                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + i + 1, i + 1);
-                else
-                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + 0 + 1, 0);
-            }
-
-            // Internal Surface
-            for (int i = 0; i < secNum; i++)
-            {
-                if (i < secNum - 1)
-                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + i + 1, secNum + i + 1);
-                else
-                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + 0 + 1, secNum + 0);
-            }
+            LoadIndicesPrismWithOpening(iEdgesOutBasic * iNumberOfSegmentsPerSideOut);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
-            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
-
-            int iNumberOfPointsPerPolygon = INoPoints2Dfor3D / 2;
-
-            // z = 0
-            // External Outline
-            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
-            {
-                if (i < iNumberOfPointsPerPolygon - 1)
-                {
-                    wireFrame.Points.Add(arrPoints3D[i]);
-                    wireFrame.Points.Add(arrPoints3D[i + 1]);
-                }
-                else
-                {
-                    wireFrame.Points.Add(arrPoints3D[i]);
-                    wireFrame.Points.Add(arrPoints3D[0]);
-                }
-            }
-
-            // Internal Outline
-            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
-            {
-                if (i < iNumberOfPointsPerPolygon - 1)
-                {
-                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i + 1]);
-                }
-                else
-                {
-                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + 0]);
-                }
-            }
-
-            // z = t
-            // External Outline
-            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
-            {
-                if (i < iNumberOfPointsPerPolygon - 1)
-                {
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i]);
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i + 1]);
-                }
-                else
-                {
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i]);
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + 0]);
-                }
-            }
-
-            // Internal Outline
-            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
-            {
-                if (i < iNumberOfPointsPerPolygon - 1)
-                {
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i + 1]);
-                }
-                else
-                {
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
-                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + 0]);
-                }
-            }
-
-            // Lateral
-            // External Outline
-            int iPosunBodov = iNumberOfSegmentsPerSideOut / 2;
-            for (int i = 0; i < iEdgesOutBasic; i++) // Len 4 rohove body
-            {
-                wireFrame.Points.Add(arrPoints3D[i * iNumberOfSegmentsPerSideOut + iPosunBodov]);
-                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + (i * iNumberOfSegmentsPerSideOut + iPosunBodov)]);
-            }
-
-            // Internal Outline
-            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
-            {
-                wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
-                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
-            }
-
-            return wireFrame;
+            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut);
         }
 
         // TODO Ondrej, pozri sa na to - asi to vies urobit lepsie
@@ -273,5 +155,7 @@ namespace BaseClasses
             points.AddRange(offSet); // Pridame polozky na koniec zoznamu
             points.RemoveRange(0, iOffsetCount); // Vymazeme polozky zo zaciatku zoznamu
         }
+
+        //public override void loadWireFrameIndices() { }
     }
 }
