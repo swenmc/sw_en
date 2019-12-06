@@ -256,6 +256,15 @@ namespace PFD
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
 
+            // Set Column Caption
+            dt.Columns["Crsc"].Caption = "Cross-section";
+            dt.Columns["Count"].Caption = "Count [-]";
+            dt.Columns["TotalLength"].Caption = "Length [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -321,7 +330,7 @@ namespace PFD
 
         private void Datagrid_Members_Loaded(object sender, RoutedEventArgs e)
         {
-            SetLastRowBold(Datagrid_Members);            
+            SetLastRowBold(Datagrid_Members); 
         }
 
         private void CreateTablePlates(CModel model)
@@ -540,7 +549,20 @@ namespace PFD
             table.Columns.Add("Total_Area", typeof(Decimal));
             table.Columns.Add("Total_Mass", typeof(Decimal));
             table.Columns.Add("Total_Price", typeof(Decimal));
-            
+
+            // Set Column Caption
+            table.Columns["Prefix"].Caption = "Prefix";
+            table.Columns["Quantity"].Caption = "Quantity [-]";
+            table.Columns["Material"].Caption = "Material";
+            table.Columns["Width"].Caption = "Width [m]";
+            table.Columns["Height"].Caption = "Height [m]";
+            table.Columns["Thickness"].Caption = "Thickness [m]";
+            table.Columns["Area"].Caption = "Area [m2]";
+            table.Columns["Mass_per_Piece"].Caption = "Mass per Piece [kg]";
+            table.Columns["Total_Area"].Caption = "Total Area [m2]";
+            table.Columns["Total_Mass"].Caption = "Total Mass [kg]";
+            table.Columns["Total_Price"].Caption = "Total Price [NZD]";
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -766,6 +788,19 @@ namespace PFD
             dt.Columns.Add("UnitPrice_PPP", typeof(String));
             dt.Columns.Add("Price", typeof(String));
 
+            // Set Column Caption
+            dt.Columns["Opening"].Caption = "Opening";
+            dt.Columns["Width"].Caption = "Width [m]";
+            dt.Columns["Height"].Caption = "Height [m]";
+            dt.Columns["Count"].Caption = "Count [-]";
+            dt.Columns["Area"].Caption = "Area [m2]";
+            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice_PPSM"].Caption = "Unit Price [NZD/m2]";
+            dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -861,6 +896,15 @@ namespace PFD
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
 
+            // Set Column Caption
+            dt.Columns["Fibreglass"].Caption = "Fibreglass";
+            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
+            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
             // Create Datases
             DataSet ds = new DataSet();
             // Add Table to Dataset
@@ -954,6 +998,14 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            dt.Columns["Component"].Caption = "Component";
+            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1083,6 +1135,14 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            dt.Columns["Flashing"].Caption = "Flashing";
+            dt.Columns["TotalLength"].Caption = "Total Length [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1242,6 +1302,14 @@ namespace PFD
             dt.Columns.Add("TotalMass", typeof(String));
             dt.Columns.Add("UnitPrice", typeof(String));
             dt.Columns.Add("Price", typeof(String));
+
+            // Set Column Caption
+            dt.Columns["Gutter"].Caption = "Gutter";
+            dt.Columns["TotalLength"].Caption = "Total Length [m]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
 
             // Create Datases
             DataSet ds = new DataSet();
