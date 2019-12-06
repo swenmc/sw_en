@@ -4,14 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
+using _3DTools;
 
 namespace BaseClasses
 {
     [Serializable]
     public class CWasher_W : CPlate
     {
+        List<Point> pointsIn_2D;
+        List<Point> pointsOut_2D;
+
+        short iEdgesOutBasic = 4;
+        short iNumberOfSegmentsPerSideOut = 4;
+
         public CWasher_W(string sName_temp,
             Point3D controlpoint,
             //float fbx_1_temp,
@@ -28,8 +36,8 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 4;
-            INoPoints2Dfor3D = 8;
-            ITotNoPointsin3D = 14;
+            INoPoints2Dfor3D = 16 + 16;
+            ITotNoPointsin3D = 32 + 32;
 
             m_pControlPoint = controlpoint;
             //m_fbX1 = fbx_1_temp;
@@ -43,12 +51,9 @@ namespace BaseClasses
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
-            //arrPoints3D = new Point3D[ITotNoPointsin3D];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            // Calculate point positions
-            Calc_Coord2D();
-            //Calc_Coord3D();
-
+            // Load washer properties from the database
             if (sName_temp != null)
             {
                 DATABASE.DTO.CRectWasher_W_Properties prop = DATABASE.CWashersManager.GetPlate_W_Properties(sName_temp);
@@ -65,6 +70,10 @@ namespace BaseClasses
                 Price_PPP_NZD = prop.Price_PPP_NZD;
             }
 
+            // Calculate point positions
+            Calc_Coord2D();
+            Calc_Coord3D();
+
             //UpdatePlateData(screwArrangement);
         }
 
@@ -73,31 +82,188 @@ namespace BaseClasses
         {
             // Outline Points
             // Outline Edges
-            float fRadiusOut = 0.2f;
-            float fRadiusIn = 0.1f;
+            float fRadiusOut = 0.08f;
+            float fRadiusIn = 0.008f;
 
-            short iEdgesOutBasic = 4;
-            short iNumberOfSegmentsPerSideOut = 4;
             int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
             int iEdgesInBasic = iEdgeOut;
 
             float fAngleBasic_rad = MathF.fPI / iEdgesOutBasic;
 
-            List<Point> pointsOutBasic = Geom2D.GetPolygonPointCoord_CW(fRadiusOut, iEdgesOutBasic);
-            List<Point> pointsInBasic = Geom2D.GetPolygonPointCoord_CW(fRadiusIn, (short)iEdgesInBasic);
+            List<Point>pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusOut, iEdgesOutBasic);
+            pointsIn_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
+            pointsOut_2D = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut); // Stvorec (TODO - zamysliet sa ako dorobit vynimku pre obldznik, uhol medzi uhloprieckami nie je rovnaky)
 
-            List<Point> pointsOut = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut); // Stvorec (TODO - zamysliet sa ako dorobit vynimku pre obldznik, uhol medzi uhloprieckami nie je rovnaky)
-
-            // Pre kombinaciu stvorca a kruhu musime stvorec musime body pootocit tak aby bol prvy bod v y = 0 a uprostred strany stvorca, nie rohovy bod
+            // Pre kombinaciu stvorca a kruhu musime body stvorca pootocit tak, aby bol prvy bod v y = 0 a uprostred strany stvorca, nie rohovy bod
             // Naprv presunieme body tak aby bol prvy bod zoznamu bod ktory je uprostred strany stvorca
-            ChangeFirstNodeOfinList(2, ref pointsOut);
+            ChangeFirstNodeOfinList(2, ref pointsOut_2D);
 
             // Nasledne pootocime body okolo [0,0] o 45 stupnov proti smeru hodinovych ruciciek
-            Geom2D.TransformPositions_CCW_rad(0, 0, fAngleBasic_rad, ref pointsOut);
+            Geom2D.TransformPositions_CCW_rad(0, 0, fAngleBasic_rad, ref pointsOut_2D);
 
-            List<Point> pointsIn = pointsInBasic; // Kruh vo vnutri
+            // !!! Ostatne plates maju body definovane proti smeru hodinovych ruciciek s [0,0] vlavo dole, toto je v smere hodinovych ruciciek a [0,0] je v strede
+            ChangeFirstNodeOfinList(2, ref pointsOutBasic_2D);
+            // Nasledne pootocime body okolo [0,0] o 45 stupnov proti smeru hodinovych ruciciek
+            Geom2D.TransformPositions_CCW_rad(0, 0, fAngleBasic_rad, ref pointsOutBasic_2D);
 
-            PointsOut2D = pointsOutBasic.ToArray();
+            PointsOut2D = pointsOutBasic_2D.ToArray();
+        }
+
+        public override void Calc_Coord3D()
+        {
+            int iNumberOfPointsPerPolygon = INoPoints2Dfor3D / 2;
+
+            // First layer
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                // Vonkajsi obvod
+                arrPoints3D[i].X = pointsOut_2D[i].X;
+                arrPoints3D[i].Y = pointsOut_2D[i].Y;
+                arrPoints3D[i].Z = 0;
+
+                // Vnutorny kruh
+                arrPoints3D[iNumberOfPointsPerPolygon + i].X = pointsIn_2D[i].X;
+                arrPoints3D[iNumberOfPointsPerPolygon + i].Y = pointsIn_2D[i].Y;
+                arrPoints3D[iNumberOfPointsPerPolygon + i].Z = 0;
+            }
+
+            // Second layer
+            for (int i = 0; i < INoPoints2Dfor3D; i++)
+            {
+                arrPoints3D[INoPoints2Dfor3D + i].X = arrPoints3D[i].X;
+                arrPoints3D[INoPoints2Dfor3D + i].Y = arrPoints3D[i].Y;
+                arrPoints3D[INoPoints2Dfor3D + i].Z = 3  * Ft; // POKUSSSS
+            }
+        }
+
+        protected override void loadIndices()
+        {
+            int secNum = 16;
+            TriangleIndices = new Int32Collection();
+
+            // Bottom Side
+            for (int i = 0; i < secNum; i++)
+            {
+                if(i < secNum - 1)
+                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + i + 1, i + 1);
+                else
+                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + 0 + 1, 0);
+            }
+
+            // Top Side
+            for (int i = 0; i < secNum; i++)
+            {
+                if (i < secNum - 1)
+                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + i + 1, INoPoints2Dfor3D + i + 1);
+                else
+                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + 0 + 1, INoPoints2Dfor3D + 0);
+            }
+
+            // Shell Surface
+            // External surface
+            for (int i = 0; i < secNum; i++)
+            {
+                if (i < secNum - 1)
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + i + 1, i + 1);
+                else
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + 0 + 1, 0);
+            }
+
+            // Internal Surface
+            for (int i = 0; i < secNum; i++)
+            {
+                if (i < secNum - 1)
+                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + i + 1, secNum + i + 1);
+                else
+                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + 0 + 1, secNum + 0);
+            }
+        }
+
+        public override ScreenSpaceLines3D CreateWireFrameModel()
+        {
+            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
+
+            int iNumberOfPointsPerPolygon = INoPoints2Dfor3D / 2;
+
+            // z = 0
+            // External Outline
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                if (i < iNumberOfPointsPerPolygon - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[i]);
+                    wireFrame.Points.Add(arrPoints3D[i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[i]);
+                    wireFrame.Points.Add(arrPoints3D[0]);
+                }
+            }
+
+            // Internal Outline
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                if (i < iNumberOfPointsPerPolygon - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + 0]);
+                }
+            }
+
+            // z = t
+            // External Outline
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                if (i < iNumberOfPointsPerPolygon - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i]);
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + i]);
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + 0]);
+                }
+            }
+
+            // Internal Outline
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                if (i < iNumberOfPointsPerPolygon - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
+                    wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + 0]);
+                }
+            }
+
+            // Lateral
+            // External Outline
+            int iPosunBodov = iNumberOfSegmentsPerSideOut / 2;
+            for (int i = 0; i < iEdgesOutBasic; i++) // Len 4 rohove body
+            {
+                wireFrame.Points.Add(arrPoints3D[i * iNumberOfSegmentsPerSideOut + iPosunBodov]);
+                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + (i * iNumberOfSegmentsPerSideOut + iPosunBodov)]);
+            }
+
+            // Internal Outline
+            for (int i = 0; i < iNumberOfPointsPerPolygon; i++)
+            {
+                wireFrame.Points.Add(arrPoints3D[iNumberOfPointsPerPolygon + i]);
+                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + iNumberOfPointsPerPolygon + i]);
+            }
+
+            return wireFrame;
         }
 
         // TODO Ondrej, pozri sa na to - asi to vies urobit lepsie

@@ -112,7 +112,7 @@ namespace BaseClasses
                     3, 1, 0.025f, 0.26f, 0.03f, 0.05f);
 
             string washerPlateTopName;
-            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, 0, 0, true);
+            washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
 
             if (sSectionNameDatabase == "10075")
             {
@@ -196,7 +196,7 @@ namespace BaseClasses
                                                   "Base plate of cross-section with this name is not implemented");
             }
 
-            washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, 0, 0, true);
+            washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
         }
 
         public virtual CConnectionJointTypes RecreateJoint()

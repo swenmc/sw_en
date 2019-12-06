@@ -1551,6 +1551,14 @@ namespace BaseClasses
                                                 GeometryModel3D plateConnectorgeom = plate.AnchorArrangement.Anchors[m].CreateGeomModel3D(brushAnchors);
                                                 plate.AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
                                                 plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+
+                                                GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushAnchors);
+                                                plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
+                                                plateConnectorsModelGroup.Children.Add(washerPlateTopGeom);
+
+                                                GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushAnchors);
+                                                plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
+                                                plateConnectorsModelGroup.Children.Add(washerBearingGeom);
                                             }
                                             plateConnectorsModelGroup.Transform = plateGeom.Transform;
                                             if (sDisplayOptions.bDisplayConnectors)
@@ -2406,6 +2414,38 @@ namespace BaseClasses
                                             Point3DCollection pointsConnector = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[m].WireFrameModelPointsFromVisual();
                                             var transPoints_PlateConnector = pointsConnector.Select(p => geom.Transform.Transform(p));
                                             jointPlatePoints.AddRange(transPoints_PlateConnector);
+                                        }
+                                    }
+
+                                    // Add plate anchors - only base plates
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+                                    {
+                                        CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+
+                                        if (plate.AnchorArrangement != null &&
+                                            plate.AnchorArrangement.Anchors != null &&
+                                            plate.AnchorArrangement.Anchors.Length > 0)
+                                        {
+                                            for (int m = 0; m < plate.AnchorArrangement.Anchors.Length; m++)
+                                            {
+                                                // Anchor
+                                                GeometryModel3D geom = plate.AnchorArrangement.Anchors[m].Visual_Connector;
+                                                Point3DCollection pointsConnector = plate.AnchorArrangement.Anchors[m].WireFrameModelPointsFromVisual();
+                                                var transPoints_PlateConnector = pointsConnector.Select(p => geom.Transform.Transform(p));
+                                                jointPlatePoints.AddRange(transPoints_PlateConnector);
+
+                                                // Washer - plate top
+                                                //GeometryModel3D geomWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate;
+                                                List<Point3D> pointsWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateWireFrameModel().Points.ToList();
+                                                var transPoints_WasherPlateTop = pointsWasherPlateTop.Select(p => geom.Transform.Transform(p));
+                                                jointPlatePoints.AddRange(transPoints_WasherPlateTop);
+
+                                                // Washer - bearing
+                                                //GeometryModel3D geomWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate;
+                                                List<Point3D> pointsWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateWireFrameModel().Points.ToList();
+                                                var transPoints_WasherBearing = pointsWasherBearing.Select(p => geom.Transform.Transform(p));
+                                                jointPlatePoints.AddRange(transPoints_WasherBearing);
+                                            }
                                         }
                                     }
                                 }
