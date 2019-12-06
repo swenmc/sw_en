@@ -1188,9 +1188,9 @@ namespace BaseClasses
                             DrawRectangle(opts.AnchorStrokeColor, null, opts.AnchorLineThickness, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
                             // Washers & Nuts
-                            CNut nut = new CNut(anchor.Name); // TODO - docasne - vytvorit databazu a napojit
-                            float fNutWidth = nut.fB_accrosCorners;
-                            float fNutHeight = nut.fC_headHeight;
+                            CNut nut = new CNut(anchor.Name, "8.8", new System.Windows.Media.Media3D.Point3D(0,0,0), 0,0,0, true); // Reference Nut // TODO - prerobit na skutocne nuts - 1x washer pre plate top a 2x bearing washer
+                            float fNutWidth = nut.SizeAcrossCorners;
+                            float fNutHeight = nut.Thickness_max;
 
                             // Washer - Plate
                             if (opts.bDrawWashers)

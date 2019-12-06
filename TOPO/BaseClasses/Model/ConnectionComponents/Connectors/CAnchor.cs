@@ -1,4 +1,5 @@
-﻿using BaseClasses.GraphObj;
+﻿using System;
+using BaseClasses.GraphObj;
 using BaseClasses.GraphObj.Objects_3D;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -6,9 +7,11 @@ using MATH;
 using DATABASE;
 using DATABASE.DTO;
 using MATERIAL;
+using System.Collections.Generic;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CAnchor : CConnector
     {
         // Anchor to plate edge distances
@@ -43,6 +46,8 @@ namespace BaseClasses
         private float m_fy_washer_bearing;
 
         private float m_fh_effective; // Effective Depth
+
+        private List<CNut> m_Nuts;
 
         //-------------------------------------------------------------------------------------------------------------
         public float x_pe_minus
@@ -339,6 +344,20 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public List<CNut> Nuts
+        {
+            get
+            {
+                return m_Nuts;
+            }
+
+            set
+            {
+                m_Nuts = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         private float m_fDiameter_pitch;
         public float Diameter_pitch
         {
@@ -556,6 +575,11 @@ namespace BaseClasses
                 m_WasherPlateTop = washerPlateTop;
                 x_washer_plate = washerPlateTop.Width_bx; // 80 mm
                 y_washer_plate = washerPlateTop.Height_hy; // 80 mm
+
+                m_Nuts = new List<CNut>();
+
+                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
+                m_Nuts.Add(nut);
             }
 
             // Bearing washer
@@ -564,6 +588,14 @@ namespace BaseClasses
                 m_WasherBearing = washerBearing;
                 x_washer_bearing = washerBearing.Width_bx; // 60 mm
                 y_washer_bearing = washerBearing.Height_hy; // 60 mm
+
+                if(m_Nuts == null)
+                    m_Nuts = new List<CNut>();
+
+                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
+                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
+                m_Nuts.Add(nutTop);
+                m_Nuts.Add(nutBottom);
             }
 
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
@@ -577,8 +609,6 @@ namespace BaseClasses
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
 
             Mass = GetMass();
-
-            BIsDisplayed = bIsDisplayed;
 
             BIsDisplayed = bIsDisplayed;
 

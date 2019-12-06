@@ -1,59 +1,229 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using _3DTools;
+using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using MATH;
+using DATABASE;
+using DATABASE.DTO;
+using MATERIAL;
 
 namespace BaseClasses
 {
-    public class CNut : CEntity3D
+    [Serializable]
+    public class CNut : CConnectionComponentEntity3D
     {
-        public float fA_accrosFlats;
-        public float fB_accrosCorners;
-        public float fC_headHeight;
-
-        public CNut(string sTypeDiameter)
+        private string m_Name;
+        public string Name
         {
-            // TODO - vypracovat databazu
-
-            /*
-
-            DIA  PITCH  A ACROSS FLATS     B ACROSS CORNERS     C HEAD HEIGHT     E SHANK DIAMETER
-                   MM       MAX MIN              MIN                  MAX             MAX MIN
-            M5 0.8 8 7.78 9.2 3.5 5 4.82
-            M6 1 10 9.78 11.5 4 6 5.82
-            M8 1.25 13 12.73 15 5.3 8 7.78
-            M10 1.5 16 15.73 18.4 6.4 10 9.78
-            M12 1.75 18 17.73 20.7 7.5 12 11.73
-            M14 2 21 20.67 24.2 8.8 14 13.73
-            M16 2 24 23.67 27.7 10 16 15.73
-            M18 2.5 27 26.67 31.2 11.5 18 17.73
-            M20 2.5 30 29.67 34.6 12.5 20 19.67
-            M22 2.5 34 33.38 39.3 14 22 21.67
-            M24 3 36 35.38 41.6 15 24 23.67
-            M27 3 41 40.38 47.3 16.7 27 26.67
-            M30 3.5 46 45 53.1 18.7 30 29.67
-            M33 3.5 50 49 57.7 20.5 33 32.61
-            M36 4 55 53.8 63.5 22.5 36 35.61
-             */
-
-            // DOCASNE
-            if(sTypeDiameter == "M16")
+            get
             {
-                fA_accrosFlats = 24f / 1000f;
-                fB_accrosCorners = 27.7f / 1000f;
-                fC_headHeight = 10f / 1000f;
+                return m_Name;
             }
-            else if(sTypeDiameter == "M20")
+
+            set
             {
-                fA_accrosFlats = 30f / 1000f;
-                fB_accrosCorners = 34.6f / 1000f;
-                fC_headHeight = 12.5f / 1000f;
-            }
-            else
-            {
-                throw new Exception("Not implemented!");
+                m_Name = value;
             }
         }
+
+        private float m_fPitch_coarse;
+        public float Pitch_coarse
+        {
+            get
+            {
+                return m_fPitch_coarse;
+            }
+
+            set
+            {
+                m_fPitch_coarse = value;
+            }
+        }
+
+        private float m_fSizeAcrossFlats_max;
+        public float SizeAcrossFlats_max
+        {
+            get
+            {
+                return m_fSizeAcrossFlats_max;
+            }
+
+            set
+            {
+                m_fSizeAcrossFlats_max = value;
+            }
+        }
+
+        private float m_fSizeAcrossFlats_min;
+        public float SizeAcrossFlats_min
+        {
+            get
+            {
+                return m_fSizeAcrossFlats_min;
+            }
+
+            set
+            {
+                m_fSizeAcrossFlats_min = value;
+            }
+        }
+
+        private float m_fSizeAcrossCorners;
+        public float SizeAcrossCorners
+        {
+            get
+            {
+                return m_fSizeAcrossCorners;
+            }
+
+            set
+            {
+                m_fSizeAcrossCorners = value;
+            }
+        }
+
+        private float m_fThickness_max;
+        public float Thickness_max
+        {
+            get
+            {
+                return m_fThickness_max;
+            }
+
+            set
+            {
+                m_fThickness_max = value;
+            }
+        }
+
+        private float m_fThickness_min;
+        public float Thickness_min
+        {
+            get
+            {
+                return m_fThickness_min;
+            }
+
+            set
+            {
+                m_fThickness_min = value;
+            }
+        }
+
+        private float m_fMass;
+        public float Mass
+        {
+            get
+            {
+                return m_fMass;
+            }
+
+            set
+            {
+                m_fMass = value;
+            }
+        }
+
+        private float m_fPrice_PPKG_NZD;
+        public float Price_PPKG_NZD
+        {
+            get
+            {
+                return m_fPrice_PPKG_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPKG_NZD = value;
+            }
+        }
+
+        private float m_fPrice_PPP_NZD;
+        public float Price_PPP_NZD
+        {
+            get
+            {
+                return m_fPrice_PPP_NZD;
+            }
+
+            set
+            {
+                m_fPrice_PPP_NZD = value;
+            }
+        }
+
+        [NonSerialized]
+        public DiffuseMaterial m_DiffuseMat;
+        [NonSerialized]
+        public GeometryModel3D Visual_Nut;
+
+        public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
+
+        public CNut() : base()
+        {
+        }
+
+        public CNut(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        {
+            Prefix = "Nut";
+            m_Name = name_temp;
+
+            m_pControlPoint = controlpoint;
+
+            CBoltNutProperties properties = CBoltNutsManager.GetBoltNutProperties(Name, "Nuts");
+
+            m_fPitch_coarse = (float)properties.Pitch_coarse;
+            m_fSizeAcrossFlats_max = (float)properties.SizeAcrossFlats_max;
+            m_fSizeAcrossFlats_min = (float)properties.SizeAcrossFlats_min;
+            m_fSizeAcrossCorners = (float)properties.SizeAcrossCorners;
+            m_fThickness_max = (float)properties.Thickness_max;
+            m_fThickness_min = (float)properties.Thickness_min;
+            m_fMass = (float)properties.Mass;
+            m_fPrice_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+            m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
+
+            m_Mat.Name = nameMaterial_temp;
+            ((CMat_03_00)m_Mat).m_ft_interval = new float[1] { 0.100f };
+
+            CMatPropertiesBOLT materialProperties = CMaterialManager.LoadMaterialPropertiesBOLT(m_Mat.Name);
+
+            ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
+            ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
+
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
+        }
+
+        protected override void loadIndices()
+        {
+
+        }
+
+        protected override Point3DCollection GetDefinitionPoints()
+        {
+            Point3DCollection pointCollection = new Point3DCollection();
+            return pointCollection;
+        }
+
+        public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
+        {
+            GeometryModel3D geometryModel = new GeometryModel3D();
+            return geometryModel;
+        }
+        public override ScreenSpaceLines3D CreateWireFrameModel()
+        {
+            ScreenSpaceLines3D geometryWireFrameModel = new ScreenSpaceLines3D();
+            return geometryWireFrameModel;
+        }
+
+        public override void loadWireFrameIndices()
+        { }
     }
 }
