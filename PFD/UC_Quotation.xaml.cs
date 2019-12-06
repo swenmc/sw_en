@@ -77,6 +77,8 @@ namespace PFD
             // Treba spravne naformatovat stlpce a pocty desatinnych miest
             // Pridat vsetky anchors zo vsetkych base plate "plate typu B" Plate AnchorArrangement
 
+            CreateTableConnectors(model);
+
             // DG 4
             // Bolt Nuts
 
@@ -638,6 +640,57 @@ namespace PFD
         private void Datagrid_Plates_Loaded(object sender, RoutedEventArgs e)
         {
             SetLastRowBold(Datagrid_Plates);
+        }
+
+
+        private void CreateTableConnectors(CModel model)
+        {
+            // Create Table
+            DataTable dt = new DataTable("TableConnectors");
+            // Create Table Rows
+            dt.Columns.Add("Prefix", typeof(String));
+            dt.Columns.Add("Quantity", typeof(Int32));
+            dt.Columns.Add("Material", typeof(String));
+            dt.Columns.Add("Size", typeof(String));
+            dt.Columns.Add("Mass_per_Piece", typeof(String));
+            dt.Columns.Add("Total_Mass", typeof(Decimal));
+            dt.Columns.Add("Total_Price", typeof(Decimal));
+
+            // Set Column Caption
+            dt.Columns["Prefix"].Caption = "Prefix1";
+            dt.Columns["Quantity"].Caption = "Quantity";
+            dt.Columns["Material"].Caption = "Material";
+            dt.Columns["Size"].Caption = "Size";
+            dt.Columns["Mass_per_Piece"].Caption = "Mass_per_Piece";
+            dt.Columns["Total_Mass"].Caption = "Total_Mass";
+            dt.Columns["Total_Price"].Caption = "Total_Price";
+
+            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 30f);
+            dt.Columns["Quantity"].ExtendedProperties.Add("Width", 20f);
+            dt.Columns["Material"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Mass_per_Piece"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Total_Mass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Total_Price"].ExtendedProperties.Add("Width", 10f);
+
+            dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["Quantity"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Mass_per_Piece"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Total_Mass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Total_Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            
+
+            Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
+            //Datagrid_Connectors.Loaded += ;
+
         }
 
         private void CreateTableCladding(CPFDViewModel vm,
