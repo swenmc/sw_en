@@ -1748,6 +1748,10 @@ namespace PFD
             dw = dataGrid.ItemsSource as DataView;
             if (dw != null) tables.Add(dw.Table);
 
+            dataGrid = uc_quotation.FindName("Datagrid_Connectors") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
             dataGrid = uc_quotation.FindName("Datagrid_Cladding") as DataGrid;
             dw = dataGrid.ItemsSource as DataView;
             if (dw != null) tables.Add(dw.Table);
