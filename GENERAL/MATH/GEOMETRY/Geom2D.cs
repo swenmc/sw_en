@@ -805,6 +805,17 @@ namespace MATH
 
             return m_ListPointsCoord2D;
         }
+        public static List<Point> GetPolygonPointCoord_RadiusInput_CW(float fOutSideRadius, short iNumEdges)
+        {
+            m_ListPointsCoord2D = new List<Point>(iNumEdges);
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+            for (int i = 0; i < iNumEdges; i++)
+            {
+                m_ListPointsCoord2D.Add(new Point(GetPositionX_deg(fOutSideRadius, i * 360 / iNumEdges), GetPositionY_CW_deg(fOutSideRadius, i * 360 / iNumEdges)));
+            }
+
+            return m_ListPointsCoord2D;
+        }
         #endregion
         #region Triangle
         // Triangle

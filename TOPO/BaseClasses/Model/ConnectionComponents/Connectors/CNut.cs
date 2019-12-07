@@ -160,7 +160,7 @@ namespace BaseClasses
         List<Point> pointsOut_2D;
 
         short iEdgesOutBasic = 6;
-        short iNumberOfSegmentsPerSideOut = 4;
+        short iNumberOfSegmentsPerSideOut = 2;
 
         int INoPoints2Dfor3D;
         int ITotNoPointsin3D;
@@ -199,8 +199,8 @@ namespace BaseClasses
                 m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
             }
 
-            INoPoints2Dfor3D = 24 + 24;
-            ITotNoPointsin3D = 48 + 48;
+            INoPoints2Dfor3D = 2 * iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
+            ITotNoPointsin3D = 2 * INoPoints2Dfor3D;
 
             // Create Array - allocate memory
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -212,8 +212,6 @@ namespace BaseClasses
 
             ((CMat_03_00)m_Mat).m_ff_yk = new float[1] { (float)materialProperties.Fy };
             ((CMat_03_00)m_Mat).m_ff_u = new float[1] { (float)materialProperties.Fu };
-
-
 
             BIsDisplayed = bIsDisplayed;
 
@@ -242,9 +240,9 @@ namespace BaseClasses
 
             float fAngleBasic_rad = MathF.fPI / iEdgesOutBasic;
 
-            List<Point> pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusOut, iEdgesOutBasic);
-            pointsIn_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
-            pointsOut_2D = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut); // Stvorec (TODO - zamysliet sa ako dorobit vynimku pre obldznik, uhol medzi uhloprieckami nie je rovnaky)
+            List<Point> pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_RadiusInput_CW(fRadiusOut, iEdgesOutBasic);
+            pointsIn_2D = Geom2D.GetPolygonPointCoord_RadiusInput_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
+            pointsOut_2D = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut);
         }
 
         // TODO Ondrej Refactoring Washer
@@ -318,25 +316,28 @@ namespace BaseClasses
             return Trans3DGroup;
         }
 
+        // TO Ondrej - Refaktorovat s CPlate a dalsimi objektami
         public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
         {
-            m_DiffuseMat = new DiffuseMaterial(brush);
-            GeometryModel3D geometryModel = new GeometryModel3D();
+            GeometryModel3D model = new GeometryModel3D();
 
-            MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
-            meshGeom3D.Positions = GetDefinitionPoints();
-            meshGeom3D.TriangleIndices = TriangleIndices;
+            // All in one mesh
+            MeshGeometry3D mesh = new MeshGeometry3D(); // Create geometry mesh
+            mesh.Positions = GetDefinitionPoints();
 
-            geometryModel.Geometry = meshGeom3D; // Set mesh to model
-            geometryModel.Material = m_DiffuseMat;
+            // Add Positions of nut points
+            loadIndices();
+            mesh.TriangleIndices = TriangleIndices;
 
-            TransformCoord(geometryModel);
+            model.Geometry = mesh;            // Set Model Geometry
+            model.Material = new DiffuseMaterial(brush);  // Set Model Material
+            TransformCoord(model);
 
-            return geometryModel;
+            return model;
         }
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
-            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut);
+            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut, false);
         }
 
         /*public override void loadWireFrameIndices()

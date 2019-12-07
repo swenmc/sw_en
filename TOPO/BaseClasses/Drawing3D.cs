@@ -1500,7 +1500,7 @@ namespace BaseClasses
             if (brushScrews == null) brushScrews = new SolidColorBrush(Colors.Red);
             if (brushAnchors == null) brushAnchors = new SolidColorBrush(Colors.Plum);
             if (brushWashers == null) brushWashers = new SolidColorBrush(Colors.Beige);
-            if (brushNuts == null) brushNuts = new SolidColorBrush(Colors.CornflowerBlue);
+            if (brushNuts == null) brushNuts = new SolidColorBrush(Colors.Yellow);
             if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange);
 
             Model3DGroup JointsModel3DGroup = null;
@@ -1566,7 +1566,7 @@ namespace BaseClasses
                                                 // Nuts
                                                 for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
                                                 {
-                                                    GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushNuts);
+                                                    GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
                                                     plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
                                                     plateConnectorsModelGroup.Children.Add(nutGeom);
                                                 }

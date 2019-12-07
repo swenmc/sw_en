@@ -267,23 +267,21 @@ namespace BaseClasses
             return Trans3DGroup;
         }
 
+        // TO Ondrej - Refaktorovat s CNut a dalsimi objektami
         public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
         {
             GeometryModel3D model = new GeometryModel3D();
 
             // All in one mesh
             MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
             mesh.Positions = GetDefinitionPoints();
 
             // Add Positions of plate edge nodes
             loadIndices();
             mesh.TriangleIndices = TriangleIndices;
 
-            model.Geometry = mesh;
-
+            model.Geometry = mesh;            // Set Model Geometry
             model.Material = new DiffuseMaterial(brush);  // Set Model Material
-
             TransformPlateCoord(model);
             return model;
         }

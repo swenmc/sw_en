@@ -83,7 +83,7 @@ namespace BaseClasses
         {
             // Outline Points
             // Outline Edges
-            float fRadiusOut = 0.08f;  // TODO - toto ta ma nastavit ako polovica dlzky uhlopriecky
+            float fRadiusOut = Width_bx * (float)MathF.dSqrt2 / 2;  // Ma sa nastavit ako polovica dlzky uhlopriecky // Plati len pre stvorcove podlozky, je potrebne doimplementovat obdlznikove
             float fRadiusIn = 0.008f; // TODO - toto ta ma nastavit podla priemeru anchor
 
             int iEdgeOut = iEdgesOutBasic * iNumberOfSegmentsPerSideOut;
@@ -91,8 +91,8 @@ namespace BaseClasses
 
             float fAngleBasic_rad = MathF.fPI / iEdgesOutBasic;
 
-            List<Point>pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusOut, iEdgesOutBasic);
-            pointsIn_2D = Geom2D.GetPolygonPointCoord_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
+            List<Point>pointsOutBasic_2D = Geom2D.GetPolygonPointCoord_RadiusInput_CW(fRadiusOut, iEdgesOutBasic);
+            pointsIn_2D = Geom2D.GetPolygonPointCoord_RadiusInput_CW(fRadiusIn, (short)iEdgesInBasic); // Kruh vo vnutri
             pointsOut_2D = Geom2D.GetPolygonPointsIncludingIntermediateOnSides_CW(fRadiusOut, iEdgesOutBasic, iNumberOfSegmentsPerSideOut); // Stvorec (TODO - zamysliet sa ako dorobit vynimku pre obldznik, uhol medzi uhloprieckami nie je rovnaky)
 
             // Pre kombinaciu stvorca a kruhu musime body stvorca pootocit tak, aby bol prvy bod v y = 0 a uprostred strany stvorca, nie rohovy bod
@@ -145,7 +145,7 @@ namespace BaseClasses
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
-            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut);
+            return CreateWireFrameModel(iEdgesOutBasic, iNumberOfSegmentsPerSideOut, true);
         }
 
         // TODO Ondrej, pozri sa na to - asi to vies urobit lepsie

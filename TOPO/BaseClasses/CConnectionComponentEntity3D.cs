@@ -67,7 +67,7 @@ namespace BaseClasses
                 if (i < secNum - 1)
                     AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + i + 1, i + 1);
                 else
-                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + 0 + 1, 0);
+                    AddRectangleIndices_CW_1234(TriangleIndices, i, secNum + i, secNum + 0, 0);
             }
 
             // Top Side
@@ -76,7 +76,7 @@ namespace BaseClasses
                 if (i < secNum - 1)
                     AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + i + 1, INoPoints2Dfor3D + i + 1);
                 else
-                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + 0 + 1, INoPoints2Dfor3D + 0);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, INoPoints2Dfor3D + i, INoPoints2Dfor3D + secNum + i, INoPoints2Dfor3D + secNum + 0, INoPoints2Dfor3D + 0);
             }
 
             // Shell Surface
@@ -86,7 +86,7 @@ namespace BaseClasses
                 if (i < secNum - 1)
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + i + 1, i + 1);
                 else
-                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + 0 + 1, 0);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 2 * secNum + i, 2 * secNum + 0, 0);
             }
 
             // Internal Surface
@@ -95,11 +95,11 @@ namespace BaseClasses
                 if (i < secNum - 1)
                     AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + i + 1, secNum + i + 1);
                 else
-                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + 0 + 1, secNum + 0);
+                    AddRectangleIndices_CW_1234(TriangleIndices, secNum + i, secNum + 2 * secNum + i, secNum + 2 * secNum + 0, secNum + 0);
             }
         }
 
-        public ScreenSpaceLines3D CreateWireFrameModel(int iEdgesOutBasic, int iNumberOfSegmentsPerSideOut)
+        public ScreenSpaceLines3D CreateWireFrameModel(int iEdgesOutBasic, int iNumberOfSegmentsPerSideOut, bool bApplyFirstPointsTransfromation)
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 
@@ -171,11 +171,12 @@ namespace BaseClasses
 
             // Lateral
             // External Outline
-            int iPosunBodov = iNumberOfSegmentsPerSideOut / 2;
+            int iPosunIndexovBodov = bApplyFirstPointsTransfromation ? iNumberOfSegmentsPerSideOut / 2 : 0; // Posunieme indexy o polovicu poctu bodov na strane
+
             for (int i = 0; i < iEdgesOutBasic; i++) // Len 4 rohove body
             {
-                wireFrame.Points.Add(arrPoints3D[i * iNumberOfSegmentsPerSideOut + iPosunBodov]);
-                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + (i * iNumberOfSegmentsPerSideOut + iPosunBodov)]);
+                wireFrame.Points.Add(arrPoints3D[i * iNumberOfSegmentsPerSideOut + iPosunIndexovBodov]);
+                wireFrame.Points.Add(arrPoints3D[INoPoints2Dfor3D + (i * iNumberOfSegmentsPerSideOut + iPosunIndexovBodov)]);
             }
 
             // Internal Outline
@@ -187,8 +188,6 @@ namespace BaseClasses
 
             return wireFrame;
         }
-
-
 
         // POMOCNE FUNKCIE
         // REFAKTOROVAT NAPRIEC KODOM S CRSC, VOLUME ATD

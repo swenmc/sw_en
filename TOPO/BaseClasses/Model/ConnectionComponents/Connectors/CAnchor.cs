@@ -578,7 +578,7 @@ namespace BaseClasses
 
                 m_Nuts = new List<CNut>();
 
-                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
+                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0.1, 0, 0), 0, -90, 0, true);
                 m_Nuts.Add(nut);
             }
 
@@ -592,8 +592,8 @@ namespace BaseClasses
                 if(m_Nuts == null)
                     m_Nuts = new List<CNut>();
 
-                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
-                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, 0, 0, true);
+                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0.20, 0, 0), 0, -90, 0, true);
+                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0.25, 0, 0), 0, -90, 0, true);
                 m_Nuts.Add(nutTop);
                 m_Nuts.Add(nutBottom);
             }
