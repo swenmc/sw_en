@@ -402,6 +402,22 @@ namespace BaseClasses
             }
         }
 
+
+        //-------------------------------------------------------------------------------------------------------------
+        private float m_fPortionOtAnchorAbovePlate_abs; // Vzdialenost horneho okraja kotvy od spodnej hrany plechu (povrchu betonoveho zakladu)
+        public float PortionOtAnchorAbovePlate_abs
+        {
+            get
+            {
+                return m_fPortionOtAnchorAbovePlate_abs;
+            }
+
+            set
+            {
+                m_fPortionOtAnchorAbovePlate_abs = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         private CWasher_W m_WasherPlateTop;
         public CWasher_W WasherPlateTop
@@ -458,6 +474,8 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
+            SetPortionOtAnchorAbovePlate();
+
             // Washer size
             // Plate washer
             //m_WasherPlateTop = washerPlateTop;
@@ -512,6 +530,8 @@ namespace BaseClasses
             Area_c_thread = MathF.fPI * MathF.Pow2(Diameter_thread) / 4f; // Core / thread area
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
+
+            SetPortionOtAnchorAbovePlate();
 
             // Washer size
             // Plate washer
@@ -568,6 +588,10 @@ namespace BaseClasses
             Area_o_shank = MathF.fPI * MathF.Pow2(Diameter_shank) / 4f; // Shank area
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
+            SetPortionOtAnchorAbovePlate();
+
+            float fOffsetFor3D = 0.0001f; // Offset medzi washer a nut pre krajsiu 3D grafiku
+
             // Washer size
             // Plate washer
             if (washerPlateTop != null)
@@ -576,9 +600,16 @@ namespace BaseClasses
                 x_washer_plate = washerPlateTop.Width_bx; // 80 mm
                 y_washer_plate = washerPlateTop.Height_hy; // 80 mm
 
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit 
+                m_WasherPlateTop.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness;
+
                 m_Nuts = new List<CNut>();
 
-                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0.1, 0, 0), 0, -90, 0, true);
+                CNut nut = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
+                float fWasherTopPlateNutPosition = m_fPortionOtAnchorAbovePlate_abs - fPlateThickness - m_WasherPlateTop.Ft - fOffsetFor3D;
+                nut.m_pControlPoint.X = fWasherTopPlateNutPosition;
+
                 m_Nuts.Add(nut);
             }
 
@@ -589,11 +620,21 @@ namespace BaseClasses
                 x_washer_bearing = washerBearing.Width_bx; // 60 mm
                 y_washer_bearing = washerBearing.Height_hy; // 60 mm
 
-                if(m_Nuts == null)
+                // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
+                float fWasherBearing_OffsetFromBottom = 0.03f; // 30 mm
+
+                m_WasherBearing.m_pControlPoint.X = m_fPortionOtAnchorAbovePlate_abs + (Length - m_fPortionOtAnchorAbovePlate_abs - fWasherBearing_OffsetFromBottom);
+
+                if (m_Nuts == null)
                     m_Nuts = new List<CNut>();
 
-                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0.20, 0, 0), 0, -90, 0, true);
-                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0.25, 0, 0), 0, -90, 0, true);
+                CNut nutTop = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
+                CNut nutBottom = new CNut(name_temp, nameMaterial_temp, new Point3D(0, 0, 0), 0, -90, 0, true);
+                float fWasherBearingTopNutPosition = (float)m_WasherBearing.m_pControlPoint.X - m_WasherBearing.Ft - fOffsetFor3D;
+                float fWasherBearingBottomNutPosition = (float)m_WasherBearing.m_pControlPoint.X + nutBottom.Thickness_max + fOffsetFor3D;
+                nutTop.m_pControlPoint.X = fWasherBearingTopNutPosition;
+                nutBottom.m_pControlPoint.X = fWasherBearingBottomNutPosition;
+
                 m_Nuts.Add(nutTop);
                 m_Nuts.Add(nutBottom);
             }
@@ -623,6 +664,13 @@ namespace BaseClasses
         public float GetMass()
         {
             return Area_p_pitch * Length * m_Mat.m_fRho;
+        }
+
+        private void SetPortionOtAnchorAbovePlate()
+        {
+            // TODO - Tuto vzdialenost mozeme urcovat rozne, ako parameter kolko ma byt kotva nad plechom / betonom alebo ako parameter dlzka kotvy - kolko ma byt kotevna dlzka (dlzka zabetonovanej casti kotvy)
+            float fPortionOtAnchorAbovePlate_rel = 0.09f; // [-] // Suradnica konca kotvy nad plechom (maximum z 9% dlzky kotvy, 1.8x priemer kotvy alebo 20 mm)
+            m_fPortionOtAnchorAbovePlate_abs = MathF.Max(fPortionOtAnchorAbovePlate_rel * Length, 1.8f * Diameter_shank, 0.02f); // [m]
         }
 
         /*

@@ -160,7 +160,7 @@ namespace BaseClasses
         List<Point> pointsOut_2D;
 
         short iEdgesOutBasic = 6;
-        short iNumberOfSegmentsPerSideOut = 2;
+        short iNumberOfSegmentsPerSideOut = 8;
 
         int INoPoints2Dfor3D;
         int ITotNoPointsin3D;

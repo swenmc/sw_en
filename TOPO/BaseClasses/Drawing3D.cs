@@ -1554,22 +1554,27 @@ namespace BaseClasses
                                                 plate.AnchorArrangement.Anchors[m].Visual_Connector = plateConnectorgeom;
                                                 plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
 
+                                                Model3DGroup anchorModelObjectsModelGroup = new Model3DGroup(); // Vsetky objekty, ktore su na viazane na danu anchor pridame do skupiny
+
                                                 // Washers
                                                 GeometryModel3D washerPlateTopGeom = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateGeomModel3D(brushWashers);
                                                 plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate = washerPlateTopGeom;
-                                                plateConnectorsModelGroup.Children.Add(washerPlateTopGeom);
+                                                anchorModelObjectsModelGroup.Children.Add(washerPlateTopGeom);
 
                                                 GeometryModel3D washerBearingGeom = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateGeomModel3D(brushWashers);
                                                 plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate = washerBearingGeom;
-                                                plateConnectorsModelGroup.Children.Add(washerBearingGeom);
+                                                anchorModelObjectsModelGroup.Children.Add(washerBearingGeom);
 
                                                 // Nuts
                                                 for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
                                                 {
                                                     GeometryModel3D nutGeom = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateGeomModel3D(brushNuts);
                                                     plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut = nutGeom;
-                                                    plateConnectorsModelGroup.Children.Add(nutGeom);
+                                                    anchorModelObjectsModelGroup.Children.Add(nutGeom);
                                                 }
+
+                                                anchorModelObjectsModelGroup.Transform = plateConnectorgeom.Transform; // Skupine objektov na kotve priradime transformaciu kotvy
+                                                plateConnectorsModelGroup.Children.Add(anchorModelObjectsModelGroup); // Skupinu objektov na anchor pridame do skupiny anchors (connectors)
                                             }
                                             plateConnectorsModelGroup.Transform = plateGeom.Transform;
                                             if (sDisplayOptions.bDisplayConnectors)
@@ -2445,17 +2450,19 @@ namespace BaseClasses
                                                 var transPoints_PlateConnector = pointsConnector.Select(p => geom.Transform.Transform(p));
                                                 jointPlatePoints.AddRange(transPoints_PlateConnector);
 
+                                                List<Point3D> anchorObjectsPoints = new List<Point3D>();
+
                                                 // Washer - plate top
                                                 GeometryModel3D geomWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.Visual_Plate;
                                                 List<Point3D> pointsWasherPlateTop = plate.AnchorArrangement.Anchors[m].WasherPlateTop.CreateWireFrameModel().Points.ToList();
                                                 var transPoints_WasherPlateTop = pointsWasherPlateTop.Select(p => geomWasherPlateTop.Transform.Transform(p));
-                                                jointPlatePoints.AddRange(transPoints_WasherPlateTop);
+                                                anchorObjectsPoints.AddRange(transPoints_WasherPlateTop);
 
                                                 // Washer - bearing
                                                 GeometryModel3D geomWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.Visual_Plate;
                                                 List<Point3D> pointsWasherBearing = plate.AnchorArrangement.Anchors[m].WasherBearing.CreateWireFrameModel().Points.ToList();
                                                 var transPoints_WasherBearing = pointsWasherBearing.Select(p => geomWasherBearing.Transform.Transform(p));
-                                                jointPlatePoints.AddRange(transPoints_WasherBearing);
+                                                anchorObjectsPoints.AddRange(transPoints_WasherBearing);
 
                                                 // Nuts
                                                 for (int n = 0; n < plate.AnchorArrangement.Anchors[m].Nuts.Count; n++)
@@ -2463,8 +2470,12 @@ namespace BaseClasses
                                                     GeometryModel3D geomNut = plate.AnchorArrangement.Anchors[m].Nuts[n].Visual_Nut;
                                                     List<Point3D> pointsNut = plate.AnchorArrangement.Anchors[m].Nuts[n].CreateWireFrameModel().Points.ToList();
                                                     var transPoints_Nut = pointsNut.Select(p => geomNut.Transform.Transform(p));
-                                                    jointPlatePoints.AddRange(transPoints_Nut);
+                                                    anchorObjectsPoints.AddRange(transPoints_Nut);
                                                 }
+
+                                                // Transformujeme body objektov priradenych ku anchor
+                                                var transPoints_AnchorObjects = anchorObjectsPoints.Select(p => plate.AnchorArrangement.Anchors[m].Visual_Connector.Transform.Transform(p));
+                                                jointPlatePoints.AddRange(transPoints_AnchorObjects);
                                             }
                                         }
                                     }

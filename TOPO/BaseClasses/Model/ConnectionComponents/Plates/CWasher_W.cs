@@ -134,7 +134,7 @@ namespace BaseClasses
             {
                 arrPoints3D[INoPoints2Dfor3D + i].X = arrPoints3D[i].X;
                 arrPoints3D[INoPoints2Dfor3D + i].Y = arrPoints3D[i].Y;
-                arrPoints3D[INoPoints2Dfor3D + i].Z = 3  * Ft; // POKUSSSS
+                arrPoints3D[INoPoints2Dfor3D + i].Z = Ft;
             }
         }
 
