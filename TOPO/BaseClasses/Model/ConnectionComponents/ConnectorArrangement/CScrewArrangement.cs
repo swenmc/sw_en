@@ -124,24 +124,32 @@ namespace BaseClasses
 
         public virtual void UpdateArrangmentData() { }
 
-        public virtual void Calc_HolesControlPointsCoord3D_FlatPlate(float fx, float fy, float ft)
+        public virtual void Calc_HolesControlPointsCoord3D_FlatPlate(float fx, float fy, float ft, bool bScrewInPlusZDirection)
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
                 arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate alebo apex JC)
                 arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (apex plate)
-                arrConnectorControlPoints3D[i].Z = -0.8*ft; // TODO Position depends on screw length // Zaciatok skrutky vycnieva 80% z hrubky plechu (dopracovat tak ze budeme poznat dlzku skrutky a pozicia zaciatku bude urcena podla hrubky plechu a dlzky skrutky
+
+                if(bScrewInPlusZDirection)
+                    arrConnectorControlPoints3D[i].Z = -referenceScrew.T_ht_headTotalThickness;
+                else
+                    arrConnectorControlPoints3D[i].Z = ft + referenceScrew.T_ht_headTotalThickness;
             }
         }
 
-        public virtual void GenerateConnectors_FlatPlate()
+        public virtual void GenerateConnectors_FlatPlate(bool bScrewInPlusZDirection)
         {
             Screws = new CScrew[IHolesNumber];
 
             for (int i = 0; i < IHolesNumber; i++)
             {
                 Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                Screws[i] = new CScrew(referenceScrew, controlpoint, 0, -90, 0, true);
+
+                if (bScrewInPlusZDirection)
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, -90, 0, true);
+                else
+                    Screws[i] = new CScrew(referenceScrew, controlpoint, 0, 90, 0, true);
             }
         }
 

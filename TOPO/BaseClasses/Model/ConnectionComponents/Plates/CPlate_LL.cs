@@ -324,13 +324,15 @@ namespace BaseClasses
             float fy_edge2 = 0.030f;
             float fy_edge3 = 0.120f;
 
+            float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
+
             // TODO nahradit enumom a switchom
 
             if (screwArrangement.IHolesNumber == 32) // LLH, LLK
             {
                 arrConnectorControlPoints3D[0].X = fx_edge;
                 arrConnectorControlPoints3D[0].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[0].Z = - Ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[0].Z = Ft + fScrewOffset;
 
                 arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
@@ -360,7 +362,7 @@ namespace BaseClasses
                 arrConnectorControlPoints3D[7].Y = fy_edge1;
                 arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[0].Z;
 
-                arrConnectorControlPoints3D[8].X = m_fbX1 - 2 * Ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[8].X = m_fbX1 - Ft - fScrewOffset;
                 arrConnectorControlPoints3D[8].Y = fy_edge1;
                 arrConnectorControlPoints3D[8].Z = m_flZ - fx_edge;
 
@@ -421,13 +423,13 @@ namespace BaseClasses
                 // Update 1
                 // Po tomto vlozeni skrutiek do plechu by sa mali suradnice skrutiek prepocitat z povodnych, v ktorych su zadane do suradnicoveho systemu plechu a ulozit
 
-                
+
                 for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                 {
                     if (i < screwArrangement.IHolesNumber / 4) // Left
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
                     }
                     else if (i < screwArrangement.IHolesNumber * 2 / 4) // Front Left
                     {
@@ -442,7 +444,7 @@ namespace BaseClasses
                     else // Right
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
                     }
                 }
             }
