@@ -27,6 +27,7 @@ namespace PFD
     /// </summary>
     public partial class UC_Quotation : UserControl
     {
+        double dBuildingMass = 0;
         double dBuildingPrice_WithoutGST = 0;
 
         public UC_Quotation(CPFDViewModel vm)
@@ -199,6 +200,7 @@ namespace PFD
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
             double buildingPrice_PSM = dBuildingPrice_WithoutGST / fBuildingArea_Gross;
             double buildingPrice_PCM = dBuildingPrice_WithoutGST / fBuildingVolume_Gross;
+            double buildingPrice_PPKG = dBuildingPrice_WithoutGST / dBuildingMass;
 
             double dGST_Percentage = 15f; // TODO - urobit nastavitelne v GUI ???
             double dGST_Absolute = dGST_Percentage / 100f * dBuildingPrice_WithoutGST;
@@ -211,9 +213,11 @@ namespace PFD
 
             BuildingArea.Text = fBuildingArea_Gross.ToString("F2");
             BuildingVolume.Text = fBuildingVolume_Gross.ToString("F2");
+            BuildingMass.Text = dBuildingMass.ToString("F2");
 
             UnitPricePerBuildingArea.Text = buildingPrice_PSM.ToString("F2");
             UnitPricePerBuildingVolume.Text = buildingPrice_PCM.ToString("F2");
+            UnitPricePerBuildingMass.Text = buildingPrice_PPKG.ToString("F2");
 
             // TODO - for later
 
@@ -328,6 +332,7 @@ namespace PFD
                 dt.Rows.Add(row);
             }
 
+            dBuildingMass += SumTotalMass;
             dBuildingPrice_WithoutGST += SumTotalPrice;
 
             // Last row
@@ -538,6 +543,7 @@ namespace PFD
                 listPlateMassPerPiece.Add(dlistPlateMassPerPiece[i].ToString("F3"));
             }
 
+            dBuildingMass += dTotalPlatesMass_Table;
             dBuildingPrice_WithoutGST += dTotalPlatesPrice_Table;
 
             // Add Sum
@@ -901,6 +907,8 @@ namespace PFD
             //    listConnectorMassPerPiece.Add(dlistConnectorMassPerPiece[i].ToString("F2"));
             //}
 
+            dBuildingMass += dTotalConnectorsMass_Table;
+            dBuildingPrice_WithoutGST += dTotalConnectorsPrice_Table;
 
             // Create Table
             DataTable dt = new DataTable("Table3");
@@ -1137,6 +1145,7 @@ namespace PFD
 
             if (SumTotalPrice > 0)
             {
+                dBuildingMass += SumTotalMass;
                 dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
@@ -1261,6 +1270,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
+                dBuildingMass += SumTotalMass;
                 dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
@@ -1382,6 +1392,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
+                dBuildingMass += SumTotalMass;
                 dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
@@ -1498,6 +1509,7 @@ namespace PFD
             DataRow row;
             if (SumTotalPrice > 0)
             {
+                dBuildingMass += SumTotalMass;
                 dBuildingPrice_WithoutGST += SumTotalPrice;
 
                 // Last row
@@ -1729,6 +1741,7 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
+            dBuildingMass += SumTotalMass;
             dBuildingPrice_WithoutGST += SumTotalPrice;
 
             // Last row
@@ -1814,6 +1827,7 @@ namespace PFD
                         ref SumTotalMass,
                         ref SumTotalPrice);
 
+            dBuildingMass += SumTotalMass;
             dBuildingPrice_WithoutGST += SumTotalPrice;
 
             //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Zatial komentujem, dal by sa tym usetrit jeden riadok

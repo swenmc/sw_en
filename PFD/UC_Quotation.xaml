@@ -47,6 +47,8 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -315,13 +317,21 @@
             <TextBlock Grid.Row="20" Name="BuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
 
-            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="21" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
-
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Mass:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="21" Name="BuildingMass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="kg" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            
             <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="22" Name="UnitPricePerBuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
-            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="22" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+
+            <TextBlock Grid.Row="23" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="23" Name="UnitPricePerBuildingVolume" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="23" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m³" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
+
+            <TextBlock Grid.Row="24" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="24" Name="UnitPricePerBuildingMass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="24" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / kg" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
