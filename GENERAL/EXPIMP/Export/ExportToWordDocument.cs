@@ -1306,6 +1306,8 @@ namespace EXPIMP
             t.Alignment = Alignment.left;
 
             List<float> columnsWidths = new List<float>();
+
+            int colorColumn = -1;
             //header
             for (int j = 0; j < dt.Columns.Count; j++)
             {
@@ -1318,6 +1320,8 @@ namespace EXPIMP
                 else columnsWidths.Add(100f / dt.Columns.Count);
 
                 SetAlignment(dt.Columns[j], t.Rows[0].Cells[j].Paragraphs[0]);
+
+                if (dt.Columns[j].ColumnName == "Color") colorColumn = j;
             }
 
             // For each load case add one row
@@ -1325,6 +1329,13 @@ namespace EXPIMP
             {
                 for (int j = 0; j < dt.Columns.Count; j++)
                 {
+                    if (colorColumn != -1 && colorColumn == j)
+                    {
+                        if(!string.IsNullOrEmpty(dt.Rows[i][j].ToString()))
+                            t.Rows[i + 1].Cells[j].FillColor = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i][j].ToString());
+                        continue;
+                    }
+                    
                     t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j].ToString());
                     SetAlignment(dt.Columns[j], t.Rows[i + 1].Cells[j].Paragraphs[0]);
                 }
