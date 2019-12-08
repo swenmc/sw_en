@@ -335,7 +335,7 @@ namespace BaseClasses
             // TODO - nie je to velmi presne spocitane, ale nechcem s tym stravit vela casu
 
             // 3 x 2 screws = 6 screws in the plate
-            float fOffSetOfScrewAndPlate = Ft;
+            float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
 
             float fx_edge = 0.015f;  // x-direction
             float fy_edge = 0.015f;  // y-direction in 2D
@@ -343,7 +343,7 @@ namespace BaseClasses
             // Middle
             arrConnectorControlPoints3D[0].X = 0;
             arrConnectorControlPoints3D[0].Y = fy_edge;
-            arrConnectorControlPoints3D[0].Z = -fOffSetOfScrewAndPlate; // TODO Position depends on screw length
+            arrConnectorControlPoints3D[0].Z =  Ft + fScrewOffset;
 
             arrConnectorControlPoints3D[1].X = 0;
             arrConnectorControlPoints3D[1].Y = m_fhY - fy_edge;
@@ -353,10 +353,10 @@ namespace BaseClasses
             // Left
 
             float fS3OffSetGCS_X, fS3OffSetGCS_Yb, fS3OffSetGCS_Yabove, fS3OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fScrewOffset, m_fGamma1_rad, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
 
             float fS4OffSetGCS_X, fS4OffSetGCS_Yb, fS4OffSetGCS_Yabove, fS4OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fScrewOffset, m_fGamma1_rad, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
 
             arrConnectorControlPoints3D[2].X = arrPoints3D[15].X + fS3OffSetGCS_X;
             arrConnectorControlPoints3D[2].Y = arrPoints3D[15].Y + fS3OffSetGCS_Yb + fS3OffSetGCS_Yabove;
@@ -368,10 +368,10 @@ namespace BaseClasses
 
             // Right
             float fS5OffSetGCS_X, fS5OffSetGCS_Yb, fS5OffSetGCS_Yabove, fS5OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, fy_edge, fScrewOffset, m_fGamma1_rad, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
 
             float fS6OffSetGCS_X, fS6OffSetGCS_Yb, fS6OffSetGCS_Yabove, fS6OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fOffSetOfScrewAndPlate, m_fGamma1_rad, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
+            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fScrewOffset, m_fGamma1_rad, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
 
             arrConnectorControlPoints3D[4].X = arrPoints3D[12].X - fS5OffSetGCS_X;
             arrConnectorControlPoints3D[4].Y = arrPoints3D[12].Y - fS5OffSetGCS_Yb + fS5OffSetGCS_Yabove;
@@ -422,7 +422,7 @@ namespace BaseClasses
                 {
                     Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
 
-                    float fAngle_y_deg = -90; // Default 1 a 2 skrutka v strede
+                    float fAngle_y_deg = 90; // Default 1 a 2 skrutka v strede
                     float fAngle_z_deg = 0;
 
                     if (i > 1) // 3-6 skrutka

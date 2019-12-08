@@ -330,7 +330,7 @@ namespace BaseClasses
                 {
                     // Left Leg
 
-                    arrConnectorControlPoints3D[0].X = Ft + fScrewOffset; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[0].X = Ft + fScrewOffset;
                     arrConnectorControlPoints3D[0].Y = fy_edge1;
                     arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 

@@ -151,8 +151,8 @@ namespace BaseClasses
         float ft)
         {
             Calc_HolesCentersCoord2DFacePlate(fbX_1, fbX_2, fhY_1);
-            Calc_HolesControlPointsCoord3D_FlatPlate(0, 0, ft);
-            GenerateConnectors_FlatPlate();
+            Calc_HolesControlPointsCoord3D_FlatPlate(0, 0, ft, false);
+            GenerateConnectors_FlatPlate(false);
         }
     }
 }

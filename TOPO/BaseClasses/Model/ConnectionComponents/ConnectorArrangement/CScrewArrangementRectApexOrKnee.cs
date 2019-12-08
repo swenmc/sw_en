@@ -458,8 +458,8 @@ namespace BaseClasses
             float fSlope_rad)
         {
             Calc_HolesCentersCoord2DApexPlate(fOffset_x, fbX, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft);
-            GenerateConnectors_FlatPlate();
+            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft, true);
+            GenerateConnectors_FlatPlate(true);
         }
 
         public override void Calc_KneePlateData(
@@ -471,8 +471,8 @@ namespace BaseClasses
             float fSlope_rad)
         {
             Calc_HolesCentersCoord2DKneePlate(fbX_1, fbX_2, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft);
-            GenerateConnectors_FlatPlate();
+            Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft, false);
+            GenerateConnectors_FlatPlate(false);
         }
 
         public Point[] GetMirroredSequenceAboutY(float fXDistanceOfMirrorAxis, CScrewSequence InputSequence)

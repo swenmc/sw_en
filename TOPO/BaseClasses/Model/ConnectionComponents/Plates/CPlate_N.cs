@@ -339,10 +339,12 @@ namespace BaseClasses
             float fx_edge = 0.020f;
             float fy_edge = 0.020f;
 
+            float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
+
             // Left back
             arrConnectorControlPoints3D[0].X = fx_edge;
             arrConnectorControlPoints3D[0].Y = fy_edge;
-            arrConnectorControlPoints3D[0].Z = -Ft; // TODO Position depends on screw length
+            arrConnectorControlPoints3D[0].Z = Ft + fScrewOffset; // TODO Position depends on screw length
 
             arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
             arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
@@ -376,7 +378,7 @@ namespace BaseClasses
             // Middle front
             arrConnectorControlPoints3D[8].X = m_fbX1 + x_a + fx_edge;
             arrConnectorControlPoints3D[8].Y = arrConnectorControlPoints3D[0].Y;
-            arrConnectorControlPoints3D[8].Z = m_fZ - Ft;
+            arrConnectorControlPoints3D[8].Z = m_fZ + Ft + fScrewOffset;
 
             arrConnectorControlPoints3D[9].X = m_fbX1 + x_a + m_fbX3 - fx_edge;
             arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[0].Y;
@@ -400,7 +402,7 @@ namespace BaseClasses
                 for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                 {
                     Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
                 }
             }
         }
