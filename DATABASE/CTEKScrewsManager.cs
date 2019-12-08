@@ -100,7 +100,8 @@ namespace DATABASE
             properties.threadsPerInch3 = reader["threadsPerInch3"].ToString();
             properties.headSizeInch = reader["headSizeInch"].ToString();
             properties.headSizemm = reader["headSizemm"].ToString();
-            properties.headThicknessmm = reader["headThicknessmm"].ToString();
+            properties.headAgonThicknessmm = reader["headAgonThicknessmm"].ToString();
+            properties.headTotalThicknessmm = reader["headTotalThicknessmm"].ToString();
             properties.washerSizemm = reader["washerSizemm"].ToString();
             properties.washerThicknessmm = reader["washerThicknessmm"].ToString();
             properties.preDrillHoleDiametermm_3mmthickness = reader["preDrillHoleDiametermm_3mmthickness"].ToString();
@@ -181,7 +182,8 @@ namespace DATABASE
             properties.threadsPerInch3 = reader["threadsPerInch3"].ToString() == "" ? 0 : Int32.Parse(reader["threadsPerInch3"].ToString());
             properties.headSizeInch = reader["headSizeInch"].ToString() == "" ? double.NaN : double.Parse(reader["headSizeInch"].ToString(), nfi); // INCHES
             properties.headSize = reader["headSizemm"].ToString() == "" ? double.NaN : double.Parse(reader["headSizemm"].ToString(), nfi) / 1000f;
-            properties.headThickness = reader["headThicknessmm"].ToString() == "" ? double.NaN : double.Parse(reader["headThicknessmm"].ToString(), nfi) / 1000f;
+            properties.headAgonThickness = reader["headAgonThicknessmm"].ToString() == "" ? double.NaN : double.Parse(reader["headAgonThicknessmm"].ToString(), nfi) / 1000f;
+            properties.headTotalThickness = reader["headTotalThicknessmm"].ToString() == "" ? double.NaN : double.Parse(reader["headTotalThicknessmm"].ToString(), nfi) / 1000f;
             properties.washerSize = reader["washerSizemm"].ToString() == "" ? double.NaN : double.Parse(reader["washerSizemm"].ToString(), nfi) / 1000f;
             properties.washerThickness = reader["washerThicknessmm"].ToString() == "" ? double.NaN : double.Parse(reader["washerThicknessmm"].ToString(), nfi) / 1000f;
             properties.preDrillHoleDiameter_3mmthickness = reader["preDrillHoleDiametermm_3mmthickness"].ToString() == "" ? double.NaN : double.Parse(reader["preDrillHoleDiametermm_3mmthickness"].ToString(), nfi) / 1000f;

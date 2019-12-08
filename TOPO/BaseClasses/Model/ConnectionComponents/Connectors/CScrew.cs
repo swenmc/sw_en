@@ -55,6 +55,34 @@ namespace BaseClasses
             }
         }
 
+        private float m_ft_ha_headAgonThickness;
+        public float T_ha_headAgonThickness
+        {
+            get
+            {
+                return m_ft_ha_headAgonThickness;
+            }
+
+            set
+            {
+                m_ft_ha_headAgonThickness = value;
+            }
+        }
+
+        private float m_ft_ht_headTotalThickness;
+        public float T_ht_headTotalThickness
+        {
+            get
+            {
+                return m_ft_ht_headTotalThickness;
+            }
+
+            set
+            {
+                m_ft_ht_headTotalThickness = value;
+            }
+        }
+
         private float m_fd_w_washerdiameter;
         public float D_w_washerdiameter
         {
@@ -142,22 +170,47 @@ namespace BaseClasses
         public CScrew()
         { }
 
-        public CScrew(string sName_temp, Point3D controlpoint, int iGauge_temp, float fDiameter_thread_temp, float fHeadDiameter_temp, float fWasherDiameter_temp, float fWasherThickness_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CScrew(string sName_temp, string gauge)
         {
             m_Mat.Name = "Class 3 / 4 / B8"; // TODO - pripravit databazu materialov pre skrutky
             Prefix = "TEK"; // TODO - Urcit co je Prefix a co je Name u skrutiek
 
             Name = sName_temp;
+            CTEKScrewProp screwProperties = CTEKScrewsManager.GetScrewProperties2(gauge);
+            SetScrewValuesFromDatabase(screwProperties);
+        }
+
+        public CScrew(CScrew referenceScrew, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        {
+            m_Mat.Name = referenceScrew.m_Mat.Name;
+            Prefix = referenceScrew.Prefix;
+            Name = referenceScrew.Name;
+            m_iGauge = referenceScrew.Gauge;
+            Diameter_thread = referenceScrew.Diameter_thread;
+            Diameter_shank = referenceScrew.Diameter_shank;
+            //threadType1;
+            //threadsPerInch1;
+            //threadType2;
+            //threadsPerInch2;
+            //threadType3;
+            //threadsPerInch3;
+            //headSizeInch;
+            m_fd_h_headdiameter = referenceScrew.D_h_headdiameter;
+            m_ft_ha_headAgonThickness = referenceScrew.T_ha_headAgonThickness;
+            m_ft_ht_headTotalThickness = referenceScrew.T_ht_headTotalThickness;
+            m_fd_w_washerdiameter = referenceScrew.D_w_washerdiameter;
+            m_ft_w_washerthickness = referenceScrew.T_w_washerthickness;
+            m_fd_predrillholediameter = referenceScrew.D_holediameter;
+            m_fShearStrength_nominal = referenceScrew.ShearStrength_nominal;
+            m_fAxialTensileStrength_nominal = referenceScrew.AxialTensileStrength_nominal;
+            m_fTorsionalStrength_nominal = referenceScrew.TorsionalStrength_nominal;
+            Mass = referenceScrew.Mass;
+            Price_PPP_NZD = referenceScrew.Price_PPP_NZD;
+            Price_PPKG_NZD = referenceScrew.Price_PPKG_NZD;
+
+            Length = referenceScrew.Length;
+
             m_pControlPoint = controlpoint;
-            m_iGauge = iGauge_temp;
-            Diameter_thread = fDiameter_thread_temp;
-
-            D_h_headdiameter = fHeadDiameter_temp;
-            D_w_washerdiameter = fWasherDiameter_temp;
-            T_w_washerthickness = fWasherThickness_temp;
-
-            Length = fLength_temp;
-            Mass = fMass_temp;
             BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = fRotation_x_deg;
@@ -168,13 +221,6 @@ namespace BaseClasses
             //m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
-        public CScrew(string sName_temp, string gauge)
-        {
-            Name = sName_temp;
-            CTEKScrewProp screwProperties = CTEKScrewsManager.GetScrewProperties2(gauge);
-            SetScrewValuesFromDatabase(screwProperties);
-        }
-
         public void SetScrewValuesFromDatabase(CTEKScrewProp properties)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -183,7 +229,7 @@ namespace BaseClasses
             m_iGauge = properties.gauge;  // Gauge v mm
             Diameter_thread = (float)properties.threadDiameter;
             Diameter_shank = (float)properties.shankDiameter;
-            Length = (float)properties.shankLength;
+            float shankLength = (float)properties.shankLength;
             //threadType1;
             //threadsPerInch1;
             //threadType2;
@@ -192,7 +238,8 @@ namespace BaseClasses
             //threadsPerInch3;
             //headSizeInch;
             m_fd_h_headdiameter = (float)properties.headSize;
-            //headThicknessmm;
+            m_ft_ha_headAgonThickness = (float)properties.headAgonThickness;
+            m_ft_ht_headTotalThickness = (float)properties.headTotalThickness;
             m_fd_w_washerdiameter = (float)properties.washerSize;
             m_ft_w_washerthickness = (float)properties.washerThickness;
             m_fd_predrillholediameter = (float)properties.preDrillHoleDiameter_3mmthickness;
@@ -202,6 +249,8 @@ namespace BaseClasses
             Mass = (float)properties.mass_kg;
             Price_PPP_NZD = (float)properties.price_PPP_NZD;
             Price_PPKG_NZD = (float)properties.price_PPKG_NZD;
+
+            Length = shankLength + m_ft_ht_headTotalThickness; // Celkova dlzka vratane hlavy
         }
 
         /*

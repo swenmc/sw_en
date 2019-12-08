@@ -431,7 +431,7 @@ namespace BaseClasses
                         fAngle_z_deg = -90 + (float)Geom2D.RadiansToDegrees(m_fRoofPitch_rad);
                     }
 
-                    screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, fAngle_y_deg, fAngle_z_deg, true);
+                    screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fAngle_y_deg, fAngle_z_deg, true);
                 }
             }
         }

@@ -318,6 +318,8 @@ namespace BaseClasses
             float fy_edge1 = 0.010f;
             float fy_edge2 = 0.030f;
 
+            float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
+
             if (screwArrangement is CScrewArrangement_L)
             {
                 float fy_edge3 = 0.120f;
@@ -328,7 +330,7 @@ namespace BaseClasses
                 {
                     // Left Leg
 
-                    arrConnectorControlPoints3D[0].X = -Ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[0].X = Ft + fScrewOffset; // TODO Position depends on screw length
                     arrConnectorControlPoints3D[0].Y = fy_edge1;
                     arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -364,7 +366,7 @@ namespace BaseClasses
 
                     arrConnectorControlPoints3D[8].X = fx_edge;
                     arrConnectorControlPoints3D[8].Y = m_fhY - fy_edge1;
-                    arrConnectorControlPoints3D[8].Z = -Ft;  // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[8].Z = Ft + fScrewOffset;  // TODO Position depends on screw length
 
                     arrConnectorControlPoints3D[9].X = m_fbX1 - fx_edge;
                     arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[8].Y;
@@ -398,7 +400,7 @@ namespace BaseClasses
                 {
                     // Left Leg
 
-                    arrConnectorControlPoints3D[0].X = -Ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[0].X = Ft + fScrewOffset; // TODO Position depends on screw length
                     arrConnectorControlPoints3D[0].Y = fy_edge1;
                     arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -418,7 +420,7 @@ namespace BaseClasses
 
                     arrConnectorControlPoints3D[4].X = fx_edge;
                     arrConnectorControlPoints3D[4].Y = m_fhY - fy_edge1;
-                    arrConnectorControlPoints3D[4].Z = -Ft; // TODO Position depends on screw length
+                    arrConnectorControlPoints3D[4].Z = Ft + fScrewOffset; // TODO Position depends on screw length
 
                     arrConnectorControlPoints3D[5].X = m_fbX1 - fx_edge;
                     arrConnectorControlPoints3D[5].Y = arrConnectorControlPoints3D[4].Y;
@@ -449,7 +451,7 @@ namespace BaseClasses
 
                 // Left Leg
                 // Bottom
-                arrConnectorControlPoints3D[0].X = -Ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[0].X = Ft + fScrewOffset; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[0].Y = fy_edge1;
                 arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -486,7 +488,7 @@ namespace BaseClasses
                 // Bottom row
                 arrConnectorControlPoints3D[8].X = fx_edge1;
                 arrConnectorControlPoints3D[8].Y = m_fhY - fConnectedSectionDepth  + fy_edge1;
-                arrConnectorControlPoints3D[8].Z = -Ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[8].Z = Ft + fScrewOffset; // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[9].X = arrConnectorControlPoints3D[8].X + fx_edge22;
                 arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[8].Y;
@@ -527,10 +529,10 @@ namespace BaseClasses
 
                 int iNumberOfScrewsInLeftLeg = screwArrangement.IHolesNumber / 2;
 
-                float fRotationAngleAboutYAxis = 0; // Vertical Axis
+                float fRotationAngleAboutYAxis = 180; // Vertical Axis
 
                 if (bChangeRotationAngle_MirroredPlate)
-                    fRotationAngleAboutYAxis = 180;
+                    fRotationAngleAboutYAxis = 0;
 
                 if (screwArrangement is CScrewArrangement_F)
                     iNumberOfScrewsInLeftLeg = 8; // TODO - umoznit nastavovat dynamicky
@@ -540,12 +542,12 @@ namespace BaseClasses
                     if (i < iNumberOfScrewsInLeftLeg) // Left Leg
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, fRotationAngleAboutYAxis, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fRotationAngleAboutYAxis, 0, true);
                     }
                     else
                     {
                         Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
-                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
                     }
                 }
             }

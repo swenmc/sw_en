@@ -21,7 +21,8 @@ namespace DATABASE.DTO
         public int threadsPerInch3;
         public double headSizeInch;
         public double headSize;
-        public double headThickness;
+        public double headAgonThickness;
+        public double headTotalThickness;
         public double washerSize;
         public double washerThickness;
         public double preDrillHoleDiameter_3mmthickness;

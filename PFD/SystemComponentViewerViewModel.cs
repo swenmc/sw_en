@@ -1249,6 +1249,8 @@ namespace PFD
             details.Add(new CComponentParamsViewString("Shank diameter", "ds", (Math.Round(screw.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Length", "l", (Math.Round(screw.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Head agon thickness", "tha", (Math.Round(screw.T_ha_headAgonThickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString("Head total thickness", "tht", (Math.Round(screw.T_ht_headTotalThickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Mass", "m", Math.Round(screw.Mass * 1000, iNumberOfDecimalPlaces_Mass).ToString(nfi), "[g]"));
