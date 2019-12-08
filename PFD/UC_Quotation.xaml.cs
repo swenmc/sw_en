@@ -922,14 +922,15 @@ namespace PFD
             dt.Columns.Add("Total_Mass", typeof(Decimal));
             dt.Columns.Add("Total_Price", typeof(Decimal));
 
+            // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
             // Set Column Caption
             dt.Columns["Prefix"].Caption = "Prefix";
             dt.Columns["Quantity"].Caption = "Quantity";
             dt.Columns["Material"].Caption = "Material";
             dt.Columns["Size"].Caption = "Size";
-            dt.Columns["Mass_per_Piece"].Caption = "Mass per Piece";
-            dt.Columns["Total_Mass"].Caption = "Total Mass";
-            dt.Columns["Total_Price"].Caption = "Price [NZD]";
+            dt.Columns["Mass_per_Piece"].Caption = "Mass per Piece [kg]";
+            dt.Columns["Total_Mass"].Caption = "Total Mass [kg]";
+            dt.Columns["Total_Price"].Caption = "Total Price [NZD]";
 
             dt.Columns["Prefix"].ExtendedProperties.Add("Width", 30f);
             dt.Columns["Quantity"].ExtendedProperties.Add("Width", 20f);
