@@ -599,8 +599,8 @@ namespace PFD
             table.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
             table.Columns["Price"].Caption = "Price [NZD]";
 
-            table.Columns["Prefix"].ExtendedProperties.Add("Width", 6f);
-            table.Columns["Count"].ExtendedProperties.Add("Width", 8f);
+            table.Columns["Prefix"].ExtendedProperties.Add("Width", 7f);
+            table.Columns["Count"].ExtendedProperties.Add("Width", 7f);
             table.Columns["Material"].ExtendedProperties.Add("Width", 8.5f);
             table.Columns["Width"].ExtendedProperties.Add("Width", 7f);
             table.Columns["Height"].ExtendedProperties.Add("Width", 7f);
@@ -1152,10 +1152,10 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 20f);
+            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 17f);
             dt.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["Color"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 12f);
+            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 15f);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
