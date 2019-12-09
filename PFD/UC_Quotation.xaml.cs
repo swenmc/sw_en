@@ -275,15 +275,15 @@ namespace PFD
             // Set Column Caption
             dt.Columns["Crsc"].Caption = "Cross-section";
             dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["TotalLength"].Caption = "Length [m]";
+            dt.Columns["TotalLength"].Caption = "Total Length [m]";
             dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m]";
             dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 47f);
+            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 43f);
             dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 8f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 12f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
@@ -1441,12 +1441,12 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Fibreglass"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["Fibreglass"].ExtendedProperties.Add("Width", 52f);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Fibreglass"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
