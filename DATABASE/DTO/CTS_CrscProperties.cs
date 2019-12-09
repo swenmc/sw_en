@@ -21,9 +21,15 @@ namespace DATABASE.DTO
        public double thickness_m;
        public double mass_kg_m2;
        public double mass_kg_lm;
-       public double price_PPSM_NZD;
-       public double price_PPLM_NZ;
-       public double price_PPKG_NZD;
+       public double price1_PPSM_NZD;
+       public double price1_PPLM_NZ;
+       public double price1_PPKG_NZD;
+       public double price2_PPSM_NZD;
+       public double price2_PPLM_NZ;
+       public double price2_PPKG_NZD;
+       public double price3_PPSM_NZD;
+       public double price3_PPLM_NZ;
+       public double price3_PPKG_NZD;
        public double maxSimpleSpan;
        public double maxEavesOverhang;
        public double A_g;

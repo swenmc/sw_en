@@ -29,6 +29,7 @@ namespace DATABASE
                         colour.CodeRGB = reader["codeRGB"].ToString();
                         colour.CodeHEX = "#"+reader["codeHEX"].ToString();
                         colour.CodeHSV = reader["codeHSV"].ToString();
+                        colour.PriceCode = Int32.Parse(reader["priceCode"].ToString());
                         items.Add(colour);
                     }
                 }
@@ -285,9 +286,15 @@ namespace DATABASE
             crsc.thickness_m = double.Parse(reader["thickness_m"].ToString(), nfi);
             crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
             crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
-            crsc.price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
-            crsc.price_PPLM_NZ = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
-            crsc.price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
+            crsc.price1_PPSM_NZD = double.Parse(reader["price1_PPSM_NZD"].ToString(), nfi);
+            crsc.price1_PPLM_NZ = double.Parse(reader["price1_PPLM_NZD"].ToString(), nfi);
+            crsc.price1_PPKG_NZD = double.Parse(reader["price1_PPKG_NZD"].ToString(), nfi);
+            crsc.price2_PPSM_NZD = double.Parse(reader["price2_PPSM_NZD"].ToString(), nfi);
+            crsc.price2_PPLM_NZ = double.Parse(reader["price2_PPLM_NZD"].ToString(), nfi);
+            crsc.price2_PPKG_NZD = double.Parse(reader["price2_PPKG_NZD"].ToString(), nfi);
+            crsc.price3_PPSM_NZD = double.Parse(reader["price3_PPSM_NZD"].ToString(), nfi);
+            crsc.price3_PPLM_NZ = double.Parse(reader["price3_PPLM_NZD"].ToString(), nfi);
+            crsc.price3_PPKG_NZD = double.Parse(reader["price3_PPKG_NZD"].ToString(), nfi);
             crsc.maxSimpleSpan = double.Parse(reader["maxSimpleSpan"].ToString(), nfi);
             crsc.maxEavesOverhang = double.Parse(reader["maxEavesOverhang"].ToString(), nfi);
             crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);

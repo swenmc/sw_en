@@ -1121,8 +1121,8 @@ namespace PFD
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
             prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
 
-            float fRoofCladdingPrice_PSM_NZD = (float)prop_RoofCladding.price_PPSM_NZD; // Cena roof cladding za 1 m^2
-            float fWallCladdingPrice_PSM_NZD = (float)prop_WallCladding.price_PPSM_NZD; ; // Cena wall cladding za 1 m^2
+            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).PriceCode, prop_RoofCladding);
+            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(colours.ElementAtOrDefault(vm.WallCladdingColorIndex).PriceCode, prop_WallCladding);
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -1264,6 +1264,25 @@ namespace PFD
 
                 Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
                 Datagrid_Cladding.Loaded += Datagrid_Cladding_Loaded;
+            }
+        }
+
+        private float GetCladdingPriceByColor_PSM_NZD(int priceCode, CTS_CrscProperties prop)
+        {
+            float fCladdingPrice1_PSM_NZD = (float)prop.price1_PPSM_NZD; // Cena cladding za 1 m^2 (Basic)
+            float fCladdingPrice2_PSM_NZD = (float)prop.price2_PPSM_NZD; // Cena cladding za 1 m^2 (FormClad)
+            float fCladdingPrice3_PSM_NZD = (float)prop.price3_PPSM_NZD; // Cena cladding za 1 m^2 (AZ)
+
+            // TODO Ondrej - toto sa asi da urobit krajsie cez nejaku relacnu databazu alebo nieco take
+            if(priceCode == 1)
+              return fCladdingPrice1_PSM_NZD;
+            else if(priceCode == 2)
+                return fCladdingPrice2_PSM_NZD;
+            else if (priceCode == 3)
+                return fCladdingPrice3_PSM_NZD;
+            else
+            {
+                throw new Exception("Invalid cladding price code.");
             }
         }
 

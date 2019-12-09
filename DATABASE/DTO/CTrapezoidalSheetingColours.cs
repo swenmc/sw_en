@@ -13,6 +13,7 @@ namespace DATABASE.DTO
         string MCodeRGB;
         string MCodeHEX;
         string MCodeHSV;
+        int MPriceCode;
 
         public int ID
         {
@@ -76,6 +77,19 @@ namespace DATABASE.DTO
             set
             {
                 MCodeHSV = value;
+            }
+        }
+
+        public int PriceCode
+        {
+            get
+            {
+                return MPriceCode;
+            }
+
+            set
+            {
+                MPriceCode = value;
             }
         }
 
