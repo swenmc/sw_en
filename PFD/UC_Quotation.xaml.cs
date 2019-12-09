@@ -38,11 +38,12 @@ namespace PFD
         const float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
         List<string> listConnectorPrefix = new List<string>(1);
-        List<int> listConnectorQuantity = new List<int>(1);
+        List<int> listConnectorCount = new List<int>(1);
         List<string> listConnectorMaterialName = new List<string>(1);
         List<string> listConnectorSize = new List<string>(1);
-        List<double> listConnectorMassPerPiece = new List<double>(1);
+        List<double> listConnectorUnitMass = new List<double>(1);
         List<double> listConnectorTotalMass = new List<double>(1);
+        List<double> listConnectorUnitPrice = new List<double>(1);
         List<double> listConnectorTotalPrice = new List<double>(1);
 
         public UC_Quotation(CPFDViewModel vm)
@@ -81,18 +82,12 @@ namespace PFD
             // DG 2
             // Plates
             CreateTablePlates(model);
-
             // TODO - dopracovat apex brace plates
 
             // DG 3
             // Screws
             // Bolts
             // Anchors
-
-            // TODO Ondrej - zobrazit zoznam screws a anchors - vid Material List
-            // Treba spravne naformatovat stlpce a pocty desatinnych miest
-            // Pridat vsetky anchors zo vsetkych base plate "plate typu B" Plate AnchorArrangement
-
             CreateTableConnectors(model);
 
             // DG 4
@@ -286,13 +281,13 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 47f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 8f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Crsc"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -378,23 +373,24 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             List<string> listPlatePrefix = new List<string>(1);
-            List<int> listPlateQuantity = new List<int>(1);
+            List<int> listPlateCount = new List<int>(1);
             List<string> listPlateMaterialName = new List<string>(1);
             List<double> dlistPlateWidth_bx = new List<double>(1);
             List<double> dlistPlateHeight_hy = new List<double>(1);
             List<double> dlistPlateThickness_tz = new List<double>(1);
             List<double> dlistPlateArea = new List<double>(1);
-            List<double> dlistPlateMassPerPiece = new List<double>(1);
+            List<double> dlistPlateUnitMass = new List<double>(1);
             List<double> listPlateTotalArea = new List<double>(1);
             List<double> listPlateTotalMass = new List<double>(1);
+            List<double> dlistPlatePricePerPiece = new List<double>(1);
             List<double> listPlateTotalPrice = new List<double>(1);
-
 
             List<string> listPlateWidth_bx = new List<string>(1);
             List<string> listPlateHeight_hy = new List<string>(1);
             List<string> listPlateThickness_tz = new List<string>(1);
             List<string> listPlateArea = new List<string>(1);
             List<string> listPlateMassPerPiece = new List<string>(1);
+            List<string> listPlatePricePerPiece = new List<string>(1);
             // Plates
 
             List<CPlate> ListOfPlateGroups = new List<CPlate>();
@@ -429,14 +425,16 @@ namespace PFD
                         float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
                         float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].fArea;
                         float fMassPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
+
+                        float fPricePerPiece;
+                        if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
+                            fPricePerPiece = (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD * fMassPerPiece;
+                        else
+                            fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
+
                         float fTotalArea = iQuantity * fArea;
                         float fTotalMass = iQuantity * fMassPerPiece;
-
-                        float fTotalPrice;
-                        if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                            fTotalPrice = fTotalMass * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD;
-                        else
-                            fTotalPrice = fTotalMass * fCFS_PricePerKg_Plates_Total;
+                        float fTotalPrice = iQuantity *  fPricePerPiece;
 
                         bool bPlatewasAdded = false; // Plate was added to the group
 
@@ -452,16 +450,10 @@ namespace PFD
                                 {
                                     // Add plate to the one from already created groups
 
-                                    listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
-                                    listPlateTotalArea[k] = listPlateQuantity[k] * dlistPlateArea[k];
-                                    listPlateTotalMass[k] = listPlateQuantity[k] * dlistPlateMassPerPiece[k]; // Recalculate total weight of all plates in the group
-
-                                    // Recalculate total price of all plates in the group
-
-                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD > 0)
-                                        listPlateTotalPrice[k] = listPlateTotalMass[k] * (float)model.m_arrConnectionJoints[i].m_arrPlates[j].Price_PPKG_NZD;
-                                    else
-                                        listPlateTotalPrice[k] = listPlateTotalMass[k] * fCFS_PricePerKg_Plates_Total;
+                                    listPlateCount[k] += 1; // Add one plate (piece) to the quantity
+                                    listPlateTotalArea[k] = listPlateCount[k] * dlistPlateArea[k];
+                                    listPlateTotalMass[k] = listPlateCount[k] * dlistPlateUnitMass[k]; // Recalculate total weight of all plates in the group
+                                    listPlateTotalPrice[k] = listPlateCount[k] * dlistPlatePricePerPiece[k]; // Recalculate total price of all plates in the group
 
                                     bPlatewasAdded = true;
                                 }
@@ -472,15 +464,16 @@ namespace PFD
                         if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
                         {
                             listPlatePrefix.Add(sPrefix);
-                            listPlateQuantity.Add(iQuantity);
+                            listPlateCount.Add(iQuantity);
                             listPlateMaterialName.Add(sMaterialName);
                             dlistPlateWidth_bx.Add(fWidth_bx);
                             dlistPlateHeight_hy.Add(fHeight_hy);
                             dlistPlateThickness_tz.Add(Ft);
                             dlistPlateArea.Add(fArea);
-                            dlistPlateMassPerPiece.Add(fMassPerPiece);
+                            dlistPlateUnitMass.Add(fMassPerPiece);
                             listPlateTotalArea.Add(fTotalArea);
                             listPlateTotalMass.Add(fTotalMass);
+                            dlistPlatePricePerPiece.Add(fPricePerPiece);
                             listPlateTotalPrice.Add(fTotalPrice);
 
                             // Add first plate in the group to the list of plate groups
@@ -521,11 +514,11 @@ namespace PFD
 
             for (int i = 0; i < listPlatePrefix.Count; i++)
             {
-                dTotalPlatesArea_Table += (dlistPlateArea[i] * listPlateQuantity[i]);
-                dTotalPlatesVolume_Table += (dlistPlateArea[i] * listPlateQuantity[i] * dlistPlateThickness_tz[i]);
+                dTotalPlatesArea_Table += (dlistPlateArea[i] * listPlateCount[i]);
+                dTotalPlatesVolume_Table += (dlistPlateArea[i] * listPlateCount[i] * dlistPlateThickness_tz[i]);
                 dTotalPlatesMass_Table += listPlateTotalMass[i];
                 dTotalPlatesPrice_Table += listPlateTotalPrice[i];
-                iTotalPlatesNumber_Table += listPlateQuantity[i];
+                iTotalPlatesNumber_Table += listPlateCount[i];
             }
 
             //dTotalPlatesArea_Model = Math.Round(dTotalPlatesArea_Model, iNumberOfDecimalPlacesArea);
@@ -555,7 +548,8 @@ namespace PFD
                 listPlateHeight_hy.Add(dlistPlateHeight_hy[i].ToString("F3"));
                 listPlateThickness_tz.Add(dlistPlateThickness_tz[i].ToString("F3"));
                 listPlateArea.Add(dlistPlateArea[i].ToString("F3"));
-                listPlateMassPerPiece.Add(dlistPlateMassPerPiece[i].ToString("F3"));
+                listPlateMassPerPiece.Add(dlistPlateUnitMass[i].ToString("F3"));
+                listPlatePricePerPiece.Add(dlistPlatePricePerPiece[i].ToString("F3"));
             }
 
             dBuildingMass += dTotalPlatesMass_Table;
@@ -563,7 +557,7 @@ namespace PFD
 
             // Add Sum
             listPlatePrefix.Add("Total:");
-            listPlateQuantity.Add(iTotalPlatesNumber_Table);
+            listPlateCount.Add(iTotalPlatesNumber_Table);
             listPlateMaterialName.Add("");
             listPlateWidth_bx.Add(""); // Empty cell
             listPlateHeight_hy.Add(""); // Empty cell
@@ -572,60 +566,64 @@ namespace PFD
             listPlateMassPerPiece.Add(""); // Empty cell
             listPlateTotalArea.Add(dTotalPlatesArea_Table);
             listPlateTotalMass.Add(dTotalPlatesMass_Table);
+            listPlatePricePerPiece.Add("");
             listPlateTotalPrice.Add(dTotalPlatesPrice_Table);
 
             // Create Table
             DataTable table = new DataTable("TablePlates");
             // Create Table Rows
             table.Columns.Add("Prefix", typeof(String));
-            table.Columns.Add("Quantity", typeof(Int32));
+            table.Columns.Add("Count", typeof(Int32));
             table.Columns.Add("Material", typeof(String));
             table.Columns.Add("Width", typeof(String));
             table.Columns.Add("Height", typeof(String));
             table.Columns.Add("Thickness", typeof(String));
             table.Columns.Add("Area", typeof(String));
-            table.Columns.Add("Mass_per_Piece", typeof(String));
-            table.Columns.Add("Total_Area", typeof(Decimal));
-            table.Columns.Add("Total_Mass", typeof(Decimal));
-            table.Columns.Add("Total_Price", typeof(Decimal));
+            table.Columns.Add("UnitMass", typeof(String));
+            table.Columns.Add("TotalArea", typeof(Decimal));
+            table.Columns.Add("TotalMass", typeof(Decimal));
+            table.Columns.Add("UnitPrice", typeof(String));
+            table.Columns.Add("Price", typeof(Decimal));
 
             // Set Column Caption
             table.Columns["Prefix"].Caption = "Prefix";
-            table.Columns["Quantity"].Caption = "Quantity [-]";
+            table.Columns["Count"].Caption = "Count [-]";
             table.Columns["Material"].Caption = "Material";
             table.Columns["Width"].Caption = "Width [m]";
             table.Columns["Height"].Caption = "Height [m]";
             table.Columns["Thickness"].Caption = "Thickness [m]";
             table.Columns["Area"].Caption = "Area [m2]";
-            table.Columns["Mass_per_Piece"].Caption = "Mass per Piece [kg]";
-            table.Columns["Total_Area"].Caption = "Total Area [m2]";
-            table.Columns["Total_Mass"].Caption = "Total Mass [kg]";
-            table.Columns["Total_Price"].Caption = "Total Price [NZD]";
+            table.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
+            table.Columns["TotalArea"].Caption = "Total Area [m2]";
+            table.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            table.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
+            table.Columns["Price"].Caption = "Price [NZD]";
 
-            table.Columns["Prefix"].ExtendedProperties.Add("Width", 7.5f);
-            table.Columns["Quantity"].ExtendedProperties.Add("Width", 10.0f);
-            table.Columns["Material"].ExtendedProperties.Add("Width", 10.0f);
-            table.Columns["Width"].ExtendedProperties.Add("Width", 7.5f);
-            table.Columns["Height"].ExtendedProperties.Add("Width", 7.5f);
-            table.Columns["Thickness"].ExtendedProperties.Add("Width", 10.0f);
-            table.Columns["Area"].ExtendedProperties.Add("Width", 7.5f);
-            table.Columns["Mass_per_Piece"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Total_Area"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Total_Mass"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Total_Price"].ExtendedProperties.Add("Width", 10f);
+            table.Columns["Prefix"].ExtendedProperties.Add("Width", 6f);
+            table.Columns["Count"].ExtendedProperties.Add("Width", 8f);
+            table.Columns["Material"].ExtendedProperties.Add("Width", 8.5f);
+            table.Columns["Width"].ExtendedProperties.Add("Width", 7f);
+            table.Columns["Height"].ExtendedProperties.Add("Width", 7f);
+            table.Columns["Thickness"].ExtendedProperties.Add("Width", 8.5f);
+            table.Columns["Area"].ExtendedProperties.Add("Width", 7f);
+            table.Columns["UnitMass"].ExtendedProperties.Add("Width", 9f);
+            table.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
+            table.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            table.Columns["UnitPrice"].ExtendedProperties.Add("Width", 11f);
+            table.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             table.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            table.Columns["Quantity"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
             table.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
             table.Columns["Height"].ExtendedProperties.Add("Align", AlignmentX.Right);
             table.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
             table.Columns["Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Mass_per_Piece"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Total_Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Total_Mass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Total_Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
-
+            table.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            table.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -639,16 +637,17 @@ namespace PFD
                 try
                 {
                     row["Prefix"] = listPlatePrefix[i];
-                    row["Quantity"] = listPlateQuantity[i];
+                    row["Count"] = listPlateCount[i];
                     row["Material"] = listPlateMaterialName[i];
                     row["Width"] = listPlateWidth_bx[i];
                     row["Height"] = listPlateHeight_hy[i];
                     row["Thickness"] = listPlateThickness_tz[i];
                     row["Area"] = listPlateArea[i];
-                    row["Mass_per_Piece"] = listPlateMassPerPiece[i];
-                    row["Total_Area"] = listPlateTotalArea[i].ToString("F3");
-                    row["Total_Mass"] = listPlateTotalMass[i].ToString("F3");
-                    row["Total_Price"] = listPlateTotalPrice[i].ToString("F3");
+                    row["UnitMass"] = listPlateMassPerPiece[i];
+                    row["TotalArea"] = listPlateTotalArea[i].ToString("F2");
+                    row["TotalMass"] = listPlateTotalMass[i].ToString("F2");
+                    row["UnitPrice"] = listPlatePricePerPiece[i];
+                    row["Price"] = listPlateTotalPrice[i].ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -663,22 +662,19 @@ namespace PFD
             SetLastRowBold(Datagrid_Plates);
         }
 
-
         private void CreateTableConnectors(CModel model)
         {
-            //float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-            //float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
-
             //float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
             //float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
             //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             listConnectorPrefix = new List<string>(1);
-            listConnectorQuantity = new List<int>(1);
+            listConnectorCount = new List<int>(1);
             listConnectorMaterialName = new List<string>(1);
             listConnectorSize = new List<string>(1);
-            listConnectorMassPerPiece = new List<double>(1);
+            listConnectorUnitMass = new List<double>(1);
             listConnectorTotalMass = new List<double>(1);
+            listConnectorUnitPrice = new List<double>(1);
             listConnectorTotalPrice = new List<double>(1);
 
             // Connectors
@@ -914,7 +910,7 @@ namespace PFD
             {
                 dTotalConnectorsMass_Table += listConnectorTotalMass[i];
                 dTotalConnectorsPrice_Table += listConnectorTotalPrice[i];
-                iTotalConnectorsNumber_Table += listConnectorQuantity[i];
+                iTotalConnectorsNumber_Table += listConnectorCount[i];
             }
 
             //To Mato...toto tu treba???
@@ -941,38 +937,42 @@ namespace PFD
             // Create Table Rows
 
             dt.Columns.Add("Prefix", typeof(String));
-            dt.Columns.Add("Quantity", typeof(Int32));
+            dt.Columns.Add("Count", typeof(Int32));
             dt.Columns.Add("Material", typeof(String));
             dt.Columns.Add("Size", typeof(String));
-            dt.Columns.Add("Mass_per_Piece", typeof(String));
-            dt.Columns.Add("Total_Mass", typeof(Decimal));
-            dt.Columns.Add("Total_Price", typeof(Decimal));
+            dt.Columns.Add("UnitMass", typeof(String));
+            dt.Columns.Add("TotalMass", typeof(Decimal));
+            dt.Columns.Add("UnitPrice", typeof(string));
+            dt.Columns.Add("Price", typeof(Decimal));
 
             // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
             // Set Column Caption
             dt.Columns["Prefix"].Caption = "Prefix";
-            dt.Columns["Quantity"].Caption = "Quantity";
+            dt.Columns["Count"].Caption = "Count [-]";
             dt.Columns["Material"].Caption = "Material";
             dt.Columns["Size"].Caption = "Size";
-            dt.Columns["Mass_per_Piece"].Caption = "Mass per Piece [kg]";
-            dt.Columns["Total_Mass"].Caption = "Total Mass [kg]";
-            dt.Columns["Total_Price"].Caption = "Total Price [NZD]";
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Quantity"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["Material"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 25f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
+            dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);
             dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Mass_per_Piece"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Total_Mass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Total_Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Quantity"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Mass_per_Piece"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Total_Mass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Total_Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -985,12 +985,13 @@ namespace PFD
                 try
                 {
                     row["Prefix"] = listConnectorPrefix[i];
-                    row["Quantity"] = listConnectorQuantity[i];
+                    row["Count"] = listConnectorCount[i];
                     row["Material"] = listConnectorMaterialName[i];
                     row["Size"] = listConnectorSize[i];
-                    row["Mass_per_Piece"] = listConnectorMassPerPiece[i].ToString("F2");
-                    row["Total_Mass"] = listConnectorTotalMass[i].ToString("F3");
-                    row["Total_Price"] = listConnectorTotalPrice[i].ToString("F3");
+                    row["UnitMass"] = listConnectorUnitMass[i].ToString("F2");
+                    row["TotalMass"] = listConnectorTotalMass[i].ToString("F2");
+                    row["UnitPrice"] = listConnectorUnitPrice[i].ToString("F2");
+                    row["Price"] = listConnectorTotalPrice[i].ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
@@ -999,12 +1000,13 @@ namespace PFD
             // Add Sum
             row = dt.NewRow();
             row["Prefix"] = "Total:";
-            row["Quantity"] = iTotalConnectorsNumber_Table;
+            row["Count"] = iTotalConnectorsNumber_Table;
             row["Material"] = "";
             row["Size"] = "";
-            row["Mass_per_Piece"] = "";
-            row["Total_Mass"] = dTotalConnectorsMass_Table.ToString("F3");
-            row["Total_Price"] = dTotalConnectorsPrice_Table.ToString("F3");
+            row["UnitPrice"] = "";
+            row["TotalMass"] = dTotalConnectorsMass_Table.ToString("F2");
+            row["UnitPrice"] = "";
+            row["Price"] = dTotalConnectorsPrice_Table.ToString("F2");
             dt.Rows.Add(row);
 
             Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
@@ -1024,8 +1026,17 @@ namespace PFD
             string sMaterialName = connector.m_Mat.Name;
             float fDiameter = connector.Diameter_thread;
             float fLength = connector.Length;
-            float fMassPerPiece = connector.Mass;
-            float fTotalMass = iQuantity * fMassPerPiece;
+            float fUnitMass = connector.Mass;
+            float fTotalMass = iQuantity * fUnitMass;
+            float fUnitPrice = connector.Price_PPP_NZD;
+
+            if (connector.Price_PPP_NZD > 0)
+                fUnitPrice = connector.Price_PPP_NZD;
+            else
+            {
+                if (connector is CScrew) fUnitPrice = fTEK_PricePerPiece_Screws_Total;
+                else if (connector is CAnchor) fUnitPrice = (fAnchor_PricePerLength * fLength);
+            }
 
             if (connector is CScrew)
             {
@@ -1039,15 +1050,7 @@ namespace PFD
                 size = $"{connector.Name} x {Math.Round(fLength * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
             
-            float fTotalPrice = 0;
-            if (connector.Price_PPP_NZD > 0)
-                fTotalPrice = iQuantity * connector.Price_PPP_NZD;
-            else
-            {
-                if(connector is CScrew) fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
-                else if(connector is CAnchor) fTotalPrice = iQuantity * (fAnchor_PricePerLength * fLength);
-
-            }
+            float fTotalPrice = iQuantity * fUnitPrice;
             
             bool bConnectorwasAdded = false; // Connector was added to the group
 
@@ -1060,13 +1063,9 @@ namespace PFD
                 {
                     // Add connector to the one from already created groups
 
-                    listConnectorQuantity[m] += iQuantity; // Add one connector (piece) to the quantity
-                    listConnectorTotalMass[m] = listConnectorQuantity[m] * listConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
-
-                    if (connector.Price_PPP_NZD > 0)
-                        listConnectorTotalPrice[m] = listConnectorQuantity[m] * connector.Price_PPP_NZD; // Recalculate total price of all connectors in the group
-                    else
-                        listConnectorTotalPrice[m] = listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total;
+                    listConnectorCount[m] += iQuantity; // Add one connector (piece) to the quantity
+                    listConnectorTotalMass[m] = listConnectorCount[m] * listConnectorUnitMass[m]; // Recalculate total mass of all connectors in the group
+                    listConnectorTotalPrice[m] = listConnectorCount[m] * fUnitPrice; // Recalculate total price of all connectors in the group
 
                     bConnectorwasAdded = true;
                     // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
@@ -1077,11 +1076,12 @@ namespace PFD
             if (!bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
             {
                 listConnectorPrefix.Add(sPrefix);
-                listConnectorQuantity.Add(iQuantity);
+                listConnectorCount.Add(iQuantity);
                 listConnectorMaterialName.Add(sMaterialName);
                 listConnectorSize.Add(size);
-                listConnectorMassPerPiece.Add(fMassPerPiece);
+                listConnectorUnitMass.Add(fUnitMass);
                 listConnectorTotalMass.Add(fTotalMass);
+                listConnectorUnitPrice.Add(fUnitPrice);
                 listConnectorTotalPrice.Add(fTotalPrice);
 
                 // Add first plate in the group to the list of plate groups
@@ -1143,8 +1143,8 @@ namespace PFD
 
             dt.Columns["Cladding"].Caption = "Cladding";
             dt.Columns["Thickness"].Caption = "Thickness [mm]";
-            dt.Columns["Color"].Caption = "Color";
-            dt.Columns["ColorName"].Caption = "Color Name";
+            dt.Columns["Color"].Caption = "Colour";
+            dt.Columns["ColorName"].Caption = "Colour Name";
             //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
             dt.Columns["TotalArea"].Caption = "Total Area [m2]";
             dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
@@ -1155,17 +1155,17 @@ namespace PFD
             dt.Columns["Cladding"].ExtendedProperties.Add("Width", 20f);
             dt.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["Color"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 12f);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Cladding"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Color"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["ColorName"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Color"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["ColorName"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1312,17 +1312,17 @@ namespace PFD
             dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Opening"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Opening"].ExtendedProperties.Add("Width", 12.5f);
             dt.Columns["Width"].ExtendedProperties.Add("Width", 7.5f);
             dt.Columns["Height"].ExtendedProperties.Add("Width", 7.5f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 7.5f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
             dt.Columns["Area"].ExtendedProperties.Add("Width", 7.5f);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Opening"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1558,12 +1558,12 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Component"].ExtendedProperties.Add("Width", 50f);
+            dt.Columns["Component"].ExtendedProperties.Add("Width", 52f);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Component"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1711,11 +1711,11 @@ namespace PFD
             dt.Columns["Price"].Caption = "Price [NZD]";
 
             dt.Columns["Flashing"].ExtendedProperties.Add("Width", 50f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 12f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Flashing"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1893,11 +1893,11 @@ namespace PFD
             dt.Columns["Price"].Caption = "Price [NZD]";
 
             dt.Columns["Gutter"].ExtendedProperties.Add("Width", 50f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 12f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
 
             dt.Columns["Gutter"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
