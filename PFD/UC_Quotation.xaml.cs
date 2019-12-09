@@ -28,7 +28,7 @@ namespace PFD
     public partial class UC_Quotation : UserControl
     {
         double dBuildingMass = 0;
-        double dBuildingPrice_WithoutGST = 0;
+        double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
 
         const float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
         const float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
@@ -208,16 +208,27 @@ namespace PFD
                 fWindowFlashing_TotalLength);
 
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
-            double buildingPrice_PSM = dBuildingPrice_WithoutGST / fBuildingArea_Gross;
-            double buildingPrice_PCM = dBuildingPrice_WithoutGST / fBuildingVolume_Gross;
-            double buildingPrice_PPKG = dBuildingPrice_WithoutGST / dBuildingMass;
 
-            double dGST_Percentage = 15f; // TODO - urobit nastavitelne v GUI ???
-            double dGST_Absolute = dGST_Percentage / 100f * dBuildingPrice_WithoutGST;
-            double dTotalBuildingPrice_IncludingGST = dBuildingPrice_WithoutGST + dGST_Absolute;
+            // Margin
+            Margin_Percentage.Text = "40"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
+            double dMarginPercentage = double.Parse(Margin_Percentage.Text.ToString());
+            double dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
+            double buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
+
+            // Building Unit Price
+            double buildingPrice_PSM = buildingPrice_WithMargin_WithoutGST / fBuildingArea_Gross;
+            double buildingPrice_PCM = buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross;
+            double buildingPrice_PPKG = buildingPrice_WithMargin_WithoutGST / dBuildingMass;
+
+            GST_Percentage.Text = "15"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
+            double dGST_Percentage = double.Parse(GST_Percentage.Text.ToString());
+            double dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
+            double dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
 
             // Vypiseme celkovu cenu a dalsie parametre
-            SubTotalPrice.Text = dBuildingPrice_WithoutGST.ToString("F2");
+            NetPrice.Text = dBuildingNetPrice_WithoutMargin_WithoutGST.ToString("F2");
+            Margin_Absolute.Text = dMarginAbsolute.ToString("F2");
+            SubTotalPrice.Text = buildingPrice_WithMargin_WithoutGST.ToString("F2");
             GST_Absolute.Text = dGST_Absolute.ToString("F2");
             TotalPrice.Text = dTotalBuildingPrice_IncludingGST.ToString("F2");
 
@@ -343,7 +354,7 @@ namespace PFD
             }
 
             dBuildingMass += SumTotalMass;
-            dBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
             // Last row
             row = dt.NewRow();
@@ -553,7 +564,7 @@ namespace PFD
             }
 
             dBuildingMass += dTotalPlatesMass_Table;
-            dBuildingPrice_WithoutGST += dTotalPlatesPrice_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalPlatesPrice_Table;
 
             // Add Sum
             listPlatePrefix.Add("Total:");
@@ -930,7 +941,7 @@ namespace PFD
             //}
 
             dBuildingMass += dTotalConnectorsMass_Table;
-            dBuildingPrice_WithoutGST += dTotalConnectorsPrice_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalConnectorsPrice_Table;
 
             // Create Table
             DataTable dt = new DataTable("Table3");
@@ -1246,7 +1257,7 @@ namespace PFD
             if (SumTotalPrice > 0)
             {
                 dBuildingMass += SumTotalMass;
-                dBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1390,7 +1401,7 @@ namespace PFD
             if (SumTotalPrice > 0)
             {
                 dBuildingMass += SumTotalMass;
-                dBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1512,7 +1523,7 @@ namespace PFD
             if (SumTotalPrice > 0)
             {
                 dBuildingMass += SumTotalMass;
-                dBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1629,7 +1640,7 @@ namespace PFD
             if (SumTotalPrice > 0)
             {
                 dBuildingMass += SumTotalMass;
-                dBuildingPrice_WithoutGST += SumTotalPrice;
+                dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
                 // Last row
                 row = dt.NewRow();
@@ -1861,7 +1872,7 @@ namespace PFD
                         ref SumTotalPrice);
 
             dBuildingMass += SumTotalMass;
-            dBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
             // Last row
             DataRow row;
@@ -1947,7 +1958,7 @@ namespace PFD
                         ref SumTotalPrice);
 
             dBuildingMass += SumTotalMass;
-            dBuildingPrice_WithoutGST += SumTotalPrice;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
 
             //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy gutters // Zatial komentujem, dal by sa tym usetrit jeden riadok
             //{

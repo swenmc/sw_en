@@ -132,7 +132,7 @@
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>                    
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -169,7 +169,7 @@
                     <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            
+
             <TextBlock Grid.Row="8" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Name="FibreglassLabel" Text="Fibreglass" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Fibreglass" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
@@ -249,7 +249,7 @@
                     <DataGridTextColumn Binding="{Binding Price}" Header="Price [NZD]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            
+
             <TextBlock Grid.Row="14" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Gutters" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
             <DataGrid Name ="Datagrid_Gutters" Grid.Row="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
                 IsReadOnly="True" CanUserSortColumns="False">
@@ -299,17 +299,29 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="19" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Net Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="19" Name="NetPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
-            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST (15%):" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="20" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Margin (" VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="20" Name="Margin_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="70,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text=" %):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="20" Name="Margin_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
-            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="21" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
-            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Subtotal Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="21" Name="SubTotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST      ( " VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="22" Name="GST_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="70,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text=" %):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="22" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
+
+            <TextBlock Grid.Row="23" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Total Price:" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="23" Name="TotalPrice" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
+            <TextBlock Grid.Row="23" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16" FontWeight="Bold" Foreground="DarkBlue"/>
 
             <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Area:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="19" Name="BuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
@@ -322,7 +334,7 @@
             <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Building Mass:" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="21" Name="BuildingMass" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="kg" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
-            
+
             <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Unit Price (without GST):" VerticalAlignment="Top" Width="150" Margin="410,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="22" Name="UnitPricePerBuildingArea" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="60" Margin="570,2,0,0" FontSize="12"/>
             <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD / m²" VerticalAlignment="Top" Width="100" Margin="640,2,0,0" FontSize="12"/>
