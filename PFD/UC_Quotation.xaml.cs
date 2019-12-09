@@ -1124,7 +1124,7 @@ namespace PFD
             string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
             string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
 
-            List<CTrapezoidalSheetingColours> colours = CTrapezoidalSheetingManager.LoadTrapezoidalSheetingColours();
+            List<CoatingColours> colours = CCoatingColorManager.LoadCoatingColours("TrapezoidalSheetingSQLiteDB");
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
             prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}");
@@ -1561,8 +1561,8 @@ namespace PFD
             // Roof Netting and Sisalation
             // Roof Sisalation Foil
             // Roof Safe Net
-            float fRoofSisalationFoilPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof foil za 1 m^2
-            float fRoofSafeNetPrice_PSM_NZD = (float)listOfProperties[1].Price_PPSM_NZD; // Cena roof net za 1 m^2
+            float fRoofSisalationFoilPrice_PSM_NZD = (float)listOfProperties[0].Price1_PPSM_NZD; // Cena roof foil za 1 m^2
+            float fRoofSafeNetPrice_PSM_NZD = (float)listOfProperties[1].Price1_PPSM_NZD; // Cena roof net za 1 m^2
 
             float fRoofSisalationFoilUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
             float fRoofSafeNetUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;

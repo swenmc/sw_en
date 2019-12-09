@@ -220,7 +220,7 @@ namespace PFD
 
         public static void FillComboboxWithColors(ComboBox combobox)
         {
-            List<CTrapezoidalSheetingColours> colours = CTrapezoidalSheetingManager.LoadTrapezoidalSheetingColours();
+            List<CoatingColours> colours = CCoatingColorManager.LoadCoatingColours("TrapezoidalSheetingSQLiteDB");
             combobox.ItemsSource = colours;
 
             //List<Tuple<string, string>> color_items = new List<Tuple<string, string>>();

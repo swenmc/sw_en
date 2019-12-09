@@ -96,6 +96,7 @@
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="CCoatingColorManager.cs" />
     <Compile Include="CWashersManager.cs" />
     <Compile Include="DTO\CBoltNutProperties.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="DTO\CComponentPrefixes.cs" />
     <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
     <Compile Include="DTO\CSectionProperties.cs" />
-    <Compile Include="DTO\CTrapezoidalSheetingColours.cs" />
+    <Compile Include="DTO\CoatingColours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

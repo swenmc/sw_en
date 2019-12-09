@@ -34,6 +34,7 @@ namespace BaseClasses
         private float m_fPrice_PPKG_NZD; // Price per kilogram
         private float m_fPrice_PPP_NZD; // Price per piece
 
+        private int m_ColorID; // TODO Ondrej - Pracovat s ID alebo priamo s Color
         private int m_Count;
 
         public string Type
@@ -180,6 +181,19 @@ namespace BaseClasses
             }
         }
 
+        public int ColorID
+        {
+            get
+            {
+                return m_ColorID;
+            }
+
+            set
+            {
+                m_ColorID = value;
+            }
+        }
+
         public int Count
         {
             get
@@ -210,8 +224,10 @@ namespace BaseClasses
 
             m_fUnitMass_SM = (float)prop.Mass_kg_m2;
 
-            m_fPrice_PPSM_NZD = (float)prop.Price_PPSM_NZD;
-            m_fPrice_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+            ColorID = 1; // TODO - napojit index na GUI
+            List<CoatingColours> colorsProp = CCoatingColorManager.LoadCoatingColours("AccessoriesSQLiteDB");
+            m_fPrice_PPSM_NZD = GetDoorPriceByColor_PSM_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
+            m_fPrice_PPKG_NZD = GetDoorPriceByColor_PPKG_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
 
             m_fPrice_PPP_NZD = m_fPrice_PPSM_NZD * m_fArea;
 
@@ -229,6 +245,44 @@ namespace BaseClasses
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        private float GetDoorPriceByColor_PSM_NZD(int priceCode, CPlaneItemProperties prop)
+        {
+            float fDoorPrice1_PSM_NZD = (float)prop.Price1_PPSM_NZD; // Cena door za 1 m^2 (Basic)
+            float fDoorPrice2_PSM_NZD = (float)prop.Price2_PPSM_NZD; // Cena door za 1 m^2 (FormClad)
+            float fDoorPrice3_PSM_NZD = (float)prop.Price3_PPSM_NZD; // Cena door za 1 m^2 (AZ)
+
+            // TODO Ondrej - toto sa asi da urobit krajsie cez nejaku relacnu databazu alebo nieco take
+            if (priceCode == 1)
+                return fDoorPrice1_PSM_NZD;
+            else if (priceCode == 2)
+                return fDoorPrice2_PSM_NZD;
+            else if (priceCode == 3)
+                return fDoorPrice3_PSM_NZD;
+            else
+            {
+                throw new Exception("Invalid door price code.");
+            }
+        }
+
+        private float GetDoorPriceByColor_PPKG_NZD(int priceCode, CPlaneItemProperties prop)
+        {
+            float fDoorPrice1_PKG_NZD = (float)prop.Price1_PPKG_NZD; // Cena door za 1 m^2 (Basic)
+            float fDoorPrice2_PKG_NZD = (float)prop.Price2_PPKG_NZD; // Cena door za 1 m^2 (FormClad)
+            float fDoorPrice3_PKG_NZD = (float)prop.Price3_PPKG_NZD; // Cena door za 1 m^2 (AZ)
+
+            // TODO Ondrej - toto sa asi da urobit krajsie cez nejaku relacnu databazu alebo nieco take
+            if (priceCode == 1)
+                return fDoorPrice1_PKG_NZD;
+            else if (priceCode == 2)
+                return fDoorPrice2_PKG_NZD;
+            else if (priceCode == 3)
+                return fDoorPrice3_PKG_NZD;
+            else
+            {
+                throw new Exception("Invalid door price code.");
+            }
         }
     }
 }

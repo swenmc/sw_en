@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DATABASE.DTO
 {
-    public class CTrapezoidalSheetingColours
+    public class CoatingColours
     {
         int MID;
         string MName;
@@ -93,7 +93,6 @@ namespace DATABASE.DTO
             }
         }
 
-        public CTrapezoidalSheetingColours() { }
-
+        public CoatingColours() { }
     }
 }

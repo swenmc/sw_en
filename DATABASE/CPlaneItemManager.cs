@@ -106,8 +106,43 @@ namespace DATABASE
             }
 
             properties.Mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
-            properties.Price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
-            properties.Price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
+            properties.Price1_PPSM_NZD = double.Parse(reader["price1_PPSM_NZD"].ToString(), nfi);
+            properties.Price1_PPKG_NZD = double.Parse(reader["price1_PPKG_NZD"].ToString(), nfi);
+
+            try
+            {
+                properties.Price2_PPSM_NZD = double.Parse(reader["price2_PPSM_NZD"].ToString(), nfi);
+            }
+            catch
+            {
+                properties.Price2_PPSM_NZD = 0; // Nie vsetky plosne elementy maju definovane rozne ceny
+            }
+
+            try
+            {
+                properties.Price2_PPKG_NZD = double.Parse(reader["price2_PPKG_NZD"].ToString(), nfi);
+            }
+            catch
+            {
+                properties.Price2_PPKG_NZD = 0; // Nie vsetky plosne elementy maju definovane rozne ceny
+            }
+            try
+            {
+                properties.Price3_PPSM_NZD = double.Parse(reader["price3_PPSM_NZD"].ToString(), nfi);
+            }
+            catch
+            {
+                properties.Price3_PPSM_NZD = 0; // Nie vsetky plosne elementy maju definovane rozne ceny
+            }
+            try
+            {
+                properties.Price3_PPKG_NZD = double.Parse(reader["price3_PPKG_NZD"].ToString(), nfi);
+            }
+            catch
+            {
+                properties.Price3_PPKG_NZD = 0; // Nie vsetky plosne elementy maju definovane rozne ceny
+            }
+
             properties.Note = reader["note"].ToString();
 
             return properties;
