@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CBoltNutsManager.cs" />
+    <Compile Include="CRollerDoorPricesManager.cs" />
     <Compile Include="CPlaneItemManager.cs" />
     <Compile Include="CLengthItemManager.cs" />
     <Compile Include="CBoltsManager.cs" />
