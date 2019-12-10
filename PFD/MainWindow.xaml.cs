@@ -874,6 +874,12 @@ namespace PFD
 
             if (compListVM.NoCompomentsForMaterialList()) Part_List.IsEnabled = false;
             else Part_List.IsEnabled = true;
+
+            if (vm.RecreateModel)
+            {
+                Part_List.Content = null;
+                Quotation.Content = null;
+            }
         }
 
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
@@ -1031,10 +1037,12 @@ namespace PFD
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {
                 Part_List.Content = new UC_MaterialList(vm.Model);
+                //if (Part_List.Content == null) Part_List.Content = new UC_MaterialList(vm.Model);
             }
             else if(MainTabControl.SelectedIndex == (int)ETabNames.eQuoation)
             {
-                Quotation.Content = new UC_Quotation(vm);
+                //Quotation.Content = new UC_Quotation(vm);
+                if (Quotation.Content == null) Quotation.Content = new UC_Quotation(vm);
             }
             else
             {

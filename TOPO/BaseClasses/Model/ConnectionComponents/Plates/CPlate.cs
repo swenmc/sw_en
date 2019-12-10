@@ -691,7 +691,7 @@ namespace BaseClasses
                         //fVolume = (float)prop.Volume;
                         //fMass = (float)prop.Mass;
 
-                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        if (prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
                     }
                 case ESerieTypePlate.eSerie_L:
@@ -709,11 +709,12 @@ namespace BaseClasses
                         //fVolume = (float)prop.Volume;
                         //fMass = (float)prop.Mass;
 
-                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                         if(prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
                     }
                 case ESerieTypePlate.eSerie_F:
                     {
+                        //To Mato - tu je problem,ze tu pride parameter "FB" ale v databaze take nie je, takze null a nullreferenceexception
                         CPlate_F_Properties prop = new CPlate_F_Properties();
                         prop = CJointsManager.GetPlate_F_Properties(plateDatabaseName);
 
@@ -727,7 +728,7 @@ namespace BaseClasses
                         //fVolume = (float)prop.Volume;
                         //fMass = (float)prop.Mass;
 
-                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        if (prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
                     }
                 case ESerieTypePlate.eSerie_LL:
@@ -745,7 +746,7 @@ namespace BaseClasses
                         //fVolume = (float)prop.Volume / 1000000000;
                         //fMass = (float)prop.Mass;
 
-                        Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        if (prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
                     }
                 default:

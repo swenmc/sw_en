@@ -62,11 +62,17 @@ namespace PFD
 
         public UC_MaterialList(CModel_PFD model)
         {
+            //DateTime start = DateTime.Now;
+            //System.Diagnostics.Trace.WriteLine("UC_MaterialList");
             InitializeComponent();
+
+            //System.Diagnostics.Trace.WriteLine("after InitializeComponent: " + (DateTime.Now - start).TotalMilliseconds);
 
             CMaterialListViewModel vm = new CMaterialListViewModel(model);
             vm.PropertyChanged += MaterialListViewModel_PropertyChanged;
             this.DataContext = vm;
+
+            //System.Diagnostics.Trace.WriteLine("after CMaterialListViewModel: " + (DateTime.Now - start).TotalMilliseconds) ;
 
             // Clear all lists
             DeleteAllLists();
@@ -87,7 +93,7 @@ namespace PFD
             // Plates
 
             List<CPlate> ListOfPlateGroups = new List<CPlate>();
-            System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
+            //System.Diagnostics.Trace.WriteLine("model.m_arrConnectionJoints.Count: " + model.m_arrConnectionJoints.Count);
             int count = 0;
             for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
             {
@@ -178,12 +184,19 @@ namespace PFD
                         // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
                         // Nie vsetky plechy budu mat parametre definovane v databaze
                         // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
+                        //TO Mato - a preco sa to nedeje uz pri vytvarani plechov? Nacitavanie dat z databazy stale je sprostost, lebo to spomaluje
 
+
+                        //System.Diagnostics.Trace.WriteLine($"before model.m_arrConnectionJoints[{i}].m_arrPlates[{j}].SetParams: " + (DateTime.Now - start).TotalMilliseconds);
                         try
                         {
                             model.m_arrConnectionJoints[i].m_arrPlates[j].SetParams(model.m_arrConnectionJoints[i].m_arrPlates[j].Name, model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS);
                         }
-                        catch { };
+                        catch (Exception ex)
+                        {
+                            //System.Diagnostics.Trace.WriteLine($"{ex.Message}" + (DateTime.Now - start).TotalMilliseconds);
+                        };
+                        //System.Diagnostics.Trace.WriteLine($"after model.m_arrConnectionJoints[{i}].m_arrPlates[{j}].SetParams: " + (DateTime.Now - start).TotalMilliseconds);
 
                         string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
                         int iQuantity = 1;
@@ -254,7 +267,7 @@ namespace PFD
                     }
                 }
             }
-            System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
+            //System.Diagnostics.Trace.WriteLine("Joints SelectedForMaterialList count: " + count);
 
             // Check Data
             double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
@@ -392,7 +405,10 @@ namespace PFD
                 table2.Rows.Add(row);
             }
 
+            //System.Diagnostics.Trace.WriteLine("before plates: " + (DateTime.Now - start).TotalMilliseconds);
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            //System.Diagnostics.Trace.WriteLine("after plates: " + (DateTime.Now - start).TotalMilliseconds);
+
 
             // Connectors
             // TASK 422
@@ -686,8 +702,9 @@ namespace PFD
                 catch (ArgumentOutOfRangeException) { }
                 table3.Rows.Add(row);
             }
-
+            //System.Diagnostics.Trace.WriteLine("before connectors: " + (DateTime.Now - start).TotalMilliseconds);
             Datagrid_Screws.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            //System.Diagnostics.Trace.WriteLine("after connectors: " + (DateTime.Now - start).TotalMilliseconds);
         }
 
         private void MaterialListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -6,6 +6,21 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         >
+    <UserControl.Resources>
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="MainColumn" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="5,10,5,5">
             <Grid.RowDefinitions>
@@ -20,17 +35,29 @@
             <DataGrid Name ="Datagrid_Members" ItemsSource="{Binding MembersMaterialList}" Grid.Row="1"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
             IsReadOnly="True">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding CrScName}" Header="CrScName" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding MaterialName}" Header="MaterialName" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding LengthStr}" Header="Length" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding MassPerLengthStr}" Header="MassPerLength" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding MassPerPieceStr}" Header="MassPerPiece" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalLength, StringFormat={}{0:0.00}}" Header="TotalLength" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalMass, StringFormat={}{0:0.00}}" Header="TotalMass" Width="Auto"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding TotalPrice, StringFormat={}{0:0.00}}" Header="TotalPrice" Width="Auto"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding CrScName}" Header="Cross-section" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Quantity}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MaterialName}" Header="Material Name" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding LengthStr}" Header="Length [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MassPerLengthStr}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding MassPerPieceStr}" Header="Mass Per Piece" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalLength, StringFormat={}{0:0.00}}" Header="Total Length [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalMass, StringFormat={}{0:0.00}}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <!--<DataGridTextColumn Binding="{Binding TotalPrice, StringFormat={}{0:0.00}}" Header="TotalPrice" Width="Auto"></DataGridTextColumn>-->
                 </DataGrid.Columns>
             </DataGrid>
 

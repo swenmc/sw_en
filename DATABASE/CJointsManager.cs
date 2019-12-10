@@ -10,6 +10,11 @@ namespace DATABASE
 {
     public static class CJointsManager
     {
+        private static Dictionary<string, CPlate_B_Properties> plateB_properties = new Dictionary<string, CPlate_B_Properties>();
+        private static Dictionary<string, CPlate_F_Properties> plateF_properties = new Dictionary<string, CPlate_F_Properties>();
+        private static Dictionary<string, CPlate_L_Properties> plateL_properties = new Dictionary<string, CPlate_L_Properties>();
+        private static Dictionary<string, CPlate_LL_Properties> plateLL_properties = new Dictionary<string, CPlate_LL_Properties>();
+
         public static List<CConnectionDescription> LoadJointsConnectionDescriptions()
         {
             CConnectionDescription item;
@@ -116,9 +121,13 @@ namespace DATABASE
             return properties;
         }
 
+
         public static CPlate_B_Properties GetPlate_B_Properties(string name)
         {
             CPlate_B_Properties properties = null;
+
+            if (plateB_properties.TryGetValue(name, out properties)) return properties;
+
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -130,6 +139,7 @@ namespace DATABASE
                     if (reader.Read())
                     {
                         properties = GetPlate_B_Properties(reader);
+                        plateB_properties.Add(name, properties);
                     }
                 }
             }
@@ -255,6 +265,8 @@ namespace DATABASE
         public static CPlate_L_Properties GetPlate_L_Properties(string name)
         {
             CPlate_L_Properties properties = null;
+            if (plateL_properties.TryGetValue(name, out properties)) return properties;
+
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -266,6 +278,7 @@ namespace DATABASE
                     if (reader.Read())
                     {
                         properties = GetPlate_L_Properties(reader);
+                        plateL_properties.Add(name, properties);
                     }
                 }
             }
@@ -358,6 +371,7 @@ namespace DATABASE
         public static CPlate_F_Properties GetPlate_F_Properties(string name)
         {
             CPlate_F_Properties properties = null;
+            if (plateF_properties.TryGetValue(name, out properties)) return properties;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -369,6 +383,7 @@ namespace DATABASE
                     if (reader.Read())
                     {
                         properties = GetPlate_F_Properties(reader);
+                        plateF_properties.Add(name, properties);
                     }
                 }
             }
@@ -462,6 +477,7 @@ namespace DATABASE
         public static CPlate_LL_Properties GetPlate_LL_Properties(string name)
         {
             CPlate_LL_Properties properties = null;
+            if (plateLL_properties.TryGetValue(name, out properties)) return properties;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["JointsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -473,6 +489,7 @@ namespace DATABASE
                     if (reader.Read())
                     {
                         properties = GetPlate_LL_Properties(reader);
+                        plateLL_properties.Add(name, properties);
                     }
                 }
             }
