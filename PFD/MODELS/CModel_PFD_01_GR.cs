@@ -2738,8 +2738,8 @@ namespace PFD
 
                     if (bUseMainColumnFlyBracingPlates && iMainColumnFlyBracing_EveryXXGirt > 0 && (iCurrentMemberIndex - iFirstGirtOnCurrentSideIndex + 1) % iMainColumnFlyBracing_EveryXXGirt == 0)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
                     }
                     else
                     {
@@ -2779,8 +2779,8 @@ namespace PFD
 
                     if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iRafterFlyBracing_EveryXXPurlin == 0)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
                     }
                     else
                     {

@@ -714,7 +714,6 @@ namespace BaseClasses
                     }
                 case ESerieTypePlate.eSerie_F:
                     {
-                        //To Mato - tu je problem,ze tu pride parameter "FB" ale v databaze take nie je, takze null a nullreferenceexception
                         CPlate_F_Properties prop = new CPlate_F_Properties();
                         prop = CJointsManager.GetPlate_F_Properties(plateDatabaseName);
 
