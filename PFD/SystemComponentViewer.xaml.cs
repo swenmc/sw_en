@@ -1234,7 +1234,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_F:
                         {
                             CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

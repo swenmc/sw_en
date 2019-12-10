@@ -147,7 +147,6 @@ namespace BaseClasses
         // F - with or without holes
         public CConCom_Plate_F_or_L(string sName_temp,
             Point3D controlpoint,
-            int iLeftRightIndex_temp, // 0 - left (original), 1 - right
             float fbX1_temp,
             float fbX2_temp,
             float fhY_temp,
@@ -168,7 +167,7 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
-            iLeftRightIndex = iLeftRightIndex_temp;
+            iLeftRightIndex = sName_temp.Substring(5, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX1 = fbX1_temp;
             m_fbX2 = fbX2_temp;
             m_fhY = fhY_temp;
