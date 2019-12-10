@@ -470,6 +470,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\TemplateQuotation.docx" />
     <None Include="Resources\TemplateReport.docx" />
   </ItemGroup>
   <ItemGroup>
