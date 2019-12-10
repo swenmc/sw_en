@@ -116,6 +116,7 @@
     <Compile Include="DTO\CMatPropertiesRF.cs" />
     <Compile Include="DTO\CMatPropertiesRC.cs" />
     <Compile Include="DTO\CTEKScrewProp.cs" />
+    <Compile Include="DTO\CTS_CoatingProperties.cs" />
     <Compile Include="DTO\CTS_SectionPropertiesText.cs" />
     <Compile Include="DTO\CTS_SectionProperties.cs" />
     <Compile Include="DTO\CTS_CrscProperties.cs" />

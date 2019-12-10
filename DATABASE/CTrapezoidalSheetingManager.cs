@@ -267,6 +267,9 @@ namespace DATABASE
             crsc.price3_PPSM_NZD = double.Parse(reader["price3_PPSM_NZD"].ToString(), nfi);
             crsc.price3_PPLM_NZ = double.Parse(reader["price3_PPLM_NZD"].ToString(), nfi);
             crsc.price3_PPKG_NZD = double.Parse(reader["price3_PPKG_NZD"].ToString(), nfi);
+            crsc.price4_PPSM_NZD = double.Parse(reader["price4_PPSM_NZD"].ToString(), nfi);
+            crsc.price4_PPLM_NZ = double.Parse(reader["price4_PPLM_NZD"].ToString(), nfi);
+            crsc.price4_PPKG_NZD = double.Parse(reader["price4_PPKG_NZD"].ToString(), nfi);
             crsc.maxSimpleSpan = double.Parse(reader["maxSimpleSpan"].ToString(), nfi);
             crsc.maxEavesOverhang = double.Parse(reader["maxEavesOverhang"].ToString(), nfi);
             crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
@@ -327,6 +330,127 @@ namespace DATABASE
             list.Add(properties.phi_V_nz);
 
             return list;
+        }
+
+
+
+        // Coating
+        private static Dictionary<string, CTS_CoatingProperties> coatingItems = null;
+
+        public static Dictionary<string, CTS_CoatingProperties> LoadCoatingProperties()
+        {
+            if (coatingItems != null) return coatingItems;
+            CTS_CoatingProperties coatingProp = null;
+            coatingItems = new Dictionary<string, CTS_CoatingProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coating", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        coatingProp = GetCoatingProperties(reader);
+                        coatingItems.Add(coatingProp.Name, coatingProp);
+                    }
+                }
+            }
+            return coatingItems;
+        }
+
+        public static List<CTS_CoatingProperties> LoadCoatingPropertiesList()
+        {
+            CTS_CoatingProperties properties;
+            List<CTS_CoatingProperties> items = new List<CTS_CoatingProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coating", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        properties = new CTS_CoatingProperties();
+                        properties = GetCoatingProperties(reader);
+                        items.Add(properties);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CTS_CoatingProperties LoadCoatingProperties(string name)
+        {
+            CTS_CoatingProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coating WHERE name_short = @name_short", conn);
+                command.Parameters.AddWithValue("@name_short", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetCoatingProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CTS_CoatingProperties GetCoatingProperties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CTS_CoatingProperties coatingprop = new CTS_CoatingProperties();
+            coatingprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            coatingprop.Name = reader["name_short"].ToString();
+            coatingprop.ColorIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
+            coatingprop.PriceCode = Int32.Parse(reader["priceCode"].ToString(), nfi);
+
+            return coatingprop;
+        }
+
+        // TODO Ondrej - Toto by sa malo presunut do nejake bazovej triedy pre pracu s textom a pod
+
+        // Split text
+        // Returns array of words (strings)
+        public static string[] SplitText(string inputText)
+        {
+            char[] delimiterChars = { ' ', ',', '.', ':', '\t', '\n' }; // Znaky, ktore urcuju rozdelenie textu
+
+            //System.Console.WriteLine($"Original text: '{inputText}'");
+
+            string[] words = inputText.Split(delimiterChars);
+
+            /*
+            System.Console.WriteLine($"{words.Length} words in text:");
+
+                foreach (var word in words)
+                {
+                    System.Console.WriteLine($"<{word}>");
+            }
+            */
+
+            return words;
+        }
+
+        // Convert string to array of int IDs
+
+        public static int[] ConvertStringArrayOfIDs(string inputText)
+        {
+            string[] words = SplitText(inputText);
+
+            int[] arrayIDs = new int[words.Length];
+
+            for (int i = 0; i < words.Length; i++)
+                arrayIDs[i] = Int32.Parse(words[i]);
+
+            return arrayIDs;
         }
     }
 }

@@ -11,10 +11,10 @@ namespace DATABASE
     {
         // "TrapezoidalSheetingSQLiteDB"
         // colours
-        public static List<CoatingColours> LoadCoatingColours(string sDatabaseName, string sTableName = "colours")
+        public static List<CoatingColour> LoadColours(string sDatabaseName, string sTableName = "colours")
         {
-            CoatingColours colour;
-            List<CoatingColours> items = new List<CoatingColours>();
+            CoatingColour colour;
+            List<CoatingColour> items = new List<CoatingColour>();
             
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[sDatabaseName].ConnectionString))
             {
@@ -24,19 +24,49 @@ namespace DATABASE
                 {
                     while (reader.Read())
                     {
-
-                        colour = new CoatingColours();
-                        colour.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        colour.Name = reader["name"].ToString();
-                        colour.CodeRGB = reader["codeRGB"].ToString();
-                        colour.CodeHEX = "#"+reader["codeHEX"].ToString();
-                        colour.CodeHSV = reader["codeHSV"].ToString();
-                        colour.PriceCode = Int32.Parse(reader["priceCode"].ToString());
+                        colour = new CoatingColour();
+                        colour = GetColorProperties(reader);
                         items.Add(colour);
                     }
                 }
             }
             return items;
+        }
+
+        public static CoatingColour LoadCoatingProperties(int id)
+        {
+            CoatingColour properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coating WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetColorProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CoatingColour GetColorProperties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CoatingColour colour = new CoatingColour();
+            colour.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            colour.Name = reader["name"].ToString();
+            colour.CodeRGB = reader["codeRGB"].ToString();
+            colour.CodeHEX = "#" + reader["codeHEX"].ToString();
+            colour.CodeHSV = reader["codeHSV"].ToString();
+            colour.PriceCode = Int32.Parse(reader["priceCode"].ToString());
+
+            return colour;
         }
     }
 }

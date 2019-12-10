@@ -75,6 +75,8 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
 
                             <RowDefinition />
                         </Grid.RowDefinitions>
@@ -180,8 +182,12 @@
                         <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                        
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -193,16 +199,20 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                        
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -214,32 +224,32 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="21" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FibreglassAreaRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="19" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="21" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="20" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="22" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="20" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="22" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        <!--<TextBlock Grid.Row="21" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <!--<TextBlock Grid.Row="23" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -251,8 +261,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>-->
 
-                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -263,12 +273,12 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBlock Grid.Row="23" Grid.Column="0" Text="View:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="23" Grid.Column="1" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="25" Grid.Column="0" Text="View:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="24" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="26" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="26" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project details" Width="20" Height="20" Click="btnProjectInfo_Click">

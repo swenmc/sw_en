@@ -445,7 +445,7 @@ namespace PFD
 
                         float fTotalArea = iQuantity * fArea;
                         float fTotalMass = iQuantity * fMassPerPiece;
-                        float fTotalPrice = iQuantity *  fPricePerPiece;
+                        float fTotalPrice = iQuantity * fPricePerPiece;
 
                         bool bPlatewasAdded = false; // Plate was added to the group
 
@@ -711,66 +711,66 @@ namespace PFD
 
                         //for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length; k++) // For each connector in plate
                         //{
-                            
-                            
-                            ////z toho funkcia
-                            //string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name;
-                            //int iQuantity = 1;
-                            //string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].m_Mat.Name;
-                            //int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Gauge;
-                            //float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread;
-                            //float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length;
-                            //string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
-                            //float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
-                            //float fTotalMass = iQuantity * fMassPerPiece;
 
-                            //float fTotalPrice;
-                            //if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
-                            //    fTotalPrice = iQuantity * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD;
-                            //else
-                            //    fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
 
-                            //bool bConnectorwasAdded = false; // Connector was added to the group
+                        ////z toho funkcia
+                        //string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name;
+                        //int iQuantity = 1;
+                        //string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].m_Mat.Name;
+                        //int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Gauge;
+                        //float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread;
+                        //float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length;
+                        //string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
+                        //float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
+                        //float fTotalMass = iQuantity * fMassPerPiece;
 
-                            //if (ListOfConnectorGroups.Count > 0) // If it not first item
-                            //{
-                            //    for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
-                            //    {
-                            //        if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name &&
-                            //        MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread) &&
-                            //        MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length) &&
-                            //        MathF.d_equal(ListOfConnectorGroups[m].Mass, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass))
-                            //        {
-                            //            // Add connector to the one from already created groups
+                        //float fTotalPrice;
+                        //if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
+                        //    fTotalPrice = iQuantity * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD;
+                        //else
+                        //    fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
 
-                            //            listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
-                            //            listConnectorTotalMass[m] = listConnectorQuantity[m] * listConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
+                        //bool bConnectorwasAdded = false; // Connector was added to the group
 
-                            //            if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
-                            //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD; // Recalculate total price of all connectors in the group
-                            //            else
-                            //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total;
+                        //if (ListOfConnectorGroups.Count > 0) // If it not first item
+                        //{
+                        //    for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
+                        //    {
+                        //        if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name &&
+                        //        MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread) &&
+                        //        MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length) &&
+                        //        MathF.d_equal(ListOfConnectorGroups[m].Mass, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass))
+                        //        {
+                        //            // Add connector to the one from already created groups
 
-                            //            bConnectorwasAdded = true;
-                            //            // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                            //            break;
-                            //        }
-                            //    }
-                            //}
+                        //            listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
+                        //            listConnectorTotalMass[m] = listConnectorQuantity[m] * listConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
 
-                            //if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                            //{
-                            //    listConnectorPrefix.Add(sPrefix);
-                            //    listConnectorQuantity.Add(iQuantity);
-                            //    listConnectorMaterialName.Add(sMaterialName);
-                            //    listConnectorSize.Add(size);
-                            //    listConnectorMassPerPiece.Add(fMassPerPiece);
-                            //    listConnectorTotalMass.Add(fTotalMass);
-                            //    listConnectorTotalPrice.Add(fTotalPrice);
+                        //            if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
+                        //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD; // Recalculate total price of all connectors in the group
+                        //            else
+                        //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total;
 
-                            //    // Add first plate in the group to the list of plate groups
-                            //    ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
-                            //}
+                        //            bConnectorwasAdded = true;
+                        //            // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                        //            break;
+                        //        }
+                        //    }
+                        //}
+
+                        //if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                        //{
+                        //    listConnectorPrefix.Add(sPrefix);
+                        //    listConnectorQuantity.Add(iQuantity);
+                        //    listConnectorMaterialName.Add(sMaterialName);
+                        //    listConnectorSize.Add(size);
+                        //    listConnectorMassPerPiece.Add(fMassPerPiece);
+                        //    listConnectorTotalMass.Add(fTotalMass);
+                        //    listConnectorTotalPrice.Add(fTotalPrice);
+
+                        //    // Add first plate in the group to the list of plate groups
+                        //    ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
+                        //}
                         //}
                     }
 
@@ -1057,12 +1057,12 @@ namespace PFD
             }
             else if (connector is CAnchor)
             {
-                sPrefix = connector.Prefix;                
+                sPrefix = connector.Prefix;
                 size = $"{connector.Name} x {Math.Round(fLength * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
-            
+
             float fTotalPrice = iQuantity * fUnitPrice;
-            
+
             bool bConnectorwasAdded = false; // Connector was added to the group
 
             for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
@@ -1083,7 +1083,7 @@ namespace PFD
                     break;
                 }
             }
-            
+
             if (!bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
             {
                 listConnectorPrefix.Add(sPrefix);
@@ -1118,13 +1118,17 @@ namespace PFD
             string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
             string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
 
+            List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+            string roofCladdingCoating = coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
+            string wallCladdingCoating = coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
+
             List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
             List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
 
             string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
             string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
 
-            List<CoatingColours> colours = CCoatingColorManager.LoadCoatingColours("TrapezoidalSheetingSQLiteDB");
+            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
             prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}");
@@ -1132,8 +1136,16 @@ namespace PFD
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
             prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
 
-            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).PriceCode, prop_RoofCladding);
-            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(colours.ElementAtOrDefault(vm.WallCladdingColorIndex).PriceCode, prop_WallCladding);
+            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
+            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(roofCladdingCoating);
+
+            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
+            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(wallCladdingCoating);
+
+            List<CoatingColour> colours = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB");
+
+            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex).PriceCode, prop_RoofCladding); // Ceny urcujeme podla coating
+            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex).PriceCode, prop_WallCladding); // Ceny urcujeme podla coating
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -1280,17 +1292,20 @@ namespace PFD
 
         private float GetCladdingPriceByColor_PSM_NZD(int priceCode, CTS_CrscProperties prop)
         {
-            float fCladdingPrice1_PSM_NZD = (float)prop.price1_PPSM_NZD; // Cena cladding za 1 m^2 (Basic)
-            float fCladdingPrice2_PSM_NZD = (float)prop.price2_PPSM_NZD; // Cena cladding za 1 m^2 (FormClad)
-            float fCladdingPrice3_PSM_NZD = (float)prop.price3_PPSM_NZD; // Cena cladding za 1 m^2 (AZ)
+            float fCladdingPrice1_PSM_NZD = (float)prop.price1_PPSM_NZD; // Cena cladding za 1 m^2 (ColorSteel Endura)
+            float fCladdingPrice2_PSM_NZD = (float)prop.price2_PPSM_NZD; // Cena cladding za 1 m^2 (ColorSteel Maxx)
+            float fCladdingPrice3_PSM_NZD = (float)prop.price3_PPSM_NZD; // Cena cladding za 1 m^2 (FormClad)
+            float fCladdingPrice4_PSM_NZD = (float)prop.price4_PPSM_NZD; // Cena cladding za 1 m^2 (AlumZinc)
 
             // TODO Ondrej - toto sa asi da urobit krajsie cez nejaku relacnu databazu alebo nieco take
-            if(priceCode == 1)
-              return fCladdingPrice1_PSM_NZD;
-            else if(priceCode == 2)
+            if (priceCode == 1)
+                return fCladdingPrice1_PSM_NZD;
+            else if (priceCode == 2)
                 return fCladdingPrice2_PSM_NZD;
             else if (priceCode == 3)
                 return fCladdingPrice3_PSM_NZD;
+            else if (priceCode == 4)
+                return fCladdingPrice4_PSM_NZD;
             else
             {
                 throw new Exception("Invalid cladding price code.");
@@ -2117,7 +2132,4 @@ namespace PFD
             }
         }
     }
-
-
-
 }

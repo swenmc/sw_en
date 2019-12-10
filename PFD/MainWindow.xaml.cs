@@ -215,7 +215,7 @@ namespace PFD
                         cInfo.MemberTypePosition == EMemberType_FS_Position.EdgePurlin)
                     {
                         vm.RecreateJoints = true;
-                        vm.RecreateModel = true;                        
+                        vm.RecreateModel = true;
                     }
                     else return;
                 } 
@@ -1423,8 +1423,13 @@ namespace PFD
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
 
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_RoofCladdingCoating);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
+
+            // TODO Ondrej  toto asi musime presunut ak ma obsah tychto comboboxov zavisiet na vybranej polozke v comboboxoch Coating
             CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
             CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
+
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 

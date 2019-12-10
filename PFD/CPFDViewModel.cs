@@ -50,9 +50,11 @@ namespace PFD
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
+        private int MRoofCladdingCoatingIndex;
         private int MRoofCladdingColorIndex;
         private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
+        private int MWallCladdingCoatingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
@@ -295,8 +297,10 @@ namespace PFD
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                 RoofCladdingIndex = 1;
+                RoofCladdingCoatingIndex = 1;
                 RoofCladdingColorIndex = 8;
                 WallCladdingIndex = 0;
+                WallCladdingCoatingIndex = 1;
                 WallCladdingColorIndex = 8;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
 
@@ -650,6 +654,24 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingCoatingIndex
+        {
+            get
+            {
+                return MRoofCladdingCoatingIndex;
+            }
+
+            set
+            {
+                MRoofCladdingCoatingIndex = value;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
+                RecreateModel = true;
+                NotifyPropertyChanged("RoofCladdingCoatingIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int RoofCladdingColorIndex
         {
             get
@@ -697,6 +719,24 @@ namespace PFD
                 //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WallCladdingCoatingIndex
+        {
+            get
+            {
+                return MWallCladdingCoatingIndex;
+            }
+
+            set
+            {
+                MWallCladdingCoatingIndex = value;
+                //SetResultsAreNotValid();
+                //RecreateJoints = true;
+                RecreateModel = true;
+                NotifyPropertyChanged(" WallCladdingCoatingIndex");
             }
         }
 
@@ -3099,9 +3139,11 @@ namespace PFD
             data.FrontFrameRakeAngle = MFrontFrameRakeAngle;
             data.BackFrameRakeAngle = MBackFrameRakeAngle;
             data.RoofCladdingIndex = MRoofCladdingIndex;
+            data.RoofCladdingCoatingIndex = MRoofCladdingCoatingIndex;
             data.RoofCladdingColorIndex = MRoofCladdingColorIndex;
             data.RoofCladdingThicknessIndex = MRoofCladdingThicknessIndex;
             data.WallCladdingIndex = MWallCladdingIndex;
+            data.WallCladdingCoatingIndex = MWallCladdingCoatingIndex;
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
             data.SupportTypeIndex = MSupportTypeIndex;

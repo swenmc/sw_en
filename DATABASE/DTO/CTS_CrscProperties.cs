@@ -30,6 +30,9 @@ namespace DATABASE.DTO
        public double price3_PPSM_NZD;
        public double price3_PPLM_NZ;
        public double price3_PPKG_NZD;
+       public double price4_PPSM_NZD;
+       public double price4_PPLM_NZ;
+       public double price4_PPKG_NZD;
        public double maxSimpleSpan;
        public double maxEavesOverhang;
        public double A_g;

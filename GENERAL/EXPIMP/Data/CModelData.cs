@@ -30,9 +30,11 @@ namespace EXPIMP
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
+        private int MRoofCladdingCoatingIndex;
         private int MRoofCladdingColorIndex;
         private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
+        private int MWallCladdingCoatingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MSupportTypeIndex;
@@ -297,6 +299,19 @@ namespace EXPIMP
             }
         }
 
+        public int RoofCladdingCoatingIndex
+        {
+            get
+            {
+                return MRoofCladdingCoatingIndex;
+            }
+
+            set
+            {
+                MRoofCladdingCoatingIndex = value;
+            }
+        }
+
         public int RoofCladdingColorIndex
         {
             get
@@ -333,6 +348,19 @@ namespace EXPIMP
             set
             {
                 MWallCladdingIndex = value;
+            }
+        }
+
+        public int WallCladdingCoatingIndex
+        {
+            get
+            {
+                return MWallCladdingCoatingIndex;
+            }
+
+            set
+            {
+                MWallCladdingCoatingIndex = value;
             }
         }
 

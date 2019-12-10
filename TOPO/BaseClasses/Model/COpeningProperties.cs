@@ -225,7 +225,7 @@ namespace BaseClasses
             m_fUnitMass_SM = (float)prop.Mass_kg_m2;
 
             ColorID = 1; // TODO - napojit index na GUI
-            List<CoatingColours> colorsProp = CCoatingColorManager.LoadCoatingColours("AccessoriesSQLiteDB");
+            List<CoatingColour> colorsProp = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
             m_fPrice_PPSM_NZD = GetDoorPriceByColor_PSM_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
             m_fPrice_PPKG_NZD = GetDoorPriceByColor_PPKG_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
 
