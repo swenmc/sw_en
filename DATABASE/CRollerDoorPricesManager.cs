@@ -11,12 +11,10 @@ namespace DATABASE
 {
     public static class CRollerDoorPricesManager
     {
-        public static float GetRollerDoorPrice(float doorWidth, float doorHeight, bool bIsAluZincColor)
+        public static float GetRollerDoorPrice(bool bIsDomesticModelSeries, float doorWidth, float doorHeight, bool bIsAluZincColor)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
-
-            bool bIsDomesticModelSeries = true;
 
             float fAreaLimit;
             float fWidthLimit;

@@ -225,11 +225,19 @@ namespace BaseClasses
             m_fUnitMass_SM = (float)prop.Mass_kg_m2;
 
             ColorID = 1; // TODO - napojit index na GUI
-            List<CoatingColour> colorsProp = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+            bool bIsDomesticSeries = true; // TODO - napojit na GUI, combobox v stplci s nazv om Series s dvomi polozka "Domestic" a "Roller Shutter"
+            List <CoatingColour> colorsProp = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
             m_fPrice_PPSM_NZD = GetDoorPriceByColor_PSM_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
             m_fPrice_PPKG_NZD = GetDoorPriceByColor_PPKG_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
 
             m_fPrice_PPP_NZD = m_fPrice_PPSM_NZD * m_fArea;
+
+            if(m_sType == "Roller Door")
+            {
+                m_fPrice_PPP_NZD = CRollerDoorPricesManager.GetRollerDoorPrice(m_fWidth, m_fHeight, colorsProp.ElementAtOrDefault(ColorID).Name == "Zinc"); // Zinc - ID farby v databaze je 23
+                m_fPrice_PPSM_NZD = m_fPrice_PPP_NZD / m_fArea;
+                m_fPrice_PPKG_NZD = m_fPrice_PPSM_NZD / m_fUnitMass_SM;
+            }
 
             m_Count = 1;
         }
