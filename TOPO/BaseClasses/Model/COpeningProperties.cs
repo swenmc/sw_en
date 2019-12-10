@@ -234,7 +234,7 @@ namespace BaseClasses
 
             if(m_sType == "Roller Door")
             {
-                m_fPrice_PPP_NZD = CRollerDoorPricesManager.GetRollerDoorPrice(m_fWidth, m_fHeight, colorsProp.ElementAtOrDefault(ColorID).Name == "Zinc"); // Zinc - ID farby v databaze je 23
+                m_fPrice_PPP_NZD = CRollerDoorPricesManager.GetRollerDoorPrice(bIsDomesticSeries, m_fWidth, m_fHeight, colorsProp.ElementAtOrDefault(ColorID).Name == "Zinc"); // Zinc - ID farby v databaze je 23
                 m_fPrice_PPSM_NZD = m_fPrice_PPP_NZD / m_fArea;
                 m_fPrice_PPKG_NZD = m_fPrice_PPSM_NZD / m_fUnitMass_SM;
             }
