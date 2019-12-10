@@ -153,7 +153,8 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Cladding}" Header="Cladding" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Thickness}" Header="Thickness [mm]" Width="70" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Thickness}" Header="Thickness [mm]" Width="65" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Coating}" Header="Coating" Width="80" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Colour" Width="50">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="{x:Type TextBlock}">
@@ -304,8 +305,8 @@
             <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
             <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Margin (" VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
-            <TextBox   Grid.Row="20" Name="Margin_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="70,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text=" %):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="20" Name="Margin_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="25" Margin="70,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White"/>
+            <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="95,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="20" Name="Margin_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="20" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
@@ -314,8 +315,8 @@
             <TextBlock Grid.Row="21" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 
             <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="GST      ( " VerticalAlignment="Top" Width="60" Margin="10,2,0,0" FontSize="16"/>
-            <TextBox   Grid.Row="22" Name="GST_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Margin="70,2,0,0" FontSize="16"/>
-            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text=" %):" VerticalAlignment="Top" Width="30" Margin="105,2,0,0" FontSize="16"/>
+            <TextBox   Grid.Row="22" Name="GST_Percentage" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="25" Margin="70,2,0,0" FontSize="16" BorderThickness="0" BorderBrush="White"/>
+            <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="%):" VerticalAlignment="Top" Width="30" Margin="95,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="22" Name="GST_Absolute" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" TextAlignment="Right" VerticalAlignment="Top" Width="120" Margin="130,2,0,0" FontSize="16"/>
             <TextBlock Grid.Row="22" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="NZD" VerticalAlignment="Top" Width="50" Margin="260,2,0,0" FontSize="16"/>
 

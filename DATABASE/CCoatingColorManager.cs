@@ -64,7 +64,15 @@ namespace DATABASE
             colour.CodeRGB = reader["codeRGB"].ToString();
             colour.CodeHEX = "#" + reader["codeHEX"].ToString();
             colour.CodeHSV = reader["codeHSV"].ToString();
-            colour.PriceCode = Int32.Parse(reader["priceCode"].ToString());
+
+            try
+            {
+                colour.PriceCode = Int32.Parse(reader["priceCode"].ToString());
+            }
+            catch
+            {
+                colour.PriceCode = -1; // Nie je definovane pre coating colors of trapezoidal sheets pretoze rovnaka farba moze mat inu cenu z dovodu ineho dodavatela, inej hrubky pozinkovania a podobne
+            }
 
             return colour;
         }

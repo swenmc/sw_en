@@ -1155,6 +1155,7 @@ namespace PFD
             // Create Table Rows
             dt.Columns.Add("Cladding", typeof(String));
             dt.Columns.Add("Thickness", typeof(String));
+            dt.Columns.Add("Coating", typeof(String));
             dt.Columns.Add("Color", typeof(String));
             dt.Columns.Add("ColorName", typeof(String));
             //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
@@ -1166,6 +1167,7 @@ namespace PFD
 
             dt.Columns["Cladding"].Caption = "Cladding";
             dt.Columns["Thickness"].Caption = "Thickness [mm]";
+            dt.Columns["Coating"].Caption = "Coating";
             dt.Columns["Color"].Caption = "Colour";
             dt.Columns["ColorName"].Caption = "Colour Name";
             //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
@@ -1175,11 +1177,12 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 17f);
-            dt.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Color"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Thickness"].ExtendedProperties.Add("Width", 9f);
+            dt.Columns["Coating"].ExtendedProperties.Add("Width", 11f);
+            dt.Columns["Color"].ExtendedProperties.Add("Width", 9f);
             dt.Columns["ColorName"].ExtendedProperties.Add("Width", 15f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 9f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
@@ -1187,6 +1190,7 @@ namespace PFD
 
             dt.Columns["Cladding"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Coating"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Color"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["ColorName"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1217,6 +1221,7 @@ namespace PFD
                 {
                     row["Cladding"] = roofCladding;
                     row["Thickness"] = roofCladdingThickness;
+                    row["Coating"] = roofCladdingCoating;
                     row["Color"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
                     row["ColorName"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
                     row["TotalArea"] = fRoofArea_Total_Netto.ToString("F2");
@@ -1246,6 +1251,7 @@ namespace PFD
                 {
                     row["Cladding"] = wallCladding;
                     row["Thickness"] = wallCladdingThickness;
+                    row["Coating"] = wallCladdingCoating;
                     row["Color"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
                     row["ColorName"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
 
@@ -1275,6 +1281,7 @@ namespace PFD
                 row = dt.NewRow();
                 row["Cladding"] = "Total:";
                 row["Thickness"] = "";
+                row["Coating"] = "";
                 row["Color"] = "";
                 row["ColorName"] = "";
                 //row["TotalLength"] = SumTotalLength.ToString("F2");
