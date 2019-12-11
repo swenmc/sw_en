@@ -1145,7 +1145,8 @@ namespace PFD
             // Create Table Rows
             dt.Columns.Add("Prefix", typeof(String));
             dt.Columns.Add("Count", typeof(Int32));
-            dt.Columns.Add("Material", typeof(String));            
+            dt.Columns.Add("Material", typeof(String));
+            dt.Columns.Add("Size", typeof(String));
             dt.Columns.Add("UnitMass", typeof(String));
             dt.Columns.Add("TotalMass", typeof(Decimal));
             dt.Columns.Add("UnitPrice", typeof(string));
@@ -1154,7 +1155,8 @@ namespace PFD
             // Set Column Caption
             dt.Columns["Prefix"].Caption = "Prefix";
             dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["Material"].Caption = "Material";            
+            dt.Columns["Material"].Caption = "Material";
+            dt.Columns["Size"].Caption = "Size";
             dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
             dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
@@ -1162,7 +1164,8 @@ namespace PFD
 
             dt.Columns["Prefix"].ExtendedProperties.Add("Width", 25f);
             dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
-            dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);            
+            dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);
+            dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
@@ -1170,7 +1173,8 @@ namespace PFD
 
             dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);            
+            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
             dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
             dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
             dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
@@ -1189,6 +1193,7 @@ namespace PFD
                     row["Prefix"] = item.Prefix;
                     row["Count"] = item.Quantity;
                     row["Material"] = item.MaterialName;
+                    row["Size"] = item.Name;
                     row["UnitMass"] = item.MassPerPiece.ToString("F2");
                     row["TotalMass"] = item.TotalMass.ToString("F2");
                     row["UnitPrice"] = item.PricePerPiece.ToString("F2");
@@ -1203,6 +1208,7 @@ namespace PFD
             row["Prefix"] = "Total:";
             row["Count"] = iTotalNutsNumber_Table;
             row["Material"] = "";
+            row["Size"] = "";
             row["UnitPrice"] = "";
             row["TotalMass"] = dTotalNutsMass_Table.ToString("F2");
             row["UnitPrice"] = "";
@@ -1220,7 +1226,7 @@ namespace PFD
 
         private void AddBoltNutToQuotation(CNut nut, List<QuotationItem> quotation, int iQuantity)
         {
-            QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == nut.Name &&
+            QuotationItem qItem = quotation.FirstOrDefault(q => q.Name == nut.Name &&
                     MathF.d_equal(q.MassPerPiece, nut.Mass));
             //TO Mato - neviem na zaklade coho vsetkeho to treba groupovat???
             // TO Ondrej - podla priemeru (prefix M16)
@@ -1229,7 +1235,7 @@ namespace PFD
 
             if (qItem != null) //this quotation exists
             {
-                qItem.Quantity += iQuantity;                
+                qItem.Quantity += iQuantity;
                 qItem.TotalMass = qItem.Quantity * qItem.MassPerPiece;
                 qItem.TotalPrice = qItem.Quantity * qItem.PricePerPiece;
             }
@@ -1237,11 +1243,12 @@ namespace PFD
             {
                 QuotationItem item = new QuotationItem
                 {
-                    Prefix = nut.Name,
-                    Quantity = iQuantity,                    
-                    MaterialName = nut.m_Mat.Name,                    
+                    Prefix = nut.Prefix,
+                    Name = nut.Name,
+                    Quantity = iQuantity,
+                    MaterialName = nut.m_Mat.Name,
                     MassPerPiece = nut.Mass,
-                    PricePerPiece = nut.Price_PPKG_NZD * nut.Mass,                    
+                    PricePerPiece = nut.Price_PPKG_NZD * nut.Mass,
                     TotalMass = iQuantity * nut.Mass,
                     TotalPrice = iQuantity * nut.Price_PPKG_NZD * nut.Mass
                 };

@@ -178,7 +178,7 @@ namespace BaseClasses
 
         public CNut(string name_temp, string nameMaterial_temp, Point3D controlpoint, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
-            Prefix = "Nut";
+            Prefix = "HEX Nut";
             m_Name = name_temp;
 
             m_pControlPoint = controlpoint;
