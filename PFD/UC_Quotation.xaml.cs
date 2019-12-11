@@ -789,7 +789,7 @@ namespace PFD
                     row["Prefix"] = item.Prefix;
                     row["Count"] = item.Quantity;
                     row["Material"] = item.MaterialName;
-                    row["Size"] = item.Size;
+                    row["Size"] = item.Name;
                     row["UnitMass"] = item.MassPerPiece.ToString("F2");
                     row["TotalMass"] = item.TotalMass.ToString("F2");
                     row["UnitPrice"] = item.PricePerPiece.ToString("F2");
@@ -823,7 +823,7 @@ namespace PFD
         private void AddConnector(CConnector connector, List<QuotationItem> quotation, int iQuantity)
         {
             string sPrefix = "";
-            string size = "";                        
+            string name = "";
             float fTotalMass = iQuantity * connector.Mass;
             float fUnitPrice = connector.Price_PPP_NZD;
 
@@ -839,12 +839,12 @@ namespace PFD
             {
                 sPrefix = connector.Name;
                 int iGauge = ((CScrew)connector).Gauge;
-                size = $"{iGauge}g x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
+                name = $"{iGauge}g x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
             else if (connector is CAnchor)
             {
                 sPrefix = connector.Prefix;
-                size = $"{connector.Name} x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
+                name = $"{connector.Name} x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
 
             float fTotalPrice = iQuantity * fUnitPrice;
@@ -869,7 +869,7 @@ namespace PFD
                     MaterialName = connector.m_Mat.Name,
                     Diameter_thread = connector.Diameter_thread,
                     Length = connector.Length,
-                    Size = size,
+                    Name = name,
                     MassPerPiece = connector.Mass,
                     TotalMass = fTotalMass,
                     PricePerPiece = fUnitPrice,

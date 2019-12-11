@@ -130,7 +130,7 @@
                     <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="100" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="80" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -157,7 +157,7 @@
                     <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Count}" Header="Count [-]" Width="50" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="100" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Size}" Header="Size" Width="80" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass}" Header="Unit Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitPrice}" Header="Unit Price [NZD/piece]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
