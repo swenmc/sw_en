@@ -37,15 +37,6 @@ namespace PFD
         const float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
         const float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
-        List<string> listConnectorPrefix = new List<string>(1);
-        List<int> listConnectorCount = new List<int>(1);
-        List<string> listConnectorMaterialName = new List<string>(1);
-        List<string> listConnectorSize = new List<string>(1);
-        List<double> listConnectorUnitMass = new List<double>(1);
-        List<double> listConnectorTotalMass = new List<double>(1);
-        List<double> listConnectorUnitPrice = new List<double>(1);
-        List<double> listConnectorTotalPrice = new List<double>(1);
-
         float fTotalAreaOfOpennings = 0;
 
         float fRollerDoorTrimmerFlashing_TotalLength = 0;
@@ -616,10 +607,6 @@ namespace PFD
 
         private void CreateTableConnectors(CModel model)
         {
-            //float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
-            //float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
-            //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
-
             // Connectors
             // TASK 422
             // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky            
