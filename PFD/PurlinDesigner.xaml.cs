@@ -52,7 +52,7 @@ namespace PFD
             CComboBoxHelper.FillComboboxValues("MaterialsSQLiteDB", "materialSteelAS4600", "Grade", Combobox_Material);
 
             // Fill cladding type and thicknesses
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
 
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
