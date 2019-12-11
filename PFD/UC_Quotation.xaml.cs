@@ -416,11 +416,13 @@ namespace PFD
                     count++;
                     for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                     {
-
                         // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
                         // Nie vsetky plechy budu mat parametre definovane v databaze
                         // !!!! Treba doriesit presne rozmery pri vytvarani plates a zaokruhlovanie
 
+                        #region Base Plate
+                        // TO Ondrej Blok1 Plate START
+                        // ----------------------------------------------------------------------------------------------------------------------------------------
                         try
                         {
                             model.m_arrConnectionJoints[i].m_arrPlates[j].SetParams(model.m_arrConnectionJoints[i].m_arrPlates[j].Name, model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS);
@@ -468,7 +470,7 @@ namespace PFD
 
                                     bPlatewasAdded = true;
                                 }
-                                // TOO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                                // TODO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                             }
                         }
 
@@ -492,12 +494,29 @@ namespace PFD
                             ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
                         }
 
+                        // TO Ondrej Blok1 Plate END
+                        // ----------------------------------------------------------------------------------------------------------------------------------------
+                        #endregion
 
                         //temp
                         // Anchors - WASHERS
                         // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
-                         // ten washer nema prefix
-                         //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
+                        //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
+
+                        // To Ondrej - K prvej vete nemam vyhrady. Urob ako sa to ma.
+                        // Zgrupovat to treba podla prefixu, ale kedze to este nie je dotiahnute tak porovnavam aj rozmery a plochu uz pridanych plates alebo washers s aktualnym
+                        // Vyrobil som 3 bloky kodu, resp. regiony
+                        // Jeden pre base plate, jeden washer plate top a jeden pre washer bearing
+                        // Funguje to tak ze sa v bloku nastavia parametre aktualnej plate / washer (pocet, rozmery cena, celkove pocty a cena atd)
+                        // Potom sa prechadza cyklus cez vsetky uz vytvorene riadky, resp ListOfPlateGroups a porovnava sa ci je aktualny objekt rovnaky ako niektory uz pridany do skupiny
+                        // Porovnava sa prefix, rozmery a plocha (ak by sme boli dosledni tak pre plates by sa este malo porovnat screw arrangement, anchor arrangement)
+                        // Ak sa zisti ze rovnaky plate/ washer uz bol pridany tak sa aktualizuju celkove parametre, celkovy pocet, celkova plocha, celkova hmotnost
+                        // Ak sa zisti ze taky plech v skupine este nie je alebo je to uplne prvy plech v cykle tak sa vyrobi novy zaznam
+
+                        // Dalo by sa to napriklad refaktorovat a urobit z toho jedna funkcia
+                        // ListOfPlateGroups by som asi zrusil, lebo tam nemame moznost nastavit pocet plechov v ramci skupiny
+                        // Ak tomu rozumiem spravne chces na to pouzit List<PlateView> a odstranit jednotlive zoznamy podla stplcov
+                        // Kazdopadne zase sa dostavame k tomu, ze to mame vselijako, niekde samostatne zoznamy pre jednotlive stlpce, inde zoznam objektov s properties, ktore odpovedaju jednemu riadku.
 
                         if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
                         {
@@ -508,63 +527,164 @@ namespace PFD
                                 CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
                                 int anchorsNum = plate.AnchorArrangement.Anchors.Length;
 
+                                #region Washer Plate Top
+                                // TO Ondrej Blok2 Washer Plate Top START
+                                // ----------------------------------------------------------------------------------------------------------------------------------------
+                                // Plate Top Washer
+                                try
+                                {
+                                    anchor.WasherPlateTop.SetParams(anchor.WasherPlateTop.Name, anchor.WasherPlateTop.m_ePlateSerieType_FS);
+                                }
+                                catch { };
+
                                 sPrefix = anchor.WasherPlateTop.Name;
+                                iQuantity = anchorsNum; // One plate washer per anchor
+                                sMaterialName = anchor.WasherPlateTop.m_Mat.Name;
 
-                                fTotalArea = anchorsNum * anchor.WasherPlateTop.fArea;
-                                fMassPerPiece = anchor.WasherPlateTop.fArea * anchor.WasherPlateTop.Ft * anchor.WasherPlateTop.m_Mat.m_fRho;
-
+                                fWidth_bx = anchor.WasherPlateTop.Width_bx;
+                                fHeight_hy = anchor.WasherPlateTop.Height_hy;
+                                Ft = anchor.WasherPlateTop.Ft;
+                                fArea = anchor.WasherPlateTop.fArea;
+                                fMassPerPiece = fArea * Ft * anchor.WasherPlateTop.m_Mat.m_fRho;
+ 
                                 if (anchor.WasherPlateTop.Price_PPKG_NZD > 0)
                                     fPricePerPiece = (float)anchor.WasherPlateTop.Price_PPKG_NZD * fMassPerPiece;
                                 else
                                     fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
 
-                                fTotalMass = anchorsNum * fMassPerPiece;
-                                fTotalPrice = anchorsNum * fPricePerPiece;
+                                fTotalArea = iQuantity * anchor.WasherPlateTop.fArea;
+                                fTotalMass = iQuantity * fMassPerPiece;
+                                fTotalPrice = iQuantity * fPricePerPiece;
 
-                                //TODO - radsej refaktorovat s triedou PlateView
+                                bPlatewasAdded = false; // Plate was added to the group
 
-                                listPlatePrefix.Add(sPrefix);
-                                //listPlatePrefix.Add($"{sPrefix}-{anchor.WasherPlateTop.Prefix}");
-                                listPlateCount.Add(anchorsNum);
-                                listPlateMaterialName.Add(anchor.WasherPlateTop.m_Mat.Name);
-                                dlistPlateWidth_bx.Add(anchor.WasherPlateTop.Width_bx);
-                                dlistPlateHeight_hy.Add(anchor.WasherPlateTop.Height_hy);
-                                dlistPlateThickness_tz.Add(anchor.WasherPlateTop.Ft);
-                                dlistPlateArea.Add(anchor.WasherPlateTop.fArea);
-                                dlistPlateUnitMass.Add(fMassPerPiece);
-                                listPlateTotalArea.Add(fTotalArea);
-                                listPlateTotalMass.Add(fTotalMass);
-                                dlistPlatePricePerPiece.Add(fPricePerPiece);
-                                listPlateTotalPrice.Add(fTotalPrice);
+                                if (i > 0 || (i == 0 && j > 0)) // If it not first item
+                                {
+                                    for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
+                                    {
+                                        if (ListOfPlateGroups[k].Name == anchor.WasherPlateTop.Name &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Width_bx, anchor.WasherPlateTop.Width_bx) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Height_hy, anchor.WasherPlateTop.Height_hy) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Ft, anchor.WasherPlateTop.Ft) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].fArea, anchor.WasherPlateTop.fArea))
+                                        {
+                                            // Add plate to the one from already created groups
 
+                                            listPlateCount[k] += iQuantity; // Add one washers to the quantity
+                                            listPlateTotalArea[k] = listPlateCount[k] * dlistPlateArea[k];
+                                            listPlateTotalMass[k] = listPlateCount[k] * dlistPlateUnitMass[k]; // Recalculate total weight of all plates in the group
+                                            listPlateTotalPrice[k] = listPlateCount[k] * dlistPlatePricePerPiece[k]; // Recalculate total price of all plates in the group
 
-                                fTotalArea = anchorsNum * anchor.WasherBearing.fArea;
-                                fMassPerPiece = anchor.WasherBearing.fArea * anchor.WasherBearing.Ft * anchor.WasherBearing.m_Mat.m_fRho;
+                                            bPlatewasAdded = true;
+                                        }
+
+                                        // TODO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                                    }
+                                }
+
+                                if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                                {
+                                    //TODO - radsej refaktorovat s triedou PlateView
+                                    listPlatePrefix.Add(sPrefix);
+                                    listPlateCount.Add(iQuantity);
+                                    listPlateMaterialName.Add(sMaterialName);
+                                    dlistPlateWidth_bx.Add(fWidth_bx);
+                                    dlistPlateHeight_hy.Add(fHeight_hy);
+                                    dlistPlateThickness_tz.Add(Ft);
+                                    dlistPlateArea.Add(fArea);
+                                    dlistPlateUnitMass.Add(fMassPerPiece);
+                                    listPlateTotalArea.Add(fTotalArea);
+                                    listPlateTotalMass.Add(fTotalMass);
+                                    dlistPlatePricePerPiece.Add(fPricePerPiece);
+                                    listPlateTotalPrice.Add(fTotalPrice);
+
+                                    // Add first plate in the group to the list of plate groups
+                                    ListOfPlateGroups.Add(anchor.WasherPlateTop);
+                                }
+                                // TO Ondrej Blok2 Washer Plate Top END
+                                // ----------------------------------------------------------------------------------------------------------------------------------------
+                                #endregion
+
+                                #region Washer Bearing 
+                                // TO Ondrej Blok3 Washer Bearing START
+                                // ----------------------------------------------------------------------------------------------------------------------------------------
+                                // Bearing Washer
+                                try
+                                {
+                                    anchor.WasherBearing.SetParams(anchor.WasherBearing.Name, anchor.WasherBearing.m_ePlateSerieType_FS);
+                                }
+                                catch { };
+
+                                sPrefix = anchor.WasherBearing.Name;
+                                iQuantity = 2 * anchorsNum; // Two bearing washers per anchor
+                                sMaterialName = anchor.WasherBearing.m_Mat.Name;
+
+                                fWidth_bx = anchor.WasherBearing.Width_bx;
+                                fHeight_hy = anchor.WasherBearing.Height_hy;
+                                Ft = anchor.WasherBearing.Ft;
+                                fArea = anchor.WasherBearing.fArea;
+                                fMassPerPiece = fArea * Ft * anchor.WasherBearing.m_Mat.m_fRho;
 
                                 if (anchor.WasherBearing.Price_PPKG_NZD > 0)
                                     fPricePerPiece = (float)anchor.WasherBearing.Price_PPKG_NZD * fMassPerPiece;
                                 else
                                     fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
 
-                                fTotalMass = anchorsNum * fMassPerPiece;
-                                fTotalPrice = anchorsNum * fPricePerPiece;
+                                fTotalArea = iQuantity * anchor.WasherPlateTop.fArea;
+                                fTotalMass = iQuantity * fMassPerPiece;
+                                fTotalPrice = iQuantity * fPricePerPiece;
 
-                                listPlatePrefix.Add($"{sPrefix}-{anchor.WasherBearing.Prefix}");
-                                listPlateCount.Add(anchorsNum);
-                                listPlateMaterialName.Add(anchor.WasherBearing.m_Mat.Name);
-                                dlistPlateWidth_bx.Add(anchor.WasherBearing.Width_bx);
-                                dlistPlateHeight_hy.Add(anchor.WasherBearing.Height_hy);
-                                dlistPlateThickness_tz.Add(anchor.WasherBearing.Ft);
-                                dlistPlateArea.Add(anchor.WasherBearing.fArea);
-                                dlistPlateUnitMass.Add(fMassPerPiece);
-                                listPlateTotalArea.Add(fTotalArea);
-                                listPlateTotalMass.Add(fTotalMass);
-                                dlistPlatePricePerPiece.Add(fPricePerPiece);
-                                listPlateTotalPrice.Add(fTotalPrice);
+                                bPlatewasAdded = false; // Plate was added to the group
+
+                                if (i > 0 || (i == 0 && j > 0)) // If it not first item
+                                {
+                                    for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
+                                    {
+                                        if (ListOfPlateGroups[k].Name == anchor.WasherBearing.Name &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Width_bx, anchor.WasherBearing.Width_bx) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Height_hy, anchor.WasherBearing.Height_hy) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].Ft, anchor.WasherBearing.Ft) &&
+                                        MathF.d_equal(ListOfPlateGroups[k].fArea, anchor.WasherBearing.fArea))
+                                        {
+                                            // Add plate to the one from already created groups
+
+                                            listPlateCount[k] += iQuantity; // Add one washers to the quantity
+                                            listPlateTotalArea[k] = listPlateCount[k] * dlistPlateArea[k];
+                                            listPlateTotalMass[k] = listPlateCount[k] * dlistPlateUnitMass[k]; // Recalculate total weight of all plates in the group
+                                            listPlateTotalPrice[k] = listPlateCount[k] * dlistPlatePricePerPiece[k]; // Recalculate total price of all plates in the group
+
+                                            bPlatewasAdded = true;
+                                        }
+
+                                        // TODO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                                    }
+                                }
+
+                                if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                                {
+                                    //TODO - radsej refaktorovat s triedou PlateView
+                                    listPlatePrefix.Add(sPrefix);
+                                    listPlateCount.Add(iQuantity);
+                                    listPlateMaterialName.Add(sMaterialName);
+                                    dlistPlateWidth_bx.Add(fWidth_bx);
+                                    dlistPlateHeight_hy.Add(fHeight_hy);
+                                    dlistPlateThickness_tz.Add(Ft);
+                                    dlistPlateArea.Add(fArea);
+                                    dlistPlateUnitMass.Add(fMassPerPiece);
+                                    listPlateTotalArea.Add(fTotalArea);
+                                    listPlateTotalMass.Add(fTotalMass);
+                                    dlistPlatePricePerPiece.Add(fPricePerPiece);
+                                    listPlateTotalPrice.Add(fTotalPrice);
+
+                                    // Add first plate in the group to the list of plate groups
+                                    ListOfPlateGroups.Add(anchor.WasherBearing);
+                                }
+                                // TO Ondrej Blok3 Washer Bearing END
+                                // ----------------------------------------------------------------------------------------------------------------------------------------
+                                #endregion
                             }
                         }
                         //end temp
-
                     }
                 }
             }

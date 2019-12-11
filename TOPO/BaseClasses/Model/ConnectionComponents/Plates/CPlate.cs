@@ -748,6 +748,24 @@ namespace BaseClasses
                         if (prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
                         break;
                     }
+                case ESerieTypePlate.eSerie_W:
+                    {
+                        CRectWasher_W_Properties prop = new CRectWasher_W_Properties();
+                        prop = CWashersManager.GetPlate_W_Properties(plateDatabaseName);
+
+                        // Doriesit identicku geometriu v modeli a v database a presnost
+                        //fWidth_bx = (float)prop.TotalDim_x / 1000; // Rozvinuta sirka - horizontalny smer
+                        //fHeight_hy = (float)prop.TotalDim_y / 1000; // Rozvinuta vyska - vertikalny smer
+                        //m_ft = (float)prop.thickness / 1000; // Thickness
+                        //fArea = (float)prop.Area / 1000000;
+
+                        // Doplnit do databazy obvod a povrch
+                        //fVolume = (float)prop.Volume / 1000000000;
+                        //fMass = (float)prop.Mass;
+
+                        if (prop != null) Price_PPKG_NZD = (float)prop.Price_PPKG_NZD;
+                        break;
+                    }
                 default:
                     {
                         // Doimplementovat
