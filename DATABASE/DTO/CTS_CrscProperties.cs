@@ -12,13 +12,15 @@ namespace DATABASE.DTO
        public string name;
        public int material_ID;
        public string material_Name;
+       public double widthCoil_m;
        public double widthTot_m;
        public double widthModular_m;
        public double widthRib_m;
        public double widthUpRib_m;
        public double height_m;
        public string thickness_for_name;
-       public double thickness_m;
+       public double thicknessCore_m;
+       public double thicknessTotal_m;
        public double mass_kg_m2;
        public double mass_kg_lm;
        public double price1_PPSM_NZD;

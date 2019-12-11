@@ -170,7 +170,7 @@ namespace DATABASE
             properties_string_milimeter.widthRib_m = (Math.Round(properties_number_meter.widthRib_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.widthUpRib_m = (Math.Round(properties_number_meter.widthUpRib_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.height_m = (Math.Round(properties_number_meter.height_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
-            properties_string_milimeter.thickness_m = (Math.Round(properties_number_meter.thickness_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            properties_string_milimeter.thickness_m = (Math.Round(properties_number_meter.thicknessCore_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.mass_kg_m2 = (Math.Round(properties_number_meter.mass_kg_m2 * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.mass_kg_lm = (Math.Round(properties_number_meter.mass_kg_lm * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.maxSimpleSpan = (Math.Round(properties_number_meter.maxSimpleSpan * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
@@ -250,12 +250,14 @@ namespace DATABASE
             crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
             crsc.name = reader["name"].ToString();
             crsc.material_Name = reader["material_Name"].ToString();
+            crsc.widthCoil_m = double.Parse(reader["widthCoil_m"].ToString(), nfi);
             crsc.widthTot_m = double.Parse(reader["widthTot_m"].ToString(), nfi);
             crsc.widthModular_m = double.Parse(reader["widthModular_m"].ToString(), nfi);
             crsc.widthRib_m = double.Parse(reader["widthRib_m"].ToString(), nfi);
             crsc.widthUpRib_m = double.Parse(reader["widthUpRib_m"].ToString(), nfi);
             crsc.height_m = double.Parse(reader["height_m"].ToString(), nfi);
-            crsc.thickness_m = double.Parse(reader["thickness_m"].ToString(), nfi);
+            crsc.thicknessCore_m = double.Parse(reader["thicknessCore_m"].ToString(), nfi);
+            crsc.thicknessTotal_m = double.Parse(reader["thicknessTot_m"].ToString(), nfi);
             crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
             crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
             crsc.price1_PPSM_NZD = double.Parse(reader["price1_PPSM_NZD"].ToString(), nfi);
