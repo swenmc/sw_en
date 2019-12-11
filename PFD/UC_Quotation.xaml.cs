@@ -849,7 +849,7 @@ namespace PFD
 
             float fTotalPrice = iQuantity * fUnitPrice;
 
-            QuotationItem item = quotation.FirstOrDefault(q => q.Prefix == connector.Name &&
+            QuotationItem item = quotation.FirstOrDefault(q => q.Prefix == sPrefix &&
                         MathF.d_equal(q.Diameter_thread, connector.Diameter_thread) &&
                         MathF.d_equal(q.Length, connector.Length) &&
                         MathF.d_equal(q.MassPerPiece, connector.Mass));
@@ -867,6 +867,8 @@ namespace PFD
                     Prefix = sPrefix,
                     Quantity = iQuantity,
                     MaterialName = connector.m_Mat.Name,
+                    Diameter_thread = connector.Diameter_thread,
+                    Length = connector.Length,
                     Size = size,
                     MassPerPiece = connector.Mass,
                     TotalMass = fTotalMass,
