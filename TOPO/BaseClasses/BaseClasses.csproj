@@ -111,6 +111,7 @@
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\DisplayOptionsHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="ModelViews\PlateView.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
@@ -351,6 +352,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -474,6 +474,7 @@ namespace PFD
 
                         if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
                         {
+                            //TODO - radsej refaktorovat s triedou PlateView
                             listPlatePrefix.Add(sPrefix);
                             listPlateCount.Add(iQuantity);
                             listPlateMaterialName.Add(sMaterialName);
@@ -490,6 +491,77 @@ namespace PFD
                             // Add first plate in the group to the list of plate groups
                             ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
                         }
+
+
+                        //temp
+                        // Anchors - WASHERS
+                        // TO Mato - nieco som skusal... chcelo by to asi mat jeden objekt na tieto veci a nie zoznamy kade tade
+                         // ten washer nema prefix
+                         //rovnako je asi problem,ze to nijako negrupujem...ale tak potreboval by som vediet na zaklade coho sa to bude grupovat
+
+                        if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+                        {
+                            CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+
+                            if (plate.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                            {
+                                CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
+                                int anchorsNum = plate.AnchorArrangement.Anchors.Length;
+
+                                fTotalArea = anchorsNum * anchor.WasherPlateTop.fArea;
+                                fMassPerPiece = anchor.WasherPlateTop.fArea * anchor.WasherPlateTop.Ft * anchor.WasherPlateTop.m_Mat.m_fRho;
+
+                                if (anchor.WasherPlateTop.Price_PPKG_NZD > 0)
+                                    fPricePerPiece = (float)anchor.WasherPlateTop.Price_PPKG_NZD * fMassPerPiece;
+                                else
+                                    fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
+
+                                fTotalMass = anchorsNum * fMassPerPiece;
+                                fTotalPrice = anchorsNum * fPricePerPiece;
+
+                                //TODO - radsej refaktorovat s triedou PlateView
+
+                                listPlatePrefix.Add($"{sPrefix}-{anchor.WasherPlateTop.Prefix}");
+                                listPlateCount.Add(anchorsNum);
+                                listPlateMaterialName.Add(anchor.WasherPlateTop.m_Mat.Name);
+                                dlistPlateWidth_bx.Add(anchor.WasherPlateTop.Width_bx);
+                                dlistPlateHeight_hy.Add(anchor.WasherPlateTop.Height_hy);
+                                dlistPlateThickness_tz.Add(anchor.WasherPlateTop.Ft);
+                                dlistPlateArea.Add(anchor.WasherPlateTop.fArea);
+                                dlistPlateUnitMass.Add(fMassPerPiece);
+                                listPlateTotalArea.Add(fTotalArea);
+                                listPlateTotalMass.Add(fTotalMass);
+                                dlistPlatePricePerPiece.Add(fPricePerPiece);
+                                listPlateTotalPrice.Add(fTotalPrice);
+
+
+                                fTotalArea = anchorsNum * anchor.WasherBearing.fArea;
+                                fMassPerPiece = anchor.WasherBearing.fArea * anchor.WasherBearing.Ft * anchor.WasherBearing.m_Mat.m_fRho;
+
+                                if (anchor.WasherBearing.Price_PPKG_NZD > 0)
+                                    fPricePerPiece = (float)anchor.WasherBearing.Price_PPKG_NZD * fMassPerPiece;
+                                else
+                                    fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
+
+                                fTotalMass = anchorsNum * fMassPerPiece;
+                                fTotalPrice = anchorsNum * fPricePerPiece;
+
+                                listPlatePrefix.Add($"{sPrefix}-{anchor.WasherBearing.Prefix}");
+                                listPlateCount.Add(anchorsNum);
+                                listPlateMaterialName.Add(anchor.WasherBearing.m_Mat.Name);
+                                dlistPlateWidth_bx.Add(anchor.WasherBearing.Width_bx);
+                                dlistPlateHeight_hy.Add(anchor.WasherBearing.Height_hy);
+                                dlistPlateThickness_tz.Add(anchor.WasherBearing.Ft);
+                                dlistPlateArea.Add(anchor.WasherBearing.fArea);
+                                dlistPlateUnitMass.Add(fMassPerPiece);
+                                listPlateTotalArea.Add(fTotalArea);
+                                listPlateTotalMass.Add(fTotalMass);
+                                dlistPlatePricePerPiece.Add(fPricePerPiece);
+                                listPlateTotalPrice.Add(fTotalPrice);
+                            }
+                        }
+                        //end temp
+
                     }
                 }
             }
@@ -672,6 +744,51 @@ namespace PFD
         {
             SetLastRowBold(Datagrid_Plates);
         }
+
+        private void AddWashers(CConnector connector, List<CConnector> ListOfConnectorGroups, int iQuantity)
+        {
+            //if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+            //{
+            //    CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+
+            //    if (plate.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+            //    {
+
+            //        CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
+            //        int anchorsNum = plate.AnchorArrangement.Anchors.Length;
+
+            //        fTotalArea = anchorsNum * anchor.WasherPlateTop.fArea;
+            //        fMassPerPiece = anchor.WasherPlateTop.fArea * anchor.WasherPlateTop.Ft * anchor.WasherPlateTop.m_Mat.m_fRho;
+
+            //        if (anchor.WasherPlateTop.Price_PPKG_NZD > 0)
+            //            fPricePerPiece = (float)anchor.WasherPlateTop.Price_PPKG_NZD * fMassPerPiece;
+            //        else
+            //            fPricePerPiece = fCFS_PricePerKg_Plates_Total * fMassPerPiece;
+
+            //        fTotalMass = anchorsNum * fMassPerPiece;
+            //        fTotalPrice = anchorsNum * fPricePerPiece;
+
+            //        listPlatePrefix.Add($"{sPrefix}-{anchor.WasherPlateTop.Prefix}");
+            //        listPlateCount.Add(anchorsNum);
+            //        listPlateMaterialName.Add(anchor.WasherPlateTop.m_Mat.Name);
+            //        dlistPlateWidth_bx.Add(anchor.WasherPlateTop.Width_bx);
+            //        dlistPlateHeight_hy.Add(anchor.WasherPlateTop.Height_hy);
+            //        dlistPlateThickness_tz.Add(anchor.WasherPlateTop.Ft);
+            //        dlistPlateArea.Add(anchor.WasherPlateTop.fArea);
+            //        dlistPlateUnitMass.Add(fMassPerPiece);
+            //        listPlateTotalArea.Add(fTotalArea);
+            //        listPlateTotalMass.Add(fTotalMass);
+            //        dlistPlatePricePerPiece.Add(fPricePerPiece);
+            //        listPlateTotalPrice.Add(fTotalPrice);
+
+
+
+
+                    
+            //    }
+            //}
+        }
+
 
         private void CreateTableConnectors(CModel model)
         {
