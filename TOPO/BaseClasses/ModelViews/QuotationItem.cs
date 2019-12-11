@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BaseClasses
 {
-    public class PlateView
+    public class QuotationItem
     {
         string m_Prefix;
+        //string m_Name;
         int m_Quantity;
         string m_MaterialName;
         float m_Width_bx;
@@ -34,6 +35,18 @@ namespace BaseClasses
                 m_Prefix = value;
             }
         }
+        //public string Name
+        //{
+        //    get
+        //    {
+        //        return m_Name;
+        //    }
+
+        //    set
+        //    {
+        //        m_Name = value;
+        //    }
+        //}
 
         public int Quantity
         {
@@ -179,6 +192,6 @@ namespace BaseClasses
         }
 
 
-        public PlateView() { }
+        public QuotationItem() { }
     }
 }

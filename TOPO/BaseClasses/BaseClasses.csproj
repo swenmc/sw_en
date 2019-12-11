@@ -111,6 +111,7 @@
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\DisplayOptionsHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="ModelViews\QuotationItem.cs" />
     <Compile Include="ModelViews\PlateView.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
