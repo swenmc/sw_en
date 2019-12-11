@@ -86,7 +86,15 @@ namespace EXPIMP
             // Create a new document.
             using (DocX document = DocX.Create(fileName))
             {
-                Paragraph par = document.InsertParagraph("Quotation");
+                // The path to a template document,
+                string templatePath = resourcesFolderPath + "TemplateQuotation.docx";
+                // Apply a template to the document based on a path.
+                document.ApplyTemplate(templatePath);
+
+                Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
+                par.RemoveText(0);
+
+                //Paragraph par = document.InsertParagraph("Quotation");
 
                 foreach (DataTable dt in tables)
                 {
@@ -792,13 +800,14 @@ namespace EXPIMP
             SetFontSizeForTable(parSLS.FollowingTable);
         }
 
-        private static void SetFontSizeForTable(Table table)
+        private static void SetFontSizeForTable(Table table, double? fontSize = null)
         {
             if (table == null) return;
 
             foreach (Paragraph p in table.Paragraphs)
             {
-                p.FontSize(fontSizeInTable);
+                if(fontSize != null) p.FontSize(fontSize.Value);
+                else p.FontSize(fontSizeInTable);
             }
         }
 
@@ -1301,11 +1310,25 @@ namespace EXPIMP
 
         private static Table GetTableFromDataTable(DocX document, DataTable dt)
         {
+            bool withoutPrices = false;
+            int columnCount = dt.Columns.Count;
+            if (withoutPrices)
+            {
+                //getColumns without prices
+                //columnCount = 0;
+                //for (int j = 0; j < dt.Columns.Count; j++)
+                //{
+                //    if(dt.Columns[j].Caption)
+                //}
+            }
+
             var t = document.AddTable(dt.Rows.Count + 1, dt.Columns.Count);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
 
             List<float> columnsWidths = new List<float>();
+
+            
 
             int colorColumn = -1;
             //header
@@ -1341,7 +1364,7 @@ namespace EXPIMP
                 }
             }
 
-            SetFontSizeForTable(t);
+            SetFontSizeForTable(t, 7);
             
             t.AutoFit = AutoFit.ColumnWidth;
             t.SetWidthsPercentage(columnsWidths.ToArray(), quotationTableWidth);
