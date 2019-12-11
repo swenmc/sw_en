@@ -16,6 +16,9 @@ namespace BaseClasses
         float m_Height_hy;
         float m_Ft;
         float m_Area;
+        float m_Diameter_thread;
+        float m_Length;
+
         float m_MassPerPiece;
         float m_TotalArea;
         float m_TotalMass;
@@ -191,6 +194,31 @@ namespace BaseClasses
             }
         }
 
+        public float Diameter_thread
+        {
+            get
+            {
+                return m_Diameter_thread;
+            }
+
+            set
+            {
+                m_Diameter_thread = value;
+            }
+        }
+
+        public float Length
+        {
+            get
+            {
+                return m_Length;
+            }
+
+            set
+            {
+                m_Length = value;
+            }
+        }
 
         public QuotationItem() { }
     }

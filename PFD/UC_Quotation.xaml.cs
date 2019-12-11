@@ -92,7 +92,7 @@ namespace PFD
 
             // DG 4
             // Bolt Nuts
-
+            CreateTableBoltNuts(model);
             // TODO
 
             // DG 5
@@ -1098,6 +1098,155 @@ namespace PFD
             }
         }
 
+        private void CreateTableBoltNuts(CModel model)
+        {
+            // Bolt nuts
+            List<QuotationItem> quotation = new List<QuotationItem>();
+
+            for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
+            {
+                if (!model.m_arrConnectionJoints[i].BIsSelectedForMaterialList) continue;
+
+                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                {
+                    // Anchors
+                    if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+                    {
+                        CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+
+                        if (plate.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        {
+                            CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
+                            int anchorsNum = plate.AnchorArrangement.Anchors.Length;
+                            //v pripade ak su anchor.Nuts stale rovnake tak netreba foreach ale len quantity = anchorsNum * anchor.Nuts.Count
+                            foreach (CNut nut in anchor.Nuts)
+                            {
+                                AddBoltNutToQuotation(nut, quotation, anchorsNum);
+                            }
+                        }
+                    }
+                }
+            }
+
+            double dTotalNutsMass_Table = 0;
+            double dTotalNutsPrice_Table = 0;
+            int iTotalNutsNumber_Table = 0;
+            foreach (QuotationItem item in quotation)
+            {
+                dTotalNutsMass_Table += item.TotalMass;
+                dTotalNutsPrice_Table += item.TotalPrice;
+                iTotalNutsNumber_Table += item.Quantity;
+            }
+
+            dBuildingMass += dTotalNutsMass_Table;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalNutsPrice_Table;
+
+            // Create Table
+            DataTable dt = new DataTable("TableBoltNuts");
+            // Create Table Rows
+            dt.Columns.Add("Prefix", typeof(String));
+            dt.Columns.Add("Count", typeof(Int32));
+            dt.Columns.Add("Material", typeof(String));            
+            dt.Columns.Add("UnitMass", typeof(String));
+            dt.Columns.Add("TotalMass", typeof(Decimal));
+            dt.Columns.Add("UnitPrice", typeof(string));
+            dt.Columns.Add("Price", typeof(Decimal));
+            
+            // Set Column Caption
+            dt.Columns["Prefix"].Caption = "Prefix";
+            dt.Columns["Count"].Caption = "Count [-]";
+            dt.Columns["Material"].Caption = "Material";            
+            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
+            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
+            dt.Columns["Price"].Caption = "Price [NZD]";
+
+            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 25f);
+            dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
+            dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);            
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+            dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
+
+            dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
+            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);            
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+            DataRow row;
+            foreach (QuotationItem item in quotation)
+            {
+                row = dt.NewRow();
+                try
+                {
+                    row["Prefix"] = item.Prefix;
+                    row["Count"] = item.Quantity;
+                    row["Material"] = item.MaterialName;                    
+                    row["UnitMass"] = item.MassPerPiece.ToString("F2");
+                    row["TotalMass"] = item.TotalMass.ToString("F2");
+                    row["UnitPrice"] = item.PricePerPiece.ToString("F2");
+                    row["Price"] = item.TotalPrice.ToString("F2");
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            // Add Sum
+            row = dt.NewRow();
+            row["Prefix"] = "Total:";
+            row["Count"] = iTotalNutsNumber_Table;
+            row["Material"] = "";            
+            row["UnitPrice"] = "";
+            row["TotalMass"] = dTotalNutsMass_Table.ToString("F2");
+            row["UnitPrice"] = "";
+            row["Price"] = dTotalNutsPrice_Table.ToString("F2");
+            dt.Rows.Add(row);
+
+            Datagrid_BoltNuts.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_BoltNuts.Loaded += Datagrid_BoltNuts_Loaded;
+        }
+
+        private void Datagrid_BoltNuts_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_BoltNuts);
+        }
+
+        private void AddBoltNutToQuotation(CNut nut, List<QuotationItem> quotation, int iQuantity)
+        {
+            QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == nut.Name &&
+                    MathF.d_equal(q.MassPerPiece, nut.Mass));
+            //TO Mato - neviem na zaklade coho vsetkeho to treba groupovat???
+
+            if (qItem != null) //this quotation exists
+            {
+                qItem.Quantity += iQuantity;                
+                qItem.TotalMass = qItem.Quantity * qItem.MassPerPiece;
+                qItem.TotalPrice = qItem.Quantity * qItem.PricePerPiece;
+            }
+            else //quotation item does not exist = add to collection
+            {
+                QuotationItem item = new QuotationItem
+                {
+                    Prefix = nut.Name,
+                    Quantity = iQuantity,                    
+                    MaterialName = nut.m_Mat.Name,                    
+                    MassPerPiece = nut.Mass,
+                    PricePerPiece = nut.Price_PPKG_NZD * nut.Mass,                    
+                    TotalMass = iQuantity * nut.Mass,
+                    TotalPrice = iQuantity * nut.Price_PPKG_NZD * nut.Mass
+                };
+                quotation.Add(item);
+            }
+        }
+
         private void CreateTableCladding(CPFDViewModel vm,
              float fWallArea_Total,
              float fTotalAreaOfOpennings,
@@ -1325,6 +1474,7 @@ namespace PFD
         private void SetLastRowBold(DataGrid datagrid)
         {
             DataGridRow dtrow = (DataGridRow)datagrid.ItemContainerGenerator.ContainerFromIndex(datagrid.Items.Count - 1);
+            if (dtrow == null) return;
             Setter bold = new Setter(TextBlock.FontWeightProperty, FontWeights.Bold, null);
             Style newStyle = new Style(dtrow.GetType());
 
