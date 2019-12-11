@@ -1189,7 +1189,7 @@ namespace PFD
                 {
                     row["Prefix"] = item.Prefix;
                     row["Count"] = item.Quantity;
-                    row["Material"] = item.MaterialName;                    
+                    row["Material"] = item.MaterialName;
                     row["UnitMass"] = item.MassPerPiece.ToString("F2");
                     row["TotalMass"] = item.TotalMass.ToString("F2");
                     row["UnitPrice"] = item.PricePerPiece.ToString("F2");
@@ -1203,7 +1203,7 @@ namespace PFD
             row = dt.NewRow();
             row["Prefix"] = "Total:";
             row["Count"] = iTotalNutsNumber_Table;
-            row["Material"] = "";            
+            row["Material"] = "";
             row["UnitPrice"] = "";
             row["TotalMass"] = dTotalNutsMass_Table.ToString("F2");
             row["UnitPrice"] = "";
