@@ -508,6 +508,8 @@ namespace PFD
                                 CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
                                 int anchorsNum = plate.AnchorArrangement.Anchors.Length;
 
+                                sPrefix = anchor.WasherPlateTop.Name;
+
                                 fTotalArea = anchorsNum * anchor.WasherPlateTop.fArea;
                                 fMassPerPiece = anchor.WasherPlateTop.fArea * anchor.WasherPlateTop.Ft * anchor.WasherPlateTop.m_Mat.m_fRho;
 
@@ -521,7 +523,8 @@ namespace PFD
 
                                 //TODO - radsej refaktorovat s triedou PlateView
 
-                                listPlatePrefix.Add($"{sPrefix}-{anchor.WasherPlateTop.Prefix}");
+                                listPlatePrefix.Add(sPrefix);
+                                //listPlatePrefix.Add($"{sPrefix}-{anchor.WasherPlateTop.Prefix}");
                                 listPlateCount.Add(anchorsNum);
                                 listPlateMaterialName.Add(anchor.WasherPlateTop.m_Mat.Name);
                                 dlistPlateWidth_bx.Add(anchor.WasherPlateTop.Width_bx);
