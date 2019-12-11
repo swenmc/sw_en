@@ -55,8 +55,6 @@ namespace PFD
             List<Point> fWallDefinitionPoints_Left = new List<Point>(4) { new Point(0, 0), new Point(model.fL_tot, 0), new Point(model.fL_tot, model.fH1_frame), new Point(0, model.fH1_frame) };
             List<Point> fWallDefinitionPoints_Front = new List<Point>(5) { new Point(0, 0), new Point(model.fW_frame, 0), new Point(model.fW_frame, model.fH1_frame), new Point(0.5 * model.fW_frame, model.fH2_frame), new Point(0, model.fH1_frame) };
 
-            // TODO Ondrej - refaktoring - funckia CreateTableCladding
-
             float fWallArea_Left = 0; float fWallArea_Right = 0;
             if (vm.ComponentList[(int)EMemberType_FS_Position.Girt].Generate == true)
             {
@@ -81,6 +79,7 @@ namespace PFD
 
             // DG 2
             // Plates
+            // Washers
             CreateTablePlates(model);
             // TODO - dopracovat apex brace plates
 
@@ -93,12 +92,6 @@ namespace PFD
             // DG 4
             // Bolt Nuts
             CreateTableBoltNuts(model);
-            // TODO
-
-            // DG 5
-            // Washers
-
-            // TODO
 
             // DG 7
             // Doors and windows
@@ -176,6 +169,7 @@ namespace PFD
             float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
+            // TODO Ondrej - refaktoring - funckia CreateTableCladding
             CreateTableCladding(vm,
                 fWallArea_Total,
                 fTotalAreaOfOpennings,
