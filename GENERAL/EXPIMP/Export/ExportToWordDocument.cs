@@ -1310,57 +1310,68 @@ namespace EXPIMP
 
         private static Table GetTableFromDataTable(DocX document, DataTable dt)
         {
-            bool withoutPrices = false;
             int columnCount = dt.Columns.Count;
+
+            bool withoutPrices = true;
+            List<int> priceColumnsIndexes = new List<int>();
             if (withoutPrices)
             {
-                //getColumns without prices
-                //columnCount = 0;
-                //for (int j = 0; j < dt.Columns.Count; j++)
-                //{
-                //    if(dt.Columns[j].Caption)
-                //}
+                columnCount = 0;
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    if (dt.Columns[j].Caption.Contains("Price"))
+                    {
+                        priceColumnsIndexes.Add(j);
+                    }
+                    else
+                    {
+                        columnCount++;
+                    }
+                }
             }
 
-            var t = document.AddTable(dt.Rows.Count + 1, dt.Columns.Count);
+            var t = document.AddTable(dt.Rows.Count + 1, columnCount);
             t.Design = TableDesign.TableGrid;
             t.Alignment = Alignment.left;
 
             List<float> columnsWidths = new List<float>();
 
-            
-
             int colorColumn = -1;
+            int columnSkip = 0;
             //header
-            for (int j = 0; j < dt.Columns.Count; j++)
+            for (int j = 0; j < columnCount; j++)
             {
-                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j].Caption);                
+                if (priceColumnsIndexes.Contains(j)) columnSkip++;
+                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j + columnSkip].Caption);                
                 t.Rows[0].Cells[j].Paragraphs[0].Bold();
-                if (dt.Columns[j].ExtendedProperties["Width"] != null)
+                if (dt.Columns[j + columnSkip].ExtendedProperties["Width"] != null)
                 {
-                    columnsWidths.Add((float)dt.Columns[j].ExtendedProperties["Width"]);
+                    columnsWidths.Add((float)dt.Columns[j + columnSkip].ExtendedProperties["Width"]);
                 }
-                else columnsWidths.Add(100f / dt.Columns.Count);
+                else columnsWidths.Add(100f / columnCount);
 
-                SetAlignment(dt.Columns[j], t.Rows[0].Cells[j].Paragraphs[0]);
+                SetAlignment(dt.Columns[j + columnSkip], t.Rows[0].Cells[j].Paragraphs[0]);
 
-                if (dt.Columns[j].ColumnName == "Color") colorColumn = j;
+                if (dt.Columns[j + columnSkip].ColumnName == "Color") colorColumn = j;
             }
 
             // For each load case add one row
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                for (int j = 0; j < dt.Columns.Count; j++)
+                columnSkip = 0;
+                for (int j = 0; j < columnCount; j++)
                 {
+                    if (priceColumnsIndexes.Contains(j)) columnSkip++;
+
                     if (colorColumn != -1 && colorColumn == j)
                     {
-                        if(!string.IsNullOrEmpty(dt.Rows[i][j].ToString()))
-                            t.Rows[i + 1].Cells[j].FillColor = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i][j].ToString());
+                        if(!string.IsNullOrEmpty(dt.Rows[i][j + columnSkip].ToString()))
+                            t.Rows[i + 1].Cells[j].FillColor = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i][j + columnSkip].ToString());
                         continue;
                     }
                     
-                    t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j].ToString());
-                    SetAlignment(dt.Columns[j], t.Rows[i + 1].Cells[j].Paragraphs[0]);
+                    t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j + columnSkip].ToString());
+                    SetAlignment(dt.Columns[j + columnSkip], t.Rows[i + 1].Cells[j].Paragraphs[0]);
                 }
             }
 
