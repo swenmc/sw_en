@@ -1344,6 +1344,12 @@ namespace EXPIMP
                 if (priceColumnsIndexes.Contains(j)) columnSkip++;
                 t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j + columnSkip].Caption);                
                 t.Rows[0].Cells[j].Paragraphs[0].Bold();
+                if (dt.Columns[j + columnSkip].ExtendedProperties["Unit"] != null)
+                {
+                    t.Rows[0].Cells[j].InsertParagraph(dt.Columns[j + columnSkip].ExtendedProperties["Unit"].ToString()).Bold();
+                    SetAlignment(dt.Columns[j + columnSkip], t.Rows[0].Cells[j].Paragraphs[1]);
+                }
+                
                 if (dt.Columns[j + columnSkip].ExtendedProperties["Width"] != null)
                 {
                     columnsWidths.Add((float)dt.Columns[j + columnSkip].ExtendedProperties["Width"]);
@@ -1351,6 +1357,7 @@ namespace EXPIMP
                 else columnsWidths.Add(100f / columnCount);
 
                 SetAlignment(dt.Columns[j + columnSkip], t.Rows[0].Cells[j].Paragraphs[0]);
+                
 
                 if (dt.Columns[j + columnSkip].ColumnName == "Color") colorColumn = j;
             }

@@ -219,12 +219,20 @@ namespace PFD
 
             // Set Column Caption
             dt.Columns["Crsc"].Caption = "Cross-section";
-            dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["TotalLength"].Caption = "Total Length [m]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
+            dt.Columns["Count"].Caption = "Count";
+            dt.Columns["TotalLength"].Caption = "Total Length";
+            dt.Columns["UnitMass"].Caption = "Unit Mass";
+            dt.Columns["TotalMass"].Caption = "Total Mass";
+            dt.Columns["UnitPrice"].Caption = "Unit Price";
+            dt.Columns["Price"].Caption = "Price";
+
+            dt.Columns["Crsc"].ExtendedProperties.Add("Unit", "[Test Unit]");
+            dt.Columns["Count"].ExtendedProperties.Add("Unit", "[-]");
+            dt.Columns["TotalLength"].ExtendedProperties.Add("Unit", "[m]");
+            dt.Columns["UnitMass"].ExtendedProperties.Add("Unit", "[kg/m]");
+            dt.Columns["TotalMass"].ExtendedProperties.Add("Unit", "[kg]");
+            dt.Columns["UnitPrice"].ExtendedProperties.Add("Unit", "[NZD/m]");
+            dt.Columns["Price"].ExtendedProperties.Add("Unit", "[NZD]");
 
             dt.Columns["Crsc"].ExtendedProperties.Add("Width", 55f);
             dt.Columns["Count"].ExtendedProperties.Add("Width", 10f);
