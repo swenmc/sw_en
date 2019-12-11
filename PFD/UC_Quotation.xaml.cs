@@ -46,6 +46,15 @@ namespace PFD
         List<double> listConnectorUnitPrice = new List<double>(1);
         List<double> listConnectorTotalPrice = new List<double>(1);
 
+        float fTotalAreaOfOpennings = 0;
+
+        float fRollerDoorTrimmerFlashing_TotalLength = 0;
+        float fRollerDoorLintelFlashing_TotalLength = 0;
+        float fRollerDoorLintelCapFlashing_TotalLength = 0;
+        float fPADoorTrimmerFlashing_TotalLength = 0;
+        float fPADoorLintelFlashing_TotalLength = 0;
+        float fWindowFlashing_TotalLength = 0;
+
         public UC_Quotation(CPFDViewModel vm)
         {
             InitializeComponent();
@@ -94,68 +103,8 @@ namespace PFD
             CreateTableBoltNuts(model);
 
             // DG 7
-            // Doors and windows
-            float fTotalAreaOfOpennings = 0;
-
-            float fRollerDoorTrimmerFlashing_TotalLength = 0;
-            float fRollerDoorLintelFlashing_TotalLength = 0;
-            float fRollerDoorLintelCapFlashing_TotalLength = 0;
-            float fPADoorTrimmerFlashing_TotalLength = 0;
-            float fPADoorLintelFlashing_TotalLength = 0;
-            float fWindowFlashing_TotalLength = 0;
-
-            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
-
-            foreach (DoorProperties dp in vm.DoorBlocksProperties)
-            {
-                fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
-
-                if (dp.sDoorType == "Roller Door")
-                {
-                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                    fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                    fRollerDoorLintelCapFlashing_TotalLength = dp.fDoorsWidth;
-                }
-                else
-                {
-                    fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
-                    fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                }
-
-                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight));
-            }
-
-            foreach (WindowProperties wp in vm.WindowBlocksProperties)
-            {
-                fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
-
-                fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
-
-                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight));
-            }
-
-            // TODO Ondrej
-
-            // Refaktorovat kody
-            // Skus to popozerat a pripadne nejako zautomatizovat
-            // V principe mame 2 typy poloziek
-            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
-            // 2 - definovene plochou (doors, windows, roof netting)
-
-            List<COpeningProperties> groupedOpenings = new List<COpeningProperties>();
-            foreach (COpeningProperties op in listOfOpenings)
-            {
-                if (groupedOpenings.Contains(op))
-                {
-                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];
-                    //grOP.Area += op.Area;
-                    //grOP.Perimeter += op.Perimeter;
-                    grOP.Count++;
-                }
-                else groupedOpenings.Add(op);
-            }
-
-            CreateTableDoorsAndWindows(groupedOpenings);
+            // Doors and windows            
+            CreateTableDoorsAndWindows(vm);
 
             // DG 9
             // Cladding
@@ -671,116 +620,36 @@ namespace PFD
             //float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
             //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
-            listConnectorPrefix = new List<string>(1);
-            listConnectorCount = new List<int>(1);
-            listConnectorMaterialName = new List<string>(1);
-            listConnectorSize = new List<string>(1);
-            listConnectorUnitMass = new List<double>(1);
-            listConnectorTotalMass = new List<double>(1);
-            listConnectorUnitPrice = new List<double>(1);
-            listConnectorTotalPrice = new List<double>(1);
-
             // Connectors
             // TASK 422
-            // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky
-            // Vsetky by mali mat nejaky prefix, material, popis velkosti (priemer, dlzka), vaha / kus, cena / kus
-            // Prosim pozri sa na to a skus to povylepsovat
-            // Blok pre screws a pre anchors maju velmi vela spolocneho, mozes to skusit refaktorovat
-
+            // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky            
             // Anchors + screws
-            List<CConnector> ListOfConnectorGroups = new List<CConnector>();
+            
+            List<QuotationItem> quotation = new List<QuotationItem>();
 
-            for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
-                if (!model.m_arrConnectionJoints[i].BIsSelectedForMaterialList) continue;
+                if (!joint.BIsSelectedForMaterialList) continue;
 
-                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                foreach (CPlate plate in joint.m_arrPlates) // For each plate
                 {
                     // Screws
-                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null)
+                    if (plate.ScrewArrangement.Screws != null)
                     {
-                        AddConnector(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.FirstOrDefault(), ListOfConnectorGroups, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length);
-
-                        //for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length; k++) // For each connector in plate
-                        //{
-
-
-                        ////z toho funkcia
-                        //string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name;
-                        //int iQuantity = 1;
-                        //string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].m_Mat.Name;
-                        //int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Gauge;
-                        //float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread;
-                        //float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length;
-                        //string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
-                        //float fMassPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass;
-                        //float fTotalMass = iQuantity * fMassPerPiece;
-
-                        //float fTotalPrice;
-                        //if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
-                        //    fTotalPrice = iQuantity * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD;
-                        //else
-                        //    fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
-
-                        //bool bConnectorwasAdded = false; // Connector was added to the group
-
-                        //if (ListOfConnectorGroups.Count > 0) // If it not first item
-                        //{
-                        //    for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
-                        //    {
-                        //        if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Name &&
-                        //        MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Diameter_thread) &&
-                        //        MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Length) &&
-                        //        MathF.d_equal(ListOfConnectorGroups[m].Mass, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Mass))
-                        //        {
-                        //            // Add connector to the one from already created groups
-
-                        //            listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
-                        //            listConnectorTotalMass[m] = listConnectorQuantity[m] * listConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
-
-                        //            if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD > 0)
-                        //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k].Price_PPP_NZD; // Recalculate total price of all connectors in the group
-                        //            else
-                        //                listConnectorTotalPrice[m] = listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total;
-
-                        //            bConnectorwasAdded = true;
-                        //            // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                        //            break;
-                        //        }
-                        //    }
-                        //}
-
-                        //if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                        //{
-                        //    listConnectorPrefix.Add(sPrefix);
-                        //    listConnectorQuantity.Add(iQuantity);
-                        //    listConnectorMaterialName.Add(sMaterialName);
-                        //    listConnectorSize.Add(size);
-                        //    listConnectorMassPerPiece.Add(fMassPerPiece);
-                        //    listConnectorTotalMass.Add(fTotalMass);
-                        //    listConnectorTotalPrice.Add(fTotalPrice);
-
-                        //    // Add first plate in the group to the list of plate groups
-                        //    ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws[k]);
-                        //}
-                        //}
+                        AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);                       
                     }
 
                     // Anchors
-                    if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+                    if (plate is CConCom_Plate_B_basic)
                     {
-                        CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+                        CConCom_Plate_B_basic plateB = (CConCom_Plate_B_basic)plate;
 
-                        if (plate.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+                        if (plateB.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
                         {
                             // TASK 422
-
-                            // TODO Ondrej - doplnit data pre anchors
+                            // Doplnit data pre anchors
                             // Refaktorovat anchors a screws
-
-                            // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade
-
-                            // Size
+                            // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade                            
 
                             // Pre screws - gauge + dlzka (14g - 38)
                             // Pre anchors  - name + dlzka (M16 - 330)
@@ -789,68 +658,7 @@ namespace PFD
                             // TEK    |     1515 | Class 3 / 4 / B8 |  14g-38 |                 0.052 |
                             // Anchor |       65 |              8.8 | M16-330 |                 2.241 |
 
-                            AddConnector(plate.AnchorArrangement.Anchors.FirstOrDefault(), ListOfConnectorGroups, plate.AnchorArrangement.Anchors.Length);
-
-                            //for (int k = 0; k < plate.AnchorArrangement.Anchors.Length; k++) // For each connector in plate
-                            //{
-                            //    string sPrefix = plate.AnchorArrangement.Anchors[k].Prefix;
-                            //    int iQuantity = 1;
-                            //    string sMaterialName = plate.AnchorArrangement.Anchors[k].m_Mat.Name;
-                            //    string sName = plate.AnchorArrangement.Anchors[k].Name;
-                            //    float fDiameter = plate.AnchorArrangement.Anchors[k].Diameter_thread;
-                            //    float fLength = plate.AnchorArrangement.Anchors[k].Length;
-                            //    string size = sName + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
-                            //    float fMassPerPiece = plate.AnchorArrangement.Anchors[k].Mass;
-                            //    float fTotalMass = iQuantity * fMassPerPiece;
-
-                            //    float fTotalPrice;
-                            //    if (plate.AnchorArrangement.Anchors[k].Price_PPP_NZD > 0)
-                            //        fTotalPrice = iQuantity * plate.AnchorArrangement.Anchors[k].Price_PPP_NZD;
-                            //    else
-                            //        fTotalPrice = iQuantity * (fAnchor_PricePerLength * fLength);
-
-                            //    bool bConnectorwasAdded = false; // Connector was added to the group
-
-                            //    if (ListOfConnectorGroups.Count > 0) // If it not first item
-                            //    {
-                            //        for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
-                            //        {
-                            //            if (ListOfConnectorGroups[m].Name == plate.AnchorArrangement.Anchors[k].Name &&
-                            //            MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, plate.AnchorArrangement.Anchors[k].Diameter_thread) &&
-                            //            MathF.d_equal(ListOfConnectorGroups[m].Length, plate.AnchorArrangement.Anchors[k].Length) &&
-                            //            MathF.d_equal(ListOfConnectorGroups[m].Mass, plate.AnchorArrangement.Anchors[k].Mass))
-                            //            {
-                            //                // Add connector to the one from already created groups
-
-                            //                listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
-                            //                listConnectorTotalMass[m] = listConnectorQuantity[m] * listConnectorMassPerPiece[m]; // Recalculate total mass of all connectors in the group
-
-                            //                if (plate.AnchorArrangement.Anchors[k].Price_PPP_NZD > 0)
-                            //                    listConnectorTotalPrice[m] = listConnectorQuantity[m] * plate.AnchorArrangement.Anchors[k].Price_PPP_NZD; // Recalculate total price of all connectors in the group
-                            //                else
-                            //                    listConnectorTotalPrice[m] = listConnectorQuantity[m] * (fAnchor_PricePerLength * plate.AnchorArrangement.Anchors[k].Length);
-
-                            //                bConnectorwasAdded = true;
-                            //                // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                            //                break;
-                            //            }
-                            //        }
-                            //    }
-
-                            //    if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-                            //    {
-                            //        listConnectorPrefix.Add(sPrefix);
-                            //        listConnectorQuantity.Add(iQuantity);
-                            //        listConnectorMaterialName.Add(sMaterialName);
-                            //        listConnectorSize.Add(size);
-                            //        listConnectorMassPerPiece.Add(fMassPerPiece);
-                            //        listConnectorTotalMass.Add(fTotalMass);
-                            //        listConnectorTotalPrice.Add(fTotalPrice);
-
-                            //        // Add first plate in the group to the list of plate groups
-                            //        ListOfConnectorGroups.Add(plate.AnchorArrangement.Anchors[k]);
-                            //    }
-                            //}
+                            AddConnector(plateB.AnchorArrangement.Anchors.FirstOrDefault(), quotation, plateB.AnchorArrangement.Anchors.Length);
                         }
                     }
                 }
@@ -909,11 +717,11 @@ namespace PFD
             double dTotalConnectorsMass_Table = 0;
             double dTotalConnectorsPrice_Table = 0;
             int iTotalConnectorsNumber_Table = 0;
-            for (int i = 0; i < listConnectorPrefix.Count; i++)
+            foreach (QuotationItem item in quotation)
             {
-                dTotalConnectorsMass_Table += listConnectorTotalMass[i];
-                dTotalConnectorsPrice_Table += listConnectorTotalPrice[i];
-                iTotalConnectorsNumber_Table += listConnectorCount[i];
+                dTotalConnectorsMass_Table += item.TotalMass;
+                dTotalConnectorsPrice_Table += item.TotalPrice;
+                iTotalConnectorsNumber_Table += item.Quantity;
             }
 
             //To Mato...toto tu treba???
@@ -940,7 +748,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalConnectorsPrice_Table;
 
             // Create Table
-            DataTable dt = new DataTable("Table3");
+            DataTable dt = new DataTable("TableConnectors");
             // Create Table Rows
 
             dt.Columns.Add("Prefix", typeof(String));
@@ -986,19 +794,19 @@ namespace PFD
             // Add Table to Dataset
             ds.Tables.Add(dt);
             DataRow row;
-            for (int i = 0; i < listConnectorPrefix.Count; i++)
+            foreach (QuotationItem item in quotation)
             {
                 row = dt.NewRow();
                 try
                 {
-                    row["Prefix"] = listConnectorPrefix[i];
-                    row["Count"] = listConnectorCount[i];
-                    row["Material"] = listConnectorMaterialName[i];
-                    row["Size"] = listConnectorSize[i];
-                    row["UnitMass"] = listConnectorUnitMass[i].ToString("F2");
-                    row["TotalMass"] = listConnectorTotalMass[i].ToString("F2");
-                    row["UnitPrice"] = listConnectorUnitPrice[i].ToString("F2");
-                    row["Price"] = listConnectorTotalPrice[i].ToString("F2");
+                    row["Prefix"] = item.Prefix;
+                    row["Count"] = item.Quantity;
+                    row["Material"] = item.MaterialName;
+                    row["Size"] = item.Size;
+                    row["UnitMass"] = item.MassPerPiece.ToString("F2");
+                    row["TotalMass"] = item.TotalMass.ToString("F2");
+                    row["UnitPrice"] = item.PricePerPiece.ToString("F2");
+                    row["Price"] = item.TotalPrice.ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
@@ -1025,16 +833,11 @@ namespace PFD
             SetLastRowBold(Datagrid_Connectors);
         }
 
-        private void AddConnector(CConnector connector, List<CConnector> ListOfConnectorGroups, int iQuantity)
+        private void AddConnector(CConnector connector, List<QuotationItem> quotation, int iQuantity)
         {
             string sPrefix = "";
-            string size = "";
-            //int iQuantity = 1;
-            string sMaterialName = connector.m_Mat.Name;
-            float fDiameter = connector.Diameter_thread;
-            float fLength = connector.Length;
-            float fUnitMass = connector.Mass;
-            float fTotalMass = iQuantity * fUnitMass;
+            string size = "";                        
+            float fTotalMass = iQuantity * connector.Mass;
             float fUnitPrice = connector.Price_PPP_NZD;
 
             if (connector.Price_PPP_NZD > 0)
@@ -1042,58 +845,49 @@ namespace PFD
             else
             {
                 if (connector is CScrew) fUnitPrice = fTEK_PricePerPiece_Screws_Total;
-                else if (connector is CAnchor) fUnitPrice = (fAnchor_PricePerLength * fLength);
+                else if (connector is CAnchor) fUnitPrice = (fAnchor_PricePerLength * connector.Length);
             }
 
             if (connector is CScrew)
             {
                 sPrefix = connector.Name;
                 int iGauge = ((CScrew)connector).Gauge;
-                size = $"{iGauge}g x {Math.Round(fLength * 1000, 0)}"; // Display in [mm] (value * 1000)
+                size = $"{iGauge}g x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
             else if (connector is CAnchor)
             {
                 sPrefix = connector.Prefix;
-                size = $"{connector.Name} x {Math.Round(fLength * 1000, 0)}"; // Display in [mm] (value * 1000)
+                size = $"{connector.Name} x {Math.Round(connector.Length * 1000, 0)}"; // Display in [mm] (value * 1000)
             }
 
             float fTotalPrice = iQuantity * fUnitPrice;
 
-            bool bConnectorwasAdded = false; // Connector was added to the group
+            QuotationItem item = quotation.FirstOrDefault(q => q.Prefix == connector.Name &&
+                        MathF.d_equal(q.Diameter_thread, connector.Diameter_thread) &&
+                        MathF.d_equal(q.Length, connector.Length) &&
+                        MathF.d_equal(q.MassPerPiece, connector.Mass));
 
-            for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
+            if (item != null)
             {
-                if (ListOfConnectorGroups[m].Name == connector.Name &&
-                MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, connector.Diameter_thread) &&
-                MathF.d_equal(ListOfConnectorGroups[m].Length, connector.Length) &&
-                MathF.d_equal(ListOfConnectorGroups[m].Mass, connector.Mass))
+                item.Quantity += iQuantity; // Add one connector (piece) to the quantity
+                item.TotalMass = item.Quantity * item.MassPerPiece;// Recalculate total mass of all connectors in the group
+                item.TotalPrice = item.Quantity * item.PricePerPiece;// Recalculate total price of all connectors in the group
+            }
+            else
+            {
+                QuotationItem newItem = new QuotationItem
                 {
-                    // Add connector to the one from already created groups
-
-                    listConnectorCount[m] += iQuantity; // Add one connector (piece) to the quantity
-                    listConnectorTotalMass[m] = listConnectorCount[m] * listConnectorUnitMass[m]; // Recalculate total mass of all connectors in the group
-                    listConnectorTotalPrice[m] = listConnectorCount[m] * fUnitPrice; // Recalculate total price of all connectors in the group
-
-                    bConnectorwasAdded = true;
-                    // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
-                    break;
-                }
-            }
-
-            if (!bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
-            {
-                listConnectorPrefix.Add(sPrefix);
-                listConnectorCount.Add(iQuantity);
-                listConnectorMaterialName.Add(sMaterialName);
-                listConnectorSize.Add(size);
-                listConnectorUnitMass.Add(fUnitMass);
-                listConnectorTotalMass.Add(fTotalMass);
-                listConnectorUnitPrice.Add(fUnitPrice);
-                listConnectorTotalPrice.Add(fTotalPrice);
-
-                // Add first plate in the group to the list of plate groups
-                ListOfConnectorGroups.Add(connector);
-            }
+                    Prefix = sPrefix,
+                    Quantity = iQuantity,
+                    MaterialName = connector.m_Mat.Name,
+                    Size = size,
+                    MassPerPiece = connector.Mass,
+                    TotalMass = fTotalMass,
+                    PricePerPiece = fUnitPrice,
+                    TotalPrice = fTotalPrice
+                };
+                quotation.Add(newItem);
+            }      
         }
 
         private void CreateTableBoltNuts(CModel model)
@@ -1484,8 +1278,66 @@ namespace PFD
             dtrow.Style = newStyle;
         }
 
-        private void CreateTableDoorsAndWindows(List<COpeningProperties> list)
+        private void CreateTableDoorsAndWindows(CPFDViewModel vm)
         {
+            fTotalAreaOfOpennings = 0;
+
+            fRollerDoorTrimmerFlashing_TotalLength = 0;
+            fRollerDoorLintelFlashing_TotalLength = 0;
+            fRollerDoorLintelCapFlashing_TotalLength = 0;
+            fPADoorTrimmerFlashing_TotalLength = 0;
+            fPADoorLintelFlashing_TotalLength = 0;
+            fWindowFlashing_TotalLength = 0;
+
+            List<COpeningProperties> listOfOpenings = new List<COpeningProperties>();
+
+            foreach (DoorProperties dp in vm.DoorBlocksProperties)
+            {
+                fTotalAreaOfOpennings += dp.fDoorsWidth * dp.fDoorsHeight;
+
+                if (dp.sDoorType == "Roller Door")
+                {
+                    fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                    fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                    fRollerDoorLintelCapFlashing_TotalLength = dp.fDoorsWidth;
+                }
+                else
+                {
+                    fPADoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
+                    fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
+                }
+
+                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight));
+            }
+
+            foreach (WindowProperties wp in vm.WindowBlocksProperties)
+            {
+                fTotalAreaOfOpennings += wp.fWindowsWidth * wp.fWindowsHeight;
+
+                fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
+
+                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight));
+            }
+
+            // TODO Ondrej
+
+            // Refaktorovat kody
+            // Skus to popozerat a pripadne nejako zautomatizovat
+            // V principe mame 2 typy poloziek
+            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
+            // 2 - definovene plochou (doors, windows, roof netting)
+
+            List<COpeningProperties> groupedOpenings = new List<COpeningProperties>();
+            foreach (COpeningProperties op in listOfOpenings)
+            {
+                if (groupedOpenings.Contains(op))
+                {
+                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];                    
+                    grOP.Count++;
+                }
+                else groupedOpenings.Add(op);
+            }
+
             // Create Table
             DataTable dt = new DataTable("TableDoorsAndWindows");
             // Create Table Rows
@@ -1548,7 +1400,7 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            foreach (COpeningProperties prop in list)
+            foreach (COpeningProperties prop in groupedOpenings)
             {
                 AddOpeningItemRow(dt,
                             "Opening",
@@ -2777,5 +2629,235 @@ namespace PFD
         //    Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
         //    Datagrid_Plates.Loaded += Datagrid_Plates_Loaded;
         //}
+
+        //zaloha
+        //private void CreateTableConnectors(CModel model)
+        //{
+        //    //float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
+        //    //float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
+        //    //float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
+
+        //    //listConnectorPrefix = new List<string>(1);
+        //    //listConnectorCount = new List<int>(1);
+        //    //listConnectorMaterialName = new List<string>(1);
+        //    //listConnectorSize = new List<string>(1);
+        //    //listConnectorUnitMass = new List<double>(1);
+        //    //listConnectorTotalMass = new List<double>(1);
+        //    //listConnectorUnitPrice = new List<double>(1);
+        //    //listConnectorTotalPrice = new List<double>(1);
+
+        //    // Connectors
+        //    // TASK 422
+        //    // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky
+        //    // Vsetky by mali mat nejaky prefix, material, popis velkosti (priemer, dlzka), vaha / kus, cena / kus
+        //    // Prosim pozri sa na to a skus to povylepsovat
+        //    // Blok pre screws a pre anchors maju velmi vela spolocneho, mozes to skusit refaktorovat
+
+        //    // Anchors + screws
+        //    //List<CConnector> ListOfConnectorGroups = new List<CConnector>();
+        //    List<QuotationItem> quotation = new List<QuotationItem>();
+
+        //    for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
+        //    {
+        //        if (!model.m_arrConnectionJoints[i].BIsSelectedForMaterialList) continue;
+
+        //        for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+        //        {
+        //            // Screws
+        //            if (model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws != null)
+        //            {
+        //                AddConnector(model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.FirstOrDefault(), ListOfConnectorGroups, model.m_arrConnectionJoints[i].m_arrPlates[j].ScrewArrangement.Screws.Length);
+        //            }
+
+        //            // Anchors
+        //            if (model.m_arrConnectionJoints[i].m_arrPlates[j] is CConCom_Plate_B_basic)
+        //            {
+        //                CConCom_Plate_B_basic plate = (CConCom_Plate_B_basic)model.m_arrConnectionJoints[i].m_arrPlates[j];
+
+        //                if (plate.AnchorArrangement != null) // Base plate - obsahuje anchor arrangement
+        //                {
+        //                    // TASK 422
+        //                    // Doplnit data pre anchors
+        //                    // Refaktorovat anchors a screws
+        //                    // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade
+        //                    // Size
+
+        //                    // Pre screws - gauge + dlzka (14g - 38)
+        //                    // Pre anchors  - name + dlzka (M16 - 330)
+
+        //                    // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
+        //                    // TEK    |     1515 | Class 3 / 4 / B8 |  14g-38 |                 0.052 |
+        //                    // Anchor |       65 |              8.8 | M16-330 |                 2.241 |
+
+        //                    AddConnector(plate.AnchorArrangement.Anchors.FirstOrDefault(), ListOfConnectorGroups, plate.AnchorArrangement.Anchors.Length);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    // Check Data
+        //    //double dTotalConnectorsMass_Model = 0, dTotalConnectorsMass_Table = 0;
+        //    //double dTotalConnectorsPrice_Model = 0, dTotalConnectorsPrice_Table = 0;
+        //    //int iTotalConnectorsNumber_Model = 0, iTotalConnectorsNumber_Table = 0;
+
+        //    ////toto sa mi zda,ze netreba
+        //    //foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
+        //    //{
+        //    //    if (!joint.BIsSelectedForMaterialList) continue;
+
+        //    //    foreach (CPlate plate in joint.m_arrPlates)
+        //    //    {
+        //    //        // Set connectors data
+        //    //        if (plate.ScrewArrangement.Screws != null)
+        //    //        {
+        //    //            foreach (CConnector connector in plate.ScrewArrangement.Screws)
+        //    //            {
+        //    //                dTotalConnectorsMass_Model += connector.Mass;
+
+        //    //                if (connector.Price_PPP_NZD > 0)
+        //    //                    dTotalConnectorsPrice_Model += connector.Price_PPP_NZD;
+        //    //                else
+        //    //                    dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
+
+        //    //                iTotalConnectorsNumber_Model += 1;
+        //    //            }
+        //    //        }
+
+        //    //        if (plate is CConCom_Plate_B_basic)
+        //    //        {
+        //    //            CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+        //    //            if (basePlate.AnchorArrangement.Anchors != null)
+        //    //            {
+        //    //                foreach (CConnector connector in basePlate.AnchorArrangement.Anchors)
+        //    //                {
+        //    //                    dTotalConnectorsMass_Model += connector.Mass;
+
+        //    //                    if (connector.Price_PPP_NZD > 0)
+        //    //                        dTotalConnectorsPrice_Model += connector.Price_PPP_NZD;
+        //    //                    else
+        //    //                        dTotalConnectorsPrice_Model += (fAnchor_PricePerLength * connector.Length);
+
+        //    //                    iTotalConnectorsNumber_Model += 1;
+        //    //                }
+        //    //            }
+        //    //        }
+        //    //    }
+        //    //}
+
+        //    double dTotalConnectorsMass_Table = 0;
+        //    double dTotalConnectorsPrice_Table = 0;
+        //    int iTotalConnectorsNumber_Table = 0;
+        //    for (int i = 0; i < listConnectorPrefix.Count; i++)
+        //    {
+        //        dTotalConnectorsMass_Table += listConnectorTotalMass[i];
+        //        dTotalConnectorsPrice_Table += listConnectorTotalPrice[i];
+        //        iTotalConnectorsNumber_Table += listConnectorCount[i];
+        //    }
+
+        //    //To Mato...toto tu treba???
+        //    // TO Ondrej
+        //    // Tie kontroly znikli pre to aby som mal istotu ze som vsetko spravne pridal z modelu do zoznamov
+        //    // V debugu by sa nam to mohlo zist aby sme nic nevynechali ani neodfiltrovali
+
+        //    //if (!MathF.d_equal(dTotalConnectorsMass_Model, dTotalConnectorsMass_Table) ||
+        //    //        (iTotalConnectorsNumber_Model != iTotalConnectorsNumber_Table)) // Error
+        //    //    MessageBox.Show(
+        //    //    "Total weight of connectors in model " + dTotalConnectorsMass_Model + " kg" + "\n" +
+        //    //    "Total weight of connectors in table " + dTotalConnectorsMass_Table + " kg" + "\n" +
+        //    //    "Total number of connectors in model " + iTotalConnectorsNumber_Model + "\n" +
+        //    //    "Total number of connectors in table " + iTotalConnectorsNumber_Table + "\n");
+
+        //    //// Prepare output format (last row is empty)
+        //    //for (int i = 0; i < listConnectorPrefix.Count; i++)
+        //    //{
+        //    //    // Change output data format
+        //    //    listConnectorMassPerPiece.Add(dlistConnectorMassPerPiece[i].ToString("F2"));
+        //    //}
+
+        //    dBuildingMass += dTotalConnectorsMass_Table;
+        //    dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalConnectorsPrice_Table;
+
+        //    // Create Table
+        //    DataTable dt = new DataTable("Table3");
+        //    // Create Table Rows
+
+        //    dt.Columns.Add("Prefix", typeof(String));
+        //    dt.Columns.Add("Count", typeof(Int32));
+        //    dt.Columns.Add("Material", typeof(String));
+        //    dt.Columns.Add("Size", typeof(String));
+        //    dt.Columns.Add("UnitMass", typeof(String));
+        //    dt.Columns.Add("TotalMass", typeof(Decimal));
+        //    dt.Columns.Add("UnitPrice", typeof(string));
+        //    dt.Columns.Add("Price", typeof(Decimal));
+
+        //    // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
+        //    // Set Column Caption
+        //    dt.Columns["Prefix"].Caption = "Prefix";
+        //    dt.Columns["Count"].Caption = "Count [-]";
+        //    dt.Columns["Material"].Caption = "Material";
+        //    dt.Columns["Size"].Caption = "Size";
+        //    dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
+        //    dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
+        //    dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
+        //    dt.Columns["Price"].Caption = "Price [NZD]";
+
+        //    dt.Columns["Prefix"].ExtendedProperties.Add("Width", 25f);
+        //    dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
+        //    dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);
+        //    dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
+        //    dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
+        //    dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
+        //    dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
+        //    dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
+
+        //    dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
+        //    dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
+        //    dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
+        //    dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+
+        //    // Create Datases
+        //    DataSet ds = new DataSet();
+        //    // Add Table to Dataset
+        //    ds.Tables.Add(dt);
+        //    DataRow row;
+        //    for (int i = 0; i < listConnectorPrefix.Count; i++)
+        //    {
+        //        row = dt.NewRow();
+        //        try
+        //        {
+        //            row["Prefix"] = listConnectorPrefix[i];
+        //            row["Count"] = listConnectorCount[i];
+        //            row["Material"] = listConnectorMaterialName[i];
+        //            row["Size"] = listConnectorSize[i];
+        //            row["UnitMass"] = listConnectorUnitMass[i].ToString("F2");
+        //            row["TotalMass"] = listConnectorTotalMass[i].ToString("F2");
+        //            row["UnitPrice"] = listConnectorUnitPrice[i].ToString("F2");
+        //            row["Price"] = listConnectorTotalPrice[i].ToString("F2");
+        //        }
+        //        catch (ArgumentOutOfRangeException) { }
+        //        dt.Rows.Add(row);
+        //    }
+
+        //    // Add Sum
+        //    row = dt.NewRow();
+        //    row["Prefix"] = "Total:";
+        //    row["Count"] = iTotalConnectorsNumber_Table;
+        //    row["Material"] = "";
+        //    row["Size"] = "";
+        //    row["UnitPrice"] = "";
+        //    row["TotalMass"] = dTotalConnectorsMass_Table.ToString("F2");
+        //    row["UnitPrice"] = "";
+        //    row["Price"] = dTotalConnectorsPrice_Table.ToString("F2");
+        //    dt.Rows.Add(row);
+
+        //    Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
+        //    Datagrid_Connectors.Loaded += Datagrid_Connectors_Loaded;
+        //}
+
     }
 }

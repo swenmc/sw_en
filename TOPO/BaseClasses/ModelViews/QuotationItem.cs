@@ -8,8 +8,7 @@ namespace BaseClasses
 {
     public class QuotationItem
     {
-        string m_Prefix;
-        //string m_Name;
+        string m_Prefix;        
         int m_Quantity;
         string m_MaterialName;
         float m_Width_bx;
@@ -18,7 +17,7 @@ namespace BaseClasses
         float m_Area;
         float m_Diameter_thread;
         float m_Length;
-
+        string m_Size;
         float m_MassPerPiece;
         float m_TotalArea;
         float m_TotalMass;
@@ -217,6 +216,19 @@ namespace BaseClasses
             set
             {
                 m_Length = value;
+            }
+        }
+
+        public string Size
+        {
+            get
+            {
+                return m_Size;
+            }
+
+            set
+            {
+                m_Size = value;
             }
         }
 
