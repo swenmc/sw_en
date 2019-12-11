@@ -923,6 +923,10 @@ namespace PFD
             }
 
             //To Mato...toto tu treba???
+            // TO Ondrej
+            // Tie kontroly znikli pre to aby som mal istotu ze som vsetko spravne pridal z modelu do zoznamov
+            // V debugu by sa nam to mohlo zist aby sme nic nevynechali ani neodfiltrovali
+
             //if (!MathF.d_equal(dTotalConnectorsMass_Model, dTotalConnectorsMass_Table) ||
             //        (iTotalConnectorsNumber_Model != iTotalConnectorsNumber_Table)) // Error
             //    MessageBox.Show(
@@ -1119,6 +1123,7 @@ namespace PFD
                             CAnchor anchor = plate.AnchorArrangement.Anchors.FirstOrDefault();
                             int anchorsNum = plate.AnchorArrangement.Anchors.Length;
                             //v pripade ak su anchor.Nuts stale rovnake tak netreba foreach ale len quantity = anchorsNum * anchor.Nuts.Count
+                            // TO Ondrej  - na 90 % su rovnake, teoereticky by mohol niekto mat hornu maticu nejaku specialnu inu ako spodne zabetonovane v betone, priemer musi byt rovnaky
                             foreach (CNut nut in anchor.Nuts)
                             {
                                 AddBoltNutToQuotation(nut, quotation, anchorsNum);
@@ -1224,6 +1229,9 @@ namespace PFD
             QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == nut.Name &&
                     MathF.d_equal(q.MassPerPiece, nut.Mass));
             //TO Mato - neviem na zaklade coho vsetkeho to treba groupovat???
+            // TO Ondrej - podla priemeru (prefix M16)
+            // Este ako tak na to pozeram, tak mozno zjednotime s Connectors, aby boli vsetky stlpce rovnake
+            // Vymyslim nejaky prefix, z prefixu urobim size a doplnim ostatne stlpce aby boli rovnake ako ma tabulka Connectors
 
             if (qItem != null) //this quotation exists
             {
