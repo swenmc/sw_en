@@ -80,7 +80,7 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        public static void ReportQuotationToWordDoc(List<DataTable> tables, QuotationData data)
+        public static void ReportQuotationToWordDoc(List<DataTable> tables, QuotationData data, CModelData dataModel)
         {
             string fileName = GetQuotationName();
             // Create a new document.
@@ -90,8 +90,48 @@ namespace EXPIMP
                 string templatePath = resourcesFolderPath + "TemplateQuotation.docx";
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
-                
+
                 DrawProjectInfo(document, data.ProjectInfo);
+
+                //-----------------------------------------------------------------------------------------------------------
+                // To Ondrej - pridal som parameter CModelData, ale mozno by sem mal ist cely CPFDViewModel
+                // alebo musime chybajuce polozky pridat do CModelData, resp QuotationData
+
+                document.ReplaceText("[Length]", dataModel.Length.ToString("F2"));
+                document.ReplaceText("[GableWidth]", dataModel.GableWidth.ToString("F2"));
+                document.ReplaceText("[WallHeight]", dataModel.WallHeight.ToString("F2"));
+                document.ReplaceText("[WallHeight_H2]","TODO"); // Nacitat alebo dopocitat z uhla a rozmerov
+                document.ReplaceText("[RoofPitch_deg]", dataModel.RoofPitch_deg.ToString());
+                document.ReplaceText("[BayWidth]", "TODO"); // pridat L1_frame
+
+                List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+                string roofCladding = claddings.ElementAtOrDefault(dataModel.RoofCladdingIndex);
+                string wallCladding = claddings.ElementAtOrDefault(dataModel.WallCladdingIndex);
+
+                List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
+                List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
+
+                string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(dataModel.RoofCladdingThicknessIndex);
+                string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(dataModel.WallCladdingThicknessIndex);
+
+                List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+                string roofCladdingCoating = coatings.ElementAtOrDefault(dataModel.RoofCladdingCoatingIndex);
+                string wallCladdingCoating = coatings.ElementAtOrDefault(dataModel.WallCladdingCoatingIndex);
+
+                document.ReplaceText("[roofCladding]", $"{roofCladding}-{roofCladdingThickness}");
+                document.ReplaceText("[wallCladding]", $"{wallCladding}-{wallCladdingThickness}");
+
+                document.ReplaceText("[roofCoating]", roofCladdingCoating);
+                document.ReplaceText("[wallCoating]", wallCladdingCoating);
+
+                document.ReplaceText("[Location]", dataModel.Location);
+                document.ReplaceText("[EWindRegion]", dataModel.WindRegion);
+
+                document.ReplaceText("[numberRollerDoors]", "TODO");
+                document.ReplaceText("[numberPersonnelDoors]", "TODO");
+
+                document.ReplaceText("[price_WithMargin_WithoutGST]", "TODO");
+                //-----------------------------------------------------------------------------------------------------------
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
                 par.RemoveText(0);
@@ -102,11 +142,10 @@ namespace EXPIMP
                     Table t = GetTableFromDataTable(document, dt);
                     par.InsertText(dt.TableName);
                     par.StyleName = "NoSpacing";
-                    par = par.InsertParagraphAfterSelf("");                    
+                    par = par.InsertParagraphAfterSelf("");
                     par.InsertTableBeforeSelf(t);
                 }
-                
-                
+
                 // Save this document to disk.
                 document.Save();
             }

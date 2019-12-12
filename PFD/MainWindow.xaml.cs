@@ -1738,17 +1738,17 @@ namespace PFD
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)
         {
             CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
-            
+
             WaitWindow ww = new WaitWindow("DOC");
             ww.ContentRendered += Quotation_WaitWindow_ContentRendered;
             ww.Show();
         }
-                
+
         private void Quotation_WaitWindow_ContentRendered(object sender, EventArgs e)
         {
             UC_Quotation uc_quotation = null;
-            if (Quotation.Content == null)            
-                uc_quotation = new UC_Quotation(vm);            
+            if (Quotation.Content == null)
+                uc_quotation = new UC_Quotation(vm);
             else uc_quotation = Quotation.Content as UC_Quotation;
 
             QuotationViewModel qVM = uc_quotation.DataContext as QuotationViewModel;
@@ -1758,7 +1758,7 @@ namespace PFD
 
             List<DataTable> tables = new List<DataTable>();
 
-            DataGrid dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;            
+            DataGrid dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;
             DataView dw = dataGrid.ItemsSource as DataView;
             if (dw != null) tables.Add(dw.Table);
 
@@ -1800,7 +1800,7 @@ namespace PFD
 
             try
             {
-                ExportToWordDocument.ReportQuotationToWordDoc(tables, quotationData);
+                ExportToWordDocument.ReportQuotationToWordDoc(tables, quotationData, vm.GetModelData());
             }
             catch (Exception ex)
             {

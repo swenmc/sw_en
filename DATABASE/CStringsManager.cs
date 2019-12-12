@@ -54,7 +54,7 @@ namespace DATABASE
             List<DataExportTables> allItems = new List<DataExportTables>();
 
             allItems.AddRange(LoadStringsTable("BasicGeometry"));
-            allItems.AddRange(LoadStringsTable("BasicLoadParameters"));        
+            allItems.AddRange(LoadStringsTable("BasicLoadParameters"));
             allItems.AddRange(LoadStringsTable("AS1170_1_DL"));
             allItems.AddRange(LoadStringsTable("AS1170_1_SL"));
             allItems.AddRange(LoadStringsTable("AS1170_1_IL"));
@@ -74,7 +74,6 @@ namespace DATABASE
             }
             return dict;
         }
-
 
         private static List<DataExportTables> LoadStringsTable(string tableName)
         {
@@ -138,10 +137,9 @@ namespace DATABASE
             // Do buducna je este otazka ako by sme to urobili pre palce, stopy, libry, unce a dalsie imperialne jednotky, ktore su popularne v GB a v USA
 
             data.Unit = reader["Unit"].ToString();
-            data.UnitIdentificator = reader["UnitIdentificator"].ToString();            
-            
+            data.UnitIdentificator = reader["UnitIdentificator"].ToString();
+
             return data;
         }
-        
     }
 }

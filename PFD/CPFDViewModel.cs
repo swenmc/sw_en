@@ -3197,17 +3197,27 @@ namespace PFD
             //data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
             //data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
-            data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
-            data.sDesignResults_ULS = sDesignResults_ULS;
-            data.sDesignResults_SLS = sDesignResults_SLS;
-            
-            data.dictULSDesignResults = GetDesignResultsULS();
-            data.dictSLSDesignResults = GetDesignResultsSLS();
-            GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
+            if (ModelCalculatedResultsValid) // Skusame nacitat vysledky len ak su spocitane
+            {
+                try
+                {
+                    data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
+                    data.sDesignResults_ULS = sDesignResults_ULS;
+                    data.sDesignResults_SLS = sDesignResults_SLS;
 
-            data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
-            data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
-            data.frameModels = frameModels;
+                    data.dictULSDesignResults = GetDesignResultsULS();
+                    data.dictSLSDesignResults = GetDesignResultsSLS();
+                    GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
+
+                    data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
+                    data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
+                    data.frameModels = frameModels;
+                }
+                catch
+                {
+                    throw new Exception("Unable to load results. Not calculated or non-valid results!");
+                }
+            }
 
             data.JointsDict = JointsVM.DictJoints;
             data.FootingsDict = FootingVM.DictFootings;
