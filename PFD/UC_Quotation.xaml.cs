@@ -37,9 +37,23 @@ namespace PFD
         // Bez jednotiek
         ColumnProperties colProp_Prefix = new ColumnProperties(typeof(String), "Prefix", "Prefix", 7.5f, null, AlignmentX.Left);
         ColumnProperties colProp_Name = new ColumnProperties(typeof(String), "Name", "Name", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_Item = new ColumnProperties(typeof(String), "Item", "Item", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_Component = new ColumnProperties(typeof(String), "Component", "Component", 15f, null, AlignmentX.Left);
         ColumnProperties colProp_Size = new ColumnProperties(typeof(String), "Size", "Size", 10f, null, AlignmentX.Left);
-        ColumnProperties colProp_CrossSection = new ColumnProperties(typeof(String), "Crsc", "Cross-section", 55f, null, AlignmentX.Left);
+        ColumnProperties colProp_Description = new ColumnProperties(typeof(String), "Description", "Description", 15f, null, AlignmentX.Left);
+
+        // Specificke nazvy (mozno by sa to dalo nahradit ako item / description alebo nieco podobne)
+        ColumnProperties colProp_CrossSection = new ColumnProperties(typeof(String), "Crsc", "Cross-section", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Cladding = new ColumnProperties(typeof(String), "Cladding", "Cladding", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Fibreglass = new ColumnProperties(typeof(String), "Fibreglass", "Fibreglass", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Opening = new ColumnProperties(typeof(String), "Opening", "Opening", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Gutter = new ColumnProperties(typeof(String), "Gutter", "Gutter", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Flashing = new ColumnProperties(typeof(String), "Flashing", "Flashing", 12.5f, null, AlignmentX.Left);
+
         ColumnProperties colProp_Material = new ColumnProperties(typeof(String), "Material", "Material", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Coating = new ColumnProperties(typeof(String), "Coating", "Coating", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_Color = new ColumnProperties(typeof(String), "Color", "Colour", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_ColorName = new ColumnProperties(typeof(String), "ColorName", "Colour Name", 12.5f, null, AlignmentX.Left);
 
         // S jednotkami
         ColumnProperties colProp_Count = new ColumnProperties(typeof(Int32), "Count", "Count", 7.5f, "[-]", AlignmentX.Right);
@@ -47,15 +61,15 @@ namespace PFD
         ColumnProperties colProp_Height_m = new ColumnProperties(typeof(String), "Height_m", "Height", 7.5f, "[m]", AlignmentX.Right);
         ColumnProperties colProp_Thickness_m = new ColumnProperties(typeof(String), "Thickness_m", "Thickness", 7.5f, "[m]", AlignmentX.Right);
         ColumnProperties colProp_Thickness_mm = new ColumnProperties(typeof(String), "Thickness_mm", "Thickness", 7.5f, "[mm]", AlignmentX.Right);
-        ColumnProperties colProp_Area_m2 = new ColumnProperties(typeof(String), "Area_m2", "Area", 10f, "[m2]", AlignmentX.Right);
+        ColumnProperties colProp_Area_m2 = new ColumnProperties(typeof(String), "Area_m2", "Area", 10f, "[m²]", AlignmentX.Right);
         ColumnProperties colProp_UnitMass_LM = new ColumnProperties(typeof(String), "UnitMass_LM", "Unit Mass", 10f, "[kg/m]", AlignmentX.Right);
-        ColumnProperties colProp_UnitMass_SM = new ColumnProperties(typeof(String), "UnitMass_SQM", "Unit Mass", 10f, "[kg/m2]", AlignmentX.Right);
+        ColumnProperties colProp_UnitMass_SM = new ColumnProperties(typeof(String), "UnitMass_SM", "Unit Mass", 10f, "[kg/m²]", AlignmentX.Right);
         ColumnProperties colProp_UnitMass_P = new ColumnProperties(typeof(String), "UnitMass_P", "Unit Mass", 10f, "[kg/piece]", AlignmentX.Right);
         ColumnProperties colProp_UnitPrice_LM_NZD = new ColumnProperties(typeof(String), "UnitPrice_LM_NZD", "Unit Price", 0f, "[NZD/m]", AlignmentX.Right);
-        ColumnProperties colProp_UnitPrice_SM_NZD = new ColumnProperties(typeof(String), "UnitPrice_SM_NZD", "Unit Price", 0f, "[NZD/m2]", AlignmentX.Right);
+        ColumnProperties colProp_UnitPrice_SM_NZD = new ColumnProperties(typeof(String), "UnitPrice_SM_NZD", "Unit Price", 0f, "[NZD/m²]", AlignmentX.Right);
         ColumnProperties colProp_UnitPrice_P_NZD = new ColumnProperties(typeof(String), "UnitPrice_P_NZD", "Unit Price", 0f, "[NZD/piece]", AlignmentX.Right);
         ColumnProperties colProp_TotalLength_m = new ColumnProperties(typeof(Decimal), "TotalLength_m", "Total Length", 10f, "[m]", AlignmentX.Right);
-        ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m2]", AlignmentX.Right);
+        ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m²]", AlignmentX.Right);
         ColumnProperties colProp_TotalMass = new ColumnProperties(typeof(String), "TotalMass", "Total Mass", 10f, "[kg]", AlignmentX.Right);
         ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
 
@@ -88,9 +102,21 @@ namespace PFD
             {
                 colProp_Prefix,
                 colProp_Name,
+                colProp_Component,
                 colProp_Size,
+                colProp_Description,
+
                 colProp_CrossSection,
+                colProp_Cladding,
+                colProp_Fibreglass,
+                colProp_Opening,
+                colProp_Gutter,
+                colProp_Flashing,
+
                 colProp_Material,
+                colProp_Coating,
+                colProp_Color,
+                colProp_ColorName,
 
                 colProp_Count,
                 colProp_Width_m,
@@ -1041,51 +1067,20 @@ namespace PFD
             // Create Table
             DataTable dt = new DataTable("TableCladding");
             // Create Table Rows
-            dt.Columns.Add("Cladding", typeof(String));
-            dt.Columns.Add("Thickness", typeof(String));
-            dt.Columns.Add("Coating", typeof(String));
-            dt.Columns.Add("Color", typeof(String));
-            dt.Columns.Add("ColorName", typeof(String));
+            dt.Columns.Add(colProp_Cladding.ColumnName, colProp_Cladding.DataType);
+            dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
+            dt.Columns.Add(colProp_Coating.ColumnName, colProp_Coating.DataType);
+            dt.Columns.Add(colProp_Color.ColumnName, colProp_Color.DataType);
+            dt.Columns.Add(colProp_ColorName.ColumnName, colProp_ColorName.DataType);
             //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
-            dt.Columns.Add("TotalArea", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
-            dt.Columns.Add("TotalMass", typeof(String));
-            dt.Columns.Add("UnitPrice", typeof(String));
-            dt.Columns.Add("Price", typeof(String));
+            dt.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
+            dt.Columns.Add(colProp_UnitMass_SM.ColumnName, colProp_UnitMass_SM.DataType); // kg / m^2
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_SM_NZD.ColumnName, colProp_UnitPrice_SM_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            dt.Columns["Cladding"].Caption = "Cladding";
-            dt.Columns["Thickness"].Caption = "Thickness [mm]";
-            dt.Columns["Coating"].Caption = "Coating";
-            dt.Columns["Color"].Caption = "Colour";
-            dt.Columns["ColorName"].Caption = "Colour Name";
-            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
-
-            dt.Columns["Cladding"].ExtendedProperties.Add(sEP_Width, 20f);
-            dt.Columns["Thickness"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["Coating"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["Color"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["ColorName"].ExtendedProperties.Add(sEP_Width, 20f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
-
-            dt.Columns["Cladding"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["Thickness"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["Coating"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["Color"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["ColorName"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1107,22 +1102,22 @@ namespace PFD
                 float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row["Cladding"] = roofCladding;
-                    row["Thickness"] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row["Coating"] = roofCladdingCoating;
-                    row["Color"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
-                    row["ColorName"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
-                    row["TotalArea"] = fRoofArea_Total_Netto.ToString("F2");
+                    row[colProp_Cladding.ColumnName] = roofCladding;
+                    row[colProp_Thickness_mm.ColumnName] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
+                    row[colProp_Coating.ColumnName] = roofCladdingCoating;
+                    row[colProp_Color.ColumnName] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
+                    row[colProp_ColorName.ColumnName] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
+                    row[colProp_TotalArea_m2.ColumnName] = fRoofArea_Total_Netto.ToString("F2");
                     SumTotalArea += fRoofArea_Total_Netto;
 
-                    row["UnitMass"] = fUnitMass.ToString("F2");
+                    row[colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
 
-                    row["TotalMass"] = totalMass.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
 
-                    row["UnitPrice"] = fRoofCladdingPrice_PSM_NZD.ToString("F2");
+                    row[colProp_UnitPrice_SM_NZD.ColumnName] = fRoofCladdingPrice_PSM_NZD.ToString("F2");
 
-                    row["Price"] = fRoofCladdingPrice_Total_NZD.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = fRoofCladdingPrice_Total_NZD.ToString("F2");
                     SumTotalPrice += fRoofCladdingPrice_Total_NZD;
                 }
                 catch (ArgumentOutOfRangeException) { }
@@ -1137,23 +1132,23 @@ namespace PFD
                 float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row["Cladding"] = wallCladding;
-                    row["Thickness"] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row["Coating"] = wallCladdingCoating;
-                    row["Color"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
-                    row["ColorName"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
+                    row[colProp_Cladding.ColumnName] = wallCladding;
+                    row[colProp_Thickness_mm.ColumnName] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
+                    row[colProp_Coating.ColumnName] = wallCladdingCoating;
+                    row[colProp_Color.ColumnName] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
+                    row[colProp_ColorName.ColumnName] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
 
-                    row["TotalArea"] = fWallArea_Total_Netto.ToString("F2");
+                    row[colProp_TotalArea_m2.ColumnName] = fWallArea_Total_Netto.ToString("F2");
                     SumTotalArea += fWallArea_Total_Netto;
 
-                    row["UnitMass"] = fUnitMass.ToString("F2");
+                    row[colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
 
-                    row["TotalMass"] = totalMass.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
 
-                    row["UnitPrice"] = fWallCladdingPrice_PSM_NZD.ToString("F2");
+                    row[colProp_UnitPrice_SM_NZD.ColumnName] = fWallCladdingPrice_PSM_NZD.ToString("F2");
 
-                    row["Price"] = fWallCladdingPrice_Total_NZD.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = fWallCladdingPrice_Total_NZD.ToString("F2");
                     SumTotalPrice += fWallCladdingPrice_Total_NZD;
                 }
                 catch (ArgumentOutOfRangeException) { }
@@ -1167,17 +1162,17 @@ namespace PFD
 
                 // Last row
                 row = dt.NewRow();
-                row["Cladding"] = "Total:";
-                row["Thickness"] = "";
-                row["Coating"] = "";
-                row["Color"] = "";
-                row["ColorName"] = "";
+                row[colProp_Cladding.ColumnName] = "Total:";
+                row[colProp_Thickness_mm.ColumnName] = "";
+                row[colProp_Coating.ColumnName] = "";
+                row[colProp_Color.ColumnName] = "";
+                row[colProp_ColorName.ColumnName] = "";
                 //row["TotalLength"] = SumTotalLength.ToString("F2");
-                row["TotalArea"] = SumTotalArea.ToString("F2");
-                row["UnitMass"] = "";
-                row["TotalMass"] = SumTotalMass.ToString("F2");
-                row["UnitPrice"] = "";
-                row["Price"] = SumTotalPrice.ToString("F2");
+                row[colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
+                row[colProp_UnitMass_SM.ColumnName] = "";
+                row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+                row[colProp_UnitPrice_SM_NZD.ColumnName] = "";
+                row[colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
                 dt.Rows.Add(row);
 
                 Datagrid_Cladding.ItemsSource = ds.Tables[0].AsDataView();
@@ -1423,36 +1418,16 @@ namespace PFD
             // Create Table
             DataTable dt = new DataTable("TableFibreglass");
             // Create Table Rows
-            dt.Columns.Add("Fibreglass", typeof(String));
+            dt.Columns.Add(colProp_Fibreglass.ColumnName, colProp_Fibreglass.DataType);
             //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
-            dt.Columns.Add("TotalArea", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
-            dt.Columns.Add("TotalMass", typeof(String));
-            dt.Columns.Add("UnitPrice", typeof(String));
-            dt.Columns.Add("Price", typeof(String));
+            dt.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
+            dt.Columns.Add(colProp_UnitMass_SM.ColumnName, colProp_UnitMass_SM.DataType); // kg / m^2
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_SM_NZD.ColumnName, colProp_UnitPrice_SM_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            // Set Column Caption
-            dt.Columns["Fibreglass"].Caption = "Fibreglass";
-            //dt.Columns["TotalLength"].Caption = "Total Length\t [m]";
-            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
-
-            dt.Columns["Fibreglass"].ExtendedProperties.Add(sEP_Width, 70f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
-
-            dt.Columns["Fibreglass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1465,7 +1440,7 @@ namespace PFD
             double SumTotalPrice = 0;
 
             AddSurfaceItemRow(dt,
-                        "Fibreglass",
+                        colProp_Fibreglass.ColumnName,
                         "Roof Fibreglass",
                         fFibreGlassArea_Roof,
                         fRoofFibreGlassUnitMass_SM,
@@ -1477,7 +1452,7 @@ namespace PFD
                         ref SumTotalPrice);
 
             AddSurfaceItemRow(dt,
-                        "Fibreglass",
+                        colProp_Fibreglass.ColumnName,
                         "Wall Fibreglass",
                         fFibreGlassArea_Walls,
                         fWallFibreGlassUnitMass_SM,
@@ -1496,13 +1471,13 @@ namespace PFD
 
                 // Last row
                 row = dt.NewRow();
-                row["Fibreglass"] = "Total:";
+                row[colProp_Fibreglass.ColumnName] = "Total:";
                 //row["TotalLength"] = SumTotalLength.ToString("F2");
-                row["TotalArea"] = SumTotalArea.ToString("F2");
-                row["UnitMass"] = "";
-                row["TotalMass"] = SumTotalMass.ToString("F2");
-                row["UnitPrice"] = "";
-                row["Price"] = SumTotalPrice.ToString("F2");
+                row[colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
+                row[colProp_UnitMass_SM.ColumnName] = "";
+                row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+                row[colProp_UnitPrice_SM_NZD.ColumnName] = "";
+                row[colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
                 dt.Rows.Add(row);
 
                 Datagrid_Fibreglass.ItemsSource = ds.Tables[0].AsDataView();
@@ -1542,34 +1517,15 @@ namespace PFD
             // Create Table
             DataTable dt = new DataTable("TableRoofNetting");
             // Create Table Rows
-            dt.Columns.Add("Component", typeof(String));
-            dt.Columns.Add("TotalArea", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String)); // kg / m^2
-            dt.Columns.Add("TotalMass", typeof(String));
-            dt.Columns.Add("UnitPrice", typeof(String));
-            dt.Columns.Add("Price", typeof(String));
+            dt.Columns.Add(colProp_Component.ColumnName, colProp_Component.DataType);
+            dt.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
+            dt.Columns.Add(colProp_UnitMass_SM.ColumnName, colProp_UnitMass_SM.DataType); // kg / m^2
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_SM_NZD.ColumnName, colProp_UnitPrice_SM_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            // Set Column Caption
-            dt.Columns["Component"].Caption = "Component";
-            dt.Columns["TotalArea"].Caption = "Total Area [m2]";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/m2]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
-
-            dt.Columns["Component"].ExtendedProperties.Add(sEP_Width, 70f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
-
-            dt.Columns["Component"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1582,7 +1538,7 @@ namespace PFD
             double SumTotalPrice = 0;
 
             AddSurfaceItemRow(dt,
-                        "Component",
+                        colProp_Component.ColumnName,
                         listOfProperties[0].Name,
                         fRoofArea,
                         fRoofSisalationFoilUnitMass_SM,
@@ -1594,7 +1550,7 @@ namespace PFD
                         ref SumTotalPrice);
 
             AddSurfaceItemRow(dt,
-                        "Component",
+                        colProp_Component.ColumnName,
                         listOfProperties[1].Name,
                         fRoofArea,
                         fRoofSafeNetUnitMass_SM,
@@ -1613,13 +1569,13 @@ namespace PFD
 
                 // Last row
                 row = dt.NewRow();
-                row["Component"] = "Total:";
+                row[colProp_Component.ColumnName] = "Total:";
                 //row["TotalLength"] = SumTotalLength.ToString("F2");
-                row["TotalArea"] = SumTotalArea.ToString("F2");
-                row["UnitMass"] = "";
-                row["TotalMass"] = SumTotalMass.ToString("F2");
-                row["UnitPrice"] = "";
-                row["Price"] = SumTotalPrice.ToString("F2");
+                row[colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
+                row[colProp_UnitMass_SM.ColumnName] = "";
+                row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+                row[colProp_UnitPrice_SM_NZD.ColumnName] = "";
+                row[colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
                 dt.Rows.Add(row);
 
                 Datagrid_RoofNetting.ItemsSource = ds.Tables[0].AsDataView();
@@ -2014,17 +1970,17 @@ namespace PFD
                 {
                     row[itemColumnName] = itemName;
 
-                    row["TotalArea"] = totalArea.ToString("F2");
+                    row[colProp_TotalArea_m2.ColumnName] = totalArea.ToString("F2");
                     SumTotalArea += totalArea;
 
-                    row["UnitMass"] = unitMass.ToString("F2");
+                    row[colProp_UnitMass_SM.ColumnName] = unitMass.ToString("F2");
 
-                    row["TotalMass"] = totalMass.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
 
-                    row["UnitPrice"] = unitPrice.ToString("F2");
+                    row[colProp_UnitPrice_SM_NZD.ColumnName] = unitPrice.ToString("F2");
 
-                    row["Price"] = price.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = price.ToString("F2");
                     SumTotalPrice += price;
                 }
                 catch (ArgumentOutOfRangeException) { }
