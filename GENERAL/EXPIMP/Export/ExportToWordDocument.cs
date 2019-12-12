@@ -97,12 +97,12 @@ namespace EXPIMP
                 // To Ondrej - pridal som parameter CModelData, ale mozno by sem mal ist cely CPFDViewModel
                 // alebo musime chybajuce polozky pridat do CModelData, resp QuotationData
 
-                document.ReplaceText("[Length]", dataModel.Length.ToString("F2"));
-                document.ReplaceText("[GableWidth]", dataModel.GableWidth.ToString("F2"));
-                document.ReplaceText("[WallHeight]", dataModel.WallHeight.ToString("F2"));
+                document.ReplaceText("[Length]", data.Length.ToString("F2"));
+                document.ReplaceText("[GableWidth]", data.GableWidth.ToString("F2"));
+                document.ReplaceText("[WallHeight]", data.WallHeight.ToString("F2"));
                 document.ReplaceText("[WallHeight_H2]","TODO"); // Nacitat alebo dopocitat z uhla a rozmerov
-                document.ReplaceText("[RoofPitch_deg]", dataModel.RoofPitch_deg.ToString());
-                document.ReplaceText("[BayWidth]", "TODO"); // pridat L1_frame
+                document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString());
+                document.ReplaceText("[BayWidth]", data.BayWidth.ToString("f2")); // pridat L1_frame
 
                 List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
                 string roofCladding = claddings.ElementAtOrDefault(dataModel.RoofCladdingIndex);

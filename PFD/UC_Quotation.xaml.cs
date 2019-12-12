@@ -266,6 +266,8 @@ namespace PFD
             qVM.PropertyChanged += QVM_PropertyChanged;
             this.DataContext = qVM;
 
+            vm._quotationViewModel = qVM;
+
             // Vypiseme celkovu cenu a dalsie parametre
             //NetPrice.Text = dBuildingNetPrice_WithoutMargin_WithoutGST.ToString("F2");
             //Margin_Absolute.Text = dMarginAbsolute.ToString("F2");

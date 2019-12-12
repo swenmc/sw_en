@@ -2694,6 +2694,8 @@ namespace PFD
         private CFootingInputVM _footingVM;
         public DisplayOptionsViewModel _displayOptionsVM;
 
+        public QuotationViewModel _quotationViewModel;
+
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3228,6 +3230,71 @@ namespace PFD
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
             data.DisplayOptions = GetDisplayOptions();
+            return data;
+        }
+
+        public QuotationData GetQuotationData()
+        {
+            QuotationData data = new QuotationData();            
+            data.GableWidth = MGableWidth;
+            data.Length = MLength;
+            data.WallHeight = MWallHeight;
+            data.RoofPitch_deg = MRoofPitch_deg;
+            data.Frames = MFrames;
+            data.GirtDistance = MGirtDistance;
+            data.PurlinDistance = MPurlinDistance;
+            data.ColumnDistance = MColumnDistance;
+            data.BottomGirtPosition = MBottomGirtPosition;
+
+            data.BuildingArea_Gross = _quotationViewModel.BuildingArea_Gross;
+            data.BuildingMass = _quotationViewModel.BuildingMass;
+            data.BuildingNetPrice_WithoutMargin_WithoutGST = _quotationViewModel.BuildingNetPrice_WithoutMargin_WithoutGST;
+            data.BuildingPrice_PCM = _quotationViewModel.BuildingPrice_PCM;
+            data.BuildingPrice_PPKG = _quotationViewModel.BuildingPrice_PPKG;
+            data.BuildingPrice_PSM = _quotationViewModel.BuildingPrice_PSM;
+            data.BuildingPrice_WithMargin_WithoutGST = _quotationViewModel.BuildingPrice_WithMargin_WithoutGST;
+            data.BuildingVolume_Gross = _quotationViewModel.BuildingVolume_Gross;
+            data.GST_Absolute = _quotationViewModel.GST_Absolute;
+            data.GST_Percentage = _quotationViewModel.GST_Percentage;
+            data.MarginAbsolute = _quotationViewModel.MarginAbsolute;
+            data.Margin_Percentage = _quotationViewModel.Margin_Percentage;
+            data.TotalBuildingPrice_IncludingGST = _quotationViewModel.TotalBuildingPrice_IncludingGST;
+
+
+            data.BayWidth = fL1;
+               
+
+            ////Load input
+            //data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
+            //data.DesignLife = _loadInput.ListDesignLife[_loadInput.DesignLifeIndex];
+            //data.ImportanceClass = _loadInput.ListImportanceClass[_loadInput.ImportanceClassIndex];
+            //data.SnowRegion = _loadInput.ListSnowRegion[_loadInput.SnowRegionIndex];
+            //data.ExposureCategory = _loadInput.ListExposureCategory[_loadInput.ExposureCategoryIndex];
+            //data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
+            //data.TerrainCategory = _loadInput.ListTerrainCategory[_loadInput.TerrainCategoryIndex];
+            //data.SiteSubSoilClass = _loadInput.ListSiteSubSoilClass[_loadInput.SiteSubSoilClassIndex];
+            //data.SiteElevation = _loadInput.SiteElevation;
+            //data.R_SLS = _loadInput.R_SLS;
+            //data.AnnualProbabilitySLS = _loadInput.AnnualProbabilitySLS;
+
+            //data.InternalPressureCoefficientCpiMaximumPressure = _loadInput.InternalPressureCoefficientCpiMaximumPressure;
+            //data.InternalPressureCoefficientCpiMaximumSuction = _loadInput.InternalPressureCoefficientCpiMaximumSuction;
+
+            //data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall;
+            //data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof;
+            //data.ImposedActionRoof = _loadInput.ImposedActionRoof;
+            //data.AnnualProbabilityULS_Snow = _loadInput.AnnualProbabilityULS_Snow;
+            //data.R_ULS_Snow = _loadInput.R_ULS_Snow;
+            //data.AnnualProbabilityULS_Wind = _loadInput.AnnualProbabilityULS_Wind;
+            //data.R_ULS_Wind = _loadInput.R_ULS_Wind;
+            //data.AnnualProbabilityULS_EQ = _loadInput.AnnualProbabilityULS_EQ;
+            //data.R_ULS_EQ = _loadInput.R_ULS_EQ;
+            //data.FaultDistanceDmin = _loadInput.FaultDistanceDmin;
+            //data.FaultDistanceDmax = _loadInput.FaultDistanceDmax;
+            //data.ZoneFactorZ = _loadInput.ZoneFactorZ;
+           
+            data.ProjectInfo = _projectInfoVM.GetProjectInfo();
+            
             return data;
         }
 

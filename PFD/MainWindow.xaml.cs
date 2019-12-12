@@ -1751,10 +1751,15 @@ namespace PFD
                 uc_quotation = new UC_Quotation(vm);
             else uc_quotation = Quotation.Content as UC_Quotation;
 
-            QuotationViewModel qVM = uc_quotation.DataContext as QuotationViewModel;
+            //QuotationViewModel qVM = uc_quotation.DataContext as QuotationViewModel;
 
-            QuotationData quotationData = new QuotationData();
-            quotationData.ProjectInfo = projectInfoVM.GetProjectInfo();
+            //QuotationData quotationData = new QuotationData();
+            //quotationData.ProjectInfo = projectInfoVM.GetProjectInfo();
+
+
+            //tento objekt by mal stacit pre export quotation
+            //vsetko co chyba,tak treba do neho doplnit vid metoda nizsie GetQuotationData
+            QuotationData quotationData = vm.GetQuotationData();
 
             List<DataTable> tables = new List<DataTable>();
 
