@@ -143,6 +143,7 @@
     <Compile Include="UC_Quotation.xaml.cs">
       <DependentUpon>UC_Quotation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\QuotationViewModel.cs" />
     <Compile Include="ViewModels\WindowGeneratorViewModel.cs" />
     <Compile Include="WindowsGeneratorWindow.xaml.cs">
       <DependentUpon>WindowsGeneratorWindow.xaml</DependentUpon>

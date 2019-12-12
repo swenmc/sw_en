@@ -230,8 +230,8 @@ namespace PFD
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
             // Margin
-            Margin_Percentage.Text = "40"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
-            double dMarginPercentage = double.Parse(Margin_Percentage.Text.ToString());
+            //Margin_Percentage.Text = "40"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
+            double dMarginPercentage = 40;
             double dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
             double buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
 
@@ -240,25 +240,46 @@ namespace PFD
             double buildingPrice_PCM = buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross;
             double buildingPrice_PPKG = buildingPrice_WithMargin_WithoutGST / dBuildingMass;
 
-            GST_Percentage.Text = "15"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
-            double dGST_Percentage = double.Parse(GST_Percentage.Text.ToString());
+            //GST_Percentage.Text = "15"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
+            double dGST_Percentage = 15;
             double dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
             double dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
 
+
+            QuotationViewModel qVM = new QuotationViewModel
+            {
+                Margin_Percentage = dMarginPercentage,
+                GST_Percentage = dGST_Percentage,
+                BuildingNetPrice_WithoutMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST,
+                MarginAbsolute = dMarginAbsolute,
+                BuildingPrice_WithMargin_WithoutGST = buildingPrice_WithMargin_WithoutGST,
+                GST_Absolute = dGST_Absolute,
+                TotalBuildingPrice_IncludingGST = dTotalBuildingPrice_IncludingGST,
+                BuildingArea_Gross = fBuildingArea_Gross,
+                BuildingVolume_Gross = fBuildingVolume_Gross,
+                BuildingMass = dBuildingMass,
+                BuildingPrice_PSM = buildingPrice_PSM,
+                BuildingPrice_PCM = buildingPrice_PCM,
+                BuildingPrice_PPKG = buildingPrice_PPKG
+            };
+
+            qVM.PropertyChanged += QVM_PropertyChanged;
+            this.DataContext = qVM;
+
             // Vypiseme celkovu cenu a dalsie parametre
-            NetPrice.Text = dBuildingNetPrice_WithoutMargin_WithoutGST.ToString("F2");
-            Margin_Absolute.Text = dMarginAbsolute.ToString("F2");
-            SubTotalPrice.Text = buildingPrice_WithMargin_WithoutGST.ToString("F2");
-            GST_Absolute.Text = dGST_Absolute.ToString("F2");
-            TotalPrice.Text = dTotalBuildingPrice_IncludingGST.ToString("F2");
+            //NetPrice.Text = dBuildingNetPrice_WithoutMargin_WithoutGST.ToString("F2");
+            //Margin_Absolute.Text = dMarginAbsolute.ToString("F2");
+            //SubTotalPrice.Text = buildingPrice_WithMargin_WithoutGST.ToString("F2");
+            //GST_Absolute.Text = dGST_Absolute.ToString("F2");
+            //TotalPrice.Text = dTotalBuildingPrice_IncludingGST.ToString("F2");
 
-            BuildingArea.Text = fBuildingArea_Gross.ToString("F2");
-            BuildingVolume.Text = fBuildingVolume_Gross.ToString("F2");
-            BuildingMass.Text = dBuildingMass.ToString("F2");
+            //BuildingArea.Text = fBuildingArea_Gross.ToString("F2");
+            //BuildingVolume.Text = fBuildingVolume_Gross.ToString("F2");
+            //BuildingMass.Text = dBuildingMass.ToString("F2");
 
-            UnitPricePerBuildingArea.Text = buildingPrice_PSM.ToString("F2");
-            UnitPricePerBuildingVolume.Text = buildingPrice_PCM.ToString("F2");
-            UnitPricePerBuildingMass.Text = buildingPrice_PPKG.ToString("F2");
+            //UnitPricePerBuildingArea.Text = buildingPrice_PSM.ToString("F2");
+            //UnitPricePerBuildingVolume.Text = buildingPrice_PCM.ToString("F2");
+            //UnitPricePerBuildingMass.Text = buildingPrice_PPKG.ToString("F2");
 
             // TODO - for later
 
@@ -288,6 +309,11 @@ namespace PFD
 
             // DG 22
             // Control Joints
+        }
+
+        private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
         }
 
         private void CreateTableMembers(CModel model)
@@ -1976,8 +2002,8 @@ namespace PFD
             dt.Columns[properties.ColumnName].Caption = properties.Caption;
 
             // Set Extended properties
-            if(properties.EP_Unit != null && properties.EP_Unit.Length > 1)
-               dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Unit, properties.EP_Unit);
+            if (properties.EP_Unit != null && properties.EP_Unit.Length > 1)
+                dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Unit, properties.EP_Unit);
 
             dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, properties.EP_Width);
             dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Align, properties.EP_Alignment);

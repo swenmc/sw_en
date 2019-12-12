@@ -80,7 +80,7 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        public static void ReportQuotationToWordDoc(List<DataTable> tables, CProjectInfo pInfo)
+        public static void ReportQuotationToWordDoc(List<DataTable> tables, QuotationData data)
         {
             string fileName = GetQuotationName();
             // Create a new document.
@@ -91,7 +91,7 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
                 
-                DrawProjectInfo(document, pInfo);
+                DrawProjectInfo(document, data.ProjectInfo);
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
                 par.RemoveText(0);

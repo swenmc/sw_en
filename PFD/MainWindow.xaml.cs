@@ -1751,6 +1751,11 @@ namespace PFD
                 uc_quotation = new UC_Quotation(vm);            
             else uc_quotation = Quotation.Content as UC_Quotation;
 
+            QuotationViewModel qVM = uc_quotation.DataContext as QuotationViewModel;
+
+            QuotationData quotationData = new QuotationData();
+            quotationData.ProjectInfo = projectInfoVM.GetProjectInfo();
+
             List<DataTable> tables = new List<DataTable>();
 
             DataGrid dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;            
@@ -1795,7 +1800,7 @@ namespace PFD
 
             try
             {
-                ExportToWordDocument.ReportQuotationToWordDoc(tables, projectInfoVM.GetProjectInfo());
+                ExportToWordDocument.ReportQuotationToWordDoc(tables, quotationData);
             }
             catch (Exception ex)
             {
