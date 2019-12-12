@@ -80,7 +80,7 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        public static void ReportQuotationToWordDoc(List<DataTable> tables, QuotationData data, CModelData dataModel)
+        public static void ReportQuotationToWordDoc(List<DataTable> tables, QuotationData data)
         {
             string fileName = GetQuotationName();
             // Create a new document.
@@ -93,44 +93,28 @@ namespace EXPIMP
 
                 DrawProjectInfo(document, data.ProjectInfo);
 
+                // Replace parameter identificators by values in .doc
                 //-----------------------------------------------------------------------------------------------------------
-                // To Ondrej - pridal som parameter CModelData, ale mozno by sem mal ist cely CPFDViewModel
-                // alebo musime chybajuce polozky pridat do CModelData, resp QuotationData
-
                 document.ReplaceText("[Length]", data.Length.ToString("F2"));
                 document.ReplaceText("[GableWidth]", data.GableWidth.ToString("F2"));
                 document.ReplaceText("[WallHeight]", data.WallHeight.ToString("F2"));
-                document.ReplaceText("[WallHeight_H2]","TODO"); // Nacitat alebo dopocitat z uhla a rozmerov
+                document.ReplaceText("[ApexHeight_H2]",data.ApexHeight_H2.ToString("F2"));
                 document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString());
-                document.ReplaceText("[BayWidth]", data.BayWidth.ToString("f2")); // pridat L1_frame
+                document.ReplaceText("[BayWidth]", data.BayWidth.ToString("F2"));
 
-                List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-                string roofCladding = claddings.ElementAtOrDefault(dataModel.RoofCladdingIndex);
-                string wallCladding = claddings.ElementAtOrDefault(dataModel.WallCladdingIndex);
+                document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
+                document.ReplaceText("[wallCladding]", $"{data.WallCladding}-{data.WallCladdingThickness_mm}");
 
-                List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
-                List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
+                document.ReplaceText("[roofCoating]", data.RoofCladdingCoating);
+                document.ReplaceText("[wallCoating]", data.WallCladdingCoating);
 
-                string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(dataModel.RoofCladdingThicknessIndex);
-                string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(dataModel.WallCladdingThicknessIndex);
+                document.ReplaceText("[Location]", data.Location);
+                document.ReplaceText("[WindRegion]", data.WindRegion);
 
-                List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-                string roofCladdingCoating = coatings.ElementAtOrDefault(dataModel.RoofCladdingCoatingIndex);
-                string wallCladdingCoating = coatings.ElementAtOrDefault(dataModel.WallCladdingCoatingIndex);
+                document.ReplaceText("[numberRollerDoors]", data.NumberOfRollerDoors.ToString());
+                document.ReplaceText("[numberPersonnelDoors]", data.NumberOfPersonnelDoors.ToString());
 
-                document.ReplaceText("[roofCladding]", $"{roofCladding}-{roofCladdingThickness}");
-                document.ReplaceText("[wallCladding]", $"{wallCladding}-{wallCladdingThickness}");
-
-                document.ReplaceText("[roofCoating]", roofCladdingCoating);
-                document.ReplaceText("[wallCoating]", wallCladdingCoating);
-
-                document.ReplaceText("[Location]", dataModel.Location);
-                document.ReplaceText("[EWindRegion]", dataModel.WindRegion);
-
-                document.ReplaceText("[numberRollerDoors]", "TODO");
-                document.ReplaceText("[numberPersonnelDoors]", "TODO");
-
-                document.ReplaceText("[price_WithMargin_WithoutGST]", "TODO");
+                document.ReplaceText("[price_WithMargin_WithoutGST]", data.BuildingPrice_WithMargin_WithoutGST.ToString("F2"));
                 //-----------------------------------------------------------------------------------------------------------
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));

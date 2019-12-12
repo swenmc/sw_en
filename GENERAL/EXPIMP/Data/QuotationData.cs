@@ -18,13 +18,28 @@ namespace EXPIMP
         private float MGableWidth;
         private float MLength;
         private float MWallHeight;
+        private float MApexHeight_H2;
         private float MRoofPitch_deg;
         private int MFrames;
         private float MGirtDistance;
         private float MPurlinDistance;
         private float MColumnDistance;
         private float MBottomGirtPosition;
-        
+        private float MBayWidth;
+
+        private string MRoofCladding;
+        private string MWallCladding;
+        private string MRoofCladdingThickness_mm;
+        private string MWallCladdingThickness_mm;
+        private string MRoofCladdingCoating;
+        private string MWallCladdingCoating;
+
+        private string MLocation;
+        private string MWindRegion;
+
+        private int MNumberOfRollerDoors;
+        private int MNumberOfPersonnelDoors;
+
         private CProjectInfo projectInfo;
 
         double m_BuildingNetPrice_WithoutMargin_WithoutGST;
@@ -44,7 +59,6 @@ namespace EXPIMP
         double m_BuildingPrice_PCM;
         double m_BuildingPrice_PPKG;
 
-
         //-------------------------------------------------------------------------------------------------------------
         public float GableWidth
         {
@@ -53,7 +67,7 @@ namespace EXPIMP
                 return MGableWidth;
             }
             set
-            {                
+            {
                 MGableWidth = value;
             }
         }
@@ -81,6 +95,19 @@ namespace EXPIMP
             set
             {
                 MWallHeight = value;
+            }
+        }
+
+        public float ApexHeight_H2
+        {
+            get
+            {
+                return MApexHeight_H2;
+            }
+
+            set
+            {
+                MApexHeight_H2 = value;
             }
         }
 
@@ -162,7 +189,149 @@ namespace EXPIMP
             }
         }
 
-       
+        public float BayWidth
+        {
+            get
+            {
+                return MBayWidth;
+            }
+
+            set
+            {
+                MBayWidth = value;
+            }
+        }
+
+        public string RoofCladding
+        {
+            get
+            {
+                return MRoofCladding;
+            }
+
+            set
+            {
+                MRoofCladding = value;
+            }
+        }
+
+        public string WallCladding
+        {
+            get
+            {
+                return MWallCladding;
+            }
+
+            set
+            {
+                MWallCladding = value;
+            }
+        }
+
+        public string RoofCladdingThickness_mm
+        {
+            get
+            {
+                return MRoofCladdingThickness_mm;
+            }
+
+            set
+            {
+                MRoofCladdingThickness_mm = value;
+            }
+        }
+
+        public string WallCladdingThickness_mm
+        {
+            get
+            {
+                return MWallCladdingThickness_mm;
+            }
+
+            set
+            {
+                MWallCladdingThickness_mm = value;
+            }
+        }
+
+        public string RoofCladdingCoating
+        {
+            get
+            {
+                return MRoofCladdingCoating;
+            }
+
+            set
+            {
+                MRoofCladdingCoating = value;
+            }
+        }
+
+        public string WallCladdingCoating
+        {
+            get
+            {
+                return MWallCladdingCoating;
+            }
+
+            set
+            {
+                MWallCladdingCoating = value;
+            }
+        }
+
+        public string Location
+        {
+            get
+            {
+                return MLocation;
+            }
+
+            set
+            {
+                MLocation = value;
+            }
+        }
+
+        public string WindRegion
+        {
+            get
+            {
+                return MWindRegion;
+            }
+
+            set
+            {
+                MWindRegion = value;
+            }
+        }
+
+        public int NumberOfRollerDoors
+        {
+            get
+            {
+                return MNumberOfRollerDoors;
+            }
+
+            set
+            {
+                MNumberOfRollerDoors = value;
+            }
+        }
+
+        public int NumberOfPersonnelDoors
+        {
+            get
+            {
+                return MNumberOfPersonnelDoors;
+            }
+
+            set
+            {
+                MNumberOfPersonnelDoors = value;
+            }
+        }
+
         public CProjectInfo ProjectInfo
         {
             get
@@ -345,7 +514,7 @@ namespace EXPIMP
             }
         }
 
-        public float BayWidth;
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

@@ -3235,7 +3235,7 @@ namespace PFD
 
         public QuotationData GetQuotationData()
         {
-            QuotationData data = new QuotationData();            
+            QuotationData data = new QuotationData();
             data.GableWidth = MGableWidth;
             data.Length = MLength;
             data.WallHeight = MWallHeight;
@@ -3245,6 +3245,35 @@ namespace PFD
             data.PurlinDistance = MPurlinDistance;
             data.ColumnDistance = MColumnDistance;
             data.BottomGirtPosition = MBottomGirtPosition;
+            data.BayWidth = fL1;
+
+            data.ApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians); // TO Ondrej H2 by mala byt tiez property v CPFDModelView aj ked sa nezadava v GUI? alebo si ju mam vsade dopocitavat ?
+
+            // TO Ondrej
+            // Tieto properties pre cladding by sa asi dali ziskat nejako jednoduchsie nez znova nacitavat z databazy
+
+            List<string> claddings = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+
+            data.RoofCladding = claddings.ElementAtOrDefault(MRoofCladdingIndex);
+            data.WallCladding = claddings.ElementAtOrDefault(MWallCladdingIndex);
+
+            List<string> list_roofCladdingThickness = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", data.RoofCladding, "name");
+            List<string> list_wallCladdingThickness = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", data.WallCladding, "name");
+
+            data.RoofCladdingThickness_mm = list_roofCladdingThickness.ElementAtOrDefault(MRoofCladdingThicknessIndex);
+            data.WallCladdingThickness_mm = list_wallCladdingThickness.ElementAtOrDefault(MWallCladdingThicknessIndex);
+
+            List<string> coatings = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+            data.RoofCladdingCoating = coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
+            data.WallCladdingCoating = coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
+
+            data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
+            data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
+
+            data.NumberOfRollerDoors = 1; // TODO Ondrej - ako to co najintelengtnejsie dostat z UC Doors and Windows, alebo si to mam odlozit ako globalnu property v UC Quotations
+            data.NumberOfPersonnelDoors = 1; // TODO Ondrej - ako to co najintelengtnejsie dostat z UC Doors and Windows, alebo si to mam odlozit ako globalnu property v UC Quotations
+
+            data.ProjectInfo = _projectInfoVM.GetProjectInfo();
 
             data.BuildingArea_Gross = _quotationViewModel.BuildingArea_Gross;
             data.BuildingMass = _quotationViewModel.BuildingMass;
@@ -3260,41 +3289,6 @@ namespace PFD
             data.Margin_Percentage = _quotationViewModel.Margin_Percentage;
             data.TotalBuildingPrice_IncludingGST = _quotationViewModel.TotalBuildingPrice_IncludingGST;
 
-
-            data.BayWidth = fL1;
-               
-
-            ////Load input
-            //data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
-            //data.DesignLife = _loadInput.ListDesignLife[_loadInput.DesignLifeIndex];
-            //data.ImportanceClass = _loadInput.ListImportanceClass[_loadInput.ImportanceClassIndex];
-            //data.SnowRegion = _loadInput.ListSnowRegion[_loadInput.SnowRegionIndex];
-            //data.ExposureCategory = _loadInput.ListExposureCategory[_loadInput.ExposureCategoryIndex];
-            //data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
-            //data.TerrainCategory = _loadInput.ListTerrainCategory[_loadInput.TerrainCategoryIndex];
-            //data.SiteSubSoilClass = _loadInput.ListSiteSubSoilClass[_loadInput.SiteSubSoilClassIndex];
-            //data.SiteElevation = _loadInput.SiteElevation;
-            //data.R_SLS = _loadInput.R_SLS;
-            //data.AnnualProbabilitySLS = _loadInput.AnnualProbabilitySLS;
-
-            //data.InternalPressureCoefficientCpiMaximumPressure = _loadInput.InternalPressureCoefficientCpiMaximumPressure;
-            //data.InternalPressureCoefficientCpiMaximumSuction = _loadInput.InternalPressureCoefficientCpiMaximumSuction;
-
-            //data.AdditionalDeadActionWall = _loadInput.AdditionalDeadActionWall;
-            //data.AdditionalDeadActionRoof = _loadInput.AdditionalDeadActionRoof;
-            //data.ImposedActionRoof = _loadInput.ImposedActionRoof;
-            //data.AnnualProbabilityULS_Snow = _loadInput.AnnualProbabilityULS_Snow;
-            //data.R_ULS_Snow = _loadInput.R_ULS_Snow;
-            //data.AnnualProbabilityULS_Wind = _loadInput.AnnualProbabilityULS_Wind;
-            //data.R_ULS_Wind = _loadInput.R_ULS_Wind;
-            //data.AnnualProbabilityULS_EQ = _loadInput.AnnualProbabilityULS_EQ;
-            //data.R_ULS_EQ = _loadInput.R_ULS_EQ;
-            //data.FaultDistanceDmin = _loadInput.FaultDistanceDmin;
-            //data.FaultDistanceDmax = _loadInput.FaultDistanceDmax;
-            //data.ZoneFactorZ = _loadInput.ZoneFactorZ;
-           
-            data.ProjectInfo = _projectInfoVM.GetProjectInfo();
-            
             return data;
         }
 
