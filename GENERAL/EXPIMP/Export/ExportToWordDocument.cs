@@ -80,7 +80,7 @@ namespace EXPIMP
             Process.Start(fileName);
         }
 
-        public static void ReportQuotationToWordDoc(List<DataTable> tables)
+        public static void ReportQuotationToWordDoc(List<DataTable> tables, CProjectInfo pInfo)
         {
             string fileName = GetQuotationName();
             // Create a new document.
@@ -90,6 +90,8 @@ namespace EXPIMP
                 string templatePath = resourcesFolderPath + "TemplateQuotation.docx";
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
+                
+                DrawProjectInfo(document, pInfo);
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
                 par.RemoveText(0);
@@ -162,6 +164,11 @@ namespace EXPIMP
             document.ReplaceText("[ProjectPart]", pInfo.ProjectPart);
 
             document.ReplaceText("[Date]", pInfo.Date.ToString("dd/MM/yyyy"));
+            
+            document.ReplaceText("[ContactPerson]", pInfo.ContactPerson);
+            document.ReplaceText("[ContactPersonPhone]", pInfo.ContactPersonPhone);
+            document.ReplaceText("[ContactPersonEmail]", pInfo.ContactPersonEmail);
+            document.ReplaceText("[CustomerName]", pInfo.CustomerName);
         }
 
         private static void DrawBasicGeometry(DocX document, CModelData data)

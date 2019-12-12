@@ -1795,7 +1795,7 @@ namespace PFD
 
             try
             {
-                ExportToWordDocument.ReportQuotationToWordDoc(tables);
+                ExportToWordDocument.ReportQuotationToWordDoc(tables, projectInfoVM.GetProjectInfo());
             }
             catch (Exception ex)
             {

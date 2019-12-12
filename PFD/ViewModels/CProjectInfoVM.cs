@@ -25,7 +25,12 @@ namespace PFD
         private string m_ProjectNumber;
         private string m_ProjectPart;
         private DateTime m_Date;
-        
+
+        private string m_ContactPerson;
+        private string m_ContactPersonPhone;
+        private string m_ContactPersonEmail;
+        private string m_CustomerName;
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -99,6 +104,63 @@ namespace PFD
             }
         }
 
+        public string ContactPerson
+        {
+            get
+            {
+                return m_ContactPerson;
+            }
+
+            set
+            {
+                m_ContactPerson = value;
+                NotifyPropertyChanged("ContactPerson");
+            }
+        }
+
+        public string ContactPersonPhone
+        {
+            get
+            {
+                return m_ContactPersonPhone;
+            }
+
+            set
+            {
+                m_ContactPersonPhone = value;
+                NotifyPropertyChanged("ContactPersonPhone");
+            }
+        }
+        public string ContactPersonEmail
+        {
+            get
+            {
+                return m_ContactPersonEmail;
+            }
+
+            set
+            {
+                m_ContactPersonEmail = value;
+                NotifyPropertyChanged("ContactPersonEmail");
+            }
+        }
+
+        public string CustomerName
+        {
+            get
+            {
+                return m_CustomerName;
+            }
+
+            set
+            {
+                m_CustomerName = value;
+                NotifyPropertyChanged("CustomerName");
+            }
+        }
+
+        
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -117,7 +179,7 @@ namespace PFD
 
         public CProjectInfo GetProjectInfo()
         {
-            CProjectInfo pi = new CProjectInfo(m_ProjectName, m_Site, m_ProjectNumber, m_ProjectPart, m_Date);
+            CProjectInfo pi = new CProjectInfo(m_ProjectName, m_Site, m_ProjectNumber, m_ProjectPart, m_Date, m_ContactPerson, m_ContactPersonPhone, m_ContactPersonEmail, m_CustomerName);
             return pi;
         }
 
@@ -129,6 +191,11 @@ namespace PFD
             ProjectPart = pi.ProjectPart;
             Site = pi.Site;
             ProjectDate = pi.Date;
+
+            ContactPerson = pi.ContactPerson;
+            ContactPersonPhone = pi.ContactPersonPhone;
+            ContactPersonEmail = pi.ContactPersonEmail;
+            CustomerName = pi.CustomerName;
         }
     }
 }
