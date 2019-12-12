@@ -949,7 +949,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalNutsPrice_Table;
 
             // Create Table
-            DataTable dt = new DataTable("TableBoltNuts");
+            DataTable dt = new DataTable("Bolt Nuts");
 
             // Create Table Rows
             dt.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
@@ -1091,7 +1091,7 @@ namespace PFD
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
 
             // Create Table
-            DataTable dt = new DataTable("TableCladding");
+            DataTable dt = new DataTable("Cladding");
             // Create Table Rows
             dt.Columns.Add(colProp_Cladding.ColumnName, colProp_Cladding.DataType);
             dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
@@ -1305,7 +1305,7 @@ namespace PFD
             }
 
             // Create Table
-            DataTable dt = new DataTable("TableDoorsAndWindows");
+            DataTable dt = new DataTable("Doors and Windows");
             // Create Table Rows
             dt.Columns.Add(colProp_Opening.ColumnName, colProp_Opening.DataType);
             dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
@@ -1408,7 +1408,7 @@ namespace PFD
             float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD;
 
             // Create Table
-            DataTable dt = new DataTable("TableFibreglass");
+            DataTable dt = new DataTable("Fibreglass");
             // Create Table Rows
             dt.Columns.Add(colProp_Fibreglass.ColumnName, colProp_Fibreglass.DataType);
             //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
@@ -1507,7 +1507,7 @@ namespace PFD
             float fRoofSafeNetPrice_Total_NZD = fRoofArea * fRoofSafeNetPrice_PSM_NZD;
 
             // Create Table
-            DataTable dt = new DataTable("TableRoofNetting");
+            DataTable dt = new DataTable("Roof Netting");
             // Create Table Rows
             dt.Columns.Add(colProp_Component.ColumnName, colProp_Component.DataType);
             dt.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
@@ -1640,7 +1640,7 @@ namespace PFD
             float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
 
             // Create Table
-            DataTable dt = new DataTable("TableFlashing");
+            DataTable dt = new DataTable("Flashing");
             // Create Table Rows
             dt.Columns.Add(colProp_Flashing.ColumnName, colProp_Flashing.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
@@ -1803,7 +1803,7 @@ namespace PFD
             float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD;
 
             // Create Table
-            DataTable dt = new DataTable("TableGutter");
+            DataTable dt = new DataTable("Gutters");
             // Create Table Rows
             dt.Columns.Add(colProp_Gutter.ColumnName, colProp_Gutter.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
