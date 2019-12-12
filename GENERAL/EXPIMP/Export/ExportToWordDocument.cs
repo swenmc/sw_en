@@ -95,26 +95,18 @@ namespace EXPIMP
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
                 par.RemoveText(0);
-
-                //Paragraph par = document.InsertParagraph("Quotation");
+                par = par.InsertParagraphAfterSelf("");
 
                 foreach (DataTable dt in tables)
                 {
                     Table t = GetTableFromDataTable(document, dt);
-                    par = par.InsertParagraphAfterSelf("");
+                    par.InsertText(dt.TableName);
+                    par.StyleName = "NoSpacing";
+                    par = par.InsertParagraphAfterSelf("");                    
                     par.InsertTableBeforeSelf(t);
                 }
                 
                 
-                
-                //// The path to a template document,
-                //string templatePath = resourcesFolderPath + "TemplateReport.docx";
-                //// Apply a template to the document based on a path.
-                //document.ApplyTemplate(templatePath);
-                //DrawProjectInfo(document, modelData.ProjectInfo);
-                //CreateTOC(document);
-
-
                 // Save this document to disk.
                 document.Save();
             }

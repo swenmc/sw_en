@@ -139,16 +139,15 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         public CProjectInfo(string projectName, string site, string projectNumber, string projectPart, DateTime date, string contactPerson, string contactPersonPhone, string contactPersonEmail, string customerName)
         {
-            // TO Ondrej - ak to uzivatel neneditoval a je to nevyplnene typu null, tak to potom assertuje pri exporte
             m_ProjectName = projectName == null ? "" : projectName;
             m_Site = site = site == null ? "" : site;
             m_ProjectNumber = projectNumber == null ? "" : projectNumber;
             m_ProjectPart = projectPart == null ? "" : projectPart;
             m_Date = date;
-            m_ContactPerson = contactPerson;
-            m_ContactPersonPhone = contactPersonPhone;
-            m_ContactPersonEmail = contactPersonEmail;
-            m_CustomerName = customerName;
+            m_ContactPerson = contactPerson == null ? "" : contactPerson;
+            m_ContactPersonPhone = contactPersonPhone == null ? "" : contactPersonPhone;
+            m_ContactPersonEmail = contactPersonEmail == null ? "" : contactPersonEmail;
+            m_CustomerName = customerName == null ? "" : customerName;
         }
     }
 }

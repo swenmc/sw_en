@@ -293,7 +293,7 @@ namespace PFD
         private void CreateTableMembers(CModel model)
         {
             // Create Table
-            DataTable dt = new DataTable("TableMembers");
+            DataTable dt = new DataTable("Members");
             // Create Table Rows
             dt.Columns.Add(colProp_CrossSection.ColumnName, colProp_CrossSection.DataType);
             dt.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
@@ -520,7 +520,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalPlatesPrice_Table;
 
             // Create Table
-            DataTable table = new DataTable("TablePlates");
+            DataTable table = new DataTable("Plates");
             // Create Table Rows
             table.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
             table.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
@@ -760,7 +760,7 @@ namespace PFD
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalConnectorsPrice_Table;
 
             // Create Table
-            DataTable dt = new DataTable("TableConnectors");
+            DataTable dt = new DataTable("Connectors (Anchors, Bolts, Screws, Rivets)");
 
             // Create Table Rows
             dt.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
