@@ -25,11 +25,12 @@ namespace PFD
         private string m_ProjectNumber;
         private string m_ProjectPart;
         private DateTime m_Date;
-
-        private string m_ContactPerson;
-        private string m_ContactPersonPhone;
-        private string m_ContactPersonEmail;
         private string m_CustomerName;
+        private string m_CustomerContactPerson;
+
+        private string m_SalesPerson;
+        private string m_SalesPersonPhone;
+        private string m_SalesPersonEmail;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -104,47 +105,6 @@ namespace PFD
             }
         }
 
-        public string ContactPerson
-        {
-            get
-            {
-                return m_ContactPerson;
-            }
-
-            set
-            {
-                m_ContactPerson = value;
-                NotifyPropertyChanged("ContactPerson");
-            }
-        }
-
-        public string ContactPersonPhone
-        {
-            get
-            {
-                return m_ContactPersonPhone;
-            }
-
-            set
-            {
-                m_ContactPersonPhone = value;
-                NotifyPropertyChanged("ContactPersonPhone");
-            }
-        }
-        public string ContactPersonEmail
-        {
-            get
-            {
-                return m_ContactPersonEmail;
-            }
-
-            set
-            {
-                m_ContactPersonEmail = value;
-                NotifyPropertyChanged("ContactPersonEmail");
-            }
-        }
-
         public string CustomerName
         {
             get
@@ -159,7 +119,60 @@ namespace PFD
             }
         }
 
-        
+        public string CustomerContactPerson
+        {
+            get
+            {
+                return m_CustomerContactPerson;
+            }
+
+            set
+            {
+                m_CustomerContactPerson = value;
+                NotifyPropertyChanged("CustomerContactPerson");
+            }
+        }
+
+        public string SalesPerson
+        {
+            get
+            {
+                return m_SalesPerson;
+            }
+
+            set
+            {
+                m_SalesPerson = value;
+                NotifyPropertyChanged("SalesPerson");
+            }
+        }
+
+        public string SalesPersonPhone
+        {
+            get
+            {
+                return m_SalesPersonPhone;
+            }
+
+            set
+            {
+                m_SalesPersonPhone = value;
+                NotifyPropertyChanged("SalesPersonPhone");
+            }
+        }
+        public string SalesPersonEmail
+        {
+            get
+            {
+                return m_SalesPersonEmail;
+            }
+
+            set
+            {
+                m_SalesPersonEmail = value;
+                NotifyPropertyChanged("SalesPersonEmail");
+            }
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------
@@ -179,7 +192,8 @@ namespace PFD
 
         public CProjectInfo GetProjectInfo()
         {
-            CProjectInfo pi = new CProjectInfo(m_ProjectName, m_Site, m_ProjectNumber, m_ProjectPart, m_Date, m_ContactPerson, m_ContactPersonPhone, m_ContactPersonEmail, m_CustomerName);
+            CProjectInfo pi = new CProjectInfo(m_ProjectName, m_Site, m_ProjectNumber, m_ProjectPart, m_Date, m_CustomerName, m_CustomerContactPerson,
+                                               m_SalesPerson, m_SalesPersonPhone, m_SalesPersonEmail);
             return pi;
         }
 
@@ -192,10 +206,12 @@ namespace PFD
             Site = pi.Site;
             ProjectDate = pi.Date;
 
-            ContactPerson = pi.ContactPerson;
-            ContactPersonPhone = pi.ContactPersonPhone;
-            ContactPersonEmail = pi.ContactPersonEmail;
             CustomerName = pi.CustomerName;
+            CustomerContactPerson = pi.CustomerContactPerson;
+
+            SalesPerson = pi.SalesPerson;
+            SalesPersonPhone = pi.SalesPersonPhone;
+            SalesPersonEmail = pi.SalesPersonEmail;
         }
     }
 }

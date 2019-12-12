@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Project Information" Height="480" Width="400">
+        Title="Project Information" Height="520" Width="400">
     <!--<Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -19,6 +19,7 @@
                 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
@@ -66,27 +67,33 @@
                      TextWrapping="Wrap" VerticalAlignment="Top"
                      Text="{Binding Path=CustomerName, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <Label Grid.Row="6" Grid.Column="0" Content="Formsteel Sales" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
-            
-            <TextBlock Grid.Row="7" Grid.Column="0" Text="Contact Person:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Contact Person:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="7" Grid.Column="1" HorizontalAlignment="Stretch" 
+            <TextBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"
-                     Text="{Binding Path=ContactPerson, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                     Text="{Binding Path=CustomerContactPerson, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            
+            <Label Grid.Row="7" Grid.Column="0" Content="Formsteel Sales" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"/>
+            
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Sales Person:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="8" Grid.Column="1" HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=SalesPerson, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="0" Text="Phone:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="8" Grid.Column="1"  HorizontalAlignment="Stretch" 
-                     TextWrapping="Wrap" VerticalAlignment="Top"
-                     Text="{Binding Path=ContactPersonPhone, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            
-            <TextBlock Grid.Row="9" Grid.Column="0" Text="Email Address:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Phone:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="9" Grid.Column="1"  HorizontalAlignment="Stretch" 
                      TextWrapping="Wrap" VerticalAlignment="Top"
-                     Text="{Binding Path=ContactPersonEmail, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                     Text="{Binding Path=SalesPersonPhone, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="Email Address:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="10" Grid.Column="1"  HorizontalAlignment="Stretch" 
+                     TextWrapping="Wrap" VerticalAlignment="Top"
+                     Text="{Binding Path=SalesPersonEmail, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <StackPanel Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+            <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
                 <Button Width="80" Height="25" Name="BtnSaveProjectInfo" Content="Save" Margin="0 0 10 0"
                  Click="BtnSaveProjectInfo_Click"/>
                 <Button Width="80" Height="25" Name="BtnLoadProjectInfo" Content="Load" Margin="0 0 10 0"

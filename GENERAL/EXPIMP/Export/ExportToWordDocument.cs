@@ -179,11 +179,14 @@ namespace EXPIMP
             document.ReplaceText("[ProjectPart]", pInfo.ProjectPart);
 
             document.ReplaceText("[Date]", pInfo.Date.ToString("dd/MM/yyyy"));
-            
-            document.ReplaceText("[ContactPerson]", pInfo.ContactPerson);
-            document.ReplaceText("[ContactPersonPhone]", pInfo.ContactPersonPhone);
-            document.ReplaceText("[ContactPersonEmail]", pInfo.ContactPersonEmail);
+
             document.ReplaceText("[CustomerName]", pInfo.CustomerName);
+            document.ReplaceText("[CustomerContactPerson]", pInfo.CustomerContactPerson);
+
+            document.ReplaceText("[SalesPerson]", pInfo.SalesPerson);
+            document.ReplaceText("[SalesPersonPhone]", pInfo.SalesPersonPhone);
+            document.ReplaceText("[SalesPersonEmail]", pInfo.SalesPersonEmail);
+
         }
 
         private static void DrawBasicGeometry(DocX document, CModelData data)

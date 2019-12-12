@@ -231,8 +231,8 @@ namespace PFD
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
-        public float fL1;
-        public float fh2;
+        public float fBayWidth;
+        public float fApexHeight_H2;
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
@@ -292,9 +292,9 @@ namespace PFD
                 SetResultsAreNotValid();
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
-                fL1 = MLength / (MFrames - 1);
+                fBayWidth = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
-                fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
@@ -343,11 +343,11 @@ namespace PFD
                     // UHOL ZACHOVAME ROVNAKY - V OPACNOM PRIPADE SA NEUPDATOVALA SPRAVNE VYSKA h2
 
                     // Recalculate roof pitch
-                    //fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
+                    //fRoofPitch_radians = (float)Math.Atan((fApexHeight_H2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
                     //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
                     // Recalculate roof height
-                    fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
@@ -378,8 +378,8 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
-                    // Recalculate fL1
-                    fL1 = MLength / (MFrames - 1);
+                    // Recalculate fBayWidth
+                    fBayWidth = MLength / (MFrames - 1);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -407,7 +407,7 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     // Recalculate roof heigth
-                    fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -440,7 +440,7 @@ namespace PFD
                 {
                     fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
                     // Recalculate h2
-                    fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+                    fApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -466,7 +466,7 @@ namespace PFD
                 if (MModelIndex != 0)
                 {
                     // Recalculate L1
-                    fL1 = MLength / (MFrames - 1);
+                    fBayWidth = MLength / (MFrames - 1);
                 }
                 SetResultsAreNotValid();
                 RecreateJoints = true;
@@ -593,7 +593,7 @@ namespace PFD
 
             set
             {
-                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MGableWidth) - (Math.PI / 180)); // minus 1 radian
                 float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -frontFrameRakeAngle_limit_deg || value > frontFrameRakeAngle_limit_deg)
@@ -619,7 +619,7 @@ namespace PFD
 
             set
             {
-                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fBayWidth / MGableWidth) - (Math.PI / 180)); // minus 1 radian
                 float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -backFrameRakeAngle_limit_deg || value > backFrameRakeAngle_limit_deg)
@@ -3245,9 +3245,9 @@ namespace PFD
             data.PurlinDistance = MPurlinDistance;
             data.ColumnDistance = MColumnDistance;
             data.BottomGirtPosition = MBottomGirtPosition;
-            data.BayWidth = fL1;
 
-            data.ApexHeight_H2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians); // TO Ondrej H2 by mala byt tiez property v CPFDModelView aj ked sa nezadava v GUI? alebo si ju mam vsade dopocitavat ?
+            data.BayWidth = fBayWidth;
+            data.ApexHeight_H2 = fApexHeight_H2;
 
             // TO Ondrej
             // Tieto properties pre cladding by sa asi dali ziskat nejako jednoduchsie nez znova nacitavat z databazy

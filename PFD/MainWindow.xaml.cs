@@ -359,7 +359,7 @@ namespace PFD
             // Treba sa na to pozriet podrobnejsie
             // Navrhujem napojit nejaky externy solver
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2, 1000, 0, 1000, 1000, 1000);
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fApexHeight_H2, 1000, 0, 1000, 1000, 1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data
@@ -483,7 +483,7 @@ namespace PFD
             int iNumberOfMainColumns_x = 2; // TODO - napojit na model
             int iNumberOfMainRafters_x = 2; // TODO - napojit na model
 
-            float fLoadingWidth_Frame_x = vm.fL1; // Zatazovacia sirka ramu
+            float fLoadingWidth_Frame_x = vm.fBayWidth; // Zatazovacia sirka ramu
             float fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians);
 
             float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
@@ -806,7 +806,7 @@ namespace PFD
         {
             CComponentListVM compList = (CComponentListVM)uc_ComponentList.DataContext;
             // Set current geometry data to calculate loads
-            sGeometryInputData.fH_2 = vm.fh2;
+            sGeometryInputData.fH_2 = vm.fApexHeight_H2;
             sGeometryInputData.fH_1 = vm.WallHeight;
             sGeometryInputData.fW = vm.GableWidth;
             sGeometryInputData.fL = vm.Length;
@@ -1704,7 +1704,7 @@ namespace PFD
 
         private void btnWindowsGenerator_Click(object sender, RoutedEventArgs e)
         {
-            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.fL1, vm.ColumnDistance);
+            WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.fBayWidth, vm.ColumnDistance);
             generatorWindow.ShowDialog();
 
             List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();

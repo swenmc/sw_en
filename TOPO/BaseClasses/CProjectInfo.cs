@@ -11,10 +11,12 @@ namespace BaseClasses
         private string m_ProjectPart;
         private DateTime m_Date;
 
-        private string m_ContactPerson;
-        private string m_ContactPersonPhone;
-        private string m_ContactPersonEmail;
         private string m_CustomerName;
+        private string m_CustomerContactPerson;
+
+        private string m_SalesPerson;
+        private string m_SalesPersonPhone;
+        private string m_SalesPersonEmail;
 
         public string ProjectName
         {
@@ -81,44 +83,6 @@ namespace BaseClasses
             }
         }
 
-        public string ContactPerson
-        {
-            get
-            {
-                return m_ContactPerson;
-            }
-
-            set
-            {
-                m_ContactPerson = value;
-            }
-        }
-
-        public string ContactPersonPhone
-        {
-            get
-            {
-                return m_ContactPersonPhone;
-            }
-
-            set
-            {
-                m_ContactPersonPhone = value;
-            }
-        }
-        public string ContactPersonEmail
-        {
-            get
-            {
-                return m_ContactPersonEmail;
-            }
-
-            set
-            {
-                m_ContactPersonEmail = value;
-            }
-        }
-
         public string CustomerName
         {
             get
@@ -132,22 +96,77 @@ namespace BaseClasses
             }
         }
 
-        
+        public string CustomerContactPerson
+        {
+            get
+            {
+                return m_CustomerContactPerson;
+            }
+
+            set
+            {
+                m_CustomerContactPerson = value;
+            }
+        }
+
+        public string SalesPerson
+        {
+            get
+            {
+                return m_SalesPerson;
+            }
+
+            set
+            {
+                m_SalesPerson = value;
+            }
+        }
+
+        public string SalesPersonPhone
+        {
+            get
+            {
+                return m_SalesPersonPhone;
+            }
+
+            set
+            {
+                m_SalesPersonPhone = value;
+            }
+        }
+        public string SalesPersonEmail
+        {
+            get
+            {
+                return m_SalesPersonEmail;
+            }
+
+            set
+            {
+                m_SalesPersonEmail = value;
+            }
+        }
+
 
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------
-        public CProjectInfo(string projectName, string site, string projectNumber, string projectPart, DateTime date, string contactPerson, string contactPersonPhone, string contactPersonEmail, string customerName)
+        public CProjectInfo(string projectName, string site, string projectNumber, string projectPart, DateTime date,
+            string customerName, string customerContactPerson,
+            string salesPerson, string salesPersonPhone, string salesPersonEmail)
         {
             m_ProjectName = projectName == null ? "" : projectName;
             m_Site = site = site == null ? "" : site;
             m_ProjectNumber = projectNumber == null ? "" : projectNumber;
             m_ProjectPart = projectPart == null ? "" : projectPart;
             m_Date = date;
-            m_ContactPerson = contactPerson == null ? "" : contactPerson;
-            m_ContactPersonPhone = contactPersonPhone == null ? "" : contactPersonPhone;
-            m_ContactPersonEmail = contactPersonEmail == null ? "" : contactPersonEmail;
+
             m_CustomerName = customerName == null ? "" : customerName;
+            m_CustomerContactPerson = customerContactPerson == null ? "" : customerContactPerson;
+
+            m_SalesPerson = salesPerson == null ? "" : salesPerson;
+            m_SalesPersonPhone = salesPersonPhone == null ? "" : salesPersonPhone;
+            m_SalesPersonEmail = salesPersonEmail == null ? "" : salesPersonEmail;
         }
     }
 }
