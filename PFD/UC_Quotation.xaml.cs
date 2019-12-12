@@ -27,6 +27,40 @@ namespace PFD
     /// </summary>
     public partial class UC_Quotation : UserControl
     {
+        // To Ondrej - tu by som chcel pre stlpce, ktore sa casto opakuju ale najlepsie pre vsetky
+        // vyrobit defaultne, ktore sa budu vsade pouzivat, aby sa nestalo ze niekde nieco zmenime a niekde zabudneme
+
+        string sEP_Width = "Width";
+        string sEP_Unit = "Unit";
+        string sEP_Align = "Align";
+
+        // Bez jednotiek
+        ColumnProperties colProp_Prefix = new ColumnProperties(typeof(String), "Prefix", "Prefix", 7.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Name = new ColumnProperties(typeof(String), "Name", "Name", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_Size = new ColumnProperties(typeof(String), "Size", "Size", 10f, null, AlignmentX.Left);
+        ColumnProperties colProp_CrossSection = new ColumnProperties(typeof(String), "Crsc", "Cross-section", 55f, null, AlignmentX.Left);
+        ColumnProperties colProp_Material = new ColumnProperties(typeof(String), "Material", "Material", 12.5f, null, AlignmentX.Left);
+
+        // S jednotkami
+        ColumnProperties colProp_Count = new ColumnProperties(typeof(Int32), "Count", "Count", 7.5f, "[-]", AlignmentX.Right);
+        ColumnProperties colProp_Width_m = new ColumnProperties(typeof(String), "Width_m", "Width", 7.5f, "[m]", AlignmentX.Right);
+        ColumnProperties colProp_Height_m = new ColumnProperties(typeof(String), "Height_m", "Height", 7.5f, "[m]", AlignmentX.Right);
+        ColumnProperties colProp_Thickness_m = new ColumnProperties(typeof(String), "Thickness_m", "Thickness", 7.5f, "[m]", AlignmentX.Right);
+        ColumnProperties colProp_Thickness_mm = new ColumnProperties(typeof(String), "Thickness_mm", "Thickness", 7.5f, "[mm]", AlignmentX.Right);
+        ColumnProperties colProp_Area_m2 = new ColumnProperties(typeof(String), "Area_m2", "Area", 10f, "[m2]", AlignmentX.Right);
+        ColumnProperties colProp_UnitMass_LM = new ColumnProperties(typeof(String), "UnitMass_LM", "Unit Mass", 10f, "[kg/m]", AlignmentX.Right);
+        ColumnProperties colProp_UnitMass_SM = new ColumnProperties(typeof(String), "UnitMass_SQM", "Unit Mass", 10f, "[kg/m2]", AlignmentX.Right);
+        ColumnProperties colProp_UnitMass_P = new ColumnProperties(typeof(String), "UnitMass_P", "Unit Mass", 10f, "[kg/piece]", AlignmentX.Right);
+        ColumnProperties colProp_UnitPrice_LM_NZD = new ColumnProperties(typeof(String), "UnitPrice_LM_NZD", "Unit Price", 0f, "[NZD/m]", AlignmentX.Right);
+        ColumnProperties colProp_UnitPrice_SM_NZD = new ColumnProperties(typeof(String), "UnitPrice_SM_NZD", "Unit Price", 0f, "[NZD/m2]", AlignmentX.Right);
+        ColumnProperties colProp_UnitPrice_P_NZD = new ColumnProperties(typeof(String), "UnitPrice_P_NZD", "Unit Price", 0f, "[NZD/piece]", AlignmentX.Right);
+        ColumnProperties colProp_TotalLength_m = new ColumnProperties(typeof(Decimal), "TotalLength_m", "Total Length", 10f, "[m]", AlignmentX.Right);
+        ColumnProperties colProp_TotalArea_m2 = new ColumnProperties(typeof(Decimal), "TotalArea_m2", "Total Area", 10f, "[m2]", AlignmentX.Right);
+        ColumnProperties colProp_TotalMass = new ColumnProperties(typeof(String), "TotalMass", "Total Mass", 10f, "[kg]", AlignmentX.Right);
+        ColumnProperties colProp_TotalPrice_NZD = new ColumnProperties(typeof(String), "TotalPrice_NZD", "Price", 0f, "[NZD]", AlignmentX.Right);
+
+        List<ColumnProperties> colPropList;
+
         double dBuildingMass = 0;
         double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
 
@@ -49,6 +83,32 @@ namespace PFD
         public UC_Quotation(CPFDViewModel vm)
         {
             InitializeComponent();
+
+            colPropList = new List<ColumnProperties>()
+            {
+                colProp_Prefix,
+                colProp_Name,
+                colProp_Size,
+                colProp_CrossSection,
+                colProp_Material,
+
+                colProp_Count,
+                colProp_Width_m,
+                colProp_Height_m,
+                colProp_Thickness_m,
+                colProp_Thickness_mm,
+                colProp_Area_m2,
+                colProp_UnitMass_LM,
+                colProp_UnitMass_SM,
+                colProp_UnitMass_P,
+                colProp_UnitPrice_LM_NZD,
+                colProp_UnitPrice_SM_NZD,
+                colProp_UnitPrice_P_NZD,
+                colProp_TotalLength_m,
+                colProp_TotalArea_m2,
+                colProp_TotalMass,
+                colProp_TotalPrice_NZD
+            };
 
             CModel model = vm.Model;
 
@@ -209,46 +269,16 @@ namespace PFD
             // Create Table
             DataTable dt = new DataTable("TableMembers");
             // Create Table Rows
-            dt.Columns.Add("Crsc", typeof(String));
-            dt.Columns.Add("Count", typeof(String));
-            dt.Columns.Add("TotalLength", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String));
-            dt.Columns.Add("TotalMass", typeof(String));
-            dt.Columns.Add("UnitPrice", typeof(String));
-            dt.Columns.Add("Price", typeof(String));
+            dt.Columns.Add(colProp_CrossSection.ColumnName, colProp_CrossSection.DataType);
+            dt.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
+            dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
+            dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_LM_NZD.ColumnName, colProp_UnitPrice_LM_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            // Set Column Caption
-            dt.Columns["Crsc"].Caption = "Cross-section";
-            dt.Columns["Count"].Caption = "Count";
-            dt.Columns["TotalLength"].Caption = "Total Length";
-            dt.Columns["UnitMass"].Caption = "Unit Mass";
-            dt.Columns["TotalMass"].Caption = "Total Mass";
-            dt.Columns["UnitPrice"].Caption = "Unit Price";
-            dt.Columns["Price"].Caption = "Price";
-
-            dt.Columns["Crsc"].ExtendedProperties.Add("Unit", "[Test Unit]");
-            dt.Columns["Count"].ExtendedProperties.Add("Unit", "[-]");
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Unit", "[m]");
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Unit", "[kg/m]");
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Unit", "[kg]");
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Unit", "[NZD/m]");
-            dt.Columns["Price"].ExtendedProperties.Add("Unit", "[NZD]");
-
-            dt.Columns["Crsc"].ExtendedProperties.Add("Width", 55f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 15f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
-
-            dt.Columns["Crsc"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -273,22 +303,22 @@ namespace PFD
 
                 try
                 {
-                    row["Crsc"] = crsc.Name_short;
+                    row[colProp_CrossSection.ColumnName] = crsc.Name_short;
 
-                    row["Count"] = count.ToString();
+                    row[colProp_Count.ColumnName] = count.ToString();
                     SumCount += count;
 
-                    row["TotalLength"] = totalLength.ToString("F2");
+                    row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
 
-                    row["UnitMass"] = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL).ToString("F2");
+                    row[colProp_UnitMass_LM.ColumnName] = (crsc.A_g * GlobalConstants.MATERIAL_DENSITY_STEEL).ToString("F2");
 
-                    row["TotalMass"] = totalMass.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
                     SumTotalMass += totalMass;
 
-                    row["UnitPrice"] = crsc.price_PPLM_NZD.ToString("F2");
+                    row[colProp_UnitPrice_LM_NZD.ColumnName] = crsc.price_PPLM_NZD.ToString("F2");
 
-                    row["Price"] = totalPrice.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = totalPrice.ToString("F2");
                     SumTotalPrice += totalPrice;
                 }
                 catch (ArgumentOutOfRangeException) { }
@@ -300,18 +330,17 @@ namespace PFD
 
             // Last row
             row = dt.NewRow();
-            row["Crsc"] = "Total:";
-            row["Count"] = SumCount.ToString();
-            row["TotalLength"] = SumTotalLength.ToString("F2");
-            row["UnitMass"] = "";
-            row["TotalMass"] = SumTotalMass.ToString("F2");
-            row["UnitPrice"] = "";
-            row["Price"] = SumTotalPrice.ToString("F2");
+            row[colProp_CrossSection.ColumnName] = "Total:";
+            row[colProp_Count.ColumnName] = SumCount.ToString();
+            row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
+            row[colProp_UnitMass_LM.ColumnName] = "";
+            row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+            row[colProp_UnitPrice_LM_NZD.ColumnName] = "";
+            row[colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
             dt.Rows.Add(row);
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();
             Datagrid_Members.Loaded += Datagrid_Members_Loaded;
-
         }
 
         private void Datagrid_Members_Loaded(object sender, RoutedEventArgs e)
@@ -324,16 +353,16 @@ namespace PFD
             float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
             float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
-            
+
             List<QuotationItem> quotation = new List<QuotationItem>();
-            // Plates                                    
+            // Plates
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
             {
                 //toto by podla mna uz malo byt nastavene a nie tu to checkovat
                 joint.BIsSelectedForMaterialList = CJointHelper.IsJointSelectedForMaterialList(joint);
 
                 if (!joint.BIsSelectedForMaterialList) continue;
-                                
+
                 foreach (CPlate plate in joint.m_arrPlates) // For each plate
                 {
                     // Nastavime parametre plechu z databazy - TO Ondrej - toto by sa malo diat uz asi pri vytvarani plechov
@@ -350,8 +379,8 @@ namespace PFD
                     catch { };
 
                     AddPlateToQuotation(plate, quotation, 1);
-                    
-                    
+
+
                     // TO Ondrej Blok1 Plate END
                     // ----------------------------------------------------------------------------------------------------------------------------------------
                     #endregion
@@ -397,7 +426,7 @@ namespace PFD
 
                             AddPlateToQuotation(anchor.WasherPlateTop, quotation, anchorsNum);
 
-                            
+
                             // TO Ondrej Blok2 Washer Plate Top END
                             // ----------------------------------------------------------------------------------------------------------------------------------------
                             #endregion
@@ -413,7 +442,7 @@ namespace PFD
                             catch { };
 
                             AddPlateToQuotation(anchor.WasherBearing, quotation, anchorsNum);
-                            
+
                             // TO Ondrej Blok3 Washer Bearing END
                             // ----------------------------------------------------------------------------------------------------------------------------------------
                             #endregion
@@ -463,63 +492,25 @@ namespace PFD
             }
             dBuildingMass += dTotalPlatesMass_Table;
             dBuildingNetPrice_WithoutMargin_WithoutGST += dTotalPlatesPrice_Table;
-            
 
             // Create Table
             DataTable table = new DataTable("TablePlates");
             // Create Table Rows
-            table.Columns.Add("Prefix", typeof(String));
-            table.Columns.Add("Count", typeof(Int32));
-            table.Columns.Add("Material", typeof(String));
-            table.Columns.Add("Width", typeof(String));
-            table.Columns.Add("Height", typeof(String));
-            table.Columns.Add("Thickness", typeof(String));
-            table.Columns.Add("Area", typeof(String));
-            table.Columns.Add("UnitMass", typeof(String));
-            table.Columns.Add("TotalArea", typeof(Decimal));
-            table.Columns.Add("TotalMass", typeof(Decimal));
-            table.Columns.Add("UnitPrice", typeof(String));
-            table.Columns.Add("Price", typeof(Decimal));
+            table.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
+            table.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
+            table.Columns.Add(colProp_Material.ColumnName, colProp_Material.DataType);
+            table.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
+            table.Columns.Add(colProp_Height_m.ColumnName, colProp_Height_m.DataType);
+            table.Columns.Add(colProp_Thickness_m.ColumnName, colProp_Thickness_m.DataType);
+            table.Columns.Add(colProp_Area_m2.ColumnName, colProp_Area_m2.DataType);
+            table.Columns.Add(colProp_UnitMass_P.ColumnName, colProp_UnitMass_P.DataType);
+            table.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
+            table.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            table.Columns.Add(colProp_UnitPrice_P_NZD.ColumnName, colProp_UnitPrice_P_NZD.DataType);
+            table.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            // Set Column Caption
-            table.Columns["Prefix"].Caption = "Prefix";
-            table.Columns["Count"].Caption = "Count [-]";
-            table.Columns["Material"].Caption = "Material";
-            table.Columns["Width"].Caption = "Width [m]";
-            table.Columns["Height"].Caption = "Height [m]";
-            table.Columns["Thickness"].Caption = "Thickness [m]";
-            table.Columns["Area"].Caption = "Area [m2]";
-            table.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
-            table.Columns["TotalArea"].Caption = "Total Area [m2]";
-            table.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            table.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
-            table.Columns["Price"].Caption = "Price [NZD]";
-
-            table.Columns["Prefix"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Count"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Material"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Width"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Height"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["Area"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            table.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            table.Columns["Price"].ExtendedProperties.Add("Width", 0f);
-
-            table.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            table.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            table.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Height"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            table.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(table);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -533,18 +524,18 @@ namespace PFD
 
                 try
                 {
-                    row["Prefix"] = item.Prefix;
-                    row["Count"] = item.Quantity;
-                    row["Material"] = item.MaterialName;
-                    row["Width"] = item.Width_bx.ToString("F2");
-                    row["Height"] = item.Height_hy.ToString("F2");
-                    row["Thickness"] = item.Ft.ToString("F2");
-                    row["Area"] = item.Area.ToString("F2");
-                    row["UnitMass"] = item.MassPerPiece.ToString("F2");
-                    row["TotalArea"] = item.TotalArea.ToString("F2");
-                    row["TotalMass"] = item.TotalMass.ToString("F2");
-                    row["UnitPrice"] = item.PricePerPiece.ToString("F2");
-                    row["Price"] = item.TotalPrice.ToString("F2");
+                    row[colProp_Prefix.ColumnName] = item.Prefix;
+                    row[colProp_Count.ColumnName] = item.Quantity;
+                    row[colProp_Material.ColumnName] = item.MaterialName;
+                    row[colProp_Width_m.ColumnName] = item.Width_bx.ToString("F2");
+                    row[colProp_Height_m.ColumnName] = item.Height_hy.ToString("F2");
+                    row[colProp_Thickness_m.ColumnName] = item.Ft.ToString("F3"); // meters
+                    row[colProp_Area_m2.ColumnName] = item.Area.ToString("F2");
+                    row[colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[colProp_TotalArea_m2.ColumnName] = item.TotalArea.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -552,20 +543,20 @@ namespace PFD
 
             // Last row
             row = table.NewRow();
-            row["Prefix"] = "Total:";
-            row["Count"] = iTotalPlatesNumber_Table;
-            row["Material"] = "";
-            row["Width"] = "";
-            row["Height"] = "";
-            row["Thickness"] = "";
-            row["Area"] = "";
-            row["UnitMass"] = "";
-            row["TotalArea"] = dTotalPlatesArea_Table.ToString("F2");
-            row["TotalMass"] = dTotalPlatesMass_Table.ToString("F2");
-            row["UnitPrice"] = "";
-            row["Price"] = dTotalPlatesPrice_Table.ToString("F2");
+            row[colProp_Prefix.ColumnName] = "Total:";
+            row[colProp_Count.ColumnName] = iTotalPlatesNumber_Table;
+            row[colProp_Material.ColumnName] = "";
+            row[colProp_Width_m.ColumnName] = "";
+            row[colProp_Height_m.ColumnName] = "";
+            row[colProp_Thickness_m.ColumnName] = "";
+            row[colProp_Area_m2.ColumnName] = "";
+            row[colProp_UnitMass_P.ColumnName] = "";
+            row[colProp_TotalArea_m2.ColumnName] = dTotalPlatesArea_Table.ToString("F2");
+            row[colProp_TotalMass.ColumnName] = dTotalPlatesMass_Table.ToString("F2");
+            row[colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[colProp_TotalPrice_NZD.ColumnName] = dTotalPlatesPrice_Table.ToString("F2");
             table.Rows.Add(row);
-            
+
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
             Datagrid_Plates.Loaded += Datagrid_Plates_Loaded;
         }
@@ -619,7 +610,7 @@ namespace PFD
             // TASK 422
             // Neviem ci je to stastne ale chcel som usetrit datagridy a dat vsetky spojovacie prostriedky (rozne typy) do jednej tabulky            
             // Anchors + screws
-            
+
             List<QuotationItem> quotation = new List<QuotationItem>();
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints) // For each joint
@@ -631,7 +622,7 @@ namespace PFD
                     // Screws
                     if (plate.ScrewArrangement.Screws != null)
                     {
-                        AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);                       
+                        AddConnector(plate.ScrewArrangement.Screws.FirstOrDefault(), quotation, plate.ScrewArrangement.Screws.Length);
                     }
 
                     // Anchors
@@ -744,45 +735,19 @@ namespace PFD
 
             // Create Table
             DataTable dt = new DataTable("TableConnectors");
+
             // Create Table Rows
+            dt.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
+            dt.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
+            dt.Columns.Add(colProp_Material.ColumnName, colProp_Material.DataType);
+            dt.Columns.Add(colProp_Size.ColumnName, colProp_Size.DataType);
+            dt.Columns.Add(colProp_UnitMass_P.ColumnName, colProp_UnitMass_P.DataType);
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_P_NZD.ColumnName, colProp_UnitPrice_P_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            dt.Columns.Add("Prefix", typeof(String));
-            dt.Columns.Add("Count", typeof(Int32));
-            dt.Columns.Add("Material", typeof(String));
-            dt.Columns.Add("Size", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String));
-            dt.Columns.Add("TotalMass", typeof(Decimal));
-            dt.Columns.Add("UnitPrice", typeof(string));
-            dt.Columns.Add("Price", typeof(Decimal));
-
-            // Prefix | Quantity |     Material     | Size    |   Mass per Piece [kg] | Total Mass [kg] | Unit Price [NZD / piece] | Total Price [NZD]
-            // Set Column Caption
-            dt.Columns["Prefix"].Caption = "Prefix";
-            dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["Material"].Caption = "Material";
-            dt.Columns["Size"].Caption = "Size";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
-
-            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["Size"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
-
-            dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -794,14 +759,14 @@ namespace PFD
                 row = dt.NewRow();
                 try
                 {
-                    row["Prefix"] = item.Prefix;
-                    row["Count"] = item.Quantity;
-                    row["Material"] = item.MaterialName;
-                    row["Size"] = item.Name;
-                    row["UnitMass"] = item.MassPerPiece.ToString("F2");
-                    row["TotalMass"] = item.TotalMass.ToString("F2");
-                    row["UnitPrice"] = item.PricePerPiece.ToString("F2");
-                    row["Price"] = item.TotalPrice.ToString("F2");
+                    row[colProp_Prefix.ColumnName] = item.Prefix;
+                    row[colProp_Count.ColumnName] = item.Quantity;
+                    row[colProp_Material.ColumnName] = item.MaterialName;
+                    row[colProp_Size.ColumnName] = item.Name;
+                    row[colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
@@ -809,14 +774,14 @@ namespace PFD
 
             // Add Sum
             row = dt.NewRow();
-            row["Prefix"] = "Total:";
-            row["Count"] = iTotalConnectorsNumber_Table;
-            row["Material"] = "";
-            row["Size"] = "";
-            row["UnitPrice"] = "";
-            row["TotalMass"] = dTotalConnectorsMass_Table.ToString("F2");
-            row["UnitPrice"] = "";
-            row["Price"] = dTotalConnectorsPrice_Table.ToString("F2");
+            row[colProp_Prefix.ColumnName] = "Total:";
+            row[colProp_Count.ColumnName] = iTotalConnectorsNumber_Table;
+            row[colProp_Material.ColumnName] = "";
+            row[colProp_Size.ColumnName] = "";
+            row[colProp_UnitMass_P.ColumnName] = "";
+            row[colProp_TotalMass.ColumnName] = dTotalConnectorsMass_Table.ToString("F2");
+            row[colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[colProp_TotalPrice_NZD.ColumnName] = dTotalConnectorsPrice_Table.ToString("F2");
             dt.Rows.Add(row);
 
             Datagrid_Connectors.ItemsSource = ds.Tables[0].AsDataView();
@@ -884,7 +849,7 @@ namespace PFD
                     TotalPrice = fTotalPrice
                 };
                 quotation.Add(newItem);
-            }      
+            }
         }
 
         private void CreateTableBoltNuts(CModel model)
@@ -933,43 +898,19 @@ namespace PFD
 
             // Create Table
             DataTable dt = new DataTable("TableBoltNuts");
+
             // Create Table Rows
-            dt.Columns.Add("Prefix", typeof(String));
-            dt.Columns.Add("Count", typeof(Int32));
-            dt.Columns.Add("Material", typeof(String));
-            dt.Columns.Add("Size", typeof(String));
-            dt.Columns.Add("UnitMass", typeof(String));
-            dt.Columns.Add("TotalMass", typeof(Decimal));
-            dt.Columns.Add("UnitPrice", typeof(string));
-            dt.Columns.Add("Price", typeof(Decimal));
-            
-            // Set Column Caption
-            dt.Columns["Prefix"].Caption = "Prefix";
-            dt.Columns["Count"].Caption = "Count [-]";
-            dt.Columns["Material"].Caption = "Material";
-            dt.Columns["Size"].Caption = "Size";
-            dt.Columns["UnitMass"].Caption = "Unit Mass [kg/piece]";
-            dt.Columns["TotalMass"].Caption = "Total Mass [kg]";
-            dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
-            dt.Columns["Price"].Caption = "Price [NZD]";
+            dt.Columns.Add(colProp_Prefix.ColumnName, colProp_Prefix.DataType);
+            dt.Columns.Add(colProp_Count.ColumnName, colProp_Count.DataType);
+            dt.Columns.Add(colProp_Material.ColumnName, colProp_Material.DataType);
+            dt.Columns.Add(colProp_Size.ColumnName, colProp_Size.DataType);
+            dt.Columns.Add(colProp_UnitMass_P.ColumnName, colProp_UnitMass_P.DataType);
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_P_NZD.ColumnName, colProp_UnitPrice_P_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
 
-            dt.Columns["Prefix"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Material"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
-
-            dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -981,14 +922,14 @@ namespace PFD
                 row = dt.NewRow();
                 try
                 {
-                    row["Prefix"] = item.Prefix;
-                    row["Count"] = item.Quantity;
-                    row["Material"] = item.MaterialName;
-                    row["Size"] = item.Name;
-                    row["UnitMass"] = item.MassPerPiece.ToString("F2");
-                    row["TotalMass"] = item.TotalMass.ToString("F2");
-                    row["UnitPrice"] = item.PricePerPiece.ToString("F2");
-                    row["Price"] = item.TotalPrice.ToString("F2");
+                    row[colProp_Prefix.ColumnName] = item.Prefix;
+                    row[colProp_Count.ColumnName] = item.Quantity;
+                    row[colProp_Material.ColumnName] = item.MaterialName;
+                    row[colProp_Size.ColumnName] = item.Name;
+                    row[colProp_UnitMass_P.ColumnName] = item.MassPerPiece.ToString("F2");
+                    row[colProp_TotalMass.ColumnName] = item.TotalMass.ToString("F2");
+                    row[colProp_UnitPrice_P_NZD.ColumnName] = item.PricePerPiece.ToString("F2");
+                    row[colProp_TotalPrice_NZD.ColumnName] = item.TotalPrice.ToString("F2");
                 }
                 catch (ArgumentOutOfRangeException) { }
                 dt.Rows.Add(row);
@@ -996,14 +937,14 @@ namespace PFD
 
             // Add Sum
             row = dt.NewRow();
-            row["Prefix"] = "Total:";
-            row["Count"] = iTotalNutsNumber_Table;
-            row["Material"] = "";
-            row["Size"] = "";
-            row["UnitPrice"] = "";
-            row["TotalMass"] = dTotalNutsMass_Table.ToString("F2");
-            row["UnitPrice"] = "";
-            row["Price"] = dTotalNutsPrice_Table.ToString("F2");
+            row[colProp_Prefix.ColumnName] = "Total:";
+            row[colProp_Count.ColumnName] = iTotalNutsNumber_Table;
+            row[colProp_Material.ColumnName] = "";
+            row[colProp_Size.ColumnName] = "";
+            row[colProp_UnitMass_P.ColumnName] = "";
+            row[colProp_TotalMass.ColumnName] = dTotalNutsMass_Table.ToString("F2");
+            row[colProp_UnitPrice_P_NZD.ColumnName] = "";
+            row[colProp_TotalPrice_NZD.ColumnName] = dTotalNutsPrice_Table.ToString("F2");
             dt.Rows.Add(row);
 
             Datagrid_BoltNuts.ItemsSource = ds.Tables[0].AsDataView();
@@ -1124,27 +1065,27 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Cladding"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["Thickness"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Coating"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Color"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["ColorName"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Cladding"].ExtendedProperties.Add(sEP_Width, 20f);
+            dt.Columns["Thickness"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["Coating"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["Color"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["ColorName"].ExtendedProperties.Add(sEP_Width, 20f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Cladding"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Coating"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Color"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["ColorName"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Cladding"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["Thickness"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Coating"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["Color"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["ColorName"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1167,7 +1108,7 @@ namespace PFD
                 try
                 {
                     row["Cladding"] = roofCladding;
-                    row["Thickness"] = roofCladdingThickness;
+                    row["Thickness"] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
                     row["Coating"] = roofCladdingCoating;
                     row["Color"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
                     row["ColorName"] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
@@ -1197,7 +1138,7 @@ namespace PFD
                 try
                 {
                     row["Cladding"] = wallCladding;
-                    row["Thickness"] = wallCladdingThickness;
+                    row["Thickness"] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
                     row["Coating"] = wallCladdingCoating;
                     row["Color"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
                     row["ColorName"] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
@@ -1336,7 +1277,7 @@ namespace PFD
             {
                 if (groupedOpenings.Contains(op))
                 {
-                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];                    
+                    COpeningProperties grOP = groupedOpenings[groupedOpenings.IndexOf(op)];
                     grOP.Count++;
                 }
                 else groupedOpenings.Add(op);
@@ -1346,7 +1287,7 @@ namespace PFD
             DataTable dt = new DataTable("TableDoorsAndWindows");
             // Create Table Rows
             dt.Columns.Add("Opening", typeof(String));
-            dt.Columns.Add("Width", typeof(String));
+            dt.Columns.Add(sEP_Width, typeof(String));
             dt.Columns.Add("Height", typeof(String));
             dt.Columns.Add("Count", typeof(String));
             dt.Columns.Add("Area", typeof(String));
@@ -1370,29 +1311,29 @@ namespace PFD
             dt.Columns["UnitPrice_PPP"].Caption = "Unit Price [NZD/piece]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Opening"].ExtendedProperties.Add("Width", 30f);
-            dt.Columns["Width"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Height"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Count"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["Area"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Opening"].ExtendedProperties.Add(sEP_Width, 30f);
+            dt.Columns["Width"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["Height"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["Count"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["Area"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Opening"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Height"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Opening"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["Width"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Height"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Count"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Area"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice_PPSM"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice_PPP"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1499,19 +1440,19 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Fibreglass"].ExtendedProperties.Add("Width", 70f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Fibreglass"].ExtendedProperties.Add(sEP_Width, 70f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Fibreglass"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Fibreglass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1616,19 +1557,19 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m2]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Component"].ExtendedProperties.Add("Width", 70f);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Component"].ExtendedProperties.Add(sEP_Width, 70f);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Component"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Component"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1768,19 +1709,19 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Flashing"].ExtendedProperties.Add("Width", 60f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Flashing"].ExtendedProperties.Add(sEP_Width, 60f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add(sEP_Width, 20f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Flashing"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Flashing"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["TotalLength"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -1950,19 +1891,19 @@ namespace PFD
             dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/m]";
             dt.Columns["Price"].Caption = "Price [NZD]";
 
-            dt.Columns["Gutter"].ExtendedProperties.Add("Width", 60f);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Width", 20f);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 0f);
-            dt.Columns["Price"].ExtendedProperties.Add("Width", 0f);
+            dt.Columns["Gutter"].ExtendedProperties.Add(sEP_Width, 60f);
+            dt.Columns["TotalLength"].ExtendedProperties.Add(sEP_Width, 20f);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 0f);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 0f);
 
-            dt.Columns["Gutter"].ExtendedProperties.Add("Align", AlignmentX.Left);
-            dt.Columns["TotalLength"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-            dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+            dt.Columns["Gutter"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+            dt.Columns["TotalLength"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+            dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
             // Create Datases
             DataSet ds = new DataSet();
@@ -2145,7 +2086,37 @@ namespace PFD
             }
         }
 
+        private void SetColumnProperties(DataTable dt, ColumnProperties properties)
+        {
+            // Set Column Caption
+            dt.Columns[properties.ColumnName].Caption = properties.Caption;
 
+            // Set Extended properties
+            if(properties.EP_Unit != null && properties.EP_Unit.Length > 1)
+               dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Unit, properties.EP_Unit);
+
+            dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Width, properties.EP_Width);
+            dt.Columns[properties.ColumnName].ExtendedProperties.Add(sEP_Align, properties.EP_Alignment);
+        }
+
+        private void SetDataTableColumnProperties(DataTable dt)
+        {
+            foreach (DataColumn c in dt.Columns)
+                SetColumnProperties(dt, GetColumnProperties(c));
+        }
+
+        private ColumnProperties GetColumnProperties(DataColumn c)
+        {
+            ColumnProperties prop = null;
+
+            if (colPropList != null)
+            {
+                prop = new ColumnProperties();
+                prop = colPropList.Find(x => x.ColumnName == c.ColumnName);
+            }
+
+            return prop;
+        }
 
         //ODKALDAM SI PLATES METODU AK BY SOM V REFAKTORINGU NIECO DOBABRAL TAK odtialto sa vezme
         //private void CreateTablePlates(CModel model)
@@ -2552,7 +2523,7 @@ namespace PFD
         //    table.Columns.Add("Prefix", typeof(String));
         //    table.Columns.Add("Count", typeof(Int32));
         //    table.Columns.Add("Material", typeof(String));
-        //    table.Columns.Add("Width", typeof(String));
+        //    table.Columns.Add(sEP_Width, typeof(String));
         //    table.Columns.Add("Height", typeof(String));
         //    table.Columns.Add("Thickness", typeof(String));
         //    table.Columns.Add("Area", typeof(String));
@@ -2576,31 +2547,31 @@ namespace PFD
         //    table.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
         //    table.Columns["Price"].Caption = "Price [NZD]";
 
-        //    table.Columns["Prefix"].ExtendedProperties.Add("Width", 7f);
-        //    table.Columns["Count"].ExtendedProperties.Add("Width", 7f);
-        //    table.Columns["Material"].ExtendedProperties.Add("Width", 8.5f);
-        //    table.Columns["Width"].ExtendedProperties.Add("Width", 7f);
-        //    table.Columns["Height"].ExtendedProperties.Add("Width", 7f);
-        //    table.Columns["Thickness"].ExtendedProperties.Add("Width", 8.5f);
-        //    table.Columns["Area"].ExtendedProperties.Add("Width", 7f);
-        //    table.Columns["UnitMass"].ExtendedProperties.Add("Width", 9f);
-        //    table.Columns["TotalArea"].ExtendedProperties.Add("Width", 10f);
-        //    table.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-        //    table.Columns["UnitPrice"].ExtendedProperties.Add("Width", 11f);
-        //    table.Columns["Price"].ExtendedProperties.Add("Width", 8f);
+        //    table.Columns["Prefix"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    table.Columns["Count"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    table.Columns["Material"].ExtendedProperties.Add(sEP_Width, 8.5f);
+        //    table.Columns["Width"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    table.Columns["Height"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    table.Columns["Thickness"].ExtendedProperties.Add(sEP_Width, 8.5f);
+        //    table.Columns["Area"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    table.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 9f);
+        //    table.Columns["TotalArea"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    table.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    table.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 11f);
+        //    table.Columns["Price"].ExtendedProperties.Add(sEP_Width, 8f);
 
-        //    table.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-        //    table.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
-        //    table.Columns["Width"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["Height"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["Thickness"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["Area"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["TotalArea"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    table.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    table.Columns["Prefix"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+        //    table.Columns["Count"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["Material"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+        //    table.Columns["Width"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["Height"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["Thickness"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["Area"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["TotalArea"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    table.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
         //    // Create Datases
         //    DataSet ds = new DataSet();
@@ -2806,23 +2777,23 @@ namespace PFD
         //    dt.Columns["UnitPrice"].Caption = "Unit Price [NZD/piece]";
         //    dt.Columns["Price"].Caption = "Price [NZD]";
 
-        //    dt.Columns["Prefix"].ExtendedProperties.Add("Width", 25f);
-        //    dt.Columns["Count"].ExtendedProperties.Add("Width", 7f);
-        //    dt.Columns["Material"].ExtendedProperties.Add("Width", 20f);
-        //    dt.Columns["Size"].ExtendedProperties.Add("Width", 10f);
-        //    dt.Columns["UnitMass"].ExtendedProperties.Add("Width", 10f);
-        //    dt.Columns["TotalMass"].ExtendedProperties.Add("Width", 10f);
-        //    dt.Columns["UnitPrice"].ExtendedProperties.Add("Width", 10f);
-        //    dt.Columns["Price"].ExtendedProperties.Add("Width", 8f);
+        //    dt.Columns["Prefix"].ExtendedProperties.Add(sEP_Width, 25f);
+        //    dt.Columns["Count"].ExtendedProperties.Add(sEP_Width, 7f);
+        //    dt.Columns["Material"].ExtendedProperties.Add(sEP_Width, 20f);
+        //    dt.Columns["Size"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Width, 10f);
+        //    dt.Columns["Price"].ExtendedProperties.Add(sEP_Width, 8f);
 
-        //    dt.Columns["Prefix"].ExtendedProperties.Add("Align", AlignmentX.Left);
-        //    dt.Columns["Count"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    dt.Columns["Material"].ExtendedProperties.Add("Align", AlignmentX.Left);
-        //    dt.Columns["Size"].ExtendedProperties.Add("Align", AlignmentX.Left);
-        //    dt.Columns["UnitMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    dt.Columns["TotalMass"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    dt.Columns["UnitPrice"].ExtendedProperties.Add("Align", AlignmentX.Right);
-        //    dt.Columns["Price"].ExtendedProperties.Add("Align", AlignmentX.Right);
+        //    dt.Columns["Prefix"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+        //    dt.Columns["Count"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    dt.Columns["Material"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+        //    dt.Columns["Size"].ExtendedProperties.Add(sEP_Align, AlignmentX.Left);
+        //    dt.Columns["UnitMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    dt.Columns["TotalMass"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    dt.Columns["UnitPrice"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
+        //    dt.Columns["Price"].ExtendedProperties.Add(sEP_Align, AlignmentX.Right);
 
         //    // Create Datases
         //    DataSet ds = new DataSet();
@@ -2863,5 +2834,24 @@ namespace PFD
         //    Datagrid_Connectors.Loaded += Datagrid_Connectors_Loaded;
         //}
 
+    }
+
+    class ColumnProperties : DataColumn
+    {
+        public float EP_Width;
+        public string EP_Unit;
+        public object EP_Alignment;
+
+        public ColumnProperties() { }
+        public ColumnProperties(Type cType, string sName, string sCaption, float fWidth, string sUnit, object eAlignment)
+        {
+            DataType = cType;
+            ColumnName = sName;
+            Caption = sCaption;
+
+            EP_Width = fWidth;
+            EP_Unit = sUnit;
+            EP_Alignment = eAlignment;
+        }
     }
 }
