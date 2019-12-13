@@ -3273,8 +3273,8 @@ namespace PFD
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
 
-            data.NumberOfRollerDoors = 1; // TODO Ondrej - ako to co najintelengtnejsie dostat z UC Doors and Windows, alebo si to mam odlozit ako globalnu property v UC Quotations
-            data.NumberOfPersonnelDoors = 1; // TODO Ondrej - ako to co najintelengtnejsie dostat z UC Doors and Windows, alebo si to mam odlozit ako globalnu property v UC Quotations
+            data.NumberOfRollerDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count(); 
+            data.NumberOfPersonnelDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
 
