@@ -3201,24 +3201,27 @@ namespace PFD
 
             if (ModelCalculatedResultsValid) // Skusame nacitat vysledky len ak su spocitane
             {
-                try
-                {
-                    data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
-                    data.sDesignResults_ULS = sDesignResults_ULS;
-                    data.sDesignResults_SLS = sDesignResults_SLS;
 
+                data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
+                data.sDesignResults_ULS = sDesignResults_ULS;
+                data.sDesignResults_SLS = sDesignResults_SLS;
+
+                // BUG 437
+                // Bracing Blocks by mali ma bCalculate a bDesign stale na False
+                //try // To Ondrej - tu som dal try - Dictionary sa nenastavia - mozno to suvisi s tym ze sa pridali pruty typu bracing blocks, alebo ich spoje ???
+                //{
                     data.dictULSDesignResults = GetDesignResultsULS();
                     data.dictSLSDesignResults = GetDesignResultsSLS();
                     GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
+                //}
+                //catch
+                //{
+                    //throw new Exception("Unable to load results. Not calculated or non-valid results!");
+                //}
 
-                    data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
-                    data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
-                    data.frameModels = frameModels;
-                }
-                catch
-                {
-                    throw new Exception("Unable to load results. Not calculated or non-valid results!");
-                }
+                data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
+                data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
+                data.frameModels = frameModels;
             }
 
             data.JointsDict = JointsVM.DictJoints;
