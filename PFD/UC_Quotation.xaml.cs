@@ -315,7 +315,21 @@ namespace PFD
 
         private void QVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
+            if (e.PropertyName == "Margin_Percentage" || e.PropertyName == "GST_Percentage")
+            {
+                QuotationViewModel vm = sender as QuotationViewModel;
+
+                vm.MarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * vm.Margin_Percentage / 100f;
+                vm.BuildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + vm.MarginAbsolute;
+
+                // Building Unit Price
+                vm.BuildingPrice_PSM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingArea_Gross;
+                vm.BuildingPrice_PCM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingVolume_Gross;
+                vm.BuildingPrice_PPKG = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingMass;
+                
+                vm.GST_Absolute = vm.GST_Percentage / 100f * vm.BuildingPrice_WithMargin_WithoutGST;
+                vm.TotalBuildingPrice_IncludingGST = vm.BuildingPrice_WithMargin_WithoutGST + vm.GST_Absolute;
+            }
         }
 
         private void CreateTableMembers(CModel model)
