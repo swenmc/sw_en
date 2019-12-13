@@ -267,15 +267,16 @@ namespace PFD
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
+            //toto tu asi nepotrebujeme ak zakazeme pridavat cez klik na novy riadok
             //kvoli Doors Models,  najprv musi byt update
-            if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
-            {
-                Datagrid_DoorsAndGates_SelectionChanged(null, null);
-            }
-            else if (sender is WindowProperties || e.PropertyName == "WindowBlocksProperties_Add")
-            {
-                Datagrid_Windows_SelectionChanged(null, null);
-            }
+            //if (sender is DoorProperties || e.PropertyName == "DoorBlocksProperties_Add")
+            //{
+            //    Datagrid_DoorsAndGates_SelectionChanged(null, null);
+            //}
+            //else if (sender is WindowProperties || e.PropertyName == "WindowBlocksProperties_Add")
+            //{
+            //    Datagrid_Windows_SelectionChanged(null, null);
+            //}
 
             if (vm.RecreateJoints) vm.RecreateJoints = false;
         }

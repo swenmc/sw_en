@@ -445,7 +445,7 @@
                             </Button>
                         </StackPanel>
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
-                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Width="2*" Header="Side" ToolTipService.ToolTip="Select side of building"
@@ -480,7 +480,7 @@
                             </Button>
                         </StackPanel>
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" 
-                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_Windows_AddingNewItem" SelectionChanged="Datagrid_Windows_SelectionChanged" GotFocus="Datagrid_Windows_GotFocus">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="2*"

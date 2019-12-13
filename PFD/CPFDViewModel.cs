@@ -2592,7 +2592,11 @@ namespace PFD
             {
                 //d.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie dveri
                 int bayNum = GetFreeBayFor(d);
-                if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                if (bayNum == -1)
+                {
+                    throw new Exception($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                    //PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                } 
                 else d.iBayNumber = bayNum;
             }
         }
@@ -3087,31 +3091,41 @@ namespace PFD
 
         private void HandleDoorPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "sBuildingSide")
+            try
             {
-                SetResultsAreNotValid();
-                if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
-                if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
-            }
-            else if (e.PropertyName == "iBayNumber")
-            {
-                SetResultsAreNotValid();
-                if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
-                if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
-            }
-            else if (e.PropertyName == "sDoorType")
-            {
-                SetResultsAreNotValid();
-                SetComponentListAccordingToDoors();
-            }
+                if (e.PropertyName == "sBuildingSide")
+                {
+                    SetResultsAreNotValid();
+                    if (sender is DoorProperties) SetDoorsBays(sender as DoorProperties);
+                    if (sender is WindowProperties) SetWindowsBays(sender as WindowProperties);
+                }
+                else if (e.PropertyName == "iBayNumber")
+                {
+                    SetResultsAreNotValid();
+                    if (sender is DoorProperties) CheckDoorsBays(sender as DoorProperties);
+                    if (sender is WindowProperties) CheckWindowsBays(sender as WindowProperties);
+                }
+                else if (e.PropertyName == "sDoorType")
+                {
+                    SetResultsAreNotValid();
+                    SetComponentListAccordingToDoors();
+                }
 
-            if (e.PropertyName == "fDoorsHeight" || e.PropertyName == "fDoorsWidth" ||
-                e.PropertyName == "fDoorCoordinateXinBlock")
-            {
-                SetResultsAreNotValid();
+                if (e.PropertyName == "fDoorsHeight" || e.PropertyName == "fDoorsWidth" ||
+                    e.PropertyName == "fDoorCoordinateXinBlock")
+                {
+                    SetResultsAreNotValid();
+                }
+                RecreateFloorSlab = true;
+                this.PropertyChanged(sender, e);
             }
-            RecreateFloorSlab = true;
-            this.PropertyChanged(sender, e);
+            catch (Exception ex)
+            {
+                //bug 436
+                //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
+                //DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(y => y.Key);
+                //DoorBlocksProperties = DoorBlocksProperties;
+            }            
         }
 
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
