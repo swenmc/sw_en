@@ -408,14 +408,14 @@ namespace BaseClasses
             canvasForImage.UpdateLayout();
             RenderVisual(canvasForImage);
 
-            using (Stream stream = GetCanvasStream(canvasForImage))
-            {
-                using (var fileStream = File.Create("canvas.png"))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    stream.CopyTo(fileStream);
-                }
-            }
+            //using (Stream stream = GetCanvasStream(canvasForImage))
+            //{
+            //    using (var fileStream = File.Create("canvas.png"))
+            //    {
+            //        stream.Seek(0, SeekOrigin.Begin);
+            //        stream.CopyTo(fileStream);
+            //    }
+            //}
 
             return canvasForImage;
         }
