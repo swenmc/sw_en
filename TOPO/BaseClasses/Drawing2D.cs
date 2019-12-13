@@ -335,9 +335,14 @@ namespace BaseClasses
                     if (pHolesCentersPointsScrews2D != null) canvasPointsHolesScrews = new List<Point>(pHolesCentersPointsScrews2D);
                     if (pHolesCentersPointsAnchors2D != null) canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
                     if (plate.DrillingRoutePoints != null) canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
-                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
-                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
-                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
+
+                    //daco treba mirorovat daco nie...nechapem
+                    canvasDimensions = MirrorYCoordinates(plate.Dimensions);
+                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
+                    canvasBendLines = MirrorYCoordinates(plate.BendLines);
+                    //if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
+                    //if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
+                    //if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
                 }
 
                 double minX = canvasPointsOut.Min(p => p.X);
@@ -386,6 +391,16 @@ namespace BaseClasses
                 // Member Outline
                 DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
+                //List<Point> canvasMemberOutlinePoints = new List<Point>();
+                //foreach (CLine2D l in canvasMemberOutline)
+                //{
+                //    canvasMemberOutlinePoints.Add(l.P1);
+                //    canvasMemberOutlinePoints.Add(l.P2);
+                //}
+
+
+                //DrawPolyLine(false, canvasMemberOutlinePoints, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
                 // Bend Lines
                 DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
             }
@@ -393,14 +408,14 @@ namespace BaseClasses
             canvasForImage.UpdateLayout();
             RenderVisual(canvasForImage);
 
-            //using (Stream stream = GetCanvasStream(canvasForImage))
-            //{                
-            //    using (var fileStream = File.Create("canvas.png"))
-            //    {
-            //        stream.Seek(0, SeekOrigin.Begin);
-            //        stream.CopyTo(fileStream);
-            //    }
-            //}
+            using (Stream stream = GetCanvasStream(canvasForImage))
+            {
+                using (var fileStream = File.Create("canvas.png"))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(fileStream);
+                }
+            }
 
             return canvasForImage;
         }

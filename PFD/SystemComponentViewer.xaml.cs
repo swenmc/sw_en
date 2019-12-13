@@ -1456,6 +1456,9 @@ namespace PFD
             Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
                         vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
             //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, false, true, false, true, true, false, false, false, false);
+            //Canvas dxfCanvas = new Canvas();
+            //Drawing2D.DrawPlateToCanvas(plate, 400, 500, ref dxfCanvas, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
+            //            vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
             CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);            
         }
 

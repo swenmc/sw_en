@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Export Display Options" Height="300" Width="250">
+        Title="Export Display Options" Height="250" Width="250">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -28,9 +28,9 @@
                 <CheckBox Name="chbDrawHoles2D" IsChecked="{Binding Path=DrawHoles2D}" Content="Draw Holes" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawHoleCentreSymbol2D" IsChecked="{Binding Path=DrawHoleCentreSymbol2D}" Content="Draw Hole Centre Symbol" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Content="Draw Member Outline" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Content="Draw Bend Lines" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Visibility="Hidden" Content="Draw Dimensions" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Visibility="Hidden" Content="Draw Member Outline" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Visibility="Hidden" Content="Draw Bend Lines" Margin="0 5 0 0"/>
             </StackPanel>
             
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0" >
