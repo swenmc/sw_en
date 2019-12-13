@@ -178,6 +178,9 @@ namespace EXPIMP
             document.ReplaceText("[ProjectNumber]", pInfo.ProjectNumber);
             document.ReplaceText("[ProjectPart]", pInfo.ProjectPart);
 
+            document.ReplaceText("[ProjectName_UC]", pInfo.ProjectName.ToUpper()); // Upper Case
+            document.ReplaceText("[SalesPerson_UC]", pInfo.SalesPerson.ToUpper()); // Upper Case
+
             document.ReplaceText("[Date]", pInfo.Date.ToString("dd/MM/yyyy"));
 
             document.ReplaceText("[CustomerName]", pInfo.CustomerName);
