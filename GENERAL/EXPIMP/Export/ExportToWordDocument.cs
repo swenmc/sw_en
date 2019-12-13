@@ -189,7 +189,6 @@ namespace EXPIMP
             document.ReplaceText("[SalesPerson]", pInfo.SalesPerson);
             document.ReplaceText("[SalesPersonPhone]", pInfo.SalesPersonPhone);
             document.ReplaceText("[SalesPersonEmail]", pInfo.SalesPersonEmail);
-
         }
 
         private static void DrawBasicGeometry(DocX document, CModelData data)
