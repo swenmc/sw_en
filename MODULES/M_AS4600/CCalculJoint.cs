@@ -977,8 +977,8 @@ namespace M_AS4600
             designDetails.fe_x_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_x - designDetails.fplateWidth_x); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
             designDetails.fe_y_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_y - designDetails.fplateWidth_y); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
 
-            designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.x_washer_plate; // Input
-            designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.y_washer_plate; // Input
+            designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx; // Input
+            designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
 
             CMat_02_00 materialConcrete = new CMat_02_00();
             materialConcrete = (CMat_02_00)foundation.m_Mat;
@@ -1121,8 +1121,8 @@ namespace M_AS4600
 
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
-            designDetails.fm_x = anchorArrangement.referenceAnchor.x_washer_bearing; // Input
-            designDetails.fm_y = anchorArrangement.referenceAnchor.y_washer_bearing; // Input
+            designDetails.fm_x = anchorArrangement.referenceAnchor.WasherBearing.Width_bx; // Input
+            designDetails.fm_y = anchorArrangement.referenceAnchor.WasherBearing.Height_hy; // Input
             designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
             designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 

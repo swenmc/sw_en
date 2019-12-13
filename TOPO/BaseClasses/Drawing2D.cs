@@ -1195,9 +1195,9 @@ namespace BaseClasses
                             // Washer - Plate
                             if (opts.bDrawWashers)
                             {
-                                fPlateWasherWidth_x = anchor.x_washer_plate; // Kolmo na rovinu
-                                fPlateWasherWidth_y = anchor.y_washer_plate;
-                                fPlateWasherThickness = 0.008f; // TO napojit na GUI ???
+                                fPlateWasherWidth_x = anchor.WasherPlateTop.Width_bx; // Kolmo na rovinu
+                                fPlateWasherWidth_y = anchor.WasherPlateTop.Height_hy;
+                                fPlateWasherThickness = anchor.WasherPlateTop.Ft;
 
                                 float fPlateWasherOffsetFromTop = (float)anchor.m_pControlPoint.Z - fPlateWasherThickness; // TO napojit na GUI ???
 
@@ -1231,9 +1231,10 @@ namespace BaseClasses
                             // Washer - Bearing
                             if (opts.bDrawWashers)
                             {
-                                fBearingWasherWidth_x = anchor.x_washer_bearing; // Kolmo na rovinu
-                                fBearingWasherWidth_y = anchor.y_washer_bearing;
-                                fBearingWasherThickness = 0.006f; // TO napojit na GUI ???
+                                fBearingWasherWidth_x = anchor.WasherBearing.Width_bx; // Kolmo na rovinu
+                                fBearingWasherWidth_y = anchor.WasherBearing.Height_hy;
+                                fBearingWasherThickness = anchor.WasherBearing.Ft;
+
                                 float fBearingWasherOffsetFromTop = fAnchorLength - 0.03f; // TO napojit na GUI ??? // Vzdialenost od hornej hrany kotvy po hornu hranu bearing washer
 
                                 Point lt_BearingWasher = new Point(insertingPoint.X - fBearingWasherWidth_y * 0.5, insertingPoint.Y - fBearingWasherOffsetFromTop);

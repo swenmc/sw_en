@@ -36,15 +36,6 @@ namespace BaseClasses
         private float m_fx_fe_max;
         private float m_fy_fe_max;
 
-        // Washer size
-        // Plate washer
-        private float m_fx_washer_plate;
-        private float m_fy_washer_plate;
-
-        // Bearing washer
-        private float m_fx_washer_bearing;
-        private float m_fy_washer_bearing;
-
         private float m_fh_effective; // Effective Depth
 
         private List<CNut> m_Nuts;
@@ -274,62 +265,6 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float x_washer_plate
-        {
-            get
-            {
-                return m_fx_washer_plate;
-            }
-
-            set
-            {
-                m_fx_washer_plate = value;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------
-        public float y_washer_plate
-        {
-            get
-            {
-                return m_fy_washer_plate;
-            }
-
-            set
-            {
-                m_fy_washer_plate = value;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------
-        public float x_washer_bearing
-        {
-            get
-            {
-                return m_fx_washer_bearing;
-            }
-
-            set
-            {
-                m_fx_washer_bearing = value;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------
-        public float y_washer_bearing
-        {
-            get
-            {
-                return m_fy_washer_bearing;
-            }
-
-            set
-            {
-                m_fy_washer_bearing = value;
-            }
-        }
-
-        //-------------------------------------------------------------------------------------------------------------
         public float h_effective
         {
             get
@@ -476,17 +411,6 @@ namespace BaseClasses
 
             SetPortionOtAnchorAbovePlate();
 
-            // Washer size
-            // Plate washer
-            //m_WasherPlateTop = washerPlateTop;
-            //x_washer_plate = washerPlateTop.Width_bx; // 80 mm
-            //y_washer_plate = washerPlateTop.Height_hy; // 80 mm
-
-            // Bearing washer
-            //m_WasherBearing = washerBearing;
-            //x_washer_bearing = washerBearing.Width_bx; // 60 mm
-            //y_washer_bearing = washerBearing.Height_hy; // 60 mm
-
             h_effective = 0.90909f * fLength_temp; // 300 mm (efektivna dlzka tyce zabetonovana v zaklade)
 
             ((CMat_03_00)m_Mat).Name = "8.8";
@@ -532,17 +456,6 @@ namespace BaseClasses
             Area_p_pitch = MathF.fPI * MathF.Pow2(Diameter_pitch) / 4f; // Pitch diameter area
 
             SetPortionOtAnchorAbovePlate();
-
-            // Washer size
-            // Plate washer
-            //m_WasherPlateTop = washerPlateTop;
-            //x_washer_plate = washerPlateTop.Width_bx; // 80 mm
-            //y_washer_plate = washerPlateTop.Height_hy; // 80 mm
-
-            // Bearing washer
-            //m_WasherBearing = washerBearing;
-            //x_washer_bearing = washerBearing.Width_bx; // 60 mm
-            //y_washer_bearing = washerBearing.Height_hy; // 60 mm
 
             h_effective = fh_eff_temp; // Efektivna dlzka tyce zabetonovana v zaklade
 
@@ -597,8 +510,6 @@ namespace BaseClasses
             if (washerPlateTop != null)
             {
                 m_WasherPlateTop = washerPlateTop;
-                x_washer_plate = washerPlateTop.Width_bx; // 80 mm
-                y_washer_plate = washerPlateTop.Height_hy; // 80 mm
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 float fPlateThickness = 0.003f; // TODO - zavisi od hrubky plechu base plate - napojit 
@@ -617,8 +528,6 @@ namespace BaseClasses
             if (washerBearing != null)
             {
                 m_WasherBearing = washerBearing;
-                x_washer_bearing = washerBearing.Width_bx; // 60 mm
-                y_washer_bearing = washerBearing.Height_hy; // 60 mm
 
                 // Urcime pozicie washer a nuts v LCS kotvy - LCS kotvy smeruje v smere x
                 float fWasherBearing_OffsetFromBottom = 0.03f; // 30 mm
