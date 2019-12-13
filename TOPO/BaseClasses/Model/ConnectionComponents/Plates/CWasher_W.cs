@@ -54,7 +54,7 @@ namespace BaseClasses
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Load washer properties from the database
-            if (sName_temp != null)
+            if (sName_temp != null && sName_temp.Length > 1)
             {
                 DATABASE.DTO.CRectWasher_W_Properties prop = DATABASE.CWashersManager.GetPlate_W_Properties(sName_temp);
 
