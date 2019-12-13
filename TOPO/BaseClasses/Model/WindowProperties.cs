@@ -27,6 +27,7 @@ namespace BaseClasses
         private float m_distFrontColumns = float.NaN;
         private float m_distBackColumns = float.NaN;
 
+        public bool IsSetFromCode = false;
 
         public string sBuildingSide
         {

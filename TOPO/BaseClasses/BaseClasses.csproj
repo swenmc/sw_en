@@ -110,6 +110,7 @@
     <Compile Include="Helpers\DimensionsDrawingHelper.cs" />
     <Compile Include="Helpers\ModelHelper.cs" />
     <Compile Include="Helpers\DisplayOptionsHelper.cs" />
+    <Compile Include="Helpers\PropertyChangedExtendedEventArgs.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="ModelViews\QuotationItem.cs" />
     <Compile Include="ModelViews\PlateView.cs" />

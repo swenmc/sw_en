@@ -186,12 +186,20 @@ namespace PFD
             }
             else if (sender is DoorProperties)
             {
+                if (e.PropertyName == "Bays") return;
+                DoorProperties doorProperties = sender as DoorProperties;
+                if (doorProperties.IsSetFromCode) return;
+
                 Datagrid_DoorsAndGates_SelectionChanged(null, null);
                 vm.RecreateJoints = true;
                 vm.RecreateFloorSlab = true;
             }
             else if (sender is WindowProperties)
             {
+                if (e.PropertyName == "Bays") return;
+                WindowProperties wProperties = sender as WindowProperties;
+                if (wProperties.IsSetFromCode) return;
+
                 Datagrid_Windows_SelectionChanged(null, null);
                 vm.RecreateJoints = true;
             }
@@ -1679,6 +1687,7 @@ namespace PFD
 
             foreach (DoorProperties dp in vm.DoorBlocksProperties)
             {
+                //dp.PropertyChanged -= null;
                 bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
                 if (!existsSameItem) doorProperties.Add(dp);
                 

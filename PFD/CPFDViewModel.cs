@@ -1406,6 +1406,7 @@ namespace PFD
                 MDoorBlocksProperties.CollectionChanged += DoorBlocksProperties_CollectionChanged;
                 foreach (DoorProperties d in MDoorBlocksProperties)
                 {
+                    d.PropertyChanged -= HandleDoorPropertiesPropertyChangedEvent;
                     d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
                 }
                 RecreateModel = true;
@@ -1417,17 +1418,17 @@ namespace PFD
 
         private void DoorBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                DoorProperties d = MDoorBlocksProperties.LastOrDefault();
-                if (d != null)
-                {
-                    CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
-                    d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
-                    NotifyPropertyChanged("DoorBlocksProperties_Add");
-                    SetResultsAreNotValid();
-                }
-            }
+            //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            //{
+            //    DoorProperties d = MDoorBlocksProperties.LastOrDefault();
+            //    if (d != null)
+            //    {
+            //        CDoorsAndWindowsHelper.SetDefaultDoorParams(d);
+            //        d.PropertyChanged += HandleDoorPropertiesPropertyChangedEvent;
+            //        NotifyPropertyChanged("DoorBlocksProperties_Add");
+            //        SetResultsAreNotValid();
+            //    }
+            //}
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 RecreateJoints = true;
@@ -1455,6 +1456,7 @@ namespace PFD
                 MWindowBlocksProperties.CollectionChanged += WindowBlocksProperties_CollectionChanged;
                 foreach (WindowProperties w in MWindowBlocksProperties)
                 {
+                    w.PropertyChanged -= HandleWindowPropertiesPropertyChangedEvent;
                     w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
                 }
                 RecreateModel = true;
@@ -1464,17 +1466,17 @@ namespace PFD
         }
         private void WindowBlocksProperties_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                WindowProperties w = MWindowBlocksProperties.LastOrDefault();
-                if (w != null)
-                {
-                    CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
-                    w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
-                    NotifyPropertyChanged("WindowBlocksProperties_Add");
-                    SetResultsAreNotValid();
-                }
-            }
+            //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            //{
+            //    WindowProperties w = MWindowBlocksProperties.LastOrDefault();
+            //    if (w != null)
+            //    {
+            //        CDoorsAndWindowsHelper.SetDefaultWindowParams(w);
+            //        w.PropertyChanged += HandleWindowPropertiesPropertyChangedEvent;
+            //        NotifyPropertyChanged("WindowBlocksProperties_Add");
+            //        SetResultsAreNotValid();
+            //    }
+            //}
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 RecreateJoints = true;
@@ -2596,8 +2598,13 @@ namespace PFD
                 {
                     throw new Exception($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
                     //PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{d.sBuildingSide}]");
+                }
+                else
+                {
+                    d.IsSetFromCode = true;
+                    d.iBayNumber = bayNum;
+                    d.IsSetFromCode = false;
                 } 
-                else d.iBayNumber = bayNum;
             }
         }
 
@@ -2633,7 +2640,12 @@ namespace PFD
                     //w.iBayNumber++; //tu by sa dala napisat funkcia na najdenie volneho bay na umiesnenie okna
                     int bayNum = GetFreeBayFor(w);
                     if (bayNum == -1) PFDMainWindow.ShowMessageBoxInPFDWindow($"Not possible to find free bay on this side. [{w.sBuildingSide}]");
-                    else w.iBayNumber = bayNum;
+                    else
+                    {
+                        w.IsSetFromCode = true;
+                        w.iBayNumber = bayNum;
+                        w.IsSetFromCode = false;
+                    }
                 }
             }
         }
@@ -3121,10 +3133,16 @@ namespace PFD
             }
             catch (Exception ex)
             {
+                PFDMainWindow.ShowMessageBoxInPFDWindow(ex.Message);
                 //bug 436
                 //tu by som chcel reagovat na to,ze neexistuje volna bay, zistit koliziu = ze su rovnake objekty a jeden surovo zmazat
-                //DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(y => y.Key);
-                //DoorBlocksProperties = DoorBlocksProperties;
+                var duplicates = DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() > 1).Select(g => g.FirstOrDefault());
+                if (duplicates.Count() > 0)
+                {
+                    var doorProps = DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() == 1).Select(g => g.FirstOrDefault()).ToList();
+                    doorProps.AddRange(duplicates);
+                    DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProps);
+                }                
             }            
         }
 
