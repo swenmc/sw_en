@@ -317,14 +317,14 @@ namespace BaseClasses
                 bool bPointsHaveYinUpDirection = false;
                 if (bPointsHaveYinUpDirection)
                 {
-                    canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
+                    canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);  // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                     //canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(null);
-                    canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D);
-                    canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D);
-                    canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints);
-                    canvasDimensions = MirrorYCoordinates(plate.Dimensions);
-                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
-                    canvasBendLines = MirrorYCoordinates(plate.BendLines);
+                    canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasDimensions = MirrorYCoordinates(plate.Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasBendLines = MirrorYCoordinates(plate.BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                     //if (note2D != null) note2D.MirrorYCoordinates();
                 }
                 else
@@ -337,12 +337,13 @@ namespace BaseClasses
                     if (plate.DrillingRoutePoints != null) canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
 
                     //daco treba mirorovat daco nie...nechapem
-                    canvasDimensions = MirrorYCoordinates(plate.Dimensions);
-                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
-                    canvasBendLines = MirrorYCoordinates(plate.BendLines);
-                    //if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
-                    //if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
-                    //if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
+                    // TO Ondrej - toto som zatial zakomentoval, ale mozno to bude potrebne, ak nie tak ten zakomentovany kod zmaz
+                    //canvasDimensions = MirrorYCoordinates(plate.Dimensions);
+                    //canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
+                    //canvasBendLines = MirrorYCoordinates(plate.BendLines);
+                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
+                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
+                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
                 }
 
                 double minX = canvasPointsOut.Min(p => p.X);
@@ -358,10 +359,10 @@ namespace BaseClasses
                 canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
                 canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
 
-                canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-                //canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+                canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
+                canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
+                canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
+                //canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor * scale_unit);
 
                 // Definition Points
                 //vobec nechapem preco treba spravit mirror pre samotne body, ale body ktore sa pouziju pre nakreslenie ciar uz mirorovane netreba
@@ -1866,14 +1867,14 @@ namespace BaseClasses
 
             if (bPointsHaveYinUpDirection)
             {
-                canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut);
-                canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn);
-                canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews);
-                canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors);
-                canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
-                canvasDimensions = MirrorYCoordinates(Dimensions);
-                canvasMemberOutline = MirrorYCoordinates(MemberOutline);
-                canvasBendLines = MirrorYCoordinates(BendLines);
+                canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasDimensions = MirrorYCoordinates(Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasMemberOutline = MirrorYCoordinates(MemberOutline); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasBendLines = MirrorYCoordinates(BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 if (note2D != null) note2D.MirrorYCoordinates();
             }
             else

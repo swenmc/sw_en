@@ -986,7 +986,7 @@ namespace PFD
             }
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
-            Drawing2D.DrawPlateToCanvas(plate,
+            Drawing2D.DrawPlateToCanvas(plate.GetClonedPlate(),
                Frame2DWidth,
                Frame2DHeight,
                ref page2D,
@@ -1453,13 +1453,18 @@ namespace PFD
             SCVDisplayOptionsWindow w = sender as SCVDisplayOptionsWindow;
             SCVDisplayOptionsViewModel vm = w.DataContext as SCVDisplayOptionsViewModel;
 
-            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
+            // Bug 396 - docasna oprava - Ondrej prosim o upravu funkcii pre zrkadlenie.
+            // Nasledne odstranit klonovanie vstupneho objektu plate plate.GetClonedPlate() a skontrlovat ci to funguje spravne, mozno bude potrebne nejake zrkadlenia aktivovat
+            // Spravne by sme CPlate podla mna nemali pre ucely vykreslenia klonovat, ale musime ustrazit, aby sme pri vykresleni alebo exporte
+            // nezmenili jej povodne parametre
+
+            Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate.GetClonedPlate(), vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
                         vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
-            //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, false, true, false, true, true, false, false, false, false);
+            //Canvas dxfCanvas = Drawing2D.DrawRealPlateToCanvas(plate, true, true, true, true, true, true, true, true, true);
             //Canvas dxfCanvas = new Canvas();
             //Drawing2D.DrawPlateToCanvas(plate, 400, 500, ref dxfCanvas, vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D,
             //            vm.DrawDrillingRoute2D, vm.DrawDimensions2D, vm.DrawMemberOutline2D, vm.DrawBendLines2D);
-            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);            
+            CExportToDXF.ExportCanvas_DXF(dxfCanvas, 0, 0);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
