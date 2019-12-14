@@ -207,6 +207,7 @@ namespace EXPIMP
                 if (o is WindowsShapes.Rectangle)
                 {
                     WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
+                    
                     double x = Canvas.GetLeft(winRect);
                     double y = Canvas.GetTop(winRect);
                     //double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
@@ -236,7 +237,7 @@ namespace EXPIMP
                     solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
                     solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
                     solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
-                    solid.Layer = new netDxf.Tables.Layer("Points");
+                    solid.Layer = new netDxf.Tables.Layer( string.IsNullOrEmpty(winRect.Tag.ToString()) ? "Points" : winRect.Tag.ToString()); //"Points"
                     doc.AddEntity(solid);
                 }
                 else if (o is WindowsShapes.Polyline)
@@ -255,7 +256,7 @@ namespace EXPIMP
                     {
                         poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
                     }
-                    poly.Layer = new netDxf.Tables.Layer("Outline");
+                    poly.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty(winPol.Tag.ToString()) ? "Outline" : winPol.Tag.ToString()); //"Outline"
                     doc.AddEntity(poly);
                 }
                 else if (o is WindowsShapes.Ellipse)
@@ -271,7 +272,7 @@ namespace EXPIMP
                     double x = Canvas.GetLeft(winElipse);
                     double y = Canvas.GetTop(winElipse);
                     Ellipse elipse = new Ellipse(new Vector2(pCenter.X + x, pCenter.Y + y), majorAxis, minorAxis);
-                    elipse.Layer = new netDxf.Tables.Layer("Outline");
+                    elipse.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty(winElipse.Tag.ToString()) ? "Outline" : winElipse.Tag.ToString()); //"Outline"
                     doc.AddEntity(elipse);
                 }
                 else if (o is WindowsShapes.Line)
@@ -281,7 +282,7 @@ namespace EXPIMP
                     Vector2 startPoint = new Vector2(winLine.X1, winLine.Y1);
                     Vector2 endPoint = new Vector2(winLine.X2, winLine.Y2);
                     Line line = new Line(startPoint, endPoint);
-                    line.Layer = new netDxf.Tables.Layer("Holes center points");
+                    line.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty(winLine.Tag.ToString()) ? "Holes center points" : winLine.Tag.ToString()); //"Holes center points"
                     doc.AddEntity(line);
                 }
                 else if (o is System.Windows.Controls.TextBlock)
@@ -297,7 +298,7 @@ namespace EXPIMP
                     Text txt = new Text(winText.Text, new Vector2(x, y), fontSize);
                     //Text txt = new Text(winText.Text, new Vector2(x, -y), fontSize);  //pretocenim podla osi y dostanem body tak ako v canvase
                     txt.Color = AciColor.Yellow;
-                    txt.Layer = new netDxf.Tables.Layer("Text");
+                    txt.Layer = new netDxf.Tables.Layer(string.IsNullOrEmpty( winText.Tag.ToString()) ? "Text" : winText.Tag.ToString());
                     doc.AddEntity(txt);
 
                     //Takto sa da spravit zlozitejsi text, napr. Bold atd..

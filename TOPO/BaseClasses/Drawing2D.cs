@@ -366,44 +366,34 @@ namespace BaseClasses
 
                 // Definition Points
                 //vobec nechapem preco treba spravit mirror pre samotne body, ale body ktore sa pouziju pre nakreslenie ciar uz mirorovane netreba
-                DrawComponentPoints(bDrawPoints, canvasPointsOut_Mirror, canvasPointsIn, canvasForImage);
+                DrawComponentPoints(bDrawPoints, canvasPointsOut_Mirror, canvasPointsIn, canvasForImage, "Points");
 
                 // Outlines
-                DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage);
+                DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
 
                 // Definition Point Numbers
-                DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
+                DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage, "Point numbers");
 
                 // Holes
                 if (pHolesCentersPointsScrews2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, fDiameter_screwPreDrilledHoles * scale_unit, canvasForImage);
-                    DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, fDiameter_screwPreDrilledHoles * scale_unit, canvasForImage, "Holes");
+                    DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage, "Drilling route");
                 }
 
                 if (pHolesCentersPointsAnchors2D != null)
                 {
-                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, fDiameter_anchorPreDrilledHoles * scale_unit, canvasForImage);
+                    DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, fDiameter_anchorPreDrilledHoles * scale_unit, canvasForImage, "Holes");
                 }
 
                 // Dimensions
-                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1);
+                DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
 
                 // Member Outline
-                DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
-
-                //List<Point> canvasMemberOutlinePoints = new List<Point>();
-                //foreach (CLine2D l in canvasMemberOutline)
-                //{
-                //    canvasMemberOutlinePoints.Add(l.P1);
-                //    canvasMemberOutlinePoints.Add(l.P2);
-                //}
-
-
-                //DrawPolyLine(false, canvasMemberOutlinePoints, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
-
+                DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Member outline");
+                
                 // Bend Lines
-                DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Bend lines");
             }
 
             canvasForImage.UpdateLayout();
@@ -672,7 +662,7 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsDPC_DPM, opts.DPC_DPMColor, PenLineCap.Flat, PenLineCap.Flat, opts.DPC_DPMThickness, canvasForImage, opts.DPC_DPMLineStyle, dashes);
+                    DrawPolyLine(false, PointsDPC_DPM, opts.DPC_DPMColor, PenLineCap.Flat, PenLineCap.Flat, opts.DPC_DPMThickness, canvasForImage, "", opts.DPC_DPMLineStyle, dashes);
                 }
 
                 if (opts.bDrawPerimeter)
@@ -704,7 +694,7 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage, opts.PerimeterLineStyle, dashes);
+                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage,"", opts.PerimeterLineStyle, dashes);
                 }
 
                 if (opts.bDrawReinforcement)
@@ -784,7 +774,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorTop, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorTop, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage,"", DashStyles.Solid, null);
                         }
                         else
                         {
@@ -839,7 +829,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorBottom, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage, DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorBottom, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage,"", DashStyles.Solid, null);
                         }
                         else
                         {
@@ -885,7 +875,7 @@ namespace BaseClasses
                         dashes.Add(3); dashes.Add(3); // Kratsie a hustejsie ciarky
 
                         //opts.ReinforcementInSlabThickness = dLineThicknessFactor * reinfocementDiameter;
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, opts.ReinforcementInSlabLineStyle, dashes);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage,"", opts.ReinforcementInSlabLineStyle, dashes);
 
                         // Starter - reinforcement bar to connect with mesh in floor slab
                         bool bDrawReinforcement_Starter = true;
@@ -1151,7 +1141,7 @@ namespace BaseClasses
 
                         double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * dReal_Model_Zoom_Factor;
 
-                        DrawHoles(opts.bDrawHoles, opts.bDrawHoleCentreSymbols, canvasPointsHolesScrews, opts.bHoleColor, opts.bHoleCenterSymbolColor, opts.HoleLineThickness, opts.HoleCenterSymbolLineThickness, dHolesDiameterScrews, canvasForImage, 1);
+                        DrawHoles(opts.bDrawHoles, opts.bDrawHoleCentreSymbols, canvasPointsHolesScrews, opts.bHoleColor, opts.bHoleCenterSymbolColor, opts.HoleLineThickness, opts.HoleCenterSymbolLineThickness, dHolesDiameterScrews, canvasForImage, "", 1);
                     }
                 }
 
@@ -1365,7 +1355,7 @@ namespace BaseClasses
                 canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
                 // Dimensions
-                DrawDimensions(opts.bDrawDimensions, canvasDimensions, canvasForImage, opts.DimensionsLinesColor, opts.DimensionsTextColor, opts.DimensionsThickness);
+                DrawDimensions(opts.bDrawDimensions, canvasDimensions, canvasForImage, opts.DimensionsLinesColor, opts.DimensionsTextColor, opts.DimensionsThickness, "Dimensions");
             }
 
             if (opts.bDrawNotes)
@@ -1903,10 +1893,10 @@ namespace BaseClasses
             canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
-            DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
+            DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage, "Points");
 
             // Outlines
-            DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage);
+            DrawOutlines(bDrawOutLine, canvasPointsOut, canvasPointsIn, canvasForImage, "Outlines");
 
             // Definition Point Numbers
             DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
@@ -1924,7 +1914,7 @@ namespace BaseClasses
             }
 
             // Dimensions
-            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1);
+            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
 
             // Member Outline
             DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
@@ -2214,19 +2204,19 @@ namespace BaseClasses
         //        }
         //    }
         //}
-        public static void DrawComponentPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage)
+        public static void DrawComponentPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage, string name = "")
         {
             if (bDrawPoints)
             {
-                DrawPoints(bDrawPoints, PointsOut, canvasForImage);
-                DrawPoints(bDrawPoints, PointsIn, canvasForImage);
+                DrawPoints(bDrawPoints, PointsOut, canvasForImage, name);
+                DrawPoints(bDrawPoints, PointsIn, canvasForImage, name);
             }
         }
-        public static void DrawPoints(bool bDrawPoints, List<Point> points, Canvas canvasForImage)
+        public static void DrawPoints(bool bDrawPoints, List<Point> points, Canvas canvasForImage, string name)
         {
             foreach (Point p in points)
             {
-                DrawPoint(p, Brushes.Red, Brushes.Red, 4, canvasForImage);
+                DrawPoint(p, Brushes.Red, Brushes.Red, 4, canvasForImage, name);
             }
 
         }
@@ -2326,12 +2316,12 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawOutlines(bool bDrawOutLine, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage)
+        public static void DrawOutlines(bool bDrawOutLine, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage, string name)
         {
             if (bDrawOutLine)
             {
-                DrawPolyLine(true, PointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
-                DrawPolyLine(true, PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                DrawPolyLine(true, PointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
+                DrawPolyLine(true, PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
             }
         }
 
@@ -2359,7 +2349,7 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawPointNumbers(bool bDrawPointNumbers, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage)
+        public static void DrawPointNumbers(bool bDrawPointNumbers, List<Point> PointsOut, List<Point> PointsIn, Canvas canvasForImage, string name = "")
         {
             if (bDrawPointNumbers)
             {
@@ -2368,7 +2358,7 @@ namespace BaseClasses
                 {
                     for (int i = 0; i < PointsOut.Count; i++)
                     {
-                        DrawText((i + 1).ToString(), PointsOut[i].X, PointsOut[i].Y, 0, 16, false, Brushes.Blue, canvasForImage);
+                        DrawText((i + 1).ToString(), PointsOut[i].X, PointsOut[i].Y, 0, 16, false, Brushes.Blue, canvasForImage, name);
                     }
                 }
 
@@ -2377,7 +2367,7 @@ namespace BaseClasses
                 {
                     for (int i = 0; i < PointsIn.Count; i++)
                     {
-                        DrawText((i + 1).ToString(), PointsIn[i].X, PointsIn[i].Y, 0, 16, false, Brushes.Green, canvasForImage);
+                        DrawText((i + 1).ToString(), PointsIn[i].X, PointsIn[i].Y, 0, 16, false, Brushes.Green, canvasForImage, name);
                     }
                 }
             }
@@ -2403,7 +2393,7 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, SolidColorBrush ColorHoles, SolidColorBrush ColorHoleCenterSymbols, double ThicknessHoleLine, double ThicknessHoleCenterSymbolLine, double dHolesDiameter, Canvas canvasForImage, double SymbolOffsetFromHoleCircle = 5)
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, SolidColorBrush ColorHoles, SolidColorBrush ColorHoleCenterSymbols, double ThicknessHoleLine, double ThicknessHoleCenterSymbolLine, double dHolesDiameter, Canvas canvasForImage, string name = "", double SymbolOffsetFromHoleCircle = 5)
         {
             if (bDrawHoles)
             {
@@ -2413,10 +2403,10 @@ namespace BaseClasses
                     for (int i = 0; i < PointsHoles.Count; i++)
                     {
                         // Draw Hole
-                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, ThicknessHoleLine, canvasForImage);
+                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, ThicknessHoleLine, canvasForImage, name);
 
                         // Draw Symbol of Center
-                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, ColorHoleCenterSymbols, ThicknessHoleCenterSymbolLine, canvasForImage);
+                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, ColorHoleCenterSymbols, ThicknessHoleCenterSymbolLine, canvasForImage, name);
                     }
                 }
             }
@@ -2459,11 +2449,11 @@ namespace BaseClasses
         //        DrawPolyLine(false, PointsDrillingRoute, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         //}
 
-        public static void DrawDrillingRoute(bool bDrawDrillingRoute, List<Point> PointsDrillingRoute, Canvas canvasForImage)
+        public static void DrawDrillingRoute(bool bDrawDrillingRoute, List<Point> PointsDrillingRoute, Canvas canvasForImage, string name = "")
         {
             if (!bDrawDrillingRoute || PointsDrillingRoute == null) return;
 
-            DrawPolyLine(false, PointsDrillingRoute, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawPolyLine(false, PointsDrillingRoute, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, name);
         }
 
         //public static void DrawDimensions(bool bDrawDimensions, CDimension[] Dimensions, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas canvasForImage)
@@ -2687,7 +2677,7 @@ namespace BaseClasses
             canvasForImage.Children.Add(myPath);
         }
 
-        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness)
+        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
         {
             if (bDrawDimensions && Dimensions != null && Dimensions.Count > 0)
             {
@@ -2696,12 +2686,12 @@ namespace BaseClasses
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim, true, canvasForImage, linesColor, textColor, thickness);
+                        DrawSimpleLinearDimension(dim, true, canvasForImage, linesColor, textColor, thickness, name);
                     }
                     else if (Dimensions[i] is CDimensionArc)
                     {
                         CDimensionArc dim = (CDimensionArc)Dimensions[i];
-                        DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, canvasForImage);
+                        DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, canvasForImage, name);
                     }
                     else
                     {
@@ -2742,7 +2732,7 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
+        public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage, string name = "")
         {
             if (bDrawLines && lines != null && lines.Count > 0)
             {
@@ -2760,24 +2750,25 @@ namespace BaseClasses
 
                         DoubleCollection dashes = new DoubleCollection();
                         dashes.Add(10); dashes.Add(10);
-                        DrawLine(l, color, startCap, endCap, thickness, canvasForImage, DashStyles.Dash, dashes);
+                        DrawLine(l, color, startCap, endCap, thickness, canvasForImage, DashStyles.Dash, dashes, name);
                     }
                 }
             }
         }
 
-        public static void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
+        public static void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas, string name = "")
         {
-            DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
+            DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness), name);
         }
 
-        public static void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, DashStyle dashStyle, DoubleCollection dashArray = null)
+        public static void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, DashStyle dashStyle, DoubleCollection dashArray = null, string name = "")
         {
             //Random r = new Random();
             //Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
             //SolidColorBrush b = new SolidColorBrush(randomcolor);
 
             Line myLine = new Line();
+            myLine.Tag = name;
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
             myLine.X1 = line.X1;
@@ -2829,7 +2820,7 @@ namespace BaseClasses
         //    imageCanvas.Children.Add(myLine);
         //}
         public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
-            SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+            SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, string name = "")
         {
             if (listPoints == null) return;
             if (listPoints.Count < 2) return;
@@ -2846,6 +2837,7 @@ namespace BaseClasses
             }
 
             Polyline myLine = new Polyline();
+            myLine.Tag = name;
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
             myLine.Points = new PointCollection(points);
@@ -2859,7 +2851,7 @@ namespace BaseClasses
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
         }
-        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, DashStyle dashStyle = null, DoubleCollection dashArray = null)
+        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, string name = "", DashStyle dashStyle = null, DoubleCollection dashArray = null)
         {
             if (listPoints == null) return;
             if (listPoints.Count < 2) return;
@@ -2871,6 +2863,7 @@ namespace BaseClasses
             if (bIsClosed) points.Add(listPoints.ElementAt(0));
 
             Polyline myLine = new Polyline();
+            myLine.Tag = name;
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
             myLine.Points = points;
@@ -2923,11 +2916,12 @@ namespace BaseClasses
             Canvas.SetLeft(polygon, canvasLeft);
             imageCanvas.Children.Add(polygon);
         }
-        public static void DrawCircle(Point center, double diameter, SolidColorBrush colorStroke, SolidColorBrush colorFill, double thickness, Canvas imageCanvas)
+        public static void DrawCircle(Point center, double diameter, SolidColorBrush colorStroke, SolidColorBrush colorFill, double thickness, Canvas imageCanvas, string name = "")
         {
             if (!Double.IsNaN(center.X))
             {
                 Ellipse circle = new Ellipse();
+                circle.Tag = name;
                 circle.Height = diameter;
                 circle.Width = diameter;
                 circle.StrokeThickness = thickness;
@@ -2943,11 +2937,12 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawSymbol_Cross(Point center, double size, SolidColorBrush color, double thickness, Canvas imageCanvas)
+        public static void DrawSymbol_Cross(Point center, double size, SolidColorBrush color, double thickness, Canvas imageCanvas, string name = "")
         {
             if (!Double.IsNaN(center.X)) // Check that value is not "NaN" - TODO - Ondrej Bug No. 109
             {
                 Line l = new Line();
+                l.Tag = name;
 
                 double fSideLength = 0.5f * size;
 
@@ -2958,7 +2953,7 @@ namespace BaseClasses
                 l.X2 = center.X + fSideLength;
                 l.Y2 = center.Y;
 
-                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid, null, name);
 
                 l.X1 = center.X;
                 l.Y1 = center.Y - fSideLength;
@@ -2966,7 +2961,7 @@ namespace BaseClasses
                 l.X2 = center.X;
                 l.Y2 = center.Y + fSideLength;
 
-                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid, null, name);
             }
         }
 
@@ -3105,7 +3100,7 @@ namespace BaseClasses
         //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
         //}
 
-        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness)
+        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas, SolidColorBrush linesColor, SolidColorBrush textColor, double thickness, string name = "")
         {
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
@@ -3222,17 +3217,17 @@ namespace BaseClasses
             double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
 
             // Draw dimension line
-            DrawLine(lPrimaryLine, linesColor, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lPrimaryLine, linesColor, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid, null, name);
             // Draw extension line - start
-            DrawLine(lExtensionLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lExtensionLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
             // Draw extension line - end
-            DrawLine(lExtensionLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lExtensionLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid, null, name);
             // Draw slope line - start
-            DrawLine(lSlopeLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lSlopeLine1, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
             // Draw slope line - end
-            DrawLine(lSlopeLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
+            DrawLine(lSlopeLine2, linesColor, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid, null, name);
             // Draw text            
-            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, textColor, imageCanvas);
+            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, textColor, imageCanvas, name);
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
@@ -3341,7 +3336,7 @@ namespace BaseClasses
         //    DrawText(sText, modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor +  fTextPositionx, modelMarginBottom_y - (pCenter.Y * dReal_Model_Zoom_Factor + fTextPositiony), 0, 12, false, Brushes.Black, imageCanvas);
         //}
 
-        public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas)
+        public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas, string name = "")
         {
             float fPositionOfArcFactor = 0.3f;
 
@@ -3403,14 +3398,14 @@ namespace BaseClasses
             l1.Y1 = pCenter.Y;
             l1.X2 = pStart.X;
             l1.Y2 = pStart.Y;
-            DrawLine(l1, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray);
+            DrawLine(l1, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray, name);
 
             Line l2 = new Line();
             l2.X1 = pCenter.X;
             l2.Y1 = pCenter.Y;
             l2.X2 = pEnd.X;
             l2.Y2 = pEnd.Y;
-            DrawLine(l2, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray);
+            DrawLine(l2, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray, name);
 
             // Draw text
             // Draw text in the middle of the arc
@@ -3423,7 +3418,7 @@ namespace BaseClasses
             string sText = Math.Round(slopeDeg, 1).ToString() + " °";
 
             double dTextWidth;
-            DrawText(sText, fTextPositionx, fTextPositiony, 0, 12, Brushes.Black, imageCanvas, out dTextWidth);
+            DrawText(sText, fTextPositionx, fTextPositiony, 0, 12, Brushes.Black, imageCanvas, out dTextWidth, name);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
@@ -3579,9 +3574,10 @@ namespace BaseClasses
             return points;
         }
 
-        public static void DrawRectangle(SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas canvas, Point lt, Point br)
+        public static void DrawRectangle(SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas canvas, Point lt, Point br, string name = "")
         {
             Rectangle rect = new Rectangle();
+            rect.Tag = name;
             rect.Stretch = Stretch.Fill;
             rect.Fill = fillColor;
             rect.Stroke = strokeColor;
@@ -3593,9 +3589,10 @@ namespace BaseClasses
         }
 
         //TEXT
-        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, bool bIsTextAboveControlPoint, SolidColorBrush color, Canvas canvas)
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, bool bIsTextAboveControlPoint, SolidColorBrush color, Canvas canvas, string name = "")
         {
             TextBlock textBlock = new TextBlock();
+            textBlock.Tag = name;
             textBlock.Text = text;
             textBlock.Foreground = color;
             //textBlock.Background = new SolidColorBrush(Colors.Red);
@@ -3658,9 +3655,10 @@ namespace BaseClasses
             canvas.Children.Add(textBlock);
         }
 
-        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas, out double txtWidth)
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas, out double txtWidth, string name = "")
         {
             TextBlock textBlock = new TextBlock();
+            textBlock.Tag = name;
             textBlock.Text = text;
             textBlock.Foreground = color;
             //textBlock.Background = new SolidColorBrush(Colors.Red);
@@ -3726,9 +3724,10 @@ namespace BaseClasses
             canvas.Children.Add(textBlock);
         }
 
-        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, SolidColorBrush color, Canvas canvas)
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, SolidColorBrush color, Canvas canvas, string name = "")
         {
             TextBlock textBlock = new TextBlock();
+            textBlock.Tag = name;
             textBlock.Text = text;
             textBlock.Foreground = color;
             //textBlock.Background = new SolidColorBrush(Colors.Red);
