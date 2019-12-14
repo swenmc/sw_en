@@ -15,22 +15,22 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridDisplayOptions" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>                
+            <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Margin="5,0,0,0">                
+            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="0" Margin="5,0,0,0">
                 <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawPointNumbers2D" IsChecked="{Binding Path=DrawPointNumbers2D}" Content="Draw Point Numbers" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawHoles2D" IsChecked="{Binding Path=DrawHoles2D}" Content="Draw Holes" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawHoleCentreSymbol2D" IsChecked="{Binding Path=DrawHoleCentreSymbol2D}" Content="Draw Hole Centre Symbol" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Visibility="Hidden" Content="Draw Dimensions" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Visibility="Hidden" Content="Draw Member Outline" Margin="0 5 0 0"/>
-                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Visibility="Hidden" Content="Draw Bend Lines" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Content="Draw Member Outline" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Content="Draw Bend Lines" Margin="0 5 0 0"/>
             </StackPanel>
             
             <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0" >
