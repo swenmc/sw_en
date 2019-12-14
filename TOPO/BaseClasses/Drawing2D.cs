@@ -322,9 +322,9 @@ namespace BaseClasses
                     canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                     canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                     canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasDimensions = MirrorYCoordinates(plate.Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasBendLines = MirrorYCoordinates(plate.BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasDimensions = MirrorAboutX_ChangeYCoordinates(plate.Dimensions, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(plate.MemberOutlines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasBendLines = MirrorAboutX_ChangeYCoordinates(plate.BendLines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                     //if (note2D != null) note2D.MirrorYCoordinates();
                 }
                 else
@@ -536,7 +536,7 @@ namespace BaseClasses
             double horizontalOffset = -0.5 * fPadWidth_y - pad.Eccentricity_y; // Opacne znamienko pre excentricity lebo LCS y v 3D smeruje tam, kam x v 2D
 
             // Pre wind post na zadnej strane je excentricita definovana zaporna v GCS, preto ju musime otocit
-            if(pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
                 horizontalOffset = -0.5 * fPadWidth_y + pad.Eccentricity_y;
 
             List<Point> PointsFootingPad_real = new List<Point>
@@ -583,8 +583,8 @@ namespace BaseClasses
                 dModel_Length_y_real_F1,
                 dscaleFactor,
                 scale_unit,
-                width, 
-                height, 
+                width,
+                height,
                 out fModel_Length_x_page_F1,
                 out fModel_Length_y_page_F1,
                 out dFactor_x_F1,
@@ -949,13 +949,13 @@ namespace BaseClasses
                         break;
                     case 4:
                     case 7:
-                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8,     5, 7, 8 };
+                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8, 5, 7, 8 };
                         break;
                     case 8:
                         crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8 };
                         break;
                     case 9:
-                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8,    8 , 34, 8 };
+                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8, 8, 34, 8 };
                         break;
                     case 10:
                     case 11:
@@ -974,7 +974,7 @@ namespace BaseClasses
 
                     double dCurrentCoordinate = 0;
 
-                    for(int i = 0; i < crscWebSegmentsWidths.Count - 1; i++) // Pocet pozicii vnutornych vyztuh je pocet segmentov - 1
+                    for (int i = 0; i < crscWebSegmentsWidths.Count - 1; i++) // Pocet pozicii vnutornych vyztuh je pocet segmentov - 1
                     {
                         stiffenersHorizontalPositions.Add((dCurrentCoordinate + crscWebSegmentsWidths[i]) / 1000); // Pridanie absolutnej pozicie hrany a konverzia na mm
                         dCurrentCoordinate += crscWebSegmentsWidths[i]; // nastavenie novej hodnoty pre hranu
@@ -1204,7 +1204,7 @@ namespace BaseClasses
                             DrawRectangle(opts.AnchorStrokeColor, null, opts.AnchorLineThickness, canvasForImage, PointsAnchor[0], PointsAnchor[1]);
 
                             // Washers & Nuts
-                            CNut nut = new CNut(anchor.Name, "8.8", new System.Windows.Media.Media3D.Point3D(0,0,0), 0,0,0, true); // Reference Nut // TODO - prerobit na skutocne nuts - 1x washer pre plate top a 2x bearing washer
+                            CNut nut = new CNut(anchor.Name, "8.8", new System.Windows.Media.Media3D.Point3D(0, 0, 0), 0, 0, 0, true); // Reference Nut // TODO - prerobit na skutocne nuts - 1x washer pre plate top a 2x bearing washer
                             float fNutWidth = nut.SizeAcrossCorners;
                             float fNutHeight = nut.Thickness_max;
 
@@ -1490,7 +1490,7 @@ namespace BaseClasses
                             (fPlateWasherThickness * 1000).ToString("F0") + " mm washer on top";
 
                         //notes2D.Add(new CNote2D(pTextNote_AnchorTopWasher, sText_AnchorTopWasher,bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, pArrowEnd_AnchorTopWasher, center, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right));
-   
+
                         notes2D.Add(new CNote2D(relativePoint, sText_AnchorTopWasher, bDrawAnchorTopWasherDescription, pArrowStart_AnchorTopWasher, relativePoint, center, opts.NotesArrowFillColor, opts.NotesArrowStrokeColor, bDrawUnderLineBelowText, VerticalAlignment.Center, HorizontalAlignment.Right, 12, true, opts.NotesThickness));
                     }
 
@@ -1872,9 +1872,9 @@ namespace BaseClasses
                 canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasDimensions = MirrorYCoordinates(Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasMemberOutline = MirrorYCoordinates(MemberOutline); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasBendLines = MirrorYCoordinates(BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasDimensions = MirrorAboutX_ChangeYCoordinates(Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(MemberOutline); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasBendLines = MirrorAboutX_ChangeYCoordinates(BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 if (note2D != null) note2D.MirrorYCoordinates();
             }
             else
@@ -1936,24 +1936,52 @@ namespace BaseClasses
             if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
         }
 
-        private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
+        private static List<CDimension> MirrorAboutX_ChangeYCoordinates(CDimension[] Dimensions, bool changeOriginalObject = true)
         {
             if (Dimensions == null) return new List<CDimension>();
-            List<CDimension> listDimensions = new List<CDimension>(Dimensions);
-            foreach (CDimension d in listDimensions)
+            List<CDimension> listDimensions = new List<CDimension>();
+
+            if (changeOriginalObject)
             {
-                d.MirrorYCoordinates();
+                listDimensions = new List<CDimension>(Dimensions);
+                foreach (CDimension d in listDimensions)
+                {
+                    d.MirrorYCoordinates();
+                }
             }
+            else
+            {
+                foreach (CDimension d in Dimensions)
+                {
+                    CDimension dimensionClone = d.Clone();
+                    dimensionClone.MirrorYCoordinates();
+                    listDimensions.Add(dimensionClone);
+                }
+            }
+
             return listDimensions;
         }
 
-        private static List<CLine2D> MirrorYCoordinates(CLine2D[] lines)
+        private static List<CLine2D> MirrorAboutX_ChangeYCoordinates(CLine2D[] lines, bool changeOriginalObject = true)
         {
             if (lines == null) return new List<CLine2D>();
-            List<CLine2D> listLines = new List<CLine2D>(lines);
-            foreach (CLine2D l in listLines)
+            List<CLine2D> listLines = new List<CLine2D>();
+            if (changeOriginalObject)
             {
-                l.MirrorYCoordinates();
+                listLines = new List<CLine2D>(lines);
+                foreach (CLine2D l in listLines)
+                {
+                    l.MirrorYCoordinates();
+                }
+            }
+            else
+            {
+                foreach (CLine2D l in lines)
+                {
+                    CLine2D lineClone = l.Clone();
+                    lineClone.MirrorYCoordinates();
+                    listLines.Add(lineClone);
+                }
             }
             return listLines;
         }
@@ -3804,7 +3832,7 @@ namespace BaseClasses
         public static double GetTextWidth(string text, double fontSize)
         {
             TextBlock textBlock = new TextBlock();
-            textBlock.Text = text;            
+            textBlock.Text = text;
             textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
             return txtSize.Width;

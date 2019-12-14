@@ -362,28 +362,51 @@ namespace MATH
         {
             point.Y *= -1;
         }
-        public static List<Point> MirrorAboutX_ChangeYCoordinates(List<Point> points)
+        public static List<Point> MirrorAboutX_ChangeYCoordinates(List<Point> points, bool changeOriginalObject = false)
         {
             List<Point> mirroredPoints = new List<Point>();
 
             if (points != null)
             {
-                foreach (Point p in points)
-                {   
-                    mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                if (changeOriginalObject)
+                {
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        points[i] = new Point(points[i].X, points[i].Y * -1);
+                    }
+                    return points;
+                }
+                else
+                {
+                    foreach (Point p in points)
+                    {
+
+                        mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                    }
                 }
             }
             return mirroredPoints;
         }
-        public static List<Point> MirrorAboutX_ChangeYCoordinates(Point[] points)
+        public static List<Point> MirrorAboutX_ChangeYCoordinates(Point[] points, bool changeOriginalObject = false)
         {
             List<Point> mirroredPoints = new List<Point>();
 
             if (points != null)
             {
-                foreach (Point p in points)
+                if (changeOriginalObject)
                 {
-                    mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        points[i] = new Point(points[i].X, points[i].Y * -1);
+                    }
+                    return points.ToList();
+                }
+                else
+                {
+                    foreach (Point p in points)
+                    {
+                        mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                    }
                 }
             }
             return mirroredPoints;
