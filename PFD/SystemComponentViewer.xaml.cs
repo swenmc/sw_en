@@ -986,7 +986,7 @@ namespace PFD
             }
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
-            Drawing2D.DrawPlateToCanvas(plate.GetClonedPlate(),
+            Drawing2D.DrawPlateToCanvas(plate,
                Frame2DWidth,
                Frame2DHeight,
                ref page2D,

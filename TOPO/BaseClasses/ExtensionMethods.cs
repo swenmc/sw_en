@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BaseClasses.GraphObj;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -312,6 +313,22 @@ namespace BaseClasses
                 CReinforcementBar_U r = bar as CReinforcementBar_U;                
                 clone = r.Clone();
                 clone.BIsDisplayed = bar.BIsDisplayed;
+            }
+            return clone;
+        }
+
+        public static CDimension GetClonedDimension(this CDimension dimension)
+        {
+            CDimension clone = null;
+            if (dimension is CDimensionLinear)
+            {
+                CDimensionLinear d = dimension as CDimensionLinear;
+                clone = d.Clone();
+            }
+            else if (dimension is CDimensionArc)
+            {
+                CDimensionArc d = dimension as CDimensionArc;
+                clone = d.Clone();
             }
             return clone;
         }

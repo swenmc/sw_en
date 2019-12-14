@@ -1953,7 +1953,7 @@ namespace BaseClasses
             {
                 foreach (CDimension d in Dimensions)
                 {
-                    CDimension dimensionClone = d.Clone();
+                    CDimension dimensionClone = d.GetClonedDimension();
                     dimensionClone.MirrorYCoordinates();
                     listDimensions.Add(dimensionClone);
                 }
