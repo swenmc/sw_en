@@ -18,7 +18,7 @@ namespace PFD
 
         double m_BuildingNetPrice_WithoutMargin_WithoutGST;
 
-        double m_MarginAbsolute;
+        double m_Margin_Absolute;
         double m_Margin_Percentage;
         double m_BuildingPrice_WithMargin_WithoutGST;
         double m_GST_Absolute;
@@ -51,17 +51,17 @@ namespace PFD
             }
         }
 
-        public double MarginAbsolute
+        public double Margin_Absolute
         {
             get
             {
-                return m_MarginAbsolute;
+                return m_Margin_Absolute;
             }
 
             set
             {
-                m_MarginAbsolute = value;
-                NotifyPropertyChanged("MarginAbsolute");
+                m_Margin_Absolute = value;
+                NotifyPropertyChanged("Margin_Absolute");
             }
         }
 
@@ -200,6 +200,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.0 || value > 30)
+                    throw new ArgumentException("GST must be between 0.0 and 30 [%]");
                 m_GST_Percentage = value;
                 NotifyPropertyChanged("GST_Percentage");
             }
@@ -214,6 +216,8 @@ namespace PFD
 
             set
             {
+                if (value < 0.0 || value > 60)
+                    throw new ArgumentException("Margin must be between 0.0 and 60 [%]");
                 m_Margin_Percentage = value;
                 NotifyPropertyChanged("Margin_Percentage");
             }

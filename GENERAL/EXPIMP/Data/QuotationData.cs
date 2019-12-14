@@ -44,7 +44,7 @@ namespace EXPIMP
 
         double m_BuildingNetPrice_WithoutMargin_WithoutGST;
 
-        double m_MarginAbsolute;
+        double m_Margin_Absolute;
         double m_Margin_Percentage;
         double m_BuildingPrice_WithMargin_WithoutGST;
         double m_GST_Absolute;
@@ -358,16 +358,16 @@ namespace EXPIMP
             }
         }
 
-        public double MarginAbsolute
+        public double Margin_Absolute
         {
             get
             {
-                return m_MarginAbsolute;
+                return m_Margin_Absolute;
             }
 
             set
             {
-                m_MarginAbsolute = value;
+                m_Margin_Absolute = value;
             }
         }
 

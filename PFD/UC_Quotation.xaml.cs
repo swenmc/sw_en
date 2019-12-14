@@ -230,8 +230,7 @@ namespace PFD
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
             // Margin
-            //Margin_Percentage.Text = "40"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
-            double dMarginPercentage = 40;
+            double dMarginPercentage = 40; // Default
             double dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
             double buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
 
@@ -240,19 +239,18 @@ namespace PFD
             double buildingPrice_PCM = buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross;
             double buildingPrice_PPKG = buildingPrice_WithMargin_WithoutGST / dBuildingMass;
 
-            //GST_Percentage.Text = "15"; // TODO - urobit nastavitelne v GUI ??? - ViewModel
-            double dGST_Percentage = 15;
+            double dGST_Percentage = 15; // Default
             double dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
             double dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
 
 
             QuotationViewModel qVM = new QuotationViewModel
             {
-                Margin_Percentage = dMarginPercentage,
-                GST_Percentage = dGST_Percentage,
                 BuildingNetPrice_WithoutMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST,
-                MarginAbsolute = dMarginAbsolute,
+                Margin_Percentage = dMarginPercentage,
+                Margin_Absolute = dMarginAbsolute,
                 BuildingPrice_WithMargin_WithoutGST = buildingPrice_WithMargin_WithoutGST,
+                GST_Percentage = dGST_Percentage,
                 GST_Absolute = dGST_Absolute,
                 TotalBuildingPrice_IncludingGST = dTotalBuildingPrice_IncludingGST,
                 BuildingArea_Gross = fBuildingArea_Gross,
@@ -267,21 +265,6 @@ namespace PFD
             this.DataContext = qVM;
 
             vm._quotationViewModel = qVM;
-
-            // Vypiseme celkovu cenu a dalsie parametre
-            //NetPrice.Text = dBuildingNetPrice_WithoutMargin_WithoutGST.ToString("F2");
-            //Margin_Absolute.Text = dMarginAbsolute.ToString("F2");
-            //SubTotalPrice.Text = buildingPrice_WithMargin_WithoutGST.ToString("F2");
-            //GST_Absolute.Text = dGST_Absolute.ToString("F2");
-            //TotalPrice.Text = dTotalBuildingPrice_IncludingGST.ToString("F2");
-
-            //BuildingArea.Text = fBuildingArea_Gross.ToString("F2");
-            //BuildingVolume.Text = fBuildingVolume_Gross.ToString("F2");
-            //BuildingMass.Text = dBuildingMass.ToString("F2");
-
-            //UnitPricePerBuildingArea.Text = buildingPrice_PSM.ToString("F2");
-            //UnitPricePerBuildingVolume.Text = buildingPrice_PCM.ToString("F2");
-            //UnitPricePerBuildingMass.Text = buildingPrice_PPKG.ToString("F2");
 
             // TODO - for later
 
@@ -319,16 +302,16 @@ namespace PFD
             {
                 QuotationViewModel vm = sender as QuotationViewModel;
 
-                vm.MarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * vm.Margin_Percentage / 100f;
-                vm.BuildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + vm.MarginAbsolute;
+                vm.Margin_Absolute = dBuildingNetPrice_WithoutMargin_WithoutGST * vm.Margin_Percentage / 100f;
+                vm.BuildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + vm.Margin_Absolute;
+
+                vm.GST_Absolute = vm.BuildingPrice_WithMargin_WithoutGST * vm.GST_Percentage / 100f;
+                vm.TotalBuildingPrice_IncludingGST = vm.BuildingPrice_WithMargin_WithoutGST + vm.GST_Absolute;
 
                 // Building Unit Price
                 vm.BuildingPrice_PSM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingArea_Gross;
                 vm.BuildingPrice_PCM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingVolume_Gross;
                 vm.BuildingPrice_PPKG = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingMass;
-                
-                vm.GST_Absolute = vm.GST_Percentage / 100f * vm.BuildingPrice_WithMargin_WithoutGST;
-                vm.TotalBuildingPrice_IncludingGST = vm.BuildingPrice_WithMargin_WithoutGST + vm.GST_Absolute;
             }
         }
 

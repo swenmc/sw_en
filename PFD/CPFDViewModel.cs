@@ -3320,7 +3320,7 @@ namespace PFD
             data.BuildingVolume_Gross = _quotationViewModel.BuildingVolume_Gross;
             data.GST_Absolute = _quotationViewModel.GST_Absolute;
             data.GST_Percentage = _quotationViewModel.GST_Percentage;
-            data.MarginAbsolute = _quotationViewModel.MarginAbsolute;
+            data.Margin_Absolute = _quotationViewModel.Margin_Absolute;
             data.Margin_Percentage = _quotationViewModel.Margin_Percentage;
             data.TotalBuildingPrice_IncludingGST = _quotationViewModel.TotalBuildingPrice_IncludingGST;
 
