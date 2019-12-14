@@ -1872,10 +1872,10 @@ namespace BaseClasses
                 canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasDimensions = MirrorAboutX_ChangeYCoordinates(Dimensions); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(MemberOutline); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasBendLines = MirrorAboutX_ChangeYCoordinates(BendLines); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                if (note2D != null) note2D.MirrorYCoordinates();
+                canvasDimensions = MirrorAboutX_ChangeYCoordinates(Dimensions, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(MemberOutline, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasBendLines = MirrorAboutX_ChangeYCoordinates(BendLines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                if (note2D != null) note2D.MirrorAboutX_ChangeYCoordinates();
             }
             else
             {

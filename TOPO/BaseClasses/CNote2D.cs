@@ -244,7 +244,7 @@ namespace BaseClasses
             MArrowStrokeColor = arrowStrokeColor;
         }
 
-        public void MirrorYCoordinates()
+        public void MirrorAboutX_ChangeYCoordinates()
         {
             MNoteTextPoint.Y *= -1;
             //MRefPoint.Y *= -1;
