@@ -1141,7 +1141,7 @@ namespace BaseClasses
 
                         double dHolesDiameterScrews = basePlate.ScrewArrangement.referenceScrew.Diameter_shank * dReal_Model_Zoom_Factor;
 
-                        DrawHoles(opts.bDrawHoles, opts.bDrawHoleCentreSymbols, canvasPointsHolesScrews, opts.bHoleColor, opts.bHoleCenterSymbolColor, opts.HoleLineThickness, opts.HoleCenterSymbolLineThickness, dHolesDiameterScrews, canvasForImage, "", 1);
+                        DrawHoles(opts.bDrawHoles, opts.bDrawHoleCentreSymbols, canvasPointsHolesScrews, opts.bHoleColor, opts.bHoleCenterSymbolColor, opts.HoleLineThickness, opts.HoleCenterSymbolLineThickness, dHolesDiameterScrews, canvasForImage, "", "", 1);
                     }
                 }
 
@@ -1904,23 +1904,23 @@ namespace BaseClasses
             // Holes
             if (PointsHolesScrews != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterScrews, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterScrews, canvasForImage, "Holes", "Hole Center Symbols");
                 DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
             }
 
             if (PointsHolesAnchors != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterAnchors, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, Brushes.Black, Brushes.Red, 1, 1, dHolesDiameterAnchors, canvasForImage, "Anchor Holes", "Anchor Hole Center Symbols");
             }
 
             // Dimensions
             DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage, Brushes.DarkGreen, Brushes.DarkGreen, 1, "Dimensions");
 
             // Member Outline
-            DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Member Outline");
 
             // Bend Lines
-            DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Bend Lines");
 
             //Notes
             if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
@@ -2393,7 +2393,7 @@ namespace BaseClasses
         //    }
         //}
 
-        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, SolidColorBrush ColorHoles, SolidColorBrush ColorHoleCenterSymbols, double ThicknessHoleLine, double ThicknessHoleCenterSymbolLine, double dHolesDiameter, Canvas canvasForImage, string name = "", double SymbolOffsetFromHoleCircle = 5)
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, List<Point> PointsHoles, SolidColorBrush ColorHoles, SolidColorBrush ColorHoleCenterSymbols, double ThicknessHoleLine, double ThicknessHoleCenterSymbolLine, double dHolesDiameter, Canvas canvasForImage, string nameHoles = "", string nameHoleCentreSymbols = "", double SymbolOffsetFromHoleCircle = 5)
         {
             if (bDrawHoles)
             {
@@ -2403,10 +2403,10 @@ namespace BaseClasses
                     for (int i = 0; i < PointsHoles.Count; i++)
                     {
                         // Draw Hole
-                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, ThicknessHoleLine, canvasForImage, name);
+                        DrawCircle(PointsHoles[i], dHolesDiameter, Brushes.Black, null, ThicknessHoleLine, canvasForImage, nameHoles);
 
                         // Draw Symbol of Center
-                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, ColorHoleCenterSymbols, ThicknessHoleCenterSymbolLine, canvasForImage, name);
+                        if (bDrawHoleCentreSymbols) DrawSymbol_Cross(PointsHoles[i], dHolesDiameter + 2 * SymbolOffsetFromHoleCircle, ColorHoleCenterSymbols, ThicknessHoleCenterSymbolLine, canvasForImage, nameHoleCentreSymbols);
                     }
                 }
             }
