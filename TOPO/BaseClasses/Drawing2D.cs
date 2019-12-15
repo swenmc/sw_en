@@ -317,14 +317,14 @@ namespace BaseClasses
                 bool bPointsHaveYinUpDirection = false;
                 if (bPointsHaveYinUpDirection)
                 {
-                    canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);  // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.PointsOut2D);
                     //canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(null);
-                    canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasDimensions = MirrorAboutX_ChangeYCoordinates(plate.Dimensions, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(plate.MemberOutlines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                    canvasBendLines = MirrorAboutX_ChangeYCoordinates(plate.BendLines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                    canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsScrews2D);
+                    canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(pHolesCentersPointsAnchors2D);
+                    canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(plate.DrillingRoutePoints);
+                    canvasDimensions = MirrorAboutX_ChangeYCoordinates(plate.Dimensions, false);
+                    canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(plate.MemberOutlines, false);
+                    canvasBendLines = MirrorAboutX_ChangeYCoordinates(plate.BendLines, false);
                     //if (note2D != null) note2D.MirrorYCoordinates();
                 }
                 else
@@ -336,14 +336,42 @@ namespace BaseClasses
                     if (pHolesCentersPointsAnchors2D != null) canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
                     if (plate.DrillingRoutePoints != null) canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
 
-                    //daco treba mirorovat daco nie...nechapem
-                    // TO Ondrej - toto som zatial zakomentoval, ale mozno to bude potrebne, ak nie tak ten zakomentovany kod zmaz
-                    //canvasDimensions = MirrorYCoordinates(plate.Dimensions);
-                    //canvasMemberOutline = MirrorYCoordinates(plate.MemberOutlines);
-                    //canvasBendLines = MirrorYCoordinates(plate.BendLines);
-                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(plate.Dimensions);
-                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(plate.MemberOutlines);
-                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(plate.BendLines);
+                    // To Ondrej - pokus o opravu prepisu dat pre plate ak spustim export opakovane
+                    List<CDimension> clonedDimensions = new List<CDimension>();
+                    if (plate.Dimensions != null)
+                    {
+                        foreach (CDimension d in plate.Dimensions)
+                        {
+                            CDimension dimensionClone = d.GetClonedDimension();
+                            clonedDimensions.Add(dimensionClone);
+                        }
+                    }
+
+                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(clonedDimensions /*plate.Dimensions*/); // To Ondrej - Toto nemozeme robit. Musime do canvasDimensions priradit clonovane plate Dimensions
+
+                    List<CLine2D> clonedMemberOutlines = new List<CLine2D>();
+                    if (plate.MemberOutlines != null)
+                    {
+                        foreach (CLine2D l in plate.MemberOutlines)
+                        {
+                            CLine2D lineClone = l.Clone();
+                            clonedMemberOutlines.Add(lineClone);
+                        }
+                    }
+
+                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(clonedMemberOutlines /*plate.MemberOutlines*/ ); // To Ondrej - Toto nemozeme robit. Musime do canvasMemberOutlines priradit clonovane plate MemberOutlines
+
+                    List<CLine2D> clonedBendLines = new List<CLine2D>();
+                    if (plate.BendLines != null)
+                    {
+                        foreach (CLine2D l in plate.BendLines)
+                        {
+                            CLine2D lineClone = l.Clone();
+                            clonedBendLines.Add(lineClone);
+                        }
+                    }
+
+                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(clonedBendLines /*plate.BendLines*/); // To Ondrej - Toto nemozeme robit. Musime do canvasBendLines priradit clonovane plate BendLines
                 }
 
                 double minX = canvasPointsOut.Min(p => p.X);
@@ -1857,14 +1885,14 @@ namespace BaseClasses
 
             if (bPointsHaveYinUpDirection)
             {
-                canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasDimensions = MirrorAboutX_ChangeYCoordinates(Dimensions, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(MemberOutline, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
-                canvasBendLines = MirrorAboutX_ChangeYCoordinates(BendLines, false); // Bug 396 TODO Ondrej - urobit rozrisenia tychto funkcii, pridat nejaky bool parameter a umoznit aby vracali modifikovane objekty alebo nove objekty a neprepisali vlastnosti vstupujuceho objektu
+                canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut);
+                canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn);
+                canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews);
+                canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors);
+                canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
+                canvasDimensions = MirrorAboutX_ChangeYCoordinates(Dimensions, false);
+                canvasMemberOutline = MirrorAboutX_ChangeYCoordinates(MemberOutline, false);
+                canvasBendLines = MirrorAboutX_ChangeYCoordinates(BendLines, false);
                 if (note2D != null) note2D.MirrorAboutX_ChangeYCoordinates();
             }
             else
@@ -1874,9 +1902,43 @@ namespace BaseClasses
                 canvasPointsHolesScrews = new List<Point>(PointsHolesScrews);
                 canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
-                canvasDimensions = new List<CDimension>(Dimensions);
-                canvasMemberOutline = new List<CLine2D>(MemberOutline);
-                canvasBendLines = new List<CLine2D>(BendLines);
+
+                // To Ondrej - pokus o opravu prepisu dat pre plate ak spustim export opakovane
+                List<CDimension> clonedDimensions = new List<CDimension>();
+                if (Dimensions != null)
+                {
+                    foreach (CDimension d in Dimensions)
+                    {
+                        CDimension dimensionClone = d.GetClonedDimension();
+                        clonedDimensions.Add(dimensionClone);
+                    }
+                }
+
+                if (Dimensions != null) canvasDimensions = new List<CDimension>(clonedDimensions /*plate.Dimensions*/); // To Ondrej - Toto nemozeme robit. Musime do canvasDimensions priradit clonovane plate Dimensions
+
+                List<CLine2D> clonedMemberOutlines = new List<CLine2D>();
+                if (MemberOutline != null)
+                {
+                    foreach (CLine2D l in MemberOutline)
+                    {
+                        CLine2D lineClone = l.Clone();
+                        clonedMemberOutlines.Add(lineClone);
+                    }
+                }
+
+                if (MemberOutline != null) canvasMemberOutline = new List<CLine2D>(clonedMemberOutlines /*plate.MemberOutlines*/ ); // To Ondrej - Toto nemozeme robit. Musime do canvasMemberOutlines priradit clonovane plate MemberOutlines
+
+                List<CLine2D> clonedBendLines = new List<CLine2D>();
+                if (BendLines != null)
+                {
+                    foreach (CLine2D l in BendLines)
+                    {
+                        CLine2D lineClone = l.Clone();
+                        clonedBendLines.Add(lineClone);
+                    }
+                }
+
+                if (BendLines != null) canvasBendLines = new List<CLine2D>(clonedBendLines /*plate.BendLines*/); // To Ondrej - Toto nemozeme robit. Musime do canvasBendLines priradit clonovane plate BendLines
             }
 
             double minX = canvasPointsOut.Min(p => p.X);
