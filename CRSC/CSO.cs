@@ -226,9 +226,9 @@ namespace CRSC
             A_vz = this.A_vz_method(count);
             this.Sy0_Sz0_method(count);
             this.Iy0_Iz0_method(count);
-            this.omega0i = new double[count];
-            this.omega = new double[count];
-            this.d_omega_s = new double[count];
+            this.Omega0i = new double[count];
+            this.Omega = new double[count];
+            this.Omega_s = new double[count];
             this.J_12_13_14_method();
             this.J_15_method(count);
             this.J_16_method(count);
@@ -340,47 +340,47 @@ namespace CRSC
         //J.15 method
         public void J_15_method(int count)
         {
-            omega0i[0] = 0;
-            omega[0] = 0;
+            Omega0i[0] = 0;
+            Omega[0] = 0;
             for (int i = 1; i < count; i++)
             {
-                omega0i[i] = y_suradnice[i - 1] * z_suradnice[i] - y_suradnice[i] * z_suradnice[i - 1];
-                omega[i] = omega[i - 1] + omega0i[i];
+                Omega0i[i] = y_suradnice[i - 1] * z_suradnice[i] - y_suradnice[i] * z_suradnice[i - 1];
+                Omega[i] = Omega[i - 1] + Omega0i[i];
             }
         }
         //J.16 method
         public void J_16_method(int count)
         {
-            _Iomega = 0;
+            Iomega = 0;
             for (int i = 1; i < count; i++)
             {
-                _Iomega += (omega[i - 1] + omega[i]) * dAi_method(i) / 2;
+                Iomega += (Omega[i - 1] + Omega[i]) * dAi_method(i) / 2;
             }
-            _omega_mean = _Iomega / A_g;
+            Omega_mean = Iomega / A_g;
         }
         //J.17,J18,J19 method 
         public void J_17_18_19_method(int count)
         {
-            _Iy_omega0 = 0;
-            _Iz_omega0 = 0;
-            _Iomega_omega0 = 0;
+            Iy_omega0 = 0;
+            Iz_omega0 = 0;
+            Iomega_omega0 = 0;
 
             for (int i = 1; i < count; i++)
             {
                 double dAi = dAi_method(i);
-                _Iy_omega0 += (2 * y_suradnice[i - 1] * omega[i - 1] +
-                               2 * y_suradnice[i] * omega[i] +
-                               y_suradnice[i - 1] * omega[i] +
-                               y_suradnice[i] * omega[i - 1]) * dAi / 6;
-                _Iz_omega0 += (2 * omega[i - 1] * z_suradnice[i - 1] +
-                               2 * omega[i] * z_suradnice[i] +
-                               omega[i - 1] * z_suradnice[i] +
-                               omega[i] * z_suradnice[i - 1]) * dAi / 6;
-                _Iomega_omega0 += (Math.Pow(omega[i], 2) + Math.Pow(omega[i - 1], 2) + omega[i] * omega[i - 1]) * dAi / 3;
+                Iy_omega0 += (2 * y_suradnice[i - 1] * Omega[i - 1] +
+                               2 * y_suradnice[i] * Omega[i] +
+                               y_suradnice[i - 1] * Omega[i] +
+                               y_suradnice[i] * Omega[i - 1]) * dAi / 6;
+                Iz_omega0 += (2 * Omega[i - 1] * z_suradnice[i - 1] +
+                               2 * Omega[i] * z_suradnice[i] +
+                               Omega[i - 1] * z_suradnice[i] +
+                               Omega[i] * z_suradnice[i - 1]) * dAi / 6;
+                Iomega_omega0 += (Math.Pow(Omega[i], 2) + Math.Pow(Omega[i - 1], 2) + Omega[i] * Omega[i - 1]) * dAi / 3;
             }
-            _Iy_omega = _Iy_omega0 - (S_z0 * _Iomega / A_g);
-            _Iz_omega = _Iz_omega0 - (S_y0 * _Iomega / A_g);
-            _Iomega_omega = _Iomega_omega0 - (Math.Pow(_Iomega, 2) / A_g);
+            Iy_omega = Iy_omega0 - (S_z0 * Iomega / A_g);
+            Iz_omega = Iz_omega0 - (S_y0 * Iomega / A_g);
+            Iomega_omega = Iomega_omega0 - (Math.Pow(Iomega, 2) / A_g);
         }
         //J.20 and J.21 method
         public void J_20_21_method()
@@ -388,9 +388,9 @@ namespace CRSC
             try
             {
                 double temp = I_y * I_z - Math.Pow(I_yz, 2);
-                D_y_sc = (_Iz_omega * I_z - _Iy_omega * I_yz) / temp;
-                D_z_sc = (-_Iy_omega * I_y - _Iz_omega * I_yz) / temp;
-                I_w = _Iomega_omega + D_z_sc * _Iy_omega - D_y_sc * _Iz_omega;
+                D_y_sc = (Iz_omega * I_z - Iy_omega * I_yz) / temp;
+                D_z_sc = (-Iy_omega * I_y - Iz_omega * I_yz) / temp;
+                I_w = Iomega_omega + D_z_sc * Iy_omega - D_y_sc * Iz_omega;
             }
             catch (DivideByZeroException) { /*MessageBox.Show("ERROR. Divide by zero, J.20 method."); */}
         }
@@ -428,27 +428,27 @@ namespace CRSC
         //J.23 method   ????? nerozumiem vzorcu...je potrebne upresnit
         public void J_23_method(int count)
         {
-            d_omega_s[0] = 0;
+            Omega_s[0] = 0;
             for (int i = 1; i < count; i++)
             {
-                d_omega_s[i] = omega[i] - _omega_mean + D_z_sc * (y_suradnice[i] - D_y_gc) - D_y_sc * (z_suradnice[i] - D_z_gc);
+                Omega_s[i] = Omega[i] - Omega_mean + D_z_sc * (y_suradnice[i] - D_y_gc) - D_y_sc * (z_suradnice[i] - D_z_gc);
             }
         }
         //J.24,J.25,J.26 method
         public void J_24_25_26_method()
         {
-            omega_max = MathF.Max(d_omega_s);
-            W_w = I_w / omega_max;
+            Omega_max = MathF.Max(Omega_s);
+            W_w = I_w / Omega_max;
             D_y_s = D_y_sc - D_y_gc;
             D_z_s = D_z_sc - D_z_gc;
-            _Ip = I_y + I_z + A_g * (Math.Pow(D_y_s, 2) + Math.Pow(D_z_s, 2));
+            Ip = I_y + I_z + A_g * (Math.Pow(D_y_s, 2) + Math.Pow(D_z_s, 2));
 
         }
         //J.29 method
         public void J_29_method(int num)
         {
-            d_y_ci = (y_suradnice[num] + y_suradnice[num - 1]) / 2 - D_y_gc;
-            d_z_ci = (z_suradnice[num] + z_suradnice[num - 1]) / 2 - D_z_gc;
+            D_y_ci = (y_suradnice[num] + y_suradnice[num - 1]) / 2 - D_y_gc;
+            D_z_ci = (z_suradnice[num] + z_suradnice[num - 1]) / 2 - D_z_gc;
         }
         //J.27,J.28 method
         //This method uses J.29 method to count actual d_y_ci and d_z_ci numbers
@@ -459,15 +459,15 @@ namespace CRSC
             {
                 this.J_29_method(i);
                 dAi = this.dAi_method(i);
-                zj_temp += (Math.Pow(d_z_ci, 3) + d_z_ci * (Math.Pow(z_suradnice[i] - z_suradnice[i - 1], 2) / 4 + Math.Pow(d_y_ci, 2) +
-                        Math.Pow(y_suradnice[i] - y_suradnice[i - 1], 2) / 12) + d_y_ci * (y_suradnice[i] - y_suradnice[i - 1]) *
+                zj_temp += (Math.Pow(D_z_ci, 3) + D_z_ci * (Math.Pow(z_suradnice[i] - z_suradnice[i - 1], 2) / 4 + Math.Pow(D_y_ci, 2) +
+                        Math.Pow(y_suradnice[i] - y_suradnice[i - 1], 2) / 12) + D_y_ci * (y_suradnice[i] - y_suradnice[i - 1]) *
                         (z_suradnice[i] - z_suradnice[i - 1]) / 6) * dAi;
-                yj_temp += (Math.Pow(d_y_ci, 3) + d_y_ci * (Math.Pow(y_suradnice[i] - y_suradnice[i - 1], 2) / 4 + Math.Pow(d_z_ci, 2) +
-                        Math.Pow(z_suradnice[i] - z_suradnice[i - 1], 2) / 12) + d_z_ci * (z_suradnice[i] - z_suradnice[i - 1]) *
+                yj_temp += (Math.Pow(D_y_ci, 3) + D_y_ci * (Math.Pow(y_suradnice[i] - y_suradnice[i - 1], 2) / 4 + Math.Pow(D_z_ci, 2) +
+                        Math.Pow(z_suradnice[i] - z_suradnice[i - 1], 2) / 12) + D_z_ci * (z_suradnice[i] - z_suradnice[i - 1]) *
                         (y_suradnice[i] - y_suradnice[i - 1]) / 6) * dAi;
             }
-            d_z_j = D_z_s - (0.5 / I_y) * zj_temp;
-            d_y_j = D_y_s - (0.5 / I_z) * yj_temp;
+            D_z_j = D_z_s - (0.5 / I_y) * zj_temp;
+            D_y_j = D_y_s - (0.5 / I_z) * yj_temp;
         }
         // Calculate dimensions
         public void J_Calc_Dimensions()
@@ -546,7 +546,7 @@ namespace CRSC
                 dAi = this.dAi_method(i);
 
                 //Beta_y_temp += (Math.Pow((y_suradnice[i] - d_y_gc) - (y_suradnice[i - 1] - d_y_gc), 2) * ((z_suradnice[i] - d_z_gc) - (z_suradnice[i - 1] - d_z_gc)) + Math.Pow((z_suradnice[i] - d_z_gc) - (z_suradnice[i - 1] - d_z_gc), 3)) * dAi;
-                Beta_y_temp += (Math.Pow(d_y_ci, 2) * (d_z_ci) + Math.Pow(d_z_ci, 3)) * dAi;
+                Beta_y_temp += (Math.Pow(D_y_ci, 2) * (D_z_ci) + Math.Pow(D_z_ci, 3)) * dAi;
             }
 
             Beta_y = (1 / I_y) * Beta_y_temp - 2 * D_z_s;
@@ -561,7 +561,7 @@ namespace CRSC
                 dAi = this.dAi_method(i);
 
                 // Beta_z_temp += (Math.Pow((z_suradnice[i] - d_z_gc) - (z_suradnice[i - 1] - d_z_gc), 2) * ((y_suradnice[i] - d_y_gc) - (y_suradnice[i - 1] - d_y_gc)) + Math.Pow((y_suradnice[i] - d_y_gc) - (y_suradnice[i - 1] - d_y_gc), 3)) * dAi;
-                Beta_z_temp += (Math.Pow(d_z_ci, 2) * (d_y_ci) + Math.Pow(d_y_ci, 3)) * dAi;
+                Beta_z_temp += (Math.Pow(D_z_ci, 2) * (D_y_ci) + Math.Pow(D_y_ci, 3)) * dAi;
             }
 
             Beta_z = (1 / I_z) * Beta_z_temp - 2 * D_y_s;

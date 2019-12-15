@@ -899,62 +899,12 @@ namespace BaseClasses
 
             if (opts.bDrawColumnOutline)
             {
-                int iSectionDatabaseID = joint.m_MainMember.CrScStart.DatabaseID;
-                //string sSectionName = joint.m_MainMember.CrScStart.Name_short;
+                CCrSc_TW columnCrsc = (CCrSc_TW)joint.m_MainMember.CrScStart;
 
-                // TODO Ondrej - potreboval by som toto pridat do databazy - je to pole medzier medi zlomami hran / rebrami prierezu, mal by to byt string s ciarkami alebo bodkociarkami ktory potom prevedieme na cisla ???
-                // Kazdy prierez moze mat iny pocet hran / rebier
-                /*
-                1  10075
-                2  27055
-                3  27095
-                4  27095n
-                5  270115
-                6  270115btb
-                7  270115n
-                8  50020
-                9  50020n
-                10 63020
-                11 63020s1
-                12 63020s2
-                */
-
-                List<double> crscWebSegmentsWidths = null;
-
-                // Hodnoty su v [mm]
-                switch (iSectionDatabaseID)
-                {
-                    case 1:
-                        crscWebSegmentsWidths = new List<double>() { 6, 14, 4.5, 14, 4.5, 14, 4.5, 14, 4.5, 14, 6 };
-                        break;
-                    case 2:
-                    case 3:
-                    case 5:
-                    case 6: // Neplati pri pohlade z boku ale mne to nevadi :)
-                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8 };
-                        break;
-                    case 4:
-                    case 7:
-                        crscWebSegmentsWidths = new List<double>() { 8, 40.8, 20, 17.5, 20, 57.4, 20, 17.5, 20, 40.8, 8, 5, 7, 8 };
-                        break;
-                    case 8:
-                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8 };
-                        break;
-                    case 9:
-                        crscWebSegmentsWidths = new List<double>() { 8, 176.5, 131, 176.5, 8, 8, 34, 8 };
-                        break;
-                    case 10:
-                    case 11:
-                    case 12:
-                        crscWebSegmentsWidths = new List<double>() { 25, 51.8, 16, 14.9, 16, 98, 46.8, 93, 46.8, 98, 16, 14.9, 16, 51.8, 25 };
-                        break;
-                    default:
-                        new Exception("Cross section is not implemented");
-                        break;
-                }
+                List<double> crscWebSegmentsWidths = columnCrsc.RibsProjectionSpacing.ToList();
 
                 List<double> stiffenersHorizontalPositions = null;
-                if (crscWebSegmentsWidths != null) // Konverzia na suradnice positions a z mm na m
+                if (crscWebSegmentsWidths != null) // Konverzia na suradnice positions
                 {
                     stiffenersHorizontalPositions = new List<double>();
 
@@ -962,7 +912,7 @@ namespace BaseClasses
 
                     for (int i = 0; i < crscWebSegmentsWidths.Count - 1; i++) // Pocet pozicii vnutornych vyztuh je pocet segmentov - 1
                     {
-                        stiffenersHorizontalPositions.Add((dCurrentCoordinate + crscWebSegmentsWidths[i]) / 1000); // Pridanie absolutnej pozicie hrany a konverzia na mm
+                        stiffenersHorizontalPositions.Add((dCurrentCoordinate + crscWebSegmentsWidths[i])); // Pridanie absolutnej pozicie hrany
                         dCurrentCoordinate += crscWebSegmentsWidths[i]; // nastavenie novej hodnoty pre hranu
                     }
                 }

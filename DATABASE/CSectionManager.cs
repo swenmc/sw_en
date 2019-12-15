@@ -387,7 +387,18 @@ namespace DATABASE
             crsc.iScrewsGauge = int.Parse(reader["screwsGauge"].ToString());
             crsc.dScrewDistance = double.Parse(reader["screwsDistance"].ToString(), nfi);
 
-            crsc.ribsProjectionSpacing_mm = reader["ribsProjectionSpacing_mm"].ToString();
+            // Nacitame string so zoznam priemetov sirok
+            string ribsProjectionSpacing_mm = reader["ribsProjectionSpacing_mm"].ToString();
+
+            // String prevedieme na pole double
+            crsc.ribsProjectionSpacing = ConvertStringArray(ribsProjectionSpacing_mm);
+
+            // Prevedieme z mm na metre
+            for(int i =0; i< crsc.ribsProjectionSpacing.Length; i++)
+            {
+                crsc.ribsProjectionSpacing[i] *= 0.001;
+            }
+
             crsc.dPrice_PPLM_NZD = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
 
             return crsc;
@@ -447,6 +458,49 @@ namespace DATABASE
             list.Add(properties.fvz_red_factor);
 
             return list;
+        }
+
+        // TODO Ondrej - Refaktorovat s CTrapezoidalSheetingManager
+        // TODO Ondrej - Toto by sa malo presunut do nejake bazovej triedy pre pracu s textom a pod
+        // TODO Ondrej - umoznit rozne nastavovanie oddelovacich znakov pri roznom pouziti
+
+        // Split text
+        // Returns array of words (strings)
+        public static string[] SplitText(string inputText)
+        {
+            char[] delimiterChars = { /*' ', ',', '.', ':',*/ ';', '\t', '\n' }; // Znaky, ktore urcuju rozdelenie textu
+
+            //System.Console.WriteLine($"Original text: '{inputText}'");
+
+            string[] words = inputText.Split(delimiterChars);
+
+            /*
+            System.Console.WriteLine($"{words.Length} words in text:");
+
+                foreach (var word in words)
+                {
+                    System.Console.WriteLine($"<{word}>");
+            }
+            */
+
+            return words;
+        }
+
+        // Convert string to array of double values
+
+        public static double[] ConvertStringArray(string inputText)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            string[] words = SplitText(inputText);
+
+            double[] array = new double[words.Length];
+
+            for (int i = 0; i < words.Length; i++)
+                array[i] = double.Parse(words[i], nfi);
+
+            return array;
         }
     }
 }

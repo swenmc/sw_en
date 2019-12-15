@@ -24,7 +24,7 @@ namespace CRSC
         //public double _h;
         //public double _b;
         //public double _A_g;                 // Cross-section area (J.6)
-        public double _A_elem;                // Area off segment (J.5)
+        private double _A_elem;                // Area off segment (J.5)
         //public double _d_A_vy;              // Cross-section shear area
         //public double _d_A_vz;              // Cross-section shear area
         //public double _Sy0;                 // Static modulus to primary axis yO and zO  (J.7) and (J.9)
@@ -43,11 +43,11 @@ namespace CRSC
         //public double _Iepsilon;            // Moment of inertia (Second moment of area) to main axis - greek letters XI and ETA  // (J.13)
         //public double _Imikro;              // (J.14)
 
-        public double[] omega0i;            // Vysecove souradnice (J.15)
-        public double[] omega;
-        public double _Iomega;              // Stredni vysecova souradnice  // (J.16)
+        private double[] omega0i;            // Vysecove souradnice (J.15)
+        private double[] omega;
+        private double _Iomega;              // Stredni vysecova souradnice  // (J.16)
 
-        public double _omega_mean           // Stredni vysecova souradnice  // (J.16)
+        private double _omega_mean           // Stredni vysecova souradnice  // (J.16)
              , _Iy_omega0            // Staticky vysecový moment // (J.17)
              , _Iz_omega0            // (J.18)
              , _Iomega_omega0        // (J.19)
@@ -76,41 +76,47 @@ namespace CRSC
              //, _Wy_pl                // Plastic cross-section modulus y-y and z-z
              //, _Wz_pl;               // Plastic cross-section modulus y-y and z-z
 
-        public double[] d_omega_s;          // Vysecove souradnice ktere jsou vztazeny ke stredu smyku (J.23) // (J.23)
-        public double m_Beta_y, m_Beta_z;      // Monosymmetry constant AS / NZS standards
+        private double[] d_omega_s;          // Vysecove souradnice ktere jsou vztazeny ke stredu smyku (J.23) // (J.23)
+        private double m_Beta_y, m_Beta_z;   // Monosymmetry constant AS / NZS standards
         //public double m_t_min; // Uz je definovane v CRSC
         //public double m_t_max;
 
-        public double dBending_curve_stress_x1;
-        public double dBending_curve_stress_x2;
-        public double dBending_curve_stress_x3;
-        public double dBending_curve_stress_y;
-        public double dCompression_curve_stress_1;
-        public double dCompression_curve_stress_2;
-        public double dCompression_curve_stress_3;
+        private double dBending_curve_stress_x1;
+        private double dBending_curve_stress_x2;
+        private double dBending_curve_stress_x3;
+        private double dBending_curve_stress_y;
+        private double dCompression_curve_stress_1;
+        private double dCompression_curve_stress_2;
+        private double dCompression_curve_stress_3;
 
-        public double dfol_b;
-        public double dfod_b;
-        public double dfol_c;
-        public double dfod_c;
+        private double dfol_b;
+        private double dfod_b;
+        private double dfol_c;
+        private double dfod_c;
 
-        public double _A_stiff;
-        public int _n_stiff;
-        public double _y_stiff;
+        private double _A_stiff;
+        private int _n_stiff;
+        private double _y_stiff;
 
-        public double _b_1_flat_portion;
-        public double _b_tot;
-        public double _b_tot_length;
-        public double _A_f1;
-        //public double A_vy;
-        public double _fvy_red_factor;
+        private double _b_1_flat_portion;
+        private double _b_tot;
+        private double _b_tot_length;
+        private double _A_f1;
+        //private double A_vy;
+        private double _fvy_red_factor;
 
-        public double _d_1_flat_portion;
-        public double _d_tot;
-        public double _d_tot_length;
-        public double _A_w1;
-        //public double A_vz;
-        public double _fvz_red_factor;
+        private double _d_1_flat_portion;
+        private double _d_tot;
+        private double _d_tot_length;
+        private double _A_w1;
+        //private double A_vz;
+        private double _fvz_red_factor;
+
+        private bool _IsBuiltUp; // Je prierez zlozeny z viacerych casti
+        private int _iScrewsNumber; // Pocet skrutiek v jednom reze (horna + spodna pasnica) pre pozdlzne TEKs skrutky (built-up je true, nested alebo back to back cross-section, box cross-sections)
+        private int _iScrewsGauge; // Gauge (priemer) pre pozdlzne TEKs skrutky (built-up je true, nested alebo back to back cross-section, box cross-sections)
+        private double _dScrewDistance; // Roztec pre pozdlzne TEKs skrutky (built-up je true, nested alebo back to back cross-section, box cross-sections)
+        private double [] _ribsProjectionSpacing; // zoznam priemetov sirok na stene
 
         public ObservableCollection<string> Series = new ObservableCollection<string>()
         {
@@ -135,15 +141,46 @@ namespace CRSC
             set { _A_elem = value; }
         }
 
+        public double [] Omega0i
+        {
+            get { return omega0i; }
+            set { omega0i = value; }
+        }
+
+        public double [] Omega
+        {
+            get { return omega; }
+            set { omega = value; }
+        }
+
         public double Iomega
         {
             get { return _Iomega; }
             set { _Iomega = value; }
         }
+
         public double Omega_mean
         {
             get { return _omega_mean; }
             set { _omega_mean = value; }
+        }
+
+        public double Iy_omega0
+        {
+            get { return _Iy_omega0; }
+            set { _Iy_omega0 = value; }
+        }
+
+        public double Iz_omega0
+        {
+            get { return _Iz_omega0; }
+            set { _Iz_omega0 = value; }
+        }
+
+        public double Iomega_omega0
+        {
+            get { return _Iomega_omega0; }
+            set { _Iomega_omega0 = value; }
         }
 
         public double D_y_j
@@ -156,6 +193,18 @@ namespace CRSC
         {
             get { return d_z_j; }
             set { d_z_j = value; }
+        }
+
+        public double D_y_ci
+        {
+            get { return d_y_ci; }
+            set { d_y_ci = value; }
+        }
+
+        public double D_z_ci
+        {
+            get { return d_z_ci; }
+            set { d_z_ci = value; }
         }
 
         public double Omega_max
@@ -186,6 +235,12 @@ namespace CRSC
         {
             get { return _Iy_omega; }
             set { _Iy_omega = value; }
+        }
+
+        public double [] Omega_s
+        {
+            get { return d_omega_s; }
+            set { d_omega_s = value; }
         }
 
         public double Beta_y
@@ -356,6 +411,36 @@ namespace CRSC
             set { _fvz_red_factor = value; }
         }
 
+        public bool IsBuiltUp
+        {
+            get { return _IsBuiltUp; }
+            set { _IsBuiltUp = value; }
+        }
+
+        public int ScrewsNumber
+        {
+            get { return _iScrewsNumber; }
+            set { _iScrewsNumber = value; }
+        }
+
+        public int ScrewsGauge
+        {
+            get { return _iScrewsGauge; }
+            set { _iScrewsGauge = value; }
+        }
+
+        public double ScrewDistance
+        {
+            get { return _dScrewDistance; }
+            set { _dScrewDistance = value; }
+        }
+
+        public double [] RibsProjectionSpacing
+        {
+            get { return _ribsProjectionSpacing; }
+            set { _ribsProjectionSpacing = value; }
+        }
+
         // end of cross-section variables definition
         #endregion
 
@@ -427,12 +512,17 @@ namespace CRSC
             this.A_vz = dto.A_vz;
             this.fvz_red_factor = dto.fvz_red_factor;
 
+            this.IsBuiltUp = dto.IsBuiltUp;
+            this.ScrewsNumber = dto.iScrewsNumber;
+            this.ScrewsGauge = dto.iScrewsGauge;
+            this._dScrewDistance = dto.dScrewDistance;
+            this._ribsProjectionSpacing = dto.ribsProjectionSpacing;
+            this.price_PPLM_NZD = dto.dPrice_PPLM_NZD;
+
             this.i_y_rg = Math.Sqrt(I_y / A_g);
             this.i_z_rg = Math.Sqrt(I_z / A_g);
             this.i_epsilon_rg = Math.Sqrt(I_epsilon / A_g);
             this.i_mikro_rg = Math.Sqrt(I_mikro / A_g);
-
-            this.price_PPLM_NZD = dto.dPrice_PPLM_NZD;
         }
 
         // Calculate properties

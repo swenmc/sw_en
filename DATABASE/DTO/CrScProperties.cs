@@ -57,7 +57,7 @@ namespace DATABASE.DTO
         public int iScrewsNumber;
         public int iScrewsGauge;
         public double dScrewDistance;
-        public string ribsProjectionSpacing_mm;
+        public double [] ribsProjectionSpacing;
         public double dPrice_PPLM_NZD;
 
         public CrScProperties(){}
