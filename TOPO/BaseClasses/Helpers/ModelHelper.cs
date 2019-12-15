@@ -1,4 +1,5 @@
 ﻿
+using BaseClasses.GraphObj;
 using MATH;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -452,5 +453,33 @@ namespace BaseClasses.Helpers
             return differentPerimeters;
         }
 
+        public static List<CDimension> GetClonedDimensions(CDimension[] Dimensions)
+        {
+            // To Ondrej - pokus o opravu prepisu dat pre plate ak spustim export opakovane
+            List<CDimension> clonedDimensions = new List<CDimension>();
+            if (Dimensions != null)
+            {
+                foreach (CDimension d in Dimensions)
+                {
+                    CDimension dimensionClone = d.GetClonedDimension();
+                    clonedDimensions.Add(dimensionClone);
+                }
+            }
+            return clonedDimensions;
+        }
+
+        public static List<CLine2D> GetClonedLines(CLine2D[] lines)
+        {
+            List<CLine2D> clonedLines = new List<CLine2D>();
+            if (lines != null)
+            {
+                foreach (CLine2D l in lines)
+                {
+                    CLine2D lineClone = l.Clone();
+                    clonedLines.Add(lineClone);
+                }
+            }
+            return clonedLines;
+        }
     }
 }

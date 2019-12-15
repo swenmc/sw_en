@@ -336,42 +336,10 @@ namespace BaseClasses
                     if (pHolesCentersPointsAnchors2D != null) canvasPointsHolesAnchors = new List<Point>(pHolesCentersPointsAnchors2D);
                     if (plate.DrillingRoutePoints != null) canvasPointsDrillingRoute = new List<Point>(plate.DrillingRoutePoints);
 
-                    // To Ondrej - pokus o opravu prepisu dat pre plate ak spustim export opakovane
-                    List<CDimension> clonedDimensions = new List<CDimension>();
-                    if (plate.Dimensions != null)
-                    {
-                        foreach (CDimension d in plate.Dimensions)
-                        {
-                            CDimension dimensionClone = d.GetClonedDimension();
-                            clonedDimensions.Add(dimensionClone);
-                        }
-                    }
-
-                    if (plate.Dimensions != null) canvasDimensions = new List<CDimension>(clonedDimensions /*plate.Dimensions*/); // To Ondrej - Toto nemozeme robit. Musime do canvasDimensions priradit clonovane plate Dimensions
-
-                    List<CLine2D> clonedMemberOutlines = new List<CLine2D>();
-                    if (plate.MemberOutlines != null)
-                    {
-                        foreach (CLine2D l in plate.MemberOutlines)
-                        {
-                            CLine2D lineClone = l.Clone();
-                            clonedMemberOutlines.Add(lineClone);
-                        }
-                    }
-
-                    if (plate.MemberOutlines != null) canvasMemberOutline = new List<CLine2D>(clonedMemberOutlines /*plate.MemberOutlines*/ ); // To Ondrej - Toto nemozeme robit. Musime do canvasMemberOutlines priradit clonovane plate MemberOutlines
-
-                    List<CLine2D> clonedBendLines = new List<CLine2D>();
-                    if (plate.BendLines != null)
-                    {
-                        foreach (CLine2D l in plate.BendLines)
-                        {
-                            CLine2D lineClone = l.Clone();
-                            clonedBendLines.Add(lineClone);
-                        }
-                    }
-
-                    if (plate.BendLines != null) canvasBendLines = new List<CLine2D>(clonedBendLines /*plate.BendLines*/); // To Ondrej - Toto nemozeme robit. Musime do canvasBendLines priradit clonovane plate BendLines
+                    // Oprava prepisu dat pre plate ak spustim export opakovane                
+                    canvasDimensions = ModelHelper.GetClonedDimensions(plate.Dimensions);
+                    canvasMemberOutline = ModelHelper.GetClonedLines(plate.MemberOutlines);
+                    canvasBendLines = ModelHelper.GetClonedLines(plate.BendLines);
                 }
 
                 double minX = canvasPointsOut.Min(p => p.X);
@@ -1903,42 +1871,10 @@ namespace BaseClasses
                 canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
 
-                // To Ondrej - pokus o opravu prepisu dat pre plate ak spustim export opakovane
-                List<CDimension> clonedDimensions = new List<CDimension>();
-                if (Dimensions != null)
-                {
-                    foreach (CDimension d in Dimensions)
-                    {
-                        CDimension dimensionClone = d.GetClonedDimension();
-                        clonedDimensions.Add(dimensionClone);
-                    }
-                }
-
-                if (Dimensions != null) canvasDimensions = new List<CDimension>(clonedDimensions /*plate.Dimensions*/); // To Ondrej - Toto nemozeme robit. Musime do canvasDimensions priradit clonovane plate Dimensions
-
-                List<CLine2D> clonedMemberOutlines = new List<CLine2D>();
-                if (MemberOutline != null)
-                {
-                    foreach (CLine2D l in MemberOutline)
-                    {
-                        CLine2D lineClone = l.Clone();
-                        clonedMemberOutlines.Add(lineClone);
-                    }
-                }
-
-                if (MemberOutline != null) canvasMemberOutline = new List<CLine2D>(clonedMemberOutlines /*plate.MemberOutlines*/ ); // To Ondrej - Toto nemozeme robit. Musime do canvasMemberOutlines priradit clonovane plate MemberOutlines
-
-                List<CLine2D> clonedBendLines = new List<CLine2D>();
-                if (BendLines != null)
-                {
-                    foreach (CLine2D l in BendLines)
-                    {
-                        CLine2D lineClone = l.Clone();
-                        clonedBendLines.Add(lineClone);
-                    }
-                }
-
-                if (BendLines != null) canvasBendLines = new List<CLine2D>(clonedBendLines /*plate.BendLines*/); // To Ondrej - Toto nemozeme robit. Musime do canvasBendLines priradit clonovane plate BendLines
+                // Oprava prepisu dat pre plate ak spustim export opakovane                
+                canvasDimensions = ModelHelper.GetClonedDimensions(Dimensions);
+                canvasMemberOutline = ModelHelper.GetClonedLines(MemberOutline);
+                canvasBendLines = ModelHelper.GetClonedLines(BendLines);                
             }
 
             double minX = canvasPointsOut.Min(p => p.X);
