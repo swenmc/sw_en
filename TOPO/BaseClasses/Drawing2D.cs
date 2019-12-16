@@ -387,7 +387,7 @@ namespace BaseClasses
 
                 // Member Outline
                 DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Member outline");
-                
+
                 // Bend Lines
                 DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage, "Bend lines");
             }
@@ -690,7 +690,7 @@ namespace BaseClasses
                     DoubleCollection dashes = new DoubleCollection();
                     dashes.Add(10); dashes.Add(10);
 
-                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage,"", opts.PerimeterLineStyle, dashes);
+                    DrawPolyLine(false, PointsPerimeter, opts.PerimeterColor, PenLineCap.Flat, PenLineCap.Flat, opts.PerimeterThickness, canvasForImage, "", opts.PerimeterLineStyle, dashes);
                 }
 
                 if (opts.bDrawReinforcement)
@@ -770,7 +770,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorTop, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage,"", DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorTop, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Top_Bars_y.First().Diameter, canvasForImage, "", DashStyles.Solid, null);
                         }
                         else
                         {
@@ -825,7 +825,7 @@ namespace BaseClasses
                             pStart = ConvertRealPointToCanvasDrawingPoint(pStart, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
                             pEnd = ConvertRealPointToCanvasDrawingPoint(pEnd, fTempMin_X, fTempMin_Y, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
-                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorBottom, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage,"", DashStyles.Solid, null);
+                            DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInWiewColorBottom, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * pad.Bottom_Bars_y.First().Diameter, canvasForImage, "", DashStyles.Solid, null);
                         }
                         else
                         {
@@ -871,7 +871,7 @@ namespace BaseClasses
                         dashes.Add(3); dashes.Add(3); // Kratsie a hustejsie ciarky
 
                         //opts.ReinforcementInSlabThickness = dLineThicknessFactor * reinfocementDiameter;
-                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage,"", opts.ReinforcementInSlabLineStyle, dashes);
+                        DrawPolyLine(false, new List<Point> { pStart, pEnd }, opts.ReinforcementInSlabColor, PenLineCap.Flat, PenLineCap.Flat, dLineThicknessFactor * reinfocementDiameter, canvasForImage, "", opts.ReinforcementInSlabLineStyle, dashes);
 
                         // Starter - reinforcement bar to connect with mesh in floor slab
                         bool bDrawReinforcement_Starter = true;
@@ -1821,10 +1821,10 @@ namespace BaseClasses
                 canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
 
-                // Oprava prepisu dat pre plate ak spustim export opakovane                
+                // Oprava prepisu dat pre plate ak spustim export opakovane
                 canvasDimensions = ModelHelper.GetClonedDimensions(Dimensions);
                 canvasMemberOutline = ModelHelper.GetClonedLines(MemberOutline);
-                canvasBendLines = ModelHelper.GetClonedLines(BendLines);                
+                canvasBendLines = ModelHelper.GetClonedLines(BendLines);
             }
 
             double minX = canvasPointsOut.Min(p => p.X);
@@ -2085,17 +2085,17 @@ namespace BaseClasses
         }
 
         public static void CalculateBasicValue_ZoomFactor(
-        double dModel_Length_x_real,
-        double dModel_Length_y_real,
-        double dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
-        int scale_unit,
-        double dPageWidth,
-        double dPageHeight,
-        out double dModel_Length_x_page,
-        out double dModel_Length_y_page,
-        out double dFactor_x,
-        out double dFactor_y,
-        out double dReal_Model_Zoom_Factor)
+            double dModel_Length_x_real,
+            double dModel_Length_y_real,
+            double dScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
+            int scale_unit,
+            double dPageWidth,
+            double dPageHeight,
+            out double dModel_Length_x_page,
+            out double dModel_Length_y_page,
+            out double dFactor_x,
+            out double dFactor_y,
+            out double dReal_Model_Zoom_Factor)
         {
             dModel_Length_x_page = scale_unit * dModel_Length_x_real;
             dModel_Length_y_page = scale_unit * dModel_Length_y_real;
