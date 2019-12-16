@@ -3,6 +3,7 @@ using MATERIAL;
 using CRSC;
 using MATH;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows;
@@ -132,7 +133,7 @@ namespace M_AS4600
 
         float fh, fb, ft, ft_w, ft_f;
         float fd_l;
-        float d_1_flat_portion;
+        double [] d_1_flat_portion;
         float d_tot;
         float fa;
         float fb_f;
@@ -208,8 +209,8 @@ namespace M_AS4600
 
         public float fM_b_yv;
 
-        public float fV_v_yv;
-        public float fV_y_yv;
+        public float fV_v_yv; // Yield shear capacity
+        public float fV_y_yv; // Shear capacity
         public float fV_cr_yv;
         public float fLambda_v_yv;
 
@@ -328,9 +329,9 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_defl_tot);
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors,  designMomentValuesForCb sMomentValuesForCb)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            SetDesignInputParameters(bUseCRSCGeometricalAxes, sDIF_x_temp, cs_temp, fL_temp,  sBucklingLengthFactors,  sMomentValuesForCb);
+            SetDesignInputParameters(bUseCRSCGeometricalAxes, sDIF_x_temp, cs_temp, fL_temp, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Design
 
@@ -430,52 +431,105 @@ namespace M_AS4600
             // D2.3  Local buckling stresses
             float fk_LB_D23 = 4.0f; //see Todo - value valid for bending
 
-            float ff_ol_D23 = eq.Eq_D131____(fk_LB_D23, fE, fNu, ft, fb); // TODO - overit ci nacitvat z vlastnosti prierezu alebo pocitat
+            float ff_ol_D23 = eq.Eq_D131____(fk_LB_D23, fE, fNu, ft, fb); // TODO - overit ci nacitavat z vlastnosti prierezu alebo pocitat
 
-            // 7.2.3 Design of member subject to shear, an combined bending and shear
-            fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
-            float fk_v_yv;
+            TransStiff_D3 eTrStiff = TransStiff_D3.eD3a_NoTrStiff; // TODO - toto by sa malo pridat do databazy ako vlastnost prierezu, alebo este spravnejsie by to mala byt vlastnost pruta
 
-            TransStiff_D3 eTrStiff = TransStiff_D3.eD3c_StiffFlanges; // Todo
-            float fd_1_straight = d_1_flat_portion; // ???? ako straight part beriem nadlhsiu rovnu cast stojiny medzi vystuhami
+            bool bUse_334 = false; // TODO - option do GUI ci sa pocita podla 3.3.4 alebo 7
 
-            switch (eTrStiff)
+            if (bUse_334)
             {
-                case TransStiff_D3.eD3b_HasTrStiff:
-                    fk_v_yv = eq.Eq_D3_b____(fa, fd_1_straight);
-                    break;
-                case TransStiff_D3.eD3c_StiffFlanges:
-                    fk_v_yv = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1_straight, ft_f, ft_w);
-                    break;
-                case TransStiff_D3.eD3a_NoTrStiff:
-                default:
-                    fk_v_yv = 5.34f; // D3(a)
-                    break;
-            }
+                // 3.3.4 Shear
+                // V cykle spocitame unosnost pre kazdu priamu cast steny
+                for (int i = 0; i < d_1_flat_portion.Length; i++)
+                {
+                    if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
+                    {
+                        float fd_1_straight = (float)d_1_flat_portion[i];
+                        float fA_w_yv_temp = fd_1_straight * ft_w;
+                        float fV_y_yv_temp = eq.Eq_334_1___(ff_y, fd_1_straight,ft_w);
 
-            fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, fd_1_straight, ft);
+                        float fk_v_yv_temp = eq.Get_kv_334_(eTrStiff, fa, fd_1_straight);
+                        float fV_v_yv_temp = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv_temp, fd_1_straight);
 
-            fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
+                        fV_y_yv += fV_y_yv_temp; // Yield capacity
+                        fV_v_yv += fV_v_yv_temp; // Nominal capacity
+                    }
+                }
 
-            bool bIsMemberwithTransStiffeners = false;
+                fV_y_yv *= (float)(cs.A_vz / cs.A_w1); // Zohladnenie poctu stien
+                fV_v_yv *= (float)(cs.A_vz / cs.A_w1); // Zohladnenie poctu stien
 
-            if (!bIsMemberwithTransStiffeners)
-            {
-                // 7.2.3.2 Beams without transverse web stiffeners
-                fV_v_yv = eq.Eq_7232____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
+                // Shear
+                float fEta_V_yv_334 = eq.Eq_3341____(sDIF.fV_yv_yy, fPhi_v, fV_v_yv);
+
+                fEta_max = MathF.Max(fEta_max, fEta_V_yv_334);
             }
             else
             {
-                // 7.2.3.3 Beams with transverse web stiffeners
-                fV_v_yv = eq.Eq_7233____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
-            }
+                // 7.2.3 Design of member subject to shear, an combined bending and shear
+                // V cykle spocitame unosnost pre kazdu priamu cast steny
+                for (int i = 0; i < d_1_flat_portion.Length; i++)
+                {
+                    if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
+                    {
+                        float fd_1_straight = (float)d_1_flat_portion[i];
+                        float fA_w_yv_temp = fd_1_straight * ft_w;
+                        float fV_y_yv_temp = eq.Eq_723_5___(fA_w_yv_temp, ff_y);
+                        float fk_v_yv_temp;
 
-            // MC 15/03/2019: Reduction considering shear buckling and local buckling bewteen web stiffeners
-            if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
-            {
-                float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
-                if (fV_v_yv > fV_y_yv_red)
-                    fV_v_yv = fV_y_yv_red;
+                        switch (eTrStiff)
+                        {
+                            case TransStiff_D3.eD3b_HasTrStiff:
+                                fk_v_yv_temp = eq.Eq_D3_b____(fa, fd_1_straight);
+                                break;
+                            case TransStiff_D3.eD3c_StiffFlanges:
+                                fk_v_yv_temp = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1_straight, ft_f, ft_w);
+                                break;
+                            case TransStiff_D3.eD3a_NoTrStiff:
+                            default:
+                                fk_v_yv_temp = 5.34f; // D3(a)
+                                break;
+                        }
+
+                        float fV_cr_yv_temp = eq.Eq_D3_1____(fE, fA_w_yv_temp, fk_v_yv_temp, fNu, fd_1_straight, ft_w);
+
+                        float fLambda_v_yv_temp = eq.Eq_723_4___(fV_y_yv_temp, fV_cr_yv_temp);
+
+                        float fV_v_yv_temp;
+
+                        if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
+                        {
+                            // 7.2.3.3 Beams with transverse web stiffeners
+                            fV_v_yv_temp = eq.Eq_7233____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
+                        }
+                        else
+                        {
+                            // 7.2.3.2 Beams without transverse web stiffeners
+                            fV_v_yv_temp = eq.Eq_7232____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
+                        }
+
+                        fV_y_yv += fV_y_yv_temp; // Yield capacity
+                        fV_v_yv += fV_v_yv_temp; // Nominal capacity
+                    }
+                }
+
+                fV_y_yv *= (float)(cs.A_vz / cs.A_w1); // Zohladnenie poctu stien
+                fV_v_yv *= (float)(cs.A_vz / cs.A_w1); // Zohladnenie poctu stien
+
+                // Shear
+                float fEta_V_yv_723 = eq.Eq_3341____(sDIF.fV_yv_yy, fPhi_v, fV_v_yv);
+
+                fEta_max = MathF.Max(fEta_max, fEta_V_yv_723);
+
+                // Docasne konzervativne
+                // MC 15/03/2019: Reduction considering shear buckling and local buckling bewteen web stiffeners
+                if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
+                {
+                    float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
+                    if (fV_v_yv > fV_y_yv_red)
+                        fV_v_yv = fV_y_yv_red;
+                }
             }
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
@@ -667,7 +721,7 @@ namespace M_AS4600
 
             fI_yc = 54564f;
             fd_l = 0.005f; // Overall stiffener dimension (or overall depth of lip) Figure 2.4.2(a) Clause 2.4 / TABLE 2.4.2 / D1.2.1.2 Simple lipped channels in compression
-            d_1_flat_portion = (float)cs.d_1_flat_portion; // Web Depth Web-flange juncture // Todo // depth of the flat portion of a web
+            d_1_flat_portion = cs.RibsProjectionSpacing; // Web Depth Web-flange juncture  // depth of the flat portion of a web
             d_tot = (float)cs.d_tot; // Depth of web
 
             fl_member = fL_temp;

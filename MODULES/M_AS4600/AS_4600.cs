@@ -7,10 +7,56 @@ namespace M_AS4600
 {
     public class AS_4600
     {
+        // 3.4 SHEAR
         public float Eq_3341____(float fV_asterix, float fPhi_v, float fV_v)
         {
             return Math.Abs(fV_asterix) / (fPhi_v * fV_v); // Eq. (3.3.4.1) // fV_v design ratio
         }
+        public float Eq_334_1___(float ff_y, float fd_1, float ft_w)
+        {
+            return 0.64f * ff_y * fd_1 * ft_w; // Eq. (3.3.4(1)) // fV_v
+        }
+        public float Eq_334_2___(float ft_w, float fE, float fk_v, float ff_y)
+        {
+            return 0.64f * MathF.Pow2(ft_w) * MathF.Sqrt(fE * fk_v * ff_y); // Eq. (3.3.4(2)) // fV_v
+        }
+        public float Eq_334_3___(float ft_w, float fE, float fk_v, float fd_1)
+        {
+            return 0.905f * fE * fk_v * MathF.Pow3(ft_w) / fd_1; // Eq. (3.3.4(3)) // fV_v
+        }
+        public float Get_Vv_334_(float ff_y, float fE, float ft_w, float fk_v, float fd_1)
+        {
+            float fd1_to_tw_ratio = fd_1 / ft_w;
+            float sqrtValue_E_kv_fy = MathF.Sqrt(fE * fk_v / ff_y);
+
+            if (fd1_to_tw_ratio <= sqrtValue_E_kv_fy)
+                return Eq_334_1___(ff_y, fd_1, ft_w);
+            else if (fd1_to_tw_ratio <= 1.415f * sqrtValue_E_kv_fy)
+                return Eq_334_2___(ft_w, fE, fk_v, ff_y);
+            else
+                return Eq_334_3___(ft_w, fE, fk_v, fd_1);
+        }
+        public float Eq_334_4___(float fa, float fd_1)
+        {
+            return 4f + (5.34f / MathF.Pow2(fa / fd_1)); // Eq. (3.3.4(4)) // fk_v
+        }
+        public float Eq_334_5___(float fa, float fd_1)
+        {
+            return 5.34f + (4f / MathF.Pow2(fa / fd_1)); // Eq. (3.3.4(5)) // fk_v
+        }
+        public float Get_kv_334_(TransStiff_D3 transStifType, float fa, float fd_1)
+        {
+            if (transStifType == TransStiff_D3.eD3a_NoTrStiff)
+                return 5.34f;
+            //else if(transStifType == TransStiff_D3.eD3b_HasTrStiff || transStifType == TransStiff_D3.eD3c_StiffFlanges)
+            {
+                if (fa / fd_1 <= 1)
+                    return Eq_334_4___(fa, fd_1);
+                else
+                    return Eq_334_5___(fa, fd_1);
+            }
+        }
+
         // 5.3 BOLTED CONNECTIONS
         public float Eq_532_1___(float fV_asterix_f, float fPhi, float fV_f)
         {
