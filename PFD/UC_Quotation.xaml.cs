@@ -1653,18 +1653,18 @@ namespace PFD
 
             List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
 
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashing", fRoofRidgeFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashing", fWallCornerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashing", fBargeFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashing", fRollerDoorTrimmerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashing", fRollerDoorLintelFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashing", fRollerDoorLintelCapFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashing", fPADoorTrimmerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashing", fPADoorLintelFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashing", fWindowFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength));
 
             // Create Table
-            DataTable dt = new DataTable("Flashing");
+            DataTable dt = new DataTable("Flashings");
             // Create Table Rows
             dt.Columns.Add(colProp_Flashing.ColumnName, colProp_Flashing.DataType);
             dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
