@@ -674,7 +674,10 @@ namespace PFD
             {
                 MRoofCladdingCoatingIndex = value;
 
-                MRoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+                IsSetFromCode = true;
+                RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+                RoofCladdingColorIndex = 0;
+                IsSetFromCode = false;
 
                 //SetResultsAreNotValid();
                 //RecreateJoints = true;
@@ -746,7 +749,10 @@ namespace PFD
             {
                 MWallCladdingCoatingIndex = value;
 
-                MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+                IsSetFromCode = true;
+                WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+                WallCladdingColorIndex = 0;
+                IsSetFromCode = false;
 
                 //SetResultsAreNotValid();
                 //RecreateJoints = true;
@@ -2578,6 +2584,7 @@ namespace PFD
             set
             {
                 MRoofCladdingColors = value;
+                NotifyPropertyChanged("RoofCladdingColors");
             }
         }
 
@@ -2592,6 +2599,7 @@ namespace PFD
             set
             {
                 MWallCladdingColors = value;
+                NotifyPropertyChanged("WallCladdingColors");
             }
         }
 
