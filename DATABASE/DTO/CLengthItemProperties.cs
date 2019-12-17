@@ -12,11 +12,18 @@ namespace DATABASE.DTO
         private string m_Name;
         private double m_thickness;
         private double m_width_total;
-        private double m_mass_kg_m2;
-        private double m_mass_kg_lm;
-        private double m_price_PPLM_NZD;
-        private double m_price_PPSM_NZD;
-        private double m_price_PPKG_NZD;
+        private double m_density1_kg_m3;
+        private double m_mass1_kg_m2;
+        private double m_mass1_kg_lm;
+        private double m_price1_PPLM_NZD;
+        private double m_price1_PPSM_NZD;
+        private double m_price1_PPKG_NZD;
+        private double m_density4_kg_m3;
+        private double m_mass4_kg_m2;
+        private double m_mass4_kg_lm;
+        private double m_price4_PPLM_NZD;
+        private double m_price4_PPSM_NZD;
+        private double m_price4_PPKG_NZD;
         private string m_note;
 
         public int ID
@@ -71,68 +78,159 @@ namespace DATABASE.DTO
             }
         }
 
-        public double Mass_kg_m2
+        public double Density1_kg_m3
         {
             get
             {
-                return m_mass_kg_m2;
+                return m_density1_kg_m3;
             }
 
             set
             {
-                m_mass_kg_m2 = value;
+                m_density1_kg_m3 = value;
             }
         }
 
-        public double Mass_kg_lm
+        public double Mass1_kg_m2
         {
             get
             {
-                return m_mass_kg_lm;
+                return m_mass1_kg_m2;
             }
 
             set
             {
-                m_mass_kg_lm = value;
+                m_mass1_kg_m2 = value;
             }
         }
 
-        public double Price_PPLM_NZD
+        public double Mass1_kg_lm
         {
             get
             {
-                return m_price_PPLM_NZD;
+                return m_mass1_kg_lm;
             }
 
             set
             {
-                m_price_PPLM_NZD = value;
+                m_mass1_kg_lm = value;
             }
         }
 
-        public double Price_PPSM_NZD
+        public double Price1_PPLM_NZD
         {
             get
             {
-                return m_price_PPSM_NZD;
+                return m_price1_PPLM_NZD;
             }
 
             set
             {
-                m_price_PPSM_NZD = value;
+                m_price1_PPLM_NZD = value;
             }
         }
 
-        public double Price_PPKG_NZD
+        public double Price1_PPSM_NZD
         {
             get
             {
-                return m_price_PPKG_NZD;
+                return m_price1_PPSM_NZD;
             }
 
             set
             {
-                m_price_PPKG_NZD = value;
+                m_price1_PPSM_NZD = value;
+            }
+        }
+
+        public double Price1_PPKG_NZD
+        {
+            get
+            {
+                return m_price1_PPKG_NZD;
+            }
+
+            set
+            {
+                m_price1_PPKG_NZD = value;
+            }
+        }
+
+        public double Density4_kg_m3
+        {
+            get
+            {
+                return m_density4_kg_m3;
+            }
+
+            set
+            {
+                m_density4_kg_m3 = value;
+            }
+        }
+
+        public double Mass4_kg_m2
+        {
+            get
+            {
+                return m_mass4_kg_m2;
+            }
+
+            set
+            {
+                m_mass4_kg_m2 = value;
+            }
+        }
+
+        public double Mass4_kg_lm
+        {
+            get
+            {
+                return m_mass4_kg_lm;
+            }
+
+            set
+            {
+                m_mass4_kg_lm = value;
+            }
+        }
+
+        public double Price4_PPLM_NZD
+        {
+            get
+            {
+                return m_price4_PPLM_NZD;
+            }
+
+            set
+            {
+                m_price4_PPLM_NZD = value;
+            }
+        }
+
+        public double Price4_PPSM_NZD
+        {
+            get
+            {
+                return m_price4_PPSM_NZD;
+            }
+
+            set
+            {
+                m_price4_PPSM_NZD = value;
+            }
+        }
+
+        public double Price4_PPKG_NZD
+        {
+            get
+            {
+                return m_price4_PPKG_NZD;
+            }
+
+            set
+            {
+                m_price4_PPKG_NZD = value;
             }
         }
 

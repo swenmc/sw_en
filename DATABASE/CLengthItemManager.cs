@@ -60,7 +60,7 @@ namespace DATABASE
 
         public static CLengthItemProperties GetLengthItemProperties(string name, string TableName)
         {
-            if (DictLengthItemProperties == null) LoadLengthItemsPropertiesDictionary(TableName);
+            /*if (DictLengthItemProperties == null)*/ LoadLengthItemsPropertiesDictionary(TableName);
 
             CLengthItemProperties prop = null;
             DictLengthItemProperties.TryGetValue(name, out prop);
@@ -97,21 +97,22 @@ namespace DATABASE
             properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             properties.Name = reader["name"].ToString();
             properties.Thickness = double.Parse(reader["thickness_mm"].ToString(), nfi) / 1000f;
+            properties.Width_total = double.Parse(reader["width_total_mm"].ToString(), nfi) / 1000f;
 
-            try // TODO - doriesit ci dame do databazy len rozvinutu sirku width_total_mm alebo aj width_mm pre fibreglass
-            {
-                properties.Width_total = double.Parse(reader["width_total_mm"].ToString(), nfi) / 1000f;
-            }
-            catch
-            {
-                properties.Width_total = double.Parse(reader["width_mm"].ToString(), nfi) / 1000f;
-            }
+            properties.Density1_kg_m3 = double.Parse(reader["density1_kg_m3"].ToString(), nfi);
+            properties.Mass1_kg_m2 = double.Parse(reader["mass1_kg_m2"].ToString(), nfi);
+            properties.Mass1_kg_lm = double.Parse(reader["mass1_kg_lm"].ToString(), nfi);
+            properties.Price1_PPLM_NZD = double.Parse(reader["price1_PPLM_NZD"].ToString(), nfi);
+            properties.Price1_PPSM_NZD = double.Parse(reader["price1_PPSM_NZD"].ToString(), nfi);
+            properties.Price1_PPKG_NZD = double.Parse(reader["price1_PPKG_NZD"].ToString(), nfi);
 
-            properties.Mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
-            properties.Mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
-            properties.Price_PPLM_NZD = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
-            properties.Price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
-            properties.Price_PPKG_NZD = double.Parse(reader["price_PPKG_NZD"].ToString(), nfi);
+            properties.Density4_kg_m3 = double.Parse(reader["density4_kg_m3"].ToString(), nfi);
+            properties.Mass4_kg_m2 = double.Parse(reader["mass4_kg_m2"].ToString(), nfi);
+            properties.Mass4_kg_lm = double.Parse(reader["mass4_kg_lm"].ToString(), nfi);
+            properties.Price4_PPLM_NZD = double.Parse(reader["price4_PPLM_NZD"].ToString(), nfi);
+            properties.Price4_PPSM_NZD = double.Parse(reader["price4_PPSM_NZD"].ToString(), nfi);
+            properties.Price4_PPKG_NZD = double.Parse(reader["price4_PPKG_NZD"].ToString(), nfi);
+
             properties.Note = reader["note"].ToString();
 
             return properties;

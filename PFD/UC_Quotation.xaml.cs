@@ -1647,60 +1647,28 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength,
         float fWindowFlashing_TotalLength)
         {
-            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Flashing");
-            //CFlashingsManager.LoadFlashingsPropertiesDictionary();
-            //Dictionary<string, CLengthItemProperties> dict = CFlashingsManager.DictFlashingProperties;
+            float fRoofRidgeFlashing_TotalLength = model.fL_tot;
+            float fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
+            float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
 
-            // TODO Ondrej - toto by chcelo naplnat a pouzivat nejako krajsie, mozno by sa to dalo cele zabalit do nejakeho systemu, kde zadam len flashing name a dlzku a vsetko ostatne
-            // sa udeje automaticky v cykle cez jednotlive polozky, teraz nizsie 9 krat naplnam parametre funkcie AddLengthItemRow, co je tiez dost skarede
+            List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
 
-            // Price LM
-            float fRoofRidgeFlashingPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof ridge flashing za 1 m dlzky 
-            float fWallCornerFlashingPrice_PLM_NZD = (float)listOfProperties[1].Price_PPLM_NZD; // Cena corner flashing za 1 m dlzky
-            float fBargeFlashingPrice_PLM_NZD = (float)listOfProperties[2].Price_PPLM_NZD; // Cena barge flashing za 1 m dlzky
-
-            float fRollerDoorTrimmerFlashingPrice_PLM_NZD = (float)listOfProperties[3].Price_PPLM_NZD; // Cena roller door trimmer flashing za 1 m dlzky
-            float fRollerDoorLintelFlashingPrice_PLM_NZD = (float)listOfProperties[4].Price_PPLM_NZD; // Cena roller door lintel flashing za 1 m dlzky
-            float fRollerDoorLintelCapFlashingPrice_PLM_NZD = (float)listOfProperties[5].Price_PPLM_NZD; // Cena cap flashing za 1 m dlzky
-            float fPADoorTrimmerFlashingPrice_PLM_NZD = (float)listOfProperties[6].Price_PPLM_NZD; // Cena PA door trimmer flashing za 1 m dlzky
-            float fPADoorLintelFlashingPrice_PLM_NZD = (float)listOfProperties[7].Price_PPLM_NZD; // Cena PA door lintel flashing za 1 m dlzky
-            float fWindowFlashingPrice_PLM_NZD = (float)listOfProperties[8].Price_PPLM_NZD; // Cena window flashing za 1 m dlzky
-
-            // Mass LM
-            float fRoofRidgeFlashingUnitMass_LM = (float)listOfProperties[0].Mass_kg_lm;
-            float fWallCornerFlashingUnitMass_LM = (float)listOfProperties[1].Mass_kg_lm;
-            float fBargeFlashingUnitMass_LM = (float)listOfProperties[2].Mass_kg_lm;
-
-            float fRollerDoorTrimmerFlashingUnitMass_LM = (float)listOfProperties[3].Mass_kg_lm;
-            float fRollerDoorLintelFlashingUnitMass_LM = (float)listOfProperties[4].Mass_kg_lm;
-            float fRollerDoorLintelCapFlashingUnitMass_LM = (float)listOfProperties[5].Mass_kg_lm;
-            float fPADoorTrimmerFlashingUnitMass_LM = (float)listOfProperties[6].Mass_kg_lm;
-            float fPADoorLintelFlashingUnitMass_LM = (float)listOfProperties[7].Mass_kg_lm;
-            float fWindowFlashingUnitMass_LM = (float)listOfProperties[8].Mass_kg_lm;
-
-            // TODO Ondrej
-
-            // Refaktorovat kody
-            // Skus to popozerat a pripadne nejako zautomatizovat
-            // V principe mame 2 typy poloziek
-            // 1 - definovane dlzkou (flashings, gutters, mozno sa da uvazovat aj fibreglass)
-            // 2 - definovene plochou (doors, windows, roof netting)
-
-            float fRoofRidgeFlashingPrice_Total_NZD = model.fL_tot * fRoofRidgeFlashingPrice_PLM_NZD;
-            float fWallCornerFlashingPrice_Total_NZD = 4 * model.fH1_frame * fWallCornerFlashingPrice_PLM_NZD;
-            float fBargeFlashingPrice_Total_NZD = 4 * fRoofSideLength * fBargeFlashingPrice_PLM_NZD;
-
-            float fRollerDoorTrimmerFlashingPrice_Total_NZD = fRollerDoorTrimmerFlashing_TotalLength * fRollerDoorTrimmerFlashingPrice_PLM_NZD;
-            float fRollerDoorLintelFlashingPrice_Total_NZD = fRollerDoorLintelFlashing_TotalLength * fRollerDoorLintelFlashingPrice_PLM_NZD;
-            float fRollerDoorLintelCapFlashingPrice_Total_NZD = fRollerDoorLintelCapFlashing_TotalLength * fRollerDoorLintelCapFlashingPrice_PLM_NZD;
-            float fPADoorTrimmerFlashingPrice_Total_NZD = fPADoorTrimmerFlashing_TotalLength * fPADoorTrimmerFlashingPrice_PLM_NZD;
-            float fPADoorLintelFlashingPrice_Total_NZD = fPADoorLintelFlashing_TotalLength * fPADoorLintelFlashingPrice_PLM_NZD;
-            float fWindowFlashingPrice_Total_NZD = fWindowFlashing_TotalLength * fWindowFlashingPrice_PLM_NZD;
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashing", fRoofRidgeFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashing", fWallCornerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashing", fBargeFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashing", fRollerDoorTrimmerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashing", fRollerDoorLintelFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashing", fRollerDoorLintelCapFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashing", fPADoorTrimmerFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashing", fPADoorLintelFlashing_TotalLength));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashing", fWindowFlashing_TotalLength));
 
             // Create Table
             DataTable dt = new DataTable("Flashing");
             // Create Table Rows
             dt.Columns.Add(colProp_Flashing.ColumnName, colProp_Flashing.DataType);
+            dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
+            dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
             dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
             dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
@@ -1719,113 +1687,22 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Roof Ridge Flashing",
-                        model.fL_tot,
-                        fRoofRidgeFlashingUnitMass_LM,
-                        fRoofRidgeFlashingUnitMass_LM * model.fL_tot,
-                        fRoofRidgeFlashingPrice_PLM_NZD,
-                        fRoofRidgeFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Wall Corner Flashing",
-                        4 * model.fH1_frame,
-                        fWallCornerFlashingUnitMass_LM,
-                        fWallCornerFlashingUnitMass_LM * 4 * model.fH1_frame,
-                        fWallCornerFlashingPrice_PLM_NZD,
-                        fWallCornerFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Barge Flashing",
-                        4 * fRoofSideLength,
-                        fBargeFlashingUnitMass_LM,
-                        fBargeFlashingUnitMass_LM * 4 * fRoofSideLength,
-                        fBargeFlashingPrice_PLM_NZD,
-                        fBargeFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Roller Door Trimmer Flashing",
-                        fRollerDoorTrimmerFlashing_TotalLength,
-                        fRollerDoorTrimmerFlashingUnitMass_LM,
-                        fRollerDoorTrimmerFlashingUnitMass_LM * fRollerDoorTrimmerFlashing_TotalLength,
-                        fRollerDoorTrimmerFlashingPrice_PLM_NZD,
-                        fRollerDoorTrimmerFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Roller Door Lintel Flashing",
-                        fRollerDoorLintelFlashing_TotalLength,
-                        fRollerDoorLintelFlashingUnitMass_LM,
-                        fRollerDoorLintelFlashingUnitMass_LM * fRollerDoorLintelFlashing_TotalLength,
-                        fRollerDoorLintelFlashingPrice_PLM_NZD,
-                        fRollerDoorLintelFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Roller Door Lintel Cap Flashing",
-                        fRollerDoorLintelCapFlashing_TotalLength,
-                        fRollerDoorLintelCapFlashingUnitMass_LM,
-                        fRollerDoorLintelCapFlashingUnitMass_LM * fRollerDoorLintelCapFlashing_TotalLength,
-                        fRollerDoorLintelCapFlashingPrice_PLM_NZD,
-                        fRollerDoorLintelCapFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "PA Door Trimmer Flashing",
-                        fPADoorTrimmerFlashing_TotalLength,
-                        fPADoorTrimmerFlashingUnitMass_LM,
-                        fPADoorTrimmerFlashingUnitMass_LM * fPADoorTrimmerFlashing_TotalLength,
-                        fPADoorTrimmerFlashingPrice_PLM_NZD,
-                        fPADoorTrimmerFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "PA Door Lintel Flashing",
-                        fPADoorLintelFlashing_TotalLength,
-                        fPADoorLintelFlashingUnitMass_LM,
-                        fPADoorLintelFlashingUnitMass_LM * fPADoorLintelFlashing_TotalLength,
-                        fPADoorLintelFlashingPrice_PLM_NZD,
-                        fPADoorLintelFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddLengthItemRow(dt,
-                        colProp_Flashing.ColumnName,
-                        "Window Flashing",
-                        fWindowFlashing_TotalLength,
-                        fWindowFlashingUnitMass_LM,
-                        fWindowFlashingUnitMass_LM * fWindowFlashing_TotalLength,
-                        fWindowFlashingPrice_PLM_NZD,
-                        fWindowFlashingPrice_Total_NZD,
-                        ref SumTotalLength,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
+            foreach (CAccessories_LengthItemProperties fl in listOfFlashings)
+            {
+                AddLengthItemRow(dt,
+                            colProp_Flashing.ColumnName,
+                            fl.Name,
+                            fl.Thickness,
+                            fl.Width_total,
+                            fl.Length_total,
+                            fl.Mass_kg_lm,
+                            fl.Mass_kg_lm * fl.Length_total,
+                            fl.Price_PPLM_NZD,
+                            fl.Price_PPLM_NZD * fl.Length_total,
+                            ref SumTotalLength,
+                            ref SumTotalMass,
+                            ref SumTotalPrice);
+            }
 
             dBuildingMass += SumTotalMass;
             dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
@@ -1834,6 +1711,8 @@ namespace PFD
             DataRow row;
             row = dt.NewRow();
             row[colProp_Flashing.ColumnName] = "Total:";
+            row[colProp_Thickness_mm.ColumnName] = "";
+            row[colProp_Width_m.ColumnName] = "";
             row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
             row[colProp_UnitMass_LM.ColumnName] = "";
             row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
@@ -1852,18 +1731,16 @@ namespace PFD
 
         private void CreateTableGutters(CModel model)
         {
-            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Gutters");
-
             float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
-            float fRoofGutterPrice_PLM_NZD = (float)listOfProperties[0].Price_PPLM_NZD; // Cena roof gutter za 1 m dlzky
 
-            float fRoofGutterUnitMass_LM = (float)listOfProperties[0].Mass_kg_lm;
-            float fGuttersPrice_Total_NZD = fGuttersTotalLength * fRoofGutterPrice_PLM_NZD;
+            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength); // TODO Ondrej - toto by malo prist z GUI
 
             // Create Table
             DataTable dt = new DataTable("Gutters");
             // Create Table Rows
             dt.Columns.Add(colProp_Gutter.ColumnName, colProp_Gutter.DataType);
+            dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
+            dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
             dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
             dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
@@ -1884,12 +1761,14 @@ namespace PFD
 
             AddLengthItemRow(dt,
                         colProp_Gutter.ColumnName,
-                        "Drip Edge Gutter",
-                        fGuttersTotalLength,
-                        fRoofGutterUnitMass_LM,
-                        fRoofGutterUnitMass_LM * fGuttersTotalLength,
-                        fRoofGutterPrice_PLM_NZD,
-                        fGuttersPrice_Total_NZD,
+                        gutter.Name,
+                        gutter.Thickness,
+                        gutter.Width_total,
+                        gutter.Length_total,
+                        gutter.Mass_kg_lm,
+                        gutter.Mass_kg_lm * gutter.Length_total,
+                        gutter.Price_PPLM_NZD,
+                        gutter.Price_PPLM_NZD * gutter.Length_total,
                         ref SumTotalLength,
                         ref SumTotalMass,
                         ref SumTotalPrice);
@@ -1903,6 +1782,8 @@ namespace PFD
             DataRow row;
             row = dt.NewRow();
             row[colProp_Gutter.ColumnName] = "Total:";
+            row[colProp_Thickness_mm.ColumnName] = "";
+            row[colProp_Width_m.ColumnName] = "";
             row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
             row[colProp_UnitMass_LM.ColumnName] = "";
             row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
@@ -1923,6 +1804,8 @@ namespace PFD
         private void AddLengthItemRow(DataTable dt,
             string itemColumnName,
             string itemName,
+            double thickness_m,
+            double width,
             double totalLength,
             double unitMass,
             double totalMass,
@@ -1941,7 +1824,8 @@ namespace PFD
                 try
                 {
                     row[itemColumnName] = itemName;
-
+                    row[colProp_Thickness_mm.ColumnName] = (thickness_m * 1000).ToString("F2"); // mm
+                    row[colProp_Width_m.ColumnName] = width.ToString("F2");
                     row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
 

@@ -39,7 +39,7 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from coating WHERE ID = @id", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from colours WHERE ID = @id", conn);
                 command.Parameters.AddWithValue("@id", id);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
