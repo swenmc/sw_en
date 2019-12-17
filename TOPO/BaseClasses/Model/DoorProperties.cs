@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -18,6 +20,8 @@ namespace BaseClasses
         private float m_fDoorsHeight;
         private float m_fDoorsWidth;
         private float m_fDoorCoordinateXinBlock;
+
+        private CoatingColour m_coatingColor;
 
         private RebateProperties m_RebateProp;
         float fRollerDoorTrimmerWidth; // Sirka cross-section typu roller door trimmer
@@ -136,6 +140,20 @@ namespace BaseClasses
                     MessageBox.Show("Doors outside of bay width.");
                 }
                 else NotifyPropertyChanged("fDoorCoordinateXinBlock");
+            }
+        }
+
+        public CoatingColour CoatingColor
+        {
+            get
+            {
+                return m_coatingColor;
+            }
+
+            set
+            {
+                m_coatingColor = value;
+                NotifyPropertyChanged("CoatingColor");
             }
         }
 

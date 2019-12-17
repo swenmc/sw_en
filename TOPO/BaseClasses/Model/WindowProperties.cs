@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -20,6 +22,7 @@ namespace BaseClasses
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
 
+        private CoatingColour m_coatingColor;
 
         //validationValues
         private float m_WallHeight = float.NaN;
@@ -146,6 +149,21 @@ namespace BaseClasses
                 NotifyPropertyChanged("iNumberOfWindowColumns");
             }
         }
+
+        public CoatingColour CoatingColor
+        {
+            get
+            {
+                return m_coatingColor;
+            }
+
+            set
+            {
+                m_coatingColor = value;
+                NotifyPropertyChanged("CoatingColor");
+            }
+        }
+
         public List<int> Bays
         {
             get
