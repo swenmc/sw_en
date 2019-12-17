@@ -57,6 +57,10 @@ namespace PFD
         private int MWallCladdingCoatingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
+
+        private int MRoofFibreglassThicknessIndex;
+        private int MWallFibreglassThicknessIndex;
+
         private int MSupportTypeIndex;
 
         private float MFibreglassAreaRoof;
@@ -646,7 +650,7 @@ namespace PFD
             set
             {
                 MRoofCladdingIndex = value;
-                //SetResultsAreNotValid();
+                SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
@@ -698,8 +702,8 @@ namespace PFD
             set
             {
                 MRoofCladdingThicknessIndex = value;
-                //SetResultsAreNotValid();
-                RecreateModel = false;
+                SetResultsAreNotValid();
+                RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
         }
@@ -715,7 +719,7 @@ namespace PFD
             set
             {
                 MWallCladdingIndex = value;
-                //SetResultsAreNotValid();
+                SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingIndex");
@@ -767,9 +771,43 @@ namespace PFD
             set
             {
                 MWallCladdingThicknessIndex = value;
-                //SetResultsAreNotValid();
-                RecreateModel = false;
+                SetResultsAreNotValid();
+                RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RoofFibreglassThicknessIndex
+        {
+            get
+            {
+                return MRoofFibreglassThicknessIndex;
+            }
+
+            set
+            {
+                MRoofFibreglassThicknessIndex = value;
+                //SetResultsAreNotValid();
+                RecreateModel = true;
+                NotifyPropertyChanged("RoofFibreglassThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WallFibreglassThicknessIndex
+        {
+            get
+            {
+                return MWallFibreglassThicknessIndex;
+            }
+
+            set
+            {
+                MWallFibreglassThicknessIndex = value;
+                //SetResultsAreNotValid();
+                RecreateModel = true;
+                NotifyPropertyChanged("WallFibreglassThicknessIndex");
             }
         }
 
@@ -3180,6 +3218,10 @@ namespace PFD
             data.WallCladdingCoatingIndex = MWallCladdingCoatingIndex;
             data.WallCladdingColorIndex = MWallCladdingColorIndex;
             data.WallCladdingThicknessIndex = MWallCladdingThicknessIndex;
+
+            data.RoofFibreglassThicknessIndex = MRoofFibreglassThicknessIndex;
+            data.WallFibreglassThicknessIndex = MWallFibreglassThicknessIndex;
+
             data.SupportTypeIndex = MSupportTypeIndex;
             data.FibreglassAreaRoof = MFibreglassAreaRoof;
             data.FibreglassAreaWall = MFibreglassAreaWall;
@@ -3301,6 +3343,12 @@ namespace PFD
             List<string> coatings = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
             data.RoofCladdingCoating = coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
             data.WallCladdingCoating = coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
+
+            List<string> list_roofFibreglassThickness = DATABASE.CDatabaseManager.GetStringList("FibreglassSQLiteDB", data.RoofCladding, "name");
+            List<string> list_wallFibreglassThickness = DATABASE.CDatabaseManager.GetStringList("FibreglassSQLiteDB", data.WallCladding, "name");
+
+            data.RoofFibreglassThickness_mm = list_roofFibreglassThickness.ElementAtOrDefault(MRoofFibreglassThicknessIndex);
+            data.WallFibreglassThickness_mm = list_wallFibreglassThickness.ElementAtOrDefault(MWallFibreglassThicknessIndex);
 
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];

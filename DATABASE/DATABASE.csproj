@@ -98,6 +98,7 @@
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
     <Compile Include="CCoatingColorManager.cs" />
+    <Compile Include="CFibreglassManager.cs" />
     <Compile Include="CWashersManager.cs" />
     <Compile Include="DTO\CBoltNutProperties.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="DTO\CMatPropertiesRC.cs" />
     <Compile Include="DTO\CTEKScrewProp.cs" />
     <Compile Include="DTO\CTS_CoatingProperties.cs" />
+    <Compile Include="DTO\CFibreglassProperties.cs" />
     <Compile Include="DTO\CTS_SectionPropertiesText.cs" />
     <Compile Include="DTO\CTS_SectionProperties.cs" />
     <Compile Include="DTO\CTS_CrscProperties.cs" />
@@ -165,6 +167,7 @@
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBMeshesRC.db3" />
     <Content Include="Resources\MDBSections.db3" />
+    <None Include="Resources\MDBFibreglass.db3" />
     <None Include="Resources\MDBJoints.db3" />
     <None Include="Resources\MDBModels.db3" />
     <None Include="Resources\MDBStrings.db3" />

@@ -217,6 +217,9 @@
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Fibreglass}" Header="Fibreglass" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="65" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TotalLength_m}" Header="Total Length [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalArea_m2}" Header="Total Area [m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_SM}" Header="Unit Mass [kg/m²]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>

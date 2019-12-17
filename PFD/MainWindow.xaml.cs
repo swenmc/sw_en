@@ -130,6 +130,9 @@ namespace PFD
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
 
+            FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
+            FillComboboxFibreglassThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
+
             UpdateAll(true);
 
             vm.Model.GroupModelMembers();
@@ -150,10 +153,20 @@ namespace PFD
                 if (e.PropertyName == "RoofCladdingIndex")
                 {
                     FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+                    FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
+
+                    // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
+                    viewModel.RoofCladdingThicknessIndex = 0;
+                    viewModel.RoofFibreglassThicknessIndex = 0;
                 }
                 else if (e.PropertyName == "WallCladdingIndex")
                 {
                     FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+                    FillComboboxFibreglassThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
+
+                    // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
+                    viewModel.WallCladdingThicknessIndex = 0;
+                    viewModel.WallFibreglassThicknessIndex = 0;
                 }
 
                 if (e.PropertyName == "Bays") return;
@@ -460,8 +473,9 @@ namespace PFD
             // General loading
             // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
-            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", vm.RoofCladdingThicknessIndex);
-            float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", vm.WallCladdingThicknessIndex);
+            // TO Ondrej Bug 446
+            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), "mass_kg_m2", vm.RoofCladdingThicknessIndex);
+            float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), "mass_kg_m2", vm.WallCladdingThicknessIndex);
 
             // General Load (AS / NZS 1170.1)
             CalculateBasicLoad(fMass_Roof, fMass_Wall);
@@ -642,6 +656,11 @@ namespace PFD
         public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
         {
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
+        }
+
+        public void FillComboboxFibreglassThickness(string sTableName, ComboBox combobox)
+        {
+            CComboBoxHelper.FillComboboxValues("FibreglassSQLiteDB", sTableName, "name", combobox);
         }
 
         public void SetMaterialValuesFromDatabase()

@@ -34,6 +34,9 @@ namespace EXPIMP
         private string MRoofCladdingCoating;
         private string MWallCladdingCoating;
 
+        private string MRoofFibreglassThickness_mm;
+        private string MWallFibreglassThickness_mm;
+
         private string MLocation;
         private string MWindRegion;
 
@@ -277,6 +280,32 @@ namespace EXPIMP
             set
             {
                 MWallCladdingCoating = value;
+            }
+        }
+
+        public string RoofFibreglassThickness_mm
+        {
+            get
+            {
+                return MRoofFibreglassThickness_mm;
+            }
+
+            set
+            {
+                MRoofFibreglassThickness_mm = value;
+            }
+        }
+
+        public string WallFibreglassThickness_mm
+        {
+            get
+            {
+                return MWallFibreglassThickness_mm;
+            }
+
+            set
+            {
+                MWallFibreglassThickness_mm = value;
             }
         }
 

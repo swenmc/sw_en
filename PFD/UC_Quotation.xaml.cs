@@ -686,7 +686,7 @@ namespace PFD
                             // TASK 422
                             // Doplnit data pre anchors
                             // Refaktorovat anchors a screws
-                            // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade                            
+                            // Pre Quantity asi zaviest Count a zjednotit nazov stlpca pre pocet vsade
 
                             // Pre screws - gauge + dlzka (14g - 38)
                             // Pre anchors  - name + dlzka (M16 - 330)
@@ -1395,13 +1395,27 @@ namespace PFD
             float fFibreGlassArea_Roof,
             float fFibreGlassArea_Walls)
         {
-            List<CLengthItemProperties> listOfProperties = CLengthItemManager.LoadLengthItemsProperties("Fibreglass");
+            List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+            string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
+            string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
 
-            float fRoofFibreGlassPrice_PSM_NZD = (float)listOfProperties[0].Price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
-            float fWallFibreGlassPrice_PSM_NZD = (float)listOfProperties[1].Price_PPSM_NZD; ; // Cena wall fibreglass za 1 m^2
+            List<string> list_roofFibreglassThickness = CDatabaseManager.GetStringList("FibreglassSQLiteDB", roofCladding, "name");
+            List<string> list_wallFibreglassThickness = CDatabaseManager.GetStringList("FibreglassSQLiteDB", wallCladding, "name");
 
-            float fRoofFibreGlassUnitMass_SM = (float)listOfProperties[0].Mass_kg_m2;
-            float fWallFibreGlassUnitMass_SM = (float)listOfProperties[1].Mass_kg_m2;
+            string roofFibreglassThickness = list_roofFibreglassThickness.ElementAtOrDefault(vm.RoofFibreglassThicknessIndex);
+            string wallFibreglassThickness = list_wallFibreglassThickness.ElementAtOrDefault(vm.WallFibreglassThicknessIndex);
+
+            CFibreglassProperties prop_RoofFibreglass = new CFibreglassProperties();
+            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{roofCladding}-{roofFibreglassThickness}");
+
+            CFibreglassProperties prop_WallFibreglass = new CFibreglassProperties();
+            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{wallCladding}-{wallFibreglassThickness}");
+
+            float fRoofFibreGlassPrice_PSM_NZD = (float)prop_RoofFibreglass.price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
+            float fWallFibreGlassPrice_PSM_NZD = (float)prop_WallFibreglass.price_PPSM_NZD; // Cena wall fibreglass za 1 m^2
+
+            float fRoofFibreGlassUnitMass_SM = (float)prop_RoofFibreglass.mass_kg_m2;
+            float fWallFibreGlassUnitMass_SM = (float)prop_WallFibreglass.mass_kg_m2;
 
             float fRoofFibreGlassPrice_Total_NZD = fFibreGlassArea_Roof * fRoofFibreGlassPrice_PSM_NZD;
             float fWallFibreGlassPrice_Total_NZD = fFibreGlassArea_Walls * fWallFibreGlassPrice_PSM_NZD;
@@ -1410,7 +1424,9 @@ namespace PFD
             DataTable dt = new DataTable("Fibreglass");
             // Create Table Rows
             dt.Columns.Add(colProp_Fibreglass.ColumnName, colProp_Fibreglass.DataType);
-            //dt.Columns.Add("TotalLength", typeof(String)); // Dalo by sa spocitat ak podelime plochu sirkou profilu
+            dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
+            dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
+            dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
             dt.Columns.Add(colProp_TotalArea_m2.ColumnName, colProp_TotalArea_m2.DataType);
             dt.Columns.Add(colProp_UnitMass_SM.ColumnName, colProp_UnitMass_SM.DataType); // kg / m^2
             dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
@@ -1425,36 +1441,77 @@ namespace PFD
             // Add Table to Dataset
             ds.Tables.Add(dt);
 
-            // double SumTotalLength = 0;
+            double SumTotalLength = 0;
             double SumTotalArea = 0;
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            AddSurfaceItemRow(dt,
-                        colProp_Fibreglass.ColumnName,
-                        "Roof Fibreglass",
-                        fFibreGlassArea_Roof,
-                        fRoofFibreGlassUnitMass_SM,
-                        fRoofFibreGlassUnitMass_SM * fFibreGlassArea_Roof,
-                        fRoofFibreGlassPrice_PSM_NZD,
-                        fRoofFibreGlassPrice_Total_NZD,
-                        ref SumTotalArea,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
-            AddSurfaceItemRow(dt,
-                        colProp_Fibreglass.ColumnName,
-                        "Wall Fibreglass",
-                        fFibreGlassArea_Walls,
-                        fWallFibreGlassUnitMass_SM,
-                        fWallFibreGlassUnitMass_SM * fFibreGlassArea_Walls,
-                        fWallFibreGlassPrice_PSM_NZD,
-                        fWallFibreGlassPrice_Total_NZD,
-                        ref SumTotalArea,
-                        ref SumTotalMass,
-                        ref SumTotalPrice);
-
             DataRow row;
+
+            if (fFibreGlassArea_Roof > 0) // Roof Cladding
+            {
+                row = dt.NewRow();
+
+                float totalLength = fFibreGlassArea_Roof / (float)prop_RoofFibreglass.widthModular_m;
+                float fUnitMass = fRoofFibreGlassUnitMass_SM;
+                float totalMass = fFibreGlassArea_Roof * fUnitMass;
+                try
+                {
+                    row[colProp_Fibreglass.ColumnName] = roofCladding;
+                    row[colProp_Thickness_mm.ColumnName] = (prop_RoofFibreglass.thickness_m * 1000).ToString("F2"); // mm
+                    row[colProp_Width_m.ColumnName] = prop_RoofFibreglass.widthModular_m.ToString("F2");
+                    row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
+                    SumTotalLength += totalLength;
+
+                    row[colProp_TotalArea_m2.ColumnName] = fFibreGlassArea_Roof.ToString("F2");
+                    SumTotalArea += fFibreGlassArea_Roof;
+
+                    row[colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
+
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row[colProp_UnitPrice_SM_NZD.ColumnName] = fRoofFibreGlassPrice_PSM_NZD.ToString("F2");
+
+                    row[colProp_TotalPrice_NZD.ColumnName] = fRoofFibreGlassPrice_Total_NZD.ToString("F2");
+                    SumTotalPrice += fRoofFibreGlassPrice_Total_NZD;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            if (fFibreGlassArea_Walls > 0) // Wall Cladding
+            {
+                row = dt.NewRow();
+
+                float totalLength = fFibreGlassArea_Walls / (float)prop_WallFibreglass.widthModular_m;
+                float fUnitMass = fWallFibreGlassUnitMass_SM;
+                float totalMass = fFibreGlassArea_Walls * fUnitMass;
+                try
+                {
+                    row[colProp_Fibreglass.ColumnName] = wallCladding;
+                    row[colProp_Thickness_mm.ColumnName] = (prop_WallFibreglass.thickness_m * 1000).ToString("F2"); // mm
+                    row[colProp_Width_m.ColumnName] = prop_WallFibreglass.widthModular_m.ToString("F2");
+                    row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
+                    SumTotalLength += totalLength;
+
+                    row[colProp_TotalArea_m2.ColumnName] = fFibreGlassArea_Walls.ToString("F2");
+                    SumTotalArea += fFibreGlassArea_Walls;
+
+                    row[colProp_UnitMass_SM.ColumnName] = fUnitMass.ToString("F2");
+
+                    row[colProp_TotalMass.ColumnName] = totalMass.ToString("F2");
+                    SumTotalMass += totalMass;
+
+                    row[colProp_UnitPrice_SM_NZD.ColumnName] = fWallFibreGlassPrice_PSM_NZD.ToString("F2");
+
+                    row[colProp_TotalPrice_NZD.ColumnName] = fWallFibreGlassPrice_Total_NZD.ToString("F2");
+                    SumTotalPrice += fWallFibreGlassPrice_Total_NZD;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
             if (SumTotalPrice > 0)
             {
                 dBuildingMass += SumTotalMass;
@@ -1463,7 +1520,9 @@ namespace PFD
                 // Last row
                 row = dt.NewRow();
                 row[colProp_Fibreglass.ColumnName] = "Total:";
-                //row["TotalLength"] = SumTotalLength.ToString("F2");
+                row[colProp_Thickness_mm.ColumnName] = "";
+                row[colProp_Width_m.ColumnName] = "";
+                row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
                 row[colProp_TotalArea_m2.ColumnName] = SumTotalArea.ToString("F2");
                 row[colProp_UnitMass_SM.ColumnName] = "";
                 row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");

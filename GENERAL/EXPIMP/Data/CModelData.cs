@@ -37,6 +37,8 @@ namespace EXPIMP
         private int MWallCladdingCoatingIndex;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
+        private int MRoofFibreglassThicknessIndex;
+        private int MWallFibreglassThicknessIndex;
         private int MSupportTypeIndex;
         private float MFibreglassAreaRoof;
         private float MFibreglassAreaWall;
@@ -387,6 +389,32 @@ namespace EXPIMP
             set
             {
                 MWallCladdingThicknessIndex = value;
+            }
+        }
+
+        public int RoofFibreglassThicknessIndex
+        {
+            get
+            {
+                return MRoofFibreglassThicknessIndex;
+            }
+
+            set
+            {
+                MRoofFibreglassThicknessIndex = value;
+            }
+        }
+
+        public int WallFibreglassThicknessIndex
+        {
+            get
+            {
+                return MWallFibreglassThicknessIndex;
+            }
+
+            set
+            {
+                MWallFibreglassThicknessIndex = value;
             }
         }
 
