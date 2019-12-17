@@ -83,6 +83,7 @@ namespace PFD
         public List<WindowProperties> GetWindowsProperties()
         {
             List<WindowProperties> windowsProperties = new List<WindowProperties>();
+            if (vm.AddWindows == false) return windowsProperties;
 
 
             for (int i = 1; i <= lefRightBays.Count; i++)
@@ -141,6 +142,7 @@ namespace PFD
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            vm.AddWindows = true;
             this.Close();
         }
 

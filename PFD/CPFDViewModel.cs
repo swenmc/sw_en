@@ -52,7 +52,7 @@ namespace PFD
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
         private int MRoofCladdingCoatingIndex;
-        List<CoatingColour> MRoofCladdingColors;
+        private List<CoatingColour> MRoofCladdingColors;
         private int MRoofCladdingColorIndex;
         private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
@@ -68,6 +68,8 @@ namespace PFD
 
         private float MFibreglassAreaRoof;
         private float MFibreglassAreaWall;
+
+        
 
         //private int MWireframeColorIndex;
         //public Color WireframeColor;

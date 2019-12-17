@@ -74,8 +74,8 @@ namespace PFD
         public List<DoorProperties> GetDoorProperties()
         {
             List<DoorProperties> doorProperties = new List<DoorProperties>();
-
-
+            if (vm.AddDoors == false) return doorProperties;
+            
             for (int i = 1; i <= lefRightBays.Count; i++)
             {
                 if ((leftBays.Children[i] as CheckBox).IsChecked == true)
@@ -126,12 +126,15 @@ namespace PFD
             dp.fDoorsWidth = vm.DoorsWidth;
             dp.fDoorCoordinateXinBlock = vm.DoorCoordinateXinBlock;
             dp.sDoorType = vm.DoorType;
+            dp.CoatingColors = vm.CoatingColors;
+            dp.CoatingColor = vm.CoatingColor;
             return dp;
         }
 
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            vm.AddDoors = true;
             this.Close();
         }
 

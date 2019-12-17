@@ -218,34 +218,34 @@ namespace PFD
             combobox.ItemsSource = CDatabaseManager.GetStringList(sDBName, sTableName, sColumnName);
         }
 
-        public static void FillComboboxWithColors(ComboBox combobox, int[] colorDatabaseIDs = null)
-        {
-            // DOCASNE - Todo Ondrej, funckiu treba rozsitit tak aby brala len niektore IDs farieb z databazy
-            // Vsade potom treba nacitavanie parametrov farieb prerobit tak, aby sa nebralo len ID z comboboxu ale uvazovalo sa spravne databazove ID
+        //public static void FillComboboxWithColors(ComboBox combobox, int[] colorDatabaseIDs = null)
+        //{
+        //    // DOCASNE - Todo Ondrej, funckiu treba rozsitit tak aby brala len niektore IDs farieb z databazy
+        //    // Vsade potom treba nacitavanie parametrov farieb prerobit tak, aby sa nebralo len ID z comboboxu ale uvazovalo sa spravne databazove ID
 
-            List<CoatingColour> colours;
+        //    List<CoatingColour> colours;
 
-            if (colorDatabaseIDs == null)
-            {
-                // Nacitavame vsetky farby - stare riesenie
-                colours = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB");
-            }
-            else
-            {
-                // Nenacitavame vsetky farby ale len farby pre prislusny typ coating podla zoznamu IDs priradenemu coating type
-                // TODO Ondrej - skus to nejako premysliet ako by to slo krajsie, mozno by sa toto malo presnut do CCoatingColorManager
-                // Vyfiltrujeme farby podla nastaveneho typu coating
+        //    if (colorDatabaseIDs == null)
+        //    {
+        //        // Nacitavame vsetky farby - stare riesenie
+        //        colours = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB");
+        //    }
+        //    else
+        //    {
+        //        // Nenacitavame vsetky farby ale len farby pre prislusny typ coating podla zoznamu IDs priradenemu coating type
+        //        // TODO Ondrej - skus to nejako premysliet ako by to slo krajsie, mozno by sa toto malo presnut do CCoatingColorManager
+        //        // Vyfiltrujeme farby podla nastaveneho typu coating
 
-                colours = new List<CoatingColour>();
-                for (int i = 0; i < colorDatabaseIDs.Length; i++)
-                {
-                    CoatingColour color = CCoatingColorManager.LoadCoatingProperties(colorDatabaseIDs[i]);
-                    colours.Add(color);
-                }
-            }
+        //        colours = new List<CoatingColour>();
+        //        for (int i = 0; i < colorDatabaseIDs.Length; i++)
+        //        {
+        //            CoatingColour color = CCoatingColorManager.LoadCoatingProperties(colorDatabaseIDs[i]);
+        //            colours.Add(color);
+        //        }
+        //    }
 
-            combobox.ItemsSource = colours;
-        }
+        //    combobox.ItemsSource = colours;
+        //}
 
         public static List<CoatingColour> GetCoatingColors(int coatingIndex)
         {

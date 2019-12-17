@@ -262,7 +262,7 @@ namespace BaseClasses
             COpeningProperties op = obj as COpeningProperties;
             if (op == null) return false;
 
-            return this.Type == op.Type && MathF.d_equal(this.fWidth, op.fWidth) && MathF.d_equal(this.fHeight, op.fHeight);
+            return this.Type == op.Type && MathF.d_equal(this.fWidth, op.fWidth) && MathF.d_equal(this.fHeight, op.fHeight) && this.ColorID == op.ColorID;
         }
 
         public override int GetHashCode()

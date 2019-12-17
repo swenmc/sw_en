@@ -25,8 +25,10 @@ namespace PFD
         private float m_fDoorsHeight;
         private float m_fDoorsWidth;
         private float m_fDoorCoordinateXinBlock;
+        private CoatingColour m_coatingColor;
+        private List<CoatingColour> m_CoatingColors;
+        private bool m_AddDoors;
 
-        
         private List<string> m_DoorsTypes;
         public bool IsSetFromCode = false;
 
@@ -98,6 +100,45 @@ namespace PFD
                 NotifyPropertyChanged("DoorCoordinateXinBlock");
             }
         }
+        public CoatingColour CoatingColor
+        {
+            get
+            {
+                return m_coatingColor;
+            }
+
+            set
+            {
+                m_coatingColor = value;
+                NotifyPropertyChanged("CoatingColor");
+            }
+        }
+        public List<CoatingColour> CoatingColors
+        {
+            get
+            {
+                if (m_CoatingColors == null) m_CoatingColors = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+                return m_CoatingColors;
+            }
+
+            set
+            {
+                m_CoatingColors = value;
+            }
+        }
+
+        public bool AddDoors
+        {
+            get
+            {
+                return m_AddDoors;
+            }
+
+            set
+            {
+                m_AddDoors = value;
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -105,11 +146,12 @@ namespace PFD
         public DoorGeneratorViewModel()
         {
             IsSetFromCode = true;
+            AddDoors = false;
             DoorType = "Roller Door";
             DoorsHeight = 2.1f;
             DoorsWidth = 0.6f;
             DoorCoordinateXinBlock = 0.5f;
-
+            CoatingColor = CoatingColors.First();
 
             IsSetFromCode = false;
         }

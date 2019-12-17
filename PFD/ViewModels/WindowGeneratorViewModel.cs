@@ -27,7 +27,8 @@ namespace PFD
         private float m_fWindowCoordinateXinBay;
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
-        
+        private bool m_AddWindows;
+
         public bool IsSetFromCode = false;
 
         public float WindowHeight
@@ -108,12 +109,26 @@ namespace PFD
             }
         }
 
+        public bool AddWindows
+        {
+            get
+            {
+                return m_AddWindows;
+            }
+
+            set
+            {
+                m_AddWindows = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public WindowGeneratorViewModel()
         {
             IsSetFromCode = true;
+            AddWindows = false;
             WindowHeight = 0.6f;
             WindowWidth = 0.6f;
             WindowCoordinateXinBay = 0.4f;

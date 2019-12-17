@@ -21,6 +21,7 @@ namespace BaseClasses
         private float m_fDoorsWidth;
         private float m_fDoorCoordinateXinBlock;
 
+        private List<CoatingColour> m_CoatingColors;
         private CoatingColour m_coatingColor;
 
         private RebateProperties m_RebateProp;
@@ -156,6 +157,19 @@ namespace BaseClasses
                 NotifyPropertyChanged("CoatingColor");
             }
         }
+        public List<CoatingColour> CoatingColors
+        {
+            get
+            {
+                if (m_CoatingColors == null) m_CoatingColors = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+                return m_CoatingColors;
+            }
+
+            set
+            {
+                m_CoatingColors = value;
+            }
+        }
 
         public List<int> Bays
         {
@@ -186,7 +200,7 @@ namespace BaseClasses
         }
 
         public DoorProperties()
-        {
+        {            
         }
 
         //-------------------------------------------------------------------------------------------------------------

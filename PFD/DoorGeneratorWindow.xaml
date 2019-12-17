@@ -19,6 +19,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -38,6 +39,8 @@
             <TextBlock Grid.Row="1" Grid.Column="1" Text="Door height" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Text="Door width" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="3" Text="Coordinate in x block" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" Text="Colour" HorizontalAlignment="Left"/>
+            
 
             <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_DoorsType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
@@ -54,27 +57,37 @@
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
+            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=CoatingColors}" SelectedValue="{Binding Path=CoatingColor, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Fill="{Binding CodeHEX}" Width="92" Height="12" Margin="0,1,5,1" />
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
             <TextBlock Grid.Row="4" Grid.Column="0" Text="LEFT" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Name="leftBays" Orientation="Horizontal">
+            <StackPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Name="leftBays" Orientation="Horizontal">
                 <CheckBox Margin="0 0 20 0" Name="leftBaysAll" Checked="LeftBaysAll_Checked" Unchecked="LeftBaysAll_Unchecked">All left bays</CheckBox>
                 
             </StackPanel>
             <TextBlock Grid.Row="5" Grid.Column="0" Text="RIGHT" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Name="rightBays" Orientation="Horizontal">
+            <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Name="rightBays" Orientation="Horizontal">
                 <CheckBox Margin="0 0 20 0" Name="rightBaysAll" Checked="RightBaysAll_Checked" Unchecked="RightBaysAll_Unchecked">All right bays</CheckBox>
             </StackPanel>
             <TextBlock Grid.Row="6" Grid.Column="0" Text="FRONT" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Name="frontBays" Orientation="Horizontal">
+            <StackPanel Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" Name="frontBays" Orientation="Horizontal">
                 <CheckBox Margin="0 0 20 0" Name="frontBaysAll" Checked="FrontBaysAll_Checked" Unchecked="FrontBaysAll_Unchecked">All front bays</CheckBox>
             </StackPanel>
             <TextBlock Grid.Row="7" Grid.Column="0" Text="BACK" FontWeight="Bold" HorizontalAlignment="Left"/>
-            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Name="backBays" Orientation="Horizontal">
+            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4" Name="backBays" Orientation="Horizontal">
                 <CheckBox Margin="0 0 20 0" Name="backBaysAll" Checked="BackBaysAll_Checked" Unchecked="BackBaysAll_Unchecked">All back bays</CheckBox>
             </StackPanel>
 
-            
-
-            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnAdd" Margin="0 0 0 0" Click="BtnAdd_Click">Add</Button>
             </StackPanel>
         </Grid>
