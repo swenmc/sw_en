@@ -302,6 +302,14 @@
                     <DataGridTextColumn Binding="{Binding Gutter}" Header="Gutter" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="65" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Colour" Width="50">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Background" Value="{Binding Color}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ColorName}" Header="Colour Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalLength_m}" Header="Total Length [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_LM}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
@@ -328,6 +336,14 @@
                     <DataGridTextColumn Binding="{Binding Flashing}" Header="Flashing" Width="Auto" ElementStyle="{StaticResource MainColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Thickness_mm}" Header="Thickness [mm]" Width="65" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Width_m}" Header="Width [m]" Width="60" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Colour" Width="50">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Background" Value="{Binding Color}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ColorName}" Header="Colour Name" Width="Auto" ElementStyle="{StaticResource LeftAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalLength_m}" Header="Total Length [m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UnitMass_LM}" Header="Unit Mass [kg/m]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding TotalMass}" Header="Total Mass [kg]" Width="80" ElementStyle="{StaticResource RightAligned}"></DataGridTextColumn>

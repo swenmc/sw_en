@@ -1654,19 +1654,15 @@ namespace PFD
             List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
             List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
 
-            Color c1 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Titania").CodeHEX);
-            Color c3 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("New Denim Blue").CodeHEX);
-            Color c4 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
-
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, c1));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, c1));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, c1));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, c3));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, c3));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, c3));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, c4));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, c4));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, c4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
 
             // Create Table
             DataTable dt = new DataTable("Flashings");
@@ -1674,6 +1670,8 @@ namespace PFD
             dt.Columns.Add(colProp_Flashing.ColumnName, colProp_Flashing.DataType);
             dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
             dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
+            dt.Columns.Add(colProp_Color.ColumnName, colProp_Color.DataType);
+            dt.Columns.Add(colProp_ColorName.ColumnName, colProp_ColorName.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
             dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
             dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
@@ -1699,6 +1697,7 @@ namespace PFD
                             fl.Name,
                             fl.Thickness,
                             fl.Width_total,
+                            fl.coatingColor,
                             fl.Length_total,
                             fl.Mass_kg_lm,
                             fl.Mass_kg_lm * fl.Length_total,
@@ -1718,6 +1717,8 @@ namespace PFD
             row[colProp_Flashing.ColumnName] = "Total:";
             row[colProp_Thickness_mm.ColumnName] = "";
             row[colProp_Width_m.ColumnName] = "";
+            row[colProp_Color.ColumnName] = "";
+            row[colProp_ColorName.ColumnName] = "";
             row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
             row[colProp_UnitMass_LM.ColumnName] = "";
             row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
@@ -1738,8 +1739,7 @@ namespace PFD
         {
             float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
 
-            Color c1 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Titania").CodeHEX); // TODO Ondrej - toto by malo prist z GUI
-            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, c1); // TODO Ondrej - toto by malo prist z GUI
+            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2); // TODO Ondrej - toto by malo prist z GUI
 
             // Create Table
             DataTable dt = new DataTable("Gutters");
@@ -1747,6 +1747,8 @@ namespace PFD
             dt.Columns.Add(colProp_Gutter.ColumnName, colProp_Gutter.DataType);
             dt.Columns.Add(colProp_Thickness_mm.ColumnName, colProp_Thickness_mm.DataType);
             dt.Columns.Add(colProp_Width_m.ColumnName, colProp_Width_m.DataType);
+            dt.Columns.Add(colProp_Color.ColumnName, colProp_Color.DataType);
+            dt.Columns.Add(colProp_ColorName.ColumnName, colProp_ColorName.DataType);
             dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
             dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
             dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
@@ -1770,6 +1772,7 @@ namespace PFD
                         gutter.Name,
                         gutter.Thickness,
                         gutter.Width_total,
+                        gutter.coatingColor,
                         gutter.Length_total,
                         gutter.Mass_kg_lm,
                         gutter.Mass_kg_lm * gutter.Length_total,
@@ -1790,6 +1793,8 @@ namespace PFD
             row[colProp_Gutter.ColumnName] = "Total:";
             row[colProp_Thickness_mm.ColumnName] = "";
             row[colProp_Width_m.ColumnName] = "";
+            row[colProp_Color.ColumnName] = "";
+            row[colProp_ColorName.ColumnName] = "";
             row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
             row[colProp_UnitMass_LM.ColumnName] = "";
             row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
@@ -1812,6 +1817,7 @@ namespace PFD
             string itemName,
             double thickness_m,
             double width,
+            CoatingColour coatingColor,
             double totalLength,
             double unitMass,
             double totalMass,
@@ -1832,6 +1838,8 @@ namespace PFD
                     row[itemColumnName] = itemName;
                     row[colProp_Thickness_mm.ColumnName] = (thickness_m * 1000).ToString("F2"); // mm
                     row[colProp_Width_m.ColumnName] = width.ToString("F2");
+                    row[colProp_Color.ColumnName] = coatingColor.CodeHEX;
+                    row[colProp_ColorName.ColumnName] = coatingColor.Name;
                     row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
                     SumTotalLength += totalLength;
 

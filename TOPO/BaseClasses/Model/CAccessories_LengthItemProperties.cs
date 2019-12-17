@@ -17,7 +17,8 @@ namespace BaseClasses
         private double m_thickness;
         private double m_width_total;
         private double m_length_total;
-        private Color m_color;
+        private CoatingColour m_coatingColor;
+        //private Color m_color;
 
         private double m_density_kg_m3;
         private double m_mass_kg_m2;
@@ -78,6 +79,7 @@ namespace BaseClasses
             }
         }
 
+        /*
         public Color color
         {
             get
@@ -88,6 +90,20 @@ namespace BaseClasses
             set
             {
                 m_color = value;
+            }
+        }
+        */
+
+        public CoatingColour coatingColor
+        {
+            get
+            {
+                return m_coatingColor;
+            }
+
+            set
+            {
+                m_coatingColor = value;
             }
         }
 
@@ -173,12 +189,12 @@ namespace BaseClasses
         {
         }
 
-        public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength, Color color)
+        public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength, int colorIndex)
         {
             m_Name = databaseName;
             m_length_total = totalLength;
-            m_color = color;
-
+            //m_color = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties(colorIndex).CodeHEX);
+            m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
             SetParametersFromDatabase(databaseName, databaseTable);
         }
 
@@ -188,9 +204,10 @@ namespace BaseClasses
             m_thickness = prop.Thickness;
             m_width_total = prop.Width_total;
 
-            Color zinc =(Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
+            //Color zinc = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
+            CoatingColour zinc = CCoatingColorManager.LoadCoatingProperties("Zinc");
 
-            if (m_color == zinc) // Zinc
+            if (m_coatingColor == zinc) // Zinc
             {
                 m_density_kg_m3 = prop.Density4_kg_m3;
                 m_mass_kg_m2 = prop.Mass4_kg_m2;
