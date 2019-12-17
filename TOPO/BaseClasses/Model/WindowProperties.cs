@@ -22,6 +22,7 @@ namespace BaseClasses
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
 
+        private List<CoatingColour> m_CoatingColors;
         private CoatingColour m_coatingColor;
 
         //validationValues
@@ -163,6 +164,19 @@ namespace BaseClasses
                 NotifyPropertyChanged("CoatingColor");
             }
         }
+        public List<CoatingColour> CoatingColors
+        {
+            get
+            {
+                if (m_CoatingColors == null) m_CoatingColors = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+                return m_CoatingColors;
+            }
+
+            set
+            {
+                m_CoatingColors = value;
+            }
+        }
 
         public List<int> Bays
         {
@@ -179,7 +193,10 @@ namespace BaseClasses
             }
         }
 
-        public WindowProperties() { }
+        public WindowProperties()
+        {
+            CoatingColor = CoatingColors.First(); //default color
+        }
 
 
         //-------------------------------------------------------------------------------------------------------------
