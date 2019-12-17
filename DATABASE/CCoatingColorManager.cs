@@ -53,6 +53,26 @@ namespace DATABASE
             return properties;
         }
 
+        public static CoatingColour LoadCoatingProperties(string name)
+        {
+            CoatingColour properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from colours WHERE name = @name", conn);
+                command.Parameters.AddWithValue("@name", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetColorProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
         public static CoatingColour GetColorProperties(SQLiteDataReader reader)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();

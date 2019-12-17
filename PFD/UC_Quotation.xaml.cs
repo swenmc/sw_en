@@ -1652,16 +1652,21 @@ namespace PFD
             float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
 
             List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
+            List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
 
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength));
+            Color c1 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Titania").CodeHEX);
+            Color c3 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("New Denim Blue").CodeHEX);
+            Color c4 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
+
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, c1));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, c1));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, c1));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, c3));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, c3));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, c3));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, c4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, c4));
+            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, c4));
 
             // Create Table
             DataTable dt = new DataTable("Flashings");
@@ -1733,7 +1738,8 @@ namespace PFD
         {
             float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
 
-            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength); // TODO Ondrej - toto by malo prist z GUI
+            Color c1 = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Titania").CodeHEX); // TODO Ondrej - toto by malo prist z GUI
+            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, c1); // TODO Ondrej - toto by malo prist z GUI
 
             // Create Table
             DataTable dt = new DataTable("Gutters");

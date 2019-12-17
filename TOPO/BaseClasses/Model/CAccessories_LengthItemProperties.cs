@@ -173,10 +173,11 @@ namespace BaseClasses
         {
         }
 
-        public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength)
+        public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength, Color color)
         {
             m_Name = databaseName;
             m_length_total = totalLength;
+            m_color = color;
 
             SetParametersFromDatabase(databaseName, databaseTable);
         }
@@ -187,8 +188,7 @@ namespace BaseClasses
             m_thickness = prop.Thickness;
             m_width_total = prop.Width_total;
 
-            CoatingColour zincColor = CCoatingColorManager.LoadCoatingProperties(18);
-            Color zinc =(Color)ColorConverter.ConvertFromString(zincColor.CodeHEX);
+            Color zinc =(Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
 
             if (m_color == zinc) // Zinc
             {
