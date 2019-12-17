@@ -190,7 +190,7 @@
                         
                         <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=RoofCladdingColors}" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -214,7 +214,7 @@
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                         
                         <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="18" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <ComboBox Grid.Row="18" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>

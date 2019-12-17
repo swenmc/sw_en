@@ -33,6 +33,32 @@ namespace DATABASE
             return items;
         }
 
+        public static List<CoatingColour> LoadCoatingColours(int coatingID)
+        {
+            CoatingColour colour;
+            List<CoatingColour> items = new List<CoatingColour>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select colorRangeIDs from coating where ID = @id", conn);
+                command.Parameters.AddWithValue("@id", coatingID);
+                string colorRangeIDs = (string)command.ExecuteScalar();
+
+                command = new SQLiteCommand($"Select * from colours where ID in ({colorRangeIDs})", conn);                
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        colour = new CoatingColour();
+                        colour = GetColorProperties(reader);
+                        items.Add(colour);
+                    }
+                }
+            }
+            return items;
+        }
+
         public static CoatingColour LoadCoatingProperties(int id)
         {
             CoatingColour properties = null;

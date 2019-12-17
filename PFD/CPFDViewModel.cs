@@ -21,6 +21,7 @@ using EXPIMP;
 using M_AS4600;
 using BaseClasses.Helpers;
 using System.Windows.Media;
+using DATABASE;
 
 namespace PFD
 {
@@ -51,10 +52,12 @@ namespace PFD
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
         private int MRoofCladdingCoatingIndex;
+        List<CoatingColour> MRoofCladdingColors;
         private int MRoofCladdingColorIndex;
         private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
         private int MWallCladdingCoatingIndex;
+        private List<CoatingColour> MWallCladdingColors;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
 
@@ -302,8 +305,10 @@ namespace PFD
 
                 RoofCladdingIndex = 1;
                 RoofCladdingCoatingIndex = 1;
+
                 RoofCladdingColorIndex = 8;
                 WallCladdingIndex = 0;
+
                 WallCladdingCoatingIndex = 1;
                 WallCladdingColorIndex = 8;
                 SupportTypeIndex = 1; // Pinned // Defaultna hodnota indexu v comboboxe
@@ -668,6 +673,9 @@ namespace PFD
             set
             {
                 MRoofCladdingCoatingIndex = value;
+
+                MRoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+
                 //SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -737,6 +745,9 @@ namespace PFD
             set
             {
                 MWallCladdingCoatingIndex = value;
+
+                MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+
                 //SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -2552,6 +2563,35 @@ namespace PFD
             set
             {
                 iFrontColumnNoInOneFrame = value;
+            }
+        }
+
+        public List<CoatingColour> RoofCladdingColors
+        {
+            get
+            {
+                if (MRoofCladdingColors == null) MRoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+
+                return MRoofCladdingColors;
+            }
+
+            set
+            {
+                MRoofCladdingColors = value;
+            }
+        }
+
+        public List<CoatingColour> WallCladdingColors
+        {
+            get
+            {
+                if(MWallCladdingColors == null) MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+                return MWallCladdingColors;
+            }
+
+            set
+            {
+                MWallCladdingColors = value;
             }
         }
 

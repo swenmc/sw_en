@@ -245,23 +245,11 @@ namespace PFD
             }
 
             combobox.ItemsSource = colours;
+        }
 
-            //List<Tuple<string, string>> color_items = new List<Tuple<string, string>>();
-
-            //// Connect to database and fill items of all comboboxes
-            //using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[sDBName].ConnectionString))
-            //{
-            //    conn.Open();
-            //    SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
-            //    using (SQLiteDataReader reader = command.ExecuteReader())
-            //    {
-            //        while (reader.Read())
-            //        {
-            //            color_items.Add(Tuple.Create<string, string>(reader[sColumnText].ToString(), "#"+reader[sColumnColor].ToString()));
-            //        }
-            //    }
-            //}
-            //combobox.ItemsSource = color_items;
+        public static List<CoatingColour> GetCoatingColors(int coatingIndex)
+        {
+            return CCoatingColorManager.LoadCoatingColours(coatingIndex + 1);
         }
 
         public static void FillComboboxWithColors_All(ComboBox combobox)

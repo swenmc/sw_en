@@ -1463,11 +1463,11 @@ namespace PFD
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
 
             // TODO Ondrej  toto asi musime presunut ak ma obsah tychto comboboxov zavisiet na vybranej polozke v comboboxoch Coating
-            CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
-            CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
+            //CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
+            //CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
 
-            Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
-            Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
+            //Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
+            //Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
             Combobox_SupportType.Items.Add("Fixed");
             Combobox_SupportType.Items.Add("Pinned");
