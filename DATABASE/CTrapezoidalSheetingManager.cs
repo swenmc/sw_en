@@ -260,19 +260,9 @@ namespace DATABASE
             crsc.thicknessTotal_m = double.Parse(reader["thicknessTot_m"].ToString(), nfi);
             crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
             crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
-            crsc.price1_PPSM_NZD = double.Parse(reader["price1_PPSM_NZD"].ToString(), nfi);
-            crsc.price1_PPLM_NZ = double.Parse(reader["price1_PPLM_NZD"].ToString(), nfi);
-            crsc.price1_PPKG_NZD = double.Parse(reader["price1_PPKG_NZD"].ToString(), nfi);
-            crsc.price2_PPSM_NZD = double.Parse(reader["price2_PPSM_NZD"].ToString(), nfi);
-            crsc.price2_PPLM_NZ = double.Parse(reader["price2_PPLM_NZD"].ToString(), nfi);
-            crsc.price2_PPKG_NZD = double.Parse(reader["price2_PPKG_NZD"].ToString(), nfi);
-            crsc.price3_PPSM_NZD = double.Parse(reader["price3_PPSM_NZD"].ToString(), nfi);
-            crsc.price3_PPLM_NZ = double.Parse(reader["price3_PPLM_NZD"].ToString(), nfi);
-            crsc.price3_PPKG_NZD = double.Parse(reader["price3_PPKG_NZD"].ToString(), nfi);
-            crsc.price4_PPSM_NZD = double.Parse(reader["price4_PPSM_NZD"].ToString(), nfi);
-            crsc.price4_PPLM_NZ = double.Parse(reader["price4_PPLM_NZD"].ToString(), nfi);
-            crsc.price4_PPKG_NZD = double.Parse(reader["price4_PPKG_NZD"].ToString(), nfi);
-            crsc.maxSimpleSpan = double.Parse(reader["maxSimpleSpan"].ToString(), nfi);
+            crsc.coil_IDs = reader["coil_IDs"].ToString();
+            crsc.coatingIDs = reader["coatingIDs"].ToString();
+            crsc.thicknessID = Int32.Parse(reader["thicknessID"].ToString());
             crsc.maxEavesOverhang = double.Parse(reader["maxEavesOverhang"].ToString(), nfi);
             crsc.A_g = double.Parse(reader["A_g"].ToString(), nfi);
             crsc.Iy = double.Parse(reader["Iy"].ToString(), nfi);
@@ -412,10 +402,192 @@ namespace DATABASE
             coatingprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
             coatingprop.Name = reader["name_short"].ToString();
             coatingprop.ColorIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
-            coatingprop.PriceCode = Int32.Parse(reader["priceCode"].ToString(), nfi);
+            //coatingprop.PriceCode = Int32.Parse(reader["priceCode"].ToString(), nfi);
 
             return coatingprop;
         }
+
+        // Coil
+        private static Dictionary<int, CTS_CoilProperties> coilItems = null;
+
+        public static Dictionary<int, CTS_CoilProperties> LoadCoilProperties()
+        {
+            if (coilItems != null) return coilItems;
+            CTS_CoilProperties coilProp = null;
+            coilItems = new Dictionary<int, CTS_CoilProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coils", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        coilProp = GetCoilProperties(reader);
+                        coilItems.Add(coilProp.ID, coilProp);
+                    }
+                }
+            }
+            return coilItems;
+        }
+
+        public static List<CTS_CoilProperties> LoadCoilPropertiesList()
+        {
+            CTS_CoilProperties properties;
+            List<CTS_CoilProperties> items = new List<CTS_CoilProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coils", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        properties = new CTS_CoilProperties();
+                        properties = GetCoilProperties(reader);
+                        items.Add(properties);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CTS_CoilProperties LoadCoilProperties(int id)
+        {
+            CTS_CoilProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from coils WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetCoilProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CTS_CoilProperties GetCoilProperties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CTS_CoilProperties coilprop = new CTS_CoilProperties();
+            coilprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            coilprop.widthCoil = double.Parse(reader["widthCoil_mm"].ToString(), nfi) / 1000;
+            coilprop.thicknessID = Int32.Parse(reader["thicknessID"].ToString());
+            coilprop.thicknessCore = double.Parse(reader["thicknessCore_mm"].ToString(), nfi) / 1000;
+            coilprop.material_ID = Int32.Parse(reader["material_ID"].ToString());
+            coilprop.materialName = reader["materialName"].ToString();
+            coilprop.coatingID = Int32.Parse(reader["coatingID"].ToString());
+            coilprop.coatingName = reader["coatingName"].ToString();
+            coilprop.colorRangeIDs = ConvertStringArrayOfIDs(reader["colorRangeIDs"].ToString());
+            coilprop.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
+            coilprop.coilmass_kg_m2 = double.Parse(reader["coilmass_kg_m2"].ToString(), nfi);
+            coilprop.coilLengthPerTonne = double.Parse(reader["coilLengthPerTonne"].ToString(), nfi);
+            coilprop.price_PPTONNE_NZD = double.Parse(reader["price_PPTONNE_NZD"].ToString(), nfi);
+            coilprop.price_PPLM_NZD = double.Parse(reader["price_PPLM_NZD"].ToString(), nfi);
+            coilprop.price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
+
+            return coilprop;
+        }
+
+        // Thickness
+        private static Dictionary<int, CTS_ThicknessProperties> thicknessItems = null;
+
+        public static Dictionary<int, CTS_ThicknessProperties> LoadThicknessProperties()
+        {
+            if (thicknessItems != null) return thicknessItems;
+            CTS_ThicknessProperties thicknessProp = null;
+            thicknessItems = new Dictionary<int, CTS_ThicknessProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from thicknesses", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        thicknessProp = GetThicknessProperties(reader);
+                        thicknessItems.Add(thicknessProp.ID, thicknessProp);
+                    }
+                }
+            }
+            return thicknessItems;
+        }
+
+        public static List<CTS_ThicknessProperties> LoadThicknessPropertiesList()
+        {
+            CTS_ThicknessProperties properties;
+            List<CTS_ThicknessProperties> items = new List<CTS_ThicknessProperties>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from thicknesses", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        properties = new CTS_ThicknessProperties();
+                        properties = GetThicknessProperties(reader);
+                        items.Add(properties);
+                    }
+                }
+            }
+            return items;
+        }
+
+        public static CTS_ThicknessProperties LoadThicknessProperties(int id)
+        {
+            CTS_ThicknessProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from thicknesses WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetThicknessProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        public static CTS_ThicknessProperties GetThicknessProperties(SQLiteDataReader reader)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CTS_ThicknessProperties thicknessprop = new CTS_ThicknessProperties();
+            thicknessprop.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            thicknessprop.thicknessCore = double.Parse(reader["thicknessCore_mm"].ToString(), nfi) / 100f;
+            thicknessprop.thicknessTot = double.Parse(reader["thicknessTot_mm"].ToString(), nfi) / 100f;
+            thicknessprop.claddingIDs = ConvertStringArrayOfIDs(reader["claddingIDs"].ToString());
+            thicknessprop.coatingIDs = ConvertStringArrayOfIDs(reader["coatingIDs"].ToString());
+            thicknessprop.coil_IDs = ConvertStringArrayOfIDs(reader["coil_IDs"].ToString());
+
+            return thicknessprop;
+        }
+
+
+
+
+
+
+
 
         // TODO Ondrej - Toto by sa malo presunut do nejake bazovej triedy pre pracu s textom a pod
 
@@ -423,7 +595,7 @@ namespace DATABASE
         // Returns array of words (strings)
         public static string[] SplitText(string inputText)
         {
-            char[] delimiterChars = { ' ', ',', '.', ':', '\t', '\n' }; // Znaky, ktore urcuju rozdelenie textu
+            char[] delimiterChars = { ' ', ',', ';', '.', ':', '\t', '\n' }; // Znaky, ktore urcuju rozdelenie textu
 
             //System.Console.WriteLine($"Original text: '{inputText}'");
 

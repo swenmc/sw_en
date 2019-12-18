@@ -1083,8 +1083,9 @@ namespace PFD
 
             List<CoatingColour> colours = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB");
 
-            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex).PriceCode, prop_RoofCladding); // Ceny urcujeme podla coating
-            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex).PriceCode, prop_WallCladding); // Ceny urcujeme podla coating
+            // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
+            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex), prop_RoofCladding); // Ceny urcujeme podla coating a color
+            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex), prop_WallCladding); // Ceny urcujeme podla coating a color
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -1205,25 +1206,40 @@ namespace PFD
             }
         }
 
-        private float GetCladdingPriceByColor_PSM_NZD(int priceCode, CTS_CrscProperties prop)
+        private float GetCladdingPriceByCoatingAndColor_PSM_NZD(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
         {
-            float fCladdingPrice1_PSM_NZD = (float)prop.price1_PPSM_NZD; // Cena cladding za 1 m^2 (ColorSteel Endura)
-            float fCladdingPrice2_PSM_NZD = (float)prop.price2_PPSM_NZD; // Cena cladding za 1 m^2 (ColorSteel Maxx)
-            float fCladdingPrice3_PSM_NZD = (float)prop.price3_PPSM_NZD; // Cena cladding za 1 m^2 (FormClad)
-            float fCladdingPrice4_PSM_NZD = (float)prop.price4_PPSM_NZD; // Cena cladding za 1 m^2 (AlumZinc)
+            // TODO Ondrej
+            // Potrebujeme vyhladat cenu, asi by to bolo lepsie cez SQL dotaz priamo v databaze ???
 
-            // TODO Ondrej - toto sa asi da urobit krajsie cez nejaku relacnu databazu alebo nieco take
-            if (priceCode == 1)
-                return fCladdingPrice1_PSM_NZD;
-            else if (priceCode == 2)
-                return fCladdingPrice2_PSM_NZD;
-            else if (priceCode == 3)
-                return fCladdingPrice3_PSM_NZD;
-            else if (priceCode == 4)
-                return fCladdingPrice4_PSM_NZD;
+            // Vstupne parametre pre zistenie ceny
+
+            // Coil Width (Smartdek a Speedclad 940 mm, Purlindek 860 mm)
+            double coilWidth = prop.widthCoil_m;
+
+            // Thickness alebo Thickness ID
+            double thickness = prop.thicknessCore_m;
+            int thicknessID = prop.thicknessID;
+
+            // coating ID alebo coatingName
+            string coatingName = coatingProp.Name;
+            int coatingID = coatingProp.ID;
+
+            // color ID in colorRangeIDs (je potrebne pre Formclad IDs 14-17 alebo 18)
+            int colorID = color.ID;
+
+            List<CTS_CoilProperties> coilList  = CTrapezoidalSheetingManager.LoadCoilPropertiesList();
+
+            // TODO Ondrej - toto prosim skontroluj alebo prepis do SQL
+            CTS_CoilProperties coil = coilList.Find(c => (MathF.d_equal(c.widthCoil, coilWidth)) &&
+            (c.thicknessID == thicknessID) &&
+            (c.coatingID == coatingID) &&
+            (c.colorRangeIDs.Contains(colorID))); // TODO - vyhladat v databaze spravnu cenu na meter stvorcovy podla kombinacie parametrov
+
+            if (coil != null)
+                return (float)coil.price_PPSM_NZD;
             else
             {
-                throw new Exception("Invalid cladding price code.");
+                throw new Exception("Unable to find coil price in the database.");
             }
         }
 

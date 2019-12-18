@@ -23,6 +23,10 @@ namespace DATABASE.DTO
        public double thicknessTotal_m;
        public double mass_kg_m2;
        public double mass_kg_lm;
+       public string coil_IDs;
+       public string coatingIDs;
+       public int thicknessID;
+       /*
        public double price1_PPSM_NZD;
        public double price1_PPLM_NZ;
        public double price1_PPKG_NZD;
@@ -35,6 +39,7 @@ namespace DATABASE.DTO
        public double price4_PPSM_NZD;
        public double price4_PPLM_NZ;
        public double price4_PPKG_NZD;
+       */
        public double maxSimpleSpan;
        public double maxEavesOverhang;
        public double A_g;

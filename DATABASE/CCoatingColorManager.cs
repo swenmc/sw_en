@@ -45,7 +45,14 @@ namespace DATABASE
                 command.Parameters.AddWithValue("@id", coatingID);
                 string colorRangeIDs = (string)command.ExecuteScalar();
 
-                command = new SQLiteCommand($"Select * from colours where ID in ({colorRangeIDs})", conn);                
+                // TO Ondrej - nahradil som v databaze oddelovacie znaky "," za ";" lebo mi to robilo problemy pre exported z xls do sqlite.
+                // Potom vsak nefungoval SQLiteCommand tak som to tu prerobil naspat na oddelenie ciarkami
+
+                string pattern = ";";
+                string replace = ",";
+                string colorRangeIDs_WithComma = System.Text.RegularExpressions.Regex.Replace(colorRangeIDs, pattern, replace);
+
+                command = new SQLiteCommand($"Select * from colours where ID in ({colorRangeIDs_WithComma})", conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())

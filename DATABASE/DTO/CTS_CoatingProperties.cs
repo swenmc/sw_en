@@ -11,7 +11,7 @@ namespace DATABASE.DTO
         private int m_ID;
         private string m_name;
         private int[] m_ColorIDs;
-        private int m_PriceCode;
+        //private int m_PriceCode;
 
         public int ID
         {
@@ -52,6 +52,7 @@ namespace DATABASE.DTO
             }
         }
 
+        /*
         public int PriceCode
         {
             get
@@ -64,6 +65,7 @@ namespace DATABASE.DTO
                 m_PriceCode = value;
             }
         }
+        */
 
         public CTS_CoatingProperties() { }
     }

@@ -120,6 +120,8 @@
     <Compile Include="DTO\CTEKScrewProp.cs" />
     <Compile Include="DTO\CTS_CoatingProperties.cs" />
     <Compile Include="DTO\CFibreglassProperties.cs" />
+    <Compile Include="DTO\CTS_ThicknessProperties.cs" />
+    <Compile Include="DTO\CTS_CoilProperties.cs" />
     <Compile Include="DTO\CTS_SectionPropertiesText.cs" />
     <Compile Include="DTO\CTS_SectionProperties.cs" />
     <Compile Include="DTO\CTS_CrscProperties.cs" />
