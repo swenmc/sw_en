@@ -1081,12 +1081,17 @@ namespace PFD
             CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
             prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(wallCladdingCoating);
 
-            CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex);
+            CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
             CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
 
-            // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
-            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+            CTS_CoilProperties prop_RoofCladdingCoil = GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
+            CTS_CoilProperties prop_WallCladdingCoil = GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+
+            float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
+            float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
+
+            float fRoofCladdingPrice_PSM_NZD = (float)(prop_RoofCladdingCoil.price_PPLM_NZD / prop_RoofCladding.widthModular_m);
+            float fWallCladdingPrice_PSM_NZD = (float)(prop_WallCladdingCoil.price_PPLM_NZD / prop_WallCladding.widthModular_m);
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -1125,7 +1130,7 @@ namespace PFD
             {
                 row = dt.NewRow();
 
-                float fUnitMass = (float)prop_RoofCladding.mass_kg_m2;
+                float fUnitMass = fRoofCladdingUnitMass_kg_m2;
                 float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
@@ -1155,7 +1160,7 @@ namespace PFD
             {
                 row = dt.NewRow();
 
-                float fUnitMass = (float)prop_WallCladding.mass_kg_m2;
+                float fUnitMass = fWallCladdingUnitMass_kg_m2;
                 float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
@@ -1207,22 +1212,22 @@ namespace PFD
             }
         }
 
-        private float GetCladdingPriceByCoatingAndColor_PSM_NZD(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
+        private CTS_CoilProperties GetCladdingCoilProperties(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
         {
             // TODO Ondrej
-            // Potrebujeme vyhladat cenu, asi by to bolo lepsie cez SQL dotaz priamo v databaze ???
+            // Potrebujeme vyhladat vlastnosti coil, asi by to bolo lepsie cez SQL dotaz priamo v databaze ???
 
-            // Vstupne parametre pre zistenie ceny
+            // Vstupne parametre pre zistenie coil
 
             // Coil Width (Smartdek a Speedclad 940 mm, Purlindek 860 mm)
             double coilWidth = prop.widthCoil_m;
 
             // Thickness alebo Thickness ID
-            double thickness = prop.thicknessCore_m;
+            //double thickness = prop.thicknessCore_m;
             int thicknessID = prop.thicknessID;
 
             // coating ID alebo coatingName
-            string coatingName = coatingProp.Name;
+            //string coatingName = coatingProp.Name;
             int coatingID = coatingProp.ID;
 
             // color ID in colorRangeIDs (je potrebne pre Formclad IDs 14-17 alebo 18)
@@ -1230,17 +1235,17 @@ namespace PFD
 
             List<CTS_CoilProperties> coilList  = CTrapezoidalSheetingManager.LoadCoilPropertiesList();
 
-            // TODO Ondrej - toto prosim skontroluj alebo prepis do SQL
+            // TODO Ondrej - hladame riadok v tabulke coils - toto prosim skontroluj alebo prepis do SQL
             CTS_CoilProperties coil = coilList.Find(c => (MathF.d_equal(c.widthCoil, coilWidth)) &&
             (c.thicknessID == thicknessID) &&
             (c.coatingID == coatingID) &&
-            (c.colorRangeIDs.Contains(colorID))); // TODO - vyhladat v databaze spravnu cenu na meter stvorcovy podla kombinacie parametrov
+            (c.colorRangeIDs.Contains(colorID)));
 
             if (coil != null)
-                return (float)coil.price_PPSM_NZD;
+                return coil;
             else
             {
-                throw new Exception("Unable to find coil price in the database.");
+                throw new Exception("Unable to find coil in the database.");
             }
         }
 
