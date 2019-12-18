@@ -59,7 +59,7 @@ namespace BaseClasses
             if (sPlateType_ForL == "LJ") // TODO - tento string prepracovat na enum pre jednotlive typy plechov, pripravit databazu plechov
                 iConnectorNumberinOnePlate = 8; // Plate LJ
 
-            CScrew referenceScrew = new CScrew("TEK", "12");
+            CScrew referenceScrew = new CScrew("TEK", "14");
             CScrewArrangement_L screwArrangement = new CScrewArrangement_L(iConnectorNumberinOnePlate, referenceScrew);
 
             // TODO Ondrej 15/07/2018

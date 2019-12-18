@@ -59,7 +59,7 @@ namespace BaseClasses
             Point3D ControlPoint_P1 = new Point3D(fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), m_SecondaryMembers[0].CrScStart.z_min /*- 0.5f * m_SecondaryMembers[0].CrScStart.h*/ - m_ft + flocaleccentricity_z);
 
             int iConnectorNumberinOnePlate = 32;
-            CScrew referenceScrew = new CScrew("TEK", "12");
+            CScrew referenceScrew = new CScrew("TEK", "14");
             CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(iConnectorNumberinOnePlate, referenceScrew);
 
             m_arrPlates = new CPlate[1];

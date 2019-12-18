@@ -67,7 +67,7 @@ namespace BaseClasses
 
             int iConnectorNumberinOnePlate = 14;
 
-            CScrew referenceScrew = new CScrew("TEK", "12");
+            CScrew referenceScrew = new CScrew("TEK", "14");
             CScrewArrangement_F screwArrangement1 = new CScrewArrangement_F(iConnectorNumberinOnePlate, referenceScrew);
             CScrewArrangement_F screwArrangement2 = new CScrewArrangement_F(iConnectorNumberinOnePlate, referenceScrew);
 
