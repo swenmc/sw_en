@@ -1081,11 +1081,12 @@ namespace PFD
             CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
             prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(wallCladdingCoating);
 
-            List<CoatingColour> colours = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB");
+            CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex);
+            CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
 
             // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex), prop_RoofCladding); // Ceny urcujeme podla coating a color
-            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex), prop_WallCladding); // Ceny urcujeme podla coating a color
+            float fRoofCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
+            float fWallCladdingPrice_PSM_NZD = GetCladdingPriceByCoatingAndColor_PSM_NZD(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
 
             float fRoofCladdingPrice_Total_NZD = fRoofArea_Total_Netto * fRoofCladdingPrice_PSM_NZD;
             float fWallCladdingPrice_Total_NZD = fWallArea_Total_Netto * fWallCladdingPrice_PSM_NZD;
@@ -1131,8 +1132,8 @@ namespace PFD
                     row[colProp_Cladding.ColumnName] = roofCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
                     row[colProp_Coating.ColumnName] = roofCladdingCoating;
-                    row[colProp_Color.ColumnName] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).CodeHEX;
-                    row[colProp_ColorName.ColumnName] = colours.ElementAtOrDefault(vm.RoofCladdingColorIndex).Name;
+                    row[colProp_Color.ColumnName] = prop_RoofCladdingColor.CodeHEX;
+                    row[colProp_ColorName.ColumnName] = prop_RoofCladdingColor.Name;
                     row[colProp_TotalArea_m2.ColumnName] = fRoofArea_Total_Netto.ToString("F2");
                     SumTotalArea += fRoofArea_Total_Netto;
 
@@ -1161,8 +1162,8 @@ namespace PFD
                     row[colProp_Cladding.ColumnName] = wallCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
                     row[colProp_Coating.ColumnName] = wallCladdingCoating;
-                    row[colProp_Color.ColumnName] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).CodeHEX;
-                    row[colProp_ColorName.ColumnName] = colours.ElementAtOrDefault(vm.WallCladdingColorIndex).Name;
+                    row[colProp_Color.ColumnName] = prop_WallCladdingColor.CodeHEX;
+                    row[colProp_ColorName.ColumnName] = prop_WallCladdingColor.Name;
 
                     row[colProp_TotalArea_m2.ColumnName] = fWallArea_Total_Netto.ToString("F2");
                     SumTotalArea += fWallArea_Total_Netto;

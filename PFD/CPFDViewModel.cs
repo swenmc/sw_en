@@ -699,7 +699,7 @@ namespace PFD
             set
             {
                 MRoofCladdingColorIndex = value;
-                RecreateModel = false;
+                RecreateModel = true; // Kvoli Quotation
                 NotifyPropertyChanged("RoofCladdingColorIndex");
             }
         }
@@ -774,7 +774,7 @@ namespace PFD
             set
             {
                 MWallCladdingColorIndex = value;
-                RecreateModel = false;
+                RecreateModel = true; // Kvoli Quotation
                 NotifyPropertyChanged("WallCladdingColorIndex");
             }
         }
