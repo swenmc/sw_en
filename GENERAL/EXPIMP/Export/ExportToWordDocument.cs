@@ -1369,7 +1369,7 @@ namespace EXPIMP
             for (int j = 0; j < columnCount; j++)
             {
                 if (priceColumnsIndexes.Contains(j)) columnSkip++;
-                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j + columnSkip].Caption);                
+                t.Rows[0].Cells[j].Paragraphs[0].InsertText(dt.Columns[j + columnSkip].Caption);
                 t.Rows[0].Cells[j].Paragraphs[0].Bold();
                 if (dt.Columns[j + columnSkip].ExtendedProperties["Unit"] != null)
                 {
@@ -1384,7 +1384,6 @@ namespace EXPIMP
                 else columnsWidths.Add(100f / columnCount);
 
                 SetAlignment(dt.Columns[j + columnSkip], t.Rows[0].Cells[j].Paragraphs[0]);
-                
 
                 if (dt.Columns[j + columnSkip].ColumnName == "Color") colorColumn = j;
             }
@@ -1403,14 +1402,14 @@ namespace EXPIMP
                             t.Rows[i + 1].Cells[j].FillColor = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i][j + columnSkip].ToString());
                         continue;
                     }
-                    
+
                     t.Rows[i + 1].Cells[j].Paragraphs[0].InsertText(dt.Rows[i][j + columnSkip].ToString());
                     SetAlignment(dt.Columns[j + columnSkip], t.Rows[i + 1].Cells[j].Paragraphs[0]);
                 }
             }
 
-            SetFontSizeForTable(t, 7);
-            
+            SetFontSizeForTable(t, 6.5);
+
             t.AutoFit = AutoFit.ColumnWidth;
             t.SetWidthsPercentage(columnsWidths.ToArray(), quotationTableWidth);
 

@@ -1845,6 +1845,8 @@ namespace PFD
 
         private void CreateTableDownpipes(CModel model)
         {
+            // TODO Ondrej - vyrobit v GUI tabulku kde bude mozne zadavat polozky downpipes
+            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
             int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
             float fDownpipesTotalLength = iCountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
 

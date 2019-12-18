@@ -1903,6 +1903,10 @@ namespace PFD
             dw = dataGrid.ItemsSource as DataView;
             if (dw != null) tables.Add(dw.Table);
 
+            dataGrid = uc_quotation.FindName("Datagrid_Downpipes") as DataGrid;
+            dw = dataGrid.ItemsSource as DataView;
+            if (dw != null) tables.Add(dw.Table);
+
             dataGrid = uc_quotation.FindName("Datagrid_Flashing") as DataGrid;
             dw = dataGrid.ItemsSource as DataView;
             if (dw != null) tables.Add(dw.Table);
