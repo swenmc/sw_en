@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CBoltNutsManager.cs" />
+    <Compile Include="CDownpipesManager.cs" />
     <Compile Include="CRollerDoorPricesManager.cs" />
     <Compile Include="CPlaneItemManager.cs" />
     <Compile Include="CLengthItemManager.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="CFibreglassManager.cs" />
     <Compile Include="CWashersManager.cs" />
     <Compile Include="DTO\CBoltNutProperties.cs" />
+    <Compile Include="DTO\CDownpipeProperties.cs" />
     <Compile Include="DTO\CPlaneItemProperties.cs" />
     <Compile Include="DTO\CLengthItemProperties.cs" />
     <Compile Include="DTO\CConnectionDescription.cs" />

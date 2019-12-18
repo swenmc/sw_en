@@ -48,6 +48,7 @@ namespace PFD
         ColumnProperties colProp_Fibreglass = new ColumnProperties(typeof(String), "Fibreglass", "Fibreglass", 12.5f, null, AlignmentX.Left);
         ColumnProperties colProp_Opening = new ColumnProperties(typeof(String), "Opening", "Opening", 12.5f, null, AlignmentX.Left);
         ColumnProperties colProp_Gutter = new ColumnProperties(typeof(String), "Gutter", "Gutter", 12.5f, null, AlignmentX.Left);
+        ColumnProperties colProp_Downpipe = new ColumnProperties(typeof(String), "Downpipe", "Downpipe", 12.5f, null, AlignmentX.Left);
         ColumnProperties colProp_Flashing = new ColumnProperties(typeof(String), "Flashing", "Flashing", 20f, null, AlignmentX.Left);
 
         ColumnProperties colProp_Material = new ColumnProperties(typeof(String), "Material", "Material", 12.5f, null, AlignmentX.Left);
@@ -61,6 +62,7 @@ namespace PFD
         ColumnProperties colProp_Height_m = new ColumnProperties(typeof(String), "Height_m", "Height", 7.5f, "[m]", AlignmentX.Right);
         ColumnProperties colProp_Thickness_m = new ColumnProperties(typeof(String), "Thickness_m", "Thickness", 7.5f, "[m]", AlignmentX.Right);
         ColumnProperties colProp_Thickness_mm = new ColumnProperties(typeof(String), "Thickness_mm", "Thickness", 7.5f, "[mm]", AlignmentX.Right);
+        ColumnProperties colProp_Diameter_mm = new ColumnProperties(typeof(String), "Diameter_mm", "Diameter", 7.5f, "[mm]", AlignmentX.Right);
         ColumnProperties colProp_Area_m2 = new ColumnProperties(typeof(String), "Area_m2", "Area", 10f, "[m²]", AlignmentX.Right);
         ColumnProperties colProp_UnitMass_LM = new ColumnProperties(typeof(String), "UnitMass_LM", "Unit Mass", 10f, "[kg/m]", AlignmentX.Right);
         ColumnProperties colProp_UnitMass_SM = new ColumnProperties(typeof(String), "UnitMass_SM", "Unit Mass", 10f, "[kg/m²]", AlignmentX.Right);
@@ -111,6 +113,7 @@ namespace PFD
                 colProp_Fibreglass,
                 colProp_Opening,
                 colProp_Gutter,
+                colProp_Downpipe,
                 colProp_Flashing,
 
                 colProp_Material,
@@ -123,6 +126,7 @@ namespace PFD
                 colProp_Height_m,
                 colProp_Thickness_m,
                 colProp_Thickness_mm,
+                colProp_Diameter_mm,
                 colProp_Area_m2,
                 colProp_UnitMass_LM,
                 colProp_UnitMass_SM,
@@ -179,11 +183,11 @@ namespace PFD
             // Bolt Nuts
             CreateTableBoltNuts(model);
 
-            // DG 7
+            // DG 5
             // Doors and windows
             CreateTableDoorsAndWindows(vm);
 
-            // DG 9
+            // DG 6
             // Cladding
             float fWallArea_Total = fWallArea_Left + fWallArea_Right + fWallArea_Front + fWallArea_Back;
             float fRoofSideLength = MathF.Sqrt(MathF.Pow2(model.fH2_frame - model.fH1_frame) + MathF.Pow2(0.5f * model.fW_frame)); // Dlzka hrany strechy
@@ -204,19 +208,23 @@ namespace PFD
                 fFibreGlassArea_Roof
                );
 
-            // DG 10
+            // DG 7
             // Gutters
             CreateTableGutters(model);
 
-            // DG 11
+            // DG 8
+            // Downpipes
+            CreateTableDownpipes(model);
+
+            // DG 9
             // FibreGlass
             CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
 
-            // DG 12
+            // DG 10
             // Roof Netting
             CreateTableRoofNetting(fRoofArea);
 
-            // DG 13
+            // DG 11
             // Flashing and Packers
             CreateTableFlashing(model,
                 fRoofSideLength,
@@ -1833,6 +1841,98 @@ namespace PFD
         private void Datagrid_Gutters_Loaded(object sender, RoutedEventArgs e)
         {
             SetLastRowBold(Datagrid_Gutters);
+        }
+
+        private void CreateTableDownpipes(CModel model)
+        {
+            int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+            float fDownpipesTotalLength = iCountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
+
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2); // TODO Ondrej - toto by malo prist z GUI
+
+            double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
+            double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
+
+            // Create Table
+            DataTable dt = new DataTable("Downpipes");
+            // Create Table Rows
+            dt.Columns.Add(colProp_Downpipe.ColumnName, colProp_Downpipe.DataType);
+            dt.Columns.Add(colProp_Diameter_mm.ColumnName, colProp_Diameter_mm.DataType);
+            dt.Columns.Add(colProp_Color.ColumnName, colProp_Color.DataType);
+            dt.Columns.Add(colProp_ColorName.ColumnName, colProp_ColorName.DataType);
+            dt.Columns.Add(colProp_TotalLength_m.ColumnName, colProp_TotalLength_m.DataType);
+            dt.Columns.Add(colProp_UnitMass_LM.ColumnName, colProp_UnitMass_LM.DataType);
+            dt.Columns.Add(colProp_TotalMass.ColumnName, colProp_TotalMass.DataType);
+            dt.Columns.Add(colProp_UnitPrice_LM_NZD.ColumnName, colProp_UnitPrice_LM_NZD.DataType);
+            dt.Columns.Add(colProp_TotalPrice_NZD.ColumnName, colProp_TotalPrice_NZD.DataType);
+
+            // Set Table Column Properties
+            SetDataTableColumnProperties(dt);
+
+            // Create Datases
+            DataSet ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(dt);
+
+            double SumTotalLength = 0;
+            double SumTotalMass = 0;
+            double SumTotalPrice = 0;
+
+            DataRow row;
+
+            if (fDownpipesTotalLength > 0 && fDownpipesTotalPrice > 0) // Add new row only if length and price are more than zero
+            {
+                row = dt.NewRow();
+
+                try
+                {
+                    row[colProp_Downpipe.ColumnName] = downpipe.Name;
+                    row[colProp_Diameter_mm.ColumnName] = (downpipe.Diameter * 1000f).ToString("F2"); // mm
+                    row[colProp_Color.ColumnName] = downpipe.coatingColor.CodeHEX;
+                    row[colProp_ColorName.ColumnName] = downpipe.coatingColor.Name;
+                    row[colProp_TotalLength_m.ColumnName] = fDownpipesTotalLength.ToString("F2");
+                    SumTotalLength += fDownpipesTotalLength;
+
+                    row[colProp_UnitMass_LM.ColumnName] = downpipe.Mass_kg_lm.ToString("F2");
+
+                    row[colProp_TotalMass.ColumnName] = fDownpipesTotalMass.ToString("F2");
+                    SumTotalMass += fDownpipesTotalMass;
+
+                    row[colProp_UnitPrice_LM_NZD.ColumnName] = downpipe.Price_PPLM_NZD.ToString("F2");
+
+                    row[colProp_TotalPrice_NZD.ColumnName] = fDownpipesTotalPrice.ToString("F2");
+                    SumTotalPrice += fDownpipesTotalPrice;
+                }
+                catch (ArgumentOutOfRangeException) { }
+                dt.Rows.Add(row);
+            }
+
+            dBuildingMass += SumTotalMass;
+            dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;
+
+            //if (dt.Rows.Count > 1) // Len ak su v tabulke rozne typy downpipes // Zatial komentujem, dal by sa tym usetrit jeden riadok
+            //{
+            // Last row
+            row = dt.NewRow();
+            row[colProp_Downpipe.ColumnName] = "Total:";
+            row[colProp_Diameter_mm.ColumnName] = "";
+            row[colProp_Color.ColumnName] = "";
+            row[colProp_ColorName.ColumnName] = "";
+            row[colProp_TotalLength_m.ColumnName] = SumTotalLength.ToString("F2");
+            row[colProp_UnitMass_LM.ColumnName] = "";
+            row[colProp_TotalMass.ColumnName] = SumTotalMass.ToString("F2");
+            row[colProp_UnitPrice_LM_NZD.ColumnName] = "";
+            row[colProp_TotalPrice_NZD.ColumnName] = SumTotalPrice.ToString("F2");
+            dt.Rows.Add(row);
+            //}
+
+            Datagrid_Downpipes.ItemsSource = ds.Tables[0].AsDataView();
+            Datagrid_Downpipes.Loaded += Datagrid_Downpipes_Loaded;
+        }
+
+        private void Datagrid_Downpipes_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetLastRowBold(Datagrid_Downpipes);
         }
 
         private void AddLengthItemRow(DataTable dt,
