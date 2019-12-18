@@ -21,8 +21,8 @@ namespace DATABASE.DTO
        public string thickness_for_name;
        public double thicknessCore_m;
        public double thicknessTotal_m;
-       public double mass_kg_m2;
-       public double mass_kg_lm;
+       //public double mass_kg_m2;
+       //public double mass_kg_lm;
        public string coil_IDs;
        public string coatingIDs;
        public int thicknessID;

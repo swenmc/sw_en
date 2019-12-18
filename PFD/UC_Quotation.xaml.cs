@@ -1212,6 +1212,7 @@ namespace PFD
             }
         }
 
+        // TODO Ondrej - Refactoring s MainWindow
         private CTS_CoilProperties GetCladdingCoilProperties(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
         {
             // TODO Ondrej

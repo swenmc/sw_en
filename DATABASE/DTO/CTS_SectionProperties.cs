@@ -19,8 +19,8 @@ namespace DATABASE.DTO
        public string height_m;
        public string thickness_for_name;
        public string thickness_m;
-       public string mass_kg_m2;
-       public string mass_kg_lm;
+       //public string mass_kg_m2;
+       //public string mass_kg_lm;
        //public string price_PPSM_NZD;
        //public string price_PPLM_NZD;
        //public string price_PPKG_NZD;

@@ -171,8 +171,8 @@ namespace DATABASE
             properties_string_milimeter.widthUpRib_m = (Math.Round(properties_number_meter.widthUpRib_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.height_m = (Math.Round(properties_number_meter.height_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.thickness_m = (Math.Round(properties_number_meter.thicknessCore_m * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
-            properties_string_milimeter.mass_kg_m2 = (Math.Round(properties_number_meter.mass_kg_m2 * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
-            properties_string_milimeter.mass_kg_lm = (Math.Round(properties_number_meter.mass_kg_lm * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.mass_kg_m2 = (Math.Round(properties_number_meter.mass_kg_m2 * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
+            //properties_string_milimeter.mass_kg_lm = (Math.Round(properties_number_meter.mass_kg_lm * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.maxSimpleSpan = (Math.Round(properties_number_meter.maxSimpleSpan * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.maxEavesOverhang = (Math.Round(properties_number_meter.maxEavesOverhang * fFactor_Dimension, iDecimalPlaces_Dimension)).ToString();
             properties_string_milimeter.A_g = (Math.Round(properties_number_meter.A_g * fFactor_Area, iDecimalPlaces_Dimension)).ToString();
@@ -211,8 +211,8 @@ namespace DATABASE
             properties.widthUpRib_m = reader["widthUpRib_m"].ToString();
             properties.height_m = reader["height_m"].ToString();
             properties.thickness_m = reader["thickness_m"].ToString();
-            properties.mass_kg_m2 = reader["mass_kg_m2"].ToString();
-            properties.mass_kg_lm = reader["mass_kg_lm"].ToString();
+            //properties.mass_kg_m2 = reader["mass_kg_m2"].ToString();
+            //properties.mass_kg_lm = reader["mass_kg_lm"].ToString();
             //properties.price_PPSM_NZD = reader["price_PPSM_NZD"].ToString();
             //properties.price_PPLM_NZD = reader["price_PPLM_NZD"].ToString();
             //properties.price_PPKG_NZD = reader["price_PPKG_NZD"].ToString();
@@ -258,8 +258,8 @@ namespace DATABASE
             crsc.height_m = double.Parse(reader["height_m"].ToString(), nfi);
             crsc.thicknessCore_m = double.Parse(reader["thicknessCore_m"].ToString(), nfi);
             crsc.thicknessTotal_m = double.Parse(reader["thicknessTot_m"].ToString(), nfi);
-            crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
-            crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
+            //crsc.mass_kg_m2 = double.Parse(reader["mass_kg_m2"].ToString(), nfi);
+            //crsc.mass_kg_lm = double.Parse(reader["mass_kg_lm"].ToString(), nfi);
             crsc.coil_IDs = reader["coil_IDs"].ToString();
             crsc.coatingIDs = reader["coatingIDs"].ToString();
             crsc.thicknessID = Int32.Parse(reader["thicknessID"].ToString());
@@ -296,8 +296,8 @@ namespace DATABASE
             list.Add(properties.widthUpRib_m);
             list.Add(properties.height_m);
             list.Add(properties.thickness_m);
-            list.Add(properties.mass_kg_m2);
-            list.Add(properties.mass_kg_lm);
+            //list.Add(properties.mass_kg_m2);
+            //list.Add(properties.mass_kg_lm);
             list.Add(properties.maxSimpleSpan);
             list.Add(properties.maxEavesOverhang);
             list.Add(properties.A_g);
@@ -323,7 +323,6 @@ namespace DATABASE
 
             return list;
         }
-
 
 
         // Coating
