@@ -586,9 +586,9 @@ namespace PFD
             if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iMainColumnFlyBracingEveryXXGirt]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.MainRafter);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin]; ci.IsSetFromCode = false; }
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgeRafter);
-            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items.ElementAtOrDefault(dmodel.iRafterFlyBracingEveryXXPurlin); ci.IsSetFromCode = false; }
+            if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iRafterFlyBracingEveryXXPurlin]; ci.IsSetFromCode = false; }
 
             ci = ComponentList.FirstOrDefault(c => c.MemberTypePosition == EMemberType_FS_Position.EdgePurlin);
             if (ci != null) { ci.IsSetFromCode = true; ci.ILS = ci.ILS_Items[dmodel.iEdgePurlin_ILS_Number]; ci.IsSetFromCode = false; }

@@ -352,13 +352,13 @@ namespace PFD
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
 
-            iMainColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
+            iMainColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFlyBracingEveryXXGirt); // 0; // Default pre stlpy
             iRafterFlyBracingEveryXXPurlin = int.Parse(model.RafterFlyBracingEveryXXPurlin);
             iEdgePurlin_ILS_Number = int.Parse(model.EdgePurlin_ILS_Number);
             iGirt_ILS_Number = int.Parse(model.Girt_ILS_Number);
             iPurlin_ILS_Number = int.Parse(model.Purlin_ILS_Number);
-            iFrontColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
-            iBackColumnFlyBracingEveryXXGirt = 0; // Default pre stlpy
+            iFrontColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnFrontSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
+            iBackColumnFlyBracingEveryXXGirt = int.Parse(model.ColumnBackSideFlyBracingEveryXXGirt); // 0; // Default pre stlpy
             iGirtFrontSide_ILS_Number = int.Parse(model.GirtFrontSide_ILS_Number);
             iGirtBackSide_ILS_Number = int.Parse(model.GirtBackSide_ILS_Number);
 

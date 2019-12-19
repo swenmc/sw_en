@@ -20,39 +20,7 @@ namespace DATABASE
                 {
                     while (reader.Read())
                     {
-
-                        model = new CKitsetGableRoofEnclosed();
-                        model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        model.ModelName = reader["modelName"].ToString();
-                        model.Width = reader["width"].ToString();
-                        model.Length = reader["length"].ToString();
-                        model.Wall_height = reader["wall_height"].ToString();
-                        model.Distance_L1 = reader["distance_L1"].ToString();
-                        model.IFrames = reader["iFrames"].ToString();
-                        model.C_array_code = reader["c_array_code"].ToString();
-                        model.MainColumn = reader["mainColumn"].ToString();
-                        model.MainRafter = reader["mainRafter"].ToString();
-                        model.EdgeColumn = reader["edgeColumn"].ToString();
-                        model.EdgeRafter = reader["edgeRafter"].ToString();
-                        model.EdgePurlin = reader["edgePurlin"].ToString();
-                        model.Girt = reader["girt"].ToString();
-                        model.Purlin = reader["purlin"].ToString();
-                        model.ColumnFrontSide = reader["columnFrontSide"].ToString();
-                        model.ColumnBackSide = reader["columnBackSide"].ToString();
-                        model.GirtFrontSide = reader["girtFrontSide"].ToString();
-                        model.GirtBackSide = reader["girtBackSide"].ToString();
-                        model.DoorFrame = reader["doorFrame"].ToString();
-                        model.DoorTrimmer = reader["doorTrimmer"].ToString();
-                        model.DoorLintel = reader["doorLintel"].ToString();
-                        model.WindowFrame = reader["windowFrame"].ToString();
-
-                        model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
-                        model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
-                        model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();
-                        model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
-                        model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
-                        model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
-
+                        model = GetKitsetGableRoofEnclosedProperties(reader);
                         items.Add(model);
                     }
                 }
@@ -72,45 +40,53 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        model = new CKitsetGableRoofEnclosed();
-                        model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        model.ModelName = reader["modelName"].ToString();
-                        model.Width = reader["width"].ToString();
-                        model.Length = reader["length"].ToString();
-                        model.Wall_height = reader["wall_height"].ToString();
-                        model.Distance_L1 = reader["distance_L1"].ToString();
-                        model.IFrames = reader["iFrames"].ToString();
-                        model.C_array_code = reader["c_array_code"].ToString();
-                        model.MainColumn = reader["mainColumn"].ToString();
-                        model.MainRafter = reader["mainRafter"].ToString();
-                        model.EdgeColumn = reader["edgeColumn"].ToString();
-                        model.EdgeRafter = reader["edgeRafter"].ToString();
-                        model.EdgePurlin = reader["edgePurlin"].ToString();
-                        model.Girt = reader["girt"].ToString();
-                        model.Purlin = reader["purlin"].ToString();
-                        model.ColumnFrontSide = reader["columnFrontSide"].ToString();
-                        model.ColumnBackSide = reader["columnBackSide"].ToString();
-                        model.GirtFrontSide = reader["girtFrontSide"].ToString();
-                        model.GirtBackSide = reader["girtBackSide"].ToString();
-                        model.DoorFrame = reader["doorFrame"].ToString();
-                        model.DoorTrimmer = reader["doorTrimmer"].ToString();
-                        model.DoorLintel = reader["doorLintel"].ToString();
-                        model.WindowFrame = reader["windowFrame"].ToString();
-
-                        model.BracingBlockGirts = reader["bracingBlockGirts"].ToString();
-                        model.BracingBlockPurlins = reader["bracingBlockPurlins"].ToString();
-                        model.BracingBlocksGirtsFrontSide = reader["bracingBlocksGirtsFrontSide"].ToString();
-                        model.BracingBlocksGirtsBackSide = reader["bracingBlocksGirtsBackSide"].ToString();
-
-                        model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
-                        model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
-                        model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();
-                        model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
-                        model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
-                        model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
+                        model = GetKitsetGableRoofEnclosedProperties(reader);
                     }
                 }
             }
+            return model;
+        }
+
+        private static CKitsetGableRoofEnclosed GetKitsetGableRoofEnclosedProperties(SQLiteDataReader reader)
+        {
+            CKitsetGableRoofEnclosed model = new CKitsetGableRoofEnclosed();
+            model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            model.ModelName = reader["modelName"].ToString();
+            model.Width = reader["width"].ToString();
+            model.Length = reader["length"].ToString();
+            model.Wall_height = reader["wall_height"].ToString();
+            model.Distance_L1 = reader["distance_L1"].ToString();
+            model.IFrames = reader["iFrames"].ToString();
+            model.C_array_code = reader["c_array_code"].ToString();
+            model.MainColumn = reader["mainColumn"].ToString();
+            model.MainRafter = reader["mainRafter"].ToString();
+            model.EdgeColumn = reader["edgeColumn"].ToString();
+            model.EdgeRafter = reader["edgeRafter"].ToString();
+            model.EdgePurlin = reader["edgePurlin"].ToString();
+            model.Girt = reader["girt"].ToString();
+            model.Purlin = reader["purlin"].ToString();
+            model.ColumnFrontSide = reader["columnFrontSide"].ToString();
+            model.ColumnBackSide = reader["columnBackSide"].ToString();
+            model.GirtFrontSide = reader["girtFrontSide"].ToString();
+            model.GirtBackSide = reader["girtBackSide"].ToString();
+            model.BracingBlockGirts = reader["bracingBlockGirts"].ToString();
+            model.BracingBlockPurlins = reader["bracingBlockPurlins"].ToString();
+            model.BracingBlocksGirtsFrontSide = reader["bracingBlocksGirtsFrontSide"].ToString();
+            model.BracingBlocksGirtsBackSide = reader["bracingBlocksGirtsBackSide"].ToString();
+            model.DoorFrame = reader["doorFrame"].ToString();
+            model.DoorTrimmer = reader["doorTrimmer"].ToString();
+            model.DoorLintel = reader["doorLintel"].ToString();
+            model.WindowFrame = reader["windowFrame"].ToString();
+            model.ColumnFlyBracingEveryXXGirt = reader["iColumnFlyBracingEveryXXGirt"].ToString();
+            model.RafterFlyBracingEveryXXPurlin = reader["iRafterFlyBracingEveryXXPurlin"].ToString();
+            model.ColumnFrontSideFlyBracingEveryXXGirt = reader["iColumnFrontSideFlyBracingEveryXXGirt"].ToString();
+            model.ColumnBackSideFlyBracingEveryXXGirt = reader["iColumnBackSideFlyBracingEveryXXGirt"].ToString();
+            model.EdgePurlin_ILS_Number = reader["edgePurlin_ILS_Number"].ToString();
+            model.Girt_ILS_Number = reader["girt_ILS_Number"].ToString();
+            model.Purlin_ILS_Number = reader["purlin_ILS_Number"].ToString();
+            model.GirtFrontSide_ILS_Number = reader["girtFrontSide_ILS_Number"].ToString();
+            model.GirtBackSide_ILS_Number = reader["girtBackSide_ILS_Number"].ToString();
+
             return model;
         }
 

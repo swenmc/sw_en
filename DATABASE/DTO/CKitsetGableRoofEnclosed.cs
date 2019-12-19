@@ -37,7 +37,10 @@ namespace DATABASE.DTO
         string MBracingBlocksGirtsFrontSide;
         string MBracingBlocksGirtsBackSide;
 
+        string MColumnFlyBracingEveryXXGirt;
         string MRafterFlyBracingEveryXXPurlin;
+        string MColumnFrontSideFlyBracingEveryXXGirt;
+        string MColumnBackSideFlyBracingEveryXXGirt;
         string MEdgePurlin_ILS_Number;
         string MGirt_ILS_Number;
         string MPurlin_ILS_Number;
@@ -346,6 +349,19 @@ namespace DATABASE.DTO
             }
         }
 
+        public string ColumnFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return MColumnFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                MColumnFlyBracingEveryXXGirt = value;
+            }
+        }
+
         public string RafterFlyBracingEveryXXPurlin
         {
             get
@@ -356,6 +372,32 @@ namespace DATABASE.DTO
             set
             {
                 MRafterFlyBracingEveryXXPurlin = value;
+            }
+        }
+
+        public string ColumnFrontSideFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return MColumnFrontSideFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                MColumnFrontSideFlyBracingEveryXXGirt = value;
+            }
+        }
+
+        public string ColumnBackSideFlyBracingEveryXXGirt
+        {
+            get
+            {
+                return MColumnBackSideFlyBracingEveryXXGirt;
+            }
+
+            set
+            {
+                MColumnBackSideFlyBracingEveryXXGirt = value;
             }
         }
 
