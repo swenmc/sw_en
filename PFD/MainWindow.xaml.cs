@@ -127,8 +127,11 @@ namespace PFD
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
-            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
-            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+            //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+            //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+
+            FillComboboxTrapezoidalSheetingThickness(vm.RoofCladdingCoatingID, vm.RoofCladdingID, Combobox_RoofCladdingThickness);
+            FillComboboxTrapezoidalSheetingThickness(vm.WallCladdingCoatingID, vm.WallCladdingID, Combobox_WallCladdingThickness);
 
             FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
             FillComboboxFibreglassThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
@@ -152,7 +155,8 @@ namespace PFD
 
                 if (e.PropertyName == "RoofCladdingIndex")
                 {
-                    FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+                    FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
                     FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
 
                     // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
@@ -161,13 +165,35 @@ namespace PFD
                 }
                 else if (e.PropertyName == "WallCladdingIndex")
                 {
-                    FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+                    FillComboboxTrapezoidalSheetingThickness(viewModel.WallCladdingCoatingID, viewModel.WallCladdingID, Combobox_WallCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
                     FillComboboxFibreglassThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
 
                     // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
                     viewModel.WallCladdingThicknessIndex = 0;
                     viewModel.WallFibreglassThicknessIndex = 0;
                 }
+                else if (e.PropertyName == "RoofCladdingCoatingIndex")
+                {
+                    FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+                    FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
+
+                    // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
+                    viewModel.RoofCladdingThicknessIndex = 0;
+                    viewModel.RoofFibreglassThicknessIndex = 0;
+                }
+                else if (e.PropertyName == "WallCladdingCoatingIndex")
+                {
+                    FillComboboxTrapezoidalSheetingThickness(viewModel.WallCladdingCoatingID, viewModel.WallCladdingID, Combobox_WallCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+                    FillComboboxFibreglassThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
+
+                    // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
+                    viewModel.WallCladdingThicknessIndex = 0;
+                    viewModel.WallFibreglassThicknessIndex = 0;
+                }
+
 
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
@@ -728,9 +754,19 @@ namespace PFD
             return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * GlobalConstants.G_ACCELERATION * MathF.Pow2(fDelta_x)) / (GlobalConstants.G_ACCELERATION * fP * fDelta_x))); // Eq. 4.1(1)
         }
 
-        public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
+        //public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
+        //{
+        //    CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
+        //}
+
+        public void FillComboboxTrapezoidalSheetingThickness(int coatingID, int claddingID, ComboBox combobox)
         {
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
+            List<CTS_ThicknessProperties> props = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
+
+            var items = props.Where(p => p.coatingIDs.Contains(coatingID) && p.claddingIDs.Contains(claddingID)).Select(p => (p.thicknessCore * 100).ToString() + " mm");
+
+            combobox.ItemsSource = items;
+            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
         }
 
         public void FillComboboxFibreglassThickness(string sTableName, ComboBox combobox)

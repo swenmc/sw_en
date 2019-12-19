@@ -51,12 +51,16 @@ namespace PFD
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
+        private int MRoofCladdingID;
         private int MRoofCladdingCoatingIndex;
+        private int MRoofCladdingCoatingID;
         private List<CoatingColour> MRoofCladdingColors;
         private int MRoofCladdingColorIndex;
         private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
+        private int MWallCladdingID;
         private int MWallCladdingCoatingIndex;
+        private int MWallCladdingCoatingID;
         private List<CoatingColour> MWallCladdingColors;
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
@@ -658,6 +662,7 @@ namespace PFD
             set
             {
                 MRoofCladdingIndex = value;
+                MRoofCladdingID = MRoofCladdingIndex + 1;
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -678,6 +683,7 @@ namespace PFD
                 MRoofCladdingCoatingIndex = value;
 
                 IsSetFromCode = true;
+                RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
                 RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
                 RoofCladdingColorIndex = 0;
                 IsSetFromCode = false;
@@ -733,6 +739,7 @@ namespace PFD
             set
             {
                 MWallCladdingIndex = value;
+                WallCladdingID = MWallCladdingIndex + 1;
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -753,6 +760,7 @@ namespace PFD
                 MWallCladdingCoatingIndex = value;
 
                 IsSetFromCode = true;
+                WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
                 WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
                 WallCladdingColorIndex = 0;
                 IsSetFromCode = false;
@@ -2619,6 +2627,56 @@ namespace PFD
             {
                 MWallCladdingColors = value;
                 NotifyPropertyChanged("WallCladdingColors");
+            }
+        }
+
+        public int RoofCladdingID
+        {
+            get
+            {
+                return MRoofCladdingID;
+            }
+
+            set
+            {
+                MRoofCladdingID = value;
+            }
+        }
+        public int RoofCladdingCoatingID
+        {
+            get
+            {
+                return MRoofCladdingCoatingID;
+            }
+
+            set
+            {
+                MRoofCladdingCoatingID = value;
+            }
+        }
+
+        public int WallCladdingID
+        {
+            get
+            {
+                return MWallCladdingID;
+            }
+
+            set
+            {
+                MWallCladdingID = value;
+            }
+        }
+        public int WallCladdingCoatingID
+        {
+            get
+            {
+                return MWallCladdingCoatingID;
+            }
+
+            set
+            {
+                MWallCladdingCoatingID = value;
             }
         }
 
