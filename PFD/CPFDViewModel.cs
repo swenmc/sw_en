@@ -22,6 +22,7 @@ using M_AS4600;
 using BaseClasses.Helpers;
 using System.Windows.Media;
 using DATABASE;
+using System.Globalization;
 
 namespace PFD
 {
@@ -79,6 +80,11 @@ namespace PFD
         private string m_WallCladding;
         private string m_RoofCladdingCoating;
         private string m_WallCladdingCoating;
+
+        private List<string> m_RoofCladdingsThicknessTypes;
+        private List<string> m_WallCladdingsThicknessTypes;
+        private string m_RoofCladdingThickness;
+        private string m_WallCladdingThickness;
 
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
@@ -666,9 +672,15 @@ namespace PFD
 
             set
             {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+
                 MRoofCladdingIndex = value;
                 MRoofCladdingID = MRoofCladdingIndex + 1;
                 RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
+                RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+                RoofCladdingThicknessIndex = 0;                
+                RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -686,14 +698,19 @@ namespace PFD
 
             set
             {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+
                 MRoofCladdingCoatingIndex = value;
 
                 IsSetFromCode = true;
                 RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
                 RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
                 RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+                RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 RoofCladdingColorIndex = 0;
-                RoofCladdingThicknessIndex = 0;
+                RoofCladdingThicknessIndex = 0;                
+                RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
                 IsSetFromCode = false;
 
                 //SetResultsAreNotValid();
@@ -746,9 +763,15 @@ namespace PFD
 
             set
             {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+
                 MWallCladdingIndex = value;
                 WallCladdingID = MWallCladdingIndex + 1;
                 WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
+                WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+                WallCladdingThicknessIndex = 0;
+                WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -766,14 +789,19 @@ namespace PFD
 
             set
             {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+
                 MWallCladdingCoatingIndex = value;
 
                 IsSetFromCode = true;
                 WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
                 WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
                 WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
-                WallCladdingColorIndex = 0;
+                WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 WallCladdingThicknessIndex = 0;
+                WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
+                WallCladdingColorIndex = 0;                
                 IsSetFromCode = false;
 
                 //SetResultsAreNotValid();
@@ -810,6 +838,7 @@ namespace PFD
             set
             {
                 MWallCladdingThicknessIndex = value;
+                
                 SetResultsAreNotValid();
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
@@ -2767,6 +2796,89 @@ namespace PFD
             set
             {
                 m_WallCladdingCoating = value;
+            }
+        }
+
+        
+
+        public List<string> RoofCladdingsThicknessTypes
+        {
+            get
+            {
+                if (m_RoofCladdingsThicknessTypes == null)
+                {
+                    NumberFormatInfo nfi = new NumberFormatInfo();
+                    nfi.NumberDecimalSeparator = ".";
+                    m_RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+                }
+                return m_RoofCladdingsThicknessTypes;
+            }
+
+            set
+            {
+                m_RoofCladdingsThicknessTypes = value;
+                NotifyPropertyChanged("RoofCladdingsThicknessTypes");
+            }
+        }
+
+        public List<string> WallCladdingsThicknessTypes
+        {
+            get
+            {
+                if (m_WallCladdingsThicknessTypes == null)
+                {
+                    NumberFormatInfo nfi = new NumberFormatInfo();
+                    nfi.NumberDecimalSeparator = ".";
+                    m_WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
+                }
+                return m_WallCladdingsThicknessTypes;
+            }
+
+            set
+            {
+                m_WallCladdingsThicknessTypes = value;
+                NotifyPropertyChanged("WallCladdingsThicknessTypes");
+            }
+        }
+
+        private List<CTS_ThicknessProperties> m_ThicknessPropertiesList;
+        public List<CTS_ThicknessProperties> ThicknessPropertiesList
+        {
+            get
+            {
+                if(m_ThicknessPropertiesList == null) m_ThicknessPropertiesList = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
+                return m_ThicknessPropertiesList;
+            }
+
+            set
+            {
+                m_ThicknessPropertiesList = value;
+            }
+        }
+
+        public string RoofCladdingThickness
+        {
+            get
+            {
+                return m_RoofCladdingThickness;
+            }
+
+            set
+            {
+                m_RoofCladdingThickness = value;
+            }
+        }
+
+        public string WallCladdingThickness
+        {
+            get
+            {
+                return m_WallCladdingThickness;
+            }
+
+            set
+            {
+                m_WallCladdingThickness = value;
             }
         }
 

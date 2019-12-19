@@ -130,8 +130,8 @@ namespace PFD
             //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
 
-            FillComboboxTrapezoidalSheetingThickness(vm.RoofCladdingCoatingID, vm.RoofCladdingID, Combobox_RoofCladdingThickness);
-            FillComboboxTrapezoidalSheetingThickness(vm.WallCladdingCoatingID, vm.WallCladdingID, Combobox_WallCladdingThickness);
+            //FillComboboxTrapezoidalSheetingThickness(vm.RoofCladdingCoatingID, vm.RoofCladdingID, Combobox_RoofCladdingThickness);
+            //FillComboboxTrapezoidalSheetingThickness(vm.WallCladdingCoatingID, vm.WallCladdingID, Combobox_WallCladdingThickness);
 
             FillComboboxFibreglassThickness(vm.Claddings[vm.RoofCladdingIndex], Combobox_RoofFibreglassThickness);
             FillComboboxFibreglassThickness(vm.Claddings[vm.WallCladdingIndex], Combobox_WallFibreglassThickness);
@@ -156,36 +156,36 @@ namespace PFD
                 if (e.PropertyName == "RoofCladdingIndex")
                 {
                     viewModel.IsSetFromCode = true;
-                    FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
                     //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
                     FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
 
                     // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
-                    viewModel.RoofCladdingThicknessIndex = 0;
+                    //viewModel.RoofCladdingThicknessIndex = 0;
                     viewModel.RoofFibreglassThicknessIndex = 0;
                     viewModel.IsSetFromCode = false;
                 }
                 else if (e.PropertyName == "WallCladdingIndex")
                 {
                     viewModel.IsSetFromCode = true;
-                    FillComboboxTrapezoidalSheetingThickness(viewModel.WallCladdingCoatingID, viewModel.WallCladdingID, Combobox_WallCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(viewModel.WallCladdingCoatingID, viewModel.WallCladdingID, Combobox_WallCladdingThickness);
                     //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
                     FillComboboxFibreglassThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
 
                     // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
-                    viewModel.WallCladdingThicknessIndex = 0;
+                    //viewModel.WallCladdingThicknessIndex = 0;
                     viewModel.WallFibreglassThicknessIndex = 0;
                     viewModel.IsSetFromCode = false;
                 }
                 else if (e.PropertyName == "RoofCladdingCoatingIndex")
                 {
                     viewModel.IsSetFromCode = true;
-                    FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
+                    //FillComboboxTrapezoidalSheetingThickness(viewModel.RoofCladdingCoatingID, viewModel.RoofCladdingID, Combobox_RoofCladdingThickness);
                     //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
                     FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
 
                     // Ak zmenim typ cladding, nastavia sa do comboboxov ine hrubky, preto je potrebne ako default nastavit prvu z nich
-                    viewModel.RoofCladdingThicknessIndex = 0;
+                    //viewModel.RoofCladdingThicknessIndex = 0;
                     viewModel.RoofFibreglassThicknessIndex = 0;
                     viewModel.IsSetFromCode = false;
                 }
@@ -518,19 +518,19 @@ namespace PFD
             //string roofCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
             //string wallCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
 
-            List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.RoofCladding, "name");
-            List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.WallCladding, "name");
+            //List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.RoofCladding, "name");
+            //List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.WallCladding, "name");
 
-            string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
-            string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
+            //string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
+            //string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
 
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{roofCladdingThickness}");
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
 
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{wallCladdingThickness}");
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
 
             CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
             prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
