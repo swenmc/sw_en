@@ -211,8 +211,8 @@ namespace M_AS4600
 
         public float fV_v_yv; // Yield shear capacity
         public float fV_y_yv; // Shear capacity
-        public float fV_cr_yv;
-        public float fLambda_v_yv;
+        //public float fV_cr_yv; // Pocita sa pre jednotlive casti / elementy steny - nezobrazujeme ako vlastnost celeho prierezu
+        //public float fLambda_v_yv; // Pocita sa pre jednotlive casti / elementy steny - nezobrazujeme ako vlastnost celeho prierezu
 
         public float fM_s_xu;
         public float fM_b_xu;

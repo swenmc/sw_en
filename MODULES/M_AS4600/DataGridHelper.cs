@@ -475,6 +475,8 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
+                // Nezobrazujeme kriticku silu ani stihlost, lebo ich pocitame pre jednotlive elementy steny a nie stenu ako celok
+                /*
                 listPhysicalQuantity_Symbols.Add("V cr,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
@@ -482,6 +484,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Symbols.Add("λ v,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
+                */
 
                 listPhysicalQuantity_Symbols.Add("Φ v");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
