@@ -86,6 +86,10 @@ namespace PFD
         private string m_RoofCladdingThickness;
         private string m_WallCladdingThickness;
 
+        private List<string> m_RoofFibreglassThicknessTypes;
+        private List<string> m_WallFibreglassThicknessTypes;
+
+
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
         private int MBackgroundColorIndex;
@@ -676,14 +680,22 @@ namespace PFD
                 nfi.NumberDecimalSeparator = ".";
 
                 MRoofCladdingIndex = value;
-                MRoofCladdingID = MRoofCladdingIndex + 1;
+
+                IsSetFromCode = true;
+                MRoofCladdingID = MRoofCladdingIndex;
                 RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 RoofCladdingThicknessIndex = 0;                
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
+
+                RoofFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "name");
+                RoofFibreglassThicknessIndex = 0;
+
                 SetResultsAreNotValid();
+                IsSetFromCode = false;
+
                 //RecreateJoints = true;
-                RecreateModel = true;
+                RecreateModel = true;                
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
         }
@@ -706,7 +718,7 @@ namespace PFD
                 IsSetFromCode = true;
                 RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
                 RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
-                RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
+                RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingID);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 RoofCladdingColorIndex = 0;
                 RoofCladdingThicknessIndex = 0;                
@@ -767,12 +779,20 @@ namespace PFD
                 nfi.NumberDecimalSeparator = ".";
 
                 MWallCladdingIndex = value;
-                WallCladdingID = MWallCladdingIndex + 1;
+
+                IsSetFromCode = true;
+                WallCladdingID = MWallCladdingIndex;
                 WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
                 WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 WallCladdingThicknessIndex = 0;
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
+
+                WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
+                WallFibreglassThicknessIndex = 0;
+
                 SetResultsAreNotValid();
+                IsSetFromCode = false;
+
                 //RecreateJoints = true;
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingIndex");
@@ -797,7 +817,7 @@ namespace PFD
                 IsSetFromCode = true;
                 WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
                 WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
-                WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+                WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingID);
                 WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 WallCladdingThicknessIndex = 0;
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
@@ -2879,6 +2899,34 @@ namespace PFD
             set
             {
                 m_WallCladdingThickness = value;
+            }
+        }
+
+        public List<string> RoofFibreglassThicknessTypes
+        {
+            get
+            {
+                return m_RoofFibreglassThicknessTypes;
+            }
+
+            set
+            {
+                m_RoofFibreglassThicknessTypes = value;
+                NotifyPropertyChanged("RoofFibreglassThicknessTypes");
+            }
+        }
+
+        public List<string> WallFibreglassThicknessTypes
+        {
+            get
+            {
+                return m_WallFibreglassThicknessTypes;
+            }
+
+            set
+            {
+                m_WallFibreglassThicknessTypes = value;
+                NotifyPropertyChanged("WallFibreglassThicknessTypes");
             }
         }
 

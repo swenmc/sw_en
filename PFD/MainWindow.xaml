@@ -236,11 +236,11 @@
 
                         <TextBlock Grid.Row="21" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="22" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                         
                         <TextBlock Grid.Row="23" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
