@@ -22,12 +22,12 @@ namespace M_BASE
         }
 
         // SBD
-        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
-            SetDesignForcesAndMemberDesign_SBD(bUseCRSCGeometricalAxes, 1, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
+            SetDesignForcesAndMemberDesign_SBD(bUseCRSCGeometricalAxes, bShearDesignAccording334, 1, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
         }
 
-        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
@@ -57,7 +57,7 @@ namespace M_BASE
                         sDIF_x[i, j].fM_zv = sBIF_x[i, j].fM_zv;
                     }
 
-                    CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[i, j], member, sBucklingLengthFactors[i], sMomentValuesforCb[i]);
+                    CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x[i, j], member, sBucklingLengthFactors[i], sMomentValuesforCb[i]);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -71,7 +71,7 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndMemberDesign_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x,
+        public void SetDesignForcesAndMemberDesign_PFD(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x,
             designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
@@ -100,7 +100,7 @@ namespace M_BASE
                     sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
                 }
 
-                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[j], member, sBucklingLengthFactors[j], sMomentValuesforCb[j]);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x[j], member, sBucklingLengthFactors[j], sMomentValuesforCb[j]);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                 {

@@ -20,6 +20,7 @@ namespace PFD.Infrastructure
         private Solver SolverWindow;
         private CModel_PFD_01_GR Model;
         private bool MUseCRSCGeometricalAxes;
+        private bool MShearDesignAccording334;
         private bool DeterminateCombinationResultsByFEMSolver;
         private bool UseFEMSolverCalculationForSimpleBeam;
         private bool DeterminateMemberLocalDisplacementsForULS;
@@ -49,6 +50,7 @@ namespace PFD.Infrastructure
         public CMemberDesignCalculations(Solver solverWindow,
             CModel_PFD_01_GR model,
             bool useCRSCGeometricalAxes,
+            bool bshearDesignAccording334,
             bool determinateCombinationResultsByFEMSolver,
             bool bUseFEMSolverCalculationForSimpleBeam,
             bool determinateMemberLocalDisplacementsForULS,
@@ -59,6 +61,7 @@ namespace PFD.Infrastructure
             SolverWindow = solverWindow;
             Model = model;
             MUseCRSCGeometricalAxes = useCRSCGeometricalAxes;
+            MShearDesignAccording334 = bshearDesignAccording334;
             DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
             UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
@@ -414,6 +417,7 @@ namespace PFD.Infrastructure
 
                         // Design check procedure
                         memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes,
+                            MShearDesignAccording334,
                             iNumberOfDesignSections,
                             m,
                             mInternal_forces_and_design_parameters.InternalForces, // TO Ondrej - toto by sme asi mohli predavat cele ako jeden parameter mInternal_forces_and_design_parameters namiesto troch

@@ -242,7 +242,7 @@ namespace M_AS4600
         public float fEta_defl_zz = 0f;
         public float fEta_defl_tot = 0f;
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             designInternalForces sDIF_x_temp;
             sDIF_x_temp.fN = 0.0f;
@@ -270,7 +270,7 @@ namespace M_AS4600
                 sDIF_x_temp.fM_zz = 0;
             }
 
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -279,9 +279,9 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -329,9 +329,9 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_defl_tot);
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            SetDesignInputParameters(bUseCRSCGeometricalAxes, sDIF_x_temp, cs_temp, fL_temp, sBucklingLengthFactors, sMomentValuesForCb);
+            SetDesignInputParameters(bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, cs_temp, fL_temp, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Design
 
@@ -435,9 +435,7 @@ namespace M_AS4600
 
             TransStiff_D3 eTrStiff = TransStiff_D3.eD3a_NoTrStiff; // TODO - toto by sa malo pridat do databazy ako vlastnost prierezu, alebo este spravnejsie by to mala byt vlastnost pruta
 
-            bool bUse_334 = false; // TODO - option do GUI ci sa pocita podla 3.3.4 alebo 7
-
-            if (bUse_334)
+            if (bShearDesignAccording334) // Option do GUI ci sa pocita podla 3.3.4 alebo 7
             {
                 // 3.3.4 Shear
                 // V cykle spocitame unosnost pre kazdu priamu cast steny
@@ -640,7 +638,7 @@ namespace M_AS4600
                               + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
         }
 
-        void SetDesignInputParameters(bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        void SetDesignInputParameters(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             cs = cs_temp;
 

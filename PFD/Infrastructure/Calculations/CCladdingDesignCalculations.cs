@@ -225,6 +225,7 @@ namespace PFD.Infrastructure
 
                         // Design check procedure
                         memberDesignModel.SetDesignForcesAndMemberDesign_PFD(true,
+                            false,
                             iNumberOfDesignSections,
                             m,
                             mInternal_forces_and_design_parameters.InternalForces, // TO Ondrej - toto by sme asi mohli predavat cele ako jeden parameter mInternal_forces_and_design_parameters namiesto troch

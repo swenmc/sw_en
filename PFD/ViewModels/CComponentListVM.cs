@@ -566,7 +566,6 @@ namespace PFD
                 cInfo.SectionColor = prop.colorName;
             }
         }
-        
 
         public void SetModelComponentListProperties(Dictionary<EMemberType_FS_Position, string> MembersSectionsDict)
         {

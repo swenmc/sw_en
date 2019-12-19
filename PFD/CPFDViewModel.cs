@@ -187,6 +187,7 @@ namespace PFD
         // Local member load direction used for load definition, calculation of internal forces and design
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
+        private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
         //Color display options
         private bool m_ColorsAccordingToMembers;
@@ -1150,6 +1151,22 @@ namespace PFD
                 MUseCRSCGeometricalAxes = value;
                 RecreateModel = false;
                 NotifyPropertyChanged("UseCRSCGeometricalAxes");
+            }
+        }
+
+        public bool ShearDesignAccording334
+        {
+            get
+            {
+                return MShearDesignAccording334;
+            }
+
+            set
+            {
+                MShearDesignAccording334 = value;
+                SetResultsAreNotValid();
+                RecreateModel = false;
+                NotifyPropertyChanged("ShearDesignAccording334");
             }
         }
 
@@ -2914,6 +2931,7 @@ namespace PFD
             DeterminateCombinationResultsByFEMSolver = false;
             UseFEMSolverCalculationForSimpleBeam = false;
             DeterminateMemberLocalDisplacementsForULS = false;
+            ShearDesignAccording334 = false;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -3079,7 +3097,7 @@ namespace PFD
             }
 
             CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, footingSettings, frameModels, beamSimpleModels);
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, ShearDesignAccording334, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
 
@@ -3436,7 +3454,7 @@ namespace PFD
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
                 if (governingMember == null) continue;
                 CCalculMember cGoverningMemberResultsULS;
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, ShearDesignAccording334, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
                 dictULSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsULS);
             }
             return dictULSDesignResults;
@@ -3460,10 +3478,10 @@ namespace PFD
         }
 
         // Calculate governing member design ratio
-        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
+        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
         {
             CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID  && i.LoadCombination.ID == loadCombID);
-            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, bShearDesignAccording334, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
         }
 
         public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, CMember m, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)

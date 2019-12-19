@@ -419,6 +419,8 @@
                          Text="{Binding Path=HorizontalDisplacementLimitDenominator_Girt_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
+                        <CheckBox Grid.Row="22" Grid.Column="3" Name="chbShearDesignAccording334" Margin="5,0" IsChecked="{Binding Path=ShearDesignAccording334}">Use shear design according to 3.3.4</CheckBox>
+
                         <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"

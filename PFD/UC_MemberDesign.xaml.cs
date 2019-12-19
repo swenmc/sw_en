@@ -14,15 +14,17 @@ namespace PFD
     public partial class UC_MemberDesign : UserControl
     {
         public bool UseCRSCGeometricalAxes;
+        public bool ShearDesignAccording334;
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
 
-        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
+        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
             InitializeComponent();
 
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
+            ShearDesignAccording334 = bShearDesignAccording334;
             Model = model;
             DesignResults_ULS = designResults_ULS;
             DesignResults_SLS = designResults_SLS;
@@ -47,13 +49,13 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
             
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, ShearDesignAccording334, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
         }
 
         // Calculate governing member design ratio
-        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -65,7 +67,7 @@ namespace PFD
                     // Select member with identical ID from the list of results
                     CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, bShearDesignAccording334, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {

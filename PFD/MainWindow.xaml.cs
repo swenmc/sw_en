@@ -1098,7 +1098,7 @@ namespace PFD
 
                 if (Member_Design.Content == null)
                 {
-                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
+                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.ShearDesignAccording334, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
                 }
                 else
                 {
