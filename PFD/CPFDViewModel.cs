@@ -73,7 +73,12 @@ namespace PFD
         private float MFibreglassAreaRoof;
         private float MFibreglassAreaWall;
 
-        
+        private List<string> m_Claddings;
+        private List<string> m_Coatings;
+        private string m_RoofCladding;
+        private string m_WallCladding;
+        private string m_RoofCladdingCoating;
+        private string m_WallCladdingCoating;
 
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
@@ -663,6 +668,7 @@ namespace PFD
             {
                 MRoofCladdingIndex = value;
                 MRoofCladdingID = MRoofCladdingIndex + 1;
+                RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -684,6 +690,7 @@ namespace PFD
 
                 IsSetFromCode = true;
                 RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
+                RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
                 RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingIndex + 1);
                 RoofCladdingColorIndex = 0;
                 RoofCladdingThicknessIndex = 0;
@@ -741,6 +748,7 @@ namespace PFD
             {
                 MWallCladdingIndex = value;
                 WallCladdingID = MWallCladdingIndex + 1;
+                WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
                 SetResultsAreNotValid();
                 //RecreateJoints = true;
                 RecreateModel = true;
@@ -762,6 +770,7 @@ namespace PFD
 
                 IsSetFromCode = true;
                 WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
+                WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
                 WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
                 WallCladdingColorIndex = 0;
                 WallCladdingThicknessIndex = 0;
@@ -2679,6 +2688,85 @@ namespace PFD
             set
             {
                 MWallCladdingCoatingID = value;
+            }
+        }
+
+        public List<string> Claddings
+        {
+            get
+            {
+                if(m_Claddings == null) m_Claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+                return m_Claddings;
+            }
+
+            set
+            {
+                m_Claddings = value;
+            }
+        }
+        public List<string> Coatings
+        {
+            get
+            {
+                if (m_Coatings == null) m_Coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+                return m_Coatings;
+            }
+
+            set
+            {
+                m_Coatings = value;
+            }
+        }
+
+        public string RoofCladding
+        {
+            get
+            {
+                return m_RoofCladding;
+            }
+
+            set
+            {
+                m_RoofCladding = value;
+            }
+        }
+
+        public string WallCladding
+        {
+            get
+            {
+                return m_WallCladding;
+            }
+
+            set
+            {
+                m_WallCladding = value;
+            }
+        }
+
+        public string RoofCladdingCoating
+        {
+            get
+            {
+                return m_RoofCladdingCoating;
+            }
+
+            set
+            {
+                m_RoofCladdingCoating = value;
+            }
+        }
+
+        public string WallCladdingCoating
+        {
+            get
+            {
+                return m_WallCladdingCoating;
+            }
+
+            set
+            {
+                m_WallCladdingCoating = value;
             }
         }
 

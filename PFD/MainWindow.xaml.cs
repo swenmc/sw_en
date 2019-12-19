@@ -124,8 +124,8 @@ namespace PFD
 
             SetUIElementsVisibility();
 
-            Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
-            Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            //Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            //Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
             //FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             //FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
@@ -133,8 +133,8 @@ namespace PFD
             FillComboboxTrapezoidalSheetingThickness(vm.RoofCladdingCoatingID, vm.RoofCladdingID, Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(vm.WallCladdingCoatingID, vm.WallCladdingID, Combobox_WallCladdingThickness);
 
-            FillComboboxFibreglassThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofFibreglassThickness);
-            FillComboboxFibreglassThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallFibreglassThickness);
+            FillComboboxFibreglassThickness(vm.Claddings[vm.RoofCladdingIndex], Combobox_RoofFibreglassThickness);
+            FillComboboxFibreglassThickness(vm.Claddings[vm.WallCladdingIndex], Combobox_WallFibreglassThickness);
 
             UpdateAll(true);
 
@@ -510,16 +510,16 @@ namespace PFD
             // TO Ondrej Bug 446
 
             // TODO Ondrej - Toto Treba refaktorovat s UC_Quotation
-            List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-            string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
-            string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
+            //List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+            //string roofCladding = vm.Claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
+            //string wallCladding = vm.Claddings.ElementAtOrDefault(vm.WallCladdingIndex);
 
-            List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-            string roofCladdingCoating = coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
-            string wallCladdingCoating = coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
+            //List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
+            //string roofCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
+            //string wallCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
 
-            List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
-            List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
+            List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.RoofCladding, "name");
+            List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.WallCladding, "name");
 
             string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
             string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
@@ -527,16 +527,16 @@ namespace PFD
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}");
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{roofCladdingThickness}");
 
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{wallCladdingThickness}");
 
             CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(roofCladdingCoating);
+            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
 
             CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(wallCladdingCoating);
+            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
 
             CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
             CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
@@ -1575,11 +1575,11 @@ namespace PFD
             // Fill model combobox items
             CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
             // Cladding (type and colors)
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
+            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_RoofCladding);
+            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name", Combobox_WallCladding);
 
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_RoofCladdingCoating);
-            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
+            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_RoofCladdingCoating);
+            //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "coating", "name_short", Combobox_WallCladdingCoating);
 
             // TODO Ondrej  toto asi musime presunut ak ma obsah tychto comboboxov zavisiet na vybranej polozke v comboboxoch Coating
             //CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
