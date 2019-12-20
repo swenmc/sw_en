@@ -188,7 +188,7 @@ namespace PFD
         private bool MShowSlabRebates;
 
         private float MDisplayIn3DRatio;
-        
+
 
         // Displacement / Deflection Limits
         private float MVerticalDisplacementLimitDenominator_Rafter_PL;
@@ -685,7 +685,7 @@ namespace PFD
                 MRoofCladdingID = MRoofCladdingIndex;
                 RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
-                RoofCladdingThicknessIndex = 0;                
+                RoofCladdingThicknessIndex = 0;
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
 
                 RoofFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", RoofCladding, "name");
@@ -695,7 +695,7 @@ namespace PFD
                 IsSetFromCode = false;
 
                 //RecreateJoints = true;
-                RecreateModel = true;                
+                RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
         }
@@ -721,7 +721,7 @@ namespace PFD
                 RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingID);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 RoofCladdingColorIndex = 0;
-                RoofCladdingThicknessIndex = 0;                
+                RoofCladdingThicknessIndex = 0;
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
                 IsSetFromCode = false;
 
@@ -821,7 +821,7 @@ namespace PFD
                 WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
                 WallCladdingThicknessIndex = 0;
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
-                WallCladdingColorIndex = 0;                
+                WallCladdingColorIndex = 0;
                 IsSetFromCode = false;
 
                 //SetResultsAreNotValid();
@@ -858,7 +858,7 @@ namespace PFD
             set
             {
                 MWallCladdingThicknessIndex = value;
-                
+
                 SetResultsAreNotValid();
                 RecreateModel = true;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
@@ -990,7 +990,7 @@ namespace PFD
             set
             {
                 MBackgroundColorIndex = value;
-                                
+
                 List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
                 BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color.Value;
@@ -1321,7 +1321,7 @@ namespace PFD
 
             set
             {
-                MShowMemberRealLengthInMM = value;                
+                MShowMemberRealLengthInMM = value;
             }
         }
         public bool ShowMemberRealLengthUnit
@@ -2200,7 +2200,7 @@ namespace PFD
             set
             {
                 MSynchronizeGUI = value;
-                if(MSynchronizeGUI) NotifyPropertyChanged("SynchronizeGUI");
+                if (MSynchronizeGUI) NotifyPropertyChanged("SynchronizeGUI");
             }
         }
 
@@ -2679,7 +2679,7 @@ namespace PFD
         {
             get
             {
-                if(MWallCladdingColors == null) MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
+                if (MWallCladdingColors == null) MWallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingIndex + 1);
                 return MWallCladdingColors;
             }
 
@@ -2744,7 +2744,7 @@ namespace PFD
         {
             get
             {
-                if(m_Claddings == null) m_Claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
+                if (m_Claddings == null) m_Claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
                 return m_Claddings;
             }
 
@@ -2819,7 +2819,7 @@ namespace PFD
             }
         }
 
-        
+
 
         public List<string> RoofCladdingsThicknessTypes
         {
@@ -2866,7 +2866,7 @@ namespace PFD
         {
             get
             {
-                if(m_ThicknessPropertiesList == null) m_ThicknessPropertiesList = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
+                if (m_ThicknessPropertiesList == null) m_ThicknessPropertiesList = CTrapezoidalSheetingManager.LoadThicknessPropertiesList();
                 return m_ThicknessPropertiesList;
             }
 
@@ -3017,7 +3017,7 @@ namespace PFD
                     d.IsSetFromCode = true;
                     d.iBayNumber = bayNum;
                     d.IsSetFromCode = false;
-                } 
+                }
             }
         }
 
@@ -3129,7 +3129,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties, 
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM, DisplayOptionsViewModel displayOptionsVM)
         {
             IsSetFromCode = true;
@@ -3143,7 +3143,7 @@ namespace PFD
 
             _loadInput = loadInput;
             _loadInput.PropertyChanged += _loadInput_PropertyChanged;
-            
+
             _projectInfoVM = projectInfoVM;
             _displayOptionsVM = displayOptionsVM;
 
@@ -3271,7 +3271,7 @@ namespace PFD
         {
             CPFDLoadInput vm = sender as CPFDLoadInput;
             if (vm.IsSetFromCode) return;
-            
+
             SetResultsAreNotValid();
 
             if (PropertyChanged != null) PropertyChanged(sender, e);
@@ -3298,12 +3298,12 @@ namespace PFD
         {
             if (!_worker.IsBusy) _worker.RunWorkerAsync();
         }
-        
+
         private void CalculateInternalForces(object sender, DoWorkEventArgs e)
         {
             Calculate();
         }
-        
+
         public void GenerateMemberLoadsIfNotGenerated()
         {
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
@@ -3556,8 +3556,8 @@ namespace PFD
                     var doorProps = DoorBlocksProperties.GroupBy(d => new { d.iBayNumber, d.sBuildingSide }).Where(g => g.Count() == 1).Select(g => g.FirstOrDefault()).ToList();
                     doorProps.AddRange(duplicates);
                     DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProps);
-                }                
-            }            
+                }
+            }
         }
 
         private void HandleWindowPropertiesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -3649,30 +3649,24 @@ namespace PFD
             //data.SpectralShapeFactorChTx = _loadInput.SpectralShapeFactorChTx;
             //data.SpectralShapeFactorChTy = _loadInput.SpectralShapeFactorChTy;
 
-            if (ModelCalculatedResultsValid) // Skusame nacitat vysledky len ak su spocitane
-            {
 
-                data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
-                data.sDesignResults_ULS = sDesignResults_ULS;
-                data.sDesignResults_SLS = sDesignResults_SLS;
+            //toto som zakomentoval aby sa nezrubavalo ak nie su validne vysledky
+            //if (ModelCalculatedResultsValid) // Skusame nacitat vysledky len ak su spocitane
+            
+            data.sDesignResults_ULSandSLS = sDesignResults_ULSandSLS;
+            data.sDesignResults_ULS = sDesignResults_ULS;
+            data.sDesignResults_SLS = sDesignResults_SLS;
 
-                // BUG 437
-                // Bracing Blocks by mali ma bCalculate a bDesign stale na False
-                //try // To Ondrej - tu som dal try - Dictionary sa nenastavia - mozno to suvisi s tym ze sa pridali pruty typu bracing blocks, alebo ich spoje ???
-                //{
-                    data.dictULSDesignResults = GetDesignResultsULS();
-                    data.dictSLSDesignResults = GetDesignResultsSLS();
-                    GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
-                //}
-                //catch
-                //{
-                    //throw new Exception("Unable to load results. Not calculated or non-valid results!");
-                //}
+            // BUG 437
+            // Bracing Blocks by mali ma bCalculate a bDesign stale na False
+            data.dictULSDesignResults = GetDesignResultsULS();
+            data.dictSLSDesignResults = GetDesignResultsSLS();
+            GetGoverningMemberJointsDesignDetails(out data.dictStartJointResults, out data.dictEndJointResults);
 
-                data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
-                data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
-                data.frameModels = frameModels;
-            }
+            data.MemberInternalForcesInLoadCombinations = MemberInternalForcesInLoadCombinations;
+            data.MemberDeflectionsInLoadCombinations = MemberDeflectionsInLoadCombinations;
+            data.frameModels = frameModels;
+
 
             data.JointsDict = JointsVM.DictJoints;
             data.FootingsDict = FootingVM.DictFootings;
@@ -3729,7 +3723,7 @@ namespace PFD
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
 
-            data.NumberOfRollerDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count(); 
+            data.NumberOfRollerDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
             data.NumberOfPersonnelDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
 
             data.ProjectInfo = _projectInfoVM.GetProjectInfo();
@@ -3757,6 +3751,9 @@ namespace PFD
 
             foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
             {
+                //Tu je problem ze DesignResults nemaju hodnoty pre BracingBlockGirts = 12, BracingBlockPurlins = 13, BracingBlocksGirtsFrontSide = 14, BracingBlocksGirtsBackSide = 15,
+                if (!sDesignResults_ULS.DesignResults.ContainsKey(mGr.MemberType_FS_Position)) continue;
+
                 CLoadCombination governingLoadComb = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
                 if (governingLoadComb == null) continue;
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
@@ -3774,6 +3771,9 @@ namespace PFD
 
             foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
             {
+                //Tu je problem ze DesignResults nemaju hodnoty pre BracingBlockGirts = 12, BracingBlockPurlins = 13, BracingBlocksGirtsFrontSide = 14, BracingBlocksGirtsBackSide = 15,
+                if (!sDesignResults_SLS.DesignResults.ContainsKey(mGr.MemberType_FS_Position)) continue;
+
                 CLoadCombination governingLoadComb = sDesignResults_SLS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
                 if (governingLoadComb == null) continue;
                 CMember governingMember = sDesignResults_SLS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
@@ -3788,7 +3788,7 @@ namespace PFD
         // Calculate governing member design ratio
         private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
         {
-            CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID  && i.LoadCombination.ID == loadCombID);
+            CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
             cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, bShearDesignAccording334, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
         }
 
@@ -3823,6 +3823,9 @@ namespace PFD
 
             foreach (CMemberGroup mGr in Model.listOfModelMemberGroups)
             {
+                //Tu je problem ze DesignResults nemaju hodnoty pre BracingBlockGirts = 12, BracingBlockPurlins = 13, BracingBlocksGirtsFrontSide = 14, BracingBlocksGirtsBackSide = 15,
+                if (!sDesignResults_ULS.DesignResults.ContainsKey(mGr.MemberType_FS_Position)) continue;
+
                 CLoadCombination governingLoadComb = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].GoverningLoadCombination;
                 if (governingLoadComb == null) continue;
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
@@ -3961,7 +3964,7 @@ namespace PFD
             sDisplayOptions.SectionSymbolColor = _displayOptionsVM.SectionSymbolColor;
 
             sDisplayOptions.DetailSymbolLabelTextColor = _displayOptionsVM.DetailSymbolLabelTextColor;
-            sDisplayOptions.DetailSymbolLabelBackColor = _displayOptionsVM.DetailSymbolLabelBackColor;            
+            sDisplayOptions.DetailSymbolLabelBackColor = _displayOptionsVM.DetailSymbolLabelBackColor;
             sDisplayOptions.DetailSymbolColor = _displayOptionsVM.DetailSymbolColor;
 
             sDisplayOptions.SawCutTextColor = _displayOptionsVM.SawCutTextColor;
@@ -4004,6 +4007,6 @@ namespace PFD
             return sDisplayOptions;
         }
 
-        
+
     }
 }
