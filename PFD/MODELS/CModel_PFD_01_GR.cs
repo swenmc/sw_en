@@ -353,7 +353,8 @@ namespace PFD
                 iOneColumnGirtNo = (int)((fH1_frame - fUpperGirtLimit - fBottomGirtPosition) / fDist_Girt) + 1;
                 iGirtNoInOneFrame = 2 * iOneColumnGirtNo;
             }
-            componentListVM.SetColumnFlyBracingPosition_Items(iOneColumnGirtNo);
+            
+            componentListVM.SetColumnFlyBracingPosition_Items(iOneColumnGirtNo);  //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGenerateGirts || iMainColumnFlyBracing_EveryXXGirt == 0 || iMainColumnFlyBracing_EveryXXGirt > iGirtNoInOneFrame) // Index 0 means do not use fly bracing, more than number of girts per main column means no fly bracing too
                 bUseMainColumnFlyBracingPlates = false;
@@ -371,7 +372,7 @@ namespace PFD
                 iOneRafterPurlinNo = (int)((fRafterLength - fFirstPurlinPosition) / fDist_Purlin) + 1;
                 iPurlinNoInOneFrame = 2 * iOneRafterPurlinNo;
             }
-            componentListVM.SetRafterFlyBracingPosition_Items(iOneRafterPurlinNo);
+            componentListVM.SetRafterFlyBracingPosition_Items(iOneRafterPurlinNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGeneratePurlins || iRafterFlyBracing_EveryXXPurlin == 0 || iRafterFlyBracing_EveryXXPurlin > iPurlinNoInOneFrame) // Index 0 means do not use fly bracing, more than number of purlins per rafter means no fly bracing too
                 bUseRafterFlyBracingPlates = false;
@@ -438,7 +439,7 @@ namespace PFD
                 // Girts in the middle are considered twice - remove one set
                 iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
             }
-            componentListVM.SetFrontColumnFlyBracingPosition_Items(iOneColumnGirtNo);
+            componentListVM.SetFrontColumnFlyBracingPosition_Items(iOneColumnGirtNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGenerateFrontGirts || iFrontColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
                 bUseFrontColumnFlyBracingPlates = false;
@@ -473,7 +474,7 @@ namespace PFD
                 // Girts in the middle are considered twice - remove one set
                 iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
             }
-            componentListVM.SetBackColumnFlyBracingPosition_Items(iOneColumnGirtNo);
+            componentListVM.SetBackColumnFlyBracingPosition_Items(iOneColumnGirtNo); //zakomentovane 20.12.2019 - nechapem naco to tu je
 
             if (!bGenerateBackGirts || iBackColumnFlyBracing_EveryXXGirt == 0) // Index 0 means do not use fly bracing
                 bUseBackColumnFlyBracingPlates = false;
