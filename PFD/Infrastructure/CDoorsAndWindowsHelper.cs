@@ -61,7 +61,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 2.1f;
             doorProps.fDoorsWidth = 0.8f;
             doorProps.fDoorCoordinateXinBlock = 0.5f;
-            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();            
             DoorBlocks.Add(doorProps);
 
             return DoorBlocks;

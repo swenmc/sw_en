@@ -24,6 +24,9 @@ namespace BaseClasses
         private List<CoatingColour> m_CoatingColors;
         private CoatingColour m_coatingColor;
 
+        private List<string> m_Series;
+        private string m_Serie;
+
         private RebateProperties m_RebateProp;
         float fRollerDoorTrimmerWidth; // Sirka cross-section typu roller door trimmer
 
@@ -80,6 +83,19 @@ namespace BaseClasses
             set
             {
                 m_sDoorType = value;
+                IsSetFromCode = true;
+
+                if (m_sDoorType == "Roller Door")
+                {
+                    
+                    Series = new List<string>() { "Domestic", "Roller Shutter" };
+                    Serie = "Domestic";
+                    
+                }
+                else Series = new List<string>();
+
+                IsSetFromCode = false;
+
                 NotifyPropertyChanged("sDoorType");
             }
         }
@@ -198,6 +214,40 @@ namespace BaseClasses
                 m_RebateProp = value;
             }
         }
+
+        public List<string> Series
+        {
+            get
+            {
+                if (m_Series == null)
+                {
+                    m_Series = new List<string>();
+                }
+                return m_Series;
+            }
+
+            set
+            {
+                m_Series = value;
+                NotifyPropertyChanged("Series");
+            }
+        }
+
+        public string Serie
+        {
+            get
+            {               
+                return m_Serie;
+            }
+
+            set
+            {
+                m_Serie = value;
+                NotifyPropertyChanged("Serie");
+            }
+        }
+
+        
 
         public DoorProperties()
         {            

@@ -1303,7 +1303,7 @@ namespace PFD
                     fPADoorLintelFlashing_TotalLength += dp.fDoorsWidth;
                 }
 
-                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID)); // TODO - index farby prevziat z GUI
+                listOfOpenings.Add(new COpeningProperties(dp.sDoorType, dp.fDoorsWidth, dp.fDoorsHeight, dp.CoatingColor.ID, dp.Serie));
             }
 
             foreach (WindowProperties wp in vm.WindowBlocksProperties)
@@ -1312,7 +1312,7 @@ namespace PFD
 
                 fWindowFlashing_TotalLength += (2 * wp.fWindowsWidth + 2 * wp.fWindowsHeight);
 
-                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID)); // TODO - index farby prevziat z GUI
+                listOfOpenings.Add(new COpeningProperties("Window", wp.fWindowsWidth, wp.fWindowsHeight, wp.CoatingColor.ID, null));
             }
 
             // TODO Ondrej

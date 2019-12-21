@@ -449,15 +449,15 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Frame Content="FrameDoorWindowPreview" Name="FrameDoorWindowPreview3D" HorizontalAlignment="Left" VerticalAlignment="Top" NavigationUIVisibility="Hidden" Margin="5,5,0,0" Height="430" Width="570" MouseWheel="FrameDoorWindowPreview3D_MouseWheel"/>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Width="570" HorizontalAlignment="Left">
                             <TextBlock Name="LabelDoors" HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Doors" VerticalAlignment="Top" Margin="5,2,0,0" FontSize="16" />
-                            <Button Name="btnDoorGenerator" VerticalAlignment="Top" ToolTip="Add Doors" Margin="223 5 0 0" Width="20" Height="20" Click="BtnDoorGenerator_Click">
+                            <Button Name="btnDoorGenerator" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip="Add Doors" Margin="330 5 0 0" Width="20" Height="20" Click="BtnDoorGenerator_Click">
                                 <Image Source="Resources/doors.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
                         <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
-                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Width="2*" Header="Side" ToolTipService.ToolTip="Select side of building"
@@ -481,6 +481,18 @@
                                 <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
                                 <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
                                 <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
+                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select roller door series" Width="2*" SelectedValueBinding="{Binding Serie, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Series}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Series}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
                                 <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -520,12 +532,12 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Windows" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
-                            <Button Name="btnWindowsGenerator" VerticalAlignment="Top" ToolTip="Add Windows" Margin="223 12 0 0" Width="20" Height="20" Click="btnWindowsGenerator_Click">
+                            <Button Name="btnWindowsGenerator" VerticalAlignment="Top" ToolTip="Add Windows" Margin="330 12 0 0" Width="20" Height="20" Click="btnWindowsGenerator_Click">
                                 <Image Source="Resources/windows.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" 
-                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="450" Margin="5,2,0,0" 
+                                  HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_Windows_AddingNewItem" SelectionChanged="Datagrid_Windows_SelectionChanged" GotFocus="Datagrid_Windows_GotFocus">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="2*"

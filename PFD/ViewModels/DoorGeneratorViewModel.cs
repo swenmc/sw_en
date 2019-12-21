@@ -27,6 +27,10 @@ namespace PFD
         private float m_fDoorCoordinateXinBlock;
         private CoatingColour m_coatingColor;
         private List<CoatingColour> m_CoatingColors;
+
+        private List<string> m_Series;
+        private string m_Serie;
+
         private bool m_AddDoors;
 
         private List<string> m_DoorsTypes;
@@ -55,6 +59,12 @@ namespace PFD
             set
             {
                 m_sDoorType = value;
+                if (m_sDoorType == "Roller Door")
+                {
+                    Series = new List<string>() { "Domestic", "Roller Shutter" };
+                    Serie = "Domestic";
+                }
+                else Series = new List<string>();
                 NotifyPropertyChanged("DoorType");
             }
         }
@@ -137,6 +147,38 @@ namespace PFD
             set
             {
                 m_AddDoors = value;
+            }
+        }
+
+        public List<string> Series
+        {
+            get
+            {
+                if (m_Series == null)
+                {
+                    m_Series = new List<string>();
+                }
+                return m_Series;
+            }
+
+            set
+            {
+                m_Series = value;
+                NotifyPropertyChanged("Series");
+            }
+        }
+
+        public string Serie
+        {
+            get
+            {
+                return m_Serie;
+            }
+
+            set
+            {
+                m_Serie = value;
+                NotifyPropertyChanged("Serie");
             }
         }
 

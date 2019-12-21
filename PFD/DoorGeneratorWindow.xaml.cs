@@ -128,6 +128,8 @@ namespace PFD
             dp.sDoorType = vm.DoorType;
             dp.CoatingColors = vm.CoatingColors;
             dp.CoatingColor = vm.CoatingColor;
+            dp.Series = vm.Series;
+            dp.Serie = vm.Serie;
             return dp;
         }
 

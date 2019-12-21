@@ -37,6 +37,7 @@ namespace BaseClasses
 
         private int m_ColorID; // TODO Ondrej - Pracovat s ID alebo priamo s Color
         private int m_Count;
+        private string m_Serie;
 
         public string Type
         {
@@ -221,11 +222,25 @@ namespace BaseClasses
             }
         }
 
-        public COpeningProperties(string type, float width, float height, int coatingColorID)
+        public string Serie
+        {
+            get
+            {
+                return m_Serie;
+            }
+
+            set
+            {
+                m_Serie = value;
+            }
+        }
+
+        public COpeningProperties(string type, float width, float height, int coatingColorID, string serie)
         {
             m_sType = type;
             m_fWidth = width;
             m_fHeight = height;
+            m_Serie = serie;
 
             if (m_sType == "Window")
                 m_fPerimeter = 2 * width + 2 * height;
@@ -239,7 +254,7 @@ namespace BaseClasses
             m_fUnitMass_SM = (float)prop.Mass_kg_m2;
 
             ColorID = coatingColorID;
-            bool bIsDomesticSeries = true; // TODO - napojit na GUI, combobox v stplci s nazvom Series s dvomi polozka "Domestic" a "Roller Shutter"
+            
             List <CoatingColour> colorsProp = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
             m_coatingColor = colorsProp.ElementAtOrDefault(ColorID);
             m_fPrice_PPSM_NZD = GetDoorPriceByColor_PSM_NZD(colorsProp.ElementAtOrDefault(ColorID).PriceCode, prop);
@@ -249,6 +264,7 @@ namespace BaseClasses
 
             if (m_sType == "Roller Door")
             {
+                bool bIsDomesticSeries = (m_Serie == "Domestic"); // combobox v stplci s nazvom Series s dvomi polozka "Domestic" a "Roller Shutter"
                 m_fPrice_PPP_NZD = CRollerDoorPricesManager.GetRollerDoorPrice(bIsDomesticSeries, m_fWidth, m_fHeight, colorsProp.ElementAtOrDefault(ColorID).Name == "Zinc"); // Zinc - ID farby v databaze je 23
 
                 m_fPrice_PPSM_NZD = m_fPrice_PPP_NZD / m_fArea;
@@ -263,7 +279,7 @@ namespace BaseClasses
             COpeningProperties op = obj as COpeningProperties;
             if (op == null) return false;
 
-            return this.Type == op.Type && MathF.d_equal(this.fWidth, op.fWidth) && MathF.d_equal(this.fHeight, op.fHeight) && this.ColorID == op.ColorID;
+            return this.Type == op.Type && MathF.d_equal(this.fWidth, op.fWidth) && MathF.d_equal(this.fHeight, op.fHeight) && this.ColorID == op.ColorID && this.m_Serie == op.Serie;
         }
 
         public override int GetHashCode()

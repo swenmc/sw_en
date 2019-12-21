@@ -3536,6 +3536,10 @@ namespace PFD
                     SetResultsAreNotValid();
                     SetComponentListAccordingToDoors();
                 }
+                else if (e.PropertyName == "CoatingColor" || e.PropertyName == "Series" || e.PropertyName == "Series")
+                {
+                    return;
+                }
 
                 if (e.PropertyName == "fDoorsHeight" || e.PropertyName == "fDoorsWidth" ||
                     e.PropertyName == "fDoorCoordinateXinBlock")
