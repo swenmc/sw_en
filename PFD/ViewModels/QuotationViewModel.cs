@@ -32,6 +32,8 @@ namespace PFD
         double m_BuildingPrice_PSM;
         double m_BuildingPrice_PCM;
         double m_BuildingPrice_PPKG;
+
+        
         
         public bool IsSetFromCode = false;
 
@@ -222,6 +224,8 @@ namespace PFD
                 NotifyPropertyChanged("Margin_Percentage");
             }
         }
+
+        
 
 
 

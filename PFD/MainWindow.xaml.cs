@@ -147,6 +147,8 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
 
+                if (e.PropertyName == "RecreateQuotation") { Quotation.Content = new UC_Quotation(vm); return; }
+
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "WindowBlocksProperties_Add") { vm.RecreateJoints = true; }
@@ -449,23 +451,9 @@ namespace PFD
             // General loading
             // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
-            // TO Ondrej Bug 446
-
+            
             // TODO Ondrej - Toto Treba refaktorovat s UC_Quotation
-            //List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-            //string roofCladding = vm.Claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
-            //string wallCladding = vm.Claddings.ElementAtOrDefault(vm.WallCladdingIndex);
-
-            //List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-            //string roofCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
-            //string wallCladdingCoating = vm.Coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
-
-            //List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.RoofCladding, "name");
-            //List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", vm.WallCladding, "name");
-
-            //string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
-            //string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
-
+            
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();

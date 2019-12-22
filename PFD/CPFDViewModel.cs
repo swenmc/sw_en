@@ -229,7 +229,7 @@ namespace PFD
         private bool MRecreateRCMesh;
 
         private bool MFootingChanged;
-
+        private bool m_RecreateQuotation = false;
         // Popis pre Ondreja - doors and windows
         // GUI
 
@@ -2646,6 +2646,20 @@ namespace PFD
             }
         }
 
+        public bool RecreateQuotation
+        {
+            get
+            {
+                return m_RecreateQuotation;
+            }
+
+            set
+            {   
+                m_RecreateQuotation = value;
+                NotifyPropertyChanged("RecreateQuotation");
+            }
+        }
+
         public int IFrontColumnNoInOneFrame
         {
             get
@@ -3124,6 +3138,9 @@ namespace PFD
         public DisplayOptionsViewModel _displayOptionsVM;
 
         public QuotationViewModel _quotationViewModel;
+        public QuotationDisplayOptionsViewModel _quotationDisplayOptionsVM;
+        public QuotationDisplayOptions _quotationDisplayOptions;
+        public QuotationExportOptions _quotationExportOptions;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
@@ -3248,6 +3265,10 @@ namespace PFD
             MModelCalculatedResultsValid = false;
             MRecreateJoints = true;
             MSynchronizeGUI = true;
+
+            _quotationDisplayOptions = new QuotationDisplayOptions();
+            _quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
+            _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(_quotationDisplayOptions);
 
             IsSetFromCode = false;
 
@@ -3700,6 +3721,7 @@ namespace PFD
             data.BayWidth = fBayWidth;
             data.ApexHeight_H2 = fApexHeight_H2;
 
+            //TODO - refaktoring
             // TO Ondrej
             // Tieto properties pre cladding by sa asi dali ziskat nejako jednoduchsie nez znova nacitavat z databazy
 

@@ -140,9 +140,13 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="QuotationDisplayOptionsWindow.xaml.cs">
+      <DependentUpon>QuotationDisplayOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UC_Quotation.xaml.cs">
       <DependentUpon>UC_Quotation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\QuotationDisplayOptionsViewModel.cs" />
     <Compile Include="ViewModels\QuotationViewModel.cs" />
     <Compile Include="ViewModels\WindowGeneratorViewModel.cs" />
     <Compile Include="WindowsGeneratorWindow.xaml.cs">
@@ -294,6 +298,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuotationDisplayOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_Quotation.xaml">
       <SubType>Designer</SubType>

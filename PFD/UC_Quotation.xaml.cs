@@ -96,9 +96,12 @@ namespace PFD
         float fPADoorLintelFlashing_TotalLength = 0;
         float fWindowFlashing_TotalLength = 0;
 
+        private CPFDViewModel _pfdVM;
+
         public UC_Quotation(CPFDViewModel vm)
         {
             InitializeComponent();
+            _pfdVM = vm;
 
             colPropList = new List<ColumnProperties>()
             {
@@ -165,27 +168,53 @@ namespace PFD
 
             // DG 1
             // Members
-            CreateTableMembers(model);
+            if (vm._quotationDisplayOptionsVM.DisplayMembers) CreateTableMembers(model);
+            else
+            {
+                TextBlock_Members.Visibility = Visibility.Collapsed;
+                Datagrid_Members.Visibility = Visibility.Collapsed;
+            }
 
             // DG 2
             // Plates
-            // Washers
-            CreateTablePlates(model);
+            // Washers            
+            if (vm._quotationDisplayOptionsVM.DisplayPlates) CreateTablePlates(model);
+            else
+            {
+                TextBlock_Plates.Visibility = Visibility.Collapsed;
+                Datagrid_Plates.Visibility = Visibility.Collapsed;
+            }
             // TODO - dopracovat apex brace plates
 
             // DG 3
             // Screws
             // Bolts
-            // Anchors
-            CreateTableConnectors(model);
+            // Anchors            
+            if (vm._quotationDisplayOptionsVM.DisplayConnectors) CreateTableConnectors(model);
+            else
+            {
+                TextBlock_Connectors.Visibility = Visibility.Collapsed;
+                Datagrid_Connectors.Visibility = Visibility.Collapsed;
+            }
 
             // DG 4
-            // Bolt Nuts
-            CreateTableBoltNuts(model);
+            // Bolt Nuts            
+            if (vm._quotationDisplayOptionsVM.DisplayBoltNuts) CreateTableBoltNuts(model);
+            else
+            {
+                TextBlock_BoltNuts.Visibility = Visibility.Collapsed;
+                Datagrid_BoltNuts.Visibility = Visibility.Collapsed;
+            }
 
             // DG 5
             // Doors and windows
-            CreateTableDoorsAndWindows(vm);
+            
+            if (vm._quotationDisplayOptionsVM.DisplayDoorsAndWindows) CreateTableDoorsAndWindows(vm);
+            else
+            {
+                TextBlock_DoorsAndWindows.Visibility = Visibility.Collapsed;
+                Datagrid_DoorsAndWindows.Visibility = Visibility.Collapsed;
+            }
 
             // DG 6
             // Cladding
@@ -199,41 +228,78 @@ namespace PFD
             float fFibreGlassArea_Roof = vm.FibreglassAreaRoof / 100f * fRoofArea; // Priesvitna cast strechy TODO Percento pre fibre glass zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
-            // TODO Ondrej - refaktoring - funckia CreateTableCladding
-            CreateTableCladding(vm,
-                fWallArea_Total,
-                fTotalAreaOfOpennings,
-                fFibreGlassArea_Walls,
-                fRoofArea,
-                fFibreGlassArea_Roof
-               );
+            if (vm._quotationDisplayOptionsVM.DisplayCladding)
+            {                
+                // TODO Ondrej - refaktoring - funckia CreateTableCladding
+                CreateTableCladding(vm,
+                    fWallArea_Total,
+                    fTotalAreaOfOpennings,
+                    fFibreGlassArea_Walls,
+                    fRoofArea,
+                    fFibreGlassArea_Roof
+                   );
+            }
+            else
+            {
+                TextBlock_Cladding.Visibility = Visibility.Collapsed;
+                Datagrid_Cladding.Visibility = Visibility.Collapsed;
+            }
+            
 
             // DG 7
-            // Gutters
-            CreateTableGutters(model);
+            // Gutters            
+            if (vm._quotationDisplayOptionsVM.DisplayGutters) CreateTableGutters(model);
+            else
+            {
+                TextBlock_Gutters.Visibility = Visibility.Collapsed;
+                Datagrid_Gutters.Visibility = Visibility.Collapsed;
+            }
 
             // DG 8
-            // Downpipes
-            CreateTableDownpipes(model);
+            // Downpipes            
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe) CreateTableDownpipes(model);
+            else
+            {
+                TextBlock_Downpipes.Visibility = Visibility.Collapsed;
+                Datagrid_Downpipes.Visibility = Visibility.Collapsed;
+            }
 
             // DG 9
-            // FibreGlass
-            CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
+            // FibreGlass            
+            if (vm._quotationDisplayOptionsVM.DisplayFibreglass) CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
+            else
+            {
+                TextBlock_Fibreglass.Visibility = Visibility.Collapsed;
+                Datagrid_Fibreglass.Visibility = Visibility.Collapsed;
+            }
 
             // DG 10
-            // Roof Netting
-            CreateTableRoofNetting(fRoofArea);
+            // Roof Netting            
+            if (vm._quotationDisplayOptionsVM.DisplayRoofNetting) CreateTableRoofNetting(fRoofArea);
+            else
+            {
+                TextBlock_RoofNetting.Visibility = Visibility.Collapsed;
+                Datagrid_RoofNetting.Visibility = Visibility.Collapsed;
+            }
 
             // DG 11
-            // Flashing and Packers
-            CreateTableFlashing(model,
+            // Flashing and Packers            
+            if (vm._quotationDisplayOptionsVM.DisplayFlashing)
+            {
+                CreateTableFlashing(model,
                 fRoofSideLength,
                 fRollerDoorTrimmerFlashing_TotalLength,
                 fRollerDoorLintelFlashing_TotalLength,
                 fRollerDoorLintelCapFlashing_TotalLength,
                 fPADoorTrimmerFlashing_TotalLength,
                 fPADoorLintelFlashing_TotalLength,
-                fWindowFlashing_TotalLength);
+                fWindowFlashing_TotalLength);                
+            }
+            else
+            {
+                TextBlock_Flashing.Visibility = Visibility.Collapsed;
+                Datagrid_Flashing.Visibility = Visibility.Collapsed;
+            }
 
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
@@ -1409,11 +1475,11 @@ namespace PFD
             }
             else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
             {
-                DoorsAndWindowsLabel.IsEnabled = false;
-                DoorsAndWindowsLabel.Visibility = Visibility.Hidden;
+                TextBlock_DoorsAndWindows.IsEnabled = false;
+                TextBlock_DoorsAndWindows.Visibility = Visibility.Collapsed;
 
                 Datagrid_DoorsAndWindows.IsEnabled = false;
-                Datagrid_DoorsAndWindows.Visibility = Visibility.Hidden;
+                Datagrid_DoorsAndWindows.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -1566,11 +1632,11 @@ namespace PFD
             }
             else // TODO Ondrej - Tabulka je prazdna - nezobrazime ju
             {
-                FibreglassLabel.IsEnabled = false;
-                FibreglassLabel.Visibility = Visibility.Hidden;
+                TextBlock_Fibreglass.IsEnabled = false;
+                TextBlock_Fibreglass.Visibility = Visibility.Collapsed;
 
                 Datagrid_Fibreglass.IsEnabled = false;
-                Datagrid_Fibreglass.Visibility = Visibility.Hidden;
+                Datagrid_Fibreglass.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -2107,6 +2173,20 @@ namespace PFD
             }
 
             return prop;
+        }
+
+        private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
+        {
+            QuotationDisplayOptionsWindow window = new QuotationDisplayOptionsWindow(_pfdVM);
+            window.ShowDialog();
+
+            
+
+        }
+
+        private void ChangeGUIAccordingToDisplayOptions()
+        {
+
         }
 
         //ODKALDAM SI PLATES METODU AK BY SOM V REFAKTORINGU NIECO DOBABRAL TAK odtialto sa vezme
