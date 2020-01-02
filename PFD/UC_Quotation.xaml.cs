@@ -1126,34 +1126,20 @@ namespace PFD
 
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
-
-            List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-            string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
-            string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
-
-            List<string> coatings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-            string roofCladdingCoating = coatings.ElementAtOrDefault(vm.RoofCladdingCoatingIndex);
-            string wallCladdingCoating = coatings.ElementAtOrDefault(vm.WallCladdingCoatingIndex);
-
-            List<string> list_roofCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", roofCladding, "name");
-            List<string> list_wallCladdingThickness = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", wallCladding, "name");
-
-            string roofCladdingThickness = list_roofCladdingThickness.ElementAtOrDefault(vm.RoofCladdingThicknessIndex);
-            string wallCladdingThickness = list_wallCladdingThickness.ElementAtOrDefault(vm.WallCladdingThicknessIndex);
-
+            
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{roofCladding}-{roofCladdingThickness}");
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
 
             CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{wallCladding}-{wallCladdingThickness}");
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
 
             CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(roofCladdingCoating);
+            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
 
             CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(wallCladdingCoating);
+            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
 
             CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
             CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
@@ -1208,9 +1194,9 @@ namespace PFD
                 float totalMass = fRoofArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row[colProp_Cladding.ColumnName] = roofCladding;
+                    row[colProp_Cladding.ColumnName] = vm.RoofCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_RoofCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[colProp_Coating.ColumnName] = roofCladdingCoating;
+                    row[colProp_Coating.ColumnName] = vm.RoofCladdingCoating;
                     row[colProp_Color.ColumnName] = prop_RoofCladdingColor.CodeHEX;
                     row[colProp_ColorName.ColumnName] = prop_RoofCladdingColor.Name;
                     row[colProp_TotalArea_m2.ColumnName] = fRoofArea_Total_Netto.ToString("F2");
@@ -1238,9 +1224,9 @@ namespace PFD
                 float totalMass = fWallArea_Total_Netto * fUnitMass;
                 try
                 {
-                    row[colProp_Cladding.ColumnName] = wallCladding;
+                    row[colProp_Cladding.ColumnName] = vm.WallCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_WallCladding.thicknessCore_m * 1000).ToString("F2"); // mm
-                    row[colProp_Coating.ColumnName] = wallCladdingCoating;
+                    row[colProp_Coating.ColumnName] = vm.WallCladdingCoating;
                     row[colProp_Color.ColumnName] = prop_WallCladdingColor.CodeHEX;
                     row[colProp_ColorName.ColumnName] = prop_WallCladdingColor.Name;
 
@@ -1492,21 +1478,14 @@ namespace PFD
             float fFibreGlassArea_Roof,
             float fFibreGlassArea_Walls)
         {
-            List<string> claddings = CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-            string roofCladding = claddings.ElementAtOrDefault(vm.RoofCladdingIndex);
-            string wallCladding = claddings.ElementAtOrDefault(vm.WallCladdingIndex);
-
-            List<string> list_roofFibreglassThickness = CDatabaseManager.GetStringList("FibreglassSQLiteDB", roofCladding, "name");
-            List<string> list_wallFibreglassThickness = CDatabaseManager.GetStringList("FibreglassSQLiteDB", wallCladding, "name");
-
-            string roofFibreglassThickness = list_roofFibreglassThickness.ElementAtOrDefault(vm.RoofFibreglassThicknessIndex);
-            string wallFibreglassThickness = list_wallFibreglassThickness.ElementAtOrDefault(vm.WallFibreglassThicknessIndex);
+            string roofFibreglassThickness = vm.RoofFibreglassThicknessTypes.ElementAtOrDefault(vm.RoofFibreglassThicknessIndex);
+            string wallFibreglassThickness = vm.WallFibreglassThicknessTypes.ElementAtOrDefault(vm.WallFibreglassThicknessIndex);
 
             CFibreglassProperties prop_RoofFibreglass = new CFibreglassProperties();
-            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{roofCladding}-{roofFibreglassThickness}");
+            prop_RoofFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm.RoofCladding}-{roofFibreglassThickness}");
 
             CFibreglassProperties prop_WallFibreglass = new CFibreglassProperties();
-            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{wallCladding}-{wallFibreglassThickness}");
+            prop_WallFibreglass = CFibreglassManager.GetFibreglassProperties($"{vm.WallCladding}-{wallFibreglassThickness}");
 
             float fRoofFibreGlassPrice_PSM_NZD = (float)prop_RoofFibreglass.price_PPSM_NZD; // Cena roof fibreglass za 1 m^2
             float fWallFibreGlassPrice_PSM_NZD = (float)prop_WallFibreglass.price_PPSM_NZD; // Cena wall fibreglass za 1 m^2
@@ -1554,7 +1533,7 @@ namespace PFD
                 float totalMass = fFibreGlassArea_Roof * fUnitMass;
                 try
                 {
-                    row[colProp_Fibreglass.ColumnName] = roofCladding;
+                    row[colProp_Fibreglass.ColumnName] = vm.RoofCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_RoofFibreglass.thickness_m * 1000).ToString("F2"); // mm
                     row[colProp_Width_m.ColumnName] = prop_RoofFibreglass.widthModular_m.ToString("F2");
                     row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
@@ -1586,7 +1565,7 @@ namespace PFD
                 float totalMass = fFibreGlassArea_Walls * fUnitMass;
                 try
                 {
-                    row[colProp_Fibreglass.ColumnName] = wallCladding;
+                    row[colProp_Fibreglass.ColumnName] = vm.WallCladding;
                     row[colProp_Thickness_mm.ColumnName] = (prop_WallFibreglass.thickness_m * 1000).ToString("F2"); // mm
                     row[colProp_Width_m.ColumnName] = prop_WallFibreglass.widthModular_m.ToString("F2");
                     row[colProp_TotalLength_m.ColumnName] = totalLength.ToString("F2");
@@ -1748,9 +1727,10 @@ namespace PFD
             float fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
             float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
 
+            //To Mato - hm? nerozumiem ako z GUI kde z GUI???
             List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
-            List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
-
+            //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
+            
             listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
             listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
             listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));

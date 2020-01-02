@@ -3721,35 +3721,18 @@ namespace PFD
 
             data.BayWidth = fBayWidth;
             data.ApexHeight_H2 = fApexHeight_H2;
-
-            //TODO - refaktoring
-            // TO Ondrej
-            // Tieto properties pre cladding by sa asi dali ziskat nejako jednoduchsie nez znova nacitavat z databazy
-
-            List<string> claddings = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting_m", "name");
-
-            data.RoofCladding = claddings.ElementAtOrDefault(MRoofCladdingIndex);
-            data.WallCladding = claddings.ElementAtOrDefault(MWallCladdingIndex);
-
-            List<string> list_roofCladdingThickness = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", data.RoofCladding, "name");
-            List<string> list_wallCladdingThickness = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", data.WallCladding, "name");
-
-            data.RoofCladdingThickness_mm = list_roofCladdingThickness.ElementAtOrDefault(MRoofCladdingThicknessIndex);
-            data.WallCladdingThickness_mm = list_wallCladdingThickness.ElementAtOrDefault(MWallCladdingThicknessIndex);
-
-            List<string> coatings = DATABASE.CDatabaseManager.GetStringList("TrapezoidalSheetingSQLiteDB", "coating", "name_short");
-            data.RoofCladdingCoating = coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
-            data.WallCladdingCoating = coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
-
-            List<string> list_roofFibreglassThickness = DATABASE.CDatabaseManager.GetStringList("FibreglassSQLiteDB", data.RoofCladding, "name");
-            List<string> list_wallFibreglassThickness = DATABASE.CDatabaseManager.GetStringList("FibreglassSQLiteDB", data.WallCladding, "name");
-
-            data.RoofFibreglassThickness_mm = list_roofFibreglassThickness.ElementAtOrDefault(MRoofFibreglassThicknessIndex);
-            data.WallFibreglassThickness_mm = list_wallFibreglassThickness.ElementAtOrDefault(MWallFibreglassThicknessIndex);
+            
+            data.RoofCladding = RoofCladding;
+            data.WallCladding = WallCladding;
+            data.RoofCladdingThickness_mm = RoofCladdingThickness;
+            data.WallCladdingThickness_mm = WallCladdingThickness;
+            data.RoofCladdingCoating = RoofCladdingCoating;
+            data.WallCladdingCoating = WallCladdingCoating;
+            data.RoofFibreglassThickness_mm = RoofFibreglassThicknessTypes.ElementAtOrDefault(MRoofFibreglassThicknessIndex);
+            data.WallFibreglassThickness_mm = WallFibreglassThicknessTypes.ElementAtOrDefault(MWallFibreglassThicknessIndex);
 
             data.Location = _loadInput.ListLocations[_loadInput.LocationIndex];
             data.WindRegion = _loadInput.ListWindRegion[_loadInput.WindRegionIndex];
-
             data.NumberOfRollerDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Roller Door").Count();
             data.NumberOfPersonnelDoors = MDoorBlocksProperties.Where(d => d.sDoorType == "Personnel Door").Count();
 

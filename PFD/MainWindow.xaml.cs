@@ -452,8 +452,7 @@ namespace PFD
             // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
             
-            // TODO Ondrej - Toto Treba refaktorovat s UC_Quotation
-            
+            // TODO Ondrej - Toto Treba refaktorovat s UC_Quotation            
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
@@ -707,10 +706,11 @@ namespace PFD
             //CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
         }
 
-        public void FillComboboxFibreglassThickness(string sTableName, ComboBox combobox)
-        {
-            CComboBoxHelper.FillComboboxValues("FibreglassSQLiteDB", sTableName, "name", combobox);
-        }
+        //not used
+        //public void FillComboboxFibreglassThickness(string sTableName, ComboBox combobox)
+        //{
+        //    CComboBoxHelper.FillComboboxValues("FibreglassSQLiteDB", sTableName, "name", combobox);
+        //}
 
         public void SetMaterialValuesFromDatabase()
         {
