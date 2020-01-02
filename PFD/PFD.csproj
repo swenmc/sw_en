@@ -140,6 +140,9 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="QuotationExportOptionsWindow.xaml.cs">
+      <DependentUpon>QuotationExportOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QuotationDisplayOptionsWindow.xaml.cs">
       <DependentUpon>QuotationDisplayOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QuotationExportOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="QuotationDisplayOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,48 @@
+﻿<Window x:Class="PFD.QuotationExportOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Quotation Options" Height="310" Width="400">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Name="GridDisplayOptions" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>                
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>                
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
+                <CheckBox Name="chckDisplayMembers" Margin="0 0 0 5" IsChecked="{Binding DisplayMembers, UpdateSourceTrigger=PropertyChanged}">Members</CheckBox>
+                <CheckBox Name="chckDisplayPlates" Margin="0 0 0 5" IsChecked="{Binding DisplayPlates, UpdateSourceTrigger=PropertyChanged}">Plates</CheckBox>
+                <CheckBox Name="chcDisplayConnectors" Margin="0 0 0 5" IsChecked="{Binding DisplayConnectors, UpdateSourceTrigger=PropertyChanged}">Connectors</CheckBox>
+                <CheckBox Name="chckDisplayBoltNuts" Margin="0 0 0 5" IsChecked="{Binding DisplayBoltNuts, UpdateSourceTrigger=PropertyChanged}">BoltNuts</CheckBox>
+                <CheckBox Name="chckDisplayCladding" Margin="0 0 0 5" IsChecked="{Binding DisplayCladding, UpdateSourceTrigger=PropertyChanged}">Cladding</CheckBox>
+                <CheckBox Name="chckDisplayFibreglass" Margin="0 0 0 5" IsChecked="{Binding DisplayFibreglass, UpdateSourceTrigger=PropertyChanged}">Fibreglass</CheckBox>
+                <CheckBox Name="chckDisplayRoofNetting" Margin="0 0 0 5" IsChecked="{Binding DisplayRoofNetting, UpdateSourceTrigger=PropertyChanged}">RoofNetting</CheckBox>
+                <CheckBox Name="chckDisplayDoorsAndWindows" Margin="0 0 0 5" IsChecked="{Binding DisplayDoorsAndWindows, UpdateSourceTrigger=PropertyChanged}">DoorsAndWindows</CheckBox>
+                <CheckBox Name="chckDisplayGutters" Margin="0 0 0 5" IsChecked="{Binding DisplayGutters, UpdateSourceTrigger=PropertyChanged}">Gutters</CheckBox>
+                <CheckBox Name="chckDisplayDownpipe" Margin="0 0 0 5" IsChecked="{Binding DisplayDownpipe, UpdateSourceTrigger=PropertyChanged}">Downpipe</CheckBox>
+                <CheckBox Name="chckDisplayFlashing" Margin="0 0 0 5" IsChecked="{Binding DisplayFlashing, UpdateSourceTrigger=PropertyChanged}">Flashing</CheckBox>
+                
+            </StackPanel>            
+            
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+                <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
+                <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
+                <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

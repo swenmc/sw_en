@@ -1815,11 +1815,15 @@ namespace PFD
 
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)
         {
-            CPFDViewModel vmPFD = this.DataContext as CPFDViewModel;
-
-            WaitWindow ww = new WaitWindow("DOC");
-            ww.ContentRendered += Quotation_WaitWindow_ContentRendered;
-            ww.Show();
+            QuotationExportOptionsWindow exportOptions = new QuotationExportOptionsWindow(vm);
+            var result = exportOptions.ShowDialog();
+            
+            if (result.HasValue && result.Value == true)
+            {
+                WaitWindow ww = new WaitWindow("DOC");
+                ww.ContentRendered += Quotation_WaitWindow_ContentRendered;
+                ww.Show();
+            }
         }
 
         private void Quotation_WaitWindow_ContentRendered(object sender, EventArgs e)
@@ -1828,62 +1832,91 @@ namespace PFD
             if (Quotation.Content == null)
                 uc_quotation = new UC_Quotation(vm);
             else uc_quotation = Quotation.Content as UC_Quotation;
-
-            //QuotationViewModel qVM = uc_quotation.DataContext as QuotationViewModel;
-
-            //QuotationData quotationData = new QuotationData();
-            //quotationData.ProjectInfo = projectInfoVM.GetProjectInfo();
-
-
+                       
             //tento objekt by mal stacit pre export quotation
             //vsetko co chyba,tak treba do neho doplnit vid metoda nizsie GetQuotationData
             QuotationData quotationData = vm.GetQuotationData();
 
             List<DataTable> tables = new List<DataTable>();
+            DataGrid dataGrid = null;
+            DataView dw = null;
 
-            DataGrid dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;
-            DataView dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayMembers)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Members") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Plates") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayPlates)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Plates") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Connectors") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayConnectors)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Connectors") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_BoltNuts") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayBoltNuts)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_BoltNuts") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Cladding") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayCladding)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Cladding") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Fibreglass") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if(dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayFibreglass)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Fibreglass") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_RoofNetting") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayRoofNetting)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_RoofNetting") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_DoorsAndWindows") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayDoorsAndWindows)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_DoorsAndWindows") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Gutters") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayGutters)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Gutters") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Downpipes") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayDownpipe)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Downpipes") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
-            dataGrid = uc_quotation.FindName("Datagrid_Flashing") as DataGrid;
-            dw = dataGrid.ItemsSource as DataView;
-            if (dw != null) tables.Add(dw.Table);
+            if (vm._quotationExportOptionsVM.DisplayFlashing)
+            {
+                dataGrid = uc_quotation.FindName("Datagrid_Flashing") as DataGrid;
+                dw = dataGrid.ItemsSource as DataView;
+                if (dw != null) tables.Add(dw.Table);
+            }
 
             try
             {

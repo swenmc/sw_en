@@ -117,9 +117,19 @@ namespace EXPIMP
                 document.ReplaceText("[price_WithMargin_WithoutGST]", data.BuildingPrice_WithMargin_WithoutGST.ToString("F2"));
                 //-----------------------------------------------------------------------------------------------------------
 
-                Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
-                par.RemoveText(0);
-                par = par.InsertParagraphAfterSelf("");
+                Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));                
+
+                if (tables.Count == 0)
+                {
+                    par.Remove(false);
+                    par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("APPENDIX – MATERIAL LIST"));
+                    par.Remove(false);
+                }
+                else
+                {
+                    par.RemoveText(0);
+                    par = par.InsertParagraphAfterSelf("");
+                }
 
                 foreach (DataTable dt in tables)
                 {

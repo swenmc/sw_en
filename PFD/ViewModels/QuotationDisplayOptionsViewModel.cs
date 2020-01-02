@@ -179,6 +179,7 @@ namespace PFD
             }
         }
 
+        public QuotationDisplayOptionsViewModel() { }
 
         public QuotationDisplayOptionsViewModel(QuotationDisplayOptions opts)
         {

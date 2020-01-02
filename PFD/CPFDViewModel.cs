@@ -3139,8 +3139,9 @@ namespace PFD
 
         public QuotationViewModel _quotationViewModel;
         public QuotationDisplayOptionsViewModel _quotationDisplayOptionsVM;
-        public QuotationDisplayOptions _quotationDisplayOptions;
-        public QuotationExportOptions _quotationExportOptions;
+        public QuotationDisplayOptionsViewModel _quotationExportOptionsVM;
+        //public QuotationDisplayOptions _quotationDisplayOptions;
+        //public QuotationExportOptions _quotationExportOptions;
 
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
@@ -3266,8 +3267,8 @@ namespace PFD
             MRecreateJoints = true;
             MSynchronizeGUI = true;
 
-            _quotationDisplayOptions = new QuotationDisplayOptions();
-            _quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
+            QuotationDisplayOptions _quotationDisplayOptions = new QuotationDisplayOptions();
+            //_quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
             _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(_quotationDisplayOptions);
 
             IsSetFromCode = false;
