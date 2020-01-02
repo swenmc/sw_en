@@ -7,11 +7,10 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Quotation Options" Height="310" Width="400">
+        Title="Quotation Export Options" Height="310" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>        
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridDisplayOptions" Margin="5">

@@ -121,6 +121,10 @@ namespace EXPIMP
 
                 if (tables.Count == 0)
                 {
+                    //tu je asi nieco zle v sablone...lebo ak vymazem posledne 3,tak by to malo byt OK
+                    //document.Paragraphs.Last().Remove(false);
+                    //document.Paragraphs.Last().Remove(false);
+                    //document.Paragraphs.Last().Remove(false);
                     par.Remove(false);
                     par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("APPENDIX – MATERIAL LIST"));
                     par.Remove(false);
