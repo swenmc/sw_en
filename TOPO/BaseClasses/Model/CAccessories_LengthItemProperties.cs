@@ -18,6 +18,7 @@ namespace BaseClasses
         private double m_width_total;
         private double m_length_total;
         private CoatingColour m_coatingColor;
+        private List<CoatingColour> m_CoatingColors;
         //private Color m_color;
 
         private double m_density_kg_m3;
@@ -94,7 +95,7 @@ namespace BaseClasses
         }
         */
 
-        public CoatingColour coatingColor
+        public CoatingColour CoatingColor
         {
             get
             {
@@ -104,6 +105,20 @@ namespace BaseClasses
             set
             {
                 m_coatingColor = value;
+            }
+        }
+
+        public List<CoatingColour> CoatingColors
+        {
+            get
+            {
+                if (m_CoatingColors == null) m_CoatingColors = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+                return m_CoatingColors;
+            }
+
+            set
+            {
+                m_CoatingColors = value;
             }
         }
 

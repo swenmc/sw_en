@@ -800,6 +800,8 @@ namespace PFD
                 UpdateUC_Joints();
                 UpdateUC_Footings();
 
+                vm._flashigsVM = new FlashingsViewModel(vm.Model);
+
                 //temp nastavenie Recreate****
                 //je potrebne niekde nastavit vsetky recreate na false a zapnut ich iba ak sa zmenilo nieco co vyzaduje aby boli pregenerovane
                 vm.RecreateJoints = false;

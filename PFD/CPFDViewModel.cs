@@ -3143,6 +3143,8 @@ namespace PFD
         //public QuotationDisplayOptions _quotationDisplayOptions;
         //public QuotationExportOptions _quotationExportOptions;
 
+        public FlashingsViewModel _flashigsVM;
+
         public CPFDLoadInput _loadInput;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -3270,7 +3272,7 @@ namespace PFD
             QuotationDisplayOptions _quotationDisplayOptions = new QuotationDisplayOptions();
             //_quotationExportOptions = new QuotationExportOptions(_quotationDisplayOptions);
             _quotationDisplayOptionsVM = new QuotationDisplayOptionsViewModel(_quotationDisplayOptions);
-
+            
             IsSetFromCode = false;
 
             _worker.DoWork += CalculateInternalForces;

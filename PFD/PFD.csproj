@@ -150,6 +150,7 @@
       <DependentUpon>UC_Quotation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\QuotationDisplayOptionsViewModel.cs" />
+    <Compile Include="ViewModels\FlashingsViewModel.cs" />
     <Compile Include="ViewModels\QuotationViewModel.cs" />
     <Compile Include="ViewModels\WindowGeneratorViewModel.cs" />
     <Compile Include="WindowsGeneratorWindow.xaml.cs">
