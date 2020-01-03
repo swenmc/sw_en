@@ -570,7 +570,7 @@
                                    Text="Flashings" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
                             
                         </StackPanel>
-                        <DataGrid Name="Datagrid_Flashings" ItemsSource="{Binding _flashigsVM.Flashings, Mode=TwoWay}" 
+                        <DataGrid Name="Datagrid_Flashings" ItemsSource="{Binding Path=Flashings, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
                                   CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   >

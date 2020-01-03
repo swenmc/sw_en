@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Media;
 using DATABASE;
 using DATABASE.DTO;
@@ -63,7 +64,15 @@ namespace BaseClasses
 
             set
             {
-                m_width_total = value;
+                if (!double.IsNaN(value) && (value < 0.1 || value > 1))
+                {
+                    MessageBox.Show($"Total width must be between 0.1 and 1 [m]");
+                }
+                else
+                {
+                    m_width_total = value;
+                    NotifyPropertyChanged("Width_total");
+                }
             }
         }
 
@@ -209,7 +218,8 @@ namespace BaseClasses
             m_Name = databaseName;
             m_length_total = totalLength;
             //m_color = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties(colorIndex).CodeHEX);
-            m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
+            //m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
+            m_coatingColor = CoatingColors[colorIndex];
             SetParametersFromDatabase(databaseName, databaseTable);
         }
 

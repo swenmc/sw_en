@@ -1727,19 +1727,21 @@ namespace PFD
             float fWallCornerFlashing_TotalLength = 4 * model.fH1_frame;
             float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
 
-            //To Mato - hm? nerozumiem ako z GUI kde z GUI???
-            List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
-            //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
+            ////To Mato - hm? nerozumiem ako z GUI kde z GUI???
+            //List<CAccessories_LengthItemProperties> listOfFlashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z GUI
+            ////List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
             
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-            listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+            //listOfFlashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+
+            
 
             // Create Table
             DataTable dt = new DataTable("Flashings");
@@ -1767,7 +1769,7 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            foreach (CAccessories_LengthItemProperties fl in listOfFlashings)
+            foreach (CAccessories_LengthItemProperties fl in _pfdVM.Flashings)
             {
                 AddLengthItemRow(dt,
                             colProp_Flashing.ColumnName,
