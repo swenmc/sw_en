@@ -3143,7 +3143,7 @@ namespace PFD
         //public QuotationDisplayOptions _quotationDisplayOptions;
         //public QuotationExportOptions _quotationExportOptions;
 
-        public FlashingsViewModel _flashigsVM;
+        //public FlashingsViewModel _flashigsVM;
         public CPFDLoadInput _loadInput;
 
         private List<CAccessories_LengthItemProperties> m_Flashings;
@@ -3151,7 +3151,7 @@ namespace PFD
         {
             get
             {
-                if (m_Flashings == null) m_Flashings = _flashigsVM.Flashings;
+                //if (m_Flashings == null) m_Flashings = _flashigsVM.Flashings;
                 return m_Flashings;
             }
 
