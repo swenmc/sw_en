@@ -29,6 +29,8 @@ namespace BaseClasses
         private double m_price_PPSM_NZD;
         private double m_price_PPKG_NZD;
 
+        private CLengthItemProperties m_properties;
+
         public string Name
         {
             get
@@ -114,6 +116,8 @@ namespace BaseClasses
             set
             {
                 m_coatingColor = value;
+                SetColorProperties();
+                NotifyPropertyChanged("CoatingColor");
             }
         }
 
@@ -225,32 +229,37 @@ namespace BaseClasses
 
         private void SetParametersFromDatabase(string databaseName, string databaseTable)
         {
-            CLengthItemProperties prop = CLengthItemManager.GetLengthItemProperties(databaseName, databaseTable);
-            m_thickness = prop.Thickness;
-            m_width_total = prop.Width_total;
+            m_properties = CLengthItemManager.GetLengthItemProperties(databaseName, databaseTable);
+            m_thickness = m_properties.Thickness;
+            m_width_total = m_properties.Width_total;
 
+            SetColorProperties();
+        }
+
+        private void SetColorProperties()
+        {
             //Color zinc = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties("Zinc").CodeHEX);
-            CoatingColour zinc = CCoatingColorManager.LoadCoatingProperties("Zinc");
+            //CoatingColour zinc = CCoatingColorManager.LoadCoatingProperties("Zinc");
 
-            if (m_coatingColor == zinc) // Zinc
+            if (m_coatingColor.Name == "Zinc") // Zinc
             {
-                m_density_kg_m3 = prop.Density4_kg_m3;
-                m_mass_kg_m2 = prop.Mass4_kg_m2;
-                m_mass_kg_lm = prop.Mass4_kg_lm;
-                m_price_PPLM_NZD = prop.Price4_PPLM_NZD;
-                m_price_PPSM_NZD = prop.Price4_PPSM_NZD;
-                m_price_PPKG_NZD = prop.Price4_PPKG_NZD;
+                m_density_kg_m3 = m_properties.Density4_kg_m3;
+                m_mass_kg_m2 = m_properties.Mass4_kg_m2;
+                m_mass_kg_lm = m_properties.Mass4_kg_lm;
+                m_price_PPLM_NZD = m_properties.Price4_PPLM_NZD;
+                m_price_PPSM_NZD = m_properties.Price4_PPSM_NZD;
+                m_price_PPKG_NZD = m_properties.Price4_PPKG_NZD;
             }
             else
             {
-                m_density_kg_m3 = prop.Density1_kg_m3;
-                m_mass_kg_m2 = prop.Mass1_kg_m2;
-                m_mass_kg_lm = prop.Mass1_kg_lm;
-                m_price_PPLM_NZD = prop.Price1_PPLM_NZD;
-                m_price_PPSM_NZD = prop.Price1_PPSM_NZD;
-                m_price_PPKG_NZD = prop.Price1_PPKG_NZD;
+                m_density_kg_m3 = m_properties.Density1_kg_m3;
+                m_mass_kg_m2 = m_properties.Mass1_kg_m2;
+                m_mass_kg_lm = m_properties.Mass1_kg_lm;
+                m_price_PPLM_NZD = m_properties.Price1_PPLM_NZD;
+                m_price_PPSM_NZD = m_properties.Price1_PPSM_NZD;
+                m_price_PPKG_NZD = m_properties.Price1_PPKG_NZD;
             }
-    }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

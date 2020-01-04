@@ -40,6 +40,7 @@ namespace BaseClasses
             set
             {
                 m_Name = value;
+                SetParametersFromDatabase();
                 NotifyPropertyChanged("Name");
             }
         }
@@ -48,7 +49,7 @@ namespace BaseClasses
             get
             {
                 // 4 moznosti RP63-RP150
-                if (m_Names == null) m_Names = new List<string>() { "RP63", "RP80", "RP100", "RP150" };
+                if (m_Names == null) m_Names = new List<string>() { "RP63®", "RP80®", "RP100®", "RP150®" };
                 return m_Names;
             }
 
@@ -135,6 +136,7 @@ namespace BaseClasses
             set
             {
                 m_coatingColor = value;
+                NotifyPropertyChanged("CoatingColor");
             }
         }
         public List<CoatingColour> CoatingColors
