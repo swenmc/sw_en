@@ -613,6 +613,53 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                                   Text="Gutters" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
+
+                        </StackPanel>
+                        <DataGrid Name="Datagrid_Gutters" ItemsSource="{Binding Path=Gutters, Mode=TwoWay}" 
+                                  HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
+                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
+                                  >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Thickness" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
+                                <DataGridTextColumn Header="Total Width" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
+                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
+                                            <Setter Property="ItemTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Rectangle Fill="{Binding CodeHEX}" Width="70" Height="14" Margin="0,1,2,1" />
+                                                            <TextBlock Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
+                                            <Setter Property="ItemTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Rectangle Fill="{Binding CodeHEX}" Width="70" Height="14" Margin="0,1,2,1" />
+                                                            <TextBlock Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                     </StackPanel>
                 </ScrollViewer>

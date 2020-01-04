@@ -1812,8 +1812,10 @@ namespace PFD
         private void CreateTableGutters(CModel model)
         {
             float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
-
-            CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2); // TODO Ondrej - toto by malo prist z GUI
+            
+            //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
+            _pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
+            CAccessories_LengthItemProperties gutter = _pfdVM.Gutters.FirstOrDefault();
 
             // Create Table
             DataTable dt = new DataTable("Gutters");

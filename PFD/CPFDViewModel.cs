@@ -3158,7 +3158,43 @@ namespace PFD
             set
             {
                 m_Flashings = value;
+                foreach (CAccessories_LengthItemProperties item in m_Flashings)
+                {
+                    item.PropertyChanged += FlashingsItem_PropertyChanged;
+                }
             }
+        }
+
+        private void FlashingsItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged(sender, e);
+        }
+
+        private List<CAccessories_LengthItemProperties> m_Gutters;
+        public List<CAccessories_LengthItemProperties> Gutters
+        {
+            get
+            {
+                if (m_Gutters == null)
+                {
+                    float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
+                    CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
+                    gutter.PropertyChanged += Gutter_PropertyChanged;
+                    m_Gutters = new List<CAccessories_LengthItemProperties> { gutter };
+
+                }
+                return m_Gutters;
+            }
+
+            set
+            {
+                m_Gutters = value;
+            }
+        }
+
+        private void Gutter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged(sender, e);
         }
 
         //-------------------------------------------------------------------------------------------------------------
