@@ -99,7 +99,7 @@ namespace PFD
 
         private bool MSynchronizeGUI;
         private bool MRecreateModel;
-
+        
         private int MLoadCaseIndex;
 
         private int iFrontColumnNoInOneFrame;
@@ -340,8 +340,7 @@ namespace PFD
 
                 //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
                 BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
-                ModelCalculatedResultsValid = false;
-
+                
                 RecreateJoints = true;
                 RecreateFoundations = true;
                 RecreateFloorSlab = true;
@@ -725,9 +724,7 @@ namespace PFD
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
                 IsSetFromCode = false;
 
-                //SetResultsAreNotValid();
-                //RecreateJoints = true;
-                RecreateModel = true;
+                RecreateQuotation = true;
                 NotifyPropertyChanged("RoofCladdingCoatingIndex");
             }
         }
@@ -743,7 +740,7 @@ namespace PFD
             set
             {
                 MRoofCladdingColorIndex = value;
-                RecreateModel = true; // Kvoli Quotation
+                RecreateQuotation = true;
                 NotifyPropertyChanged("RoofCladdingColorIndex");
             }
         }
@@ -759,8 +756,8 @@ namespace PFD
             set
             {
                 MRoofCladdingThicknessIndex = value;
-                SetResultsAreNotValid();
-                RecreateModel = true;
+                //SetResultsAreNotValid();
+                RecreateQuotation = true;
                 NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
         }
@@ -790,11 +787,11 @@ namespace PFD
                 WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
                 WallFibreglassThicknessIndex = 0;
 
-                SetResultsAreNotValid();
+                //SetResultsAreNotValid();
                 IsSetFromCode = false;
 
                 //RecreateJoints = true;
-                RecreateModel = true;
+                RecreateQuotation = true;
                 NotifyPropertyChanged("WallCladdingIndex");
             }
         }
@@ -826,7 +823,7 @@ namespace PFD
 
                 //SetResultsAreNotValid();
                 //RecreateJoints = true;
-                RecreateModel = true;
+                RecreateQuotation = true;
                 NotifyPropertyChanged("WallCladdingCoatingIndex");
             }
         }
@@ -842,7 +839,7 @@ namespace PFD
             set
             {
                 MWallCladdingColorIndex = value;
-                RecreateModel = true; // Kvoli Quotation
+                RecreateQuotation = true;
                 NotifyPropertyChanged("WallCladdingColorIndex");
             }
         }
@@ -859,8 +856,8 @@ namespace PFD
             {
                 MWallCladdingThicknessIndex = value;
 
-                SetResultsAreNotValid();
-                RecreateModel = true;
+                //SetResultsAreNotValid();
+                RecreateQuotation = true;
                 NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
         }
@@ -877,7 +874,7 @@ namespace PFD
             {
                 MRoofFibreglassThicknessIndex = value;
                 //SetResultsAreNotValid();
-                RecreateModel = true;
+                RecreateQuotation = true;
                 NotifyPropertyChanged("RoofFibreglassThicknessIndex");
             }
         }
@@ -894,7 +891,7 @@ namespace PFD
             {
                 MWallFibreglassThicknessIndex = value;
                 //SetResultsAreNotValid();
-                RecreateModel = true;
+                RecreateQuotation = true;
                 NotifyPropertyChanged("WallFibreglassThicknessIndex");
             }
         }
@@ -1702,8 +1699,7 @@ namespace PFD
 
             set
             {
-                MModelCalculatedResultsValid = value;
-                RecreateModel = true;
+                MModelCalculatedResultsValid = value;                
                 NotifyPropertyChanged("ModelCalculatedResultsValid");
             }
         }
@@ -2231,6 +2227,7 @@ namespace PFD
                 MRecreateModel = value;
             }
         }
+
 
         public bool FootingChanged
         {

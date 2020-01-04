@@ -140,14 +140,13 @@ namespace PFD
                 CPFDViewModel viewModel = sender as CPFDViewModel;
                 if (viewModel == null) return;
                 if (viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
-
-
+                
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "IsEnabledLocalMembersAxis") return;
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
 
-                if (e.PropertyName == "RecreateQuotation") { Quotation.Content = new UC_Quotation(vm); return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = null; vm.RecreateQuotation = false; } return; }
 
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
@@ -157,13 +156,15 @@ namespace PFD
             else if (sender is CAccessories_LengthItemProperties)
             {
                 //only reset quotation do not regenerate model
-                Quotation.Content = null;
+                vm.RecreateQuotation = true;
+                //Quotation.Content = null;
                 return;
             }
             else if (sender is CAccessories_DownpipeProperties)
             {
                 //only reset quotation do not regenerate model
-                Quotation.Content = null;
+                vm.RecreateQuotation = true;
+                //Quotation.Content = null;
                 return;
             }
             else if (sender is CComponentListVM)
@@ -290,6 +291,7 @@ namespace PFD
             //}
 
             if (vm.RecreateJoints) vm.RecreateJoints = false;
+            if (vm.RecreateModel) vm.RecreateModel = false;
         }
 
         private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)

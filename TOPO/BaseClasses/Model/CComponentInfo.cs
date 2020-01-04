@@ -302,7 +302,7 @@ namespace BaseClasses
             set
             {
                 MIsSetFromCode = value;
-                NotifyPropertyChanged("IsSetFromCode");
+                //NotifyPropertyChanged("IsSetFromCode");
             }
         }
 
