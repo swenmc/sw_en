@@ -3160,12 +3160,12 @@ namespace PFD
                 m_Flashings = value;
                 foreach (CAccessories_LengthItemProperties item in m_Flashings)
                 {
-                    item.PropertyChanged += FlashingsItem_PropertyChanged;
+                    item.PropertyChanged += AccesoriesItem_PropertyChanged;
                 }
             }
         }
 
-        private void FlashingsItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void AccesoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged(sender, e);
         }
@@ -3179,7 +3179,7 @@ namespace PFD
                 {
                     float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
-                    gutter.PropertyChanged += Gutter_PropertyChanged;
+                    gutter.PropertyChanged += AccesoriesItem_PropertyChanged;
                     m_Gutters = new List<CAccessories_LengthItemProperties> { gutter };
 
                 }
@@ -3192,9 +3192,31 @@ namespace PFD
             }
         }
 
-        private void Gutter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+
+        private List<CAccessories_DownpipeProperties> m_Downpipes;
+        public List<CAccessories_DownpipeProperties> Downpipes
         {
-            PropertyChanged(sender, e);
+            get
+            {
+                if (m_Downpipes == null)
+                {
+                    // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
+                    int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+                    float fDownpipesTotalLength = iCountOfDownpipePoints * Model.fH1_frame; // Pocet zvodov krat vyska steny
+
+                    CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
+
+                    downpipe.PropertyChanged += AccesoriesItem_PropertyChanged;
+                    m_Downpipes = new List<CAccessories_DownpipeProperties> { downpipe };
+
+                }
+                return m_Downpipes;
+            }
+
+            set
+            {
+                m_Downpipes = value;
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------

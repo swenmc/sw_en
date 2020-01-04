@@ -14,11 +14,15 @@ namespace BaseClasses
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_Name;
+        private List<string> m_Names;
         private string m_Shape;
         private double m_diameter;
         private double m_length_total;
         private double m_length_piece;
         private CoatingColour m_coatingColor;
+        private List<CoatingColour> m_CoatingColors;
+        private int m_CountOfDownpipePoints;
+        private List<int> m_DownpipePoints;
         //private Color m_color;
 
         private double m_mass_kg_lm;
@@ -36,6 +40,21 @@ namespace BaseClasses
             set
             {
                 m_Name = value;
+                NotifyPropertyChanged("Name");
+            }
+        }
+        public List<string> Names
+        {
+            get
+            {
+                // 4 moznosti RP63-RP150
+                if (m_Names == null) m_Names = new List<string>() { "RP63", "RP80", "RP100", "RP150" };
+                return m_Names;
+            }
+
+            set
+            {
+                m_Names = value;
             }
         }
 
@@ -106,7 +125,7 @@ namespace BaseClasses
         }
         */
 
-        public CoatingColour coatingColor
+        public CoatingColour CoatingColor
         {
             get
             {
@@ -116,6 +135,19 @@ namespace BaseClasses
             set
             {
                 m_coatingColor = value;
+            }
+        }
+        public List<CoatingColour> CoatingColors
+        {
+            get
+            {
+                if (m_CoatingColors == null) m_CoatingColors = CCoatingColorManager.LoadColours("AccessoriesSQLiteDB");
+                return m_CoatingColors;
+            }
+
+            set
+            {
+                m_CoatingColors = value;
             }
         }
 
@@ -171,16 +203,51 @@ namespace BaseClasses
             }
         }
 
+        public int CountOfDownpipePoints
+        {
+            get
+            {
+                return m_CountOfDownpipePoints;
+            }
+
+            set
+            {
+                m_CountOfDownpipePoints = value;
+                NotifyPropertyChanged("CountOfDownpipePoints");
+            }
+        }
+
+        public List<int> DownpipePoints
+        {
+            get
+            {
+                if (m_DownpipePoints == null)
+                {
+                    m_DownpipePoints = new List<int>();
+                    for (int i = 0; i <= 100; i++) m_DownpipePoints.Add(i);
+                } 
+                return m_DownpipePoints;
+            }
+
+            set
+            {
+                m_DownpipePoints = value;
+            }
+        }
+
         public CAccessories_DownpipeProperties()
         {
+            m_CountOfDownpipePoints = 4; //default
         }
 
         public CAccessories_DownpipeProperties(string name, double totalLength, int colorIndex)
         {
+            m_CountOfDownpipePoints = 4; //default
             m_Name = name;
             m_length_total = totalLength;
             //m_color = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties(colorIndex).CodeHEX);
-            m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
+            //m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
+            m_coatingColor = CoatingColors[colorIndex];
             SetParametersFromDatabase();
         }
 

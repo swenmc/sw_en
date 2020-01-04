@@ -160,6 +160,12 @@ namespace PFD
                 Quotation.Content = null;
                 return;
             }
+            else if (sender is CAccessories_DownpipeProperties)
+            {
+                //only reset quotation do not regenerate model
+                Quotation.Content = null;
+                return;
+            }
             else if (sender is CComponentListVM)
             {
                 CComponentListVM clVM = sender as CComponentListVM;

@@ -661,6 +661,78 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
+                                   Text="Downpipes" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
+
+                        </StackPanel>
+                        <DataGrid Name="Datagrid_Downpipes" ItemsSource="{Binding Path=Downpipes, Mode=TwoWay}" 
+                                  HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
+                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
+                                  >
+                            <DataGrid.Columns>
+                                
+                                <DataGridComboBoxColumn Header="Name" ToolTipService.ToolTip="Select name" Width="2*" 
+                                                        SelectedValueBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Names}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding Names}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridComboBoxColumn Header="Downpipe points count" ToolTipService.ToolTip="Select downpipes points count" Width="*" 
+                                                        SelectedValueBinding="{Binding CountOfDownpipePoints, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding DownpipePoints}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding DownpipePoints}"/>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
+                                            <Setter Property="ItemTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Rectangle Fill="{Binding CodeHEX}" Width="70" Height="14" Margin="0,1,2,1" />
+                                                            <TextBlock Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
+                                            <Setter Property="ItemTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Rectangle Fill="{Binding CodeHEX}" Width="70" Height="14" Margin="0,1,2,1" />
+                                                            <TextBlock Text="{Binding Name}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>            

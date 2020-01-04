@@ -1890,13 +1890,11 @@ namespace PFD
 
         private void CreateTableDownpipes(CModel model)
         {
-            // TODO Ondrej - vyrobit v GUI tabulku kde bude mozne zadavat polozky downpipes
             // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
-            int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
-            float fDownpipesTotalLength = iCountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
-
-            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2); // TODO Ondrej - toto by malo prist z GUI
-
+            CAccessories_DownpipeProperties downpipe = _pfdVM.Downpipes[0];
+            float fDownpipesTotalLength = downpipe.CountOfDownpipePoints * model.fH1_frame; // Pocet zvodov krat vyska steny
+            downpipe.Length_total = fDownpipesTotalLength;
+            
             double fDownpipesTotalMass = fDownpipesTotalLength * downpipe.Mass_kg_lm;
             double fDownpipesTotalPrice = fDownpipesTotalLength * downpipe.Price_PPLM_NZD;
 
@@ -1935,8 +1933,8 @@ namespace PFD
                 {
                     row[colProp_Downpipe.ColumnName] = downpipe.Name;
                     row[colProp_Diameter_mm.ColumnName] = (downpipe.Diameter * 1000f).ToString("F2"); // mm
-                    row[colProp_Color.ColumnName] = downpipe.coatingColor.CodeHEX;
-                    row[colProp_ColorName.ColumnName] = downpipe.coatingColor.Name;
+                    row[colProp_Color.ColumnName] = downpipe.CoatingColor.CodeHEX;
+                    row[colProp_ColorName.ColumnName] = downpipe.CoatingColor.Name;
                     row[colProp_TotalLength_m.ColumnName] = fDownpipesTotalLength.ToString("F2");
                     SumTotalLength += fDownpipesTotalLength;
 
