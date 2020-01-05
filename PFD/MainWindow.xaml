@@ -574,12 +574,11 @@
                         </StackPanel>
                         <DataGrid Name="Datagrid_Flashings" ItemsSource="{Binding Path=Flashings, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
-                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
-                                  >
+                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
                                 <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -626,8 +625,8 @@
                                   >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" Binding="{Binding Thickness}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
                                 <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -687,7 +686,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="Downpipe points count" ToolTipService.ToolTip="Select downpipes points count" Width="*" 
+                                <DataGridComboBoxColumn Header="Count" ToolTipService.ToolTip="Select count" Width="*" 
                                                         SelectedValueBinding="{Binding CountOfDownpipePoints, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
