@@ -495,7 +495,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -579,7 +579,7 @@
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
                                 <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
-                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -627,7 +627,7 @@
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" Binding="{Binding Thickness}"/>
                                 <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
-                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -699,7 +699,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="Color" ToolTipService.ToolTip="Select color" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
