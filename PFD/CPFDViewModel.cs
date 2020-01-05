@@ -3157,12 +3157,12 @@ namespace PFD
                 m_Flashings = value;
                 foreach (CAccessories_LengthItemProperties item in m_Flashings)
                 {
-                    item.PropertyChanged += AccesoriesItem_PropertyChanged;
+                    item.PropertyChanged += AccessoriesItem_PropertyChanged;
                 }
             }
         }
 
-        private void AccesoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void AccessoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             PropertyChanged(sender, e);
         }
@@ -3176,7 +3176,7 @@ namespace PFD
                 {
                     float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
-                    gutter.PropertyChanged += AccesoriesItem_PropertyChanged;
+                    gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
                     m_Gutters = new List<CAccessories_LengthItemProperties> { gutter };
 
                 }
@@ -3203,7 +3203,7 @@ namespace PFD
 
                     CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
 
-                    downpipe.PropertyChanged += AccesoriesItem_PropertyChanged;
+                    downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
                     m_Downpipes = new List<CAccessories_DownpipeProperties> { downpipe };
 
                 }

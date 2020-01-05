@@ -443,7 +443,7 @@
             <TabItem Name ="DoorsAndWindows">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Accesories" Foreground="Blue"/>
+                        <TextBlock Text="Accessories" Foreground="Blue"/>
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -481,7 +481,7 @@
                                 <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
                                 <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
                                 <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
-                                <DataGridComboBoxColumn Header="Bay No" ToolTipService.ToolTip="Select roller door series" Width="2*" SelectedValueBinding="{Binding Serie, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Series" ToolTipService.ToolTip="Select roller door series" Width="2*" SelectedValueBinding="{Binding Serie, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Series}"/>
