@@ -456,7 +456,7 @@
                                 <Image Source="Resources/doors.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
-                        <DataGrid Name ="Datagrid_DoorsAndGates" SelectionMode="Single" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True}" 
+                        <DataGrid Name ="Datagrid_DoorsAndGates" SelectionMode="Single" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
                             <DataGrid.Columns>
@@ -476,7 +476,7 @@
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="3*"
-                                    SelectedItemBinding="{Binding Path=sDoorType}"
+                                    SelectedItemBinding="{Binding Path=sDoorType, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
                                 <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
                                 <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
@@ -485,11 +485,13 @@
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Series}"/>
+                                            <Setter Property="IsEnabled" Value="{Binding SerieEnabled}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Series}"/>
+                                            <Setter Property="IsEnabled" Value="{Binding SerieEnabled}"/>
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>

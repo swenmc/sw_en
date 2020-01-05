@@ -190,6 +190,7 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "Series") return;
                 if (e.PropertyName == "Serie") return;
+                if (e.PropertyName == "SerieEnabled") return;                
                 if (e.PropertyName == "CoatingColor") return;
                 DoorProperties doorProperties = sender as DoorProperties;
                 if (doorProperties.IsSetFromCode) return;
