@@ -465,8 +465,10 @@ namespace PFD
             // General loading
             // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
-            
-            // TODO Ondrej - Toto Treba refaktorovat s UC_Quotation            
+
+            //-----------------------------------------------------------------------------
+            // TODO Ondrej - Toto treba refaktorovat s UC_Quotation
+            // TODO 438
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
@@ -489,6 +491,7 @@ namespace PFD
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
+            //-----------------------------------------------------------------------------
 
             // General Load (AS / NZS 1170.1)
             CalculateBasicLoad(fRoofCladdingUnitMass_kg_m2, fWallCladdingUnitMass_kg_m2);

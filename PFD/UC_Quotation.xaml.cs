@@ -1126,7 +1126,10 @@ namespace PFD
 
             // Plocha strechy bez fibre glass
             float fRoofArea_Total_Netto = fRoofArea - fFibreGlassArea_Roof;
-            
+
+            //-----------------------------------------------------------------------------
+            // TODO Ondrej - Toto treba refaktorovat s MainWindow.xaml.cs
+            // TODO 438
             List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
 
             CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
@@ -1149,6 +1152,7 @@ namespace PFD
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
+            //-----------------------------------------------------------------------------
 
             float fRoofCladdingPrice_PSM_NZD = (float)(prop_RoofCladdingCoil.price_PPLM_NZD / prop_RoofCladding.widthModular_m);
             float fWallCladdingPrice_PSM_NZD = (float)(prop_WallCladdingCoil.price_PPLM_NZD / prop_WallCladding.widthModular_m);
