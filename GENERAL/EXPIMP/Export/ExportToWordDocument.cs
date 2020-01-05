@@ -117,15 +117,25 @@ namespace EXPIMP
                 document.ReplaceText("[price_WithMargin_WithoutGST]", data.BuildingPrice_WithMargin_WithoutGST.ToString("F2"));
 
                 // Exterior
+
+                // TODO 455
+                // TODO Ondrej - sem potrebujeme dostat tri moznosti Colour Steel, Zinc alebo Colour Steel / Zinc ak maju gutters alebo flashings nastavene farby aj zinc
+
+                string guttersCoatingType = "Colour Steel"; // Colour Steel, Zinc, Colour Steel / Zinc // TODO Ondrej - prejst vsetky farby coating v tabulke a zistit ci je tam nejaka zinc v kombinacii s inymi alebo su vsetky zinc alebo su vsetky ine nez zinc
+                string flashingsCoatingType = "Colour Steel"; // Colour Steel, Zinc, Colour Steel / Zinc // TODO Ondrej - prejst vsetky farby coating v tabulke a zistit ci je tam nejaka zinc v kombinacii s inymi alebo su vsetky zinc alebo su vsetky ine nez zinc
+
+                document.ReplaceText("[guttersCoatingType]", guttersCoatingType);
+                document.ReplaceText("[flashingsCoatingType]", flashingsCoatingType);
+
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
                     document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
                 else
-                    RemoveText(document, "[exterior_RollerDoors]");
+                    document.ReplaceText("[exterior_RollerDoors]", "");
 
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
                     document.ReplaceText("[exterior_PersonnelDoors]", "Doors not included.");
                 else
-                    RemoveText(document, "[exterior_PersonnelDoors]");
+                    document.ReplaceText("[exterior_PersonnelDoors]", "");
 
                 // Exclusions
                 /*
@@ -145,17 +155,17 @@ namespace EXPIMP
                 if ((tables.Find(x => x.TableName == "Fibreglass")) == null)
                     document.ReplaceText("[exclusion_Fibreglass]", "Roof and wall clearlites");
                 else
-                    RemoveText(document, "[exclusion_Fibreglass]");
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_Fibreglass]"))).Remove(false); // Whole line
 
                 if ((tables.Find(x => x.TableName == "Roof Netting")) == null)
                     document.ReplaceText("[exclusion_RoofNetting]", "Roofing netting and underlay");
                 else
-                    RemoveText(document, "[exclusion_RoofNetting]");
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_RoofNetting]"))).Remove(false); // Whole line
 
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
                     document.ReplaceText("[exclusion_DoorsAndWindows]", "Doors and Windows");
                 else
-                    RemoveText(document, "[exclusion_DoorsAndWindows]");
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_DoorsAndWindows]"))).Remove(false); // Whole line
 
                 //-----------------------------------------------------------------------------------------------------------
 
@@ -190,17 +200,6 @@ namespace EXPIMP
                 document.Save();
             }
             Process.Start(fileName);
-        }
-
-        private static void RemoveText(DocX document, string textToDelete)
-        {
-            for (int i = 0; i < document.Paragraphs.Count; i++)
-            {
-                if (document.Paragraphs[i].Text.Contains(textToDelete))
-                {
-                    document.RemoveParagraph(document.Paragraphs[i]);
-                }
-            }
         }
 
         private static string GetReportName()
