@@ -486,8 +486,8 @@ namespace PFD
             CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
             CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
 
-            CTS_CoilProperties prop_RoofCladdingCoil = GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
-            CTS_CoilProperties prop_WallCladdingCoil = GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+            CTS_CoilProperties prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
+            CTS_CoilProperties prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
@@ -577,45 +577,7 @@ namespace PFD
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
 
-        // TODO Ondrej - Refactoring s UC_Quotation
-        private CTS_CoilProperties GetCladdingCoilProperties(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
-        {
-            // TODO Ondrej
-            // Potrebujeme vyhladat vlastnosti coil, asi by to bolo lepsie cez SQL dotaz priamo v databaze ???
-
-            // Vstupne parametre pre zistenie coil
-
-            // Coil Width (Smartdek a Speedclad 940 mm, Purlindek 860 mm)
-            double coilWidth = prop.widthCoil_m;
-
-            // Thickness alebo Thickness ID
-            //double thickness = prop.thicknessCore_m;
-            int thicknessID = prop.thicknessID;
-
-            // coating ID alebo coatingName
-            //string coatingName = coatingProp.Name;
-            int coatingID = coatingProp.ID;
-
-            // color ID in colorRangeIDs (je potrebne pre Formclad IDs 14-17 alebo 18)
-            int colorID = color.ID;
-
-            List<CTS_CoilProperties> coilList = CTrapezoidalSheetingManager.LoadCoilPropertiesList();
-
-            // TODO Ondrej - hladame riadok v tabulke coils - toto prosim skontroluj alebo prepis do SQL
-            CTS_CoilProperties coil = coilList.Find(c => (MathF.d_equal(c.widthCoil, coilWidth)) &&
-            (c.thicknessID == thicknessID) &&
-            (c.coatingID == coatingID) &&
-            (c.colorRangeIDs.Contains(colorID)));
-
-            if (coil != null)
-                return coil;
-            else
-            {
-                throw new Exception("Unable to find coil in the database.");
-            }
-        }
-
-
+        
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
         {
             vm.GeneralLoad = new CCalcul_1170_1(

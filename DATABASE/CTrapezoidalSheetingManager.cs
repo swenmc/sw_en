@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Linq;
 using DATABASE.DTO;
+using MATH;
 
 namespace DATABASE
 {
@@ -431,9 +433,12 @@ namespace DATABASE
             return coilItems;
         }
 
+        private static List<CTS_CoilProperties> coilItemsList = null;
         public static List<CTS_CoilProperties> LoadCoilPropertiesList()
         {
             CTS_CoilProperties properties;
+            if (coilItemsList != null) return coilItemsList;
+
             List<CTS_CoilProperties> items = new List<CTS_CoilProperties>();
 
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
@@ -450,6 +455,7 @@ namespace DATABASE
                     }
                 }
             }
+            coilItemsList = items;
             return items;
         }
 
@@ -471,6 +477,18 @@ namespace DATABASE
                 }
             }
             return properties;
+        }
+
+        public static CTS_CoilProperties LoadCoilProperties(double coilWidth, int thicknessID, int coatingID, int colorID)
+        {
+            List<CTS_CoilProperties> items = LoadCoilPropertiesList();
+            
+            CTS_CoilProperties coil = items.FirstOrDefault(c => (MathF.d_equal(c.widthCoil, coilWidth)) &&
+                            (c.thicknessID == thicknessID) &&
+                            (c.coatingID == coatingID) &&
+                            (c.colorRangeIDs.Contains(colorID)));
+
+            return coil;
         }
 
         public static CTS_CoilProperties GetCoilProperties(SQLiteDataReader reader)
@@ -496,6 +514,37 @@ namespace DATABASE
             coilprop.price_PPSM_NZD = double.Parse(reader["price_PPSM_NZD"].ToString(), nfi);
 
             return coilprop;
+        }
+
+        public static CTS_CoilProperties GetCladdingCoilProperties(CTS_CoatingProperties coatingProp, CoatingColour color, CTS_CrscProperties prop)
+        {
+            // Potrebujeme vyhladat vlastnosti coil, asi by to bolo lepsie cez SQL dotaz priamo v databaze ???
+            //optimalizovane na vykon ale nacitava sa aj tak cely zoznam, problem nacitania priamo z DB je kvoli ColorRangeIDs
+
+            // Vstupne parametre pre zistenie coil
+
+            // Coil Width (Smartdek a Speedclad 940 mm, Purlindek 860 mm)
+            double coilWidth = prop.widthCoil_m;
+
+            // Thickness alebo Thickness ID
+            //double thickness = prop.thicknessCore_m;
+            int thicknessID = prop.thicknessID;
+
+            // coating ID alebo coatingName
+            //string coatingName = coatingProp.Name;
+            int coatingID = coatingProp.ID;
+
+            // color ID in colorRangeIDs (je potrebne pre Formclad IDs 14-17 alebo 18)
+            int colorID = color.ID;
+
+            CTS_CoilProperties coil = CTrapezoidalSheetingManager.LoadCoilProperties(coilWidth, thicknessID, coatingID, colorID);
+
+            if (coil != null)
+                return coil;
+            else
+            {
+                throw new Exception("Unable to find coil in the database.");
+            }
         }
 
         // Thickness
