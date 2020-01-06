@@ -2717,14 +2717,8 @@ namespace PFD
                 for (int i = 0; i < (iFrameNo - 1) * iGirtNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeStart, m_arrMembers[0], current_member, true));
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
-
                     CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
                     CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
-
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
 
                     int iCurrentFrameIndex = i / iGirtNoInOneFrame;
                     int iFirstGirtInFrameLeftSide = iMainColumnNo + iRafterNo + iEavesPurlinNo + iCurrentFrameIndex * iGirtNoInOneFrame;
@@ -2739,8 +2733,13 @@ namespace PFD
 
                     if (bUseMainColumnFlyBracingPlates && iMainColumnFlyBracing_EveryXXGirt > 0 && (iCurrentMemberIndex - iFirstGirtOnCurrentSideIndex + 1) % iMainColumnFlyBracing_EveryXXGirt == 0)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        bool bTopOfPlateInCrscVerticalAxisPlusDirection = false;
+
+                        if (iFirstGirtInFrameRightSide <= iCurrentMemberIndex && iCurrentMemberIndex < iFirstGirtOnCurrentSideIndex + iGirtNoInOneFrame / 2)
+                            bTopOfPlateInCrscVerticalAxisPlusDirection = true;
+
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, bTopOfPlateInCrscVerticalAxisPlusDirection, true));
                     }
                     else
                     {
@@ -2756,14 +2755,6 @@ namespace PFD
                 for (int i = 0; i < (iFrameNo - 1) * iPurlinNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i];
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeStart, m_arrMembers[1], current_member, true));
-                    //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
-
-                    // TODO Ondrej - tu je nejaky Bug - tu to nenajde uzol na raftery, kde su pripojene purlins
-                    // Mozno je problem ze purlins su sikmo a preto to nie je uplne presne
-                    // Zvacsil som limit vo funkcii na vyhladanie uzlov na prute, teraz sa uvazuje vzdialenost 0.1 mm (0.0001 m) a zda sa ze to funguje
-                    // Mozes sa s tym pripadne este pohrat a poladit to
-
                     CMember mainMemberForStartJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeStart));
                     CMember mainMemberForEndJoint = m_arrMembers.FirstOrDefault(m => m.IntermediateNodes.Contains(current_member.NodeEnd));
 
@@ -2780,8 +2771,8 @@ namespace PFD
 
                     if (bUseRafterFlyBracingPlates && iRafterFlyBracing_EveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iRafterFlyBracing_EveryXXPurlin == 0)
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeStart, mainMemberForStartJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", current_member.NodeEnd, mainMemberForEndJoint, current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                     }
                     else
                     {
