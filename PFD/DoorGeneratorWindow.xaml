@@ -9,6 +9,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Door Generator" Height="320" Width="800">
     <Window.Resources>
+        <System:Double x:Key="theComboBoxWidth">110</System:Double>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </Window.Resources>
@@ -42,9 +43,9 @@
             <TextBlock Grid.Row="1" Grid.Column="3" Text="Coordinate in x block" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="4" Text="Serie" HorizontalAlignment="Left"/>
             <TextBlock Grid.Row="1" Grid.Column="5" Text="Colour" HorizontalAlignment="Left"/>
-            
 
-            <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_DoorsType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+
+            <ComboBox Grid.Row="2" Grid.Column="0" Name ="Combobox_DoorsType" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
                   VerticalAlignment="Top" ItemsSource="{Binding Path=DoorsTypes, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=DoorType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
@@ -59,7 +60,7 @@
                      Width="{StaticResource theTextBoxWidth}" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_Serie" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_Serie" HorizontalAlignment="Left" Width="{StaticResource theComboBoxWidth}"
                   VerticalAlignment="Top" IsEnabled="{Binding Path=SerieEnabled}" ItemsSource="{Binding Path=Series, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Serie, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
