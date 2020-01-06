@@ -1650,7 +1650,8 @@ namespace BaseClasses
                                 RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
                                 JointModelGroup.Transform = rotate;
                             }
-                            else if (cmodel.m_arrConnectionJoints[i].m_MainMember != null && !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                            else if ((cmodel.m_arrConnectionJoints[i].m_SecondaryMembers == null || cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] == null) && 
+                                     cmodel.m_arrConnectionJoints[i].m_MainMember != null && !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Secondary members (or first secondary member) are null and - joint is defined in LCS of main member and rotation degree is not zero
                             {
                                 AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
                                 RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
