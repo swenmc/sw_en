@@ -146,7 +146,7 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
 
-                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = null; vm.RecreateQuotation = false; } return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
 
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
@@ -780,8 +780,11 @@ namespace PFD
                 UpdateUC_Joints();
                 UpdateUC_Footings();
 
-                FlashingsViewModel flashigsVM = new FlashingsViewModel(vm.Model);
-                vm.Flashings = flashigsVM.Flashings;
+                //FlashingsViewModel flashigsVM = new FlashingsViewModel(vm.Model);
+                //vm.Flashings = flashigsVM.Flashings;
+                vm.Flashings = null;
+                vm.Gutters = null;
+                vm.Downpipes = null;
 
                 //temp nastavenie Recreate****
                 //je potrebne niekde nastavit vsetky recreate na false a zapnut ich iba ak sa zmenilo nieco co vyzaduje aby boli pregenerovane

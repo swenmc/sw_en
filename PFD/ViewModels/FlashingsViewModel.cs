@@ -60,7 +60,7 @@ namespace PFD
             float fPADoorLintelFlashing_TotalLength = 0;
             float fWindowFlashing_TotalLength = 0;
 
-            Flashings = new List<CAccessories_LengthItemProperties>(); // TODO Ondrej - toto by malo prist z 
+            Flashings = new List<CAccessories_LengthItemProperties>(); 
             //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
 
             Flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));

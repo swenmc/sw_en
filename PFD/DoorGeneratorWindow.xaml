@@ -60,7 +60,7 @@
                          Text="{Binding Path=DoorCoordinateXinBlock, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
             <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_Serie" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                  VerticalAlignment="Top" ItemsSource="{Binding Path=Series, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  VerticalAlignment="Top" IsEnabled="{Binding Path=SerieEnabled}" ItemsSource="{Binding Path=Series, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                   SelectedValue="{Binding Path=Serie, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
             
             <ComboBox Grid.Row="2" Grid.Column="5" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"

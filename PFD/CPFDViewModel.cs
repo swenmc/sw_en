@@ -3148,14 +3148,41 @@ namespace PFD
         {
             get
             {
-                //if (m_Flashings == null) m_Flashings = _flashigsVM.Flashings;
+                if (m_Flashings == null)
+                {
+                    float fRoofSideLength = MathF.Sqrt(MathF.Pow2(Model.fH2_frame - Model.fH1_frame) + MathF.Pow2(0.5f * Model.fW_frame)); // Dlzka hrany strechy
+
+                    float fRoofRidgeFlashing_TotalLength = Model.fL_tot;
+                    float fWallCornerFlashing_TotalLength = 4 * Model.fH1_frame;
+                    float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
+
+                    float fRollerDoorTrimmerFlashing_TotalLength = 0;
+                    float fRollerDoorLintelFlashing_TotalLength = 0;
+                    float fRollerDoorLintelCapFlashing_TotalLength = 0;
+                    float fPADoorTrimmerFlashing_TotalLength = 0;
+                    float fPADoorLintelFlashing_TotalLength = 0;
+                    float fWindowFlashing_TotalLength = 0;
+
+                    m_Flashings = new List<CAccessories_LengthItemProperties>();
+                    //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
+
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+                    m_Flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+                }
                 return m_Flashings;
             }
 
             set
             {
-                m_Flashings = value;
-                foreach (CAccessories_LengthItemProperties item in m_Flashings)
+                m_Flashings = value;                
+                foreach (CAccessories_LengthItemProperties item in Flashings)
                 {
                     item.PropertyChanged += AccessoriesItem_PropertyChanged;
                 }

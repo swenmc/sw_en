@@ -30,6 +30,7 @@ namespace PFD
 
         private List<string> m_Series;
         private string m_Serie;
+        private bool m_SerieEnabled;
 
         private bool m_AddDoors;
 
@@ -63,8 +64,13 @@ namespace PFD
                 {
                     Series = new List<string>() { "Domestic", "Roller Shutter" };
                     Serie = "Domestic";
+                    SerieEnabled = true;
                 }
-                else Series = new List<string>();
+                else
+                {
+                    Series = new List<string>();
+                    SerieEnabled = false;
+                }
                 NotifyPropertyChanged("DoorType");
             }
         }
@@ -179,6 +185,19 @@ namespace PFD
             {
                 m_Serie = value;
                 NotifyPropertyChanged("Serie");
+            }
+        }
+        public bool SerieEnabled
+        {
+            get
+            {
+                return m_SerieEnabled;
+            }
+
+            set
+            {
+                m_SerieEnabled = value;
+                NotifyPropertyChanged("SerieEnabled");
             }
         }
 
