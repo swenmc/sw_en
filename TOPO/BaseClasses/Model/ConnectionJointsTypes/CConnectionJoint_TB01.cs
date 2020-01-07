@@ -28,10 +28,29 @@ namespace BaseClasses
 
             Name = "Wind Post Base Joint";
 
-            // Plate properties
-            // Todo - set correct dimensions of plate acc. to column cross-section size
-            m_ft = 0.003f;
-            m_flip = 0.18f;
+            float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
+
+            float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
+            float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
+
+            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
+            CScrew referenceScrew = new CScrew("TEK", "14");
+
+            CScrewArrangement screwArrangement;
+            string sPlatePrefix;
+            CWasher_W washerPlateTop;
+            CWasher_W washerBearing;
+
+            DATABASE.DTO.CPlate_B_Properties plateProp;
+            SetBasePlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, out sPlatePrefix, out plateProp, out screwArrangement, out washerPlateTop, out washerBearing);
+
+            float fb_plate = (float)plateProp.dim1;
+            float fh_plate = (float)plateProp.dim2y;
+            m_flip = (float)plateProp.dim3;
+            m_ft = (float)plateProp.t;
+
+            referenceAnchor.WasherPlateTop = washerPlateTop;
+            referenceAnchor.WasherBearing = washerBearing;
 
             // Skratime prut v uzle spoja - base plate o hrubku plechu
             if (m_MainMember.NodeStart.Equals(m_Node)) m_MainMember.FAlignment_Start -= m_ft; // Skratit prut (skutocny rozmer) o hrubku base plate - columns at the left side
@@ -42,28 +61,7 @@ namespace BaseClasses
             // Recalculate member parameters
             m_MainMember.Fill_Basic();
 
-            float fTolerance = 1e-6f; // Gap between cross-section surface and plate surface
-            float fb_plate = (float)(Column_temp.CrScStart.b + 2 * fTolerance);
-            float fh_plate = (float)(Column_temp.CrScStart.h);
-
-            float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
-
-            float flocaleccentricity_y = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFy_local;
-            float flocaleccentricity_z = m_MainMember.EccentricityStart == null ? 0f : m_MainMember.EccentricityStart.MFz_local;
-
-            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft - fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
-            CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
-            CScrew referenceScrew = new CScrew("TEK", "14");
-
-            CScrewArrangement screwArrangement;
-            string sPlatePrefix;
-            CWasher_W washerPlateTop;
-            CWasher_W washerBearing;
-
-            SetPlateTypeAndScrewArrangement(m_MainMember.CrScStart.Name_short, referenceScrew, fh_plate, out sPlatePrefix, out screwArrangement, out washerPlateTop, out washerBearing);
-
-            referenceAnchor.WasherPlateTop = washerPlateTop;
-            referenceAnchor.WasherBearing = washerBearing;
+            Point3D ControlPoint_P1 = new Point3D(fAlignment_x, m_MainMember.CrScStart.y_min + flocaleccentricity_y - m_ft, -0.5f * fh_plate + flocaleccentricity_z);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
@@ -71,7 +69,7 @@ namespace BaseClasses
             if (m_Node.ID != m_MainMember.NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft + fTolerance, -0.5f * fh_plate + flocaleccentricity_z);
+                ControlPoint_P1 = new Point3D(m_MainMember.FLength - fAlignment_x, m_MainMember.CrScStart.y_max + flocaleccentricity_y + m_ft, -0.5f * fh_plate + flocaleccentricity_z);
                 m_arrPlates[0] = new CConCom_Plate_B_basic(sPlatePrefix, ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, referenceAnchor, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }

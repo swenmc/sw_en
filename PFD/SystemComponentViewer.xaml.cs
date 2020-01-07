@@ -208,13 +208,6 @@ namespace PFD
             CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
-            CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
-                3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-            CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2* 0.008f - 2 * 0.002f, 0.058f,
-                3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-                3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-                3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
             CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -292,14 +285,6 @@ namespace PFD
                             case 1: // BB
                             case 2: // BC
                             case 8: // BG
-                                {
-                                    if (vm.ScrewArrangementIndex == 0) // Undefined
-                                        plate.ScrewArrangement = null;
-                                    else
-                                        plate.ScrewArrangement = screwArrangement_BX_02;
-
-                                    break;
-                                }
                             case 3: // BD
                             case 4: // BE
                             case 5: // BE
@@ -307,21 +292,16 @@ namespace PFD
                             case 7: // BF
                             case 11: // BJ
                             case 12: // BJ
-                                {
-                                    if (vm.ScrewArrangementIndex == 0) // Undefined
-                                        plate.ScrewArrangement = null;
-                                    else
-                                        plate.ScrewArrangement = screwArrangement_BX_01;
-
-                                    break;
-                                }
                             default:
                                 {
-                                    // TODO - doplnit vsetky typy base plates a arrangements
                                     if (vm.ScrewArrangementIndex == 0) // Undefined
                                         plate.ScrewArrangement = null;
                                     else
-                                        plate.ScrewArrangement = screwArrangement_BX_01;
+                                    {
+                                        CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
+                                        // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
+                                        plate.ScrewArrangement = tempJoint.GetBasePlateArrangement(plate.Prefix, referenceScrew, plate.Height_hy);
+                                    }
 
                                     break;
                                 }
@@ -1149,13 +1129,6 @@ namespace PFD
                 CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
-                CScrewArrangement_BX_1 screwArrangement_BX_01 = new CScrewArrangement_BX_1(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f,
-                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-                CScrewArrangement_BX_2 screwArrangement_BX_02 = new CScrewArrangement_BX_2(referenceScrew, 0.29f, 0.29f - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                    3, 1, 0.04f, 0.03f, 0.05f, 0.05f,
-                    3, 1, 0.04f, 0.14f, 0.05f, 0.05f,
-                    3, 1, 0.04f, 0.26f, 0.05f, 0.05f);
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
@@ -1216,7 +1189,9 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             CPlate_B_Properties prop = CJointsManager.GetPlate_B_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, screwArrangement_BX_01, true); // B
+                            CConnectionJointTypes tempJoint = new CConnectionJointTypes(); // TODO Ondrej - to by trebalo refaktorovat a odstranit vytvaranie tempJoint, potrebujeme zavolat GetBasePlateArrangement aby sa podla prefixu plate nastavilo defaultne usporiadanie screwarrangement ale ziaden joint neexistuje
+                                                                                           // GetBasePlateArrangement by asi nemalo byt v CConnectionJointTypes ale priamo v CPlate_B_basic
+                            plate = new CConCom_Plate_B_basic(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, referenceAnchor, tempJoint.GetBasePlateArrangement(prop.Name, referenceScrew, fh), true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:

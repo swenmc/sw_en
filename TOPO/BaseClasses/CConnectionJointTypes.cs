@@ -88,35 +88,12 @@ namespace BaseClasses
         }
 
         // Pomocna funkcia pre base plates - nastavenie typu plechu podla prierezu a nastavenie screwArrangement
-        protected void SetPlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew,
-            float fh_plate, out string platePrefix, out CScrewArrangement screwArrangement, out CWasher_W washerPlateTop, out CWasher_W washerBearing)
+        protected void SetBasePlateTypeAndScrewArrangement(string sSectionNameDatabase, CScrew referenceScrew,
+            out string platePrefix, out DATABASE.DTO.CPlate_B_Properties plateProp, out CScrewArrangement screwArrangement, out CWasher_W washerPlateTop, out CWasher_W washerBearing)
         {
-            // TODO - Urobit nastavovanie rozmerov dynamicky podla velkosti prierezu / vyztuh a plechu
-            // Nacitat velkosti vyztuh z parametrov prierezu, medzery a polohu skrutiek urcovat dynamicky
-            // BX1 - 2 rectangular sequencies
-            // BX2 - 3 rectangular sequencies
-
-            CScrewArrangement_BX_2 screwArrangement2_10075 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
-                    2, 1, 0.020f, 0.015f, 0.030f, 0.03f,
-                    2, 1, 0.020f, 0.050f, 0.030f, 0.03f,
-                    2, 1, 0.020f, 0.085f, 0.030f, 0.03f);
-            CScrewArrangement_BX_2 screwArrangement2_270XXX = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                    3, 1, 0.025f, 0.030f, 0.030f, 0.050f,
-                    3, 1, 0.025f, 0.135f, 0.030f, 0.050f,
-                    3, 1, 0.025f, 0.240f, 0.030f, 0.050f);
-            CScrewArrangement_BX_2 screwArrangement2_270XXXn = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                    3, 1, 0.025f, 0.030f, 0.030f, 0.050f,
-                    3, 1, 0.025f, 0.135f, 0.030f, 0.050f,
-                    3, 1, 0.025f, 0.260f, 0.030f, 0.050f);
-            CScrewArrangement_BX_1 screwArrangement1_50020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
-                    3, 3, 0.050f, 0.030f, 0.050f, 0.0625f,
-                    3, 3, 0.050f, 0.345f, 0.050f, 0.0625f);
-            CScrewArrangement_BX_1 screwArrangement1_50020n = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,
-                    3, 3, 0.050f, 0.030f, 0.050f, 0.0625f,
-                    3, 3, 0.050f, 0.395f, 0.050f, 0.0625f);
-            CScrewArrangement_BX_1 screwArrangement1_63020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
-                    3, 5, 0.050f, 0.029f, 0.050f, 0.050f,
-                    3, 5, 0.050f, 0.401f, 0.050f, 0.050f);
+            screwArrangement = null;
+            washerPlateTop = null;
+            plateProp = null;
 
             string washerPlateTopName;
             washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
@@ -125,85 +102,133 @@ namespace BaseClasses
             {
                 //platePrefix = "BI";
                 platePrefix = "BH";
-                screwArrangement = screwArrangement2_10075; // TODO - definovat iny typ
                 washerPlateTopName = "";
             }
             else if (sSectionNameDatabase == "27055")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095n")
             {
                 platePrefix = "BB";
-                screwArrangement = screwArrangement2_270XXXn;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115btb")
             {
                 platePrefix = "BA";
-                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115n")
             {
                 platePrefix = "BB";
-                screwArrangement = screwArrangement2_270XXXn;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "50020")
             {
                 platePrefix = "BD";
-                screwArrangement = screwArrangement1_50020;
                 washerPlateTopName = "WD";
             }
             else if (sSectionNameDatabase == "50020n")
             {
                 platePrefix = "BE-3 holes";
-                screwArrangement = screwArrangement1_50020n;
                 washerPlateTopName = "WD";
             }
             else if (sSectionNameDatabase == "63020")
             {
                 platePrefix = "BF-4 holes";
-                screwArrangement = screwArrangement1_63020;
                 washerPlateTopName = "WF";
             }
             else if (sSectionNameDatabase == "63020s1")
             {
                 platePrefix = "BF-6 holes";
-                screwArrangement = screwArrangement1_63020;
                 washerPlateTopName = "WF";
             }
             else if (sSectionNameDatabase == "63020s2")
             {
                 platePrefix = "BF-6 holes";
-                screwArrangement = screwArrangement1_63020;
                 washerPlateTopName = "WF";
             }
             else
             {
                 platePrefix = "";
                 washerPlateTopName = "";
-                screwArrangement = null;
                 throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
                                                   "Base plate of cross-section with this name is not implemented");
             }
 
-            washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+            if (platePrefix != "")
+            {
+                plateProp = DATABASE.CJointsManager.GetPlate_B_Properties(platePrefix);
+                screwArrangement = GetBasePlateArrangement(platePrefix, referenceScrew, (float)plateProp.dim2y); // Set base plate screw arrangement
+                washerPlateTop = new CWasher_W(washerPlateTopName, new Point3D(0, 0, 0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
+            }
+        }
+
+        public CScrewArrangement GetBasePlateArrangement(string platePrefix, CScrew referenceScrew, float fh_plate)
+        {
+            // TODO - Urobit nastavovanie rozmerov dynamicky podla velkosti prierezu / vyztuh a plechu
+            // Nacitat velkosti vyztuh z parametrov prierezu, medzery a polohu skrutiek urcovat dynamicky
+            // BX1 - 2 rectangular sequencies
+            // BX2 - 3 rectangular sequencies
+
+            CScrewArrangement_BX_2 screwArrangement2_10075_92 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
+                    2, 1, 0.020f, 0.015f, 0.030f, 0.03f,
+                    2, 1, 0.020f, 0.050f, 0.030f, 0.03f,
+                    2, 1, 0.020f, 0.085f, 0.030f, 0.03f);
+            CScrewArrangement_BX_2 screwArrangement2_270XXX_180 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.030f, 0.030f, 0.060f, 0.050f,
+                    3, 1, 0.030f, 0.135f, 0.060f, 0.050f,
+                    3, 1, 0.030f, 0.240f, 0.060f, 0.050f);
+            CScrewArrangement_BX_2 screwArrangement2_270XXX_100 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    2, 1, 0.025f, 0.030f, 0.050f, 0.050f,
+                    2, 1, 0.025f, 0.135f, 0.050f, 0.050f,
+                    2, 1, 0.025f, 0.240f, 0.050f, 0.050f);
+            CScrewArrangement_BX_2 screwArrangement2_270XXXn_180 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.030f, 0.030f, 0.060f, 0.050f,
+                    3, 1, 0.030f, 0.135f, 0.060f, 0.050f,
+                    3, 1, 0.030f, 0.260f, 0.060f, 0.050f);
+            CScrewArrangement_BX_1 screwArrangement1_50020_154 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
+                    3, 3, 0.027f, 0.030f, 0.050f, 0.060f,
+                    3, 3, 0.027f, 0.345f, 0.050f, 0.060f);
+            CScrewArrangement_BX_1 screwArrangement1_50020n_154 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,
+                    3, 3, 0.027f, 0.030f, 0.050f, 0.060f,
+                    3, 3, 0.027f, 0.395f, 0.050f, 0.060f);
+            CScrewArrangement_BX_1 screwArrangement1_63020_180 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+                    3, 5, 0.030f, 0.029f, 0.060f, 0.035f,
+                    3, 5, 0.030f, 0.404f, 0.060f, 0.035f);
+            CScrewArrangement_BX_1 screwArrangement1_63020_400 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+                    7, 5, 0.050f, 0.029f, 0.050f, 0.035f,
+                    7, 5, 0.050f, 0.401f, 0.050f, 0.035f);
+
+            if (platePrefix == "BA")
+                return screwArrangement2_270XXX_180;
+            if (platePrefix == "BG")
+                return screwArrangement2_270XXX_100;
+            else if (platePrefix == "BB" || platePrefix == "BC")
+                return screwArrangement2_270XXXn_180;
+            else if (platePrefix == "BD")
+                return screwArrangement1_50020_154;
+            else if (platePrefix == "BE-2 holes" || platePrefix == "BE-3 holes")
+                return screwArrangement1_50020n_154;
+            else if (platePrefix == "BF-4 holes" || platePrefix == "BF-6 holes")
+                return screwArrangement1_63020_400;
+            else if (platePrefix == "BH" || platePrefix == "BI")
+                return screwArrangement2_10075_92;
+            else if (platePrefix == "BJ-2 holes" || platePrefix == "BJ-3 holes")
+                return screwArrangement1_63020_180;
+            else
+                return null; // Exception - not defined plate prefix
         }
 
         public virtual CConnectionJointTypes RecreateJoint()
