@@ -660,6 +660,9 @@
     <Resource Include="Resources\options_quotation.png" />
     <Resource Include="Resources\options_solver.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\add_new_item.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
