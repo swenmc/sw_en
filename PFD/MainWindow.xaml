@@ -17,7 +17,18 @@
         <CollectionViewSource x:Key="WindowColumns" Source="{Binding WindowColumns}"/>
         <CollectionViewSource x:Key="ModelViews" Source="{Binding ModelViews}"/>
         <CollectionViewSource x:Key="ViewModelMemberFilters" Source="{Binding ViewModelMemberFilters}"/>
+
+        <Style x:Key="RightAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+        <Style x:Key="LeftAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style x:Key="CenterAligned" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
+
 
     <Grid>
         <!--Base Grid 2 columns and 4 rows-->
@@ -187,7 +198,7 @@
                         <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=RoofCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-                        
+
                         <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=RoofCladdingColors}" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
@@ -212,7 +223,7 @@
                         <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-                        
+
                         <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="18" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
@@ -241,7 +252,7 @@
                         <TextBlock Grid.Row="22" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
                         <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-                        
+
                         <TextBlock Grid.Row="23" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -318,7 +329,7 @@
                             <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" IsChecked="{Binding Path=MaterialDiffuse}">Diffuse Material</CheckBox>
                             <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" Grid.ColumnSpan="2">
                             <RadioButton Name="radioColorsIn3DMembers" GroupName="radioColorsIn3D"  IsChecked="{Binding Path=ColorsAccordingToMembers}">Colors according to Component Types</RadioButton>
                             <RadioButton Name="radioColorsIn3DSections" GroupName="radioColorsIn3D" IsChecked="{Binding Path=ColorsAccordingToSections}">Colors according to Sections</RadioButton>
@@ -357,7 +368,7 @@
                             <CheckBox Name="chbDisplayDetailSymbols" IsChecked="{Binding Path=ShowDetailSymbols}">Display Detail Symbols</CheckBox>
                             <CheckBox Name="chbDisplaySlabRebates" IsChecked="{Binding Path=ShowSlabRebates}">Display Slab Rebates</CheckBox>
                         </StackPanel>
-                        
+
 
                         <StackPanel Grid.Row="11" Grid.Column="3" Grid.RowSpan="5">
                             <CheckBox Name="chbDisplayMembersCenterLines" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>
@@ -391,7 +402,7 @@
 
                         <!-- Displacement / Deflection Limits - presunut do samostatneho okna "Design parameters" ??? -->
                         <TextBlock Grid.Row="15" Grid.Column="3" Text="Displacement Limits" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        
+
                         <TextBlock Grid.Row="16" Grid.Column="3" Text="Rafter - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitDenominator_Rafter_PL" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
@@ -435,7 +446,7 @@
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
-                        
+
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -467,7 +478,8 @@
                         </StackPanel>
                         <DataGrid Name ="Datagrid_DoorsAndGates" SelectionMode="Single" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
                                   HorizontalAlignment="Left" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
-                                  AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus">
+                                  AddingNewItem="Datagrid_DoorsAndGates_AddingNewItem" SelectionChanged="Datagrid_DoorsAndGates_SelectionChanged" GotFocus="Datagrid_DoorsAndGates_GotFocus"
+                                  CanUserSortColumns="False" >
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Width="2*" Header="Side" ToolTipService.ToolTip="Select side of building"
                                     SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
@@ -476,20 +488,22 @@
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="3*"
                                     SelectedItemBinding="{Binding Path=sDoorType, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
-                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
                                 <DataGridComboBoxColumn Header="Series" ToolTipService.ToolTip="Select roller door series" Width="2*" SelectedValueBinding="{Binding Serie, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -549,7 +563,8 @@
                         </StackPanel>
                         <DataGrid Name="Datagrid_Windows" ItemsSource="{Binding WindowBlocksProperties, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
-                                  AddingNewItem="Datagrid_Windows_AddingNewItem" SelectionChanged="Datagrid_Windows_SelectionChanged" GotFocus="Datagrid_Windows_GotFocus">
+                                  AddingNewItem="Datagrid_Windows_AddingNewItem" SelectionChanged="Datagrid_Windows_SelectionChanged" GotFocus="Datagrid_Windows_GotFocus"
+                                  CanUserSortColumns="False">
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Side" ToolTipService.ToolTip="Select side of building" Width="2*"
                                     SelectedItemBinding="{Binding Path=sBuildingSide, UpdateSourceTrigger=PropertyChanged}"
@@ -558,37 +573,50 @@
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding Bays}"/>
+                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of window" Width="*" Binding="{Binding fWindowsHeight}"/>
-                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of window" Width="*" Binding="{Binding fWindowsWidth}"/>
-                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="*" Binding="{Binding fWindowCoordinateXinBay}"/>
-                                <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="*" Binding="{Binding fWindowCoordinateZinBay}"/>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsHeight}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsWidth}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateXinBay}"/>
+                                <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateZinBay}"/>
                                 <DataGridComboBoxColumn Header="Muntin Number" ToolTipService.ToolTip="Enter number of window block columns" Width="2*"
                                     SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
-                                    ItemsSource="{Binding Source={StaticResource WindowColumns}}" />
+                                    ItemsSource="{Binding Source={StaticResource WindowColumns}}">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="ComboBox">                                            
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="ComboBox">                                            
+                                            <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Flashings" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
-                            
+
                         </StackPanel>
                         <DataGrid Name="Datagrid_Flashings" ItemsSource="{Binding Path=Flashings, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
-                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0">
+                                  CanUserAddRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
-                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total}"/>
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -630,13 +658,13 @@
                         </StackPanel>
                         <DataGrid Name="Datagrid_Gutters" ItemsSource="{Binding Path=Gutters, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
-                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
+                                  CanUserAddRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" Binding="{Binding Width_total}"/>
-                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total}"/>
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -678,10 +706,10 @@
                         </StackPanel>
                         <DataGrid Name="Datagrid_Downpipes" ItemsSource="{Binding Path=Downpipes, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
-                                  CanUserAddRows="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
+                                  CanUserAddRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
                                   >
                             <DataGrid.Columns>
-                                
+
                                 <DataGridComboBoxColumn Header="Name" ToolTipService.ToolTip="Select name" Width="2*" 
                                                         SelectedValueBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
@@ -700,6 +728,7 @@
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding DownpipePoints}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
@@ -708,7 +737,7 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="70" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
                                             <Setter Property="ItemsSource" Value="{Binding CoatingColors}"/>
@@ -745,7 +774,7 @@
 
                     </StackPanel>
                 </ScrollViewer>
-            </TabItem>            
+            </TabItem>
             <TabItem Name ="Joint_Input">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -823,7 +852,7 @@
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>
-            
+
         </TabControl>
         <Frame Grid.Row="0" Grid.RowSpan="2" Name ="Frame1" Content="Portal Frame 3D Preview"
                HorizontalContentAlignment="Stretch" 
@@ -831,7 +860,7 @@
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Margin="5,5,5,88" Grid.Column="1"/>
 
         <ToggleButton Grid.Row="0" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Name="BtnSynchronizeGUI" IsChecked="{Binding Path=SynchronizeGUI}">Synchronize GUI</ToggleButton>
-        
+
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
             <!--<StackPanel Orientation="Horizontal">
                 <ProgressBar Name="progressBar" Width="200" HorizontalAlignment="Left" Margin="15 5 0 0" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Visible" IsIndeterminate="False" />
@@ -853,7 +882,7 @@
                 <Button Name="ExportWord" Content="Export Report" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportWord_Click"/>
                 <Button Name="ExportQuotation" Content="Export Quotation" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="ExportQuotation_Click"/>
 
-                
+
 
             </StackPanel>
         </StackPanel>
