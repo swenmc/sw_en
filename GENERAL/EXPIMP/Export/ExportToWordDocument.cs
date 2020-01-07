@@ -117,15 +117,22 @@ namespace EXPIMP
                 document.ReplaceText("[price_WithMargin_WithoutGST]", data.BuildingPrice_WithMargin_WithoutGST.ToString("F2"));
 
                 // Exterior
+                // Tri moznosti Colour Steel, Zinc alebo Colour Steel / Zinc ak maju gutters alebo flashings nastavene farby aj zinc
+                DataTable dtFlashings = tables.FirstOrDefault(t => t.TableName == "Flashings");
+                if (dtFlashings != null)
+                {
+                    string flashingsCoatingType = GetCoatingType(dtFlashings);
+                    document.ReplaceText("[flashingsCoatingType]", flashingsCoatingType);
+                }
+                DataTable dtGutters = tables.FirstOrDefault(t => t.TableName == "Gutters");
+                if (dtGutters != null)
+                {
+                    string guttersCoatingType = GetCoatingType(dtGutters);
+                    document.ReplaceText("[guttersCoatingType]", guttersCoatingType);
+                }
 
-                // TODO 455
-                // TODO Ondrej - sem potrebujeme dostat tri moznosti Colour Steel, Zinc alebo Colour Steel / Zinc ak maju gutters alebo flashings nastavene farby aj zinc
-
-                string guttersCoatingType = "Colour Steel"; // Colour Steel, Zinc, Colour Steel / Zinc // TODO Ondrej - prejst vsetky farby coating v tabulke a zistit ci je tam nejaka zinc v kombinacii s inymi alebo su vsetky zinc alebo su vsetky ine nez zinc
-                string flashingsCoatingType = "Colour Steel"; // Colour Steel, Zinc, Colour Steel / Zinc // TODO Ondrej - prejst vsetky farby coating v tabulke a zistit ci je tam nejaka zinc v kombinacii s inymi alebo su vsetky zinc alebo su vsetky ine nez zinc
-
-                document.ReplaceText("[guttersCoatingType]", guttersCoatingType);
-                document.ReplaceText("[flashingsCoatingType]", flashingsCoatingType);
+                
+                
 
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
                     document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
@@ -167,6 +174,23 @@ namespace EXPIMP
                 else
                     (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_DoorsAndWindows]"))).Remove(false); // Whole line
 
+
+                if ((tables.Find(x => x.TableName == "Gutters")) == null)
+                {
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[guttersCoatingType]"))).Remove(false); 
+                    document.ReplaceText("[exclusion_Gutters]", "Gutters");
+                }
+                else
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_Gutters]"))).Remove(false); 
+
+                if ((tables.Find(x => x.TableName == "Flashings")) == null)
+                {
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[flashingsCoatingType]"))).Remove(false);
+                    document.ReplaceText("[exclusion_Flashings]", "Flashings");
+                }
+                else
+                    (document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[exclusion_Flashings]"))).Remove(false);
+
                 //-----------------------------------------------------------------------------------------------------------
 
                 Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[Quotation]"));
@@ -200,6 +224,25 @@ namespace EXPIMP
                 document.Save();
             }
             Process.Start(fileName);
+        }
+
+        private static string GetCoatingType(DataTable dt)
+        {
+            // Colour Steel, Zinc, Colour Steel / Zinc             
+            bool containsZinc = false;
+            bool containsNotZinc = false;
+            foreach (DataRow row in dt.Rows)
+            {                
+                string colorName = row["ColorName"].ToString();
+                if (string.IsNullOrEmpty(colorName)) continue;
+
+                if (colorName == "Zinc") containsZinc = true;
+                else containsNotZinc = true;
+            }
+
+            if (containsZinc && containsNotZinc) return "Colour Steel / Zinc";
+            else if (containsZinc && !containsNotZinc) return "Zinc";
+            else return "Colour Steel";
         }
 
         private static string GetReportName()
