@@ -131,9 +131,6 @@ namespace EXPIMP
                     document.ReplaceText("[guttersCoatingType]", guttersCoatingType);
                 }
 
-                
-                
-
                 if ((tables.Find(x => x.TableName == "Doors and Windows")) == null)
                     document.ReplaceText("[exterior_RollerDoors]", "Doors not included.");
                 else
