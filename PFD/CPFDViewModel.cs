@@ -3143,8 +3143,9 @@ namespace PFD
         //public FlashingsViewModel _flashigsVM;
         public CPFDLoadInput _loadInput;
 
-        private List<CAccessories_LengthItemProperties> m_Flashings;
-        public List<CAccessories_LengthItemProperties> Flashings
+        private ObservableCollection<CAccessories_LengthItemProperties> m_Flashings;
+        private List<string> m_FlashingsNames;
+        public ObservableCollection<CAccessories_LengthItemProperties> Flashings
         {
             get
             {
@@ -3163,9 +3164,9 @@ namespace PFD
                     float fPADoorLintelFlashing_TotalLength = 0;
                     float fWindowFlashing_TotalLength = 0;
 
-                    m_Flashings = new List<CAccessories_LengthItemProperties>();
+                    m_Flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
                     //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
-
+                    
                     m_Flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
                     m_Flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
                     m_Flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
@@ -3194,8 +3195,9 @@ namespace PFD
             PropertyChanged(sender, e);
         }
 
-        private List<CAccessories_LengthItemProperties> m_Gutters;
-        public List<CAccessories_LengthItemProperties> Gutters
+        private ObservableCollection<CAccessories_LengthItemProperties> m_Gutters;
+        private List<string> m_GuttersNames;
+        public ObservableCollection<CAccessories_LengthItemProperties> Gutters
         {
             get
             {
@@ -3204,7 +3206,7 @@ namespace PFD
                     float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
                     gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    m_Gutters = new List<CAccessories_LengthItemProperties> { gutter };
+                    m_Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
 
                 }
                 return m_Gutters;
@@ -3240,6 +3242,24 @@ namespace PFD
             set
             {
                 m_Downpipes = value;
+            }
+        }
+
+        public List<string> FlashingsNames
+        {
+            get
+            {
+                if(m_FlashingsNames == null) m_FlashingsNames = new List<string>() { "Roof Ridge", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                        "PA Door Trimmer",  "PA Door Header", "Window"};
+                return m_FlashingsNames;
+            }
+        }
+        public List<string> GuttersNames
+        {
+            get
+            {
+                if (m_GuttersNames == null) m_GuttersNames = new List<string>() { "Roof Gutter 430", "Roof Gutter 520", "Roof Gutter 550", "Internal Gutter" };
+                return m_GuttersNames;
             }
         }
 

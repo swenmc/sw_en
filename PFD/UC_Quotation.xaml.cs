@@ -1758,15 +1758,32 @@ namespace PFD
             float fBargeFlashing_TotalLength = 4 * fRoofSideLength;
 
             //To Mato - nie som si uplne isty, kde chceme toto nastavovat,ci tu, alebo vseobecne pri zmene modelu
-            _pfdVM.Flashings[0].Length_total = fRoofRidgeFlashing_TotalLength;
-            _pfdVM.Flashings[1].Length_total = fWallCornerFlashing_TotalLength;
-            _pfdVM.Flashings[2].Length_total = fBargeFlashing_TotalLength;
-            _pfdVM.Flashings[3].Length_total = fRollerDoorTrimmerFlashing_TotalLength;
-            _pfdVM.Flashings[4].Length_total = fRollerDoorLintelFlashing_TotalLength;
-            _pfdVM.Flashings[5].Length_total = fRollerDoorLintelCapFlashing_TotalLength;
-            _pfdVM.Flashings[6].Length_total = fPADoorTrimmerFlashing_TotalLength;
-            _pfdVM.Flashings[7].Length_total = fPADoorLintelFlashing_TotalLength;
-            _pfdVM.Flashings[8].Length_total = fWindowFlashing_TotalLength;
+            CAccessories_LengthItemProperties flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[0]);
+            if(flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[1]);
+            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[2]);
+            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[3]);
+            if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[4]);
+            if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[5]);
+            if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[6]);
+            if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[7]);
+            if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[8]);
+            if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
             
             // Create Table
             DataTable dt = new DataTable("Flashings");
@@ -1844,8 +1861,7 @@ namespace PFD
             float fGuttersTotalLength = 2 * model.fL_tot; // na dvoch okrajoch strechy
             
             //toto tu je len preto ak by sa nahodou neupdatoval gutters total length pri zmene modelu (mozno je aj lepsie to mat az tu)
-            _pfdVM.Gutters[0].Length_total = fGuttersTotalLength;
-            CAccessories_LengthItemProperties gutter = _pfdVM.Gutters.FirstOrDefault();
+            //_pfdVM.Gutters[0].Length_total = fGuttersTotalLength;            
 
             // Create Table
             DataTable dt = new DataTable("Gutters");
@@ -1873,7 +1889,12 @@ namespace PFD
             double SumTotalMass = 0;
             double SumTotalPrice = 0;
 
-            AddLengthItemRow(dt,
+            foreach (CAccessories_LengthItemProperties gutter in _pfdVM.Gutters)
+            {
+                //TO Mato - tu neviem co s tymto
+                gutter.Length_total = fGuttersTotalLength;
+
+                AddLengthItemRow(dt,
                         colProp_Gutter.ColumnName,
                         gutter.Name,
                         gutter.Thickness,
@@ -1887,6 +1908,9 @@ namespace PFD
                         ref SumTotalLength,
                         ref SumTotalMass,
                         ref SumTotalPrice);
+
+            }
+
 
             dBuildingMass += SumTotalMass;
             dBuildingNetPrice_WithoutMargin_WithoutGST += SumTotalPrice;

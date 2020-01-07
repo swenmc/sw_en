@@ -15,6 +15,7 @@ namespace BaseClasses
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_Name;
+        private string m_DatabaseTable;
         private double m_thickness;
         private double m_width_total;
         private double m_length_total;
@@ -41,8 +42,10 @@ namespace BaseClasses
             set
             {
                 m_Name = value;
+                SetParametersFromDatabase();
+                NotifyPropertyChanged("Name");
             }
-        }
+        }        
 
         public double Thickness
         {
@@ -213,6 +216,19 @@ namespace BaseClasses
             }
         }
 
+        public string DatabaseTable
+        {
+            get
+            {
+                return m_DatabaseTable;
+            }
+
+            set
+            {
+                m_DatabaseTable = value;
+            }
+        }
+
         public CAccessories_LengthItemProperties()
         {
         }
@@ -220,17 +236,16 @@ namespace BaseClasses
         public CAccessories_LengthItemProperties(string databaseName, string databaseTable, double totalLength, int colorIndex)
         {
             m_Name = databaseName;
-            m_length_total = totalLength;
-            //m_color = (Color)ColorConverter.ConvertFromString(CCoatingColorManager.LoadCoatingProperties(colorIndex).CodeHEX);
-            //m_coatingColor = CCoatingColorManager.LoadCoatingProperties(colorIndex);
+            m_DatabaseTable = databaseTable;
+            m_length_total = totalLength;            
             m_coatingColor = CoatingColors[colorIndex];
-            SetParametersFromDatabase(databaseName, databaseTable);
+            SetParametersFromDatabase();
         }
 
-        private void SetParametersFromDatabase(string databaseName, string databaseTable)
+        private void SetParametersFromDatabase()
         {
-            m_properties = CLengthItemManager.GetLengthItemProperties(databaseName, databaseTable);
-            m_thickness = m_properties.Thickness * 1000; // z [0] do [mm]
+            m_properties = CLengthItemManager.GetLengthItemProperties(m_Name, m_DatabaseTable);
+            m_thickness = m_properties.Thickness * 1000; // z [m] do [mm]
             m_width_total = m_properties.Width_total;
 
             SetColorProperties();
