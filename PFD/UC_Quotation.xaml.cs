@@ -177,7 +177,7 @@ namespace PFD
 
             // DG 2
             // Plates
-            // Washers            
+            // Washers
             if (vm._quotationDisplayOptionsVM.DisplayPlates) CreateTablePlates(model);
             else
             {
@@ -189,7 +189,7 @@ namespace PFD
             // DG 3
             // Screws
             // Bolts
-            // Anchors            
+            // Anchors
             if (vm._quotationDisplayOptionsVM.DisplayConnectors) CreateTableConnectors(model);
             else
             {
@@ -198,7 +198,7 @@ namespace PFD
             }
 
             // DG 4
-            // Bolt Nuts            
+            // Bolt Nuts
             if (vm._quotationDisplayOptionsVM.DisplayBoltNuts) CreateTableBoltNuts(model);
             else
             {
@@ -229,7 +229,7 @@ namespace PFD
             float fFibreGlassArea_Walls = vm.FibreglassAreaWall / 100f * fWallArea_Total; // Priesvitna cast strechy TODO Percento zadavat zatial v GUI, mozeme zadavat aj pocet a velkost fibreglass tabul
 
             if (vm._quotationDisplayOptionsVM.DisplayCladding)
-            {                
+            {
                 // TODO Ondrej - refaktoring - funckia CreateTableCladding
                 CreateTableCladding(vm,
                     fWallArea_Total,
@@ -244,10 +244,9 @@ namespace PFD
                 TextBlock_Cladding.Visibility = Visibility.Collapsed;
                 Datagrid_Cladding.Visibility = Visibility.Collapsed;
             }
-            
 
             // DG 7
-            // Gutters            
+            // Gutters
             if (vm._quotationDisplayOptionsVM.DisplayGutters) CreateTableGutters(model);
             else
             {
@@ -256,7 +255,7 @@ namespace PFD
             }
 
             // DG 8
-            // Downpipes            
+            // Downpipes
             if (vm._quotationDisplayOptionsVM.DisplayDownpipe) CreateTableDownpipes(model);
             else
             {
@@ -265,7 +264,7 @@ namespace PFD
             }
 
             // DG 9
-            // FibreGlass            
+            // FibreGlass
             if (vm._quotationDisplayOptionsVM.DisplayFibreglass) CreateTableFibreglass(vm, fFibreGlassArea_Roof, fFibreGlassArea_Walls);
             else
             {
@@ -274,7 +273,7 @@ namespace PFD
             }
 
             // DG 10
-            // Roof Netting            
+            // Roof Netting
             if (vm._quotationDisplayOptionsVM.DisplayRoofNetting) CreateTableRoofNetting(fRoofArea);
             else
             {
@@ -283,7 +282,7 @@ namespace PFD
             }
 
             // DG 11
-            // Flashing and Packers            
+            // Flashing and Packers
             if (vm._quotationDisplayOptionsVM.DisplayFlashing)
             {
                 CreateTableFlashing(model,
@@ -293,7 +292,7 @@ namespace PFD
                 fRollerDoorLintelCapFlashing_TotalLength,
                 fPADoorTrimmerFlashing_TotalLength,
                 fPADoorLintelFlashing_TotalLength,
-                fWindowFlashing_TotalLength);                
+                fWindowFlashing_TotalLength);
             }
             else
             {
@@ -303,21 +302,34 @@ namespace PFD
 
             // Vysledne hodnoty a sumy spolu s plochou, objemom a celkovou cenou zobrazime v tabe
 
-            // Margin
             double dMarginPercentage = 40; // Default
-            double dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
-            double buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
+            double dGST_Percentage = 15;   // Default
 
-            // Building Unit Price
-            double buildingPrice_PSM = buildingPrice_WithMargin_WithoutGST / fBuildingArea_Gross;
-            double buildingPrice_PCM = buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross;
-            double buildingPrice_PPKG = buildingPrice_WithMargin_WithoutGST / dBuildingMass;
+            double dMarginAbsolute,
+                   buildingPrice_WithMargin_WithoutGST,
+                   buildingPrice_PSM,
+                   buildingPrice_PCM,
+                   buildingPrice_PPKG,
+                   dGST_Absolute,
+                   dTotalBuildingPrice_IncludingGST;
 
-            double dGST_Percentage = 15; // Default
-            double dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
-            double dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
+            // Calculate prices
+            CalculatePrices(
+                   fBuildingArea_Gross,
+                   fBuildingVolume_Gross,
+                   dBuildingMass,
+                   dMarginPercentage,
+                   dGST_Percentage,
+                   out dMarginAbsolute,
+                   out buildingPrice_WithMargin_WithoutGST,
+                   out buildingPrice_PSM,
+                   out buildingPrice_PCM,
+                   out buildingPrice_PPKG,
+                   out dGST_Absolute,
+                   out dTotalBuildingPrice_IncludingGST
+                   );
 
-
+            // Set view model values
             QuotationViewModel qVM = new QuotationViewModel
             {
                 BuildingNetPrice_WithoutMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST,
@@ -376,17 +388,67 @@ namespace PFD
             {
                 QuotationViewModel vm = sender as QuotationViewModel;
 
-                vm.Margin_Absolute = dBuildingNetPrice_WithoutMargin_WithoutGST * vm.Margin_Percentage / 100f;
-                vm.BuildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + vm.Margin_Absolute;
+                double dMarginAbsolute,
+                       buildingPrice_WithMargin_WithoutGST,
+                       buildingPrice_PSM,
+                       buildingPrice_PCM,
+                       buildingPrice_PPKG,
+                       dGST_Absolute,
+                       dTotalBuildingPrice_IncludingGST;
 
-                vm.GST_Absolute = vm.BuildingPrice_WithMargin_WithoutGST * vm.GST_Percentage / 100f;
-                vm.TotalBuildingPrice_IncludingGST = vm.BuildingPrice_WithMargin_WithoutGST + vm.GST_Absolute;
+                // Calculate prices
+                CalculatePrices(
+                       vm.BuildingArea_Gross,
+                       vm.BuildingVolume_Gross,
+                       vm.BuildingMass,
+                       vm.Margin_Percentage,
+                       vm.GST_Percentage,
+                       out dMarginAbsolute,
+                       out buildingPrice_WithMargin_WithoutGST,
+                       out buildingPrice_PSM,
+                       out buildingPrice_PCM,
+                       out buildingPrice_PPKG,
+                       out dGST_Absolute,
+                       out dTotalBuildingPrice_IncludingGST
+                       );
 
-                // Building Unit Price
-                vm.BuildingPrice_PSM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingArea_Gross;
-                vm.BuildingPrice_PCM = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingVolume_Gross;
-                vm.BuildingPrice_PPKG = vm.BuildingPrice_WithMargin_WithoutGST / vm.BuildingMass;
+                // Set view model output values
+                vm.Margin_Absolute = dMarginAbsolute;
+                vm.BuildingPrice_WithMargin_WithoutGST = buildingPrice_WithMargin_WithoutGST;
+                vm.GST_Absolute = dGST_Absolute;
+                vm.TotalBuildingPrice_IncludingGST = dTotalBuildingPrice_IncludingGST;
+                vm.BuildingPrice_PSM = buildingPrice_PSM;
+                vm.BuildingPrice_PCM = buildingPrice_PCM;
+                vm.BuildingPrice_PPKG = buildingPrice_PPKG;
             }
+        }
+
+        private void CalculatePrices(
+            float fBuildingArea_Gross,
+            float fBuildingVolume_Gross,
+            double dBuildingMass,
+            double dMarginPercentage,
+            double dGST_Percentage,
+            out double dMarginAbsolute,
+            out double buildingPrice_WithMargin_WithoutGST,
+            out double buildingPrice_PSM,
+            out double buildingPrice_PCM,
+            out double buildingPrice_PPKG,
+            out double dGST_Absolute,
+            out double dTotalBuildingPrice_IncludingGST
+            )
+        {
+            // Margin
+            dMarginAbsolute = dBuildingNetPrice_WithoutMargin_WithoutGST * dMarginPercentage / 100f;
+            buildingPrice_WithMargin_WithoutGST = dBuildingNetPrice_WithoutMargin_WithoutGST + dMarginAbsolute;
+
+            // Building Unit Price
+            buildingPrice_PSM = fBuildingArea_Gross > 0 ? buildingPrice_WithMargin_WithoutGST / fBuildingArea_Gross : 0;
+            buildingPrice_PCM = fBuildingVolume_Gross > 0 ? buildingPrice_WithMargin_WithoutGST / fBuildingVolume_Gross : 0;
+            buildingPrice_PPKG = dBuildingMass > 0 ? buildingPrice_WithMargin_WithoutGST / dBuildingMass : 0;
+
+            dGST_Absolute = dGST_Percentage / 100f * buildingPrice_WithMargin_WithoutGST;
+            dTotalBuildingPrice_IncludingGST = buildingPrice_WithMargin_WithoutGST + dGST_Absolute;
         }
 
         private void CreateTableMembers(CModel model)
