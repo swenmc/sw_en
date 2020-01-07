@@ -230,7 +230,7 @@ namespace BaseClasses
         private void SetParametersFromDatabase(string databaseName, string databaseTable)
         {
             m_properties = CLengthItemManager.GetLengthItemProperties(databaseName, databaseTable);
-            m_thickness = m_properties.Thickness;
+            m_thickness = m_properties.Thickness * 1000; // z [0] do [mm]
             m_width_total = m_properties.Width_total;
 
             SetColorProperties();

@@ -501,9 +501,9 @@
                                 <DataGridComboBoxColumn Header="Door Type" ToolTipService.ToolTip="Select type of door" Width="3*"
                                     SelectedItemBinding="{Binding Path=sDoorType, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Source={StaticResource DoorsTypes}}" />
-                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True}"/>
-                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True}"/>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsHeight, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of door" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorsWidth, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter position of door in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fDoorCoordinateXinBlock, ValidatesOnExceptions=True, StringFormat={}{0:0.0}}"/>
                                 <DataGridComboBoxColumn Header="Series" ToolTipService.ToolTip="Select roller door series" Width="2*" SelectedValueBinding="{Binding Serie, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -583,10 +583,10 @@
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsHeight}"/>
-                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsWidth}"/>
-                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateXinBay}"/>
-                                <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateZinBay}"/>
+                                <DataGridTextColumn Header="h [m]" ToolTipService.ToolTip="Enter height of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsHeight, StringFormat={}{0:0.0}}"/>
+                                <DataGridTextColumn Header="w [m]" ToolTipService.ToolTip="Enter width of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowsWidth, StringFormat={}{0:0.0}}"/>
+                                <DataGridTextColumn Header="x [m]" ToolTipService.ToolTip="Enter horizontal position of window in the bay" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateXinBay, StringFormat={}{0:0.0}}"/>
+                                <DataGridTextColumn Header="z [m]" ToolTipService.ToolTip="Enter vertical position of window" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding fWindowCoordinateZinBay, StringFormat={}{0:0.0}}"/>
                                 <DataGridComboBoxColumn Header="Muntin Number" ToolTipService.ToolTip="Enter number of window block columns" Width="2*"
                                     SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
                                     ItemsSource="{Binding Source={StaticResource WindowColumns}}">
@@ -614,8 +614,8 @@
                                   CanUserAddRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total}"/>
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness, StringFormat={}{0:0.00}}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
                                 <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -662,8 +662,8 @@
                                   >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" IsReadOnly="True" ToolTipService.ToolTip="Name" Width="*" Binding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total}"/>
+                                <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness, StringFormat={}{0:0.00}}"/>
+                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
                                 <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
