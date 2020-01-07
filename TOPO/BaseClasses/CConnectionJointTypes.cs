@@ -96,20 +96,27 @@ namespace BaseClasses
             // BX1 - 2 rectangular sequencies
             // BX2 - 3 rectangular sequencies
 
-            CScrewArrangement_BX_2 screwArrangement1_10075 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
-                    2, 1, 0.02f, 0.015f, 0.03f, 0.03f,
-                    2, 1, 0.02f, 0.050f, 0.03f, 0.03f,
-                    2, 1, 0.02f, 0.085f, 0.03f, 0.03f);
-            CScrewArrangement_BX_1 screwArrangement1_63020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
-                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                    3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
+            CScrewArrangement_BX_2 screwArrangement2_10075 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.006f - 2 * 0.002f, 0.023f,
+                    2, 1, 0.020f, 0.015f, 0.030f, 0.03f,
+                    2, 1, 0.020f, 0.050f, 0.030f, 0.03f,
+                    2, 1, 0.020f, 0.085f, 0.030f, 0.03f);
+            CScrewArrangement_BX_2 screwArrangement2_270XXX = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.025f, 0.030f, 0.030f, 0.050f,
+                    3, 1, 0.025f, 0.135f, 0.030f, 0.050f,
+                    3, 1, 0.025f, 0.240f, 0.030f, 0.050f);
+            CScrewArrangement_BX_2 screwArrangement2_270XXXn = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
+                    3, 1, 0.025f, 0.030f, 0.030f, 0.050f,
+                    3, 1, 0.025f, 0.135f, 0.030f, 0.050f,
+                    3, 1, 0.025f, 0.260f, 0.030f, 0.050f);
             CScrewArrangement_BX_1 screwArrangement1_50020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.132f,
-                    3, 5, 0.05f, 0.029f, 0.05f, 0.05f,
-                    3, 5, 0.05f, 0.330f, 0.05f, 0.05f);
-            CScrewArrangement_BX_2 screwArrangement2 = new CScrewArrangement_BX_2(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.058f,
-                    3, 1, 0.025f, 0.03f, 0.03f, 0.05f,
-                    3, 1, 0.025f, 0.14f, 0.03f, 0.05f,
-                    3, 1, 0.025f, 0.26f, 0.03f, 0.05f);
+                    3, 3, 0.050f, 0.030f, 0.050f, 0.0625f,
+                    3, 3, 0.050f, 0.345f, 0.050f, 0.0625f);
+            CScrewArrangement_BX_1 screwArrangement1_50020n = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.008f - 2 * 0.002f, 0.182f,
+                    3, 3, 0.050f, 0.030f, 0.050f, 0.0625f,
+                    3, 3, 0.050f, 0.395f, 0.050f, 0.0625f);
+            CScrewArrangement_BX_1 screwArrangement1_63020 = new CScrewArrangement_BX_1(referenceScrew, fh_plate, fh_plate - 2 * 0.025f - 2 * 0.002f, 0.185f,
+                    3, 5, 0.050f, 0.029f, 0.050f, 0.050f,
+                    3, 5, 0.050f, 0.401f, 0.050f, 0.050f);
 
             string washerPlateTopName;
             washerBearing = new CWasher_W("WA", new Point3D(0,0,0), 0, -90, 0, true); // Opacny uhol otocenia okolo y ako ma anchor aby sme sa dostali naspat do roviny XY a t je v smere Z
@@ -118,43 +125,43 @@ namespace BaseClasses
             {
                 //platePrefix = "BI";
                 platePrefix = "BH";
-                screwArrangement = screwArrangement1_10075; // TODO - definovat iny typ
+                screwArrangement = screwArrangement2_10075; // TODO - definovat iny typ
                 washerPlateTopName = "";
             }
             else if (sSectionNameDatabase == "27055")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "27095n")
             {
                 platePrefix = "BB";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXXn;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115")
             {
                 platePrefix = "BG";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115btb")
             {
                 platePrefix = "BA";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXX;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "270115n")
             {
                 platePrefix = "BB";
-                screwArrangement = screwArrangement2;
+                screwArrangement = screwArrangement2_270XXXn;
                 washerPlateTopName = "WB";
             }
             else if (sSectionNameDatabase == "50020")
@@ -166,7 +173,7 @@ namespace BaseClasses
             else if (sSectionNameDatabase == "50020n")
             {
                 platePrefix = "BE-3 holes";
-                screwArrangement = screwArrangement1_50020;
+                screwArrangement = screwArrangement1_50020n;
                 washerPlateTopName = "WD";
             }
             else if (sSectionNameDatabase == "63020")
