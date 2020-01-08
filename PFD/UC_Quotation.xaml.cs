@@ -247,7 +247,7 @@ namespace PFD
 
             // DG 7
             // Gutters
-            if (vm._quotationDisplayOptionsVM.DisplayGutters) CreateTableGutters(model);
+            if (vm._quotationDisplayOptionsVM.DisplayGutters && _pfdVM.Gutters.Count > 0) CreateTableGutters(model);
             else
             {
                 TextBlock_Gutters.Visibility = Visibility.Collapsed;
@@ -283,7 +283,7 @@ namespace PFD
 
             // DG 11
             // Flashing and Packers
-            if (vm._quotationDisplayOptionsVM.DisplayFlashing)
+            if (vm._quotationDisplayOptionsVM.DisplayFlashing && _pfdVM.Flashings.Count > 0)
             {
                 CreateTableFlashing(model,
                 fRoofSideLength,
@@ -1762,27 +1762,30 @@ namespace PFD
             if(flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[1]);
-            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fRoofRidgeFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[2]);
-            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fWallCornerFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[3]);
-            if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fBargeFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[4]);
-            if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fRollerDoorTrimmerFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[5]);
-            if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fRollerDoorLintelFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[6]);
-            if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fRollerDoorLintelCapFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[7]);
-            if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
+            if (flashing != null) flashing.Length_total = fPADoorTrimmerFlashing_TotalLength;
 
             flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[8]);
+            if (flashing != null) flashing.Length_total = fPADoorLintelFlashing_TotalLength;
+
+            flashing = _pfdVM.Flashings.FirstOrDefault(f => f.Name == _pfdVM.FlashingsNames[9]);
             if (flashing != null) flashing.Length_total = fWindowFlashing_TotalLength;
             
             // Create Table
@@ -1816,7 +1819,7 @@ namespace PFD
                 AddLengthItemRow(dt,
                             colProp_Flashing.ColumnName,
                             fl.Name,
-                            fl.Thickness,
+                            fl.Thickness / 1000, //from [mm] to [m]
                             fl.Width_total,
                             fl.CoatingColor,
                             fl.Length_total,
@@ -1897,7 +1900,7 @@ namespace PFD
                 AddLengthItemRow(dt,
                         colProp_Gutter.ColumnName,
                         gutter.Name,
-                        gutter.Thickness,
+                        gutter.Thickness / 1000, // from [mm] to [m]
                         gutter.Width_total,
                         gutter.CoatingColor,
                         gutter.Length_total,

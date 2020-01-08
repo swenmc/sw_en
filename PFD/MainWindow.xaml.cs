@@ -1922,14 +1922,19 @@ namespace PFD
         private void btnAddFlashing_Click(object sender, RoutedEventArgs e)
         {
             float fRoofRidgeFlashing_TotalLength = vm.Model.fL_tot;
-            vm.Flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2);
+            item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
+            vm.Flashings.Add(item);
             vm.RecreateQuotation = true;
         }
+        
 
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
             float fGuttersTotalLength = 2 * vm.Model.fL_tot; // na dvoch okrajoch strechy
-            vm.Gutters.Add(new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2));
+            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
+            item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
+            vm.Gutters.Add(item);            
             vm.RecreateQuotation = true;
         }
     }

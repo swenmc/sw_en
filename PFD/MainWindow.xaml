@@ -623,7 +623,7 @@
                                                         SelectedValueBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                                         ItemsSource="{Binding Source={StaticResource FlashingsNames}}" />
                                 <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Flashing thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness, StringFormat={}{0:0.00}}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
+                                <DataGridTextColumn Header="Total Width [m]" IsReadOnly="True" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
                                 <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">
@@ -676,7 +676,7 @@
                                                         SelectedValueBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                                         ItemsSource="{Binding Source={StaticResource GuttersNames}}" />                                
                                 <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness, StringFormat={}{0:0.00}}"/>
-                                <DataGridTextColumn Header="Total Width [m]" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
+                                <DataGridTextColumn Header="Total Width [m]" IsReadOnly="True" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
                                 <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
                                     <DataGridComboBoxColumn.ElementStyle>
                                         <Style TargetType="ComboBox">

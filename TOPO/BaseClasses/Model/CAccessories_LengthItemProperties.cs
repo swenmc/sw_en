@@ -57,6 +57,7 @@ namespace BaseClasses
             set
             {
                 m_thickness = value;
+                NotifyPropertyChanged("Thickness");
             }
         }
 
@@ -245,8 +246,8 @@ namespace BaseClasses
         private void SetParametersFromDatabase()
         {
             m_properties = CLengthItemManager.GetLengthItemProperties(m_Name, m_DatabaseTable);
-            m_thickness = m_properties.Thickness * 1000; // z [m] do [mm]
-            m_width_total = m_properties.Width_total;
+            Thickness = m_properties.Thickness * 1000; // z [m] do [mm]
+            Width_total = m_properties.Width_total;
 
             SetColorProperties();
         }

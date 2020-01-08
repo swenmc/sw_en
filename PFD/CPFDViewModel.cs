@@ -3164,34 +3164,45 @@ namespace PFD
                     float fPADoorLintelFlashing_TotalLength = 0;
                     float fWindowFlashing_TotalLength = 0;
 
-                    m_Flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
-                    //List<CoatingColour> colors = CCoatingColorManager.LoadColours("TrapezoidalSheetingSQLiteDB"); // Temporary - malo by byt nastavovane z GUI
-                    
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
-                    m_Flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+                    ObservableCollection<CAccessories_LengthItemProperties> flashings = new ObservableCollection<CAccessories_LengthItemProperties>();
+                    flashings.Add(new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2));
+                    flashings.Add(new CAccessories_LengthItemProperties("Wall Corner", "Flashings", fWallCornerFlashing_TotalLength, 2));
+                    flashings.Add(new CAccessories_LengthItemProperties("Barge", "Flashings", fBargeFlashing_TotalLength, 2));
+                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Trimmer", "Flashings", fRollerDoorTrimmerFlashing_TotalLength, 4));
+                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header", "Flashings", fRollerDoorLintelFlashing_TotalLength, 4));
+                    flashings.Add(new CAccessories_LengthItemProperties("Roller Door Header Cap", "Flashings", fRollerDoorLintelCapFlashing_TotalLength, 4));
+                    flashings.Add(new CAccessories_LengthItemProperties("PA Door Trimmer", "Flashings", fPADoorTrimmerFlashing_TotalLength, 18));
+                    flashings.Add(new CAccessories_LengthItemProperties("PA Door Header", "Flashings", fPADoorLintelFlashing_TotalLength, 18));
+                    flashings.Add(new CAccessories_LengthItemProperties("Window", "Flashings", fWindowFlashing_TotalLength, 9));
+                    Flashings = flashings;
                 }
                 return m_Flashings;
             }
 
             set
             {
-                m_Flashings = value;                
+                if (value == null) return;
+                m_Flashings = value;
+                m_Flashings.CollectionChanged += Flashings_CollectionChanged;
                 foreach (CAccessories_LengthItemProperties item in Flashings)
                 {
                     item.PropertyChanged += AccessoriesItem_PropertyChanged;
                 }
             }
         }
+        
+        private void Flashings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {            
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                RecreateQuotation = true;
+            }
+        }
 
-        private void AccessoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void AccessoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == "Thickness") return;
+            if (e.PropertyName == "Width_total") return;
             PropertyChanged(sender, e);
         }
 
@@ -3206,18 +3217,26 @@ namespace PFD
                     float fGuttersTotalLength = 2 * Model.fL_tot; // na dvoch okrajoch strechy
                     CAccessories_LengthItemProperties gutter = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
                     gutter.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    m_Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
-
+                    Gutters = new ObservableCollection<CAccessories_LengthItemProperties> { gutter };
                 }
                 return m_Gutters;
             }
 
             set
             {
+                if (value == null) return;
                 m_Gutters = value;
+                m_Gutters.CollectionChanged += Gutters_CollectionChanged;
             }
         }
 
+        private void Gutters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                RecreateQuotation = true;
+            }
+        }
 
         private List<CAccessories_DownpipeProperties> m_Downpipes;
         public List<CAccessories_DownpipeProperties> Downpipes
@@ -3249,7 +3268,7 @@ namespace PFD
         {
             get
             {
-                if(m_FlashingsNames == null) m_FlashingsNames = new List<string>() { "Roof Ridge", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
+                if(m_FlashingsNames == null) m_FlashingsNames = new List<string>() { "Roof Ridge", "Roof Ridge (Soft Edge)", "Wall Corner", "Barge", "Roller Door Trimmer", "Roller Door Header", "Roller Door Header Cap",
                         "PA Door Trimmer",  "PA Door Header", "Window"};
                 return m_FlashingsNames;
             }
@@ -3258,7 +3277,7 @@ namespace PFD
         {
             get
             {
-                if (m_GuttersNames == null) m_GuttersNames = new List<string>() { "Roof Gutter 430", "Roof Gutter 520", "Roof Gutter 550", "Internal Gutter" };
+                if (m_GuttersNames == null) m_GuttersNames = new List<string>() { "Roof Gutter 430", "Roof Gutter 520", "Roof Gutter 550"/*, "Internal Gutter"*/ };
                 return m_GuttersNames;
             }
         }
