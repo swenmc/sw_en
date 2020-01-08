@@ -45,6 +45,16 @@ namespace BaseClasses
                 CConCom_Plate_F_or_L p = plate as CConCom_Plate_F_or_L;
                 clone = p.Clone();
             }
+            else if (plate is CConCom_Plate_G)
+            {
+                CConCom_Plate_G p = plate as CConCom_Plate_G;
+                clone = p.Clone();
+            }
+            else if (plate is CConCom_Plate_H)
+            {
+                CConCom_Plate_H p = plate as CConCom_Plate_H;
+                clone = p.Clone();
+            }
             else if (plate is CConCom_Plate_JA)
             {
                 CConCom_Plate_JA p = plate as CConCom_Plate_JA;

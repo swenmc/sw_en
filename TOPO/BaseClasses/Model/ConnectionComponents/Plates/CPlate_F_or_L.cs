@@ -290,7 +290,7 @@ namespace BaseClasses
             arrPoints3D[6].Y = arrPoints3D[0].Y;
             arrPoints3D[6].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[7].X = arrPoints3D[1].X + +Ft;
+            arrPoints3D[7].X = arrPoints3D[1].X + Ft;
             arrPoints3D[7].Y = arrPoints3D[1].Y;
             arrPoints3D[7].Z = arrPoints3D[1].Z + Ft;
 

@@ -1209,6 +1209,14 @@ namespace PFD
                     {
                         return dc.arr_Serie_F_ScrewArrangement_Names;
                     }
+                case ESerieTypePlate.eSerie_G:
+                    {
+                        return new List<string>(1) { "Undefined" };
+                    }
+                case ESerieTypePlate.eSerie_H:
+                    {
+                        return new List<string>(1) { "Undefined" };
+                    }
                 case ESerieTypePlate.eSerie_Q:
                     {
                         return new List<string>(1) { "Undefined" };
@@ -1293,6 +1301,21 @@ namespace PFD
                         if (plate.ScrewArrangement == null) return 0;
                         else if (plate.ScrewArrangement is CScrewArrangement_F) return 1;
                         else return 0;
+                    }
+                case ESerieTypePlate.eSerie_G:
+                    {
+                        //TODO
+                        /*if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_G) return 1;
+                        else*/ return 0;
+                    }
+                case ESerieTypePlate.eSerie_H:
+                    {
+                        //TODO
+                        /*if (plate.ScrewArrangement == null) return 0;
+                        else if (plate.ScrewArrangement is CScrewArrangement_H) return 1;
+                        else*/
+                        return 0;
                     }
                 case ESerieTypePlate.eSerie_Q:
                     {

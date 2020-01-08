@@ -387,6 +387,8 @@ namespace BaseClasses
         eSerie_L,
         eSerie_LL,
         eSerie_F,
+        eSerie_G,
+        eSerie_H,
         eSerie_Q,
         eSerie_S,
         eSerie_T,

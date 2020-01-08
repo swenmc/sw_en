@@ -558,9 +558,9 @@ namespace PFD
             MScrewArrangements = dcomponents.arr_Serie_J_ScrewArrangement_Names;
 
             // Set default
-            ComponentTypeIndex = 1;
-            ComponentSerieIndex = 9;
-            ComponentIndex = 1;
+            ComponentTypeIndex = 1; // Component Type: Plate
+            ComponentSerieIndex = 11; // Component Serie: Plate Serie J
+            ComponentIndex = 1; // Component: Plate JB
             ScrewArrangementIndex = 2;
 
             DrawPoints2D = true;
@@ -698,6 +698,20 @@ namespace PFD
                         {
                             Components = databaseComponents.arr_Serie_F_Names;
                             ScrewArrangements = databaseComponents.arr_Serie_F_ScrewArrangement_Names;
+                            ScrewArrangementIndex = 0;
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_G:
+                        {
+                            Components = databaseComponents.arr_Serie_G_Names;
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
+                            ScrewArrangementIndex = 0;
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_H:
+                        {
+                            Components = databaseComponents.arr_Serie_H_Names;
+                            ScrewArrangements = new List<string>(1) { "Undefined" };
                             ScrewArrangementIndex = 0;
                             break;
                         }
