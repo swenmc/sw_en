@@ -146,7 +146,7 @@ namespace PFD
                 if (e.PropertyName == "IsEnabledSurfaceLoadsAxis") return;
                 if (e.PropertyName == "ModelCalculatedResultsValid") return;
 
-                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; } return; }
+                if (e.PropertyName == "RecreateQuotation") { if (vm.RecreateQuotation) { Quotation.Content = new UC_Quotation(viewModel); vm.RecreateQuotation = false; SetAccesoriesButtonsVisibility();  } return; }
 
                 //if (e.PropertyName == "DoorBlocksProperties_Add") { vm.RecreateJoints = true; }
                 //if (e.PropertyName == "DoorBlocksProperties_CollectionChanged") { vm.RecreateJoints = true; }
@@ -945,7 +945,19 @@ namespace PFD
             }
         }
 
-        private void Clear3DModel_Click(object sender, RoutedEventArgs e)
+        private void SetAccesoriesButtonsVisibility()
+        {
+            if (vm.Flashings.Count >= 9) btnAddFlashing.Visibility = Visibility.Hidden;
+            else btnAddFlashing.Visibility = Visibility.Visible;
+
+            if (vm.Gutters.Count >= 1) btnAddGutter.Visibility = Visibility.Hidden;
+            else btnAddGutter.Visibility = Visibility.Visible;
+
+            if (vm.Downpipes.Count >= 1) btnAddDownpipe.Visibility = Visibility.Hidden;
+            else btnAddDownpipe.Visibility = Visibility.Visible;
+        }
+
+            private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
             ClearViewPort(page3D._trackport.ViewPort);
@@ -1921,13 +1933,25 @@ namespace PFD
         
         private void btnAddFlashing_Click(object sender, RoutedEventArgs e)
         {
-            float fRoofRidgeFlashing_TotalLength = vm.Model.fL_tot;
-            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Ridge", "Flashings", fRoofRidgeFlashing_TotalLength, 2);
-            item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
+            string flashingName = FindNotUsedFlashingName();
+            if (string.IsNullOrEmpty(flashingName)) return;
+
+            CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties(flashingName, "Flashings", 0, 2);
+            item.PropertyChanged += vm.FlashingsItem_PropertyChanged;
             vm.Flashings.Add(item);
             vm.RecreateQuotation = true;
         }
-        
+        private string FindNotUsedFlashingName()
+        {
+            foreach (string s in vm.FlashingsNames)
+            {
+                if (vm.Flashings.FirstOrDefault(f => f.Name == s && !f.Name.Contains(s) && !s.Contains(f.Name)) == null) return s;
+            }
+            return null;
+        }
+
+
+
 
         private void btnAddGutter_Click(object sender, RoutedEventArgs e)
         {
@@ -1935,6 +1959,19 @@ namespace PFD
             CAccessories_LengthItemProperties item = new CAccessories_LengthItemProperties("Roof Gutter 430", "Gutters", fGuttersTotalLength, 2);
             item.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
             vm.Gutters.Add(item);            
+            vm.RecreateQuotation = true;
+        }
+
+        private void BtnAddDownpipe_Click(object sender, RoutedEventArgs e)
+        {
+            // Zatial bude natvrdo jeden riadok s poctom zvodov, prednastavenou dlzkou ako vyskou steny a farbou, rovnaky default ako gutter
+            int iCountOfDownpipePoints = 4; // TODO - prevziat z GUI - 4 rohy strechy
+            float fDownpipesTotalLength = iCountOfDownpipePoints * vm.Model.fH1_frame; // Pocet zvodov krat vyska steny
+
+            CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
+            downpipe.PropertyChanged += vm.AccessoriesItem_PropertyChanged;
+
+            vm.Downpipes.Add(downpipe);
             vm.RecreateQuotation = true;
         }
     }

@@ -609,7 +609,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Flashings" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
-                            <Button Name="btnAddFlashing" VerticalAlignment="Top" ToolTip="Add Flashing" Margin="330 12 0 0" Width="20" Height="20" Click="btnAddFlashing_Click">
+                            <Button Name="btnAddFlashing" Visibility="Hidden" VerticalAlignment="Top" ToolTip="Add Flashing" Margin="330 12 0 0" Width="20" Height="20" Click="btnAddFlashing_Click">
                                 <Image Source="Resources/add_new_item.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
 
@@ -662,7 +662,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Gutters" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
-                            <Button Name="btnAddGutter" VerticalAlignment="Top" ToolTip="Add Gutter" Margin="330 12 0 0" Width="20" Height="20" Click="btnAddGutter_Click">
+                            <Button Name="btnAddGutter" Visibility="Hidden" VerticalAlignment="Top" ToolTip="Add Gutter" Margin="330 12 0 0" Width="20" Height="20" Click="btnAddGutter_Click">
                                 <Image Source="Resources/add_new_item.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
 
@@ -715,6 +715,9 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Left" Height="23" Width="205" TextWrapping="Wrap" 
                                    Text="Downpipes" VerticalAlignment="Top" Margin="5,10,0,0" FontSize="16" />
+                            <Button Name="btnAddDownpipe" Visibility="Hidden" VerticalAlignment="Top" ToolTip="Add Downpipe" Margin="330 12 0 0" Width="20" Height="20" Click="BtnAddDownpipe_Click">
+                                <Image Source="Resources/add_new_item.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
                         </StackPanel>
                         
                         <DataGrid Name="Datagrid_Downpipes" ItemsSource="{Binding Path=Downpipes, Mode=TwoWay}" 

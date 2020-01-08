@@ -3186,7 +3186,7 @@ namespace PFD
                 m_Flashings.CollectionChanged += Flashings_CollectionChanged;
                 foreach (CAccessories_LengthItemProperties item in Flashings)
                 {
-                    item.PropertyChanged += AccessoriesItem_PropertyChanged;
+                    item.PropertyChanged += FlashingsItem_PropertyChanged;
                 }
             }
         }
@@ -3197,6 +3197,37 @@ namespace PFD
             {
                 RecreateQuotation = true;
             }
+        }
+
+        public void FlashingsItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Name")
+            {
+                if (!ValidateFlashings()) PFDMainWindow.ShowMessageBoxInPFDWindow("Error. Duplicate definition of flashing types.");
+                
+            }
+            if (e.PropertyName == "Thickness") return;
+            if (e.PropertyName == "Width_total") return;
+            PropertyChanged(sender, e);
+        }
+        public bool ValidateFlashings()
+        {
+            foreach (CAccessories_LengthItemProperties item in Flashings)
+            {
+                int count = Flashings.Where(f => f.Name == item.Name).Count();
+                if (count > 1) return false;
+
+                if (item.Name == "Roof Ridge")
+                {
+                    if (Flashings.FirstOrDefault(f => f.Name == "Roof Ridge (Soft Edge)") != null) return false;
+                }
+
+                if (item.Name == "Roof Ridge (Soft Edge)")
+                {
+                    if (Flashings.FirstOrDefault(f => f.Name == "Roof Ridge") != null) return false;
+                }
+            }
+            return true;
         }
 
         public void AccessoriesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
