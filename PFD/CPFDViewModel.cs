@@ -3238,8 +3238,8 @@ namespace PFD
             }
         }
 
-        private List<CAccessories_DownpipeProperties> m_Downpipes;
-        public List<CAccessories_DownpipeProperties> Downpipes
+        private ObservableCollection<CAccessories_DownpipeProperties> m_Downpipes;
+        public ObservableCollection<CAccessories_DownpipeProperties> Downpipes
         {
             get
             {
@@ -3252,7 +3252,7 @@ namespace PFD
                     CAccessories_DownpipeProperties downpipe = new CAccessories_DownpipeProperties("RP80®", fDownpipesTotalLength, 2);
 
                     downpipe.PropertyChanged += AccessoriesItem_PropertyChanged;
-                    m_Downpipes = new List<CAccessories_DownpipeProperties> { downpipe };
+                    Downpipes = new ObservableCollection<CAccessories_DownpipeProperties>() { downpipe };
 
                 }
                 return m_Downpipes;
@@ -3260,7 +3260,18 @@ namespace PFD
 
             set
             {
+                
+                if (value == null) return;
                 m_Downpipes = value;
+                m_Downpipes.CollectionChanged += Downpipes_CollectionChanged;
+            }
+        }
+
+        private void Downpipes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                RecreateQuotation = true;
             }
         }
 

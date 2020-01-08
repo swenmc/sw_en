@@ -49,7 +49,7 @@ namespace BaseClasses
             get
             {
                 // 4 moznosti RP63-RP150
-                if (m_Names == null) m_Names = new List<string>() { "RP63®", "RP80®", "RP100®", "RP150®" };
+                if (m_Names == null) m_Names = new List<string>() { "RP65®", "RP80®", "RP100®", "RP150®" };
                 return m_Names;
             }
 
