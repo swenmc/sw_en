@@ -39,6 +39,7 @@ namespace BaseClasses
             // Plates are usually defined in x,y coordinates
 
             bool bUsePlatesTypeN = false; // Nastavuje sa pouzity typ zavetrovacieho plechu
+            bool bColumnUnderRafter = true; // Nastavuje ci uvazovat spoj pre wind post za rafterom alebo pod rafterom
 
             if (bUsePlatesTypeN)
             {
@@ -108,7 +109,7 @@ namespace BaseClasses
                     m_arrPlates[0] = pPlate1;
                 }
             }
-            else
+            else if(!bColumnUnderRafter)
             {
                 // Plate position in x-direction on the secondary member
                 float fAlignment_x;
@@ -122,7 +123,7 @@ namespace BaseClasses
 
                 float fGamma_rad = MathF.fPI / 6f;
                 float fColumnDepth = (float)m_SecondaryMembers[0].CrScStart.h;
-                float fhY = 0.05f; // 
+                float fhY = 0.05f; //
                 float fbX1 = fColumnDepth / (float)Math.Cos(fGamma_rad) + 0.5f * fhY;
                 float fOffsetAboveRafter = 0.01f; // Dodatocny posun plechu smerom hore nad rafter tak, aby sa neprekryvali plochy plechu a rafteru. Bolo by potrebne predefinovat plechy, aby mal konce kde sa prekryva s rafterom uplne ploche
 
@@ -188,7 +189,7 @@ namespace BaseClasses
 
                 // Zaporna suradnica x posuva plech pred zaciatok pruta
                 Point3D ControlPoint_P1 = new Point3D(fControlPointPosition_x_start, fControlPointPosition_y_start, fControlPointPosition_z_start);
-                Point3D ControlPoint_P2 = new Point3D(fControlPoint2Position_x_start, fControlPoint2Position_y_start, fControlPoint3Position_z_start);
+                Point3D ControlPoint_P2 = new Point3D(fControlPoint2Position_x_start, fControlPoint2Position_y_start, fControlPoint2Position_z_start);
                 Point3D ControlPoint_P3 = new Point3D(fControlPoint3Position_x_start, fControlPoint3Position_y_start, fControlPoint3Position_z_start);
 
                 int iConnectorNumberinOnePlate = 6;
@@ -221,6 +222,92 @@ namespace BaseClasses
                 m_arrPlates[0] = pPlate2;
                 m_arrPlates[1] = pPlate3;
                 m_arrPlates[2] = pPlate1; // TODO ??? Dlhy pasik plate M posielam do pola ako posledny, lebo z prvej plate sa urcuju rozmery prutov pre preview a je lepsie tam mat plate s kratkymi stranami
+            }
+            else
+            {
+                // Plate position in x-direction on the secondary member
+                float fAlignment_x;
+                fAlignment_x = m_SecondaryMembers[0].FAlignment_Start; // Posun v smere osi x LCS pruta
+
+                if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // End node
+                    fAlignment_x = m_SecondaryMembers[0].FAlignment_End; // Posun v smere osi x LCS pruta
+
+                float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
+                float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
+
+                float fhY = 0.05f; //
+                float fOffsetAboveRafter = 0.01f; // Dodatocny posun plechu smerom hore nad rafter tak, aby sa neprekryvali plochy plechu a rafteru. Bolo by potrebne predefinovat plechy, aby mal konce kde sa prekryva s rafterom uplne ploche
+
+                float fbPlate2 = 0.05f;
+                float fhPlate2 = 0.27f;
+
+                float fPlateOffset_y = 0.5f * (float)m_SecondaryMembers[0].CrScStart.b + (float)m_SecondaryMembers[0].CrScStart.y_min;
+
+                // Rotation about longitudinal axis
+                // Front Side of Building
+                float fRotation1AboutLCS_y_deg = 0;
+                float fRotation1AboutLCS_z_deg = -90;
+                float fControlPoint1Position_x_start = -fAlignment_x;
+                float fControlPoint1Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
+                float fControlPoint1Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
+                float fControlPoint1Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
+                float fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+                float fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+
+                float fRotation2AboutLCS_y_deg = 180 + 90;
+                float fRotation2AboutLCS_z_deg = -90;
+                float fControlPoint2Position_x_start = -fAlignment_x;
+                float fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
+                float fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
+                float fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
+                float fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+                float fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+
+                if (bSwitchConnectedSide_Z) // Back Side of Building
+                {
+                    fRotation1AboutLCS_y_deg = 90;
+                    fRotation1AboutLCS_z_deg = -90;
+                    fControlPoint1Position_x_start = -fAlignment_x;
+                    fControlPoint1Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
+                    fControlPoint1Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
+                    fControlPoint1Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
+                    fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                    fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+
+                    fRotation2AboutLCS_y_deg = 180;
+                    fRotation2AboutLCS_z_deg = -90;
+                    fControlPoint2Position_x_start = -fAlignment_x;
+                    fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhPlate2;
+                    fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
+                    fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
+                    fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                    fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                }
+
+                // Zaporna suradnica x posuva plech pred zaciatok pruta
+                Point3D ControlPoint_P1 = new Point3D(fControlPoint1Position_x_start, fControlPoint1Position_y_start, fControlPoint1Position_z_start);
+                Point3D ControlPoint_P2 = new Point3D(fControlPoint2Position_x_start, fControlPoint2Position_y_start, fControlPoint2Position_z_start);
+
+                CScrew referenceScrew = new CScrew("TEK", "14");
+                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(16, referenceScrew);
+
+                CConCom_Plate_F_or_L pPlate1 = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, fRotation1AboutLCS_y_deg, fRotation1AboutLCS_z_deg, screwArrangement_L, true);
+                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
+
+                // Identification of current joint node location (start or end definition node of secondary member)
+                if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
+                {
+                    // Rotate and move joint defined in the start point [0,0,0] to the end point
+                    ControlPoint_P1 = new Point3D(fControlPoint1Position_x_end, fControlPoint1Position_y_end, fControlPoint1Position_z_end);
+                    ControlPoint_P2 = new Point3D(fControlPoint2Position_x_end, fControlPoint2Position_y_end, fControlPoint2Position_z_end);
+
+                    pPlate1 = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, fRotation1AboutLCS_y_deg, fRotation1AboutLCS_z_deg, screwArrangement_L, true);
+                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fbPlate2, fhPlate2, fbPlate2, m_ft, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
+                }
+
+                m_arrPlates = new CPlate[2];
+                m_arrPlates[0] = pPlate1;
+                m_arrPlates[1] = pPlate2;
             }
         }
 

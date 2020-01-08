@@ -118,8 +118,12 @@
     <Compile Include="ModelViews\PlateView.cs" />
     <Compile Include="Model\CAccessories_DownpipeProperties.cs" />
     <Compile Include="Model\CAccessories_LengthItemProperties.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_H.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_G.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_H.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_G.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CWasher_W.cs" />
     <Compile Include="Model\COpeningProperties.cs" />
@@ -201,7 +205,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement_BB_BG.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BX_1.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F.cs" />
-    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F_or_L.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_L.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_O.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_N.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_LL.cs" />

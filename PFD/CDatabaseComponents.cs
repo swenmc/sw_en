@@ -36,6 +36,14 @@ namespace PFD
         //------------------------------------------------------------------------------------------------
         // Task 413
         // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
+        public List<string> arr_Serie_G_Names = new List<string>(2)
+            {"G - LH",
+             "G - RH"};
+
+    public List<string> arr_Serie_H_Names = new List<string>(2)
+            {"H - LH",
+             "H - RH"};
+
         public List<string> arr_Serie_Q_Names = new List<string>(1)
             {"Q"};
 
@@ -99,6 +107,20 @@ namespace PFD
         //------------------------------------------------------------------------------------------------
         // Task 413
         // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
+
+        public float[,] arr_Serie_G_Dimension = new float[2, 7]
+        {
+                // bX1, bX2, hY, hY2, lZ, t, iNumberOfHoles
+                {500-180, 50, 800, 300, 100, 3, 0},
+                {500-180, 50, 800, 300, 100, 3, 0},
+        };
+
+        public float[,] arr_Serie_H_Dimension = new float[2, 5]
+        {
+                {500, 400, 100, 3, 0},
+                {500, 400, 100, 3, 0}
+        };
+
         public float[,] arr_Serie_Q_Dimension = new float[1, 5]
         {
                 {272, 200, 70, 2, 0}
