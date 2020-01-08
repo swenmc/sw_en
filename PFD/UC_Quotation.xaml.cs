@@ -256,7 +256,7 @@ namespace PFD
 
             // DG 8
             // Downpipes
-            if (vm._quotationDisplayOptionsVM.DisplayDownpipe) CreateTableDownpipes(model);
+            if (vm._quotationDisplayOptionsVM.DisplayDownpipe && _pfdVM.Downpipes.Count > 0) CreateTableDownpipes(model);
             else
             {
                 TextBlock_Downpipes.Visibility = Visibility.Collapsed;
