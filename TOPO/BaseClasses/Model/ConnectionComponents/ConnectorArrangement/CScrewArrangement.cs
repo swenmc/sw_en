@@ -95,7 +95,8 @@ namespace BaseClasses
             float flZ,
             float fhY1,
             float ft,
-            float fSlope_rad)
+            float fSlope_rad,
+            bool bScrewInPlusZDirection)
         { }
 
         public virtual void Calc_HolesCentersCoord2DKneePlate(
@@ -112,7 +113,8 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float ft,
-            float fSlope_rad)
+            float fSlope_rad,
+            bool bScrewInPlusZDirection)
         { }
         public virtual void Calc_HolesCentersCoord2DApexPlate(
             float fOffset_x,

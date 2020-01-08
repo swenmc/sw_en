@@ -100,6 +100,21 @@ namespace BaseClasses
             }
         }
 
+        bool m_bScrewInPlusZDirection;
+
+        public bool ScrewInPlusZDirection
+        {
+            get
+            {
+                return m_bScrewInPlusZDirection;
+            }
+
+            set
+            {
+                m_bScrewInPlusZDirection = value;
+            }
+        }
+
         public Point pTip;
 
         public CConCom_Plate_KB()
@@ -120,6 +135,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            bool bScrewInPlusZDirection,
             CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
@@ -143,6 +159,7 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
+            m_bScrewInPlusZDirection = bScrewInPlusZDirection;
 
             UpdatePlateData(screwArrangement);
         }
@@ -170,7 +187,7 @@ namespace BaseClasses
             if (screwArrangement != null)
             {
                 // Parameter flZ - // Distance from the left edge is the same as KA plate (lz is used for KC and KD plates)
-                screwArrangement.Calc_KneePlateData(m_fbX1, m_fbX2, 0, m_fhY1, Ft, m_fSlope_rad);
+                screwArrangement.Calc_KneePlateData(m_fbX1, m_fbX2, 0, m_fhY1, Ft, m_fSlope_rad, m_bScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface

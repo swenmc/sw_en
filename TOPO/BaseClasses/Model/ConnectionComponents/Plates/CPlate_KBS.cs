@@ -29,6 +29,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            bool bScrewInPlusZDirection,
             CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
@@ -52,6 +53,7 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
+            ScrewInPlusZDirection = bScrewInPlusZDirection;
 
             UpdatePlateData(screwArrangement);
         }

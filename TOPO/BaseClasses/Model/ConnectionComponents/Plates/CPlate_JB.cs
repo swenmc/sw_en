@@ -86,6 +86,21 @@ namespace BaseClasses
             }
         }
 
+        bool m_bScrewInPlusZDirection;
+
+        public bool ScrewInPlusZDirection
+        {
+            get
+            {
+                return m_bScrewInPlusZDirection;
+            }
+
+            set
+            {
+                m_bScrewInPlusZDirection = value;
+            }
+        }
+
         public CConCom_Plate_JB()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -103,6 +118,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            bool bScrewInPlusZDirection,
             CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
@@ -124,8 +140,9 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
+            m_bScrewInPlusZDirection = bScrewInPlusZDirection;
 
-             UpdatePlateData(screwArrangement);
+            UpdatePlateData(screwArrangement);
         }
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
@@ -150,7 +167,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_ApexPlateData(0, m_fbX, m_flZ, m_fhY1, Ft, m_fSlope_rad);
+                screwArrangement.Calc_ApexPlateData(0, m_fbX, m_flZ, m_fhY1, Ft, m_fSlope_rad, m_bScrewInPlusZDirection);
             }
 
             // Fill list of indices for drawing of surface

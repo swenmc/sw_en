@@ -455,11 +455,12 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float ft,
-            float fSlope_rad)
+            float fSlope_rad,
+            bool bScrewInPlusZDirection = true)
         {
             Calc_HolesCentersCoord2DApexPlate(fOffset_x, fbX, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft, true);
-            GenerateConnectors_FlatPlate(true);
+            Calc_HolesControlPointsCoord3D_FlatPlate(fOffset_x, flZ, ft, bScrewInPlusZDirection);
+            GenerateConnectors_FlatPlate(bScrewInPlusZDirection);
         }
 
         public override void Calc_KneePlateData(
@@ -468,11 +469,12 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float ft,
-            float fSlope_rad)
+            float fSlope_rad,
+            bool bScrewInPlusZDirection = false)
         {
             Calc_HolesCentersCoord2DKneePlate(fbX_1, fbX_2, flZ, fhY_1, fSlope_rad);
-            Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft, false);
-            GenerateConnectors_FlatPlate(false);
+            Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft, bScrewInPlusZDirection);
+            GenerateConnectors_FlatPlate(bScrewInPlusZDirection);
         }
 
         public Point[] GetMirroredSequenceAboutY(float fXDistanceOfMirrorAxis, CScrewSequence InputSequence)
