@@ -15,6 +15,7 @@ namespace BaseClasses
         public event PropertyChangedEventHandler PropertyChanged;
 
         private string m_Name;
+        private string m_NameOld;
         private string m_DatabaseTable;
         private double m_thickness;
         private double m_width_total;
@@ -41,11 +42,24 @@ namespace BaseClasses
 
             set
             {
+                m_NameOld = m_Name;
                 m_Name = value;
                 SetParametersFromDatabase();
                 NotifyPropertyChanged("Name");
             }
-        }        
+        }
+        public string NameOld
+        {
+            get
+            {
+                return m_NameOld;
+            }
+
+            set
+            {
+                m_NameOld = value;
+            }
+        }
 
         public double Thickness
         {
@@ -229,6 +243,8 @@ namespace BaseClasses
                 m_DatabaseTable = value;
             }
         }
+
+        
 
         public CAccessories_LengthItemProperties()
         {

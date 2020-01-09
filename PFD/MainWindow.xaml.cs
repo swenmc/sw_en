@@ -947,14 +947,24 @@ namespace PFD
 
         private void SetAccesoriesButtonsVisibility()
         {
-            if (vm.Flashings.Count >= 9) btnAddFlashing.Visibility = Visibility.Hidden;
-            else btnAddFlashing.Visibility = Visibility.Visible;
+            //if (vm.Flashings.Count >= 9) btnAddFlashing.Visibility = Visibility.Hidden;
+            //else btnAddFlashing.Visibility = Visibility.Visible;
 
-            if (vm.Gutters.Count >= 1) btnAddGutter.Visibility = Visibility.Hidden;
-            else btnAddGutter.Visibility = Visibility.Visible;
+            //if (vm.Gutters.Count >= 1) btnAddGutter.Visibility = Visibility.Hidden;
+            //else btnAddGutter.Visibility = Visibility.Visible;
 
-            if (vm.Downpipes.Count >= 1) btnAddDownpipe.Visibility = Visibility.Hidden;
-            else btnAddDownpipe.Visibility = Visibility.Visible;
+            //if (vm.Downpipes.Count >= 1) btnAddDownpipe.Visibility = Visibility.Hidden;
+            //else btnAddDownpipe.Visibility = Visibility.Visible;
+
+            //2.moznost
+            if (vm.Flashings.Count >= 9) btnAddFlashing.IsEnabled = false;
+            else btnAddFlashing.IsEnabled = true;
+
+            if (vm.Gutters.Count >= 1) btnAddGutter.IsEnabled = false;
+            else btnAddGutter.IsEnabled = true;
+
+            if (vm.Downpipes.Count >= 1) btnAddDownpipe.IsEnabled = false;
+            else btnAddDownpipe.IsEnabled = true;
         }
 
             private void Clear3DModel_Click(object sender, RoutedEventArgs e)

@@ -3203,8 +3203,14 @@ namespace PFD
         {
             if (e.PropertyName == "Name")
             {
-                if (!ValidateFlashings()) PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
-                
+                if (!ValidateFlashings())
+                {
+                    PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
+                    CAccessories_LengthItemProperties item = sender as CAccessories_LengthItemProperties;
+                    if(item != null) item.Name = item.NameOld;                    
+                    PFDMainWindow.Datagrid_Flashings.ItemsSource = null;
+                    PFDMainWindow.Datagrid_Flashings.ItemsSource = Flashings;
+                }                 
             }
             if (e.PropertyName == "Thickness") return;
             if (e.PropertyName == "Width_total") return;
