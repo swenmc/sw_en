@@ -3203,7 +3203,7 @@ namespace PFD
         {
             if (e.PropertyName == "Name")
             {
-                if (!ValidateFlashings()) PFDMainWindow.ShowMessageBoxInPFDWindow("Error. Duplicate definition of flashing types.");
+                if (!ValidateFlashings()) PFDMainWindow.ShowMessageBoxInPFDWindow("ERROR.\nDuplicated definition of flashing type.\nChoose a unique type, please.");
                 
             }
             if (e.PropertyName == "Thickness") return;
