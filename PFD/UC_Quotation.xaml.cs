@@ -1377,7 +1377,7 @@ namespace PFD
                 {
                     fRollerDoorTrimmerFlashing_TotalLength += (dp.fDoorsHeight * 2);
                     fRollerDoorLintelFlashing_TotalLength += dp.fDoorsWidth;
-                    fRollerDoorLintelCapFlashing_TotalLength = dp.fDoorsWidth;
+                    fRollerDoorLintelCapFlashing_TotalLength += dp.fDoorsWidth;
                 }
                 else
                 {
