@@ -84,6 +84,7 @@ namespace BaseClasses
             }
         }
 
+        private bool bDefineLeftPlate = true;
         private int iLeftRightIndex; // plate 0 - left, 1 - right 
 
         public CConCom_Plate_G()
@@ -190,87 +191,174 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         public override void Calc_Coord2D()
         {
-            PointsOut2D[0].X = 0;
-            PointsOut2D[0].Y = 0;
+            if (bDefineLeftPlate)
+            {
+                PointsOut2D[0].X = 0;
+                PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1].X = m_fbX1;
-            PointsOut2D[1].Y = 0;
+                PointsOut2D[1].X = m_flZ;
+                PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2].X = PointsOut2D[1].X + m_flZ;
-            PointsOut2D[2].Y = 0;
+                PointsOut2D[2].X = PointsOut2D[1].X + m_fbX1;
+                PointsOut2D[2].Y = 0;
 
-            PointsOut2D[3].X = PointsOut2D[2].X;
-            PointsOut2D[3].Y = m_fhY;
+                PointsOut2D[3].X = PointsOut2D[2].X;
+                PointsOut2D[3].Y = m_fhY2;
 
-            PointsOut2D[4].X = PointsOut2D[1].X;
-            PointsOut2D[4].Y = m_fhY;
+                PointsOut2D[4].X = PointsOut2D[1].X + m_fbX2;
+                PointsOut2D[4].Y = m_fhY;
 
-            PointsOut2D[5].X = PointsOut2D[1].X - m_fbX2;
-            PointsOut2D[5].Y = m_fhY;
+                PointsOut2D[5].X = PointsOut2D[1].X;
+                PointsOut2D[5].Y = m_fhY;
 
-            PointsOut2D[6].X = PointsOut2D[0].X;
-            PointsOut2D[6].Y = m_fhY2;
+                PointsOut2D[6].X = PointsOut2D[0].X;
+                PointsOut2D[6].Y = m_fhY;
+            }
+            else
+            {
+                PointsOut2D[0].X = 0;
+                PointsOut2D[0].Y = 0;
+
+                PointsOut2D[1].X = m_fbX1;
+                PointsOut2D[1].Y = 0;
+
+                PointsOut2D[2].X = PointsOut2D[1].X + m_flZ;
+                PointsOut2D[2].Y = 0;
+
+                PointsOut2D[3].X = PointsOut2D[2].X;
+                PointsOut2D[3].Y = m_fhY;
+
+                PointsOut2D[4].X = PointsOut2D[1].X;
+                PointsOut2D[4].Y = m_fhY;
+
+                PointsOut2D[5].X = PointsOut2D[1].X - m_fbX2;
+                PointsOut2D[5].Y = m_fhY;
+
+                PointsOut2D[6].X = PointsOut2D[0].X;
+                PointsOut2D[6].Y = m_fhY2;
+            }
         }
 
         public override void Calc_Coord3D()
         {
             Ft = 0.02f;
 
-            arrPoints3D[0].X = 0;
-            arrPoints3D[0].Y = 0;
-            arrPoints3D[0].Z = 0;
+            if (bDefineLeftPlate)
+            {
+                arrPoints3D[0].X = 0;
+                arrPoints3D[0].Y = 0;
+                arrPoints3D[0].Z = m_flZ;
 
-            arrPoints3D[1].X = m_fbX1;
-            arrPoints3D[1].Y = 0;
-            arrPoints3D[1].Z = 0;
+                arrPoints3D[1].X = 0;
+                arrPoints3D[1].Y = 0;
+                arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = arrPoints3D[1].X;
-            arrPoints3D[2].Y = arrPoints3D[1].Y;
-            arrPoints3D[2].Z = m_flZ;
+                arrPoints3D[2].X = m_fbX1;
+                arrPoints3D[2].Y = arrPoints3D[1].Y;
+                arrPoints3D[2].Z = 0;
 
-            arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = m_fhY;
-            arrPoints3D[3].Z = arrPoints3D[2].Z;
+                arrPoints3D[3].X = arrPoints3D[2].X;
+                arrPoints3D[3].Y = m_fhY2;
+                arrPoints3D[3].Z = 0;
 
-            arrPoints3D[4].X = arrPoints3D[1].X;
-            arrPoints3D[4].Y = m_fhY;
-            arrPoints3D[4].Z = arrPoints3D[1].Z;
+                arrPoints3D[4].X = m_fbX2;
+                arrPoints3D[4].Y = m_fhY;
+                arrPoints3D[4].Z = 0;
 
-            arrPoints3D[5].X = arrPoints3D[4].X - m_fbX2;
-            arrPoints3D[5].Y = m_fhY;
-            arrPoints3D[5].Z = arrPoints3D[0].Z;
+                arrPoints3D[5].X = arrPoints3D[1].X;
+                arrPoints3D[5].Y = m_fhY;
+                arrPoints3D[5].Z = 0;
 
-            arrPoints3D[6].X = arrPoints3D[0].X;
-            arrPoints3D[6].Y = m_fhY2;
-            arrPoints3D[6].Z = arrPoints3D[0].Z;
+                arrPoints3D[6].X = arrPoints3D[0].X;
+                arrPoints3D[6].Y = m_fhY;
+                arrPoints3D[6].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[7].X = arrPoints3D[0].X;
-            arrPoints3D[7].Y = arrPoints3D[0].Y;
-            arrPoints3D[7].Z = arrPoints3D[0].Z + Ft;
+                arrPoints3D[7].X = arrPoints3D[0].X + Ft;
+                arrPoints3D[7].Y = arrPoints3D[0].Y;
+                arrPoints3D[7].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[8].X = arrPoints3D[1].X - Ft;
-            arrPoints3D[8].Y = arrPoints3D[1].Y;
-            arrPoints3D[8].Z = arrPoints3D[1].Z + Ft;
+                arrPoints3D[8].X = arrPoints3D[1].X + Ft;
+                arrPoints3D[8].Y = arrPoints3D[1].Y;
+                arrPoints3D[8].Z = arrPoints3D[1].Z + Ft;
 
-            arrPoints3D[9].X = arrPoints3D[8].X;
-            arrPoints3D[9].Y = arrPoints3D[2].Y;
-            arrPoints3D[9].Z = arrPoints3D[2].Z;
+                arrPoints3D[9].X = arrPoints3D[2].X;
+                arrPoints3D[9].Y = arrPoints3D[2].Y;
+                arrPoints3D[9].Z = arrPoints3D[2].Z + Ft;
 
-            arrPoints3D[10].X = arrPoints3D[9].X;
-            arrPoints3D[10].Y = arrPoints3D[9].Y + m_fhY;
-            arrPoints3D[10].Z = arrPoints3D[9].Z;
+                arrPoints3D[10].X = arrPoints3D[3].X;
+                arrPoints3D[10].Y = arrPoints3D[3].Y;
+                arrPoints3D[10].Z = arrPoints3D[3].Z + Ft;
 
-            arrPoints3D[11].X = arrPoints3D[8].X;
-            arrPoints3D[11].Y = arrPoints3D[8].Y + m_fhY;
-            arrPoints3D[11].Z = arrPoints3D[8].Z;
+                arrPoints3D[11].X = arrPoints3D[4].X;
+                arrPoints3D[11].Y = arrPoints3D[4].Y;
+                arrPoints3D[11].Z = arrPoints3D[4].Z + Ft;
 
-            arrPoints3D[12].X = arrPoints3D[5].X;
-            arrPoints3D[12].Y = arrPoints3D[5].Y;
-            arrPoints3D[12].Z = arrPoints3D[5].Z + Ft;
+                arrPoints3D[12].X = arrPoints3D[5].X + Ft;
+                arrPoints3D[12].Y = arrPoints3D[5].Y;
+                arrPoints3D[12].Z = arrPoints3D[5].Z + Ft;
 
-            arrPoints3D[13].X = arrPoints3D[6].X;
-            arrPoints3D[13].Y = arrPoints3D[6].Y;
-            arrPoints3D[13].Z = arrPoints3D[6].Z + Ft;
+                arrPoints3D[13].X = arrPoints3D[6].X + Ft;
+                arrPoints3D[13].Y = arrPoints3D[6].Y;
+                arrPoints3D[13].Z = arrPoints3D[6].Z;
+            }
+            else
+            {
+                arrPoints3D[0].X = 0;
+                arrPoints3D[0].Y = 0;
+                arrPoints3D[0].Z = 0;
+
+                arrPoints3D[1].X = m_fbX1;
+                arrPoints3D[1].Y = 0;
+                arrPoints3D[1].Z = 0;
+
+                arrPoints3D[2].X = arrPoints3D[1].X;
+                arrPoints3D[2].Y = arrPoints3D[1].Y;
+                arrPoints3D[2].Z = m_flZ;
+
+                arrPoints3D[3].X = arrPoints3D[2].X;
+                arrPoints3D[3].Y = m_fhY;
+                arrPoints3D[3].Z = arrPoints3D[2].Z;
+
+                arrPoints3D[4].X = arrPoints3D[1].X;
+                arrPoints3D[4].Y = m_fhY;
+                arrPoints3D[4].Z = arrPoints3D[1].Z;
+
+                arrPoints3D[5].X = arrPoints3D[4].X - m_fbX2;
+                arrPoints3D[5].Y = m_fhY;
+                arrPoints3D[5].Z = arrPoints3D[0].Z;
+
+                arrPoints3D[6].X = arrPoints3D[0].X;
+                arrPoints3D[6].Y = m_fhY2;
+                arrPoints3D[6].Z = arrPoints3D[0].Z;
+
+                arrPoints3D[7].X = arrPoints3D[0].X;
+                arrPoints3D[7].Y = arrPoints3D[0].Y;
+                arrPoints3D[7].Z = arrPoints3D[0].Z + Ft;
+
+                arrPoints3D[8].X = arrPoints3D[1].X - Ft;
+                arrPoints3D[8].Y = arrPoints3D[1].Y;
+                arrPoints3D[8].Z = arrPoints3D[1].Z + Ft;
+
+                arrPoints3D[9].X = arrPoints3D[8].X;
+                arrPoints3D[9].Y = arrPoints3D[2].Y;
+                arrPoints3D[9].Z = arrPoints3D[2].Z;
+
+                arrPoints3D[10].X = arrPoints3D[9].X;
+                arrPoints3D[10].Y = arrPoints3D[9].Y + m_fhY;
+                arrPoints3D[10].Z = arrPoints3D[9].Z;
+
+                arrPoints3D[11].X = arrPoints3D[8].X;
+                arrPoints3D[11].Y = arrPoints3D[8].Y + m_fhY;
+                arrPoints3D[11].Z = arrPoints3D[8].Z;
+
+                arrPoints3D[12].X = arrPoints3D[5].X;
+                arrPoints3D[12].Y = arrPoints3D[5].Y;
+                arrPoints3D[12].Z = arrPoints3D[5].Z + Ft;
+
+                arrPoints3D[13].X = arrPoints3D[6].X;
+                arrPoints3D[13].Y = arrPoints3D[6].Y;
+                arrPoints3D[13].Z = arrPoints3D[6].Z + Ft;
+            }
         }
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
@@ -285,37 +373,75 @@ namespace BaseClasses
         {
             TriangleIndices = new Int32Collection();
 
-            if (iLeftRightIndex == 0) // Left
+            if (bDefineLeftPlate)
             {
-                AddPenthagonIndices_CW_12345(TriangleIndices, 7, 13, 12, 11, 8);
-                AddRectangleIndices_CW_1234(TriangleIndices, 8, 11, 10, 9);
-                AddRectangleIndices_CW_1234(TriangleIndices, 9, 10, 3, 2);
-                AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 1);
-                AddPenthagonIndices_CW_12345(TriangleIndices, 4, 5, 6, 0, 1);
-                AddRectangleIndices_CW_1234(TriangleIndices, 0, 6, 13, 7);
+                if (iLeftRightIndex == 0) // Left
+                {
+                    AddPenthagonIndices_CW_12345(TriangleIndices, 8, 12, 11, 10, 9);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 9, 10, 3, 2);
+                    AddPenthagonIndices_CW_12345(TriangleIndices, 2, 3, 4, 5, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 1, 5, 6, 0);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 0, 6, 13, 7);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 7, 13, 12, 8);
 
-                AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 8, 1);
-                AddRectangleIndices_CW_1234(TriangleIndices, 8, 9, 2, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 8, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 8, 9, 2, 1);
 
-                AddRectangleIndices_CW_1234(TriangleIndices, 6, 5, 12, 13);
-                AddRectangleIndices_CW_1234(TriangleIndices, 5, 4, 11, 12);
-                AddRectangleIndices_CW_1234(TriangleIndices, 4, 3, 10, 11);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 6, 5, 12, 13);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 5, 4, 11, 12);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 4, 3, 10, 11);
+                }
+                else if (iLeftRightIndex == 1) // Right
+                {
+                    AddPenthagonIndices_CCW_12345(TriangleIndices, 8, 12, 11, 10, 9);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 9, 10, 3, 2);
+                    AddPenthagonIndices_CCW_12345(TriangleIndices, 2, 3, 4, 5, 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 1, 5, 6, 0);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 0, 6, 13, 7);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 7, 13, 12, 8);
+
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 0, 7, 8, 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 8, 9, 2, 1);
+
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 6, 5, 12, 13);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 5, 4, 11, 12);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 4, 3, 10, 11);
+                }
             }
-            else if (iLeftRightIndex == 1) // Right
+            else
             {
-                AddPenthagonIndices_CCW_12345(TriangleIndices, 7, 13, 12, 11, 8);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 8, 11, 10, 9);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 9, 10, 3, 2);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 2, 3, 4, 1);
-                AddPenthagonIndices_CCW_12345(TriangleIndices, 4, 5, 6, 0, 1);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 0, 6, 13, 7);
+                if (iLeftRightIndex == 0) // Left
+                {
+                    AddPenthagonIndices_CW_12345(TriangleIndices, 7, 13, 12, 11, 8);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 8, 11, 10, 9);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 9, 10, 3, 2);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 1);
+                    AddPenthagonIndices_CW_12345(TriangleIndices, 4, 5, 6, 0, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 0, 6, 13, 7);
 
-                AddRectangleIndices_CCW_1234(TriangleIndices, 0, 7, 8, 1);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 8, 9, 2, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 8, 1);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 8, 9, 2, 1);
 
-                AddRectangleIndices_CCW_1234(TriangleIndices, 6, 5, 12, 13);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 5, 4, 11, 12);
-                AddRectangleIndices_CCW_1234(TriangleIndices, 4, 3, 10, 11);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 6, 5, 12, 13);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 5, 4, 11, 12);
+                    AddRectangleIndices_CW_1234(TriangleIndices, 4, 3, 10, 11);
+                }
+                else if (iLeftRightIndex == 1) // Right
+                {
+                    AddPenthagonIndices_CCW_12345(TriangleIndices, 7, 13, 12, 11, 8);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 8, 11, 10, 9);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 9, 10, 3, 2);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 2, 3, 4, 1);
+                    AddPenthagonIndices_CCW_12345(TriangleIndices, 4, 5, 6, 0, 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 0, 6, 13, 7);
+
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 0, 7, 8, 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 8, 9, 2, 1);
+
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 6, 5, 12, 13);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 5, 4, 11, 12);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, 4, 3, 10, 11);
+                }
             }
         }
 
@@ -362,27 +488,54 @@ namespace BaseClasses
                 wireFrame.Points.Add(pj);
             }
 
-            // Lateral
-            wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[7]);
+            if (bDefineLeftPlate)
+            {
+                // Lateral
+                wireFrame.Points.Add(arrPoints3D[0]);
+                wireFrame.Points.Add(arrPoints3D[7]);
 
-            wireFrame.Points.Add(arrPoints3D[2]);
-            wireFrame.Points.Add(arrPoints3D[9]);
+                wireFrame.Points.Add(arrPoints3D[2]);
+                wireFrame.Points.Add(arrPoints3D[9]);
 
-            wireFrame.Points.Add(arrPoints3D[3]);
-            wireFrame.Points.Add(arrPoints3D[10]);
+                wireFrame.Points.Add(arrPoints3D[3]);
+                wireFrame.Points.Add(arrPoints3D[10]);
 
-            wireFrame.Points.Add(arrPoints3D[5]);
-            wireFrame.Points.Add(arrPoints3D[12]);
+                wireFrame.Points.Add(arrPoints3D[4]);
+                wireFrame.Points.Add(arrPoints3D[11]);
 
-            wireFrame.Points.Add(arrPoints3D[6]);
-            wireFrame.Points.Add(arrPoints3D[13]);
+                wireFrame.Points.Add(arrPoints3D[6]);
+                wireFrame.Points.Add(arrPoints3D[13]);
 
-            wireFrame.Points.Add(arrPoints3D[1]);
-            wireFrame.Points.Add(arrPoints3D[4]);
+                wireFrame.Points.Add(arrPoints3D[1]);
+                wireFrame.Points.Add(arrPoints3D[5]);
 
-            wireFrame.Points.Add(arrPoints3D[8]);
-            wireFrame.Points.Add(arrPoints3D[11]);
+                wireFrame.Points.Add(arrPoints3D[8]);
+                wireFrame.Points.Add(arrPoints3D[12]);
+            }
+            else
+            {
+                // Lateral
+                wireFrame.Points.Add(arrPoints3D[0]);
+                wireFrame.Points.Add(arrPoints3D[7]);
+
+                wireFrame.Points.Add(arrPoints3D[2]);
+                wireFrame.Points.Add(arrPoints3D[9]);
+
+                wireFrame.Points.Add(arrPoints3D[3]);
+                wireFrame.Points.Add(arrPoints3D[10]);
+
+                wireFrame.Points.Add(arrPoints3D[5]);
+                wireFrame.Points.Add(arrPoints3D[12]);
+
+                wireFrame.Points.Add(arrPoints3D[6]);
+                wireFrame.Points.Add(arrPoints3D[13]);
+
+                wireFrame.Points.Add(arrPoints3D[1]);
+                wireFrame.Points.Add(arrPoints3D[4]);
+
+                wireFrame.Points.Add(arrPoints3D[8]);
+                wireFrame.Points.Add(arrPoints3D[11]);
+            }
 
             return wireFrame;
         }
