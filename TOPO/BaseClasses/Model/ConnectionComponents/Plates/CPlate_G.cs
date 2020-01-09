@@ -363,10 +363,52 @@ namespace BaseClasses
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
         {
+            // TODO
+            float fx_edge = m_flZ * 0.5f; // Middle of left leg
+            float fy_edge1 = 0.200f;
+            float fy_edge2 = 0.050f;
+
+            float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
+
+            arrConnectorControlPoints3D[0].X = Ft + fScrewOffset;
+            arrConnectorControlPoints3D[0].Y = fy_edge1;
+            arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
+
+            arrConnectorControlPoints3D[1].X = Ft + fScrewOffset;
+            arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y + fy_edge2;
+            arrConnectorControlPoints3D[1].Z = m_flZ - fx_edge;
         }
 
         void GenerateConnectors(CScrewArrangement screwArrangement, bool bChangeRotationAngle_MirroredPlate)
         {
+            if (screwArrangement.IHolesNumber > 0)
+            {
+                screwArrangement.Screws = new CScrew[screwArrangement.IHolesNumber];
+
+                int iNumberOfScrewsInLeftLeg = screwArrangement.IHolesNumber / 2;
+
+                float fRotationAngleAboutYAxis = 180; // Vertical Axis
+
+                if (bChangeRotationAngle_MirroredPlate)
+                    fRotationAngleAboutYAxis = 0;
+
+                if (screwArrangement is CScrewArrangement_G)
+                    iNumberOfScrewsInLeftLeg = 2; // TODO - umoznit nastavovat dynamicky
+
+                for (int i = 0; i < screwArrangement.IHolesNumber; i++)
+                {
+                    if (i < iNumberOfScrewsInLeftLeg) // Left Leg
+                    {
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, fRotationAngleAboutYAxis, 0, true);
+                    }
+                    else
+                    {
+                        Point3D controlpoint = new Point3D(arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z);
+                        screwArrangement.Screws[i] = new CScrew(screwArrangement.referenceScrew, controlpoint, 0, 90, 0, true);
+                    }
+                }
+            }
         }
 
         protected override void loadIndices()

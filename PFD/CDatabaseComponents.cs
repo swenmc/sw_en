@@ -111,8 +111,8 @@ namespace PFD
         public float[,] arr_Serie_G_Dimension = new float[2, 7]
         {
                 // bX1, bX2, hY, hY2, lZ, t, iNumberOfHoles
-                {500-180, 50, 800, 300, 100, 3, 0},
-                {500-180, 50, 800, 300, 100, 3, 0},
+                {500-180, 50, 800, 300, 100, 3, 2},
+                {500-180, 50, 800, 300, 100, 3, 2},
         };
 
         public float[,] arr_Serie_H_Dimension = new float[2, 5]
