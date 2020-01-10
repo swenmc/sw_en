@@ -467,28 +467,14 @@ namespace PFD
             // toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             // TO Ondrej - suvisi to s tym ze potrebujeme oddelit vypocty hodnot zatazeni od generovania 3D geometrie a od GUI
 
-            //-----------------------------------------------------------------------------
-            // TODO Ondrej - Toto treba refaktorovat s UC_Quotation
-            // TODO 438
-            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
-
-            CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
-
-            CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
-
-            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
-
-            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
-
-            CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
-
-            CTS_CoilProperties prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
-            CTS_CoilProperties prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+            //-----------------------------------------------------------------------------            
+            CTS_CrscProperties prop_RoofCladding;
+            CTS_CrscProperties prop_WallCladding;
+            CTS_CoilProperties prop_RoofCladdingCoil;
+            CTS_CoilProperties prop_WallCladdingCoil;
+            CoatingColour prop_RoofCladdingColor;
+            CoatingColour prop_WallCladdingColor;
+            vm.GetCTS_CoilProperties(out prop_RoofCladding, out prop_WallCladding, out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);
@@ -1955,7 +1941,19 @@ namespace PFD
         {
             foreach (string s in vm.FlashingsNames)
             {
-                if (vm.Flashings.FirstOrDefault(f => f.Name == s && !f.Name.Contains(s) && !s.Contains(f.Name)) == null) return s;
+                if (vm.Flashings.FirstOrDefault(f => f.Name == s) != null) continue;
+
+                if (s == "Roof Ridge")
+                {
+                    if (vm.Flashings.FirstOrDefault(f => f.Name == "Roof Ridge (Soft Edge)") != null) continue;
+                }
+
+                if (s == "Roof Ridge (Soft Edge)")
+                {
+                    if (vm.Flashings.FirstOrDefault(f => f.Name == "Roof Ridge") != null) continue;
+                }
+
+                return s;
             }
             return null;
         }

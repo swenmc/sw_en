@@ -1192,25 +1192,31 @@ namespace PFD
             //-----------------------------------------------------------------------------
             // TODO Ondrej - Toto treba refaktorovat s MainWindow.xaml.cs
             // TODO 438
-            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
+            CTS_CrscProperties prop_RoofCladding;
+            CTS_CrscProperties prop_WallCladding;
+            CTS_CoilProperties prop_RoofCladdingCoil;
+            CTS_CoilProperties prop_WallCladdingCoil;
+            CoatingColour prop_RoofCladdingColor;
+            CoatingColour prop_WallCladdingColor;
+            vm.GetCTS_CoilProperties(out prop_RoofCladding, out prop_WallCladding, out prop_RoofCladdingCoil, out prop_WallCladdingCoil, out prop_RoofCladdingColor, out prop_WallCladdingColor);
+            //List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
+            //CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
+            //prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
 
-            CTS_CrscProperties prop_RoofCladding = new CTS_CrscProperties();
-            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.RoofCladding}-{vm.RoofCladdingThickness}");
+            //CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
+            //prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
 
-            CTS_CrscProperties prop_WallCladding = new CTS_CrscProperties();
-            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{vm.WallCladding}-{vm.WallCladdingThickness}");
+            //CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
+            //prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
 
-            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
-            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.RoofCladdingCoating);
+            //CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
+            //prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
 
-            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
-            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(vm.WallCladdingCoating);
+            //CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
+            //CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
 
-            CoatingColour prop_RoofCladdingColor = vm.RoofCladdingColors.ElementAtOrDefault(vm.RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
-            CoatingColour prop_WallCladdingColor = vm.WallCladdingColors.ElementAtOrDefault(vm.WallCladdingColorIndex);
-
-            CTS_CoilProperties prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
-            CTS_CoilProperties prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+            //CTS_CoilProperties prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
+            //CTS_CoilProperties prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(vm.WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
 
             float fRoofCladdingUnitMass_kg_m2 = (float)(prop_RoofCladdingCoil.mass_kg_lm / prop_RoofCladding.widthModular_m);
             float fWallCladdingUnitMass_kg_m2 = (float)(prop_WallCladdingCoil.mass_kg_lm / prop_WallCladding.widthModular_m);

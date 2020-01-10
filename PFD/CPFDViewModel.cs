@@ -4203,6 +4203,29 @@ namespace PFD
             return sDisplayOptions;
         }
 
+        public void GetCTS_CoilProperties(out CTS_CrscProperties prop_RoofCladding, out CTS_CrscProperties prop_WallCladding, 
+            out CTS_CoilProperties prop_RoofCladdingCoil, out CTS_CoilProperties prop_WallCladdingCoil, 
+            out CoatingColour prop_RoofCladdingColor, out CoatingColour prop_WallCladdingColor)
+        {
+            List<CTS_CoatingProperties> coatingsProperties = CTrapezoidalSheetingManager.LoadCoatingPropertiesList();
+
+            prop_RoofCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{RoofCladding}-{RoofCladdingThickness}");
+                        
+            prop_WallCladding = CTrapezoidalSheetingManager.GetSectionProperties($"{WallCladding}-{WallCladdingThickness}");
+
+            CTS_CoatingProperties prop_RoofCladdingCoating = new CTS_CoatingProperties();
+            prop_RoofCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(RoofCladdingCoating);
+
+            CTS_CoatingProperties prop_WallCladdingCoating = new CTS_CoatingProperties();
+            prop_WallCladdingCoating = CTrapezoidalSheetingManager.LoadCoatingProperties(WallCladdingCoating);
+
+            prop_RoofCladdingColor = RoofCladdingColors.ElementAtOrDefault(RoofCladdingColorIndex); // TODO Ondrej - pre Formclad a vyber color Zinc potrebujem vratit spravnu farbu odpovedajuce ID = 18 v databaze
+            prop_WallCladdingColor = WallCladdingColors.ElementAtOrDefault(WallCladdingColorIndex);
+
+            prop_RoofCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(RoofCladdingCoatingIndex), prop_RoofCladdingColor, prop_RoofCladding); // Ceny urcujeme podla coating a color
+            prop_WallCladdingCoil = CTrapezoidalSheetingManager.GetCladdingCoilProperties(coatingsProperties.ElementAtOrDefault(WallCladdingCoatingIndex), prop_WallCladdingColor, prop_WallCladding); // Ceny urcujeme podla coating a color
+        }
+
 
     }
 }
