@@ -140,6 +140,15 @@
     <Compile Include="BLOCKS\CBlock.cs" />
     <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="OptionsWindows\DesignOptionsWindow.xaml.cs">
+      <DependentUpon>DesignOptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindows\SolverOptionsWindow.xaml.cs">
+      <DependentUpon>SolverOptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindows\GeneralOptionsWindow.xaml.cs">
+      <DependentUpon>GeneralOptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QuotationExportOptionsWindow.xaml.cs">
       <DependentUpon>QuotationExportOptionsWindow.xaml</DependentUpon>
     </Compile>
@@ -248,7 +257,7 @@
     <Compile Include="WaitWindow.xaml.cs">
       <DependentUpon>WaitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DisplayOptionsWindow.xaml.cs">
+    <Compile Include="OptionsWindows\DisplayOptionsWindow.xaml.cs">
       <DependentUpon>DisplayOptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindPressureCalculatorViewModel.cs" />
@@ -302,6 +311,18 @@
     <Page Include="DesignResultsSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OptionsWindows\DesignOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\SolverOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OptionsWindows\GeneralOptionsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="QuotationExportOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -372,7 +393,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DisplayOptionsWindow.xaml">
+    <Page Include="OptionsWindows\DisplayOptionsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

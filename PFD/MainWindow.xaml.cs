@@ -1733,11 +1733,7 @@ namespace PFD
             e.Handled = true;
         }
 
-        private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
-        {
-            DisplayOptionsWindow w = new DisplayOptionsWindow(vm);
-            w.ShowDialog();
-        }
+        
 
         private void BtnDoorGenerator_Click(object sender, RoutedEventArgs e)
         {
@@ -1981,6 +1977,30 @@ namespace PFD
 
             vm.Downpipes.Add(downpipe);
             vm.RecreateQuotation = true;
+        }
+
+        private void BtnDisplayOptions_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayOptionsWindow w = new DisplayOptionsWindow(vm);
+            w.ShowDialog();
+        }
+
+        private void btnGeneralOptions_Click(object sender, RoutedEventArgs e)
+        {
+            GeneralOptionsWindow w = new GeneralOptionsWindow(vm);
+            w.ShowDialog();
+        }
+
+        private void btnSolverOptions_Click(object sender, RoutedEventArgs e)
+        {
+            SolverOptionsWindow w = new SolverOptionsWindow(vm);
+            w.ShowDialog();
+        }
+
+        private void btnDesignOptions_Click(object sender, RoutedEventArgs e)
+        {
+            DesignOptionsWindow w = new DesignOptionsWindow(vm);
+            w.ShowDialog();
         }
     }
 }
