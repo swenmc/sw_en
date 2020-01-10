@@ -212,8 +212,6 @@ namespace BaseClasses
 
         public override void Calc_Coord3D()
         {
-            //Ft = 0.02f;
-
             float y_a = (float)Math.Tan(m_fSlope_rad) * Ft;
             float y_c = (m_fhY2 - m_fhY1) * (float)Math.Sin(m_fSlope_rad);
             float z_c = (m_fhY2 - m_fhY1) * (float)Math.Cos(m_fSlope_rad);

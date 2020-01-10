@@ -299,8 +299,8 @@ namespace BaseClasses
                 Point3D ControlPoint_P2 = new Point3D(fControlPoint2Position_x_start, fControlPoint2Position_y_start, fControlPoint2Position_z_start);
 
                 CScrew referenceScrew = new CScrew("TEK", "14");
-                CScrewArrangement_G screwArrangement_G1 = new CScrewArrangement_G(2, referenceScrew);
-                CScrewArrangement_G screwArrangement_G2 = new CScrewArrangement_G(2, referenceScrew);
+                CScrewArrangement_G screwArrangement_G1 = new CScrewArrangement_G(referenceScrew);
+                CScrewArrangement_G screwArrangement_G2 = new CScrewArrangement_G(referenceScrew);
 
                 CConCom_Plate_G pPlate1 = new CConCom_Plate_G("G - LH", ControlPoint_P1, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, m_ft, 0, fRotation1AboutLCS_y_deg_start, fRotation1AboutLCS_z_deg_start, screwArrangement_G1, true);
                 CConCom_Plate_G pPlate2 = new CConCom_Plate_G("G - RH", ControlPoint_P2, fb1_Plate, fb2_Plate, fhY1_Plate, fhY2_Plate, flZ_Plate, m_ft, 0, fRotation2AboutLCS_y_deg_start, fRotation2AboutLCS_z_deg_start, screwArrangement_G2, true);
