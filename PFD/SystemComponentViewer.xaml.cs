@@ -766,7 +766,7 @@ namespace PFD
                         {
                             fb = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 0] / 1000f;
                             fh = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fl = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            fh2 = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 2] / 1000f;
                             ft = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 3] / 1000f;
                             iNumberofHoles = (int)dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 4];
                             break;
@@ -1152,7 +1152,7 @@ namespace PFD
                 CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_G screwArrangement_G = new CScrewArrangement_G(iNumberofHoles, referenceScrew);
-                CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(iNumberofHoles, referenceScrew);
+                CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(/*iNumberofHoles, */ referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
                 CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
@@ -1236,12 +1236,12 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_G:
                         {
-                            plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, ft, 0f, 0f, 0f, screwArrangement_G, true); // Q
+                            plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, ft, 0f, 0f, 0f, screwArrangement_G, true); // G
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
                         {
-                            plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fl, ft, 0f, 0f, 0f, screwArrangement_H, true); // Q
+                            plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fh2, ft, 11f * MathF.fPI / 180f, 0f, 0f, 0f, screwArrangement_H, true); // H
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

@@ -117,8 +117,8 @@ namespace PFD
 
         public float[,] arr_Serie_H_Dimension = new float[2, 5]
         {
-                {500, 400, 100, 3, 0},
-                {500, 400, 100, 3, 0}
+                {500, 400, 600, 3, 49+21},
+                {500, 400, 600, 3, 49+21}
         };
 
         public float[,] arr_Serie_Q_Dimension = new float[1, 5]
