@@ -759,7 +759,6 @@ namespace PFD
                             fh2 = dcomponents.arr_Serie_G_Dimension[vm.ComponentIndex, 3] / 1000f;
                             fl = dcomponents.arr_Serie_G_Dimension[vm.ComponentIndex, 4] / 1000f;
                             ft = dcomponents.arr_Serie_G_Dimension[vm.ComponentIndex, 5] / 1000f;
-                            iNumberofHoles = (int)dcomponents.arr_Serie_G_Dimension[vm.ComponentIndex, 6];
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
@@ -768,7 +767,6 @@ namespace PFD
                             fh = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 1] / 1000f;
                             fh2 = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 2] / 1000f;
                             ft = dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            iNumberofHoles = (int)dcomponents.arr_Serie_H_Dimension[vm.ComponentIndex, 4];
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

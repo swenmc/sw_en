@@ -108,17 +108,18 @@ namespace PFD
         // Task 413
         // TO Ondrej - Tohoto sa chcem zbavit a ziskavat to z databazy
 
-        public float[,] arr_Serie_G_Dimension = new float[2, 7]
+        public float[,] arr_Serie_G_Dimension = new float[2, 6]
         {
-                // bX1, bX2, hY, hY2, lZ, t, iNumberOfHoles
-                {500-180, 50, 800, 300, 100, 3, 2},
-                {500-180, 50, 800, 300, 100, 3, 2},
+                // bX1, bX2, hY1, hY2, lZ, t
+                {50, 320, 300, 800, 100, 3},
+                {50, 320, 300, 800, 100, 3},
         };
 
-        public float[,] arr_Serie_H_Dimension = new float[2, 5]
+        public float[,] arr_Serie_H_Dimension = new float[2, 4]
         {
-                {500, 400, 600, 3, 49+21},
-                {500, 400, 600, 3, 49+21}
+                // bX, hY1, hY2, t
+                {500, 400, 600, 3},
+                {500, 400, 600, 3}
         };
 
         public float[,] arr_Serie_Q_Dimension = new float[1, 5]

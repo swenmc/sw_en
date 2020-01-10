@@ -35,7 +35,7 @@ namespace BaseClasses
             referenceScrew = referenceScrew_temp;
         }
 
-        public void Calc_HolesCentersCoord2D(float fbX1, float fbX2, float fhY, float flZ)
+        public void Calc_HolesCentersCoord2D(float fbX1, float fbX2, float fhY1, float flZ)
         {
             fx_edge_LeftLeg = flZ * 0.5f; // Middle of left leg
 

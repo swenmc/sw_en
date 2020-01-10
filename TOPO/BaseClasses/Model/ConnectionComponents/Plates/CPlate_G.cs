@@ -39,18 +39,18 @@ namespace BaseClasses
             }
         }
 
-        private float m_fhY;
+        private float m_fhY1;
 
-        public float Fh_Y
+        public float Fh_Y1
         {
             get
             {
-                return m_fhY;
+                return m_fhY1;
             }
 
             set
             {
-                m_fhY = value;
+                m_fhY1 = value;
             }
         }
 
@@ -96,7 +96,7 @@ namespace BaseClasses
             Point3D controlpoint,
             float fbX1_temp,
             float fbX2_temp,
-            float fhY_temp,
+            float fhY1_temp,
             float fhY2_temp,
             float fl_Z_temp,
             float ft_platethickness,
@@ -118,7 +118,7 @@ namespace BaseClasses
             iLeftRightIndex = sName_temp.Substring(4, 2) == "LH" ? 0 : 1; // Side index - 0 - left (original), 1 - right
             m_fbX1 = fbX1_temp;
             m_fbX2 = fbX2_temp;
-            m_fhY = fhY_temp;
+            m_fhY1 = fhY1_temp;
             m_fhY2 = fhY2_temp;
             m_flZ = fl_Z_temp;
             Ft = ft_platethickness;
@@ -134,7 +134,7 @@ namespace BaseClasses
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y1, Fl_Z);
             Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface
@@ -168,21 +168,21 @@ namespace BaseClasses
 
             GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
 
-            Width_bx = m_fbX1;
-            Height_hy = m_fhY;
+            Width_bx = m_fbX2;
+            Height_hy = m_fhY2;
             fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
-            fA_g = Get_A_rect(Ft, m_fhY);
+            fA_g = Get_A_rect(Ft, m_fhY2);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
-            fA_v_zv = Get_A_rect(Ft, m_fhY);
+            fA_v_zv = Get_A_rect(Ft, m_fhY2);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
-            fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
+            fI_yu = Get_I_yu_rect(Ft, m_fhY2);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
 
             ScrewArrangement = screwArrangement_temp;
         }
@@ -196,20 +196,20 @@ namespace BaseClasses
             PointsOut2D[1].X = m_flZ;
             PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2].X = PointsOut2D[1].X + m_fbX1;
+            PointsOut2D[2].X = PointsOut2D[1].X + m_fbX2;
             PointsOut2D[2].Y = 0;
 
             PointsOut2D[3].X = PointsOut2D[2].X;
-            PointsOut2D[3].Y = m_fhY2;
+            PointsOut2D[3].Y = m_fhY1;
 
-            PointsOut2D[4].X = PointsOut2D[1].X + m_fbX2;
-            PointsOut2D[4].Y = m_fhY;
+            PointsOut2D[4].X = PointsOut2D[1].X + m_fbX1;
+            PointsOut2D[4].Y = m_fhY2;
 
             PointsOut2D[5].X = PointsOut2D[1].X;
-            PointsOut2D[5].Y = m_fhY;
+            PointsOut2D[5].Y = m_fhY2;
 
             PointsOut2D[6].X = PointsOut2D[0].X;
-            PointsOut2D[6].Y = m_fhY;
+            PointsOut2D[6].Y = m_fhY2;
         }
 
         public override void Calc_Coord3D()
@@ -222,24 +222,24 @@ namespace BaseClasses
             arrPoints3D[1].Y = 0;
             arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = m_fbX1;
+            arrPoints3D[2].X = m_fbX2;
             arrPoints3D[2].Y = arrPoints3D[1].Y;
             arrPoints3D[2].Z = 0;
 
             arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = m_fhY2;
+            arrPoints3D[3].Y = m_fhY1;
             arrPoints3D[3].Z = 0;
 
-            arrPoints3D[4].X = m_fbX2;
-            arrPoints3D[4].Y = m_fhY;
+            arrPoints3D[4].X = m_fbX1;
+            arrPoints3D[4].Y = m_fhY2;
             arrPoints3D[4].Z = 0;
 
             arrPoints3D[5].X = arrPoints3D[1].X;
-            arrPoints3D[5].Y = m_fhY;
+            arrPoints3D[5].Y = m_fhY2;
             arrPoints3D[5].Z = 0;
 
             arrPoints3D[6].X = arrPoints3D[0].X;
-            arrPoints3D[6].Y = m_fhY;
+            arrPoints3D[6].Y = m_fhY2;
             arrPoints3D[6].Z = arrPoints3D[0].Z;
 
             arrPoints3D[7].X = arrPoints3D[0].X + Ft;

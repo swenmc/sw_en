@@ -134,7 +134,7 @@ namespace BaseClasses
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(m_fbX, m_fhY1, m_fhY2);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(m_fhY1);
             Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface
@@ -176,13 +176,13 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
-            fA_g = Get_A_rect(Ft, m_fhY1);
+            fA_g = Get_A_rect(Ft, m_fhY2);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
-            fA_v_zv = Get_A_rect(Ft, m_fhY1);
+            fA_v_zv = Get_A_rect(Ft, m_fhY2);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fI_yu = Get_I_yu_rect(Ft, m_fhY1);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
 
             ScrewArrangement = screwArrangement_temp;
         }

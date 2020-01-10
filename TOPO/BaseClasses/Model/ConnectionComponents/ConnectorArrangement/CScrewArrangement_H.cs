@@ -35,7 +35,7 @@ namespace BaseClasses
             referenceScrew = referenceScrew_temp;
         }
 
-        public void Calc_HolesCentersCoord2D(float fbX, float fhY1, float fhY2)
+        public void Calc_HolesCentersCoord2D(float fhY1)
         {
             if (IHolesNumber > 0)
             {
