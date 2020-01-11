@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Design Options" Height="390" Width="400">
+        Title="Design Options" Height="350" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,6 +15,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridDisplayOptions" Margin="5">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>                
             </Grid.ColumnDefinitions>
@@ -22,32 +23,56 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
-                      SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                      ItemsSource="{Binding Path=ColorList}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
             
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="WireFrame Line Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="1" Grid.Column="1" Name ="WireFrameLineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WireFrameLineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>-->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Displacement Limits" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
 
-            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Rafter - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_VerticalDisplacementLimitDenominator_Rafter_PL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Rafter_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
-            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Rafter - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_VerticalDisplacementLimitDenominator_Rafter_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Rafter_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Column - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_HorizontalDisplacementLimitDenominator_Column_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=HorizontalDisplacementLimitDenominator_Column_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Purlin - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_VerticalDisplacementLimitDenominator_Purlin_PL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Purlin_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Purlin - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_VerticalDisplacementLimitDenominator_Purlin_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Purlin_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_HorizontalDisplacementLimitGirt_TL" Width="{StaticResource theTextBoxWidth}"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=HorizontalDisplacementLimitDenominator_Girt_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+
+            <CheckBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Name="chbShearDesignAccording334" Margin="5,0" IsChecked="{Binding Path=ShearDesignAccording334}">Use shear design according to 3.3.4</CheckBox>
+
+            <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
                 <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>

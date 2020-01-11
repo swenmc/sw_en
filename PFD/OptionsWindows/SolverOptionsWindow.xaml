@@ -7,47 +7,34 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Solver Options" Height="390" Width="400">
+        Title="Solver Options" Height="190" Width="400">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Name="GridDisplayOptions" Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+            <Grid.ColumnDefinitions>                
                 <ColumnDefinition Width="*"/>                
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
                 
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!--<TextBlock Grid.Row="0" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}" VerticalAlignment="Top" 
-                      SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                      ItemsSource="{Binding Path=ColorList}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+                <!--<TextBlock Text="Options" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Margin="5,0,0,0"/>-->
+                <CheckBox Name ="chbDeterminateCombinationResultsByFEMSolver_BFENet" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
+                                  IsChecked="{Binding Path=DeterminateCombinationResultsByFEMSolver}">Determinate combination results by solver</CheckBox>
+                <CheckBox Name ="chbUseFEMSolverCalculationForSimpleBeam" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
+                                  IsChecked="{Binding Path=UseFEMSolverCalculationForSimpleBeam}">Use FEM solver calculation for simple beams</CheckBox>
+                <CheckBox Name ="chbDeterminateMemberLocalDisplacementsForULS" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
+                                  IsChecked="{Binding Path=DeterminateMemberLocalDisplacementsForULS}">Determinate local displacements for ULS combinations</CheckBox>
+            </StackPanel>
             
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="WireFrame Line Thickness:" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <TextBox Grid.Row="1" Grid.Column="1" Name ="WireFrameLineThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WireFrameLineThickness, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>-->
-
             
 
-            <StackPanel Grid.Row="27" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
                 <Button Width="80" Height="25" Name="BtnSave" Content="Save" Margin="0 0 10 0" Click="BtnSave_Click"/>
                 <Button Width="80" Height="25" Name="BtnLoad" Content="Load" Margin="0 0 10 0" Click="BtnLoad_Click"/>
                 <Button Width="80" Height="25" Name="BtnOK" Margin="0 0 0 0" Click="BtnOK_Click">OK</Button>

@@ -12,14 +12,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true" Margin="5,0"/>
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-            <TextBlock Text="Options" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Margin="5,0,0,0"/>
-            <CheckBox Name ="chbDeterminateCombinationResultsByFEMSolver_BFENet" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
-                                  IsChecked="{Binding Path=DeterminateCombinationResultsByFEMSolver}">Determinate combination results by solver</CheckBox>
-            <CheckBox Name ="chbUseFEMSolverCalculationForSimpleBeam" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
-                                  IsChecked="{Binding Path=UseFEMSolverCalculationForSimpleBeam}">Use FEM solver calculation for simple beams</CheckBox>
-            <CheckBox Name ="chbDeterminateMemberLocalDisplacementsForULS" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
-                                  IsChecked="{Binding Path=DeterminateMemberLocalDisplacementsForULS}">Determinate local displacements for ULS combinations</CheckBox>
-        </StackPanel>
+        
     </Grid>
 </UserControl>

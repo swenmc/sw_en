@@ -52,12 +52,11 @@
                 </TabItem.Header>
                 <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <Grid Name="ParamsGrid" Margin="0,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="130" />
+                        <Grid.ColumnDefinitions>                            
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="30" />
-                            <ColumnDefinition Width="180" />
-                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="100" />                            
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -86,122 +85,115 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
-
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
                         <!-- Nemyslim si,ze to nejako extra pomoze. Export je vacsinou specificky a chces ho aj nejako stylovat, nie len nasmarat tabulky a koniec. -->
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
-                         VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0,0,0" 
+                         VerticalAlignment="Top"  />
                         <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
-                         VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         VerticalAlignment="Top"  />
                         <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofPitch_deg, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
                         <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="{StaticResource theTextBoxWidth}"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GirtDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_BottomGirt_Position" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=BottomGirtPosition, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FrontFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Roof Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Roof Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=RoofCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=RoofCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=RoofCladdingColors}" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
@@ -214,19 +206,19 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
                         <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofCladdingsThicknessTypes}" SelectedIndex="{Binding Path=RoofCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Claddings}" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Coating:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingCoating" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Coatings}" SelectedIndex="{Binding Path=WallCladdingCoatingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="18" Grid.Column="1" ItemsSource="{Binding Path=WallCladdingColors}" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
@@ -239,53 +231,40 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
                         <ComboBox Grid.Row="19" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallCladdingsThicknessTypes}" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="20" Grid.Column="0" Text="Suport Type:" HorizontalAlignment="Left" Margin="5,0,0,0" />
                         <ComboBox Grid.Row="20" Grid.Column="1" Name ="Combobox_SupportType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SupportTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="21" Grid.Column="0" Text="Roof Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
                         <ComboBox Grid.Row="21" Grid.Column="1" Name ="Combobox_RoofFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding RoofFibreglassThicknessTypes}" SelectedIndex="{Binding Path=RoofFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <TextBlock Grid.Row="22" Grid.Column="0" Text="Wall Fibreglass Thickness:" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.ColumnSpan="3"/>
                         <ComboBox Grid.Row="22" Grid.Column="1" Name ="Combobox_WallFibreglassThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding WallFibreglassThicknessTypes}" SelectedIndex="{Binding Path=WallFibreglassThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="23" Grid.Column="0" Text="Fibreglass Area - Roof:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_FibreglassAreaRoof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FibreglassAreaRoof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="24" Grid.Column="0" Text="Fibreglass Area - Wall:" HorizontalAlignment="Left" Margin="5,0,0,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  />
                         <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_FibreglassAreaWall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FibreglassAreaWall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        <!--<TextBlock Grid.Row="25" Grid.Column="0" Text="Wireframe Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_WireframeColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WireframeColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>-->
-
-                        <TextBlock Grid.Row="26" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="26" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="25" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -296,158 +275,33 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBlock Grid.Row="27" Grid.Column="0" Text="View:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="27" Grid.Column="1" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="View:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Row="1" Grid.Column="4" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="28" Grid.Column="0" Text="Filter:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="28" Grid.Column="1" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="Filter:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                        <ComboBox Grid.Row="2" Grid.Column="4" Name ="Combobox_ModelViewMemberFilter" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ViewModelMemberFilters}}" SelectedIndex="{Binding Path=ViewModelMemberFilterIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project Details" Width="20" Height="20" Click="btnProjectInfo_Click">
-                            <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </Button>
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnGeneralOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="General Options" Margin="25 0 0 0" Width="20" Height="20" Click="btnGeneralOptions_Click">
-                            <Image Source="Resources/options.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </Button>
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Display Options" Margin="50 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
-                            <Image Source="Resources/options_display.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </Button>
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnSolverOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Solver Options" Margin="75 0 0 0" Width="20" Height="20" Click="btnSolverOptions_Click">
-                            <Image Source="Resources/options_solver.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </Button>
-                        <Button Grid.Row="0" Grid.Column="3" Name="btnDesignOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Design Options" Margin="100 0 0 0" Width="20" Height="20" Click="btnDesignOptions_Click">
-                            <Image Source="Resources/options_design.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
-                        </Button>
-
-                        <StackPanel Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Orientation="Vertical">
-                            <CheckBox Name="chbLightDirectional" IsChecked="{Binding Path=LightDirectional}">Directional Light</CheckBox>
-                            <CheckBox Name="chbLightPoint" IsChecked="{Binding Path=LightPoint}" >Point Light</CheckBox>
-                            <CheckBox Name="chbLightSpot" IsChecked="{Binding Path=LightSpot}">SpotLight</CheckBox>
-                            <CheckBox Name="chbLightAmbient" IsChecked="{Binding Path=LightAmbient}">Ambient Light</CheckBox>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2">
+                            <Button  Name="btnProjectInfo" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Project Details" Width="20" Height="20" Click="btnProjectInfo_Click">
+                                <Image Source="Resources/details.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnGeneralOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="General Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnGeneralOptions_Click">
+                                <Image Source="Resources/options.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnDisplayOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Display Options" Margin="5 0 0 0" Width="20" Height="20" Click="BtnDisplayOptions_Click">
+                                <Image Source="Resources/options_display.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnSolverOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Solver Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnSolverOptions_Click">
+                                <Image Source="Resources/options_solver.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="3" Name="btnDesignOptions" VerticalAlignment="Top" HorizontalAlignment="Left" ToolTip="Design Options" Margin="5 0 0 0" Width="20" Height="20" Click="btnDesignOptions_Click">
+                                <Image Source="Resources/options_design.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
+                            </Button>
                         </StackPanel>
-
-                        <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical" Grid.ColumnSpan="2">
-                            <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" IsChecked="{Binding Path=MaterialDiffuse}">Diffuse Material</CheckBox>
-                            <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" IsChecked="{Binding Path=MaterialEmissive}">Emissive Material</CheckBox>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" Grid.ColumnSpan="2">
-                            <RadioButton Name="radioColorsIn3DMembers" GroupName="radioColorsIn3D"  IsChecked="{Binding Path=ColorsAccordingToMembers}">Colors according to Component Types</RadioButton>
-                            <RadioButton Name="radioColorsIn3DSections" GroupName="radioColorsIn3D" IsChecked="{Binding Path=ColorsAccordingToSections}">Colors according to Sections</RadioButton>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="4" Grid.Column="3" Grid.RowSpan="6">
-                            <CheckBox Name="chbDisplayMembers" IsChecked="{Binding Path=DisplayMembers}">Display Members</CheckBox>
-                            <CheckBox Name="chbDisplayJoints"  IsChecked="{Binding Path=DisplayJoints}">Display Joints</CheckBox>
-                            <CheckBox Name="chbDisplayPlates" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayPlates}">Display Plates</CheckBox>
-                            <CheckBox Name="chbDisplayConnectors" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayConnectors}">Display Connectors</CheckBox>
-                            <CheckBox Name="chbDisplayNodes" IsChecked="{Binding Path=DisplayNodes}">Display Nodes</CheckBox>
-
-                            <CheckBox Name="chbDisplayFoundations" IsChecked="{Binding Path=DisplayFoundations}">Display Foundations</CheckBox>
-                            <CheckBox Name="chbDisplayReinforcementBars" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBars}">Display Reinforcement</CheckBox>
-                            <CheckBox Name="chbDisplayFloorSlab" IsChecked="{Binding Path=DisplayFloorSlab}">Display Floor Slab</CheckBox>
-                            <CheckBox Name="chbDisplaySawCuts" Margin="25 0 0 0" IsChecked="{Binding Path=DisplaySawCuts}">Display Saw Cuts Slab</CheckBox>
-                            <CheckBox Name="chbDisplayControlJoints" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayControlJoints}">Display Control Joints</CheckBox>
-                            <CheckBox Name="chbDisplayNodalSupports" IsChecked="{Binding Path=DisplayNodalSupports}">Nodal Supports</CheckBox>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="4" Grid.Column="4" Grid.RowSpan="7">
-                            <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
-                            <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
-                            <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
-                            <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Display Cross-Section name</CheckBox>
-                            <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
-                            <CheckBox Name="chbDisplayMemberRealLengthUnit" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLengthUnit}" >Display Unit</CheckBox>
-                            <CheckBox Name="chbDisplayNodesDescription" Margin="0 5 0 0" IsChecked="{Binding Path=ShowNodesDescription}">Display Nodes ID</CheckBox>
-                            <CheckBox Name="chbDisplayFoundationsDescription" IsChecked="{Binding Path=ShowFoundationsDescription}">Display Foundations Description</CheckBox>
-                            <CheckBox Name="chbDisplayFloorSlabDescription" IsChecked="{Binding Path=ShowFloorSlabDescription}">Display FloorSlab Description</CheckBox>
-                            <CheckBox Name="chbDisplaySawCutsDescription" IsChecked="{Binding Path=ShowSawCutsDescription}">Display Saw Cuts Description</CheckBox>
-                            <CheckBox Name="chbDisplayControlJointsDescription" IsChecked="{Binding Path=ShowControlJointsDescription}">Display Control Joints Description</CheckBox>
-                            <CheckBox Name="chbDisplayDimensions" IsChecked="{Binding Path=ShowDimensions}">Display Dimensions</CheckBox>
-                            <CheckBox Name="chbDisplayGridLines" IsChecked="{Binding Path=ShowGridLines}">Display Gridlines</CheckBox>
-                            <CheckBox Name="chbDisplaySectionSymbols" IsChecked="{Binding Path=ShowSectionSymbols}">Display Section Symbols</CheckBox>
-                            <CheckBox Name="chbDisplayDetailSymbols" IsChecked="{Binding Path=ShowDetailSymbols}">Display Detail Symbols</CheckBox>
-                            <CheckBox Name="chbDisplaySlabRebates" IsChecked="{Binding Path=ShowSlabRebates}">Display Slab Rebates</CheckBox>
-                        </StackPanel>
-
-
-                        <StackPanel Grid.Row="11" Grid.Column="3" Grid.RowSpan="5">
-                            <CheckBox Name="chbDisplayMembersCenterLines" IsChecked="{Binding Path=DisplayMembersCenterLines}">Display Members Centerlines</CheckBox>
-                            <CheckBox Name="chbDisplaySolidModel"  IsChecked="{Binding Path=DisplaySolidModel}">Display Solid Model</CheckBox>
-                            <CheckBox Name="chbDisplayWireFrameModel" IsChecked="{Binding Path=DisplayWireFrameModel}">Display Wireframe Model</CheckBox>
-
-                            <CheckBox Name="chbDisplayMembersWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayMembersWireFrame}">Members</CheckBox>
-                            <CheckBox Name="chbDisplayJointsWireFrame"  Margin="25 0 0 0" IsChecked="{Binding Path=DisplayJointsWireFrame}">Joints</CheckBox>
-                            <CheckBox Name="chbDisplayPlatesWireFrame"  Margin="50 0 0 0" IsChecked="{Binding Path=DisplayPlatesWireFrame}">Plates</CheckBox>
-                            <CheckBox Name="chbDisplayConnectorsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayConnectorsWireFrame}">Connectors</CheckBox>
-                            <!--<CheckBox Name="chbDisplayNodesWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayNodesWireFrame}">Nodes</CheckBox>-->
-                            <CheckBox Name="chbDisplayFoundationsWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFoundationsWireFrame}">Foundations</CheckBox>
-                            <CheckBox Name="chbDisplayReinforcementBarsWireFrame" Margin="50 0 0 0" IsChecked="{Binding Path=DisplayReinforcementBarsWireFrame}">Reinforcement Bars</CheckBox>
-                            <CheckBox Name="chbDisplayFloorSlabWireFrame" Margin="25 0 0 0" IsChecked="{Binding Path=DisplayFloorSlabWireFrame}">Floor Slab</CheckBox>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="11" Grid.Column="4" Grid.RowSpan="2">
-                            <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" IsChecked="{Binding Path=DisplayDistinguishedColorMember}">Distinguished Color Members</CheckBox>
-                            <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" IsChecked="{Binding Path=DisplayTransparentModelMember}">Transparent Members</CheckBox>
-
-                            <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
-                            <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" IsEnabled="{Binding Path=IsEnabledLocalMembersAxis}" >Display Local Member Axis</CheckBox>
-                            <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" IsEnabled="{Binding Path=IsEnabledSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="14" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2">
-                            <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                            <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
-                            <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
-                        </StackPanel>
-
-                        <!-- Displacement / Deflection Limits - presunut do samostatneho okna "Design parameters" ??? -->
-                        <TextBlock Grid.Row="15" Grid.Column="3" Text="Displacement Limits" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-
-                        <TextBlock Grid.Row="16" Grid.Column="3" Text="Rafter - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitDenominator_Rafter_PL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Rafter_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="16" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="17" Grid.Column="3" Text="Rafter - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitDenominator_Rafter_TL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Rafter_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="18" Grid.Column="3" Text="Column - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="18" Grid.Column="4" Name ="TextBox_HorizontalDisplacementLimitDenominator_Column_TL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=HorizontalDisplacementLimitDenominator_Column_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="18" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="19" Grid.Column="3" Text="Purlin - permanent load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="19" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitDenominator_Purlin_PL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Purlin_PL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="20" Grid.Column="3" Text="Purlin - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="20" Grid.Column="4" Name ="TextBox_VerticalDisplacementLimitDenominator_Purlin_TL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=VerticalDisplacementLimitDenominator_Purlin_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="20" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <TextBlock Grid.Row="21" Grid.Column="3" Text="Girt - total load L/:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-                        <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_HorizontalDisplacementLimitGirt_TL" Width="{StaticResource theTextBoxWidth}"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=HorizontalDisplacementLimitDenominator_Girt_TL, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                        <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
-
-                        <CheckBox Grid.Row="22" Grid.Column="3" Name="chbShearDesignAccording334" Margin="5,0" IsChecked="{Binding Path=ShearDesignAccording334}">Use shear design according to 3.3.4</CheckBox>
-
-                        <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
-
-                        <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
-
+                        
+                        
 
                     </Grid>
                 </ScrollViewer>
@@ -593,12 +447,12 @@
                                     SelectedItemBinding="{Binding Path=iNumberOfWindowColumns}"
                                     ItemsSource="{Binding Source={StaticResource WindowColumns}}">
                                     <DataGridComboBoxColumn.ElementStyle>
-                                        <Style TargetType="ComboBox">                                            
+                                        <Style TargetType="ComboBox">
                                             <Setter Property="HorizontalAlignment" Value="Right" />
                                         </Style>
                                     </DataGridComboBoxColumn.ElementStyle>
                                     <DataGridComboBoxColumn.EditingElementStyle>
-                                        <Style TargetType="ComboBox">                                            
+                                        <Style TargetType="ComboBox">
                                             <!--<Setter Property="HorizontalAlignment" Value="Right"/>-->
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
@@ -674,7 +528,7 @@
                             <DataGrid.Columns>
                                 <DataGridComboBoxColumn Header="Name" ToolTipService.ToolTip="Select name" Width="2*" 
                                                         SelectedValueBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                                        ItemsSource="{Binding Source={StaticResource GuttersNames}}" />                                
+                                                        ItemsSource="{Binding Source={StaticResource GuttersNames}}" />
                                 <DataGridTextColumn Header="Thickness [mm]" IsReadOnly="True" ToolTipService.ToolTip="Gutter thickness" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Thickness, StringFormat={}{0:0.00}}"/>
                                 <DataGridTextColumn Header="Total Width [m]" IsReadOnly="True" ToolTipService.ToolTip="Enter total width" Width="*" ElementStyle="{StaticResource RightAligned}" Binding="{Binding Width_total, StringFormat={}{0:0.000}}"/>
                                 <DataGridComboBoxColumn Header="Colour" ToolTipService.ToolTip="Select colour" Width="2*" SelectedValueBinding="{Binding CoatingColor, UpdateSourceTrigger=PropertyChanged}">
@@ -719,7 +573,7 @@
                                 <Image Source="Resources/add_new_item.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
-                        
+
                         <DataGrid Name="Datagrid_Downpipes" ItemsSource="{Binding Path=Downpipes, Mode=TwoWay}" 
                                   HorizontalAlignment="Left" SelectionMode="Single" MinHeight="120" IsReadOnly="false" 
                                   CanUserAddRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalAlignment="Top" Width="570" Margin="5,2,0,0" 
