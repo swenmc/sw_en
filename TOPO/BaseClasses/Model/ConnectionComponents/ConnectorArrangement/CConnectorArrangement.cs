@@ -103,5 +103,15 @@ namespace BaseClasses
         {
 
         }
+
+        public int GetNumberOfEquallySpacedConnectors(float fDimension, float fSpacing)
+        {
+            return (int)(fDimension / fSpacing) - 1; // Vypocitame pocet medzier a jednu odpocitame jednu medzeru, takze dostaneme pocet skrutiek
+        }
+
+        public float GetEdgeDistanceOfEquallySpacedConnectors(float fDimension, float fSpacing, int iNumberOfConnectors)
+        {
+            return (fDimension - (iNumberOfConnectors - 1) * fSpacing) / 2f;
+        }
     }
 }

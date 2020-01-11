@@ -1234,12 +1234,12 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_G:
                         {
-                            plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, ft, 0f, 0f, 0f, screwArrangement_G, true); // G
+                            plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, 0.5f * fh2, ft, 0f, 0f, 0f, screwArrangement_G, true); // G
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
                         {
-                            plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fh2, ft, 11f * MathF.fPI / 180f, 0f, 0f, 0f, screwArrangement_H, true); // H
+                            plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fh2, 0.2f * fb, ft, 11f * MathF.fPI / 180f, 0f, 0f, 0f, screwArrangement_H, true); // H
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

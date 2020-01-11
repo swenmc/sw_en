@@ -54,6 +54,21 @@ namespace BaseClasses
             }
         }
 
+        private float m_fMainMemberWidth; // Sirka rafteru - potrebne pre urcenie priestoru pre skrutky
+
+        public float MainMemberWidth
+        {
+            get
+            {
+                return m_fMainMemberWidth;
+            }
+
+            set
+            {
+                m_fMainMemberWidth = value;
+            }
+        }
+
         float m_fSlope_rad;
 
         public float FSlope_rad
@@ -99,6 +114,7 @@ namespace BaseClasses
             float fbX_temp,
             float fhY1_temp,
             float fhY2_temp,
+            float fMainMemberWidth_temp,
             float ft_platethickness,
             float fslope_rad_temp,
             float fRotation_x_deg,
@@ -120,6 +136,7 @@ namespace BaseClasses
             m_fbX = fbX_temp;
             m_fhY1 = fhY1_temp;
             m_fhY2 = fhY2_temp;
+            m_fMainMemberWidth = fMainMemberWidth_temp;
             Ft = ft_platethickness;
             FSlope_rad = fslope_rad_temp;
             m_fRotationX_deg = fRotation_x_deg;
@@ -129,12 +146,12 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(m_fhY1);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(m_fbX, m_fhY1, m_fhY2, m_fMainMemberWidth);
+            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
             Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface

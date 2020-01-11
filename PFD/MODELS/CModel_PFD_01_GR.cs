@@ -618,10 +618,13 @@ namespace PFD
             float fGirtEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].y_min - fCutOffOneSide;
             float fPurlinStart = -(float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_max - fCutOffOneSide;
             float fPurlinEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min - fCutOffOneSide;
+
+            bool bWindPostEndUnderRafter = true; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
+
             float fFrontColumnStart = 0.0f;
-            float fFrontColumnEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max / (float)Math.Cos(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fFrontColumnEnd = (bWindPostEndUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fBackColumnStart = 0.0f;
-            float fBackColumnEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max / (float)Math.Cos(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fBackColumnEnd = (bWindPostEndUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fFrontGirtStart = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
             float fFrontGirtEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
             float fBackGirtStart = (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z

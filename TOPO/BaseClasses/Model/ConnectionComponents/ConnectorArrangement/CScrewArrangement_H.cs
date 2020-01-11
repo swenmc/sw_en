@@ -23,20 +23,34 @@ namespace BaseClasses
         public int iColumns_TopLeg = 3;
         public float fx_edge_TopLeg = 0.04f;
         public float fy_edge_TopLeg = 0.05f;
-        public float fx_spacing_TopLeg = 0.07f;
-        public float fy_spacing_TopLeg = 0.05f;
+        public float fx_spacing_TopLeg = 0.03f; //0.07f;
+        public float fy_spacing_TopLeg = 0.03f; //0.05f;
 
         public CScrewArrangement_H() { }
 
         public CScrewArrangement_H(/*int iScrewsNumber_temp,*/ CScrew referenceScrew_temp)
         {
             //IHolesNumber = iScrewsNumber_temp;
-            IHolesNumber = iRows_BottomLeg * iColumns_BottomLeg + iRows_TopLeg * iColumns_TopLeg;
+            //IHolesNumber = iRows_BottomLeg * iColumns_BottomLeg + iRows_TopLeg * iColumns_TopLeg;
             referenceScrew = referenceScrew_temp;
         }
 
-        public void Calc_HolesCentersCoord2D(float fhY1)
+        public void Calc_HolesCentersCoord2D(float fbX, float fhY1, float fhY2, float fMainMemberWidth)
         {
+            iColumns_BottomLeg = GetNumberOfEquallySpacedConnectors(fbX, fx_spacing_BottomLeg);
+            iRows_BottomLeg = GetNumberOfEquallySpacedConnectors(fhY1, fy_spacing_BottomLeg);
+
+            fx_edge_BottomLeg = GetEdgeDistanceOfEquallySpacedConnectors(fbX, fx_spacing_BottomLeg, iColumns_BottomLeg);
+            fy_edge_BottomLeg = GetEdgeDistanceOfEquallySpacedConnectors(fhY1, fy_spacing_BottomLeg, iRows_BottomLeg);
+
+            iColumns_TopLeg = GetNumberOfEquallySpacedConnectors(fMainMemberWidth, fx_spacing_TopLeg);
+            iRows_TopLeg = GetNumberOfEquallySpacedConnectors(fhY2 - fhY1, fy_spacing_TopLeg);
+
+            fx_edge_TopLeg = GetEdgeDistanceOfEquallySpacedConnectors(fMainMemberWidth, fx_spacing_TopLeg, iColumns_TopLeg);
+            fy_edge_TopLeg = GetEdgeDistanceOfEquallySpacedConnectors(fhY2 - fhY1, fy_spacing_TopLeg, iRows_TopLeg);
+
+            IHolesNumber = iRows_BottomLeg * iColumns_BottomLeg + iRows_TopLeg * iColumns_TopLeg;
+
             if (IHolesNumber > 0)
             {
                 HolesCentersPoints2D = new Point[IHolesNumber];

@@ -84,6 +84,21 @@ namespace BaseClasses
             }
         }
 
+        private float m_fMainMemberDepth; // Vyska rafteru - potrebne pre urcenie priestoru pre skrutky v lavom ramene plechu
+
+        public float MainMemberDepth
+        {
+            get
+            {
+                return m_fMainMemberDepth;
+            }
+
+            set
+            {
+                m_fMainMemberDepth = value;
+            }
+        }
+
         private int iLeftRightIndex; // plate 0 - left, 1 - right 
 
         public CConCom_Plate_G()
@@ -99,6 +114,7 @@ namespace BaseClasses
             float fhY1_temp,
             float fhY2_temp,
             float fl_Z_temp,
+            float fMainMemberDepth_temp,
             float ft_platethickness,
             float fRotation_x_deg,
             float fRotation_y_deg,
@@ -121,6 +137,7 @@ namespace BaseClasses
             m_fhY1 = fhY1_temp;
             m_fhY2 = fhY2_temp;
             m_flZ = fl_Z_temp;
+            m_fMainMemberDepth = fMainMemberDepth_temp;
             Ft = ft_platethickness;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -129,12 +146,12 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y1, Fl_Z);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fb_X2, Fh_Y1, Fh_Y2, Fl_Z, MainMemberDepth);
+            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
             Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface
