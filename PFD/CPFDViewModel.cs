@@ -92,8 +92,7 @@ namespace PFD
 
         //private int MWireframeColorIndex;
         //public Color WireframeColor;
-        private int MBackgroundColorIndex;
-        public Color BackgroundColor;
+        
         private int MViewIndex;
         private int MViewModelMemberFilterIndex;
 
@@ -339,7 +338,7 @@ namespace PFD
                 FibreglassAreaWall = 0; // % 0-ziadne fibreglass, 99 - takmer cela strecha fibreglass
 
                 //WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
-                BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+                //BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
                 
                 RecreateJoints = true;
                 RecreateFoundations = true;
@@ -977,25 +976,25 @@ namespace PFD
         //}
 
         //-------------------------------------------------------------------------------------------------------------
-        public int BackgroundColorIndex
-        {
-            get
-            {
-                return MBackgroundColorIndex;
-            }
+        //public int BackgroundColorIndex
+        //{
+        //    get
+        //    {
+        //        return MBackgroundColorIndex;
+        //    }
 
-            set
-            {
-                MBackgroundColorIndex = value;
+        //    set
+        //    {
+        //        MBackgroundColorIndex = value;
 
-                List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
+        //        List<CComboColor> listOfMediaColours = CComboBoxHelper.ColorList;
 
-                BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color.Value;
+        //        BackgroundColor = listOfMediaColours[MBackgroundColorIndex].Color.Value;
 
-                RecreateModel = true;
-                NotifyPropertyChanged("BackgroundColorIndex");
-            }
-        }
+        //        RecreateModel = true;
+        //        NotifyPropertyChanged("BackgroundColorIndex");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int LoadCaseIndex
@@ -4196,7 +4195,7 @@ namespace PFD
             sDisplayOptions.fFloorSlabSolidModelOpacity = _displayOptionsVM.FloorSlabSolidModelOpacity;
             sDisplayOptions.fSlabRebateSolidModelOpacity = _displayOptionsVM.SlabRebateSolidModelOpacity;
 
-            sDisplayOptions.backgroundColor = BackgroundColor;
+            sDisplayOptions.backgroundColor = _displayOptionsVM.BackgroundColor;
             sDisplayOptions.ModelView = ViewIndex;
             sDisplayOptions.ViewModelMembers = ViewModelMemberFilterIndex;
 

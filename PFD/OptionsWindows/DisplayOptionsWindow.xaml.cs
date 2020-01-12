@@ -29,8 +29,8 @@ namespace PFD
             DisplayOptionsChanged = false;
             
             pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            this.Colours.DataContext = pfdVM._displayOptionsVM;
-            this.DataContext = pfdVM;
+            //this.Colours.DataContext = pfdVM._displayOptionsVM;
+            this.DataContext = pfdVM._displayOptionsVM;
         }
 
         

@@ -95,6 +95,9 @@ namespace PFD
         private Color m_SlabRebateColor = Colors.OrangeRed;
         private int m_SlabRebateColorIndex;
 
+        private int m_BackgroundColorIndex;
+        private Color m_BackgroundColor = Colors.Black;
+
         private float m_MemberSolidModelOpacity = 0.8f;
         private float m_PlateSolidModelOpacity = 0.5f;
         private float m_ScrewSolidModelOpacity = 0.9f;
@@ -1162,6 +1165,37 @@ namespace PFD
             }
         }
 
+        public int BackgroundColorIndex
+        {
+            get
+            {
+                return m_BackgroundColorIndex;
+            }
+
+            set
+            {
+                m_BackgroundColorIndex = value;
+
+                BackgroundColor = CComboBoxHelper.ColorList[m_BackgroundColorIndex].Color.Value;
+
+                NotifyPropertyChanged("BackgroundColorIndex");
+            }
+        }
+
+        public Color BackgroundColor
+        {
+            get
+            {
+                return m_BackgroundColor;
+            }
+
+            set
+            {
+                m_BackgroundColor = value;
+                NotifyPropertyChanged("BackgroundColor");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -1228,6 +1262,8 @@ namespace PFD
             ReinforcementBarSolidModelOpacity = 0.9f;
             FloorSlabSolidModelOpacity = 0.3f;
             SlabRebateSolidModelOpacity = 0.3f;
+
+            BackgroundColorIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
 
             IsSetFromCode = false;
         }

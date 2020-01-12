@@ -26,7 +26,7 @@
             <TabItem Name ="General">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="General" Foreground="Blue"/>
+                        <TextBlock Text="General" Foreground="Black"/>
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -75,7 +75,7 @@
             <TabItem Name ="Objects">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Objects" Foreground="Blue"/>
+                        <TextBlock Text="Objects" Foreground="Black"/>
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -146,7 +146,7 @@
             <TabItem Name="Colours">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Colours" Foreground="Blue"/>
+                        <TextBlock Text="Colours" Foreground="Black"/>
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -564,6 +564,20 @@
                          Text="{Binding Path=SlabRebateSolidModelOpacity, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
 
+                        <TextBlock Grid.Row="10" Grid.Column="2" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
+                        <ComboBox Grid.Row="10" Grid.Column="3" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                         ItemsSource="{Binding Path=ColorList}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                     </Grid>
                 </ScrollViewer>
 
@@ -572,7 +586,7 @@
             <TabItem Name ="Loads">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Loads" Foreground="Blue"/>
+                        <TextBlock Text="Loads" Foreground="Black"/>
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

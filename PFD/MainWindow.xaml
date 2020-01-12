@@ -263,18 +263,7 @@
                         <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-                        <TextBlock Grid.Row="25" Grid.Column="0" Text="Background Color:" HorizontalAlignment="Left" Margin="5,0,0,0" />
-                        <ComboBox Grid.Row="25" Grid.Column="1" Name ="Combobox_BackgroundColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=BackgroundColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Rectangle Fill="{Binding Name}" Width="92" Height="12" Margin="0,1,5,1" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        
                         <TextBlock Grid.Row="1" Grid.Column="3" Text="View:" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                         <ComboBox Grid.Row="1" Grid.Column="4" Name ="Combobox_View" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource ModelViews}}" SelectedIndex="{Binding Path=ViewIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>

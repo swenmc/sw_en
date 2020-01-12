@@ -1519,8 +1519,8 @@ namespace PFD
             //CComboBoxHelper.FillComboboxWithColors_All(Combobox_WireframeColor);
             //Combobox_WireframeColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
 
-            CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
-            Combobox_BackgroundColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
+            //CComboBoxHelper.FillComboboxWithColors_All(Combobox_BackgroundColor);
+            //Combobox_BackgroundColor.SelectedIndex = CComboBoxHelper.GetColorIndex(Colors.Black);
         }
 
         private void ExportPDF_Click(object sender, RoutedEventArgs e)
