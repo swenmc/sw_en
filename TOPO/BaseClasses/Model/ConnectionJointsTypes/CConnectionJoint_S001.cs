@@ -16,11 +16,12 @@ namespace BaseClasses
         // Column to Edge Rafter Joint
         public float m_ft;
         public float m_fRoofPitch_rad;
+        public bool m_bWindPostEndUnderRafter;
         public bool m_bSwitchConnectedSide_Z;
 
         public CConnectionJoint_S001() { }
 
-        public CConnectionJoint_S001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bSwitchConnectedSide_Z, bool bIsDisplayed_temp)
+        public CConnectionJoint_S001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, float fRoofPitch_rad, bool bWindPostEndUnderRafter, bool bSwitchConnectedSide_Z, bool bIsDisplayed_temp)
         {
             bIsJointDefinedinGCS = false;
 
@@ -30,16 +31,16 @@ namespace BaseClasses
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
             m_fRoofPitch_rad = fRoofPitch_rad;
+            m_bWindPostEndUnderRafter = bWindPostEndUnderRafter;
+            m_bSwitchConnectedSide_Z = bSwitchConnectedSide_Z;
             BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
-            m_bSwitchConnectedSide_Z = bSwitchConnectedSide_Z;
             m_ft = 0.002f;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
 
             bool bUsePlatesTypeN = false; // Nastavuje sa pouzity typ zavetrovacieho plechu
-            bool bColumnUnderRafter = true; // Nastavuje ci uvazovat spoj pre wind post za rafterom alebo pod rafterom
             bool bUseSamePlates = false; // Nastavuje ci sa ma pouzit na oboch stranach plate G alebo na jednej strane G a na druhej H
 
             if (bUsePlatesTypeN)
@@ -110,7 +111,7 @@ namespace BaseClasses
                     m_arrPlates[0] = pPlate1;
                 }
             }
-            else if(!bColumnUnderRafter)
+            else if(!bWindPostEndUnderRafter)
             {
                 // Plate position in x-direction on the secondary member
                 float fAlignment_x;
@@ -334,12 +335,12 @@ namespace BaseClasses
                 float fOffsetAboveColumnEnd =(float)m_MainMember.CrScStart.h / (float)Math.Cos(fRoofPitch_rad); // Dodatocny posun plechu smerom hore na hornu hranu rafter.
 
                 float fb1_Plate1 = 0.05f;
-                float fb2_Plate1 = (float)m_SecondaryMembers[0].CrScStart.h;
+                float fb2_Plate1 = (float)m_SecondaryMembers[0].CrScStart.h - (float)m_MainMember.CrScStart.b;
                 float fhY1_Plate = fb2_Plate1;// 0.3f;
                 float fhY2_Plate = fhY1_Plate + fOffsetAboveColumnEnd;//0.8f; // Celkovy rozmer
                 float flZ_Plate = 0.1f;
 
-                float fb_Plate2 = (float)(m_SecondaryMembers[0].CrScStart.h + m_MainMember.CrScStart.b);
+                float fb_Plate2 = (float)m_SecondaryMembers[0].CrScStart.h;
                 float fhY1_Plate2 = fb_Plate2; // 0.5f;
                 float fhY2_Plate2 = fhY1_Plate2 + 2f * (float)m_MainMember.CrScStart.b; // 0.7f; // Celkovy rozmer
 
@@ -355,19 +356,19 @@ namespace BaseClasses
                 float fControlPoint1Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY2_Plate + fOffsetAboveColumnEnd;
                 float fControlPoint1Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
                 float fControlPoint1Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
-                float fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
-                float fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+                float fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z + (float)m_MainMember.CrScStart.b;
+                float fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z + (float)m_MainMember.CrScStart.b;
 
                 float fRotation2AboutLCS_y_deg_start = 90;
                 float fRotation2AboutLCS_z_deg_start = 90;
                 float fRotation2AboutLCS_y_deg_end = 90;
                 float fRotation2AboutLCS_z_deg_end = 270;
-                float fControlPoint2Position_x_start = -fAlignment_x + fhY1_Plate2 + m_ft;
-                float fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY1_Plate2 - m_ft;
+                float fControlPoint2Position_x_start = -fAlignment_x + fhY1_Plate2/* + m_ft*/;
+                float fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY1_Plate2/* - m_ft*/;
                 float fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
                 float fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
-                float fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z - (float)m_MainMember.CrScStart.b;
-                float fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z - (float)m_MainMember.CrScStart.b;
+                float fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
+                float fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_min + flocaleccentricity_z;
 
                 if (bSwitchConnectedSide_Z) // Back Side of Building
                 {
@@ -379,19 +380,19 @@ namespace BaseClasses
                     fControlPoint1Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY2_Plate + fOffsetAboveColumnEnd;
                     fControlPoint1Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
                     fControlPoint1Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
-                    fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
-                    fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                    fControlPoint1Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z - (float)m_MainMember.CrScStart.b;
+                    fControlPoint1Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z - (float)m_MainMember.CrScStart.b;
 
                     fRotation2AboutLCS_y_deg_start = 270;
                     fRotation2AboutLCS_z_deg_start = 90;
                     fRotation2AboutLCS_y_deg_end = 270;
                     fRotation2AboutLCS_z_deg_end = 270;
-                    fControlPoint2Position_x_start = -fAlignment_x + fhY1_Plate2 + m_ft;
-                    fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY1_Plate2 - m_ft;
+                    fControlPoint2Position_x_start = -fAlignment_x + fhY1_Plate2/* + m_ft*/;
+                    fControlPoint2Position_x_end = m_SecondaryMembers[0].FLength + fAlignment_x - fhY1_Plate2/* - m_ft*/;
                     fControlPoint2Position_y_start = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_min;
                     fControlPoint2Position_y_end = flocaleccentricity_y + (float)m_SecondaryMembers[0].CrScStart.y_max;
-                    fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z + (float)m_MainMember.CrScStart.b;
-                    fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z + (float)m_MainMember.CrScStart.b;
+                    fControlPoint2Position_z_start = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
+                    fControlPoint2Position_z_end = (float)m_SecondaryMembers[0].CrScStart.z_max + flocaleccentricity_z;
                 }
 
                 // Zaporna suradnica x posuva plech pred zaciatok pruta
@@ -428,7 +429,7 @@ namespace BaseClasses
 
         public override CConnectionJointTypes RecreateJoint()
         {
-            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bSwitchConnectedSide_Z, BIsDisplayed);
+            return new CConnectionJoint_S001(m_Node, m_MainMember,m_SecondaryMembers[0], m_fRoofPitch_rad, m_bWindPostEndUnderRafter, m_bSwitchConnectedSide_Z, BIsDisplayed);
         }
     }
 }
