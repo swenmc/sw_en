@@ -2282,9 +2282,9 @@ namespace PFD
             //----------------------------------------------------------------------------------------------------------------------------------------------------
 
             int arraysizeoriginal;
-            
+
             // Cross-sections
-            
+
             // Copy block cross-sections into the model
             for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
             {
@@ -2318,7 +2318,7 @@ namespace PFD
                 // -------------------------------------------------------------------------------------------------
                 // Deactivate bracing blocks and joints
                 // Find bracing blocks for deactivated girt
-                DeactivateMemberBracingBlocks(m, block, openningPointsInGCS);                
+                DeactivateMemberBracingBlocks(m, block, openningPointsInGCS);
             }
 
             // Copy block nodes into the model
@@ -2370,37 +2370,6 @@ namespace PFD
                     }
                 }
             }
-            
-            //to Mato - toto je povodny kod pred refaktoringom ak je to hore OK, tak toto asi zmazat
-            //for (int j = 0; j < m_arrMembers.Length; j++)
-            //{
-            //    if (m_arrMembers[j].EMemberType == EMemberType_FS.eGB)
-            //    {
-            //        if (m.IsIntermediateNode(m_arrMembers[j].NodeStart) || m.IsIntermediateNode(m_arrMembers[j].NodeEnd))
-            //        {
-            //            float fAdditionalOffset = 0.2f; // Ak nechceme aby brace (bracing blok) bol hned vela door alebo window
-
-            //            if (block.BuildingSide == "Left" || block.BuildingSide == "Right") // Blok je v lavej alebo pravej stene, LCS x bloku odpoveda smer v GCS Y // Porovnavame suradnice GCS Y
-            //            {
-            //                if (m_arrMembers[j].NodeStart.Y >= openningPointsInGCS[0].Y - fAdditionalOffset && m_arrMembers[j].NodeStart.Y <= openningPointsInGCS[1].Y + fAdditionalOffset)
-            //                {
-            //                    CMember brace = m_arrMembers[j]; // Member to deactivate
-
-            //                    DeactivateMemberAndItsJoints(ref brace);
-            //                }
-            //            }
-            //            else // Blok je v prednej alebo zadnej stene, LCS x bloku odpoveda smer v GCS X // Porovnavame suradnice GCS X
-            //            {
-            //                if (m_arrMembers[j].NodeStart.X >= openningPointsInGCS[0].X - fAdditionalOffset && m_arrMembers[j].NodeStart.X <= openningPointsInGCS[1].X + fAdditionalOffset)
-            //                {
-            //                    CMember brace = m_arrMembers[j]; // Member to deactivate
-
-            //                    DeactivateMemberAndItsJoints(ref brace);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         private void DeactivateBracingBlocksThroughtBlock(CBlock block, List<Point3D> openningPointsInGCS)
@@ -3062,7 +3031,7 @@ namespace PFD
             DeactivateMemberAndItsJoints(ref m);
         }
 
-            private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
+        private void CreateFoundations(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bIsReinforcementBarStraight)
         {
             bool bGenerateFoundations = true;
             //bool bIsReinforcementBarStraight = false; // Nastavime bool, aky typ vyztuze chceme vytvorit
