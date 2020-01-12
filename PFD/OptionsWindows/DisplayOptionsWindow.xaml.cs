@@ -58,5 +58,12 @@ namespace PFD
             if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
             this.Close();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
+
+
+        }
     }
 }

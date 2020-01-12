@@ -60,7 +60,7 @@ namespace PFD
         private bool m_DisplaySolidModel;
         private bool m_DisplayWireFrameModel;
 
-        
+
 
         private bool m_DisplayMembersWireFrame;
         private bool m_DisplayJointsWireFrame;
@@ -75,7 +75,7 @@ namespace PFD
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
 
-        
+
 
         // Member description options
         private bool MShowMemberDescription;
@@ -138,7 +138,7 @@ namespace PFD
         private Color m_GridLineColor = Colors.Coral;
         private int m_GridLineColorIndex;
         private int m_GridLinePatternType = (int)ELinePatternType.DASHDOTTED;
-                
+
         private Color m_SectionSymbolLabelTextColor = Colors.Cyan;
         private int m_SectionSymbolLabelTextColorIndex;
         private Color m_SectionSymbolColor = Colors.Cyan;
@@ -156,13 +156,13 @@ namespace PFD
         private Color m_SawCutLineColor = Colors.Goldenrod;
         private int m_SawCutLineColorIndex;
         private int m_SawCutLinePatternType = (int)ELinePatternType.DOTTED;
-                
+
         private Color m_ControlJointTextColor = Colors.BlueViolet;
         private int m_ControlJointTextColorIndex;
         private Color m_ControlJointLineColor = Colors.BlueViolet;
         private int m_ControlJointLineColorIndex;
         private int m_ControlJointLinePatternType = (int)ELinePatternType.DIVIDE;
-                
+
         private Color m_FoundationTextColor = Colors.HotPink;
         private int m_FoundationTextColorIndex;
         private Color m_FloorSlabTextColor = Colors.HotPink;
@@ -199,8 +199,8 @@ namespace PFD
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
-        
-        
+
+
         private float MDisplayIn3DRatio;
         #endregion Loads
 
@@ -219,7 +219,7 @@ namespace PFD
             set
             {
                 m_LightDirectional = value;
-                
+
                 NotifyPropertyChanged("LightDirectional");
             }
         }
@@ -234,7 +234,7 @@ namespace PFD
             set
             {
                 m_LightPoint = value;
-                
+
                 NotifyPropertyChanged("LightPoint");
             }
         }
@@ -249,7 +249,7 @@ namespace PFD
             set
             {
                 m_LightSpot = value;
-                
+
                 NotifyPropertyChanged("LightSpot");
             }
         }
@@ -264,7 +264,7 @@ namespace PFD
             set
             {
                 m_LightAmbient = value;
-                
+
                 NotifyPropertyChanged("LightAmbient");
             }
         }
@@ -280,7 +280,7 @@ namespace PFD
             {
                 m_MaterialDiffuse = value;
                 if (!m_MaterialDiffuse && !m_MaterialEmissive) MaterialEmissive = true;
-                
+
                 NotifyPropertyChanged("MaterialDiffuse");
             }
         }
@@ -296,7 +296,7 @@ namespace PFD
             {
                 m_MaterialEmissive = value;
                 if (!m_MaterialEmissive && !m_MaterialDiffuse) MaterialDiffuse = true;
-                
+
                 NotifyPropertyChanged("MaterialEmissive");
             }
         }
@@ -313,7 +313,7 @@ namespace PFD
                 m_DisplayMembers = value;
                 if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
                 SetIsEnabledLocalMembersAxis();
-                
+
                 NotifyPropertyChanged("DisplayMembers");
             }
         }
@@ -328,7 +328,7 @@ namespace PFD
             set
             {
                 m_DisplayJoints = value;
-                
+
                 NotifyPropertyChanged("DisplayJoints");
             }
         }
@@ -344,7 +344,7 @@ namespace PFD
             {
                 m_DisplayPlates = value;
                 if (m_DisplayPlates) DisplayJoints = true;
-                
+
                 NotifyPropertyChanged("DisplayPlates");
             }
         }
@@ -360,7 +360,7 @@ namespace PFD
             {
                 m_DisplayConnectors = value;
                 if (m_DisplayConnectors) DisplayJoints = true;
-                
+
                 NotifyPropertyChanged("DisplayConnectors");
             }
         }
@@ -375,7 +375,7 @@ namespace PFD
             set
             {
                 m_DisplayNodes = value;
-                
+
                 NotifyPropertyChanged("DisplayNodes");
             }
         }
@@ -390,7 +390,7 @@ namespace PFD
             set
             {
                 m_DisplayFoundations = value;
-                
+
                 NotifyPropertyChanged("DisplayFoundations");
             }
         }
@@ -405,7 +405,7 @@ namespace PFD
             set
             {
                 m_DisplayReinforcementBars = value;
-                
+
                 NotifyPropertyChanged("DisplayReinforcementBars");
             }
         }
@@ -420,7 +420,7 @@ namespace PFD
             set
             {
                 m_DisplayFloorSlab = value;
-                
+
                 NotifyPropertyChanged("DisplayFloorSlab");
             }
         }
@@ -435,7 +435,7 @@ namespace PFD
             set
             {
                 m_DisplaySawCuts = value;
-                
+
                 NotifyPropertyChanged("DisplaySawCuts");
             }
         }
@@ -450,7 +450,7 @@ namespace PFD
             set
             {
                 m_DisplayControlJoints = value;
-                
+
                 NotifyPropertyChanged("DisplayControlJoints");
             }
         }
@@ -465,7 +465,7 @@ namespace PFD
             set
             {
                 m_DisplayNodalSupports = value;
-                
+
                 NotifyPropertyChanged("DisplayNodalSupports");
             }
         }
@@ -481,7 +481,7 @@ namespace PFD
             {
                 m_DisplayMembersCenterLines = value;
                 SetIsEnabledLocalMembersAxis();
-                
+
                 NotifyPropertyChanged("DisplayMembersCenterLines");
             }
         }
@@ -497,7 +497,7 @@ namespace PFD
             {
                 m_DisplaySolidModel = value;
                 SetIsEnabledLocalMembersAxis();
-                
+
                 NotifyPropertyChanged("DisplaySolidModel");
             }
         }
@@ -513,7 +513,7 @@ namespace PFD
             {
                 m_DisplayWireFrameModel = value;
                 SetIsEnabledLocalMembersAxis();
-                
+
                 NotifyPropertyChanged("DisplayWireFrameModel");
             }
         }
@@ -528,7 +528,7 @@ namespace PFD
             set
             {
                 m_DisplayDistinguishedColorMember = value;
-                
+
                 NotifyPropertyChanged("DisplayDistinguishedColorMember");
             }
         }
@@ -543,7 +543,7 @@ namespace PFD
             set
             {
                 m_DisplayTransparentModelMember = value;
-                
+
                 NotifyPropertyChanged("DisplayTransparentModelMember");
             }
         }
@@ -557,12 +557,12 @@ namespace PFD
 
             set
             {
-                if (m_ColorsAccordingToMembers != value)
-                {
-                    m_ColorsAccordingToMembers = value;
-                    
-                    NotifyPropertyChanged("ColorsAccordingToMembers");
-                }
+                if (value == false && m_ColorsAccordingToSections == false) return;
+
+                m_ColorsAccordingToMembers = value;
+
+                NotifyPropertyChanged("ColorsAccordingToMembers");
+
             }
         }
 
@@ -575,8 +575,12 @@ namespace PFD
 
             set
             {
+                if (value == false && m_ColorsAccordingToMembers == false) return;
+
                 m_ColorsAccordingToSections = value;
-                //NotifyPropertyChanged("ColorsAccordingToSections");
+
+                NotifyPropertyChanged("ColorsAccordingToSections");
+
             }
         }
 
@@ -590,7 +594,7 @@ namespace PFD
             set
             {
                 MShowMemberDescription = value;
-                
+
                 NotifyPropertyChanged("ShowMemberDescription");
             }
         }
@@ -605,7 +609,7 @@ namespace PFD
             set
             {
                 MShowMemberID = value;
-                
+
                 NotifyPropertyChanged("ShowMemberID");
             }
         }
@@ -620,7 +624,7 @@ namespace PFD
             set
             {
                 MShowMemberPrefix = value;
-                
+
                 NotifyPropertyChanged("ShowMemberPrefix");
             }
         }
@@ -635,7 +639,7 @@ namespace PFD
             set
             {
                 MShowMemberCrossSectionStartName = value;
-                
+
                 NotifyPropertyChanged("ShowMemberCrossSectionStartName");
             }
         }
@@ -650,7 +654,7 @@ namespace PFD
             set
             {
                 MShowMemberRealLength = value;
-                
+
                 NotifyPropertyChanged("ShowMemberRealLength");
             }
         }
@@ -690,7 +694,7 @@ namespace PFD
             set
             {
                 MShowLoadsLabels = value;
-                
+
                 NotifyPropertyChanged("ShowLoadsLabels");
             }
         }
@@ -705,7 +709,7 @@ namespace PFD
             set
             {
                 MShowLoadsLabelsUnits = value;
-                
+
                 NotifyPropertyChanged("ShowLoadsLabelsUnits");
             }
         }
@@ -720,7 +724,7 @@ namespace PFD
             set
             {
                 MDisplayIn3DRatio = value;
-                
+
                 NotifyPropertyChanged("MDisplayIn3DRatio");
             }
         }
@@ -741,7 +745,7 @@ namespace PFD
             set
             {
                 MShowLocalMembersAxis = value;
-                
+
                 NotifyPropertyChanged("ShowLocalMembersAxis");
             }
         }
@@ -756,7 +760,7 @@ namespace PFD
             set
             {
                 MIsEnabledLocalMembersAxis = value;
-                
+
                 NotifyPropertyChanged("IsEnabledLocalMembersAxis");
             }
         }
@@ -771,7 +775,7 @@ namespace PFD
             set
             {
                 MShowSurfaceLoadsAxis = value;
-                
+
                 NotifyPropertyChanged("ShowSurfaceLoadsAxis");
             }
         }
@@ -786,7 +790,7 @@ namespace PFD
             set
             {
                 MIsEnabledSurfaceLoadsAxis = value;
-                
+
                 NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
             }
         }
@@ -1443,7 +1447,7 @@ namespace PFD
             set
             {
                 m_WireframeColorIndex = value;
-                
+
                 WireframeColor = CComboBoxHelper.ColorList[m_WireframeColorIndex].Color.Value;
 
                 NotifyPropertyChanged("WireframeColorIndex");
@@ -1477,7 +1481,7 @@ namespace PFD
             set
             {
                 m_NodeColorIndex = value;
-                
+
                 NodeColor = CComboBoxHelper.ColorList[m_NodeColorIndex].Color.Value;
 
                 NotifyPropertyChanged("NodeColorIndex");
@@ -1494,7 +1498,7 @@ namespace PFD
             set
             {
                 m_NodeDescriptionTextColorIndex = value;
-                
+
                 NodeDescriptionTextColor = CComboBoxHelper.ColorList[m_NodeDescriptionTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("NodeDescriptionTextColorIndex");
@@ -1579,7 +1583,7 @@ namespace PFD
             set
             {
                 m_GridLineColorIndex = value;
-                
+
                 GridLineColor = CComboBoxHelper.ColorList[m_GridLineColorIndex].Color.Value;
 
                 NotifyPropertyChanged("GridLineColorIndex");
@@ -1610,7 +1614,7 @@ namespace PFD
             set
             {
                 m_SectionSymbolColorIndex = value;
-                
+
                 SectionSymbolColor = CComboBoxHelper.ColorList[m_SectionSymbolColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SectionSymbolColorIndex");
@@ -1627,7 +1631,7 @@ namespace PFD
             set
             {
                 m_DetailSymbolLabelTextColorIndex = value;
-                
+
                 DetailSymbolLabelTextColor = CComboBoxHelper.ColorList[m_DetailSymbolLabelTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("DetailSymbolLabelTextColorIndex");
@@ -1677,7 +1681,7 @@ namespace PFD
             set
             {
                 m_SawCutTextColorIndex = value;
-                
+
                 SawCutTextColor = CComboBoxHelper.ColorList[m_SawCutTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("SawCutTextColorIndex");
@@ -1762,7 +1766,7 @@ namespace PFD
             set
             {
                 m_FloorSlabTextColorIndex = value;
-                
+
                 FloorSlabTextColor = CComboBoxHelper.ColorList[m_FloorSlabTextColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FloorSlabTextColorIndex");
@@ -1796,7 +1800,7 @@ namespace PFD
             set
             {
                 m_FloorSlabColorIndex = value;
-                
+
                 FloorSlabColor = CComboBoxHelper.ColorList[m_FloorSlabColorIndex].Color.Value;
 
                 NotifyPropertyChanged("FloorSlabColorIndex");
@@ -1890,7 +1894,7 @@ namespace PFD
             {
                 MShowLoads = value;
                 SetIsEnabledSurfaceLoadsAxis();
-                
+
                 NotifyPropertyChanged("ShowLoads");
             }
         }
@@ -1905,7 +1909,7 @@ namespace PFD
             set
             {
                 MShowNodalLoads = value;
-                
+
                 NotifyPropertyChanged("ShowNodalLoads");
             }
         }
@@ -1934,7 +1938,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnGirts = value;
-                
+
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnGirts");
             }
@@ -1950,7 +1954,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnPurlins = value;
-                
+
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnPurlins");
             }
@@ -1966,7 +1970,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnColumns = value;
-                
+
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnColumns");
             }
@@ -1982,7 +1986,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnFrameMembers = value;
-                
+
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnFrameMembers");
             }
@@ -2000,7 +2004,7 @@ namespace PFD
                 MShowSurfaceLoads = value;
                 if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
                 SetIsEnabledSurfaceLoadsAxis();
-                
+
                 NotifyPropertyChanged("ShowSurfaceLoads");
             }
         }
@@ -2015,7 +2019,7 @@ namespace PFD
             set
             {
                 MShowNodesDescription = value;
-                
+
                 NotifyPropertyChanged("ShowNodesDescription");
             }
         }
