@@ -13,7 +13,7 @@
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Name="GridDisplayOptions" Margin="5">
+        <Grid Name="GridDisplayOptionsDesign" Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>

@@ -19,28 +19,30 @@ namespace PFD
     public partial class DesignOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        private bool DisplayOptionsChanged = false;
+        //private bool DisplayOptionsChanged = false;
         public DesignOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            DisplayOptionsChanged = false;
-            
-            pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            this.DataContext = pfdVM._displayOptionsVM;
+            //DisplayOptionsChanged = false;
+
+            //pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
+            //this.DataContext = pfdVM._displayOptionsVM;
+
+            this.DataContext = pfdVM;
         }
 
         
-        private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (sender == null) return;
-            if (sender is DisplayOptionsViewModel)
-            {
-                DisplayOptionsChanged = true;
-            }
-        }
+        //private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (sender == null) return;
+        //    if (sender is DisplayOptionsViewModel)
+        //    {
+        //        DisplayOptionsChanged = true;
+        //    }
+        //}
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -49,12 +51,12 @@ namespace PFD
 
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
-            DisplayOptionsChanged = true;
+            //DisplayOptionsChanged = true;
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
+            //if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
             this.Close();
         }
     }
