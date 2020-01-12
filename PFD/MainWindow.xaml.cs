@@ -91,7 +91,7 @@ namespace PFD
         public SeisLoadDataInput sSeisInputData;
 
         private CProjectInfoVM projectInfoVM;
-        private DisplayOptionsViewModel displayOptionsVM;
+        //private DisplayOptionsViewModel displayOptionsVM;
 
         public MainWindow()
         {
@@ -114,10 +114,9 @@ namespace PFD
             SetLoadInput();
 
             projectInfoVM = new CProjectInfoVM();
-            displayOptionsVM = new DisplayOptionsViewModel();
-
+            
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM, displayOptionsVM);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
@@ -422,7 +421,7 @@ namespace PFD
 
             vm.GenerateMemberLoadsIfNotGenerated();
 
-            Solver solver = new Solver(vm.UseFEMSolverCalculationForSimpleBeam);
+            Solver solver = new Solver(vm._solverOptionsVM.UseFEMSolverCalculationForSimpleBeam);
             vm.SolverWindow = solver;
 
             vm.Run();
@@ -779,7 +778,7 @@ namespace PFD
                 vm.RecreateFloorSlab = false;
             }
 
-            bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
+            bool generateSurfaceLoads = vm._displayOptionsVM.ShowSurfaceLoadsAxis ||
                                         vm.GenerateSurfaceLoads ||
                                         vm.GenerateLoadsOnGirts ||
                                         vm.GenerateLoadsOnPurlins ||
@@ -1066,7 +1065,7 @@ namespace PFD
 
                 if (Member_Design.Content == null)
                 {
-                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.ShearDesignAccording334, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
+                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM.ShearDesignAccording334, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
                 }
                 else
                 {

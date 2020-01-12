@@ -19,16 +19,27 @@ namespace PFD
     public partial class GeneralOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        
+        private bool GeneralOptionsChanged = false;
         public GeneralOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
-                        
-            this.DataContext = pfdVM;
+
+            pfdVM._generalOptionsVM.PropertyChanged += _generalOptionsVM_PropertyChanged;
+            
+            this.DataContext = pfdVM._generalOptionsVM;
         }
 
+        private void _generalOptionsVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            if (sender is GeneralOptionsViewModel)
+            {
+                GeneralOptionsChanged = true;
+            }
+        }
+                
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -42,6 +53,7 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (GeneralOptionsChanged) _pfdVM.GeneralOptionsChanged = true;
             this.Close();
         }
     }

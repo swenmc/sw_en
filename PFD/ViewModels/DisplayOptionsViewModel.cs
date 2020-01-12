@@ -18,9 +18,89 @@ namespace PFD
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        #region general
+        private bool m_LightDirectional;
+        private bool m_LightPoint;
+        private bool m_LightSpot;
+        private bool m_LightAmbient;
+
+        private bool m_MaterialDiffuse;
+        private bool m_MaterialEmissive;
+
+        //Color display options
+        private bool m_ColorsAccordingToMembers;
+        private bool m_ColorsAccordingToSections;
+
+        private bool m_DisplayDistinguishedColorMember;
+        private bool m_DisplayTransparentModelMember;
+
+        private bool MShowGlobalAxis;
+        private bool MShowLocalMembersAxis;
+        private bool MIsEnabledLocalMembersAxis;
+        private bool MShowSurfaceLoadsAxis;
+        private bool MIsEnabledSurfaceLoadsAxis;
+        #endregion general
+
+
+        private bool m_DisplayMembers;
+        private bool m_DisplayJoints;
+        private bool m_DisplayPlates;
+        private bool m_DisplayConnectors;
+        private bool m_DisplayNodes;
+        private bool m_DisplayFoundations;
+        private bool m_DisplayReinforcementBars;
+        private bool m_DisplayFloorSlab;
+        private bool m_DisplaySawCuts;
+        private bool m_DisplayControlJoints;
+        private bool m_DisplayNodalSupports;
+        private bool m_DisplayMembersCenterLines;
+        private bool m_DisplaySolidModel;
+        private bool m_DisplayWireFrameModel;
+
         
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
+
+        private bool m_DisplayMembersWireFrame;
+        private bool m_DisplayJointsWireFrame;
+        private bool m_DisplayPlatesWireFrame;
+        private bool m_DisplayConnectorsWireFrame;
+        private bool m_DisplayNodesWireFrame;
+        private bool m_DisplayFoundationsWireFrame;
+        private bool m_DisplayReinforcementBarsWireFrame;
+        private bool m_DisplayFloorSlabWireFrame;
+
+        // Labels and axes
+        private bool MShowLoadsLabels;
+        private bool MShowLoadsLabelsUnits;
+
+        
+
+        // Member description options
+        private bool MShowMemberDescription;
+        private bool MShowMemberID;
+        private bool MShowMemberPrefix;
+        private bool MShowMemberCrossSectionStartName;
+        private bool MShowMemberRealLength;
+        private bool MShowMemberRealLengthInMM;
+        private bool MShowMemberRealLengthUnit;
+        private bool MShowNodesDescription;
+
+        private bool MShowFoundationsDescription;
+        private bool MShowFloorSlabDescription;
+        private bool MShowSawCutsDescription;
+        private bool MShowControlJointsDescription;
+        private bool MShowDimensions;
+        private bool MShowGridLines;
+        private bool MShowSectionSymbols;
+        private bool MShowDetailSymbols;
+        private bool MShowSlabRebates;
+
+
+
+
+
         private Color m_WireframeColor;
         private int m_WireframeColorIndex;
         private float m_WireFrameLineThickness;
@@ -107,11 +187,613 @@ namespace PFD
         private float m_FloorSlabSolidModelOpacity = 0.3f;
         private float m_SlabRebateSolidModelOpacity = 0.5f;
 
+
+        #region Loads
+        // Load Case - display options
+        private bool MShowLoads;
+        private bool MShowNodalLoads;
+        private bool MShowLoadsOnMembers;
+        private bool MShowLoadsOnGirts;
+        private bool MShowLoadsOnPurlins;
+        private bool MShowLoadsOnColumns;
+        private bool MShowLoadsOnFrameMembers;
+        private bool MShowSurfaceLoads;
+
+        
+        
+        private float MDisplayIn3DRatio;
+        #endregion Loads
+
+
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        
+        public bool LightDirectional
+        {
+            get
+            {
+                return m_LightDirectional;
+            }
+
+            set
+            {
+                m_LightDirectional = value;
+                
+                NotifyPropertyChanged("LightDirectional");
+            }
+        }
+
+        public bool LightPoint
+        {
+            get
+            {
+                return m_LightPoint;
+            }
+
+            set
+            {
+                m_LightPoint = value;
+                
+                NotifyPropertyChanged("LightPoint");
+            }
+        }
+
+        public bool LightSpot
+        {
+            get
+            {
+                return m_LightSpot;
+            }
+
+            set
+            {
+                m_LightSpot = value;
+                
+                NotifyPropertyChanged("LightSpot");
+            }
+        }
+
+        public bool LightAmbient
+        {
+            get
+            {
+                return m_LightAmbient;
+            }
+
+            set
+            {
+                m_LightAmbient = value;
+                
+                NotifyPropertyChanged("LightAmbient");
+            }
+        }
+
+        public bool MaterialDiffuse
+        {
+            get
+            {
+                return m_MaterialDiffuse;
+            }
+
+            set
+            {
+                m_MaterialDiffuse = value;
+                if (!m_MaterialDiffuse && !m_MaterialEmissive) MaterialEmissive = true;
+                
+                NotifyPropertyChanged("MaterialDiffuse");
+            }
+        }
+
+        public bool MaterialEmissive
+        {
+            get
+            {
+                return m_MaterialEmissive;
+            }
+
+            set
+            {
+                m_MaterialEmissive = value;
+                if (!m_MaterialEmissive && !m_MaterialDiffuse) MaterialDiffuse = true;
+                
+                NotifyPropertyChanged("MaterialEmissive");
+            }
+        }
+
+        public bool DisplayMembers
+        {
+            get
+            {
+                return m_DisplayMembers;
+            }
+
+            set
+            {
+                m_DisplayMembers = value;
+                if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
+                SetIsEnabledLocalMembersAxis();
+                
+                NotifyPropertyChanged("DisplayMembers");
+            }
+        }
+
+        public bool DisplayJoints
+        {
+            get
+            {
+                return m_DisplayJoints;
+            }
+
+            set
+            {
+                m_DisplayJoints = value;
+                
+                NotifyPropertyChanged("DisplayJoints");
+            }
+        }
+
+        public bool DisplayPlates
+        {
+            get
+            {
+                return m_DisplayPlates;
+            }
+
+            set
+            {
+                m_DisplayPlates = value;
+                if (m_DisplayPlates) DisplayJoints = true;
+                
+                NotifyPropertyChanged("DisplayPlates");
+            }
+        }
+
+        public bool DisplayConnectors
+        {
+            get
+            {
+                return m_DisplayConnectors;
+            }
+
+            set
+            {
+                m_DisplayConnectors = value;
+                if (m_DisplayConnectors) DisplayJoints = true;
+                
+                NotifyPropertyChanged("DisplayConnectors");
+            }
+        }
+
+        public bool DisplayNodes
+        {
+            get
+            {
+                return m_DisplayNodes;
+            }
+
+            set
+            {
+                m_DisplayNodes = value;
+                
+                NotifyPropertyChanged("DisplayNodes");
+            }
+        }
+
+        public bool DisplayFoundations
+        {
+            get
+            {
+                return m_DisplayFoundations;
+            }
+
+            set
+            {
+                m_DisplayFoundations = value;
+                
+                NotifyPropertyChanged("DisplayFoundations");
+            }
+        }
+
+        public bool DisplayReinforcementBars
+        {
+            get
+            {
+                return m_DisplayReinforcementBars;
+            }
+
+            set
+            {
+                m_DisplayReinforcementBars = value;
+                
+                NotifyPropertyChanged("DisplayReinforcementBars");
+            }
+        }
+
+        public bool DisplayFloorSlab
+        {
+            get
+            {
+                return m_DisplayFloorSlab;
+            }
+
+            set
+            {
+                m_DisplayFloorSlab = value;
+                
+                NotifyPropertyChanged("DisplayFloorSlab");
+            }
+        }
+
+        public bool DisplaySawCuts
+        {
+            get
+            {
+                return m_DisplaySawCuts;
+            }
+
+            set
+            {
+                m_DisplaySawCuts = value;
+                
+                NotifyPropertyChanged("DisplaySawCuts");
+            }
+        }
+
+        public bool DisplayControlJoints
+        {
+            get
+            {
+                return m_DisplayControlJoints;
+            }
+
+            set
+            {
+                m_DisplayControlJoints = value;
+                
+                NotifyPropertyChanged("DisplayControlJoints");
+            }
+        }
+
+        public bool DisplayNodalSupports
+        {
+            get
+            {
+                return m_DisplayNodalSupports;
+            }
+
+            set
+            {
+                m_DisplayNodalSupports = value;
+                
+                NotifyPropertyChanged("DisplayNodalSupports");
+            }
+        }
+
+        public bool DisplayMembersCenterLines
+        {
+            get
+            {
+                return m_DisplayMembersCenterLines;
+            }
+
+            set
+            {
+                m_DisplayMembersCenterLines = value;
+                SetIsEnabledLocalMembersAxis();
+                
+                NotifyPropertyChanged("DisplayMembersCenterLines");
+            }
+        }
+
+        public bool DisplaySolidModel
+        {
+            get
+            {
+                return m_DisplaySolidModel;
+            }
+
+            set
+            {
+                m_DisplaySolidModel = value;
+                SetIsEnabledLocalMembersAxis();
+                
+                NotifyPropertyChanged("DisplaySolidModel");
+            }
+        }
+
+        public bool DisplayWireFrameModel
+        {
+            get
+            {
+                return m_DisplayWireFrameModel;
+            }
+
+            set
+            {
+                m_DisplayWireFrameModel = value;
+                SetIsEnabledLocalMembersAxis();
+                
+                NotifyPropertyChanged("DisplayWireFrameModel");
+            }
+        }
+
+        public bool DisplayDistinguishedColorMember
+        {
+            get
+            {
+                return m_DisplayDistinguishedColorMember;
+            }
+
+            set
+            {
+                m_DisplayDistinguishedColorMember = value;
+                
+                NotifyPropertyChanged("DisplayDistinguishedColorMember");
+            }
+        }
+
+        public bool DisplayTransparentModelMember
+        {
+            get
+            {
+                return m_DisplayTransparentModelMember;
+            }
+
+            set
+            {
+                m_DisplayTransparentModelMember = value;
+                
+                NotifyPropertyChanged("DisplayTransparentModelMember");
+            }
+        }
+
+        public bool ColorsAccordingToMembers
+        {
+            get
+            {
+                return m_ColorsAccordingToMembers;
+            }
+
+            set
+            {
+                if (m_ColorsAccordingToMembers != value)
+                {
+                    m_ColorsAccordingToMembers = value;
+                    
+                    NotifyPropertyChanged("ColorsAccordingToMembers");
+                }
+            }
+        }
+
+        public bool ColorsAccordingToSections
+        {
+            get
+            {
+                return m_ColorsAccordingToSections;
+            }
+
+            set
+            {
+                m_ColorsAccordingToSections = value;
+                //NotifyPropertyChanged("ColorsAccordingToSections");
+            }
+        }
+
+        public bool ShowMemberDescription
+        {
+            get
+            {
+                return MShowMemberDescription;
+            }
+
+            set
+            {
+                MShowMemberDescription = value;
+                
+                NotifyPropertyChanged("ShowMemberDescription");
+            }
+        }
+
+        public bool ShowMemberID
+        {
+            get
+            {
+                return MShowMemberID;
+            }
+
+            set
+            {
+                MShowMemberID = value;
+                
+                NotifyPropertyChanged("ShowMemberID");
+            }
+        }
+
+        public bool ShowMemberPrefix
+        {
+            get
+            {
+                return MShowMemberPrefix;
+            }
+
+            set
+            {
+                MShowMemberPrefix = value;
+                
+                NotifyPropertyChanged("ShowMemberPrefix");
+            }
+        }
+
+        public bool ShowMemberCrossSectionStartName
+        {
+            get
+            {
+                return MShowMemberCrossSectionStartName;
+            }
+
+            set
+            {
+                MShowMemberCrossSectionStartName = value;
+                
+                NotifyPropertyChanged("ShowMemberCrossSectionStartName");
+            }
+        }
+
+        public bool ShowMemberRealLength
+        {
+            get
+            {
+                return MShowMemberRealLength;
+            }
+
+            set
+            {
+                MShowMemberRealLength = value;
+                
+                NotifyPropertyChanged("ShowMemberRealLength");
+            }
+        }
+        public bool ShowMemberRealLengthInMM
+        {
+            get
+            {
+                return MShowMemberRealLengthInMM;
+            }
+
+            set
+            {
+                MShowMemberRealLengthInMM = value;
+            }
+        }
+        public bool ShowMemberRealLengthUnit
+        {
+            get
+            {
+                return MShowMemberRealLengthUnit;
+            }
+
+            set
+            {
+                MShowMemberRealLengthUnit = value;
+                NotifyPropertyChanged("ShowMemberRealLengthUnit");
+            }
+        }
+
+        public bool ShowLoadsLabels
+        {
+            get
+            {
+                return MShowLoadsLabels;
+            }
+
+            set
+            {
+                MShowLoadsLabels = value;
+                
+                NotifyPropertyChanged("ShowLoadsLabels");
+            }
+        }
+
+        public bool ShowLoadsLabelsUnits
+        {
+            get
+            {
+                return MShowLoadsLabelsUnits;
+            }
+
+            set
+            {
+                MShowLoadsLabelsUnits = value;
+                
+                NotifyPropertyChanged("ShowLoadsLabelsUnits");
+            }
+        }
+
+        public float DisplayIn3DRatio
+        {
+            get
+            {
+                return MDisplayIn3DRatio;
+            }
+
+            set
+            {
+                MDisplayIn3DRatio = value;
+                
+                NotifyPropertyChanged("MDisplayIn3DRatio");
+            }
+        }
+
+        public bool ShowGlobalAxis
+        {
+            get { return MShowGlobalAxis; }
+            set { MShowGlobalAxis = value; NotifyPropertyChanged("ShowGlobalAxis"); }
+        }
+
+        public bool ShowLocalMembersAxis
+        {
+            get
+            {
+                return MShowLocalMembersAxis;
+            }
+
+            set
+            {
+                MShowLocalMembersAxis = value;
+                
+                NotifyPropertyChanged("ShowLocalMembersAxis");
+            }
+        }
+
+        public bool IsEnabledLocalMembersAxis
+        {
+            get
+            {
+                return MIsEnabledLocalMembersAxis;
+            }
+
+            set
+            {
+                MIsEnabledLocalMembersAxis = value;
+                
+                NotifyPropertyChanged("IsEnabledLocalMembersAxis");
+            }
+        }
+
+        public bool ShowSurfaceLoadsAxis
+        {
+            get
+            {
+                return MShowSurfaceLoadsAxis;
+            }
+
+            set
+            {
+                MShowSurfaceLoadsAxis = value;
+                
+                NotifyPropertyChanged("ShowSurfaceLoadsAxis");
+            }
+        }
+
+        public bool IsEnabledSurfaceLoadsAxis
+        {
+            get
+            {
+                return MIsEnabledSurfaceLoadsAxis;
+            }
+
+            set
+            {
+                MIsEnabledSurfaceLoadsAxis = value;
+                
+                NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
+            }
+        }
+
+
+
+
         public Color WireframeColor
         {
             get
@@ -1196,12 +1878,482 @@ namespace PFD
             }
         }
 
+
+        public bool ShowLoads
+        {
+            get
+            {
+                return MShowLoads;
+            }
+
+            set
+            {
+                MShowLoads = value;
+                SetIsEnabledSurfaceLoadsAxis();
+                
+                NotifyPropertyChanged("ShowLoads");
+            }
+        }
+
+        public bool ShowNodalLoads
+        {
+            get
+            {
+                return MShowNodalLoads;
+            }
+
+            set
+            {
+                MShowNodalLoads = value;
+                
+                NotifyPropertyChanged("ShowNodalLoads");
+            }
+        }
+
+        public bool ShowLoadsOnMembers
+        {
+            get
+            {
+                return MShowLoadsOnMembers;
+            }
+
+            set
+            {
+                MShowLoadsOnMembers = value;
+                NotifyPropertyChanged("ShowLoadsOnMembers");
+            }
+        }
+
+        public bool ShowLoadsOnGirts
+        {
+            get
+            {
+                return MShowLoadsOnGirts;
+            }
+
+            set
+            {
+                MShowLoadsOnGirts = value;
+                
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnGirts");
+            }
+        }
+
+        public bool ShowLoadsOnPurlins
+        {
+            get
+            {
+                return MShowLoadsOnPurlins;
+            }
+
+            set
+            {
+                MShowLoadsOnPurlins = value;
+                
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnPurlins");
+            }
+        }
+
+        public bool ShowLoadsOnColumns
+        {
+            get
+            {
+                return MShowLoadsOnColumns;
+            }
+
+            set
+            {
+                MShowLoadsOnColumns = value;
+                
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnColumns");
+            }
+        }
+
+        public bool ShowLoadsOnFrameMembers
+        {
+            get
+            {
+                return MShowLoadsOnFrameMembers;
+            }
+
+            set
+            {
+                MShowLoadsOnFrameMembers = value;
+                
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnFrameMembers");
+            }
+        }
+
+        public bool ShowSurfaceLoads
+        {
+            get
+            {
+                return MShowSurfaceLoads;
+            }
+
+            set
+            {
+                MShowSurfaceLoads = value;
+                if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
+                SetIsEnabledSurfaceLoadsAxis();
+                
+                NotifyPropertyChanged("ShowSurfaceLoads");
+            }
+        }
+
+        public bool ShowNodesDescription
+        {
+            get
+            {
+                return MShowNodesDescription;
+            }
+
+            set
+            {
+                MShowNodesDescription = value;
+                
+                NotifyPropertyChanged("ShowNodesDescription");
+            }
+        }
+
+        public bool ShowFoundationsDescription
+        {
+            get
+            {
+                return MShowFoundationsDescription;
+            }
+
+            set
+            {
+                MShowFoundationsDescription = value;
+                NotifyPropertyChanged("ShowFoundationsDescription");
+            }
+        }
+
+        public bool ShowFloorSlabDescription
+        {
+            get
+            {
+                return MShowFloorSlabDescription;
+            }
+
+            set
+            {
+                MShowFloorSlabDescription = value;
+                NotifyPropertyChanged("ShowFloorSlabDescription");
+            }
+        }
+
+        public bool ShowSawCutsDescription
+        {
+            get
+            {
+                return MShowSawCutsDescription;
+            }
+
+            set
+            {
+                MShowSawCutsDescription = value;
+                NotifyPropertyChanged("ShowSawCutsDescription");
+            }
+        }
+
+        public bool ShowControlJointsDescription
+        {
+            get
+            {
+                return MShowControlJointsDescription;
+            }
+
+            set
+            {
+                MShowControlJointsDescription = value;
+                NotifyPropertyChanged("ShowControlJointsDescription");
+            }
+        }
+
+        public bool ShowDimensions
+        {
+            get
+            {
+                return MShowDimensions;
+            }
+
+            set
+            {
+                MShowDimensions = value;
+                NotifyPropertyChanged("ShowDimensions");
+            }
+        }
+
+        public bool ShowGridLines
+        {
+            get
+            {
+                return MShowGridLines;
+            }
+
+            set
+            {
+                MShowGridLines = value;
+                NotifyPropertyChanged("ShowGridLines");
+            }
+        }
+
+        public bool ShowSectionSymbols
+        {
+            get
+            {
+                return MShowSectionSymbols;
+            }
+
+            set
+            {
+                MShowSectionSymbols = value;
+                NotifyPropertyChanged("ShowSectionSymbols");
+            }
+        }
+
+        public bool ShowDetailSymbols
+        {
+            get
+            {
+                return MShowDetailSymbols;
+            }
+
+            set
+            {
+                MShowDetailSymbols = value;
+                NotifyPropertyChanged("ShowDetailSymbols");
+            }
+        }
+
+        public bool ShowSlabRebates
+        {
+            get
+            {
+                return MShowSlabRebates;
+            }
+
+            set
+            {
+                MShowSlabRebates = value;
+                NotifyPropertyChanged("ShowSlabRebates");
+            }
+        }
+
+        public bool DisplayMembersWireFrame
+        {
+            get
+            {
+                return m_DisplayMembersWireFrame;
+            }
+
+            set
+            {
+                m_DisplayMembersWireFrame = value;
+                NotifyPropertyChanged("DisplayMembersWireFrame");
+            }
+        }
+
+        public bool DisplayJointsWireFrame
+        {
+            get
+            {
+                return m_DisplayJointsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayJointsWireFrame = value;
+                NotifyPropertyChanged("DisplayJointsWireFrame");
+            }
+        }
+
+        public bool DisplayPlatesWireFrame
+        {
+            get
+            {
+                return m_DisplayPlatesWireFrame;
+            }
+
+            set
+            {
+                m_DisplayPlatesWireFrame = value;
+                NotifyPropertyChanged("DisplayPlatesWireFrame");
+            }
+        }
+
+        public bool DisplayConnectorsWireFrame
+        {
+            get
+            {
+                return m_DisplayConnectorsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayConnectorsWireFrame = value;
+                NotifyPropertyChanged("DisplayConnectorsWireFrame");
+            }
+        }
+
+        public bool DisplayNodesWireFrame
+        {
+            get
+            {
+                return m_DisplayNodesWireFrame;
+            }
+
+            set
+            {
+                m_DisplayNodesWireFrame = value;
+                NotifyPropertyChanged("DisplayNodesWireFrame");
+            }
+        }
+
+        public bool DisplayFoundationsWireFrame
+        {
+            get
+            {
+                return m_DisplayFoundationsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayFoundationsWireFrame = value;
+                NotifyPropertyChanged("DisplayFoundationsWireFrame");
+            }
+        }
+
+        public bool DisplayReinforcementBarsWireFrame
+        {
+            get
+            {
+                return m_DisplayReinforcementBarsWireFrame;
+            }
+
+            set
+            {
+                m_DisplayReinforcementBarsWireFrame = value;
+                NotifyPropertyChanged("DisplayReinforcementBarsWireFrame");
+            }
+        }
+
+        public bool DisplayFloorSlabWireFrame
+        {
+            get
+            {
+                return m_DisplayFloorSlabWireFrame;
+            }
+
+            set
+            {
+                m_DisplayFloorSlabWireFrame = value;
+                NotifyPropertyChanged("DisplayFloorSlabWireFrame");
+            }
+        }
+
+        private void SetIsEnabledLocalMembersAxis()
+        {
+            //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
+            //tak by malo byt zobrazenie os Local Member Axis disabled.            
+            if (m_DisplayMembers)
+            {
+                if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;
+                else { IsEnabledLocalMembersAxis = false; }
+            }
+            else { IsEnabledLocalMembersAxis = false; }
+
+            if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
+        }
+
+        private void SetIsEnabledSurfaceLoadsAxis()
+        {
+            //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
+            if (MShowSurfaceLoads && MShowLoads) IsEnabledSurfaceLoadsAxis = true;
+            else IsEnabledSurfaceLoadsAxis = false;
+
+            if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public DisplayOptionsViewModel()
         {
             IsSetFromCode = true;
+
+            LightDirectional = false;
+            LightPoint = false;
+            LightSpot = false;
+            LightAmbient = true;
+            MaterialDiffuse = true;
+            MaterialEmissive = false;
+            DisplayMembers = true;
+            DisplayJoints = true;
+            DisplayPlates = true;
+            DisplayConnectors = false;
+            DisplayNodes = false;
+            DisplayFoundations = true;
+            DisplayReinforcementBars = false;
+            DisplayFloorSlab = true;
+            DisplaySawCuts = true;
+            DisplayControlJoints = true;
+
+            DisplayMembersWireFrame = false;
+            DisplayJointsWireFrame = false;
+            DisplayPlatesWireFrame = false;
+            DisplayConnectorsWireFrame = false;
+            DisplayNodesWireFrame = false;
+            DisplayFoundationsWireFrame = false;
+            DisplayReinforcementBarsWireFrame = false;
+            DisplayNodalSupports = false;
+            DisplayMembersCenterLines = false;
+            DisplaySolidModel = true;
+            DisplayWireFrameModel = false;
+            DisplayDistinguishedColorMember = false;
+            DisplayTransparentModelMember = false;
+            ColorsAccordingToMembers = true;
+            ColorsAccordingToSections = false;
+
+            ShowNodesDescription = false;
+            ShowMemberDescription = false;
+            ShowMemberID = true;
+            ShowMemberPrefix = true;
+            ShowMemberRealLength = true;
+            ShowMemberRealLengthInMM = true;
+            ShowMemberRealLengthUnit = false;
+            ShowMemberCrossSectionStartName = false;
+            ShowFoundationsDescription = false;
+            ShowSawCutsDescription = false;
+            ShowControlJointsDescription = false;
+            ShowDimensions = true;
+            ShowGridLines = false;
+            ShowSectionSymbols = false;
+            ShowDetailSymbols = false;
+            ShowSlabRebates = true;
+
+            ShowLoads = false;
+            ShowLoadsOnMembers = false;
+            ShowLoadsOnGirts = true;
+            ShowLoadsOnPurlins = true;
+            ShowLoadsOnColumns = true;
+            ShowLoadsOnFrameMembers = true;
+            ShowNodalLoads = false;
+            ShowSurfaceLoads = false;
+            ShowLoadsLabels = false;
+            ShowLoadsLabelsUnits = false;
+            ShowGlobalAxis = true;
+            ShowLocalMembersAxis = false;
+            ShowSurfaceLoadsAxis = false;
+
+            DisplayIn3DRatio = 0.003f;
+
 
             WireframeColorIndex = CComboBoxHelper.GetColorIndex(Colors.CadetBlue);
             WireFrameLineThickness = 2;

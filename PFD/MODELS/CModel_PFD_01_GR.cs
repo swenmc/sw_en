@@ -211,18 +211,18 @@ namespace PFD
             */
 
             // TODO - doplnit potrebne vstupne hodnoty
-            float fVerticalDisplacementLimitDenominator_Rafter_PL = vm.VerticalDisplacementLimitDenominator_Rafter_PL;
+            float fVerticalDisplacementLimitDenominator_Rafter_PL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_PL;
             float fVerticalDisplacementLimitDenominator_Rafter_IL = 150f;
-            float fVerticalDisplacementLimitDenominator_Rafter_TL = vm.VerticalDisplacementLimitDenominator_Rafter_TL;
+            float fVerticalDisplacementLimitDenominator_Rafter_TL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_TL;
             float fHorizontalDisplacementLimitDenominator_Column_PL = 50f;
             float fHorizontalDisplacementLimitDenominator_Column_IL = 50f;
-            float fHorizontalDisplacementLimitDenominator_Column_TL = vm.HorizontalDisplacementLimitDenominator_Column_TL;
-            float fVerticalDisplacementLimitDenominator_Purlin_PL = vm.VerticalDisplacementLimitDenominator_Purlin_PL;
+            float fHorizontalDisplacementLimitDenominator_Column_TL = vm._designOptionsVM.HorizontalDisplacementLimitDenominator_Column_TL;
+            float fVerticalDisplacementLimitDenominator_Purlin_PL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Purlin_PL;
             float fVerticalDisplacementLimitDenominator_Purlin_IL = 100f;
-            float fVerticalDisplacementLimitDenominator_Purlin_TL = vm.VerticalDisplacementLimitDenominator_Purlin_TL;
+            float fVerticalDisplacementLimitDenominator_Purlin_TL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Purlin_TL;
             float fHorizontalDisplacementLimitDenominator_Girt_PL = 50f;
             float fHorizontalDisplacementLimitDenominator_Girt_IL = 100f;
-            float fHorizontalDisplacementLimitDenominator_Girt_TL = vm.HorizontalDisplacementLimitDenominator_Girt_TL;
+            float fHorizontalDisplacementLimitDenominator_Girt_TL = vm._designOptionsVM.HorizontalDisplacementLimitDenominator_Girt_TL;
             float fHorizontalDisplacementLimitDenominator_WindPost_PL = 50f;
             float fHorizontalDisplacementLimitDenominator_WindPost_IL = 100f;
             float fHorizontalDisplacementLimitDenominator_WindPost_TL = 100f;
@@ -492,7 +492,7 @@ namespace PFD
             // TODO 408 - Zapracovat toto nastavenie do GUI - prebrat s Ondrejom a dopracovat funkcionalitu tak ze sa budu generovat len bracing blocks na stenach 
             // alebo pre purlins v kazdom druhom rade (medzera medzi girts alebo purlins)
 
-            bool bUseGBEverySecondGUI = vm.BracingEverySecondRowOfGirts; 
+            bool bUseGBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfGirts; 
             bool bUseGBEverySecond = bUseGBEverySecondGUI && (iOneColumnGirtNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na vysku steny je neparny
 
             if (bGenerateGirtBracingSideWalls)
@@ -516,7 +516,7 @@ namespace PFD
             int iNumberOfPBMembersInOneBayOneSide = 0;
             int iNumberOfPBMembersInOneBay = 0;
 
-            bool bUsePBEverySecondGUI = vm.BracingEverySecondRowOfPurlins;
+            bool bUsePBEverySecondGUI = vm._generalOptionsVM.BracingEverySecondRowOfPurlins;
             bool bUsePBEverySecond = bUsePBEverySecondGUI && (iOneRafterPurlinNo % 2 != 0); // Nastavena hodnota je true a pocet bracing blocks na stranu strechy je neparny
 
             if (bGeneratePurlinBracing)

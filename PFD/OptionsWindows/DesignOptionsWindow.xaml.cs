@@ -19,30 +19,28 @@ namespace PFD
     public partial class DesignOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        //private bool DisplayOptionsChanged = false;
+        private bool DesignOptionsChanged = false;
         public DesignOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            //DisplayOptionsChanged = false;
+            DesignOptionsChanged = false;
 
-            //pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            //this.DataContext = pfdVM._displayOptionsVM;
-
-            this.DataContext = pfdVM;
+            pfdVM._designOptionsVM.PropertyChanged += HandleDesignOptionsPropertyChangedEvent;
+            this.DataContext = pfdVM._designOptionsVM;
         }
 
-        
-        //private void HandleDisplayOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    if (sender == null) return;
-        //    if (sender is DisplayOptionsViewModel)
-        //    {
-        //        DisplayOptionsChanged = true;
-        //    }
-        //}
+
+        private void HandleDesignOptionsPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            if (sender is DesignOptionsViewModel)
+            {
+                DesignOptionsChanged = true;
+            }
+        }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -51,12 +49,12 @@ namespace PFD
 
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
-            //DisplayOptionsChanged = true;
+            DesignOptionsChanged = true;
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            //if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
+            if (DesignOptionsChanged) _pfdVM.DesignOptionsChanged = true;
             this.Close();
         }
     }

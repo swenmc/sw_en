@@ -158,6 +158,9 @@
     <Compile Include="UC_Quotation.xaml.cs">
       <DependentUpon>UC_Quotation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DesignOptionsViewModel.cs" />
+    <Compile Include="ViewModels\SolverOptionsViewModel.cs" />
+    <Compile Include="ViewModels\GeneralOptionsViewModel.cs" />
     <Compile Include="ViewModels\QuotationDisplayOptionsViewModel.cs" />
     <Compile Include="ViewModels\FlashingsViewModel.cs" />
     <Compile Include="ViewModels\QuotationViewModel.cs" />
