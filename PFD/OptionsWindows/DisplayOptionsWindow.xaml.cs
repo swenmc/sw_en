@@ -29,7 +29,7 @@ namespace PFD
             DisplayOptionsChanged = false;
             
             pfdVM._displayOptionsVM.PropertyChanged += HandleDisplayOptionsPropertyChangedEvent;
-            //this.Colours.DataContext = pfdVM._displayOptionsVM;
+            
             this.DataContext = pfdVM._displayOptionsVM;
         }
 
@@ -57,6 +57,13 @@ namespace PFD
         {
             if (DisplayOptionsChanged) _pfdVM.SynchronizeGUI = true;
             this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //radioColorsIn3DMembers.IsChecked = _pfdVM._displayOptionsVM.ColorsAccordingToMembers;
+
+
         }
     }
 }

@@ -101,53 +101,17 @@ namespace PFD
         
         private int MLoadCaseIndex;
 
-        private int iFrontColumnNoInOneFrame;
-
-        private bool m_LightDirectional;
-        private bool m_LightPoint;
-        private bool m_LightSpot;
-        private bool m_LightAmbient;
-        private bool m_MaterialDiffuse;
-        private bool m_MaterialEmissive;
-        private bool m_DisplayMembers;
-        private bool m_DisplayJoints;
-        private bool m_DisplayPlates;
-        private bool m_DisplayConnectors;
-        private bool m_DisplayNodes;
-        private bool m_DisplayFoundations;
-        private bool m_DisplayReinforcementBars;
-        private bool m_DisplayFloorSlab;
-        private bool m_DisplaySawCuts;
-        private bool m_DisplayControlJoints;
-        private bool m_DisplayNodalSupports;
-        private bool m_DisplayMembersCenterLines;
-        private bool m_DisplaySolidModel;
-        private bool m_DisplayWireFrameModel;
-        private bool m_DisplayDistinguishedColorMember;
-        private bool m_DisplayTransparentModelMember;
+        private int iFrontColumnNoInOneFrame;                
         private bool m_TransformScreenLines3DToCylinders3D;
+                
 
-        private bool m_DisplayMembersWireFrame;
-        private bool m_DisplayJointsWireFrame;
-        private bool m_DisplayPlatesWireFrame;
-        private bool m_DisplayConnectorsWireFrame;
-        private bool m_DisplayNodesWireFrame;
-        private bool m_DisplayFoundationsWireFrame;
-        private bool m_DisplayReinforcementBarsWireFrame;
-        private bool m_DisplayFloorSlabWireFrame;
+        private bool m_GeneralOptionsChanged;
+        private bool m_SolverOptionsChanged;
+        private bool m_DesignOptionsChanged;
+        private bool m_DisplayOptionsChanged;
 
-        private bool m_BracingEverySecondRowOfGirts;
-        private bool m_BracingEverySecondRowOfPurlins;
-
-        // Load Case - display options
-        private bool MShowLoads;
-        private bool MShowNodalLoads;
-        private bool MShowLoadsOnMembers;
-        private bool MShowLoadsOnGirts;
-        private bool MShowLoadsOnPurlins;
-        private bool MShowLoadsOnColumns;
-        private bool MShowLoadsOnFrameMembers;
-        private bool MShowSurfaceLoads;
+        //private bool m_BracingEverySecondRowOfGirts;
+        //private bool m_BracingEverySecondRowOfPurlins;
 
         // Loads - generate options
         private bool MGenerateNodalLoads;
@@ -157,59 +121,26 @@ namespace PFD
         private bool MGenerateLoadsOnFrameMembers;
         private bool MGenerateSurfaceLoads;
 
-        // Labels and axes
-        private bool MShowLoadsLabels;
-        private bool MShowLoadsLabelsUnits;
-        private bool MShowGlobalAxis;
-        private bool MShowLocalMembersAxis;
-        private bool MIsEnabledLocalMembersAxis;
-        private bool MShowSurfaceLoadsAxis;
-        private bool MIsEnabledSurfaceLoadsAxis;
 
-        // Member description options
-        private bool MShowMemberDescription;
-        private bool MShowMemberID;
-        private bool MShowMemberPrefix;
-        private bool MShowMemberCrossSectionStartName;
-        private bool MShowMemberRealLength;
-        private bool MShowMemberRealLengthInMM;
-        private bool MShowMemberRealLengthUnit;
-        private bool MShowNodesDescription;
-
-        private bool MShowFoundationsDescription;
-        private bool MShowFloorSlabDescription;
-        private bool MShowSawCutsDescription;
-        private bool MShowControlJointsDescription;
-        private bool MShowDimensions;
-        private bool MShowGridLines;
-        private bool MShowSectionSymbols;
-        private bool MShowDetailSymbols;
-        private bool MShowSlabRebates;
-
-        private float MDisplayIn3DRatio;
-
-
-        // Displacement / Deflection Limits
-        private float MVerticalDisplacementLimitDenominator_Rafter_PL;
-        private float MVerticalDisplacementLimitDenominator_Rafter_TL;
-        private float MHorizontalDisplacementLimitDenominator_Column_TL;
-        private float MVerticalDisplacementLimitDenominator_Purlin_PL;
-        private float MVerticalDisplacementLimitDenominator_Purlin_TL;
-        private float MHorizontalDisplacementLimitDenominator_Girt_TL;
+        //// Displacement / Deflection Limits
+        //private float MVerticalDisplacementLimitDenominator_Rafter_PL;
+        //private float MVerticalDisplacementLimitDenominator_Rafter_TL;
+        //private float MHorizontalDisplacementLimitDenominator_Column_TL;
+        //private float MVerticalDisplacementLimitDenominator_Purlin_PL;
+        //private float MVerticalDisplacementLimitDenominator_Purlin_TL;
+        //private float MHorizontalDisplacementLimitDenominator_Girt_TL;
 
         // Load Combination - options
-        private bool MDeterminateCombinationResultsByFEMSolver;
-        private bool MUseFEMSolverCalculationForSimpleBeam;
-        private bool MDeterminateMemberLocalDisplacementsForULS;
+        //private bool MDeterminateCombinationResultsByFEMSolver;
+        //private bool MUseFEMSolverCalculationForSimpleBeam;
+        //private bool MDeterminateMemberLocalDisplacementsForULS;
 
         // Local member load direction used for load definition, calculation of internal forces and design
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
-        private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
+        //private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
 
-        //Color display options
-        private bool m_ColorsAccordingToMembers;
-        private bool m_ColorsAccordingToSections;
+        
 
         private ObservableCollection<DoorProperties> MDoorBlocksProperties;
         private ObservableCollection<WindowProperties> MWindowBlocksProperties;
@@ -1029,179 +960,55 @@ namespace PFD
             }
         }
 
-        public bool ShowLoads
-        {
-            get
-            {
-                return MShowLoads;
-            }
+        
 
-            set
-            {
-                MShowLoads = value;
-                SetIsEnabledSurfaceLoadsAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowLoads");
-            }
-        }
+        //public bool DeterminateCombinationResultsByFEMSolver
+        //{
+        //    get
+        //    {
+        //        return MDeterminateCombinationResultsByFEMSolver;
+        //    }
 
-        public bool ShowNodalLoads
-        {
-            get
-            {
-                return MShowNodalLoads;
-            }
+        //    set
+        //    {
+        //        MDeterminateCombinationResultsByFEMSolver = value;
+        //        SetResultsAreNotValid();
+        //        RecreateModel = false;
+        //        NotifyPropertyChanged("DeterminateCombinationResultsByFEMSolver");
+        //    }
+        //}
 
-            set
-            {
-                MShowNodalLoads = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowNodalLoads");
-            }
-        }
+        //public bool UseFEMSolverCalculationForSimpleBeam
+        //{
+        //    get
+        //    {
+        //        return MUseFEMSolverCalculationForSimpleBeam;
+        //    }
 
-        public bool ShowLoadsOnMembers
-        {
-            get
-            {
-                return MShowLoadsOnMembers;
-            }
+        //    set
+        //    {
+        //        MUseFEMSolverCalculationForSimpleBeam = value;
+        //        SetResultsAreNotValid();
+        //        RecreateModel = false;
+        //        NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
+        //    }
+        //}
 
-            set
-            {
-                MShowLoadsOnMembers = value;
-                NotifyPropertyChanged("ShowLoadsOnMembers");
-            }
-        }
+        //public bool DeterminateMemberLocalDisplacementsForULS
+        //{
+        //    get
+        //    {
+        //        return MDeterminateMemberLocalDisplacementsForULS;
+        //    }
 
-        public bool ShowLoadsOnGirts
-        {
-            get
-            {
-                return MShowLoadsOnGirts;
-            }
-
-            set
-            {
-                MShowLoadsOnGirts = value;
-                RecreateModel = false;
-                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnGirts");
-            }
-        }
-
-        public bool ShowLoadsOnPurlins
-        {
-            get
-            {
-                return MShowLoadsOnPurlins;
-            }
-
-            set
-            {
-                MShowLoadsOnPurlins = value;
-                RecreateModel = false;
-                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnPurlins");
-            }
-        }
-
-        public bool ShowLoadsOnColumns
-        {
-            get
-            {
-                return MShowLoadsOnColumns;
-            }
-
-            set
-            {
-                MShowLoadsOnColumns = value;
-                RecreateModel = false;
-                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnColumns");
-            }
-        }
-
-        public bool ShowLoadsOnFrameMembers
-        {
-            get
-            {
-                return MShowLoadsOnFrameMembers;
-            }
-
-            set
-            {
-                MShowLoadsOnFrameMembers = value;
-                RecreateModel = false;
-                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnFrameMembers");
-            }
-        }
-
-        public bool ShowSurfaceLoads
-        {
-            get
-            {
-                return MShowSurfaceLoads;
-            }
-
-            set
-            {
-                MShowSurfaceLoads = value;
-                if (!MShowSurfaceLoads && MShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
-                SetIsEnabledSurfaceLoadsAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowSurfaceLoads");
-            }
-        }
-
-        public bool DeterminateCombinationResultsByFEMSolver
-        {
-            get
-            {
-                return MDeterminateCombinationResultsByFEMSolver;
-            }
-
-            set
-            {
-                MDeterminateCombinationResultsByFEMSolver = value;
-                SetResultsAreNotValid();
-                RecreateModel = false;
-                NotifyPropertyChanged("DeterminateCombinationResultsByFEMSolver");
-            }
-        }
-
-        public bool UseFEMSolverCalculationForSimpleBeam
-        {
-            get
-            {
-                return MUseFEMSolverCalculationForSimpleBeam;
-            }
-
-            set
-            {
-                MUseFEMSolverCalculationForSimpleBeam = value;
-                SetResultsAreNotValid();
-                RecreateModel = false;
-                NotifyPropertyChanged("UseFEMSolverCalculationForSimpleBeam");
-            }
-        }
-
-        public bool DeterminateMemberLocalDisplacementsForULS
-        {
-            get
-            {
-                return MDeterminateMemberLocalDisplacementsForULS;
-            }
-
-            set
-            {
-                MDeterminateMemberLocalDisplacementsForULS = value;
-                SetResultsAreNotValid();
-                RecreateModel = false;
-                NotifyPropertyChanged("DeterminateMemberLocalDisplacementsForULS");
-            }
-        }
+        //    set
+        //    {
+        //        MDeterminateMemberLocalDisplacementsForULS = value;
+        //        SetResultsAreNotValid();
+        //        RecreateModel = false;
+        //        NotifyPropertyChanged("DeterminateMemberLocalDisplacementsForULS");
+        //    }
+        //}
 
         public bool UseCRSCGeometricalAxes
         {
@@ -1217,233 +1024,9 @@ namespace PFD
                 NotifyPropertyChanged("UseCRSCGeometricalAxes");
             }
         }
+                
 
-        public bool ShearDesignAccording334
-        {
-            get
-            {
-                return MShearDesignAccording334;
-            }
-
-            set
-            {
-                MShearDesignAccording334 = value;
-                SetResultsAreNotValid();
-                RecreateModel = false;
-                NotifyPropertyChanged("ShearDesignAccording334");
-            }
-        }
-
-        public bool ShowMemberDescription
-        {
-            get
-            {
-                return MShowMemberDescription;
-            }
-
-            set
-            {
-                MShowMemberDescription = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowMemberDescription");
-            }
-        }
-
-        public bool ShowMemberID
-        {
-            get
-            {
-                return MShowMemberID;
-            }
-
-            set
-            {
-                MShowMemberID = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowMemberID");
-            }
-        }
-
-        public bool ShowMemberPrefix
-        {
-            get
-            {
-                return MShowMemberPrefix;
-            }
-
-            set
-            {
-                MShowMemberPrefix = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowMemberPrefix");
-            }
-        }
-
-        public bool ShowMemberCrossSectionStartName
-        {
-            get
-            {
-                return MShowMemberCrossSectionStartName;
-            }
-
-            set
-            {
-                MShowMemberCrossSectionStartName = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowMemberCrossSectionStartName");
-            }
-        }
-
-        public bool ShowMemberRealLength
-        {
-            get
-            {
-                return MShowMemberRealLength;
-            }
-
-            set
-            {
-                MShowMemberRealLength = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowMemberRealLength");
-            }
-        }
-        public bool ShowMemberRealLengthInMM
-        {
-            get
-            {
-                return MShowMemberRealLengthInMM;
-            }
-
-            set
-            {
-                MShowMemberRealLengthInMM = value;
-            }
-        }
-        public bool ShowMemberRealLengthUnit
-        {
-            get
-            {
-                return MShowMemberRealLengthUnit;
-            }
-
-            set
-            {
-                MShowMemberRealLengthUnit = value;
-                NotifyPropertyChanged("ShowMemberRealLengthUnit");
-            }
-        }
-
-        public bool ShowLoadsLabels
-        {
-            get
-            {
-                return MShowLoadsLabels;
-            }
-
-            set
-            {
-                MShowLoadsLabels = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowLoadsLabels");
-            }
-        }
-
-        public bool ShowLoadsLabelsUnits
-        {
-            get
-            {
-                return MShowLoadsLabelsUnits;
-            }
-
-            set
-            {
-                MShowLoadsLabelsUnits = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowLoadsLabelsUnits");
-            }
-        }
-
-        public float DisplayIn3DRatio
-        {
-            get
-            {
-                return MDisplayIn3DRatio;
-            }
-
-            set
-            {
-                MDisplayIn3DRatio = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("MDisplayIn3DRatio");
-            }
-        }
-
-        public bool ShowGlobalAxis
-        {
-            get { return MShowGlobalAxis; }
-            set { MShowGlobalAxis = value; RecreateModel = false; NotifyPropertyChanged("ShowGlobalAxis"); }
-        }
-
-        public bool ShowLocalMembersAxis
-        {
-            get
-            {
-                return MShowLocalMembersAxis;
-            }
-
-            set
-            {
-                MShowLocalMembersAxis = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowLocalMembersAxis");
-            }
-        }
-
-        public bool IsEnabledLocalMembersAxis
-        {
-            get
-            {
-                return MIsEnabledLocalMembersAxis;
-            }
-
-            set
-            {
-                MIsEnabledLocalMembersAxis = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("IsEnabledLocalMembersAxis");
-            }
-        }
-
-        public bool ShowSurfaceLoadsAxis
-        {
-            get
-            {
-                return MShowSurfaceLoadsAxis;
-            }
-
-            set
-            {
-                MShowSurfaceLoadsAxis = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowSurfaceLoadsAxis");
-            }
-        }
-
-        public bool IsEnabledSurfaceLoadsAxis
-        {
-            get
-            {
-                return MIsEnabledSurfaceLoadsAxis;
-            }
-
-            set
-            {
-                MIsEnabledSurfaceLoadsAxis = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("IsEnabledSurfaceLoadsAxis");
-            }
-        }
+        
 
         public bool GenerateNodalLoads
         {
@@ -1703,376 +1286,7 @@ namespace PFD
             }
         }
 
-        public bool LightDirectional
-        {
-            get
-            {
-                return m_LightDirectional;
-            }
-
-            set
-            {
-                m_LightDirectional = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("LightDirectional");
-            }
-        }
-
-        public bool LightPoint
-        {
-            get
-            {
-                return m_LightPoint;
-            }
-
-            set
-            {
-                m_LightPoint = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("LightPoint");
-            }
-        }
-
-        public bool LightSpot
-        {
-            get
-            {
-                return m_LightSpot;
-            }
-
-            set
-            {
-                m_LightSpot = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("LightSpot");
-            }
-        }
-
-        public bool LightAmbient
-        {
-            get
-            {
-                return m_LightAmbient;
-            }
-
-            set
-            {
-                m_LightAmbient = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("LightAmbient");
-            }
-        }
-
-        public bool MaterialDiffuse
-        {
-            get
-            {
-                return m_MaterialDiffuse;
-            }
-
-            set
-            {
-                m_MaterialDiffuse = value;
-                if (!m_MaterialDiffuse && !m_MaterialEmissive) MaterialEmissive = true;
-                RecreateModel = false;
-                NotifyPropertyChanged("MaterialDiffuse");
-            }
-        }
-
-        public bool MaterialEmissive
-        {
-            get
-            {
-                return m_MaterialEmissive;
-            }
-
-            set
-            {
-                m_MaterialEmissive = value;
-                if (!m_MaterialEmissive && !m_MaterialDiffuse) MaterialDiffuse = true;
-                RecreateModel = false;
-                NotifyPropertyChanged("MaterialEmissive");
-            }
-        }
-
-        public bool DisplayMembers
-        {
-            get
-            {
-                return m_DisplayMembers;
-            }
-
-            set
-            {
-                m_DisplayMembers = value;
-                if (!m_DisplayMembers && MShowLocalMembersAxis) ShowLocalMembersAxis = false;
-                SetIsEnabledLocalMembersAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayMembers");
-            }
-        }
-
-        public bool DisplayJoints
-        {
-            get
-            {
-                return m_DisplayJoints;
-            }
-
-            set
-            {
-                m_DisplayJoints = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayJoints");
-            }
-        }
-
-        public bool DisplayPlates
-        {
-            get
-            {
-                return m_DisplayPlates;
-            }
-
-            set
-            {
-                m_DisplayPlates = value;
-                if (m_DisplayPlates) DisplayJoints = true;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayPlates");
-            }
-        }
-
-        public bool DisplayConnectors
-        {
-            get
-            {
-                return m_DisplayConnectors;
-            }
-
-            set
-            {
-                m_DisplayConnectors = value;
-                if (m_DisplayConnectors) DisplayJoints = true;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayConnectors");
-            }
-        }
-
-        public bool DisplayNodes
-        {
-            get
-            {
-                return m_DisplayNodes;
-            }
-
-            set
-            {
-                m_DisplayNodes = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayNodes");
-            }
-        }
-
-        public bool DisplayFoundations
-        {
-            get
-            {
-                return m_DisplayFoundations;
-            }
-
-            set
-            {
-                m_DisplayFoundations = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayFoundations");
-            }
-        }
-
-        public bool DisplayReinforcementBars
-        {
-            get
-            {
-                return m_DisplayReinforcementBars;
-            }
-
-            set
-            {
-                m_DisplayReinforcementBars = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayReinforcementBars");
-            }
-        }
-
-        public bool DisplayFloorSlab
-        {
-            get
-            {
-                return m_DisplayFloorSlab;
-            }
-
-            set
-            {
-                m_DisplayFloorSlab = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayFloorSlab");
-            }
-        }
-
-        public bool DisplaySawCuts
-        {
-            get
-            {
-                return m_DisplaySawCuts;
-            }
-
-            set
-            {
-                m_DisplaySawCuts = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplaySawCuts");
-            }
-        }
-
-        public bool DisplayControlJoints
-        {
-            get
-            {
-                return m_DisplayControlJoints;
-            }
-
-            set
-            {
-                m_DisplayControlJoints = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayControlJoints");
-            }
-        }
-
-        public bool DisplayNodalSupports
-        {
-            get
-            {
-                return m_DisplayNodalSupports;
-            }
-
-            set
-            {
-                m_DisplayNodalSupports = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayNodalSupports");
-            }
-        }
-
-        public bool DisplayMembersCenterLines
-        {
-            get
-            {
-                return m_DisplayMembersCenterLines;
-            }
-
-            set
-            {
-                m_DisplayMembersCenterLines = value;
-                SetIsEnabledLocalMembersAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayMembersCenterLines");
-            }
-        }
-
-        public bool DisplaySolidModel
-        {
-            get
-            {
-                return m_DisplaySolidModel;
-            }
-
-            set
-            {
-                m_DisplaySolidModel = value;
-                SetIsEnabledLocalMembersAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplaySolidModel");
-            }
-        }
-
-        public bool DisplayWireFrameModel
-        {
-            get
-            {
-                return m_DisplayWireFrameModel;
-            }
-
-            set
-            {
-                m_DisplayWireFrameModel = value;
-                SetIsEnabledLocalMembersAxis();
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayWireFrameModel");
-            }
-        }
-
-        public bool DisplayDistinguishedColorMember
-        {
-            get
-            {
-                return m_DisplayDistinguishedColorMember;
-            }
-
-            set
-            {
-                m_DisplayDistinguishedColorMember = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayDistinguishedColorMember");
-            }
-        }
-
-        public bool DisplayTransparentModelMember
-        {
-            get
-            {
-                return m_DisplayTransparentModelMember;
-            }
-
-            set
-            {
-                m_DisplayTransparentModelMember = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("DisplayTransparentModelMember");
-            }
-        }
-
-        public bool ColorsAccordingToMembers
-        {
-            get
-            {
-                return m_ColorsAccordingToMembers;
-            }
-
-            set
-            {
-                if (m_ColorsAccordingToMembers != value)
-                {
-                    m_ColorsAccordingToMembers = value;
-                    RecreateModel = false;
-                    NotifyPropertyChanged("ColorsAccordingToMembers");
-                }
-            }
-        }
-
-        public bool ColorsAccordingToSections
-        {
-            get
-            {
-                return m_ColorsAccordingToSections;
-            }
-
-            set
-            {
-                m_ColorsAccordingToSections = value;
-                //NotifyPropertyChanged("ColorsAccordingToSections");
-            }
-        }
+       
 
         public CJointsVM JointsVM
         {
@@ -2199,20 +1413,7 @@ namespace PFD
             }
         }
 
-        public bool ShowNodesDescription
-        {
-            get
-            {
-                return MShowNodesDescription;
-            }
-
-            set
-            {
-                MShowNodesDescription = value;
-                RecreateModel = false;
-                NotifyPropertyChanged("ShowNodesDescription");
-            }
-        }
+        
 
         public bool RecreateModel
         {
@@ -2270,131 +1471,7 @@ namespace PFD
             }
         }
 
-        public bool ShowFoundationsDescription
-        {
-            get
-            {
-                return MShowFoundationsDescription;
-            }
-
-            set
-            {
-                MShowFoundationsDescription = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowFoundationsDescription");
-            }
-        }
-
-        public bool ShowFloorSlabDescription
-        {
-            get
-            {
-                return MShowFloorSlabDescription;
-            }
-
-            set
-            {
-                MShowFloorSlabDescription = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowFloorSlabDescription");
-            }
-        }
-
-        public bool ShowSawCutsDescription
-        {
-            get
-            {
-                return MShowSawCutsDescription;
-            }
-
-            set
-            {
-                MShowSawCutsDescription = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowSawCutsDescription");
-            }
-        }
-
-        public bool ShowControlJointsDescription
-        {
-            get
-            {
-                return MShowControlJointsDescription;
-            }
-
-            set
-            {
-                MShowControlJointsDescription = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowControlJointsDescription");
-            }
-        }
-
-        public bool ShowDimensions
-        {
-            get
-            {
-                return MShowDimensions;
-            }
-
-            set
-            {
-                MShowDimensions = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowDimensions");
-            }
-        }
-
-        public bool ShowGridLines
-        {
-            get
-            {
-                return MShowGridLines;
-            }
-
-            set
-            {
-                MShowGridLines = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowGridLines");
-            }
-        }
-
-        public bool ShowSectionSymbols
-        {
-            get
-            {
-                return MShowSectionSymbols;
-            }
-
-            set
-            {
-                MShowSectionSymbols = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowSectionSymbols");
-            }
-        }
-
-        public bool ShowDetailSymbols
-        {
-            get
-            {
-                return MShowDetailSymbols;
-            }
-
-            set
-            {
-                MShowDetailSymbols = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowDetailSymbols");
-            }
-        }
-
-        public bool ShowSlabRebates
-        {
-            get
-            {
-                return MShowSlabRebates;
-            }
-
-            set
-            {
-                MShowSlabRebates = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("ShowSlabRebates");
-            }
-        }
+        
 
         public bool TransformScreenLines3DToCylinders3D
         {
@@ -2409,238 +1486,38 @@ namespace PFD
             }
         }
 
-        public bool DisplayMembersWireFrame
-        {
-            get
-            {
-                return m_DisplayMembersWireFrame;
-            }
+        
 
-            set
-            {
-                m_DisplayMembersWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayMembersWireFrame");
-            }
-        }
 
-        public bool DisplayJointsWireFrame
-        {
-            get
-            {
-                return m_DisplayJointsWireFrame;
-            }
+        //public bool BracingEverySecondRowOfGirts
+        //{
+        //    get
+        //    {
+        //        return m_BracingEverySecondRowOfGirts;
+        //    }
 
-            set
-            {
-                m_DisplayJointsWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayJointsWireFrame");
-            }
-        }
+        //    set
+        //    {
+        //        m_BracingEverySecondRowOfGirts = value;
+        //        RecreateJoints = true;
+        //        if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfGirts");
+        //    }
+        //}
 
-        public bool DisplayPlatesWireFrame
-        {
-            get
-            {
-                return m_DisplayPlatesWireFrame;
-            }
+        //public bool BracingEverySecondRowOfPurlins
+        //{
+        //    get
+        //    {
+        //        return m_BracingEverySecondRowOfPurlins;
+        //    }
 
-            set
-            {
-                m_DisplayPlatesWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayPlatesWireFrame");
-            }
-        }
-
-        public bool DisplayConnectorsWireFrame
-        {
-            get
-            {
-                return m_DisplayConnectorsWireFrame;
-            }
-
-            set
-            {
-                m_DisplayConnectorsWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayConnectorsWireFrame");
-            }
-        }
-
-        public bool DisplayNodesWireFrame
-        {
-            get
-            {
-                return m_DisplayNodesWireFrame;
-            }
-
-            set
-            {
-                m_DisplayNodesWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayNodesWireFrame");
-            }
-        }
-
-        public bool DisplayFoundationsWireFrame
-        {
-            get
-            {
-                return m_DisplayFoundationsWireFrame;
-            }
-
-            set
-            {
-                m_DisplayFoundationsWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayFoundationsWireFrame");
-            }
-        }
-
-        public bool DisplayReinforcementBarsWireFrame
-        {
-            get
-            {
-                return m_DisplayReinforcementBarsWireFrame;
-            }
-
-            set
-            {
-                m_DisplayReinforcementBarsWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayReinforcementBarsWireFrame");
-            }
-        }
-
-        public bool DisplayFloorSlabWireFrame
-        {
-            get
-            {
-                return m_DisplayFloorSlabWireFrame;
-            }
-
-            set
-            {
-                m_DisplayFloorSlabWireFrame = value;
-                if (MSynchronizeGUI) NotifyPropertyChanged("DisplayFloorSlabWireFrame");
-            }
-        }
-
-        // Displacement / Deflection Limits
-        public float VerticalDisplacementLimitDenominator_Rafter_PL
-        {
-            get
-            {
-                return MVerticalDisplacementLimitDenominator_Rafter_PL;
-            }
-
-            set
-            {
-                MVerticalDisplacementLimitDenominator_Rafter_PL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Rafter_PL");
-            }
-        }
-
-        public float VerticalDisplacementLimitDenominator_Rafter_TL
-        {
-            get
-            {
-                return MVerticalDisplacementLimitDenominator_Rafter_TL;
-            }
-
-            set
-            {
-                MVerticalDisplacementLimitDenominator_Rafter_TL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Rafter_TL");
-            }
-        }
-
-        public float HorizontalDisplacementLimitDenominator_Column_TL
-        {
-            get
-            {
-                return MHorizontalDisplacementLimitDenominator_Column_TL;
-            }
-
-            set
-            {
-                MHorizontalDisplacementLimitDenominator_Column_TL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Column_TL");
-            }
-        }
-
-        public float VerticalDisplacementLimitDenominator_Purlin_PL
-        {
-            get
-            {
-                return MVerticalDisplacementLimitDenominator_Purlin_PL;
-            }
-
-            set
-            {
-                MVerticalDisplacementLimitDenominator_Purlin_PL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Purlin_PL");
-            }
-        }
-
-        public float VerticalDisplacementLimitDenominator_Purlin_TL
-        {
-            get
-            {
-                return MVerticalDisplacementLimitDenominator_Purlin_TL;
-            }
-
-            set
-            {
-                MVerticalDisplacementLimitDenominator_Purlin_TL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("VerticalDisplacementLimitDenominator_Purlin_TL");
-            }
-        }
-
-        public float HorizontalDisplacementLimitDenominator_Girt_TL
-        {
-            get
-            {
-                return MHorizontalDisplacementLimitDenominator_Girt_TL;
-            }
-
-            set
-            {
-                MHorizontalDisplacementLimitDenominator_Girt_TL = value;
-                SetResultsAreNotValid();
-                NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Girt_TL");
-            }
-        }
-
-        public bool BracingEverySecondRowOfGirts
-        {
-            get
-            {
-                return m_BracingEverySecondRowOfGirts;
-            }
-
-            set
-            {
-                m_BracingEverySecondRowOfGirts = value;
-                RecreateJoints = true;
-                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfGirts");
-            }
-        }
-
-        public bool BracingEverySecondRowOfPurlins
-        {
-            get
-            {
-                return m_BracingEverySecondRowOfPurlins;
-            }
-
-            set
-            {
-                m_BracingEverySecondRowOfPurlins = value;
-                RecreateJoints = true;
-                if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfPurlins");
-            }
-        }
+        //    set
+        //    {
+        //        m_BracingEverySecondRowOfPurlins = value;
+        //        RecreateJoints = true;
+        //        if (MSynchronizeGUI) NotifyPropertyChanged("BracingEverySecondRowOfPurlins");
+        //    }
+        //}
 
         public bool RecreateQuotation
         {
@@ -3131,7 +2008,11 @@ namespace PFD
         private CProjectInfoVM _projectInfoVM;
         private CJointsVM _jointsVM;
         private CFootingInputVM _footingVM;
+
         public DisplayOptionsViewModel _displayOptionsVM;
+        public GeneralOptionsViewModel _generalOptionsVM;
+        public SolverOptionsViewModel _solverOptionsVM;
+        public DesignOptionsViewModel _designOptionsVM;
 
         public QuotationViewModel _quotationViewModel;
         public QuotationDisplayOptionsViewModel _quotationDisplayOptionsVM;
@@ -3329,11 +2210,80 @@ namespace PFD
             }
         }
 
+        public bool GeneralOptionsChanged
+        {
+            get
+            {
+                return m_GeneralOptionsChanged;
+            }
+
+            set
+            {
+                m_GeneralOptionsChanged = value;
+
+                RecreateJoints = true;
+                
+                if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
+            }
+        }
+
+        public bool SolverOptionsChanged
+        {
+            get
+            {
+                return m_SolverOptionsChanged;
+            }
+
+            set
+            {
+                m_SolverOptionsChanged = value;
+
+                SetResultsAreNotValid();
+                RecreateModel = false;
+
+                NotifyPropertyChanged("SolverOptionsChanged");
+            }
+        }
+
+        public bool DesignOptionsChanged
+        {
+            get
+            {
+                return m_DesignOptionsChanged;
+            }
+
+            set
+            {
+                m_DesignOptionsChanged = value;
+
+                SetResultsAreNotValid();
+
+                NotifyPropertyChanged("DesignOptionsChanged");
+            }
+        }
+
+        public bool DisplayOptionsChanged
+        {
+            get
+            {
+                return m_DisplayOptionsChanged;
+            }
+
+            set
+            {
+                m_DisplayOptionsChanged = value;
+
+                RecreateModel = false;
+
+                NotifyPropertyChanged("DisplayOptionsChanged");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
-            CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM, DisplayOptionsViewModel displayOptionsVM)
+            CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
@@ -3348,89 +2298,23 @@ namespace PFD
             _loadInput.PropertyChanged += _loadInput_PropertyChanged;
 
             _projectInfoVM = projectInfoVM;
-            _displayOptionsVM = displayOptionsVM;
 
-            LightDirectional = false;
-            LightPoint = false;
-            LightSpot = false;
-            LightAmbient = true;
-            MaterialDiffuse = true;
-            MaterialEmissive = false;
-            DisplayMembers = true;
-            DisplayJoints = true;
-            DisplayPlates = true;
-            DisplayConnectors = false;
-            DisplayNodes = false;
-            DisplayFoundations = true;
-            DisplayReinforcementBars = false;
-            DisplayFloorSlab = true;
-            DisplaySawCuts = true;
-            DisplayControlJoints = true;
+            _displayOptionsVM = new DisplayOptionsViewModel();
+            _generalOptionsVM = new GeneralOptionsViewModel();
+            _solverOptionsVM = new SolverOptionsViewModel();
+            _designOptionsVM = new DesignOptionsViewModel();
+            
+            
 
-            DisplayMembersWireFrame = false;
-            DisplayJointsWireFrame = false;
-            DisplayPlatesWireFrame = false;
-            DisplayConnectorsWireFrame = false;
-            DisplayNodesWireFrame = false;
-            DisplayFoundationsWireFrame = false;
-            DisplayReinforcementBarsWireFrame = false;
-            DisplayNodalSupports = false;
-            DisplayMembersCenterLines = false;
-            DisplaySolidModel = true;
-            DisplayWireFrameModel = false;
-            DisplayDistinguishedColorMember = false;
-            DisplayTransparentModelMember = false;
-            ColorsAccordingToMembers = true;
-            ColorsAccordingToSections = false;
+            
             RecreateModel = true;
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
 
-            ShowNodesDescription = false;
-            ShowMemberDescription = false;
-            ShowMemberID = true;
-            ShowMemberPrefix = true;
-            ShowMemberRealLength = true;
-            ShowMemberRealLengthInMM = true;
-            ShowMemberRealLengthUnit = false;
-            ShowMemberCrossSectionStartName = false;
-            ShowFoundationsDescription = false;
-            ShowSawCutsDescription = false;
-            ShowControlJointsDescription = false;
-            ShowDimensions = true;
-            ShowGridLines = false;
-            ShowSectionSymbols = false;
-            ShowDetailSymbols = false;
-            ShowSlabRebates = true;
 
-            ShowLoads = false;
-            ShowLoadsOnMembers = false;
-            ShowLoadsOnGirts = true;
-            ShowLoadsOnPurlins = true;
-            ShowLoadsOnColumns = true;
-            ShowLoadsOnFrameMembers = true;
-            ShowNodalLoads = false;
-            ShowSurfaceLoads = false;
-            ShowLoadsLabels = false;
-            ShowLoadsLabelsUnits = false;
-            ShowGlobalAxis = true;
-            ShowLocalMembersAxis = false;
-            ShowSurfaceLoadsAxis = false;
-
-            BracingEverySecondRowOfGirts = true;
-            BracingEverySecondRowOfPurlins = true;
-
-            // Displacement / Deflection Limits
-            // V pripade potreby vytvorit samostatny dialog pre Design parameters / options
-            MVerticalDisplacementLimitDenominator_Rafter_PL = 300;
-            MVerticalDisplacementLimitDenominator_Rafter_TL = 250;
-            MHorizontalDisplacementLimitDenominator_Column_TL = 150;
-            MVerticalDisplacementLimitDenominator_Purlin_PL = 300;
-            MVerticalDisplacementLimitDenominator_Purlin_TL = 150;
-            MHorizontalDisplacementLimitDenominator_Girt_TL = 150;
-
-            DisplayIn3DRatio = 0.003f;
+            //BracingEverySecondRowOfGirts = true;
+            //BracingEverySecondRowOfPurlins = true;
 
             GenerateNodalLoads = true;
             GenerateLoadsOnGirts = true;
@@ -3439,10 +2323,10 @@ namespace PFD
             GenerateLoadsOnFrameMembers = true;
             GenerateSurfaceLoads = true;
 
-            DeterminateCombinationResultsByFEMSolver = false;
-            UseFEMSolverCalculationForSimpleBeam = false;
-            DeterminateMemberLocalDisplacementsForULS = false;
-            ShearDesignAccording334 = false;
+            //DeterminateCombinationResultsByFEMSolver = false;
+            //UseFEMSolverCalculationForSimpleBeam = false;
+            //DeterminateMemberLocalDisplacementsForULS = false;
+            //ShearDesignAccording334 = false;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -3597,22 +2481,24 @@ namespace PFD
                 // Calculation of frame model
                 frameModels = model.GetFramesFromModel(); // Create models of particular frames
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-                CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
+                CFramesCalculations.RunFramesCalculations(frameModels, !_solverOptionsVM.DeterminateCombinationResultsByFEMSolver, SolverWindow);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
-            if (DeterminateCombinationResultsByFEMSolver || UseFEMSolverCalculationForSimpleBeam)
+            if (_solverOptionsVM.DeterminateCombinationResultsByFEMSolver || _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam)
             {
                 SolverWindow.SetBeams();
                 // Calculation of simple beam model
                 beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-                CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
+                CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !_solverOptionsVM.DeterminateCombinationResultsByFEMSolver, SolverWindow);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
             }
 
             CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, ShearDesignAccording334, DeterminateCombinationResultsByFEMSolver, UseFEMSolverCalculationForSimpleBeam, DeterminateMemberLocalDisplacementsForULS, footingSettings, frameModels, beamSimpleModels);
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, 
+                _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS, 
+                footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
             SetDesignMembersLists(memberDesignCalculations);
 
@@ -3687,28 +2573,7 @@ namespace PFD
             return WindowBlocksProperties.Count > 0;
         }
 
-        private void SetIsEnabledLocalMembersAxis()
-        {
-            //ak su zapnute Members, ale nie je ziaden z checkboxov Display Members Centerline, Solid Model, Wireframe Model zapnuty, 
-            //tak by malo byt zobrazenie os Local Member Axis disabled.            
-            if (m_DisplayMembers)
-            {
-                if (m_DisplayMembersCenterLines || m_DisplaySolidModel || m_DisplayWireFrameModel) IsEnabledLocalMembersAxis = true;
-                else { IsEnabledLocalMembersAxis = false; }
-            }
-            else { IsEnabledLocalMembersAxis = false; }
-
-            if (!IsEnabledLocalMembersAxis && ShowLocalMembersAxis) ShowLocalMembersAxis = false;
-        }
-
-        private void SetIsEnabledSurfaceLoadsAxis()
-        {
-            //Podobne ak su sice zapnute Surface loads, ale nie su zapnute Loads ako celok, tak by Surface Loads Axis malo byt disabled.
-            if (MShowSurfaceLoads && MShowLoads) IsEnabledSurfaceLoadsAxis = true;
-            else IsEnabledSurfaceLoadsAxis = false;
-
-            if (!IsEnabledSurfaceLoadsAxis && ShowSurfaceLoadsAxis) ShowSurfaceLoadsAxis = false;
-        }
+        
 
         private void SetResultsAreNotValid()
         {
@@ -3954,7 +2819,7 @@ namespace PFD
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
                 if (governingMember == null) continue;
                 CCalculMember cGoverningMemberResultsULS;
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, ShearDesignAccording334, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
                 dictULSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsULS);
             }
             return dictULSDesignResults;
@@ -4049,81 +2914,81 @@ namespace PFD
         {
             DisplayOptions sDisplayOptions = new DisplayOptions();
             // Get display options from GUI
-            sDisplayOptions.bUseLightDirectional = LightDirectional;
-            sDisplayOptions.bUseLightPoint = LightPoint;
-            sDisplayOptions.bUseLightSpot = LightSpot;
-            sDisplayOptions.bUseLightAmbient = LightAmbient;
+            sDisplayOptions.bUseLightDirectional = _displayOptionsVM.LightDirectional;
+            sDisplayOptions.bUseLightPoint = _displayOptionsVM.LightPoint;
+            sDisplayOptions.bUseLightSpot = _displayOptionsVM.LightSpot;
+            sDisplayOptions.bUseLightAmbient = _displayOptionsVM.LightAmbient;
 
-            sDisplayOptions.bUseDiffuseMaterial = MaterialDiffuse;
-            sDisplayOptions.bUseEmissiveMaterial = MaterialEmissive;
+            sDisplayOptions.bUseDiffuseMaterial = _displayOptionsVM.MaterialDiffuse;
+            sDisplayOptions.bUseEmissiveMaterial = _displayOptionsVM.MaterialEmissive;
 
-            sDisplayOptions.bDisplayMembers = DisplayMembers;
-            sDisplayOptions.bDisplayJoints = DisplayJoints;
-            sDisplayOptions.bDisplayPlates = DisplayPlates;
-            sDisplayOptions.bDisplayConnectors = DisplayConnectors;
-            sDisplayOptions.bDisplayNodes = DisplayNodes;
+            sDisplayOptions.bDisplayMembers = _displayOptionsVM.DisplayMembers;
+            sDisplayOptions.bDisplayJoints = _displayOptionsVM.DisplayJoints;
+            sDisplayOptions.bDisplayPlates = _displayOptionsVM.DisplayPlates;
+            sDisplayOptions.bDisplayConnectors = _displayOptionsVM.DisplayConnectors;
+            sDisplayOptions.bDisplayNodes = _displayOptionsVM.DisplayNodes;
 
-            sDisplayOptions.bDisplayFoundations = DisplayFoundations;
-            sDisplayOptions.bDisplayReinforcementBars = DisplayReinforcementBars;
-            sDisplayOptions.bDisplayFloorSlab = DisplayFloorSlab;
-            sDisplayOptions.bDisplaySawCuts = DisplaySawCuts;
-            sDisplayOptions.bDisplayControlJoints = DisplayControlJoints;
-            sDisplayOptions.bDisplayNodalSupports = DisplayNodalSupports;
+            sDisplayOptions.bDisplayFoundations = _displayOptionsVM.DisplayFoundations;
+            sDisplayOptions.bDisplayReinforcementBars = _displayOptionsVM.DisplayReinforcementBars;
+            sDisplayOptions.bDisplayFloorSlab = _displayOptionsVM.DisplayFloorSlab;
+            sDisplayOptions.bDisplaySawCuts = _displayOptionsVM.DisplaySawCuts;
+            sDisplayOptions.bDisplayControlJoints = _displayOptionsVM.DisplayControlJoints;
+            sDisplayOptions.bDisplayNodalSupports = _displayOptionsVM.DisplayNodalSupports;
 
-            sDisplayOptions.bDisplayMembersWireFrame = DisplayMembersWireFrame;
-            sDisplayOptions.bDisplayJointsWireFrame = DisplayJointsWireFrame;
-            sDisplayOptions.bDisplayPlatesWireFrame = DisplayPlatesWireFrame;
-            sDisplayOptions.bDisplayConnectorsWireFrame = DisplayConnectorsWireFrame;
-            sDisplayOptions.bDisplayNodesWireFrame = DisplayNodesWireFrame;
-            sDisplayOptions.bDisplayFoundationsWireFrame = DisplayFoundationsWireFrame;
-            sDisplayOptions.bDisplayReinforcementBarsWireFrame = DisplayReinforcementBarsWireFrame;
-            sDisplayOptions.bDisplayFloorSlabWireFrame = DisplayFloorSlabWireFrame;
+            sDisplayOptions.bDisplayMembersWireFrame = _displayOptionsVM.DisplayMembersWireFrame;
+            sDisplayOptions.bDisplayJointsWireFrame = _displayOptionsVM.DisplayJointsWireFrame;
+            sDisplayOptions.bDisplayPlatesWireFrame = _displayOptionsVM.DisplayPlatesWireFrame;
+            sDisplayOptions.bDisplayConnectorsWireFrame = _displayOptionsVM.DisplayConnectorsWireFrame;
+            sDisplayOptions.bDisplayNodesWireFrame = _displayOptionsVM.DisplayNodesWireFrame;
+            sDisplayOptions.bDisplayFoundationsWireFrame = _displayOptionsVM.DisplayFoundationsWireFrame;
+            sDisplayOptions.bDisplayReinforcementBarsWireFrame = _displayOptionsVM.DisplayReinforcementBarsWireFrame;
+            sDisplayOptions.bDisplayFloorSlabWireFrame = _displayOptionsVM.DisplayFloorSlabWireFrame;
 
-            sDisplayOptions.bDisplayMemberDescription = ShowMemberDescription;
-            sDisplayOptions.bDisplayMemberID = ShowMemberID;
-            sDisplayOptions.bDisplayMemberPrefix = ShowMemberPrefix;
-            sDisplayOptions.bDisplayMemberCrossSectionStartName = ShowMemberCrossSectionStartName;
-            sDisplayOptions.bDisplayMemberRealLength = ShowMemberRealLength;
-            sDisplayOptions.bDisplayMemberRealLengthInMM = ShowMemberRealLengthInMM;
-            sDisplayOptions.bDisplayMemberRealLengthUnit = ShowMemberRealLengthUnit;
-            sDisplayOptions.bDisplayNodesDescription = ShowNodesDescription;
+            sDisplayOptions.bDisplayMemberDescription = _displayOptionsVM.ShowMemberDescription;
+            sDisplayOptions.bDisplayMemberID = _displayOptionsVM.ShowMemberID;
+            sDisplayOptions.bDisplayMemberPrefix = _displayOptionsVM.ShowMemberPrefix;
+            sDisplayOptions.bDisplayMemberCrossSectionStartName = _displayOptionsVM.ShowMemberCrossSectionStartName;
+            sDisplayOptions.bDisplayMemberRealLength = _displayOptionsVM.ShowMemberRealLength;
+            sDisplayOptions.bDisplayMemberRealLengthInMM = _displayOptionsVM.ShowMemberRealLengthInMM;
+            sDisplayOptions.bDisplayMemberRealLengthUnit = _displayOptionsVM.ShowMemberRealLengthUnit;
+            sDisplayOptions.bDisplayNodesDescription = _displayOptionsVM.ShowNodesDescription;
 
-            sDisplayOptions.bDisplayFoundationsDescription = ShowFoundationsDescription;
-            sDisplayOptions.bDisplayFloorSlabDescription = ShowFloorSlabDescription;
-            sDisplayOptions.bDisplaySawCutsDescription = ShowSawCutsDescription;
-            sDisplayOptions.bDisplayControlJointsDescription = ShowControlJointsDescription;
-            sDisplayOptions.bDisplayDimensions = ShowDimensions;
-            sDisplayOptions.bDisplayGridlines = ShowGridLines;
-            sDisplayOptions.bDisplaySectionSymbols = ShowSectionSymbols;
-            sDisplayOptions.bDisplayDetailSymbols = ShowDetailSymbols;
-            sDisplayOptions.bDisplaySlabRebates = ShowSlabRebates;
+            sDisplayOptions.bDisplayFoundationsDescription = _displayOptionsVM.ShowFoundationsDescription;
+            sDisplayOptions.bDisplayFloorSlabDescription = _displayOptionsVM.ShowFloorSlabDescription;
+            sDisplayOptions.bDisplaySawCutsDescription = _displayOptionsVM.ShowSawCutsDescription;
+            sDisplayOptions.bDisplayControlJointsDescription = _displayOptionsVM.ShowControlJointsDescription;
+            sDisplayOptions.bDisplayDimensions = _displayOptionsVM.ShowDimensions;
+            sDisplayOptions.bDisplayGridlines = _displayOptionsVM.ShowGridLines;
+            sDisplayOptions.bDisplaySectionSymbols = _displayOptionsVM.ShowSectionSymbols;
+            sDisplayOptions.bDisplayDetailSymbols = _displayOptionsVM.ShowDetailSymbols;
+            sDisplayOptions.bDisplaySlabRebates = _displayOptionsVM.ShowSlabRebates;
 
-            sDisplayOptions.bDisplayMembersCenterLines = DisplayMembersCenterLines;
-            sDisplayOptions.bDisplaySolidModel = DisplaySolidModel;
-            sDisplayOptions.bDisplayWireFrameModel = DisplayWireFrameModel;
+            sDisplayOptions.bDisplayMembersCenterLines = _displayOptionsVM.DisplayMembersCenterLines;
+            sDisplayOptions.bDisplaySolidModel = _displayOptionsVM.DisplaySolidModel;
+            sDisplayOptions.bDisplayWireFrameModel = _displayOptionsVM.DisplayWireFrameModel;
 
-            sDisplayOptions.bDistinguishedColor = DisplayDistinguishedColorMember;
-            sDisplayOptions.bTransparentMemberModel = DisplayTransparentModelMember;
+            sDisplayOptions.bDistinguishedColor = _displayOptionsVM.DisplayDistinguishedColorMember;
+            sDisplayOptions.bTransparentMemberModel = _displayOptionsVM.DisplayTransparentModelMember;
 
-            sDisplayOptions.bDisplayGlobalAxis = ShowGlobalAxis;
-            sDisplayOptions.bDisplayLocalMembersAxis = ShowLocalMembersAxis;
-            sDisplayOptions.bDisplaySurfaceLoadAxis = ShowSurfaceLoadsAxis;
+            sDisplayOptions.bDisplayGlobalAxis = _displayOptionsVM.ShowGlobalAxis;
+            sDisplayOptions.bDisplayLocalMembersAxis = _displayOptionsVM.ShowLocalMembersAxis;
+            sDisplayOptions.bDisplaySurfaceLoadAxis = _displayOptionsVM.ShowSurfaceLoadsAxis;
 
-            sDisplayOptions.bDisplayLoads = ShowLoads;
-            sDisplayOptions.bDisplayNodalLoads = ShowNodalLoads;
-            sDisplayOptions.bDisplayMemberLoads = ShowLoadsOnMembers;
-            sDisplayOptions.bDisplayMemberLoads_Girts = ShowLoadsOnGirts;
-            sDisplayOptions.bDisplayMemberLoads_Purlins = ShowLoadsOnPurlins;
-            sDisplayOptions.bDisplayMemberLoads_Columns = ShowLoadsOnColumns;
-            sDisplayOptions.bDisplayMemberLoads_Frames = ShowLoadsOnFrameMembers;
-            sDisplayOptions.bDisplaySurfaceLoads = ShowSurfaceLoads;
+            sDisplayOptions.bDisplayLoads = _displayOptionsVM.ShowLoads;
+            sDisplayOptions.bDisplayNodalLoads = _displayOptionsVM.ShowNodalLoads;
+            sDisplayOptions.bDisplayMemberLoads = _displayOptionsVM.ShowLoadsOnMembers;
+            sDisplayOptions.bDisplayMemberLoads_Girts = _displayOptionsVM.ShowLoadsOnGirts;
+            sDisplayOptions.bDisplayMemberLoads_Purlins = _displayOptionsVM.ShowLoadsOnPurlins;
+            sDisplayOptions.bDisplayMemberLoads_Columns = _displayOptionsVM.ShowLoadsOnColumns;
+            sDisplayOptions.bDisplayMemberLoads_Frames = _displayOptionsVM.ShowLoadsOnFrameMembers;
+            sDisplayOptions.bDisplaySurfaceLoads = _displayOptionsVM.ShowSurfaceLoads;
 
-            sDisplayOptions.bDisplayLoadsLabels = ShowLoadsLabels;
-            sDisplayOptions.bDisplayLoadsLabelsUnits = ShowLoadsLabelsUnits;
+            sDisplayOptions.bDisplayLoadsLabels = _displayOptionsVM.ShowLoadsLabels;
+            sDisplayOptions.bDisplayLoadsLabelsUnits = _displayOptionsVM.ShowLoadsLabelsUnits;
 
-            sDisplayOptions.DisplayIn3DRatio = DisplayIn3DRatio;
-            sDisplayOptions.bColorsAccordingToMembers = ColorsAccordingToMembers;
-            sDisplayOptions.bColorsAccordingToSections = ColorsAccordingToSections;
+            sDisplayOptions.DisplayIn3DRatio = _displayOptionsVM.DisplayIn3DRatio;
+            sDisplayOptions.bColorsAccordingToMembers = _displayOptionsVM.ColorsAccordingToMembers;
+            sDisplayOptions.bColorsAccordingToSections = _displayOptionsVM.ColorsAccordingToSections;
 
             //sDisplayOptions.wireFrameColor = WireframeColor;
             sDisplayOptions.wireFrameColor = _displayOptionsVM.WireframeColor;

@@ -19,14 +19,25 @@ namespace PFD
     public partial class SolverOptionsWindow : Window
     {
         private CPFDViewModel _pfdVM;
-        
+        private bool SolverOptionsChanged = false;
         public SolverOptionsWindow(CPFDViewModel pfdVM)
         {
             InitializeComponent();
 
             _pfdVM = pfdVM;
 
-            this.DataContext = pfdVM;
+            pfdVM._solverOptionsVM.PropertyChanged += _solverOptionsVM_PropertyChanged;
+
+            this.DataContext = pfdVM._solverOptionsVM;
+        }
+
+        private void _solverOptionsVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            if (sender is SolverOptionsViewModel)
+            {
+                SolverOptionsChanged = true;
+            }
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -41,6 +52,7 @@ namespace PFD
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
+            if (SolverOptionsChanged) _pfdVM.SolverOptionsChanged = true;
             this.Close();
         }
     }
