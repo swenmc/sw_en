@@ -189,7 +189,7 @@ namespace PFD
                 if (e.PropertyName == "Bays") return;
                 if (e.PropertyName == "Series") return;
                 if (e.PropertyName == "Serie") return;
-                if (e.PropertyName == "SerieEnabled") return;                
+                if (e.PropertyName == "SerieEnabled") return;
                 if (e.PropertyName == "CoatingColor") return;
                 DoorProperties doorProperties = sender as DoorProperties;
                 if (doorProperties.IsSetFromCode) return;
@@ -245,6 +245,10 @@ namespace PFD
                     if (result == MessageBoxResult.Yes)
                     {
                         RemoveDoorsAndWindowsBuildingSide("Front");
+
+                        // TODO 449 - Review Ondrej
+                        vm.RecreateJoints = true; // Need to recreate joints as the members were added/removed
+                        vm.RecreateModel = true;
                     }
                     else
                     {
@@ -261,9 +265,14 @@ namespace PFD
                     if (result == MessageBoxResult.Yes)
                     {
                         RemoveDoorsAndWindowsBuildingSide("Back");
+
+                        // TODO 449 - Review Ondrej
+                        vm.RecreateJoints = true; // Need to recreate joints as the members were added/removed
+                        vm.RecreateModel = true;
                     }
                     else
                     {
+                        // To Ondrej - preco tu nie je to iste ako pre Girt - Front Side ??? Nastavenie cInfo.IsSetFromCode
                         cInfo.Generate = true;
                         return;
                     }
@@ -278,7 +287,6 @@ namespace PFD
 
             DeleteCalculationResults();
             UpdateAll();
-
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
