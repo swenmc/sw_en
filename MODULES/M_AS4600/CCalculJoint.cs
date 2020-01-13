@@ -14,7 +14,7 @@ namespace M_AS4600
     {
         AS_4600 eq = new AS_4600(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
         NZS_3101 eq_concrete = new NZS_3101(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
-        
+
         public CConnectionJointTypes joint;
         public CFoundation footing;
         public designInternalForces sDIF;
@@ -45,7 +45,7 @@ namespace M_AS4600
         public float fEta_max_Footing = 0;
 
         public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, CConnectionJointTypes joint_temp, CModel model, CalculationSettingsFoundation calcSettingsFoundation, designInternalForces sDIF_temp, bool bSaveDetails = false)
-        { 
+        {
             if (joint_temp == null)
             {
                 throw new ArgumentNullException("Joint object is not defined");
@@ -580,140 +580,227 @@ namespace M_AS4600
             designDetails.iNumberOfScrewsInTension = plate.ScrewArrangement.IHolesNumber * 2 / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
 
             // Tension force in plate (metal strip)
-            float fDIF_N_plate =0;
+            float fDIF_N_plate = 0;
             float fDIF_V_connection_one_side = 0;
             designDetails.fPhi_N_screw = 0.5f;
 
-            if (joint_temp.m_arrPlates[0] is CConCom_Plate_N)
+            if (joint_temp is CConnectionJoint_S001) // Joint Type S001 - valid joint for wind post / column to edge rafter joint
             {
-                CConCom_Plate_N plateN = (CConCom_Plate_N)joint_temp.m_arrPlates[0];
+                CConnectionJoint_S001 joint_S001 = (CConnectionJoint_S001)joint_temp;
 
-                fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
-                fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
-            }
-            else if (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1] is CConCom_Plate_M) // Plate M - strip is last plate
-            {
-                CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
+                if (joint_S001.bUsePlatesTypeN)
+                {
+                    // Plate N - stary typ (dva pasy)
+                    if (joint_temp.m_arrPlates[0] is CConCom_Plate_N)
+                    {
+                        CConCom_Plate_N plateN = (CConCom_Plate_N)joint_temp.m_arrPlates[0];
 
-                fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Cos(plateM.Gamma1_rad);
-                fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
-            }
-            else
-            {
-                throw new Exception("Invalid plate type.");
-            }
+                        fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
+                        fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid plate type.");
+                    }
+                }
+                else if (!joint_S001.m_bWindPostEndUnderRafter)
+                {
+                    // Plate M - novy typ (2 x L + jeden pas)
+                    if (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1] is CConCom_Plate_M) // Plate M - strip is last plate
+                    {
+                        CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
 
-            // 5.4.3 Screwed connections in tension
-            // 5.4.3.2 Pull-out and pull-over (pull-through)
+                        fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Cos(plateM.Gamma1_rad);
+                        fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid plate type.");
+                    }
+                }
+                else if (joint_S001.bUseSamePlates)
+                {
+                    // Dva plechy G
 
-            // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
+                }
+                else if (joint_temp.m_arrPlates[0] is CConCom_Plate_G && joint_temp.m_arrPlates[1] is CConCom_Plate_H)
+                {
+                    // Rozdielne plechy - lavy G a pravy H
+                    // Plechy sa posudzuju len v strihu / smyku
 
-            designDetails.fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
-            designDetails.fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fV_yv_yy / designDetails.iNumberOfScrewsInTension, designDetails.fPhi_N_screw, designDetails.fN_t_5432_MainMember);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5432_MainMember);
+                    CConCom_Plate_G plate1 = (CConCom_Plate_G)joint_temp.m_arrPlates[0];
+                    CConCom_Plate_H plate2 = (CConCom_Plate_H)joint_temp.m_arrPlates[1];
 
-            // 5.4.3.4 Screwed connections subject to combined shear and pull-over
+                    int iNumberOfScrewInTension_Plate1_Left = ((CScrewArrangement_G)plate1.ScrewArrangement).iNumberOfScrews_LeftLeg;
+                    int iNumberOfScrewInTension_Plate1_Right = 0;
+                    int iNumberOfScrewInShear_Plate1_Left = 0;
+                    int iNumberOfScrewInShear_Plate1_Right = ((CScrewArrangement_G)plate1.ScrewArrangement).iNumberOfScrews_RightLeg;
 
-            // Check conditions
-            bool bIsFulFilled_5434 = eq.Conditions_5434_FulFilled(ft_1_plate, ft_2_crscmainMember, screw.T_w_washerthickness, screw.D_w_washerdiameter, screw.Gauge, ff_uk_1_plate);
+                    int iNumberOfScrewInTension_Plate2_Bottom = 0;
+                    int iNumberOfScrewInTension_Plate2_Top = 0;
+                    int iNumberOfScrewInShear_Plate2_Bottom = ((CScrewArrangement_H)plate2.ScrewArrangement).iNumberOfScrews_BottomLeg;
+                    int iNumberOfScrewInShear_Plate2_Top = ((CScrewArrangement_H)plate2.ScrewArrangement).iNumberOfScrews_TopLeg;
 
-            if (bDisplayWarningForContitions5434and5435 && !bIsFulFilled_5434)
-                throw new Exception("Conditions acc. to cl 5.4.3.4 are not fulfilled!");
+                    fDIF_V_connection_one_side = 0.5f * Math.Abs(sDIF_temp.fV_yv_yy);
 
-            /*
-            Vb and Nov shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(b), respectively. In using Clause 5.4.2.4, only Equation 5.4.2.4(6) needs to be considered.
-            A value of Φ = 0.65 shall be used.
-            */
+                    // Plate 1
+                    // Left Leg
 
-            // Pripoj plechu k hlavnemu prutu
-            // Tension and shear
-            designDetails.fPhi_shear_Vb_Nov = 0.65f;
-            designDetails.fC_for5434_MainMember = eq.Get_C_Tab_5424(screw.Diameter_thread, ft_2_crscmainMember);
-            designDetails.fV_b_for5434_MainMember = eq.Eq_5424_6__(designDetails.fC_for5434_MainMember, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // Eq. 5.4.2.4(6)
-            designDetails.fd_w_for5434_plate = eq.Get_d_apostrophe_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
-            designDetails.fN_ov_for5434_plate = eq.Eq_5432_3__(ft_1_plate, screw.D_w_washerdiameter, ff_uk_1_plate); // 5.4.3.2(b) Eq. 5.4.3.2(3) - Nov
+                    // 5.4.3 Screwed connections in tension
+                    // 5.4.3.2 Pull-out and pull-over (pull-through)
 
-            bool bIsEccentricallyLoadedJoint = false;
+                    // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
 
-            if (bIsEccentricallyLoadedJoint)
-                designDetails.fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
+                    designDetails.fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
+                    designDetails.fEta_N_t_5432_MainMember = eq.Eq_5432_1__(fDIF_V_connection_one_side / iNumberOfScrewInTension_Plate1_Left, designDetails.fPhi_N_screw, designDetails.fN_t_5432_MainMember);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5432_MainMember);
 
-            designDetails.fV_asterix_b_for5434_MainMember = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
-            designDetails.fEta_5434_MainMember = eq.Eq_5434____(designDetails.fV_asterix_b_for5434_MainMember, Math.Abs(sDIF_temp.fV_yv_yy) / designDetails.iNumberOfScrewsInTension, designDetails.fPhi_shear_Vb_Nov, designDetails.fV_b_for5434_MainMember, designDetails.fN_ov_for5434_plate);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5434_MainMember);
+                    // 5.4.3.3 Screws in tension
+                    // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
 
-            // 5.4.3.5 Screwed connections subject to combined shear and pull-out
+                    designDetails.fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
+                    designDetails.fEta_N_t_screw_5433 = (Math.Abs(fDIF_V_connection_one_side) / iNumberOfScrewInTension_Plate1_Left) / (0.5f * designDetails.fN_t_nom_screw_5433);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
 
-            // Check conditions
-            bool bIsFulFilled_5435 = eq.Conditions_5435_FulFilled(ft_2_crscmainMember, screw.Gauge, ff_yk_2_MainMember, ff_uk_2_MainMember);
+                    // Right Leg
 
-            if (bDisplayWarningForContitions5434and5435 && !bIsFulFilled_5435)
-                throw new Exception("Conditions acc. to cl 5.4.3.5 are not fulfilled!");
+                    // 5.4.2.5 Connection shear as limited by end distance
+                    designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
 
-            /*
-            Vb and Nou shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(a), respectively. In using Clause 5.4.3.2, only Equation 5.4.3.2(2) needs to be considered.
-            A value of Φ = 0.60 shall be used.
-            */
+                    // Distance to an end of the connected part is parallel to the line of the applied force
+                    designDetails.fV_asterix_fv_plate = Math.Abs(sDIF_temp.fV_yv_yy / iNumberOfScrewInShear_Plate1_Right);
+                    designDetails.fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, designDetails.fe_Plate, ff_uk_1_plate);
+                    designDetails.fEta_V_fv_5425_Plate = eq.Eq_5425_1__(designDetails.fV_asterix_fv_plate, designDetails.fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_fv_5425_Plate);
 
-            // Pripoj k hlavnemu prutu
-            designDetails.fV_b_for5435_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
-            designDetails.fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
+                    // 5.4.2.6 Screws in shear
+                    // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
 
-            designDetails.fV_asterix_b_for5435_MainMember = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
-            designDetails.fEta_5435_MainMember = eq.Eq_5435____(designDetails.fV_asterix_b_for5435_MainMember, Math.Abs(sDIF_temp.fV_yv_yy), 0.6f, designDetails.fV_b_for5435_MainMember, designDetails.fN_ou_for5435_MainMember);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5435_MainMember);
+                    designDetails.fV_w_nom_screw_5426 = screw.ShearStrength_nominal;
+                    designDetails.fEta_V_w_5426 = (Math.Abs(fDIF_V_connection_one_side) / iNumberOfScrewInShear_Plate1_Right) / (0.5f * designDetails.fV_w_nom_screw_5426);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
 
-            // 5.4.2.5 Connection shear as limited by end distance
-            designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                }
+                else
+                {
+                    throw new Exception("Invalid plate type.");
+                }
 
-            // Distance to an end of the connected part is parallel to the line of the applied force
-            designDetails.fV_asterix_fv_plate = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
-            designDetails.fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, designDetails.fe_Plate, ff_uk_1_plate);
-            designDetails.fEta_V_fv_5425_Plate = eq.Eq_5425_1__(designDetails.fV_asterix_fv_plate, designDetails.fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_fv_5425_Plate);
+                if (joint_S001.bUsePlatesTypeN || !joint_S001.m_bWindPostEndUnderRafter) // Docasne
+                {
+                    // 5.4.3 Screwed connections in tension
+                    // 5.4.3.2 Pull-out and pull-over (pull-through)
 
-            // 5.4.2.6 Screws in shear
-            // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
+                    // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
 
-            designDetails.fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
-            designDetails.fEta_V_w_5426 = Math.Max(designDetails.fV_asterix_b_for5435_MainMember, designDetails.fV_asterix_fv_plate) / (0.5f * designDetails.fV_w_nom_screw_5426);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
+                    designDetails.fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
+                    designDetails.fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fV_yv_yy / designDetails.iNumberOfScrewsInTension, designDetails.fPhi_N_screw, designDetails.fN_t_5432_MainMember);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5432_MainMember);
 
-            // 5.4.3.3 Screws in tension
-            // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+                    // 5.4.3.4 Screwed connections subject to combined shear and pull-over
 
-            designDetails.fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
-            designDetails.fEta_N_t_screw_5433 = (Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInTension / 2)) / (0.5f * designDetails.fN_t_nom_screw_5433);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
+                    // Check conditions
+                    bool bIsFulFilled_5434 = eq.Conditions_5434_FulFilled(ft_1_plate, ft_2_crscmainMember, screw.T_w_washerthickness, screw.D_w_washerdiameter, screw.Gauge, ff_uk_1_plate);
 
-            // 5.4.3.6 Screws subject to combined shear and tension
-            // A screw required to resist simultaneously a design shear force and a design tensile where V screw and N screw shall be determined by testing in accordance with Section 8.
+                    if (bDisplayWarningForContitions5434and5435 && !bIsFulFilled_5434)
+                        throw new Exception("Conditions acc. to cl 5.4.3.4 are not fulfilled!");
 
-            designDetails.fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(designDetails.fV_asterix_b_for5435_MainMember, designDetails.fV_asterix_fv_plate), Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInTension / 2), 0.5f, designDetails.fV_w_nom_screw_5426, designDetails.fN_t_nom_screw_5433);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_N_t_screw_5436);
+                    /*
+                    Vb and Nov shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(b), respectively. In using Clause 5.4.2.4, only Equation 5.4.2.4(6) needs to be considered.
+                    A value of Φ = 0.65 shall be used.
+                    */
 
-            // Plate design
-            // Plate tension design
-            designDetails.fPhi_plate = 0.65f;
-            designDetails.fA_n_plate = plate.fA_n;
-            designDetails.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_n_plate, ff_uk_1_plate);
-            designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(fDIF_N_plate, designDetails.fPhi_plate, designDetails.fN_t_plate);
-            fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
+                    // Pripoj plechu k hlavnemu prutu
+                    // Tension and shear
+                    designDetails.fPhi_shear_Vb_Nov = 0.65f;
+                    designDetails.fC_for5434_MainMember = eq.Get_C_Tab_5424(screw.Diameter_thread, ft_2_crscmainMember);
+                    designDetails.fV_b_for5434_MainMember = eq.Eq_5424_6__(designDetails.fC_for5434_MainMember, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // Eq. 5.4.2.4(6)
+                    designDetails.fd_w_for5434_plate = eq.Get_d_apostrophe_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
+                    designDetails.fN_ov_for5434_plate = eq.Eq_5432_3__(ft_1_plate, screw.D_w_washerdiameter, ff_uk_1_plate); // 5.4.3.2(b) Eq. 5.4.3.2(3) - Nov
 
-            // Validation - negative design ratio
-            if (designDetails.fEta_N_t_5432_MainMember < 0 ||
-                designDetails.fEta_5434_MainMember < 0 ||
-                designDetails.fEta_5435_MainMember < 0 ||
-                designDetails.fEta_V_fv_5425_Plate < 0 ||
-                designDetails.fEta_V_w_5426 < 0 ||
-                designDetails.fEta_N_t_screw_5433 < 0 ||
-                designDetails.fEta_V_N_t_screw_5436 < 0 ||
-                designDetails.fEta_N_t_5423_plate < 0 ||
-                designDetails.fEta_V_yv_3341_plate < 0 ||
-                designDetails.fEta_Vb_5424_SecondaryMember < 0 ||
-                designDetails.fEta_V_fv_5425_SecondaryMember < 0)
-            {
-                throw new Exception("Design ratio is invalid!");
+                    bool bIsEccentricallyLoadedJoint = false;
+
+                    if (bIsEccentricallyLoadedJoint)
+                        designDetails.fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
+
+                    designDetails.fV_asterix_b_for5434_MainMember = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
+                    designDetails.fEta_5434_MainMember = eq.Eq_5434____(designDetails.fV_asterix_b_for5434_MainMember, Math.Abs(sDIF_temp.fV_yv_yy) / designDetails.iNumberOfScrewsInTension, designDetails.fPhi_shear_Vb_Nov, designDetails.fV_b_for5434_MainMember, designDetails.fN_ov_for5434_plate);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_5434_MainMember);
+
+                    // 5.4.3.5 Screwed connections subject to combined shear and pull-out
+
+                    // Check conditions
+                    bool bIsFulFilled_5435 = eq.Conditions_5435_FulFilled(ft_2_crscmainMember, screw.Gauge, ff_yk_2_MainMember, ff_uk_2_MainMember);
+
+                    if (bDisplayWarningForContitions5434and5435 && !bIsFulFilled_5435)
+                        throw new Exception("Conditions acc. to cl 5.4.3.5 are not fulfilled!");
+
+                    /*
+                    Vb and Nou shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(a), respectively. In using Clause 5.4.3.2, only Equation 5.4.3.2(2) needs to be considered.
+                    A value of Φ = 0.60 shall be used.
+                    */
+
+                    // Pripoj k hlavnemu prutu
+                    designDetails.fV_b_for5435_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
+                    designDetails.fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
+
+                    designDetails.fV_asterix_b_for5435_MainMember = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
+                    designDetails.fEta_5435_MainMember = eq.Eq_5435____(designDetails.fV_asterix_b_for5435_MainMember, Math.Abs(sDIF_temp.fV_yv_yy), 0.6f, designDetails.fV_b_for5435_MainMember, designDetails.fN_ou_for5435_MainMember);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_5435_MainMember);
+
+                    // 5.4.2.5 Connection shear as limited by end distance
+                    designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+
+                    // Distance to an end of the connected part is parallel to the line of the applied force
+                    designDetails.fV_asterix_fv_plate = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
+                    designDetails.fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, designDetails.fe_Plate, ff_uk_1_plate);
+                    designDetails.fEta_V_fv_5425_Plate = eq.Eq_5425_1__(designDetails.fV_asterix_fv_plate, designDetails.fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_fv_5425_Plate);
+
+                    // 5.4.2.6 Screws in shear
+                    // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
+
+                    designDetails.fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
+                    designDetails.fEta_V_w_5426 = Math.Max(designDetails.fV_asterix_b_for5435_MainMember, designDetails.fV_asterix_fv_plate) / (0.5f * designDetails.fV_w_nom_screw_5426);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
+
+                    // 5.4.3.3 Screws in tension
+                    // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+
+                    designDetails.fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
+                    designDetails.fEta_N_t_screw_5433 = (Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInTension / 2)) / (0.5f * designDetails.fN_t_nom_screw_5433);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
+
+                    // 5.4.3.6 Screws subject to combined shear and tension
+                    // A screw required to resist simultaneously a design shear force and a design tensile where V screw and N screw shall be determined by testing in accordance with Section 8.
+
+                    designDetails.fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(designDetails.fV_asterix_b_for5435_MainMember, designDetails.fV_asterix_fv_plate), Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInTension / 2), 0.5f, designDetails.fV_w_nom_screw_5426, designDetails.fN_t_nom_screw_5433);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_N_t_screw_5436);
+
+                    // Plate design
+                    // Plate tension design
+                    designDetails.fPhi_plate = 0.65f;
+                    designDetails.fA_n_plate = plate.fA_n;
+                    designDetails.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_n_plate, ff_uk_1_plate);
+                    designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(fDIF_N_plate, designDetails.fPhi_plate, designDetails.fN_t_plate);
+                    fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
+                }
+
+                // Validation - negative design ratio
+                if (designDetails.fEta_N_t_5432_MainMember < 0 ||
+                    designDetails.fEta_5434_MainMember < 0 ||
+                    designDetails.fEta_5435_MainMember < 0 ||
+                    designDetails.fEta_V_fv_5425_Plate < 0 ||
+                    designDetails.fEta_V_w_5426 < 0 ||
+                    designDetails.fEta_N_t_screw_5433 < 0 ||
+                    designDetails.fEta_V_N_t_screw_5436 < 0 ||
+                    designDetails.fEta_N_t_5423_plate < 0 ||
+                    designDetails.fEta_V_yv_3341_plate < 0 ||
+                    designDetails.fEta_Vb_5424_SecondaryMember < 0 ||
+                    designDetails.fEta_V_fv_5425_SecondaryMember < 0)
+                {
+                    throw new Exception("Design ratio is invalid!");
+                }
             }
 
             // Validation - infinity design ratio
@@ -1399,7 +1486,7 @@ namespace M_AS4600
 
             // Validation - nemozeme posudzovat vyztuz ak nie je zadana
             // Zatial posudzujeme len spodnu vystuz v smere x
-            if(designDetails.fA_s_tot_Xdirection_bottom <= 1e-9)
+            if (designDetails.fA_s_tot_Xdirection_bottom <= 1e-9)
             {
                 throw new ArgumentException("Design Error. Bottom reinforcement area in x-direction is too small As,tot = " + String.Format("{0:0.##}", designDetails.fA_s_tot_Xdirection_bottom * 1e+6) + " mm²");
             }

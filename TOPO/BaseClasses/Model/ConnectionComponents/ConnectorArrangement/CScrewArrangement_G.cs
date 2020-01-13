@@ -26,6 +26,9 @@ namespace BaseClasses
         public float fx_spacing_RightLeg = 0.05f;//0.08f;
         public float fy_spacing_RightLeg = 0.05f;
 
+        public int iNumberOfScrews_LeftLeg = 3;
+        public int iNumberOfScrews_RightLeg = 20;
+
         public CScrewArrangement_G() { }
 
         public CScrewArrangement_G(/*int iScrewsNumber_temp,*/ CScrew referenceScrew_temp)
@@ -49,7 +52,10 @@ namespace BaseClasses
             fx_edge_LeftLeg = GetEdgeDistanceOfEquallySpacedConnectors(flZ, fx_spacing_LeftLeg, iColumns_LeftLeg);
             fy_edge_LeftLeg = fhY2 - fMainMemberDepth + GetEdgeDistanceOfEquallySpacedConnectors(fMainMemberDepth, fy_spacing_LeftLeg, iRows_LeftLeg);  // Vertikalna pozicia spodnej skrutky v lavom ramene plechu
 
-            IHolesNumber = iRows_LeftLeg * iColumns_LeftLeg + iRows_RightLeg * iColumns_RightLeg;
+            iNumberOfScrews_LeftLeg = iRows_LeftLeg * iColumns_LeftLeg;
+            iNumberOfScrews_RightLeg = iRows_RightLeg * iColumns_RightLeg;
+
+            IHolesNumber = iNumberOfScrews_LeftLeg + iNumberOfScrews_RightLeg;
 
             if (IHolesNumber > 0)
             {

@@ -26,6 +26,9 @@ namespace BaseClasses
         public float fx_spacing_TopLeg = 0.03f; //0.07f;
         public float fy_spacing_TopLeg = 0.03f; //0.05f;
 
+        public int iNumberOfScrews_BottomLeg = 49;
+        public int iNumberOfScrews_TopLeg = 9;
+
         public CScrewArrangement_H() { }
 
         public CScrewArrangement_H(/*int iScrewsNumber_temp,*/ CScrew referenceScrew_temp)
@@ -49,7 +52,10 @@ namespace BaseClasses
             fx_edge_TopLeg = GetEdgeDistanceOfEquallySpacedConnectors(fMainMemberWidth, fx_spacing_TopLeg, iColumns_TopLeg);
             fy_edge_TopLeg = GetEdgeDistanceOfEquallySpacedConnectors(fhY2 - fhY1, fy_spacing_TopLeg, iRows_TopLeg);
 
-            IHolesNumber = iRows_BottomLeg * iColumns_BottomLeg + iRows_TopLeg * iColumns_TopLeg;
+            iNumberOfScrews_BottomLeg = iRows_BottomLeg * iColumns_BottomLeg;
+            iNumberOfScrews_TopLeg = iRows_TopLeg * iColumns_TopLeg;
+
+            IHolesNumber = iNumberOfScrews_BottomLeg + iNumberOfScrews_TopLeg;
 
             if (IHolesNumber > 0)
             {

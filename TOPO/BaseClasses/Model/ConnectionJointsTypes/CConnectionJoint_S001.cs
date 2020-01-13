@@ -18,6 +18,8 @@ namespace BaseClasses
         public float m_fRoofPitch_rad;
         public bool m_bWindPostEndUnderRafter;
         public bool m_bSwitchConnectedSide_Z;
+        public bool bUsePlatesTypeN = false; // Nastavuje sa pouzity typ zavetrovacieho plechu, N - stary typ, M - novy typ
+        public bool bUseSamePlates = false; // Nastavuje ci sa ma pouzit na oboch stranach plate G alebo na jednej strane G a na druhej H
 
         public CConnectionJoint_S001() { }
 
@@ -40,10 +42,7 @@ namespace BaseClasses
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
 
-            bool bUsePlatesTypeN = false; // Nastavuje sa pouzity typ zavetrovacieho plechu
-            bool bUseSamePlates = false; // Nastavuje ci sa ma pouzit na oboch stranach plate G alebo na jednej strane G a na druhej H
-
-            if (bUsePlatesTypeN)
+            if (bUsePlatesTypeN) // Stary typ N
             {
                 // Plate position in x-direction on the secondary member
                 float fAlignment_x = 0.1f; // Posun plechu v smere osi x LCS pruta (kladna hodnota je posun v smere +x)
@@ -111,7 +110,7 @@ namespace BaseClasses
                     m_arrPlates[0] = pPlate1;
                 }
             }
-            else if(!bWindPostEndUnderRafter)
+            else if(!bWindPostEndUnderRafter) // Novy typ - M
             {
                 // Plate position in x-direction on the secondary member
                 float fAlignment_x;
