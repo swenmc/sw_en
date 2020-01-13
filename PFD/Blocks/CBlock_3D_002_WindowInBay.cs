@@ -204,8 +204,14 @@ namespace PFD
                     float fGirtStartTemp = fGirtAllignmentStart;
                     float fGirtEndTemp = fGirtAllignmentEnd;
 
-                    eccentricityGirtStart_temp = eccentricityGirtStart;
-                    eccentricityGirtEnd_temp = eccentricityGirtEnd;
+                    eccentricityGirtStart_temp = new CMemberEccentricity(eccentricityGirtStart.MFy_local, eccentricityGirtStart.MFz_local);
+                    eccentricityGirtEnd_temp = new CMemberEccentricity(eccentricityGirtEnd.MFy_local, eccentricityGirtEnd.MFz_local);
+
+                    if (bIsReverseGirtSession) // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
+                    {
+                        eccentricityGirtStart_temp = new CMemberEccentricity(-eccentricityGirtStart.MFy_local, -eccentricityGirtStart.MFz_local);
+                        eccentricityGirtEnd_temp = new CMemberEccentricity(-eccentricityGirtEnd.MFy_local, -eccentricityGirtEnd.MFz_local);
+                    }
 
                     if (i == 1 || bWindowToCloseToLeftColumn) // If just right sequence of girts is generated switch allignment and eccentricity (???) need testing;
                     {
@@ -222,8 +228,14 @@ namespace PFD
                             fGirtEndTemp = ReferenceGirt.FAlignment_Start;
                         }
 
-                        eccentricityGirtStart_temp = eccentricityGirtEnd; // TODO - we need probably to change signs of values
-                        eccentricityGirtEnd_temp = eccentricityGirtStart; // TODO - we need probably to change signs of values
+                        eccentricityGirtStart_temp = new CMemberEccentricity(eccentricityGirtEnd.MFy_local, eccentricityGirtEnd.MFz_local); // TODO - we need probably to change signs of values
+                        eccentricityGirtEnd_temp = new CMemberEccentricity(eccentricityGirtStart.MFy_local, eccentricityGirtStart.MFz_local); // TODO - we need probably to change signs of values
+
+                        if (bIsReverseGirtSession) // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
+                        {
+                            eccentricityGirtStart_temp = new CMemberEccentricity(-eccentricityGirtEnd.MFy_local, -eccentricityGirtEnd.MFz_local);
+                            eccentricityGirtEnd_temp = new CMemberEccentricity(-eccentricityGirtStart.MFy_local, -eccentricityGirtStart.MFz_local);
+                        }
                     }
 
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], ReferenceGirt.EMemberType, ReferenceGirt.EMemberTypePosition, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
@@ -237,7 +249,6 @@ namespace PFD
 
             INumberOfGirtsGeneratedInBlock = iNumberOfGirtsSequences * INumberOfGirtsToDeactivate;
 
-            // TODO - add to block parameters
             float fWindowColumnStart = 0.0f;
 
             if(fBottomGirtPosition >= fCoordinateZOfGirtUnderWindow) // Window column is connected to the girt
@@ -250,8 +261,31 @@ namespace PFD
                 fWindowColumnEnd = (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
             }
 
-            CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            float fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float feccentricityWindowColumn_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
+
+            float fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float feccentricityWindowHeader_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
+
+            float fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_max - (float)m_arrCrSc[1].z_max;
+            float feccentricityWindowSill_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
+
+            if (BuildingSide == "Left" || BuildingSide == "Back") // Align the to bottom edge of cross-section
+            {
+                fOffsetBetweenGirtAndColumn_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                feccentricityWindowColumn_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndColumn_LCS_z_axis;
+
+                fOffsetBetweenGirtAndHeader_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                feccentricityWindowHeader_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndHeader_LCS_z_axis;
+
+                fOffsetBetweenGirtAndSill_LCS_z_axis = (float)ReferenceGirt.CrScStart.z_min - (float)m_arrCrSc[1].z_min;
+                feccentricityWindowSill_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndSill_LCS_z_axis;
+            }
+
+            // Window columns
+            CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, feccentricityWindowColumn_LCS_z);
+            CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, feccentricityWindowColumn_LCS_z);
+
             float fWindowColumnRotation = (float)Math.PI / 2;
 
             // Rotate local axis about x
@@ -260,9 +294,10 @@ namespace PFD
                 fWindowColumnRotation += (float)Math.PI / 2;
             }
 
-            // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left" || BuildingSide == "Back")
+            // Set eccentricity sign of columns in front / back side depending on girt LCS (reverse session)
+            if ((BuildingSide == "Front" || BuildingSide == "Back") && bIsReverseGirtSession)
             {
+                // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
                 feccentricityWindowColumnStart.MFz_local *= -1.0f;
                 feccentricityWindowColumnEnd.MFz_local *= -1.0f;
             }
@@ -281,15 +316,16 @@ namespace PFD
             // TODO - add to block parameters
             float fWindowHeaderStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             float fWindowHeaderEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityWindowHeaderStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowHeaderEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowHeaderStart = new CMemberEccentricity(0, feccentricityWindowHeader_LCS_z);
+            CMemberEccentricity feccentricityWindowHeaderEnd = new CMemberEccentricity(0, feccentricityWindowHeader_LCS_z);
             float fWindowHeaderRotation = (float)Math.PI / 2;
 
-            // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left" || BuildingSide == "Back")
+            // Set eccentricity sign of columns in front / back side depending on girt LCS (reverse session)
+            if ((BuildingSide == "Front" || BuildingSide == "Back") && bIsReverseGirtSession)
             {
-                feccentricityWindowHeaderStart.MFz_local *= -1.0f;
-                feccentricityWindowHeaderEnd.MFz_local *= -1.0f;
+                // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
+                //feccentricityWindowHeaderStart.MFz_local *= -1.0f;
+                //feccentricityWindowHeaderEnd.MFz_local *= -1.0f;
             }
 
             for (int i = 0; i < iNumberOfHeaders; i++)
@@ -306,15 +342,16 @@ namespace PFD
             // TODO - add to block parameters
             float fWindowSillStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             float fWindowSillEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityWindowSillStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityWindowSillEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityWindowSillStart = new CMemberEccentricity(0, feccentricityWindowSill_LCS_z);
+            CMemberEccentricity feccentricityWindowSillEnd = new CMemberEccentricity(0, feccentricityWindowSill_LCS_z);
             float fWindowSillRotation = (float)Math.PI / 2;
 
-            // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (BuildingSide == "Left" || BuildingSide == "Back")
+            // Set eccentricity sign of columns in front / back side depending on girt LCS (reverse session)
+            if ((BuildingSide == "Front" || BuildingSide == "Back") && bIsReverseGirtSession)
             {
-                feccentricityWindowSillStart.MFz_local *= -1.0f;
-                feccentricityWindowSillEnd.MFz_local *= -1.0f;
+                // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
+                //feccentricityWindowSillStart.MFz_local *= -1.0f;
+                //feccentricityWindowSillEnd.MFz_local *= -1.0f;
             }
 
             for (int i = 0; i < iNumberOfSills; i++)

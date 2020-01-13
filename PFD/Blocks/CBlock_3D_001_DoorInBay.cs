@@ -290,6 +290,7 @@ namespace PFD
                 feccentricityDoorLintel_LCS_z = eccentricityGirtStart.MFz_local + fOffsetBetweenGirtAndLintel_LCS_z_axis;
             }
 
+            // Door columns / trimmers
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, feccentricityDoorColumn_LCS_z);
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, feccentricityDoorColumn_LCS_z);
 
@@ -309,7 +310,6 @@ namespace PFD
                 feccentricityDoorColumnEnd.MFz_local *= -1.0f;
             }
 
-            // Door columns
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], crscColumn, eTypeColumn, eTypePositionColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
             m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], crscColumn, eTypeColumn, eTypePositionColumn, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
 

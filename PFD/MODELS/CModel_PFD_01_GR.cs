@@ -3360,12 +3360,12 @@ namespace PFD
                 float fFloorSlab_AdditionalOffset_X = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
                 float fFloorSlab_AdditionalOffset_Y = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
 
-                float fFloorSlabOffset_x = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
-                float fFloorSlabOffset_y_Front = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
-                float fFloorSlabOffset_y_Back = 0.5f * (float)m_arrCrSc[0].b + fFloorSlab_AdditionalOffset_Y;
+                float fFloorSlabOffset_x = -(float)m_arrCrSc[0].z_max - fFloorSlab_AdditionalOffset_X;
+                float fFloorSlabOffset_y_Front = (float)m_arrCrSc[0].y_min - fFloorSlab_AdditionalOffset_Y;
+                float fFloorSlabOffset_y_Back = (float)m_arrCrSc[0].y_max + fFloorSlab_AdditionalOffset_Y;
 
                 // Potrebujeme zapocitat odsadenie wind posts, excentricita pruta wind post + polovica vysky + pridavne odsadenie okraja dosky od hrany wind post
-                if (bGenerateFrontColumns)
+                if (!bWindPostEndUnderRafter && bGenerateFrontColumns)
                 {
                     float fFloorSlabOffset_y_FrontColumns = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h - fFloorSlab_AdditionalOffset_Y;
 
@@ -3385,7 +3385,7 @@ namespace PFD
                     fFloorSlabOffset_y_Front = MathF.Min(fFloorSlabOffset_y_Front, fFloorSlabOffset_y_FrontColumns, fFloorSlabOffset_y_FrontGirts);
                 }
 
-                if (bGenerateBackColumns)
+                if (!bWindPostEndUnderRafter && bGenerateBackColumns)
                 {
                     float fFloorSlabOffset_y_BackColumns = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h + fFloorSlab_AdditionalOffset_Y;
 
