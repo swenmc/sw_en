@@ -195,6 +195,7 @@ namespace PFD
                 if (doorProperties.IsSetFromCode) return;
 
                 Datagrid_DoorsAndGates_SelectionChanged(null, null);
+                vm.RecreateModel = true;
                 vm.RecreateJoints = true;
                 vm.RecreateFloorSlab = true;
             }
@@ -205,6 +206,7 @@ namespace PFD
                 if (wProperties.IsSetFromCode) return;
 
                 Datagrid_Windows_SelectionChanged(null, null);
+                vm.RecreateModel = true;
                 vm.RecreateJoints = true;
             }
             else if (sender is CComponentInfo)
