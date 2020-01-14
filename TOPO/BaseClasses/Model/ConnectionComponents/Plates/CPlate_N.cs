@@ -157,6 +157,7 @@ namespace BaseClasses
 
             Width_bx = 2 * m_fbX1 + 2 * m_fbX2 + m_fbX3;
             Height_hy = m_fhY;
+            SetFlatedPlateDimensions();
             fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

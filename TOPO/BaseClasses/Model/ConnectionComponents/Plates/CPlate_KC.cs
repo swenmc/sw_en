@@ -228,7 +228,8 @@ namespace BaseClasses
         {
             Width_bx = Math.Max(m_fbX1, m_fbX2);
             Height_hy = Math.Max(m_fhY1, m_fhY2);
-            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
+            SetFlatedPlateDimensions();
+            fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();

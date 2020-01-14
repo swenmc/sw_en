@@ -83,8 +83,8 @@ namespace PFD
             int iNumberOfDecimalPlacesMass = 4;
             int iNumberOfDecimalPlacesPrice = 3;
 
-            float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-            float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
+            const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
 
             float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
             float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce

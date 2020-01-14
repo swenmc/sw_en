@@ -18,7 +18,7 @@ namespace BaseClasses
     {
         public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FS
 
-        private float fWidth_bx; // Rozvinuta sirka - horizontalny smer
+        private float fWidth_bx;
 
         public float Width_bx
         {
@@ -33,7 +33,7 @@ namespace BaseClasses
             }
         }
 
-        private float fHeight_hy; // Rozvinuta vyska - vertikalny smer
+        private float fHeight_hy;
 
         public float Height_hy
         {
@@ -45,6 +45,36 @@ namespace BaseClasses
             set
             {
                 fHeight_hy = value;
+            }
+        }
+
+        private float fWidth_bx_Stretched; // Rozvinuta sirka - horizontalny smer
+
+        public float Width_bx_Stretched
+        {
+            get
+            {
+                return fWidth_bx_Stretched;
+            }
+
+            set
+            {
+                fWidth_bx_Stretched = value;
+            }
+        }
+
+        private float fHeight_hy_Stretched; // Rozvinuta vyska - vertikalny smer
+
+        public float Height_hy_Stretched
+        {
+            get
+            {
+                return fHeight_hy_Stretched;
+            }
+
+            set
+            {
+                fHeight_hy_Stretched = value;
             }
         }
 
@@ -371,6 +401,38 @@ namespace BaseClasses
         public float GetVolumeIgnoringHoles()
         {
             return Ft * Geom2D.PolygonArea(PointsOut2D);
+        }
+
+        public void GetFlatedPlateCoordinates(out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y)
+        {
+            fMax_X = float.MinValue;
+            fMin_X = float.MaxValue;
+            fMax_Y = float.MinValue;
+            fMin_Y = float.MaxValue;
+
+            // Take maximum / minimum coordinate
+
+            if (PointsOut2D != null && PointsOut2D.Length > 2) // Some points exist - pre urcenie rozmeru minimalne 3 body
+            {
+                foreach (Point p in PointsOut2D)
+                {
+                    fMax_X = Math.Max(fMax_X, (float)p.X);
+                    fMin_X = Math.Min(fMin_X, (float)p.X);
+                    fMax_Y = Math.Max(fMax_Y, (float)p.Y);
+                    fMin_Y = Math.Min(fMin_Y, (float)p.Y);
+                }
+            }
+        }
+
+        public void SetFlatedPlateDimensions()
+        {
+            // Get edge coordinates
+            float fMax_X = 0, fMin_X = 0, fMax_Y = 0, fMin_Y = 0;
+            GetFlatedPlateCoordinates(out fMax_X, out fMin_X, out fMax_Y, out fMin_Y);
+
+            // Calculation dimensions of plate
+            fWidth_bx_Stretched = fMax_X - fMin_X;
+            fHeight_hy_Stretched = fMax_Y - fMin_Y;
         }
 
         public float GetMassIgnoringHoles()

@@ -74,6 +74,8 @@ namespace BaseClasses
             Calc_Coord2D();
             Calc_Coord3D();
 
+            SetFlatedPlateDimensions();
+
             //UpdatePlateData(screwArrangement);
         }
 

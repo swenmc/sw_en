@@ -80,12 +80,18 @@ namespace PFD
         double dBuildingMass = 0;
         double dBuildingNetPrice_WithoutMargin_WithoutGST = 0;
 
-        const float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-        const float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
+        const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+        const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
+        const float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
+
+        // Plate price - general plate price
+
+        // 3 mm - 40.0 NZD / m^2
+        // 2 mm - 27.0 NZD / m^2
+        // 1 mm - 14.0 NZD / m^2
 
         const float fTEK_PricePerPiece_Screws_Total = 0.15f;     // NZD / piece / !!! priblizna cena - nezohladnuje priemer skrutky
         const float fAnchor_PricePerLength = 30; // NZD / m - !!! priblizna cena - nezohladnuje priemer tyce
-        const float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
         float fTotalAreaOfOpennings = 0;
 
@@ -537,8 +543,8 @@ namespace PFD
 
         private void CreateTablePlates(CModel model)
         {
-            float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
-            float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
+            const float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+            const float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
             float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
 
             List<QuotationItem> quotation = new List<QuotationItem>();
@@ -662,7 +668,14 @@ namespace PFD
                         if (plate.Price_PPKG_NZD > 0)
                             dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * plate.Price_PPKG_NZD;
                         else
+                        {
                             dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+
+                            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) // Consider overal rectangular dimensions for knee and apex plates
+                            {
+                                dTotalPlatesPrice_Model += plate.Width_bx_Stretched * plate.Height_hy_Stretched * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+                            }
+                        }
 
                         iTotalPlatesNumber_Model += 1;
                     }
@@ -757,6 +770,11 @@ namespace PFD
         {
             float fMassPerPiece = plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
             float fPricePerPiece = plate.Price_PPKG_NZD > 0 ? (float)plate.Price_PPKG_NZD * fMassPerPiece : fCFS_PricePerKg_Plates_Total * fMassPerPiece;
+
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J || plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) // Consider overal rectangular dimensions for knee and apex plates
+            {
+                fPricePerPiece = plate.Width_bx_Stretched * plate.Height_hy_Stretched * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+            }
 
             QuotationItem qItem = quotation.FirstOrDefault(q => q.Prefix == plate.Name && MathF.d_equal(q.Width_bx, plate.Width_bx) &&
                     MathF.d_equal(q.Height_hy, plate.Height_hy) &&

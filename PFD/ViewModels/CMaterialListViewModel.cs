@@ -38,11 +38,12 @@ namespace PFD.ViewModels
         //int iNumberOfDecimalPlacesPrice = 3;
 
         float fCFS_PricePerKg_Members_Material = 2.08f;     // NZD / kg
-        float fCFS_PricePerKg_Plates_Material = 2.8f;      // NZD / kg
         float fCFS_PricePerKg_Members_Manufacture = 2.0f;  // NZD / kg
-        float fCFS_PricePerKg_Plates_Manufacture = 2.0f;   // NZD / kg
 
-        float fTEK_PricePerPiece_Screws_Total = 0.20f;         // NZD / piece
+        float fCFS_PricePerKg_Plates_Material = 1.698f;    // NZD / kg
+        float fCFS_PricePerKg_Plates_Manufacture = 0.0f;   // NZD / kg
+
+        float fTEK_PricePerPiece_Screws_Total = 0.15f;         // NZD / piece
 
         public CMaterialListViewModel(CModel_PFD model)
         {
