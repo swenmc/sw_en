@@ -2376,7 +2376,7 @@ namespace BaseClasses
 
                     for (int i = 0; i < wireFramePoints.Count / 2; i++)
                     {
-                        float fFactor = 0.01f;
+                        float fFactor = 1f;
                         GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, fFactor * sDiplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
@@ -2592,7 +2592,7 @@ namespace BaseClasses
                     {
                         //To Mato - to je co toto za factor? nema sa brat nahodou podla velkosti modelu,alebo take nieco?
                         // To Ondrej - to je taky faktor co prevada hodnotu line thickness v pointoch na metre ako rozmer valca pre 3D, takze napriklad 2 na 0.02 m
-                        float fFactor = 0.01f;
+                        float fFactor = 1.1f; //bolo 0.01f
                         GeometryModel3D cylinder = Get3DLineReplacement(sDisplayOptions.wireFrameColor, fFactor * sDisplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }

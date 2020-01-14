@@ -45,7 +45,6 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
-                //DrawModel3DToDoc(document, viewPort);
                 DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_SOLID);
                 DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES);
 
@@ -63,13 +62,6 @@ namespace EXPIMP
                 DrawJointDesign(document, modelData);
                 DrawFootingDesign(document, modelData);
 
-                //DrawLogoAndProjectInfoTable(document);
-                //DrawLogo(document);
-                //DrawModel3D(document, viewPort);
-                //DrawBasicGeometry(document, null);
-                //DrawLoad(document, null);
-
-                //CreateChapterWithBuletedList(document);
 
                 CreateTOC(document);
 
