@@ -238,6 +238,11 @@ namespace PFD
                     vm.RecreateJoints = true; //need to recreate joint when Section was changed
                     vm.RecreateModel = true;
                 }
+                if (e.PropertyName == "Generate")
+                {
+                    vm.RecreateJoints = true; //need to recreate joint when generate was changed
+                    vm.RecreateModel = true;
+                }
 
                 if (e.PropertyName == "Generate" && cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate == false && AreDoorsOrWindowsOnBuildingSide("Front"))
                 {

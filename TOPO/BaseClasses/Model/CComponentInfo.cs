@@ -116,15 +116,17 @@ namespace BaseClasses
 
                 MGenerate = value;
                 if (MGenerate == null) return;
-                                                
+
+                bool isChangedFromCode = IsSetFromCode;
+                
                 if (propertyWasChanged)
                 {
-                    IsSetFromCode = true;
+                    if(!isChangedFromCode) IsSetFromCode = true;
                     Display = MGenerate.Value;
                     Calculate = MGenerate.Value;
                     Design = MGenerate.Value;
                     MaterialList = MGenerate.Value;
-                    IsSetFromCode = false;
+                    if (!isChangedFromCode) IsSetFromCode = false;
                 }
                 NotifyPropertyChanged("Generate");
             }

@@ -161,23 +161,23 @@ namespace PFD
             if (cInfo.ComponentName == "Column - Front Side")
             {
                 CComponentInfo girtFront = ComponentList.First(c => c.ComponentName == "Girt - Front Side");
-                if (girtFront.Generate != cInfo.Generate) girtFront.Generate = cInfo.Generate;
-            }
+                if (girtFront.Generate != cInfo.Generate) { girtFront.IsSetFromCode = true; girtFront.Generate = cInfo.Generate; girtFront.IsSetFromCode = false; }
+                }
             else if (cInfo.ComponentName == "Column - Back Side")
             {
                 CComponentInfo girtBack = ComponentList.First(c => c.ComponentName == "Girt - Back Side");
-                if (girtBack.Generate != cInfo.Generate) girtBack.Generate = cInfo.Generate;
-            }
+                if (girtBack.Generate != cInfo.Generate) { girtBack.IsSetFromCode = true; girtBack.Generate = cInfo.Generate; girtBack.IsSetFromCode = false; }
+                }
             else if (cInfo.ComponentName == "Girt - Front Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnFront = ComponentList.First(c => c.ComponentName == "Column - Front Side");
-                if (columnFront.Generate != cInfo.Generate) columnFront.Generate = cInfo.Generate;
-            }
+                if (columnFront.Generate != cInfo.Generate) { columnFront.IsSetFromCode = true; columnFront.Generate = cInfo.Generate; columnFront.IsSetFromCode = false; }
+                }
             else if (cInfo.ComponentName == "Girt - Back Side" && cInfo.Generate.Value) //iba ked zapnem Girt tak sa musi zapnut aj column
             {
                 CComponentInfo columnBack = ComponentList.First(c => c.ComponentName == "Column - Back Side");
-                if (columnBack.Generate != cInfo.Generate) columnBack.Generate = cInfo.Generate;
-            }
+                if (columnBack.Generate != cInfo.Generate) { columnBack.IsSetFromCode = true; columnBack.Generate = cInfo.Generate; columnBack.IsSetFromCode = false; }
+                }
 
             //task 505
             //volba generate by mala byt viazana na bool generate pre purlins resp. girts na jednotlivych stranach budovy, podobne ako su girts viazane na columns.
@@ -185,34 +185,34 @@ namespace PFD
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.Purlin)
             {
                 CComponentInfo purlinBlock = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins);
-                if (purlinBlock.Generate != cInfo.Generate) purlinBlock.Generate = cInfo.Generate;
-            }
+                if (purlinBlock.Generate != cInfo.Generate) { purlinBlock.IsSetFromCode = true; purlinBlock.Generate = cInfo.Generate; purlinBlock.IsSetFromCode = false; }
+                }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlockPurlins && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj purlins
             {
                 CComponentInfo purlin = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.Purlin);
-                if (purlin.Generate != cInfo.Generate) purlin.Generate = cInfo.Generate;
-            }
+                if (purlin.Generate != cInfo.Generate) { purlin.IsSetFromCode = true; purlin.Generate = cInfo.Generate; purlin.IsSetFromCode = false; }
+                }
 
 
             if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide) 
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide);
-                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
-            }
+                if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
+                }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.GirtBackSide)
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide);
-                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+                if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsFrontSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt front
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtFrontSide);
-                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+                if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
             else if (cInfo.MemberTypePosition == EMemberType_FS_Position.BracingBlocksGirtsBackSide && cInfo.Generate.Value) //iba ked zapnem blocks tak sa musi zapnut aj girt back
             {
                 CComponentInfo ci = ComponentList.First(c => c.MemberTypePosition == EMemberType_FS_Position.GirtBackSide);
-                if (ci.Generate != cInfo.Generate) ci.Generate = cInfo.Generate;
+                if (ci.Generate != cInfo.Generate) { ci.IsSetFromCode = true; ci.Generate = cInfo.Generate; ci.IsSetFromCode = false; }
             }
 
         }
