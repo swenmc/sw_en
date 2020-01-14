@@ -3749,7 +3749,8 @@ namespace BaseClasses
                 {
                     if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
                     {
-                        Canvas.SetLeft(textBlock, posx - txtSize.Width);
+                        if(txtSize.Width < txtSize.Height) Canvas.SetLeft(textBlock, posx - txtSize.Width - 5);  //tu je uz len bulharska konstanta aby dobre bolo (Bug 472)
+                        else Canvas.SetLeft(textBlock, posx - txtSize.Width);
                     }
                     else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
                 }
