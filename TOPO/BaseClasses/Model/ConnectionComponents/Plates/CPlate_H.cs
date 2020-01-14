@@ -186,8 +186,10 @@ namespace BaseClasses
             GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
 
             Width_bx = m_fbX;
-            Height_hy = m_fhY2;
-            SetFlatedPlateDimensions();
+            Height_hy = m_fhY1;
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX; // Total width
+            Height_hy_Stretched = m_fhY2;
             fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

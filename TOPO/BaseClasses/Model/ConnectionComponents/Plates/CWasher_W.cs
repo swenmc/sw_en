@@ -74,7 +74,9 @@ namespace BaseClasses
             Calc_Coord2D();
             Calc_Coord3D();
 
-            SetFlatedPlateDimensions();
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = Width_bx;
+            Height_hy_Stretched = Height_hy_Stretched;
 
             //UpdatePlateData(screwArrangement);
         }

@@ -182,8 +182,10 @@ namespace BaseClasses
         {
             Width_bx = Math.Max(m_fbX1, m_fbX2);
             Height_hy = Math.Max(m_fhY1, m_fhY2);
-            SetFlatedPlateDimensions();
-            fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = Math.Max(m_fbX1, m_fbX2);
+            Height_hy_Stretched = Math.Max(m_fhY1, m_fhY2);
+            fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();

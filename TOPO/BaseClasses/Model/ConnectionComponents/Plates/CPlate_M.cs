@@ -159,9 +159,12 @@ namespace BaseClasses
                 GenerateConnectors(screwArrangement_temp);
             }
 
-            Width_bx = 2 * m_fbX1 + m_fbX2 + 2 * m_fbX3;
+            Width_bx = m_fbX1 + m_fbX2 + m_fbX3;
             Height_hy = m_fhY;
-            SetFlatedPlateDimensions();
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX1 + m_fbX2 + m_fbX3;
+            Height_hy_Stretched = m_fhY;
+
             fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

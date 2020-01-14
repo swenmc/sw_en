@@ -180,15 +180,17 @@ namespace BaseClasses
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
             Width_bx = m_fbX1;
-            Height_hy = m_fhY2;
-            SetFlatedPlateDimensions();
+            Height_hy = m_fhY1;
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX1;
+            Height_hy_Stretched = m_fhY2;
             fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
-            fA_g = Get_A_rect(Ft, m_fhY2);
+            fA_g = Get_A_rect(Ft, m_fhY1);
             int iNumberOfScrewsInSection = 6; // TODO, temporary - zavisi na rozmiestneni skrutiek
 
             fA_n = fA_g;
@@ -198,7 +200,7 @@ namespace BaseClasses
                 fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             }
 
-            fA_v_zv = Get_A_rect(Ft, m_fhY2);
+            fA_v_zv = Get_A_rect(Ft, m_fhY1);
 
             fA_vn_zv = fA_v_zv;
 
@@ -207,8 +209,8 @@ namespace BaseClasses
                 fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             }
 
-            fI_yu = Get_I_yu_rect(Ft, m_fhY2);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
+            fI_yu = Get_I_yu_rect(Ft, m_fhY1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;
 

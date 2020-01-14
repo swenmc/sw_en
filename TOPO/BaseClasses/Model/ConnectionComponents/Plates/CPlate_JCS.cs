@@ -282,9 +282,11 @@ namespace BaseClasses
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {
-            Width_bx = m_fbX2_AndLips;
+            Width_bx = m_fbX2;
             Height_hy = Math.Max(m_fhY1, m_fhY2);
-            SetFlatedPlateDimensions();
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX2_AndLips; // Total width
+            Height_hy_Stretched = m_fhY2;
             fArea = Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();

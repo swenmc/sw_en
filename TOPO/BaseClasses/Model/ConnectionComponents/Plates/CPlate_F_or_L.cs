@@ -125,9 +125,11 @@ namespace BaseClasses
 
             GenerateConnectors(screwArrangement_temp, false);
 
-            Width_bx = m_fbX1 + m_fbX2;
+            Width_bx = m_fbX1;
             Height_hy = m_fhY;
-            SetFlatedPlateDimensions();
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX1 + m_flZ; // Total width
+            Height_hy_Stretched = m_fhY;
             fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -220,8 +222,11 @@ namespace BaseClasses
 
             GenerateConnectors(screwArrangement_temp, bChangeRotationAngle_MirroredPlate);
 
-            Width_bx = m_fbX1 + m_fbX2;
+            Width_bx = m_fbX2; //Math.Max(m_fbX1, m_fbX2);
             Height_hy = m_fhY;
+            //SetFlatedPlateDimensions();
+            Width_bx_Stretched = m_fbX2 + m_flZ; // Total width
+            Height_hy_Stretched = m_fhY;
             SetFlatedPlateDimensions();
             fArea = MATH.Geom2D.PolygonArea(PointsOut2D);
             fCuttingRouteDistance = GetCuttingRouteDistance();
