@@ -299,8 +299,8 @@ namespace PFD
                 eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].y_max + m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].z_max));
                 eccentricityColumnBack_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].y_min + m_arrCrSc[(int)EMemberGroupNames.eBackColumn].z_min));
 
-                eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0); // TODO - dopracovat podla toho ako to chcu mat zarovnane
-                eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
+                eccentricityGirtFront_Y0 = new CMemberEccentricity(0, eccentricityColumnFront_Z.MFz_local + (float)(m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].z_max - m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].z_max + m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].b));
+                eccentricityGirtBack_YL = new CMemberEccentricity(0, eccentricityColumnBack_Z.MFz_local + (float)(m_arrCrSc[(int)EMemberGroupNames.eBackColumn].z_min - m_arrCrSc[(int)EMemberGroupNames.eBackGirt].z_min - m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].b));
             }
 
             // Member Intermediate Supports
@@ -3354,53 +3354,12 @@ namespace PFD
                 materialConcrete.m_fE = 30e+9f;
 
                 // Ground Floor Slab
-                float fFloorSlab_AdditionalOffset_X = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
-                float fFloorSlab_AdditionalOffset_Y = 0.01f; // Rozmer o ktory doska presahuje od hrany stlpa
+                float fFloorSlab_AdditionalOffset_X = 0.005f; // Rozmer o ktory doska presahuje od hrany stlpa
+                float fFloorSlab_AdditionalOffset_Y = 0.005f; // Rozmer o ktory doska presahuje od hrany stlpa
 
                 float fFloorSlabOffset_x = -(float)m_arrCrSc[0].z_max - fFloorSlab_AdditionalOffset_X;
                 float fFloorSlabOffset_y_Front = (float)m_arrCrSc[0].y_min - fFloorSlab_AdditionalOffset_Y;
                 float fFloorSlabOffset_y_Back = (float)m_arrCrSc[0].y_max + fFloorSlab_AdditionalOffset_Y;
-
-                // Potrebujeme zapocitat odsadenie wind posts, excentricita pruta wind post + polovica vysky + pridavne odsadenie okraja dosky od hrany wind post
-                if (!bWindPostUnderRafter && bGenerateFrontColumns)
-                {
-                    float fFloorSlabOffset_y_FrontColumns = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h - fFloorSlab_AdditionalOffset_Y;
-
-                    if (eccentricityColumnFront_Z != null)
-                        fFloorSlabOffset_y_FrontColumns -= eccentricityColumnFront_Z.MFz_local;
-
-                    float fFloorSlabOffset_y_FrontGirts = 0;
-
-                    if (bGenerateFrontGirts)
-                    {
-                        fFloorSlabOffset_y_FrontGirts = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].h - fFloorSlab_AdditionalOffset_Y;
-
-                        if (eccentricityGirtFront_Y0 != null)
-                            fFloorSlabOffset_y_FrontGirts += eccentricityGirtFront_Y0.MFz_local;
-                    }
-
-                    fFloorSlabOffset_y_Front = MathF.Min(fFloorSlabOffset_y_Front, fFloorSlabOffset_y_FrontColumns, fFloorSlabOffset_y_FrontGirts);
-                }
-
-                if (!bWindPostUnderRafter && bGenerateBackColumns)
-                {
-                    float fFloorSlabOffset_y_BackColumns = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h + fFloorSlab_AdditionalOffset_Y;
-
-                    if (eccentricityColumnBack_Z != null)
-                        fFloorSlabOffset_y_BackColumns -= eccentricityColumnBack_Z.MFz_local;
-
-                    float fFloorSlabOffset_y_BackGirts = 0;
-
-                    if (bGenerateBackGirts)
-                    {
-                        fFloorSlabOffset_y_BackGirts = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackGirt].h + fFloorSlab_AdditionalOffset_Y;
-
-                        if (eccentricityGirtBack_YL != null)
-                            fFloorSlabOffset_y_BackGirts += eccentricityGirtBack_YL.MFz_local;
-                    }
-
-                    fFloorSlabOffset_y_Back = MathF.Max(fFloorSlabOffset_y_Back, fFloorSlabOffset_y_BackColumns, fFloorSlabOffset_y_BackGirts);
-                }
 
                 float fFloorSlab_aX = fW_frame + 2 * (-fFloorSlabOffset_x);
                 float fFloorSlab_bY = fL_tot + (-fFloorSlabOffset_y_Front) + fFloorSlabOffset_y_Back;
