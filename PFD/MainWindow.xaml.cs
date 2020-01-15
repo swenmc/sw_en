@@ -282,6 +282,11 @@ namespace PFD
                         return;
                     }
                 }
+
+                if (e.PropertyName == "Material")
+                {
+                    CModelHelper.ChangeMembersMaterial(cInfo, vm.Model);
+                }
             }
 
             SetUIElementsVisibility();

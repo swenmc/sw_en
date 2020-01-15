@@ -642,6 +642,10 @@ namespace M_AS4600
         {
             cs = cs_temp;
 
+            //temp
+            //System.Diagnostics.Trace.WriteLine(cs.ID);
+            //System.Diagnostics.Trace.WriteLine(cs.m_Mat.Name);
+
             // Set design internal forces according AS 4600 symbols of axes
             sDIF.fN = sDIF_x_temp.fN;
             sDIF.fN_c = sDIF_x_temp.fN_c;
