@@ -499,7 +499,18 @@ namespace PFD
         }
 
 
-        
+        public static void ChangeMembersMaterial(CComponentInfo cInfo, CModel model)
+        {
+            List<CMember> members = model.m_arrMembers.Where(m => m.EMemberTypePosition == cInfo.MemberTypePosition).ToList();
+            foreach (CMember m in members)
+            {
+                if(m.CrScStart != null) m.CrScStart.m_Mat.Name = cInfo.Material;
+                if (m.CrScEnd != null) m.CrScEnd.m_Mat.Name = cInfo.Material;
+            }
+
+        }
+
+
 
     }
 }
