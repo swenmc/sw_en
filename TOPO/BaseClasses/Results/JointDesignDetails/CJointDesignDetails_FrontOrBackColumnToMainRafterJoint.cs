@@ -72,6 +72,83 @@ namespace BaseClasses
         public float fV_fv_SecondaryMember;
         public float fEta_V_fv_5425_SecondaryMember;
 
+
+        // Plates G and H
+
+        // 5.4.2 Screwed connections in shear
+        public float fPhi_shear_Vb_5424;
+
+        // Plate G
+        public float ft_1_Plate1;
+        public float ff_uk_1_Plate1;
+        public float ff_yk_1_Plate1;
+
+        // Left Leg
+        public int iNumberOfScrewInTension_Plate1_Left;
+
+        // Right Leg
+        public int iNumberOfScrewsInShear_Plate1_Right;
+
+        // 5.4.2.4 Tilting and hole bearing
+        public float fC_for5424_Plate1;
+        public float fV_b_for5424_Plate1;
+        public float fV_asterix_b_for5424_Plate1;
+        public float fEta_5424_1_Plate1;
+
+        // 5.4.2.5 Connection shear as limited by end distance 
+        public float fe_Plate1;
+        public float fV_asterix_fv_Plate1;
+        public float fV_fv_Plate1;
+        public float fEta_V_fv_5425_Plate1;
+
+        // 5.4.2.6 Screws in shear
+        public float fV_w_nom_screw_5426_Plate1;
+        public float fEta_V_w_5426_Plate1;
+
+        // Plate H
+        public float ft_1_Plate2;
+        public float ff_uk_1_Plate2;
+        public float ff_yk_1_Plate2;
+
+        // Bottom Leg
+        public int iNumberOfScrewsInShear_Plate2_BL;
+
+        // 5.4.2.4 Tilting and hole bearing
+        public float fC_for5424_Plate2_BL;
+        public float fV_b_for5424_Plate2_BL;
+        public float fV_asterix_b_for5424_Plate2_BL;
+        public float fEta_5424_1_Plate2_BL;
+
+        // 5.4.2.5 Connection shear as limited by end distance 
+        public float fe_Plate2_BL;
+        public float fV_asterix_fv_Plate2_BL;
+        public float fV_fv_Plate2_BL;
+        public float fEta_V_fv_5425_Plate2_BL;
+
+        // 5.4.2.6 Screws in shear
+        public float fV_w_nom_screw_5426_Plate2_BL;
+        public float fEta_V_w_5426_Plate2_BL;
+
+        // Top Leg
+        public int iNumberOfScrewsInShear_Plate2_TL;
+
+        // 5.4.2.4 Tilting and hole bearing
+        public float fC_for5424_Plate2_TL;
+        public float fV_b_for5424_Plate2_TL;
+        public float fV_asterix_b_for5424_Plate2_TL;
+        public float fEta_5424_1_Plate2_TL;
+
+        // 5.4.2.5 Connection shear as limited by end distance 
+        public float fe_Plate2_TL;
+        public float fV_asterix_fv_Plate2_TL;
+        public float fV_fv_Plate2_TL;
+        public float fEta_V_fv_5425_Plate2_TL;
+
+        // 5.4.2.6 Screws in shear
+        public float fV_w_nom_screw_5426_Plate2_TL;
+        public float fEta_V_w_5426_Plate2_TL;
+
+
         public CJointDesignDetails_FrontOrBackColumnToMainRafterJoint()
         {
 
