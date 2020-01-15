@@ -577,13 +577,13 @@ namespace M_AS4600
 
             // TODO - refactoring s CalculateDesignRatioGirtOrPurlinJoint
             bool bDisplayWarningForContitions5434and5435 = false;
-            designDetails.iNumberOfScrewsInTension = plate.ScrewArrangement.IHolesNumber * 2 / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
 
             // Tension force in plate (metal strip)
             float fDIF_N_plate = 0;
             float fDIF_V_connection_one_side = 0;
-            designDetails.fPhi_N_screw = 0.5f;
-            designDetails.fPhi_N_t_screw = 0.5f;
+            designDetails.fPhi_N_screw = 0.5f; // Screw Tension Connection (pre tahany spoj)
+            designDetails.fPhi_N_t_screw = 0.5f; // Screw Tension (pre samotnu skrutku)
+            designDetails.fPhi_shear_Vb_5424 = 0.5f; // Shear Capacity Factor (pre tahany spoj)
 
             if (joint_temp is CConnectionJoint_S001) // Joint Type S001 - valid joint for wind post / column to edge rafter joint
             {
@@ -598,6 +598,9 @@ namespace M_AS4600
 
                         fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
                         fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
+
+                        designDetails.iNumberOfScrewsInTension = plate.ScrewArrangement.IHolesNumber * 2 / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
+
                     }
                     else
                     {
@@ -606,13 +609,56 @@ namespace M_AS4600
                 }
                 else if (!joint_S001.m_bWindPostEndUnderRafter)
                 {
-                    // Plate M - novy typ (2 x L + jeden pas)
+                    // Plate M - novy typ (2 x L (plate1) + jeden pas (plate2))
                     if (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1] is CConCom_Plate_M) // Plate M - strip is last plate
                     {
                         CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
+                        designDetails.ft_1_Plate2 = plateM.Ft;
+                        designDetails.ff_yk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plateM.Ft);
+                        designDetails.ff_uk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plateM.Ft);
 
-                        fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Cos(plateM.Gamma1_rad);
-                        fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
+                        // TEMPORARY - spoj posudime tak akoby celu smykovu silu preberal pas - Plate M
+
+                        fDIF_V_connection_one_side = Math.Abs(sDIF_temp.fV_yv_yy) / 2f; // Sila na jednej strane spoja sa uvazuje ako polovica z celkovej sily v spoji
+                        fDIF_N_plate = fDIF_V_connection_one_side / (float)Math.Cos(plateM.Gamma1_rad);
+
+                        // Zlozky reakcie v pripoji plechu M k main member v osovom systeme secondary member
+                        float fDIF_V_SM_z_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateM.Gamma1_rad);
+                        float fDIF_V_SM_y_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
+
+                        designDetails.iNumberOfScrewsInShear_Plate2 = plate.ScrewArrangement.IHolesNumber / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
+
+                        // Distance to an end of the connected part is parallel to the line of the applied force
+                        designDetails.fe_Plate2 = 0.02f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+
+                        DesignScrewedConnectionInShear(
+                                    fDIF_N_plate,
+                                    designDetails.iNumberOfScrewsInShear_Plate2,
+                                    designDetails.ft_1_Plate2,
+                                    designDetails.ff_uk_1_Plate2,
+                                    designDetails.ff_yk_1_Plate2,
+                                    ft_2_crscsecMember,
+                                    ff_uk_2_SecondaryMember,
+                                    designDetails.fe_Plate2,
+                                    designDetails.fPhi_shear_Vb_5424,
+                                    out designDetails.fC_for5424_Plate2,
+                                    out designDetails.fV_b_for5424_Plate2,
+                                    out designDetails.fV_asterix_b_for5424_Plate2,
+                                    out designDetails.fEta_5424_1_Plate2,
+                                    out designDetails.fV_asterix_fv_Plate2,
+                                    out designDetails.fV_fv_Plate2,
+                                    out designDetails.fEta_V_fv_5425_Plate2,
+                                    out designDetails.fV_w_nom_screw_5426_Plate2,
+                                    out designDetails.fEta_V_w_5426_Plate2
+                                    );
+
+                        // Plate design
+                        // Plate tension design
+                        designDetails.fPhi_plate = 0.65f;
+                        designDetails.fA_n_plate = plateM.fA_n;
+                        designDetails.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_n_plate, designDetails.ff_uk_1_Plate2);
+                        designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(fDIF_N_plate, designDetails.fPhi_plate, designDetails.fN_t_plate);
+                        fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
                     }
                     else
                     {
@@ -667,7 +713,6 @@ namespace M_AS4600
                         );
 
                     // Shear
-                    designDetails.fPhi_shear_Vb_5424 = 0.5f; // Capacity Factor
 
                     // Right Leg
                     // Distance to an end of the connected part is parallel to the line of the applied force
@@ -754,7 +799,7 @@ namespace M_AS4600
                     throw new Exception("Invalid plate type.");
                 }
 
-                if (joint_S001.bUsePlatesTypeN || !joint_S001.m_bWindPostEndUnderRafter) // Docasne
+                if (joint_S001.bUsePlatesTypeN || (joint_S001.m_bWindPostEndUnderRafter && joint_S001.bUseSamePlates)) // Docasne - prvy (plates N) a treti pripad (2x plate G)
                 {
                     // 5.4.3 Screwed connections in tension
                     // 5.4.3.2 Pull-out and pull-over (pull-through)
@@ -1756,6 +1801,7 @@ namespace M_AS4600
 
             fV_w_nom_screw_5426 = screw.ShearStrength_nominal;
             fEta_V_w_5426 = (Math.Abs(fShearForce) / iNumberOfScrewInShear) / (0.5f * fV_w_nom_screw_5426);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
         }
 
         public void DesignScrewedConnectionInTension(

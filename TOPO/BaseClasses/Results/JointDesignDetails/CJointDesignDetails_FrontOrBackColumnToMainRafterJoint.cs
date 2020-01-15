@@ -72,6 +72,29 @@ namespace BaseClasses
         public float fV_fv_SecondaryMember;
         public float fEta_V_fv_5425_SecondaryMember;
 
+        // Spoj s Plate M
+
+        // Plate M
+        public int iNumberOfScrewsInShear_Plate2;
+
+        // 5.4.2.4 Tilting and hole bearing
+        public float fC_for5424_Plate2;
+        public float fV_b_for5424_Plate2;
+        public float fV_asterix_b_for5424_Plate2;
+        public float fEta_5424_1_Plate2;
+
+        // 5.4.2.5 Connection shear as limited by end distance 
+        public float fe_Plate2;
+        public float fV_asterix_fv_Plate2;
+        public float fV_fv_Plate2;
+        public float fEta_V_fv_5425_Plate2;
+
+        // 5.4.2.6 Screws in shear
+        public float fV_w_nom_screw_5426_Plate2;
+        public float fEta_V_w_5426_Plate2;
+
+
+        // Spoj s Plates G a H
 
         // Plates G and H
 
@@ -147,6 +170,11 @@ namespace BaseClasses
         // 5.4.2.6 Screws in shear
         public float fV_w_nom_screw_5426_Plate2_TL;
         public float fEta_V_w_5426_Plate2_TL;
+
+
+
+
+
 
 
         public CJointDesignDetails_FrontOrBackColumnToMainRafterJoint()

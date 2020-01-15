@@ -287,7 +287,7 @@ namespace PFD
 
             bWindPostEndUnderRafter = m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].h > 0.49f ? true : false; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
 
-            bWindPostEndUnderRafter = true;
+            //bWindPostEndUnderRafter = true;
 
             if (bWindPostEndUnderRafter)
             {
