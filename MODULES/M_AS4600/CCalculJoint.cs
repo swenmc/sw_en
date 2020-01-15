@@ -626,7 +626,7 @@ namespace M_AS4600
                         float fDIF_V_SM_z_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateM.Gamma1_rad);
                         float fDIF_V_SM_y_connection_one_side = fDIF_N_plate * (float)Math.Sin(plateM.Gamma1_rad);
 
-                        designDetails.iNumberOfScrewsInShear_Plate2 = plate.ScrewArrangement.IHolesNumber / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
+                        designDetails.iNumberOfScrewsInShear_Plate2 = plateM.ScrewArrangement.IHolesNumber / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
 
                         // Distance to an end of the connected part is parallel to the line of the applied force
                         designDetails.fe_Plate2 = 0.02f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
@@ -656,7 +656,7 @@ namespace M_AS4600
                         // Plate tension design
                         designDetails.fPhi_plate = 0.65f;
                         designDetails.fA_n_plate = plateM.fA_n;
-                        designDetails.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_n_plate, designDetails.ff_uk_1_Plate2);
+                        designDetails.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plateM.S_f_min, designDetails.fA_n_plate, designDetails.ff_uk_1_Plate2);
                         designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(fDIF_N_plate, designDetails.fPhi_plate, designDetails.fN_t_plate);
                         fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
                     }
