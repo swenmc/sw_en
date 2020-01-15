@@ -442,11 +442,11 @@ namespace M_AS4600
                 {
                     // Zjednoduseny vypocet - ignoruje vyztuhy v stene
 
-                    float fA_w_yv = d_tot * ft_w;
-                    float fV_y_yv = eq.Eq_334_1___(ff_y, d_tot, ft_w); // Yield capacity
+                    fA_w_yv = d_tot * ft_w;
+                    fV_y_yv = eq.Eq_334_1___(ff_y, d_tot, ft_w); // Yield capacity
 
                     float fk_v_yv = eq.Get_kv_334_(eTrStiff, fa, d_tot);
-                    float fV_v_yv = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv, d_tot); // Nominal capacity
+                    fV_v_yv = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv, d_tot); // Nominal capacity
                 }
                 else
                 {
@@ -483,8 +483,8 @@ namespace M_AS4600
                 {
                     // Zjednoduseny vypocet - ignoruje vyztuhy v stene
 
-                    float fA_w_yv = d_tot * ft_w;
-                    float fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
+                    fA_w_yv = d_tot * ft_w;
+                    fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
                     float fk_v_yv;
 
                     switch (eTrStiff)
@@ -501,7 +501,7 @@ namespace M_AS4600
                             break;
                     }
 
-                    float fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, d_tot, ft_w);
+                    float fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, d_tot, ft_w); // Pridat do output s podmienkou pre bIgnoreWebStiffeners
 
                     float fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
 
@@ -573,14 +573,14 @@ namespace M_AS4600
 
                 fEta_max = MathF.Max(fEta_max, fEta_V_yv_723);
 
-                // Docasne konzervativne
+                // Docasne konzervativne - redukcne faktory podla vysledkov CFS software
                 // MC 15/03/2019: Reduction considering shear buckling and local buckling bewteen web stiffeners
-                if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
-                {
-                    float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
-                    if (fV_v_yv > fV_y_yv_red)
-                        fV_v_yv = fV_y_yv_red;
-                }
+                //if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
+                //{
+                //    float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
+                //    if (fV_v_yv > fV_y_yv_red)
+                //        fV_v_yv = fV_y_yv_red;
+                //}
             }
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
