@@ -619,7 +619,8 @@ namespace M_AS4600
 
                         // TEMPORARY - spoj posudime tak akoby celu smykovu silu preberal pas - Plate M
 
-                        fDIF_V_connection_one_side = Math.Abs(sDIF_temp.fV_yv_yy) / 2f; // Sila na jednej strane spoja sa uvazuje ako polovica z celkovej sily v spoji
+                        // Sila na jednej strane spoja sa uvazuje ako polovica z celkovej sily v spoji
+                        fDIF_V_connection_one_side = Math.Abs(sDIF_temp.fV_yv_yy) / 2f;
                         fDIF_N_plate = fDIF_V_connection_one_side / (float)Math.Cos(plateM.Gamma1_rad);
 
                         // Zlozky reakcie v pripoji plechu M k main member v osovom systeme secondary member

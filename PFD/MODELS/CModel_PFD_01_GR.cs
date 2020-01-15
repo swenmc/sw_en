@@ -52,8 +52,6 @@ namespace PFD
         int[] iArrNumberOfNodesPerBackColumn;
         int iOneColumnGirtNo;
 
-        private bool bWindPostEndUnderRafter;
-
         private float fFrontFrameRakeAngle_deg;
         private float fBackFrameRakeAngle_deg;
         private int iMainColumnFlyBracing_EveryXXGirt;
@@ -285,11 +283,10 @@ namespace PFD
             float feccentricityEavePurlin_z = -fallignment_column + (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h / (float)Math.Cos(fRoofPitch_rad) - (float)m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].z_max;
             CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), feccentricityEavePurlin_z);
 
-            bWindPostEndUnderRafter = m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].h > 0.49f ? true : false; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
+            // Moze byt automaticke alebo uzivatelsky nastavitelne
+            //bWindPostEndUnderRafter = m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].h > 0.49f ? true : false; // TODO - nastavovat podla velkosti edge frame rafter // true - stlp konci na spodnej hrane rafter, false - stlp konci na hornej hrane rafter
 
-            //bWindPostEndUnderRafter = true;
-
-            if (bWindPostEndUnderRafter)
+            if (vm._generalOptionsVM.WindPostUnderRafter)
             {
                 eccentricityColumnFront_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].y_min + m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].z_max));
                 eccentricityColumnBack_Z = new CMemberEccentricity(0, -(float)(m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].y_max + m_arrCrSc[(int)EMemberGroupNames.eBackColumn].z_min));
@@ -637,9 +634,9 @@ namespace PFD
             float fPurlinEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].y_min - fCutOffOneSide;
 
             float fFrontColumnStart = 0.0f;
-            float fFrontColumnEnd = (bWindPostEndUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fFrontColumnEnd = (vm._generalOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
             float fBackColumnStart = 0.0f;
-            float fBackColumnEnd = (bWindPostEndUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
+            float fBackColumnEnd = (vm._generalOptionsVM.WindPostUnderRafter ? (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_min : (float)m_arrCrSc[(int)EMemberGroupNames.eRafter_EF].z_max) / (float)Math.Cos(fRoofPitch_rad) + (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].y_min * (float)Math.Tan(fRoofPitch_rad) /*- fCutOffOneSide*/;
 
             float fFrontGirtStart = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
             float fFrontGirtEnd = (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].y_min - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
@@ -1179,7 +1176,7 @@ namespace PFD
             if (joints == null)
             {
                 CreateJoints(bGenerateGirts, bUseMainColumnFlyBracingPlates, bGeneratePurlins, bUseRafterFlyBracingPlates, bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts,
-                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide);
+                             bGenerateBackGirts, bGenerateGirtBracingSideWalls, bGeneratePurlinBracing, bGenerateGirtBracingFrontSide, bGenerateGirtBracingBackSide, vm._generalOptionsVM.WindPostUnderRafter);
             }
             else m_arrConnectionJoints = joints;
             #endregion
@@ -1362,7 +1359,7 @@ namespace PFD
 
             if (slabs == null)
             {
-                CreateFloorSlab(bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts, bGenerateBackGirts);
+                CreateFloorSlab(bGenerateFrontColumns, bGenerateBackColumns, bGenerateFrontGirts, bGenerateBackGirts, vm._generalOptionsVM.WindPostUnderRafter);
             }
             else
                 m_arrSlabs = slabs;
@@ -2632,7 +2629,7 @@ namespace PFD
 
         private void CreateJoints(bool bGenerateGirts, bool bUseMainColumnFlyBracingPlates, bool bGeneratePurlins, bool bUseRafterFlyBracingPlates, 
             bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts,
-            bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide)
+            bool bGenerateGirtBracingSideWalls, bool bGeneratePurlinBracing, bool bGenerateGirtBracingFrontSide, bool bGenerateGirtBracingBackSide, bool bWindPostUnderRafter)
         {
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
@@ -2781,9 +2778,9 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
 
                     if (i < (int)(iFrontColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, -fRoofPitch_rad, bWindPostEndUnderRafter, true, true)); // Front Left Main Rafter (0 to 0.5*W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[1], current_member, -fRoofPitch_rad, bWindPostUnderRafter, true, true)); // Front Left Main Rafter (0 to 0.5*W)
                     else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, fRoofPitch_rad, bWindPostEndUnderRafter, true, true)); // Front Right Main Rafter(0.5*W to W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[2], current_member, fRoofPitch_rad, bWindPostUnderRafter, true, true)); // Front Right Main Rafter(0.5*W to W)
                 }
             }
 
@@ -2796,9 +2793,9 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
 
                     if (i < (int)(iBackColumnNoInOneFrame / 2))
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, fRoofPitch_rad, bWindPostEndUnderRafter, false, true)); // Back Left Main Rafter (0 to 0.5*W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, fRoofPitch_rad, bWindPostUnderRafter, false, true)); // Back Left Main Rafter (0 to 0.5*W)
                     else
-                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, -fRoofPitch_rad, bWindPostEndUnderRafter, false, true)); // Back Right Main Rafter(0.5*W to W)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_S001(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, -fRoofPitch_rad, bWindPostUnderRafter, false, true)); // Back Right Main Rafter(0.5*W to W)
                 }
             }
 
@@ -3343,7 +3340,7 @@ namespace PFD
             }
         }
 
-        private void CreateFloorSlab(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts)
+        private void CreateFloorSlab(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts, bool bWindPostUnderRafter)
         {
             bool bGenerateSlabs = true;
 
@@ -3365,7 +3362,7 @@ namespace PFD
                 float fFloorSlabOffset_y_Back = (float)m_arrCrSc[0].y_max + fFloorSlab_AdditionalOffset_Y;
 
                 // Potrebujeme zapocitat odsadenie wind posts, excentricita pruta wind post + polovica vysky + pridavne odsadenie okraja dosky od hrany wind post
-                if (!bWindPostEndUnderRafter && bGenerateFrontColumns)
+                if (!bWindPostUnderRafter && bGenerateFrontColumns)
                 {
                     float fFloorSlabOffset_y_FrontColumns = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h - fFloorSlab_AdditionalOffset_Y;
 
@@ -3385,7 +3382,7 @@ namespace PFD
                     fFloorSlabOffset_y_Front = MathF.Min(fFloorSlabOffset_y_Front, fFloorSlabOffset_y_FrontColumns, fFloorSlabOffset_y_FrontGirts);
                 }
 
-                if (!bWindPostEndUnderRafter && bGenerateBackColumns)
+                if (!bWindPostUnderRafter && bGenerateBackColumns)
                 {
                     float fFloorSlabOffset_y_BackColumns = 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h + fFloorSlab_AdditionalOffset_Y;
 

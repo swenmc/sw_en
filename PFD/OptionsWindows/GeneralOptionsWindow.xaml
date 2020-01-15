@@ -25,6 +25,8 @@
                 <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
                 <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
+                <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <CheckBox Name="chbPlaceWindPostUnderRafter" IsChecked="{Binding Path=WindPostUnderRafter}">Place wind post under rafter</CheckBox>
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >
