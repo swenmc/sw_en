@@ -2496,7 +2496,7 @@ namespace PFD
             }
 
             CalculationSettingsFoundation footingSettings = FootingVM.GetCalcSettings();
-            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, 
+            CMemberDesignCalculations memberDesignCalculations = new CMemberDesignCalculations(SolverWindow, model, UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, _designOptionsVM.IgnoreWebStiffeners,
                 _solverOptionsVM.DeterminateCombinationResultsByFEMSolver, _solverOptionsVM.UseFEMSolverCalculationForSimpleBeam, _solverOptionsVM.DeterminateMemberLocalDisplacementsForULS, 
                 footingSettings, frameModels, beamSimpleModels);
             memberDesignCalculations.CalculateAll();
@@ -2819,7 +2819,7 @@ namespace PFD
                 CMember governingMember = sDesignResults_ULS.DesignResults[mGr.MemberType_FS_Position].MemberWithMaximumDesignRatio;
                 if (governingMember == null) continue;
                 CCalculMember cGoverningMemberResultsULS;
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, _designOptionsVM.ShearDesignAccording334,_designOptionsVM.IgnoreWebStiffeners, MemberDesignResults_ULS, governingMember, governingLoadComb.ID, out cGoverningMemberResultsULS);
                 dictULSDesignResults.Add(mGr.MemberType_FS_Position, cGoverningMemberResultsULS);
             }
             return dictULSDesignResults;
@@ -2846,10 +2846,10 @@ namespace PFD
         }
 
         // Calculate governing member design ratio
-        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
+        private void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, List<CMemberLoadCombinationRatio_ULS> DesignResults, CMember m, int loadCombID, out CCalculMember cGoverningMemberResults)
         {
             CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
-            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, bShearDesignAccording334, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+            cGoverningMemberResults = new CCalculMember(false, bUseCRSCGeometricalAxes, bShearDesignAccording334, bIgnoreWebStiffeners, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
         }
 
         public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, CMember m, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)

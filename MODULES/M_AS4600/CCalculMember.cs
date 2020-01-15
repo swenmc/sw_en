@@ -242,7 +242,7 @@ namespace M_AS4600
         public float fEta_defl_zz = 0f;
         public float fEta_defl_tot = 0f;
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             designInternalForces sDIF_x_temp;
             sDIF_x_temp.fN = 0.0f;
@@ -270,7 +270,7 @@ namespace M_AS4600
                 sDIF_x_temp.fM_zz = 0;
             }
 
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bIgnoreWebStiffeners, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -279,9 +279,9 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, bShearDesignAccording334, bIgnoreWebStiffeners, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -329,9 +329,9 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_defl_tot);
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            SetDesignInputParameters(bUseCRSCGeometricalAxes, bShearDesignAccording334, sDIF_x_temp, cs_temp, fL_temp, sBucklingLengthFactors, sMomentValuesForCb);
+            SetDesignInputParameters(bUseCRSCGeometricalAxes, bShearDesignAccording334, bIgnoreWebStiffeners, sDIF_x_temp, cs_temp, fL_temp, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Design
 
@@ -438,20 +438,33 @@ namespace M_AS4600
             if (bShearDesignAccording334) // Option do GUI ci sa pocita podla 3.3.4 alebo 7
             {
                 // 3.3.4 Shear
-                // V cykle spocitame unosnost pre kazdu priamu cast steny
-                for (int i = 0; i < d_1_flat_portion.Length; i++)
+                if (bIgnoreWebStiffeners)
                 {
-                    if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
+                    // Zjednoduseny vypocet - ignoruje vyztuhy v stene
+
+                    float fA_w_yv = d_tot * ft_w;
+                    float fV_y_yv = eq.Eq_334_1___(ff_y, d_tot, ft_w); // Yield capacity
+
+                    float fk_v_yv = eq.Get_kv_334_(eTrStiff, fa, d_tot);
+                    float fV_v_yv = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv, d_tot); // Nominal capacity
+                }
+                else
+                {
+                    // V cykle spocitame unosnost pre kazdu priamu cast steny
+                    for (int i = 0; i < d_1_flat_portion.Length; i++)
                     {
-                        float fd_1_straight = (float)d_1_flat_portion[i];
-                        float fA_w_yv_temp = fd_1_straight * ft_w;
-                        float fV_y_yv_temp = eq.Eq_334_1___(ff_y, fd_1_straight,ft_w);
+                        if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
+                        {
+                            float fd_1_straight = (float)d_1_flat_portion[i];
+                            float fA_w_yv_temp = fd_1_straight * ft_w;
+                            float fV_y_yv_temp = eq.Eq_334_1___(ff_y, fd_1_straight, ft_w);
 
-                        float fk_v_yv_temp = eq.Get_kv_334_(eTrStiff, fa, fd_1_straight);
-                        float fV_v_yv_temp = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv_temp, fd_1_straight);
+                            float fk_v_yv_temp = eq.Get_kv_334_(eTrStiff, fa, fd_1_straight);
+                            float fV_v_yv_temp = eq.Get_Vv_334_(ff_y, fE, ft_w, fk_v_yv_temp, fd_1_straight);
 
-                        fV_y_yv += fV_y_yv_temp; // Yield capacity
-                        fV_v_yv += fV_v_yv_temp; // Nominal capacity
+                            fV_y_yv += fV_y_yv_temp; // Yield capacity
+                            fV_v_yv += fV_v_yv_temp; // Nominal capacity
+                        }
                     }
                 }
 
@@ -466,49 +479,89 @@ namespace M_AS4600
             else
             {
                 // 7.2.3 Design of member subject to shear, an combined bending and shear
-                // V cykle spocitame unosnost pre kazdu priamu cast steny
-                for (int i = 0; i < d_1_flat_portion.Length; i++)
+                if (bIgnoreWebStiffeners)
                 {
-                    if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
+                    // Zjednoduseny vypocet - ignoruje vyztuhy v stene
+
+                    float fA_w_yv = d_tot * ft_w;
+                    float fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
+                    float fk_v_yv;
+
+                    switch (eTrStiff)
                     {
-                        float fd_1_straight = (float)d_1_flat_portion[i];
-                        float fA_w_yv_temp = fd_1_straight * ft_w;
-                        float fV_y_yv_temp = eq.Eq_723_5___(fA_w_yv_temp, ff_y);
-                        float fk_v_yv_temp;
+                        case TransStiff_D3.eD3b_HasTrStiff:
+                            fk_v_yv = eq.Eq_D3_b____(fa, d_tot);
+                            break;
+                        case TransStiff_D3.eD3c_StiffFlanges:
+                            fk_v_yv = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, d_tot, ft_f, ft_w);
+                            break;
+                        case TransStiff_D3.eD3a_NoTrStiff:
+                        default:
+                            fk_v_yv = 5.34f; // D3(a)
+                            break;
+                    }
 
-                        switch (eTrStiff)
+                    float fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, d_tot, ft_w);
+
+                    float fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
+
+                    if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
+                    {
+                        // 7.2.3.3 Beams with transverse web stiffeners
+                        fV_v_yv = eq.Eq_7233____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
+                    }
+                    else
+                    {
+                        // 7.2.3.2 Beams without transverse web stiffeners
+                        fV_v_yv = eq.Eq_7232____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
+                    }
+                }
+                else
+                {
+                    // V cykle spocitame unosnost pre kazdu priamu cast steny
+                    for (int i = 0; i < d_1_flat_portion.Length; i++)
+                    {
+                        if (i > 0 && i < d_1_flat_portion.Length - 1) // Ignorujeme prvy a posledny element v poli, lebo to su obluciky na okrajoch
                         {
-                            case TransStiff_D3.eD3b_HasTrStiff:
-                                fk_v_yv_temp = eq.Eq_D3_b____(fa, fd_1_straight);
-                                break;
-                            case TransStiff_D3.eD3c_StiffFlanges:
-                                fk_v_yv_temp = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1_straight, ft_f, ft_w);
-                                break;
-                            case TransStiff_D3.eD3a_NoTrStiff:
-                            default:
-                                fk_v_yv_temp = 5.34f; // D3(a)
-                                break;
+                            float fd_1_straight = (float)d_1_flat_portion[i];
+                            float fA_w_yv_temp = fd_1_straight * ft_w;
+                            float fV_y_yv_temp = eq.Eq_723_5___(fA_w_yv_temp, ff_y);
+                            float fk_v_yv_temp;
+
+                            switch (eTrStiff)
+                            {
+                                case TransStiff_D3.eD3b_HasTrStiff:
+                                    fk_v_yv_temp = eq.Eq_D3_b____(fa, fd_1_straight);
+                                    break;
+                                case TransStiff_D3.eD3c_StiffFlanges:
+                                    fk_v_yv_temp = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1_straight, ft_f, ft_w);
+                                    break;
+                                case TransStiff_D3.eD3a_NoTrStiff:
+                                default:
+                                    fk_v_yv_temp = 5.34f; // D3(a)
+                                    break;
+                            }
+
+                            float fV_cr_yv_temp = eq.Eq_D3_1____(fE, fA_w_yv_temp, fk_v_yv_temp, fNu, fd_1_straight, ft_w);
+
+                            float fLambda_v_yv_temp = eq.Eq_723_4___(fV_y_yv_temp, fV_cr_yv_temp);
+
+                            float fV_v_yv_temp;
+
+                            if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
+                            {
+                                // 7.2.3.3 Beams with transverse web stiffeners
+                                fV_v_yv_temp = eq.Eq_7233____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
+                            }
+                            else
+                            {
+                                // 7.2.3.2 Beams without transverse web stiffeners
+                                fV_v_yv_temp = eq.Eq_7232____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
+                            }
+
+                            fV_y_yv += fV_y_yv_temp; // Yield capacity
+                            fV_v_yv += fV_v_yv_temp; // Nominal capacity
                         }
-
-                        float fV_cr_yv_temp = eq.Eq_D3_1____(fE, fA_w_yv_temp, fk_v_yv_temp, fNu, fd_1_straight, ft_w);
-
-                        float fLambda_v_yv_temp = eq.Eq_723_4___(fV_y_yv_temp, fV_cr_yv_temp);
-
-                        float fV_v_yv_temp;
-
-                        if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
-                        {
-                            // 7.2.3.3 Beams with transverse web stiffeners
-                            fV_v_yv_temp = eq.Eq_7233____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
-                        }
-                        else
-                        {
-                            // 7.2.3.2 Beams without transverse web stiffeners
-                            fV_v_yv_temp = eq.Eq_7232____(fV_y_yv_temp, fV_cr_yv_temp, fLambda_v_yv_temp);
-                        }
-
-                        fV_y_yv += fV_y_yv_temp; // Yield capacity
-                        fV_v_yv += fV_v_yv_temp; // Nominal capacity
                     }
                 }
 
@@ -638,7 +691,7 @@ namespace M_AS4600
                               + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
         }
 
-        void SetDesignInputParameters(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        void SetDesignInputParameters(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             cs = cs_temp;
 

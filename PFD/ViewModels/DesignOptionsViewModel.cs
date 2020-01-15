@@ -28,6 +28,7 @@ namespace PFD
         private float MHorizontalDisplacementLimitDenominator_Girt_TL;
 
         private bool MShearDesignAccording334; // Use shear design according to 3.3.4 or 7
+        private bool MIgnoreWebStiffeners; // Ignoruju sa vyztuhy / rebra na stene a pocita sa s celou stenou akokeby bola priama
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
 
@@ -137,6 +138,20 @@ namespace PFD
             }
         }
 
+        public bool IgnoreWebStiffeners
+        {
+            get
+            {
+                return MIgnoreWebStiffeners;
+            }
+
+            set
+            {
+                MIgnoreWebStiffeners = value;
+
+                NotifyPropertyChanged("IgnoreWebStiffeners");
+            }
+        }
 
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
@@ -146,7 +161,7 @@ namespace PFD
         {
             IsSetFromCode = true;
 
-            // Displacement / Deflection Limits            
+            // Displacement / Deflection Limits
             MVerticalDisplacementLimitDenominator_Rafter_PL = 300;
             MVerticalDisplacementLimitDenominator_Rafter_TL = 250;
             MHorizontalDisplacementLimitDenominator_Column_TL = 150;
@@ -155,6 +170,7 @@ namespace PFD
             MHorizontalDisplacementLimitDenominator_Girt_TL = 150;
 
             MShearDesignAccording334 = false;
+            MIgnoreWebStiffeners = false;
 
             IsSetFromCode = false;
         }

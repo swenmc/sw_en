@@ -21,6 +21,7 @@ namespace PFD.Infrastructure
         private CModel_PFD_01_GR Model;
         private bool MUseCRSCGeometricalAxes;
         private bool MShearDesignAccording334;
+        private bool MIgnoreWebStiffeners;
         private bool DeterminateCombinationResultsByFEMSolver;
         private bool UseFEMSolverCalculationForSimpleBeam;
         private bool DeterminateMemberLocalDisplacementsForULS;
@@ -51,6 +52,7 @@ namespace PFD.Infrastructure
             CModel_PFD_01_GR model,
             bool useCRSCGeometricalAxes,
             bool bshearDesignAccording334,
+            bool bIgnoreWebStiffeners,
             bool determinateCombinationResultsByFEMSolver,
             bool bUseFEMSolverCalculationForSimpleBeam,
             bool determinateMemberLocalDisplacementsForULS,
@@ -62,6 +64,7 @@ namespace PFD.Infrastructure
             Model = model;
             MUseCRSCGeometricalAxes = useCRSCGeometricalAxes;
             MShearDesignAccording334 = bshearDesignAccording334;
+            MIgnoreWebStiffeners = bIgnoreWebStiffeners;
             DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
             UseFEMSolverCalculationForSimpleBeam = bUseFEMSolverCalculationForSimpleBeam;
             DeterminateMemberLocalDisplacementsForULS = determinateMemberLocalDisplacementsForULS;
@@ -418,6 +421,7 @@ namespace PFD.Infrastructure
                         // Design check procedure
                         memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes,
                             MShearDesignAccording334,
+                            MIgnoreWebStiffeners,
                             iNumberOfDesignSections,
                             m,
                             mInternal_forces_and_design_parameters.InternalForces, // TO Ondrej - toto by sme asi mohli predavat cele ako jeden parameter mInternal_forces_and_design_parameters namiesto troch
