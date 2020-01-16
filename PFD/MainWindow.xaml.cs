@@ -614,6 +614,11 @@ namespace PFD
             sWindInputData.fInternalPressureCoefficientCpiMaximumPressure = loadInput.InternalPressureCoefficientCpiMaximumPressure;
             sWindInputData.fInternalPressureCoefficientCpiMaximumSuction = loadInput.InternalPressureCoefficientCpiMaximumSuction;
 
+            sWindInputData.fLocalPressureFactorKl_Girt = loadInput.LocalPressureFactorKl_Girt;
+            sWindInputData.fLocalPressureFactorKl_Purlin = loadInput.LocalPressureFactorKl_Purlin;
+            sWindInputData.fLocalPressureFactorKl_EavePurlin_Wall = loadInput.LocalPressureFactorKl_EavePurlin_Wall;
+            sWindInputData.fLocalPressureFactorKl_EavePurlin_Roof = loadInput.LocalPressureFactorKl_EavePurlin_Roof;
+
             vm.Wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 
