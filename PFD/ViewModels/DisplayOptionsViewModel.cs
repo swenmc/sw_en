@@ -195,6 +195,7 @@ namespace PFD
         private bool MShowLoadsOnMembers;
         private bool MShowLoadsOnGirts;
         private bool MShowLoadsOnPurlins;
+        private bool MShowLoadsOnEavePurlins;
         private bool MShowLoadsOnColumns;
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
@@ -1960,6 +1961,22 @@ namespace PFD
             }
         }
 
+        public bool ShowLoadsOnEavePurlins
+        {
+            get
+            {
+                return MShowLoadsOnEavePurlins;
+            }
+
+            set
+            {
+                MShowLoadsOnEavePurlins = value;
+
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnEavePurlins");
+            }
+        }
+
         public bool ShowLoadsOnColumns
         {
             get
@@ -2346,6 +2363,7 @@ namespace PFD
             ShowLoadsOnMembers = false;
             ShowLoadsOnGirts = true;
             ShowLoadsOnPurlins = true;
+            ShowLoadsOnEavePurlins = true;
             ShowLoadsOnColumns = true;
             ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = false;

@@ -1716,6 +1716,7 @@ namespace BaseClasses
                         {
                             if ((sDisplayOptions.bDisplayMemberLoads_Girts && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
                                (sDisplayOptions.bDisplayMemberLoads_Purlins && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
+                               (sDisplayOptions.bDisplayMemberLoads_EavePurlins && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEP) ||
                                (sDisplayOptions.bDisplayMemberLoads_Columns && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
                                (sDisplayOptions.bDisplayMemberLoads_Frames &&
                                (selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||
@@ -4100,6 +4101,7 @@ namespace BaseClasses
                             // Label zobrazujeme len pre zatazenia ktore su zobrazene
                             if ((sDisplayOptions.bDisplayMemberLoads_Girts && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
                                (sDisplayOptions.bDisplayMemberLoads_Purlins && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
+                               (sDisplayOptions.bDisplayMemberLoads_EavePurlins && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEP) ||
                                (sDisplayOptions.bDisplayMemberLoads_Columns && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
                                (sDisplayOptions.bDisplayMemberLoads_Frames &&
                                (loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||

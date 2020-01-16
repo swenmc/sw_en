@@ -2975,6 +2975,7 @@ namespace PFD
             sDisplayOptions.bDisplayMemberLoads = _displayOptionsVM.ShowLoadsOnMembers;
             sDisplayOptions.bDisplayMemberLoads_Girts = _displayOptionsVM.ShowLoadsOnGirts;
             sDisplayOptions.bDisplayMemberLoads_Purlins = _displayOptionsVM.ShowLoadsOnPurlins;
+            sDisplayOptions.bDisplayMemberLoads_EavePurlins = _displayOptionsVM.ShowLoadsOnEavePurlins;
             sDisplayOptions.bDisplayMemberLoads_Columns = _displayOptionsVM.ShowLoadsOnColumns;
             sDisplayOptions.bDisplayMemberLoads_Frames = _displayOptionsVM.ShowLoadsOnFrameMembers;
             sDisplayOptions.bDisplaySurfaceLoads = _displayOptionsVM.ShowSurfaceLoads;

@@ -613,6 +613,8 @@
                                   IsChecked="{Binding Path=ShowLoadsOnGirts}">Generated on girts</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnPurlins" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnPurlins}">Generated on purlins</CheckBox>
+                            <CheckBox Name ="chbDisplayLoadsOnEavePurlins" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnEavePurlins}">Generated on eave purlins</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnColumns" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnColumns}">Generated on columns</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"

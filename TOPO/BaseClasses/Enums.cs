@@ -793,6 +793,7 @@ namespace BaseClasses
         public bool bDisplayMemberLoads;
         public bool bDisplayMemberLoads_Girts;
         public bool bDisplayMemberLoads_Purlins;
+        public bool bDisplayMemberLoads_EavePurlins;
         public bool bDisplayMemberLoads_Columns;
         public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
