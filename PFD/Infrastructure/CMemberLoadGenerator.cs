@@ -1509,7 +1509,7 @@ namespace PFD
 
         public LoadCasesMemberLoads GetGeneratedMemberLoads(CLoadCase[] m_arrLoadCases, CMember[] allMembersInModel)
         {
-            LoadCasesMemberLoads loadCasesMemberLoads = new LoadCasesMemberLoads();            
+            LoadCasesMemberLoads loadCasesMemberLoads = new LoadCasesMemberLoads();
 
             foreach (CLoadCase lc in m_arrLoadCases)
             {
@@ -1536,7 +1536,7 @@ namespace PFD
                                             if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                             if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                                GenerateMemberLoad(l, m, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                                GenerateMemberLoad(l, m, lc.IsExternalWindPressure, lc.IsExternalWindPressure ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                         }
                                         else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                     }
@@ -1550,7 +1550,7 @@ namespace PFD
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                            GenerateMemberLoad(l, m, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                            GenerateMemberLoad(l, m, lc.IsExternalWindPressure, lc.IsExternalWindPressure ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                     }
                                     else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
@@ -1559,7 +1559,7 @@ namespace PFD
                     } //foreach member
                 } //foreach surface load in load case
 
-                loadCasesMemberLoads.Add(lc.ID, listOfMemberLoads);                
+                loadCasesMemberLoads.Add(lc.ID, listOfMemberLoads);
             } //foreach loadcase
 
             return loadCasesMemberLoads;
@@ -1574,7 +1574,7 @@ namespace PFD
             return Drawing3D.MemberLiesOnPlane(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[2], m);
         }
 
-        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
+        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, bool bIsExternalWindLoadCase, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
         {
             // Transformacia pruta do LCS plochy
             GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
@@ -1768,8 +1768,9 @@ namespace PFD
                 }
                 else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
                 {
+                    float fK_l = GetLocalWindPressureFactor_K_l(bIsExternalWindLoadCase, wind, m, loadparam.eMemberLoadDirection);
                     float fq = loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * (float)dIntersectionLengthInMember_yz_axis; // Load Value
-                    listOfMemberLoads.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    listOfMemberLoads.Add(new CMLoad_21(iLoadID, fK_l * fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
                     iLoadID += 1;
                 }
                 else
@@ -1779,10 +1780,35 @@ namespace PFD
                     float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
                     float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
-                    listOfMemberLoads.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    float fK_l = GetLocalWindPressureFactor_K_l(bIsExternalWindLoadCase, wind, m, loadparam.eMemberLoadDirection);
+                    listOfMemberLoads.Add(new CMLoad_24(iLoadID, fK_l * fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
                     iLoadID += 1;
                 }
             }
+        }
+
+        private static float GetLocalWindPressureFactor_K_l(bool bIsExternalWindLoadCase, CCalcul_1170_2 wind, CMember m, ELoadDirection loadDirection)
+        {
+            if (bIsExternalWindLoadCase && wind != null) // Jedna sa o load case s externym tlakom / sanim vetra
+            {
+                // Pruty podporujuce cladding
+                if (m.EMemberType == EMemberType_FS.eBG || m.EMemberType == EMemberType_FS.eG) // Girts
+                    return wind.fLocalPressureFactorKl_Girt;
+                else if (m.EMemberType == EMemberType_FS.eP)
+                    return wind.fLocalPressureFactorKl_Purlin;
+                else if (m.EMemberType == EMemberType_FS.eEP)
+                {
+                    if (loadDirection == ELoadDirection.eLD_Y)
+                        return wind.fLocalPressureFactorKl_EavePurlin_Wall;
+                    else if (loadDirection == ELoadDirection.eLD_Z)
+                        return wind.fLocalPressureFactorKl_EavePurlin_Roof;
+                    else
+                        return 1.0f;
+                }
+                else // Iny typ pruta - nie je v kontakte s cladding
+                    return 1.0f;
+            }
+            return 1.0f;
         }
 
         //public static List<Point3D> GetSurfaceLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)
