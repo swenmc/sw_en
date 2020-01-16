@@ -71,6 +71,12 @@ namespace PFD
             loadInputTextBoxValues sloadInputTextBoxes;
             sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure = 0.2f; // 0 - 0.7
             sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction = -0.3f; //-0.65 - 0
+
+            sloadInputTextBoxes.LocalPressureFactorKl_Girt = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky
+            sloadInputTextBoxes.LocalPressureFactorKl_Purlin = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky
+            sloadInputTextBoxes.LocalPressureFactorKl_EavePurlin_Wall = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky
+            sloadInputTextBoxes.LocalPressureFactorKl_EavePurlin_Roof = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky
+
             sloadInputTextBoxes.SiteElevation = 30;               // m  // nastavovat tu - zavisi od Location Index
             sloadInputTextBoxes.FaultDistanceDmin_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
             sloadInputTextBoxes.FaultDistanceDmax_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
@@ -129,6 +135,11 @@ namespace PFD
             sWindInputData.fTerrainCategory = GetTerrainCategory(loadinput.TerrainCategoryIndex);
             sWindInputData.fInternalPressureCoefficientCpiMaximumPressure = loadinput.InternalPressureCoefficientCpiMaximumPressure;
             sWindInputData.fInternalPressureCoefficientCpiMaximumSuction = loadinput.InternalPressureCoefficientCpiMaximumSuction;
+
+            sWindInputData.fLocalPressureFactorKl_Girt = loadinput.LocalPressureFactorKl_Girt;
+            sWindInputData.fLocalPressureFactorKl_Purlin = loadinput.LocalPressureFactorKl_Purlin;
+            sWindInputData.fLocalPressureFactorKl_EavePurlin_Wall = loadinput.LocalPressureFactorKl_EavePurlin_Wall;
+            sWindInputData.fLocalPressureFactorKl_EavePurlin_Roof = loadinput.LocalPressureFactorKl_EavePurlin_Roof;
 
             M_EC1.AS_NZS.CCalcul_1170_2 wind = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
 

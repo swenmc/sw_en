@@ -2303,15 +2303,11 @@ namespace PFD
             _generalOptionsVM = new GeneralOptionsViewModel();
             _solverOptionsVM = new SolverOptionsViewModel();
             _designOptionsVM = new DesignOptionsViewModel();
-            
-            
 
-            
             RecreateModel = true;
             ViewIndex = (int)EModelViews.ISO_FRONT_RIGHT;
             ViewModelMemberFilterIndex = (int)EViewModelMemberFilters.All;
             TransformScreenLines3DToCylinders3D = false;
-
 
             //BracingEverySecondRowOfGirts = true;
             //BracingEverySecondRowOfPurlins = true;

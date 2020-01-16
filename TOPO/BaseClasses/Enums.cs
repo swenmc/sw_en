@@ -1026,6 +1026,11 @@ namespace BaseClasses
         public float fTerrainCategory;  // float value 1-4 see Tab 4.2
         public float fInternalPressureCoefficientCpiMaximumPressure;
         public float fInternalPressureCoefficientCpiMaximumSuction;
+
+        public float fLocalPressureFactorKl_Girt;
+        public float fLocalPressureFactorKl_Purlin;
+        public float fLocalPressureFactorKl_EavePurlin_Wall;
+        public float fLocalPressureFactorKl_EavePurlin_Roof;
     }
 
     public struct WindLoadDataSpecificInput
@@ -1112,11 +1117,14 @@ namespace BaseClasses
         public int AngleWindDirectionIndex;
     }
 
-
     public struct loadInputTextBoxValues
     {
         public float InternalPressureCoefficientCpiMaximumPressure;
         public float InternalPressureCoefficientCpiMaximumSuction;
+        public float LocalPressureFactorKl_Girt; // Dalo by sa urcit automaticky
+        public float LocalPressureFactorKl_Purlin; // Dalo by sa urcit automaticky
+        public float LocalPressureFactorKl_EavePurlin_Wall; // Dalo by sa urcit automaticky
+        public float LocalPressureFactorKl_EavePurlin_Roof; // Dalo by sa urcit automaticky
         public float SiteElevation;
         public float FaultDistanceDmin_km;
         public float FaultDistanceDmax_km;
@@ -1192,9 +1200,4 @@ namespace BaseClasses
         public float fBeta_z_TB_TFB_l_ez;
         public float fBeta_LTB_fl_LTB;
     }
-
-
-
-
-    
 }

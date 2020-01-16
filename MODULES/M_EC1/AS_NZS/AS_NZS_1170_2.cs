@@ -341,7 +341,5 @@ namespace M_EC1.AS_NZS
                     return 0; // Invalid value of multiplier
             }
         }
-
-
     }
 }

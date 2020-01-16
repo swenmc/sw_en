@@ -11,15 +11,15 @@
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">        
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Name="LoadParamsGrid" Margin="5,10,5,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="190"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="170"/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="190"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -119,12 +119,12 @@
                 </StackPanel>
             </Button>
             <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_WindRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                      ItemsSource="{Binding Path=ListWindRegion}"    VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                      ItemsSource="{Binding Path=ListWindRegion}" VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="13" Grid.Column="0" Text="Terrain Category:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_TerrainCategory" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                       ItemsSource="{Binding Path=ListTerrainCategory}"   VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                       ItemsSource="{Binding Path=ListTerrainCategory}" VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainCategoryIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="14" Grid.Column="0" Text="Angle from Cardinal Direction :" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -146,6 +146,36 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=InternalPressureCoefficientCpiMaximumSuction, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="16" Grid.Column="3" Text="Local Pressure Factors" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="17" Grid.Column="3" Text="Local Pressure Factor Kl.g:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="17" Grid.Column="4" Name ="LocalPressureFactorKl_Girt" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=LocalPressureFactorKl_Girt, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="17" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="18" Grid.Column="3" Text="Local Pressure Factor Kl.p:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="18" Grid.Column="4" Name ="LocalPressureFactorKl_Purlin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=LocalPressureFactorKl_Purlin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="18" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="19" Grid.Column="3" Text="Local Pressure Factor Kl.ep.wall:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="19" Grid.Column="4" Name ="LocalPressureFactorKl_EavePurlin_Wall" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=LocalPressureFactorKl_EavePurlin_Wall, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="19" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="20" Grid.Column="3" Text="Local Pressure Factor Kl.ep.roof:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="20" Grid.Column="4" Name ="LocalPressureFactorKl_EavePurlin_Roof" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=LocalPressureFactorKl_EavePurlin_Roof, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="20" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
             <TextBlock Grid.Row="16" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

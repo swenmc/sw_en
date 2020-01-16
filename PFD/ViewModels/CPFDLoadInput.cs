@@ -40,6 +40,11 @@ namespace PFD
         private float MInternalPressureCoefficientCpiMaximumPressure; // Cpi.max
         private float MInternalPressureCoefficientCpiMaximumSuction; // Cpi.min
 
+        private float MLocalPressureFactorKl_Girt;
+        private float MLocalPressureFactorKl_Purlin;
+        private float MLocalPressureFactorKl_EavePurlin_Wall;
+        private float MLocalPressureFactorKl_EavePurlin_Roof;
+
         private int MSiteSubSoilClassIndex;
         private float MFaultDistanceDmin;
         private float MFaultDistanceDmax;
@@ -347,6 +352,82 @@ namespace PFD
 
                 SetResultsAreNotValid();
                 NotifyPropertyChanged("InternalPressureCoefficientCpiMaximumSuction");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LocalPressureFactorKl_Girt
+        {
+            get
+            {
+                return MLocalPressureFactorKl_Girt;
+            }
+
+            set
+            {
+                if (value < 1.00f || value > 3.00f)
+                    throw new ArgumentException("Local pressure factor must be between 1.00 and 3.00");
+                MLocalPressureFactorKl_Girt = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("LocalPressureFactorKl_Girt");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LocalPressureFactorKl_Purlin
+        {
+            get
+            {
+                return MLocalPressureFactorKl_Purlin;
+            }
+
+            set
+            {
+                if (value < 1.00f || value > 3.00f)
+                    throw new ArgumentException("Local pressure factor must be between 1.00 and 3.00");
+                MLocalPressureFactorKl_Purlin = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("LocalPressureFactorKl_Purlin");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LocalPressureFactorKl_EavePurlin_Wall
+        {
+            get
+            {
+                return MLocalPressureFactorKl_EavePurlin_Wall;
+            }
+
+            set
+            {
+                if (value < 1.00f || value > 3.00f)
+                    throw new ArgumentException("Local pressure factor must be between 1.00 and 3.00");
+                MLocalPressureFactorKl_EavePurlin_Wall = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("LocalPressureFactorKl_EavePurlin_Wall");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LocalPressureFactorKl_EavePurlin_Roof
+        {
+            get
+            {
+                return MLocalPressureFactorKl_EavePurlin_Roof;
+            }
+
+            set
+            {
+                if (value < 1.00f || value > 3.00f)
+                    throw new ArgumentException("Local pressure factor must be between 1.00 and 3.00");
+                MLocalPressureFactorKl_EavePurlin_Roof = value;
+
+                SetResultsAreNotValid();
+                NotifyPropertyChanged("LocalPressureFactorKl_EavePurlin_Roof");
             }
         }
 
@@ -805,6 +886,11 @@ namespace PFD
 
             InternalPressureCoefficientCpiMaximumPressure = sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure;
             InternalPressureCoefficientCpiMaximumSuction = sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction;
+
+            LocalPressureFactorKl_Girt = sloadInputTextBoxes.LocalPressureFactorKl_Girt;
+            LocalPressureFactorKl_Purlin = sloadInputTextBoxes.LocalPressureFactorKl_Girt;
+            LocalPressureFactorKl_EavePurlin_Wall = sloadInputTextBoxes.LocalPressureFactorKl_EavePurlin_Wall;
+            LocalPressureFactorKl_EavePurlin_Roof = sloadInputTextBoxes.LocalPressureFactorKl_EavePurlin_Roof;
 
             SiteElevation = sloadInputTextBoxes.SiteElevation;
             FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin_km;

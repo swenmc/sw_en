@@ -51,6 +51,11 @@ namespace M_EC1.AS_NZS
         public float fK_l_upwind; // K_l - local pressure factor, as given in Paragraph D1.3
         public float fK_l_downwind;
 
+        public float fLocalPressureFactorKl_Girt;
+        public float fLocalPressureFactorKl_Purlin;
+        public float fLocalPressureFactorKl_EavePurlin_Wall;
+        public float fLocalPressureFactorKl_EavePurlin_Roof;
+
         // Table 5.7 - reduction factor(Kr) due to parapets
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
         public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
@@ -229,6 +234,12 @@ namespace M_EC1.AS_NZS
             fWallArea_90or270 = sGeometryInput.fEaveHeight * sGeometryInput.fWidthTotal + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight) * sGeometryInput.fWidthTotal; // Gable Roof
 
             fK_l_upwind = fK_l_downwind = 1.0f;
+
+            fLocalPressureFactorKl_Girt = sWindInput.fLocalPressureFactorKl_Girt;
+            fLocalPressureFactorKl_Purlin = sWindInput.fLocalPressureFactorKl_Purlin;
+            fLocalPressureFactorKl_EavePurlin_Wall = sWindInput.fLocalPressureFactorKl_EavePurlin_Wall;
+            fLocalPressureFactorKl_EavePurlin_Roof = sWindInput.fLocalPressureFactorKl_EavePurlin_Roof;
+
             fM_lee = 1.0f;
             fM_h = 1.0f;
             fM_s = 1.0f;
