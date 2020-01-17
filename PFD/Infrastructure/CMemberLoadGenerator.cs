@@ -1807,7 +1807,7 @@ namespace PFD
 
                 if (lcType== ELCType.eWind)
                 {
-                    float fC_fig = 1.0f; // Wind load factor
+                    float fC_fig = 1.0f; // Wind aerodynamic factor factor
 
                     // Cfig.i = Cp,i * Kc,i
                     // Cfig.e = Cp,e * Ka * Kc,e * Kl * Kp
@@ -1824,6 +1824,7 @@ namespace PFD
                     if (!wind.bConsiderAreaReductionFactor_Ka)
                         fK_a = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54((float)dIntersectionLengthInMember_yz_axis * m.FLength); // Faktor je konstanta pre cely prut - zavisi od zatazovacej plochy pruta
 
+                    // External / Internal Pressure Coefficients - ako jediny je vzdy zohladneny uz vo vypocte surface loads
                     float fC_pi_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
                     float fC_pi_max_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
                     float fC_pe_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
