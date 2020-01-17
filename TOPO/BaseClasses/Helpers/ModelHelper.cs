@@ -481,5 +481,16 @@ namespace BaseClasses.Helpers
             }
             return clonedLines;
         }
+
+        public static float GetModelMaxLength(CModel model, DisplayOptions sDisplayOptions)
+        {
+            float fModel_Length_X = 0;
+            float fModel_Length_Y = 0;
+            float fModel_Length_Z = 0;
+            Drawing3D.GetModelCentreWithoutCrsc(model, sDisplayOptions, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+
+            float maxSize = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+            return maxSize;
+        }
     }
 }

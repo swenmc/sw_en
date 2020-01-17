@@ -151,6 +151,7 @@ namespace EXPIMP
 
             int legendImgWidth = 100;
             int legendTextWidth = 70;
+            float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
 
             foreach (EViewModelMemberFilters viewMembers in list_views)
             {
@@ -300,7 +301,8 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bDisplayMembersWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-
+                    opts.fWireFrameLineThickness = 2f * (modelMaxLength / 1000.0f);
+                    
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
@@ -319,6 +321,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    opts.fWireFrameLineThickness = 0.002f * (modelMaxLength / 1000.0f);
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -343,6 +346,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
+                    opts.fWireFrameLineThickness = 0.002f * (modelMaxLength / 1000.0f);
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
