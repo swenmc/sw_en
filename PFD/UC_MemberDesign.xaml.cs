@@ -50,6 +50,19 @@ namespace PFD
             if (vm.ComponentTypeIndex == -1) return;
 
             CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
+            if (GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.EdgeColumn ||
+               GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.MainColumn)
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimit_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Column_TL;
+            }
+            else if (GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.MainRafter)
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimit_Total = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_PL;
+
+
+            }
+            //TODO Mato - dokonci si to
+            
 
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;
