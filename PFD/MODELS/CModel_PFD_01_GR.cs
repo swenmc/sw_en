@@ -1342,14 +1342,7 @@ namespace PFD
 
             if (foundations == null)
             {
-                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, false);
-                //To Mato - dajak nebavi task 394
-                // TO Ondrej , No tak asi je null preto ze sa toto vytvorenie modelu vola skor nez sa vytvori GUI
-                // Asi v tomto bloku if nemozeme nastavovat nic z GUI, ale musime to vyrobit resp nastavit ako default a podla toho nastavit aj ten checkbox UseStraightReinforcementBars do VM a do GUI
-
-                //if(vm.FootingVM == null)
-                //    CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, true); //tu som myslel ze poslem ten bool dole, ale FootingVm je null
-                //else CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm.FootingVM.UseStraightReinforcementBars);
+                CreateFoundations(bGenerateFrontColumns, bGenerateBackColumns, vm._generalOptionsVM.UseStraightReinforcementBars);
             }
             else
                 m_arrFoundations = foundations;

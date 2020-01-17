@@ -43,7 +43,7 @@ namespace PFD
         private string m_ReinforcementGrade;
         private string m_ReinforcementMeshGrade;
 
-        private bool m_UseStraightReinforcementBars;
+        //private bool m_UseStraightReinforcementBars;
 
         private string m_LongReinTop_x_No;
         private string m_LongReinTop_x_Phi;
@@ -408,23 +408,23 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public bool UseStraightReinforcementBars
-        {
-            get
-            {
-                return m_UseStraightReinforcementBars;
-            }
+        //public bool UseStraightReinforcementBars
+        //{
+        //    get
+        //    {
+        //        return m_UseStraightReinforcementBars;
+        //    }
 
-            set
-            {
-                m_UseStraightReinforcementBars = value;
-                _pfdVM.RecreateFoundations = true;
+        //    set
+        //    {
+        //        m_UseStraightReinforcementBars = value;
+        //        _pfdVM.RecreateFoundations = true;
 
-                //if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
+        //        //if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
-                NotifyPropertyChanged("UseStraightReinforcementBars");
-            }
-        }
+        //        NotifyPropertyChanged("UseStraightReinforcementBars");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public string LongReinTop_x_No
@@ -2356,21 +2356,21 @@ namespace PFD
             float fDiameterBottom_Bar_y = float.Parse(LongReinBottom_y_Phi) / 1000f;
 
             // Reference / first bar coordinates
-            double cp_Top_x_coordX = UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_x;
-            double cp_Top_x_coordY = UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterTop_Bar_x : fConcreteCover + fDiameterTop_Bar_y + 0.5f * fDiameterTop_Bar_x;
-            double cp_Top_y_coordX = UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterTop_Bar_y : fConcreteCover + fDiameterTop_Bar_x + 0.5f * fDiameterTop_Bar_y;
-            double cp_Top_y_coordY = UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_y;
-            double cp_Bottom_x_coordX = UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_x;
-            double cp_Bottom_x_coordY = UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterBottom_Bar_x : fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x;
-            double cp_Bottom_y_coordX = UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterBottom_Bar_y : fConcreteCover + fDiameterBottom_Bar_x + 0.5f * fDiameterBottom_Bar_y;
-            double cp_Bottom_y_coordY = UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_y;
+            double cp_Top_x_coordX = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_x;
+            double cp_Top_x_coordY = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterTop_Bar_x : fConcreteCover + fDiameterTop_Bar_y + 0.5f * fDiameterTop_Bar_x;
+            double cp_Top_y_coordX = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterTop_Bar_y : fConcreteCover + fDiameterTop_Bar_x + 0.5f * fDiameterTop_Bar_y;
+            double cp_Top_y_coordY = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterTop_Bar_y;
+            double cp_Bottom_x_coordX = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_x;
+            double cp_Bottom_x_coordY = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterBottom_Bar_x : fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x;
+            double cp_Bottom_y_coordX = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover + 0.5f * fDiameterBottom_Bar_y : fConcreteCover + fDiameterBottom_Bar_x + 0.5f * fDiameterBottom_Bar_y;
+            double cp_Bottom_y_coordY = _pfdVM._generalOptionsVM.UseStraightReinforcementBars ? fConcreteCover : fConcreteCover + 0.5f * fDiameterBottom_Bar_y;
 
             Point3D cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, m_FootingPadSize_z_Or_h - fConcreteCover - fDiameterTop_Bar_y - 0.5f * fDiameterTop_Bar_x);
             Point3D cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, m_FootingPadSize_z_Or_h - fConcreteCover - 0.5f * fDiameterTop_Bar_y);
             Point3D cp_Bottom_x = new Point3D(cp_Bottom_x_coordX, cp_Bottom_x_coordY, fConcreteCover + fDiameterBottom_Bar_y + 0.5f * fDiameterBottom_Bar_x);
             Point3D cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, fConcreteCover + 0.5f * fDiameterBottom_Bar_y);
 
-            if (!UseStraightReinforcementBars)
+            if (!_pfdVM._generalOptionsVM.UseStraightReinforcementBars)
             {
                 cp_Top_x = new Point3D(cp_Top_x_coordX, cp_Top_x_coordY, fConcreteCover + fDiameterTop_Bar_y);
                 cp_Top_y = new Point3D(cp_Top_y_coordX, cp_Top_y_coordY, fConcreteCover);

@@ -36,6 +36,7 @@ namespace PFD
             if (sender == null) return;
             if (sender is GeneralOptionsViewModel)
             {
+                if (e.PropertyName == "UseStraightReinforcementBars") _pfdVM.RecreateFoundations = true;
                 GeneralOptionsChanged = true;
             }
         }

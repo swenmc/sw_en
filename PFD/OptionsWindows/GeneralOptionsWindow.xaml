@@ -27,6 +27,7 @@
                 <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
                 <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbPlaceWindPostUnderRafter" IsChecked="{Binding Path=WindPostUnderRafter}">Place wind post under rafter</CheckBox>
+                <CheckBox Name="chbUseStraightReinforcementBars" IsChecked="{Binding Path=UseStraightReinforcementBars}" >Use straight reinforcement bars</CheckBox>
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 5" >

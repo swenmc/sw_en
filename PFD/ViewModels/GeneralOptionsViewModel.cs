@@ -27,6 +27,8 @@ namespace PFD
         // Tato premenna urcuje aky bude detail spoja a ake budu excentricity prutov, resp. zakladovych patiek
         private bool m_WindPostUnderRafter; // Poloha wind post pod rafterom alebo za nim, moze byt nastavitelne, mohlo by byt aj automaticke podla velkosti prierezu
 
+        private bool m_UseStraightReinforcementBars;
+
         public bool BracingEverySecondRowOfGirts
         {
             get
@@ -72,6 +74,22 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public bool UseStraightReinforcementBars
+        {
+            get
+            {
+                return m_UseStraightReinforcementBars;
+            }
+
+            set
+            {
+                m_UseStraightReinforcementBars = value;
+                
+                NotifyPropertyChanged("UseStraightReinforcementBars");
+            }
+        }
+
         public bool IsSetFromCode = false;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -84,6 +102,8 @@ namespace PFD
             m_BracingEverySecondRowOfPurlins = true;
 
             m_WindPostUnderRafter = false;
+
+            m_UseStraightReinforcementBars = false;
 
             IsSetFromCode = false;
         }

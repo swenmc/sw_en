@@ -2222,6 +2222,7 @@ namespace PFD
                 m_GeneralOptionsChanged = value;
 
                 RecreateJoints = true;
+                RecreateModel = true;
                 
                 if (MSynchronizeGUI) NotifyPropertyChanged("GeneralOptionsChanged");
             }
