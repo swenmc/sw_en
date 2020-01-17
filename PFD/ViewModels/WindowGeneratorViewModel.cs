@@ -28,6 +28,7 @@ namespace PFD
         private float m_fWindowCoordinateZinBay;
         private int m_iNumberOfWindowColumns;
         private bool m_AddWindows;
+        private bool m_DeleteWindows;
 
         public bool IsSetFromCode = false;
 
@@ -122,6 +123,19 @@ namespace PFD
             }
         }
 
+        public bool DeleteWindows
+        {
+            get
+            {
+                return m_DeleteWindows;
+            }
+
+            set
+            {
+                m_DeleteWindows = value;
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -129,6 +143,7 @@ namespace PFD
         {
             IsSetFromCode = true;
             AddWindows = false;
+            DeleteWindows = false;
             WindowHeight = 0.6f;
             WindowWidth = 0.6f;
             WindowCoordinateXinBay = 0.4f;

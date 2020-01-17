@@ -125,6 +125,54 @@ namespace PFD
             return windowsProperties;
         }
 
+        public List<WindowProperties> GetWindowsToDelete()
+        {
+            List<WindowProperties> windowProperties = new List<WindowProperties>();
+            if (vm.DeleteWindows == false) return windowProperties;
+
+            for (int i = 1; i <= lefRightBays.Count; i++)
+            {
+                if ((leftBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    WindowProperties wp = new WindowProperties();
+                    wp.Bays = lefRightBays;
+                    wp.iBayNumber = i;
+                    wp.sBuildingSide = "Left";
+                    windowProperties.Add(wp);
+                }
+                if ((rightBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    WindowProperties wp = new WindowProperties();
+                    wp.Bays = lefRightBays;
+                    wp.iBayNumber = i;
+                    wp.sBuildingSide = "Right";
+                    windowProperties.Add(wp);
+                }
+            }
+
+            for (int i = 1; i <= frontBackBays.Count; i++)
+            {
+                if ((frontBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    WindowProperties wp = new WindowProperties();
+                    wp.Bays = frontBackBays;
+                    wp.iBayNumber = i;
+                    wp.sBuildingSide = "Front";
+                    windowProperties.Add(wp);
+                }
+                if ((backBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    WindowProperties wp = new WindowProperties();
+                    wp.Bays = frontBackBays;
+                    wp.iBayNumber = i;
+                    wp.sBuildingSide = "Back";
+                    windowProperties.Add(wp);
+                }
+            }
+
+            return windowProperties;
+        }
+
         private WindowProperties GetModelWindowProperties(string buildingSide)
         {
             WindowProperties wp = new WindowProperties();
@@ -138,14 +186,7 @@ namespace PFD
             wp.iNumberOfWindowColumns = vm.NumberOfWindowColumns;
             return wp;
         }
-
-
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            vm.AddWindows = true;
-            this.Close();
-        }
-
+        
         private void LeftBaysAll_Checked(object sender, RoutedEventArgs e)
         {
             foreach (CheckBox c in leftBays.Children)
@@ -208,6 +249,17 @@ namespace PFD
             {
                 c.IsChecked = false;
             }
+        }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            vm.AddWindows = true;
+            this.Close();
+        }
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            vm.DeleteWindows = true;
+            this.Close();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace PFD
         private bool m_SerieEnabled;
 
         private bool m_AddDoors;
+        private bool m_DeleteDoors;
 
         private List<string> m_DoorsTypes;
         public bool IsSetFromCode = false;
@@ -155,6 +156,18 @@ namespace PFD
                 m_AddDoors = value;
             }
         }
+        public bool DeleteDoors
+        {
+            get
+            {
+                return m_DeleteDoors;
+            }
+
+            set
+            {
+                m_DeleteDoors = value;
+            }
+        }
 
         public List<string> Series
         {
@@ -208,6 +221,7 @@ namespace PFD
         {
             IsSetFromCode = true;
             AddDoors = false;
+            DeleteDoors = false;
             DoorType = "Roller Door";
             DoorsHeight = 2.1f;
             DoorsWidth = 0.6f;

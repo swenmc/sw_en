@@ -1768,34 +1768,53 @@ namespace PFD
             DoorGeneratorWindow generatorWindow = new DoorGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1);
             generatorWindow.ShowDialog();
 
-            List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
-            if (doorProperties.Count == 0) return;
+            DoorGeneratorViewModel doorGeneratorViewModel = generatorWindow.DataContext as DoorGeneratorViewModel;
+            if (doorGeneratorViewModel == null) return;
+            if (doorGeneratorViewModel.AddDoors)
+            {
+                List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
+                if (doorProperties.Count == 0) return;
 
-            foreach (DoorProperties dp in vm.DoorBlocksProperties)
-            {
-                //dp.PropertyChanged -= null;
-                bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                if (!existsSameItem) doorProperties.Add(dp);
-                
-            }
-            
-            //door and windows collision detection
-            List<WindowProperties> windowProperties = new List<WindowProperties>();
-            bool doorWindowColision = false;
-            foreach (WindowProperties wp in vm.WindowBlocksProperties)
-            {
-                bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
-                if (!existsSameItem) windowProperties.Add(wp);
-                else doorWindowColision = true;
-            }
-            if (doorWindowColision)
-            {
-                vm.IsSetFromCode = true;
-                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
-                vm.IsSetFromCode = false;
-            }
+                foreach (DoorProperties dp in vm.DoorBlocksProperties)
+                {
+                    //dp.PropertyChanged -= null;
+                    bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                    if (!existsSameItem) doorProperties.Add(dp);
 
-            vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+                }
+
+                //door and windows collision detection
+                List<WindowProperties> windowProperties = new List<WindowProperties>();
+                bool doorWindowColision = false;
+                foreach (WindowProperties wp in vm.WindowBlocksProperties)
+                {
+                    bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
+                    if (!existsSameItem) windowProperties.Add(wp);
+                    else doorWindowColision = true;
+                }
+                if (doorWindowColision)
+                {
+                    vm.IsSetFromCode = true;
+                    vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+                    vm.IsSetFromCode = false;
+                }
+
+                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+            }
+            else if (doorGeneratorViewModel.DeleteDoors)
+            {
+                List<DoorProperties> doorsToDelete = generatorWindow.GetDoorsToDelete();
+                if (doorsToDelete.Count == 0) return;
+
+                List<DoorProperties> doorProperties = new List<DoorProperties>();
+
+                foreach (DoorProperties dp in vm.DoorBlocksProperties)
+                {
+                    bool isTheItemToDelete = doorsToDelete.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                    if (!isTheItemToDelete) doorProperties.Add(dp);
+                }
+                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+            }
         }
 
         private void btnWindowsGenerator_Click(object sender, RoutedEventArgs e)
@@ -1803,32 +1822,58 @@ namespace PFD
             WindowsGeneratorWindow generatorWindow = new WindowsGeneratorWindow(vm.Frames - 1, vm.IFrontColumnNoInOneFrame + 1, vm.WallHeight, vm.fBayWidth, vm.ColumnDistance);
             generatorWindow.ShowDialog();
 
-            List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();
-            if (windowProperties.Count == 0) return;
+            WindowGeneratorViewModel windowGeneratorViewModel = generatorWindow.DataContext as WindowGeneratorViewModel;
+            if (windowGeneratorViewModel == null) return;
 
-            foreach (WindowProperties dp in vm.WindowBlocksProperties)
+            if (windowGeneratorViewModel.AddWindows)
             {
-                bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                if (!existsSameItem) windowProperties.Add(dp);
+                List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();
+                if (windowProperties.Count == 0) return;
+
+                foreach (WindowProperties dp in vm.WindowBlocksProperties)
+                {
+                    bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                    if (!existsSameItem) windowProperties.Add(dp);
+                }
+
+                //door and windows collision detection
+                List<DoorProperties> doorProperties = new List<DoorProperties>();
+                bool doorWindowColision = false;
+                foreach (DoorProperties dp in vm.DoorBlocksProperties)
+                {
+                    bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
+                    if (!existsSameItem) doorProperties.Add(dp);
+                    else doorWindowColision = true;
+                }
+                if (doorWindowColision)
+                {
+                    vm.IsSetFromCode = true;
+                    vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
+                    vm.IsSetFromCode = false;
+                }
+
+                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+            }
+            else if (windowGeneratorViewModel.DeleteWindows)
+            {
+                List<WindowProperties> windowsToDelete = generatorWindow.GetWindowsToDelete();
+                if (windowsToDelete.Count == 0) return;
+
+                List<WindowProperties> windowProperties = new List<WindowProperties>();
+
+                foreach (WindowProperties wp in vm.WindowBlocksProperties)
+                {
+                    bool isTheItemToDelete = windowsToDelete.Exists(p => p.iBayNumber == wp.iBayNumber && p.sBuildingSide == wp.sBuildingSide);
+                    if (!isTheItemToDelete) windowProperties.Add(wp);
+                }
+                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+
+
+
             }
 
-            //door and windows collision detection
-            List<DoorProperties> doorProperties = new List<DoorProperties>();
-            bool doorWindowColision = false;
-            foreach (DoorProperties dp in vm.DoorBlocksProperties)
-            {
-                bool existsSameItem = windowProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
-                if (!existsSameItem) doorProperties.Add(dp);
-                else doorWindowColision = true;
-            }
-            if (doorWindowColision)
-            {
-                vm.IsSetFromCode = true;
-                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorProperties);
-                vm.IsSetFromCode = false;
-            }
 
-            vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowProperties);
+            
         }
 
         private void ExportQuotation_Click(object sender, RoutedEventArgs e)

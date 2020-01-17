@@ -119,6 +119,54 @@ namespace PFD
             return doorProperties;
         }
 
+        public List<DoorProperties> GetDoorsToDelete()
+        {
+            List<DoorProperties> doorProperties = new List<DoorProperties>();
+            if (vm.DeleteDoors == false) return doorProperties;
+
+            for (int i = 1; i <= lefRightBays.Count; i++)
+            {
+                if ((leftBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    DoorProperties dp = new DoorProperties();
+                    dp.Bays = lefRightBays;
+                    dp.iBayNumber = i;
+                    dp.sBuildingSide = "Left";
+                    doorProperties.Add(dp);
+                }
+                if ((rightBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    DoorProperties dp = new DoorProperties();
+                    dp.Bays = lefRightBays;
+                    dp.iBayNumber = i;
+                    dp.sBuildingSide = "Right";
+                    doorProperties.Add(dp);
+                }
+            }
+
+            for (int i = 1; i <= frontBackBays.Count; i++)
+            {
+                if ((frontBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    DoorProperties dp = new DoorProperties();
+                    dp.Bays = frontBackBays;
+                    dp.iBayNumber = i;
+                    dp.sBuildingSide = "Front";
+                    doorProperties.Add(dp);
+                }
+                if ((backBays.Children[i] as CheckBox).IsChecked == true)
+                {
+                    DoorProperties dp = new DoorProperties();
+                    dp.Bays = frontBackBays;
+                    dp.iBayNumber = i;
+                    dp.sBuildingSide = "Back";
+                    doorProperties.Add(dp);
+                }
+            }
+
+            return doorProperties;
+        }
+
         private DoorProperties GetModelDoorProperties()
         {
             DoorProperties dp = new DoorProperties();
@@ -134,11 +182,7 @@ namespace PFD
         }
 
 
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            vm.AddDoors = true;
-            this.Close();
-        }
+        
 
         private void LeftBaysAll_Checked(object sender, RoutedEventArgs e)
         {
@@ -202,6 +246,18 @@ namespace PFD
             {
                 c.IsChecked = false;
             }
+        }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            vm.AddDoors = true;
+            this.Close();
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            vm.DeleteDoors = true;
+            this.Close();
         }
     }
 }
