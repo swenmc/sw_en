@@ -1507,6 +1507,28 @@ namespace PFD
             }
         }
 
+        private static void Set_ActionCombinationFactors_Kci(
+            int iNumberOfEffectiveSurfaces,
+            float fC_pi,
+            out float fK_ci)
+        {
+            // 5.4.3 Action combination factor
+            fK_ci = 1.0f;
+
+            if (iNumberOfEffectiveSurfaces == 1)
+            {
+                fK_ci = 1.0f;
+            }
+            else if (iNumberOfEffectiveSurfaces == 2)
+            {
+                if (Math.Abs(fC_pi) >= 0.2f) fK_ci = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
+            else
+            {
+                if (Math.Abs(fC_pi) >= 0.2f) fK_ci = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
+        }
+
         private static void Set_ActionCombinationFactors_Kce(
             int iNumberOfEffectiveSurfaces,
             out float fK_ce_min,
@@ -1531,6 +1553,25 @@ namespace PFD
                 fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
                 fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
                 fK_ce_wall = 0.8f;
+            }
+        }
+
+        private static void Set_ActionCombinationFactors_Kce(
+                int iNumberOfEffectiveSurfaces,
+                out float fK_ce)
+        {
+            // 5.4.3 Action combination factor
+            if (iNumberOfEffectiveSurfaces == 1)
+            {
+                fK_ce = 1.0f;
+            }
+            else if (iNumberOfEffectiveSurfaces == 2)
+            {
+                fK_ce = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
+            else
+            {
+                fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
             }
         }
 
@@ -1577,7 +1618,7 @@ namespace PFD
                                             if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                             if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                                GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                                GenerateMemberLoad(l, m, lc.MType_LS, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                         }
                                         else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                     }
@@ -1591,7 +1632,7 @@ namespace PFD
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                            GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                            GenerateMemberLoad(l, m, lc.MType_LS, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                     }
                                     else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
@@ -1615,7 +1656,7 @@ namespace PFD
             return Drawing3D.MemberLiesOnPlane(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[2], m);
         }
 
-        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, ELCType lcType, ELCWindType lcWindType, ELCMainDirection lCMainDirection, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
+        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, ELCGTypeForLimitState lcTypeForLS, ELCType lcType, ELCWindType lcWindType, ELCMainDirection lCMainDirection, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
         {
             // Transformacia pruta do LCS plochy
             GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
@@ -1805,7 +1846,7 @@ namespace PFD
             {
                 float fq = (float)(loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * dIntersectionLengthInMember_yz_axis); // Load Value
 
-                if (lcType== ELCType.eWind)
+                if ((lcTypeForLS == ELCGTypeForLimitState.eULSOnly || lcTypeForLS == ELCGTypeForLimitState.eSLSOnly) && lcType == ELCType.eWind)
                 {
                     float fC_fig = 1.0f; // Wind aerodynamic factor factor
 
@@ -1825,55 +1866,49 @@ namespace PFD
                         fK_a = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54((float)dIntersectionLengthInMember_yz_axis * m.FLength); // Faktor je konstanta pre cely prut - zavisi od zatazovacej plochy pruta
 
                     // External / Internal Pressure Coefficients - ako jediny je vzdy zohladneny uz vo vypocte surface loads
-                    float fC_pi_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pi_max_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pe_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pe_max_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pi_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
 
-                    float fC_pi_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pi_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pe_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pe_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pi_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_real = 1.0f; // Faktor je uz zahrnuty v surface load value
 
-                    if (lcWindType == ELCWindType.eWL_Cpi_min)
-                        fC_pi_min_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
-                    else if(lcWindType == ELCWindType.eWL_Cpi_max)
-                        fC_pi_max_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
-                    else if (lcWindType == ELCWindType.eWL_Cpe_min)
-                        fC_pe_min_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
-                    else if (lcWindType == ELCWindType.eWL_Cpe_max)
-                        fC_pe_max_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
-                    else
+                    float fp_basic = float.MaxValue;
+
+                    if (lcTypeForLS == ELCGTypeForLimitState.eULSOnly)
                     {
-                        fC_pi_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                        fC_pi_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                        fC_pe_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
-                        fC_pe_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                        fp_basic = wind.fp_basic_ULS_Theta_4[(int)lCMainDirection];
                     }
 
-                    float fK_ci_min = 1.0f;
-                    float fK_ci_max = 1.0f;
-                    float fK_ce_min = 1.0f;
-                    float fK_ce_max = 1.0f;
+                    if (lcTypeForLS == ELCGTypeForLimitState.eSLSOnly)
+                    {
+                        fp_basic = wind.fp_basic_SLS_Theta_4[(int)lCMainDirection];
+                    }
 
-                    float fK_ce_wall = 1.0f;
+                    if (lcWindType == ELCWindType.eWL_Cpi_min || lcWindType == ELCWindType.eWL_Cpi_max)
+                        fC_pi_real = Math.Abs(l.fValue) / fp_basic; // Faktor je uz zahrnuty v surface load value
+                    else if (lcWindType == ELCWindType.eWL_Cpe_min || lcWindType == ELCWindType.eWL_Cpe_max)
+                        fC_pe_real = Math.Abs(l.fValue) / fp_basic; // Faktor je uz zahrnuty v surface load value
+                    else
+                    {
+                        fC_pi_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                        fC_pe_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    }
+
+                    float fK_ci = 1.0f;
+                    float fK_ce = 1.0f;
 
                     if (!wind.bConsiderCombinationFactor_Kci_and_Kce)
                     {
-                        Set_ActionCombinationFactors_Kci(2, fC_pi_min_real, fC_pi_max_real, out fK_ci_min, out fK_ci_max);
-                        Set_ActionCombinationFactors_Kce(2, out fK_ce_min, out fK_ce_max, out fK_ce_wall);
+                        Set_ActionCombinationFactors_Kci(2, fC_pi_real, out fK_ci);
+                        Set_ActionCombinationFactors_Kce(2, out fK_ce);
                     }
 
                     // Rozdiel pre hodnoty Kce na streche a na stene zatial nezohladujeme - bolo by potrebne rozlisit typ pruta a smer zatazenia podobne ako pre Kl
-                    if (lcWindType == ELCWindType.eWL_Cpi_min)
-                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_min_aux, fK_ci_min);
-                    else if(lcWindType == ELCWindType.eWL_Cpi_max)
-                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_max_aux, fK_ci_max);
-                    else if (lcWindType == ELCWindType.eWL_Cpe_min)
-                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_min_aux, fK_ce_min, fK_a, fK_l, fK_p);
-                    else if(lcWindType == ELCWindType.eWL_Cpe_max)
-                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_max_aux, fK_ce_max, fK_a, fK_l, fK_p);
-                    else
+                    if (lcWindType == ELCWindType.eWL_Cpi_min || lcWindType == ELCWindType.eWL_Cpi_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_aux, fK_ci);
+                    else if (lcWindType == ELCWindType.eWL_Cpe_min || lcWindType == ELCWindType.eWL_Cpe_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_aux, fK_ce, fK_a, fK_l, fK_p);
+                     else
                         fC_fig = 1.0f;
 
                     fq *= fC_fig; // Upravime hodnotu zatazenia
