@@ -1188,6 +1188,9 @@ namespace PFD
                     UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
                     uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+                    uc_memberDesign.IgnoreWebStiffeners = vm._designOptionsVM.IgnoreWebStiffeners;
+                    uc_memberDesign.ShearDesignAccording334 = vm._designOptionsVM.ShearDesignAccording334;
+
                     CPFDMemberDesign vmMD = uc_memberDesign.DataContext as CPFDMemberDesign;
                     vmMD.IsSetFromCode = true;
                     vmMD.LimitStateIndex = 0;
