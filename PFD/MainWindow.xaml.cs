@@ -756,8 +756,13 @@ namespace PFD
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
-            else if (vm.Model != null) MessageBox.Show("Joints will be recreated and changed to defaults.");
-
+            else if (vm.Model != null)
+            {
+                this.IsEnabled = false;
+                MessageBox.Show("Joints will be recreated and changed to defaults.");
+                this.IsEnabled = true;
+            }
+            
             List<CFoundation> foundations = null;
             if (!vm.RecreateFoundations) foundations = vm.Model.m_arrFoundations;
             //else if (vm.Model != null) MessageBox.Show("Foundations will be recreated and changed to defaults.");
