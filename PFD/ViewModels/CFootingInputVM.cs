@@ -1804,6 +1804,7 @@ namespace PFD
         {
             get
             {
+                //Task 402 joint je null!!!
                 m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
                 CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
                 CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
@@ -2007,7 +2008,7 @@ namespace PFD
 
             for (int i = 0; i < _pfdVM.Model.m_arrConnectionJoints.Count; i++)
             {
-                if (node == _pfdVM.Model.m_arrConnectionJoints[i].m_Node && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_B_basic)
+                if (node.ID == _pfdVM.Model.m_arrConnectionJoints[i].m_Node.ID && _pfdVM.Model.m_arrConnectionJoints[i].m_arrPlates[0] is CConCom_Plate_B_basic)
                 {
                     return _pfdVM.Model.m_arrConnectionJoints[i];
                 }

@@ -537,14 +537,32 @@ namespace BaseClasses
                 };
 
             // Vytvorime pole bodov v ktorom budu vsetky relevantne krajne body potrebne pre urcenie velkosti vykreslovaneho obrazku
-            List<Point> PointsForEdgeCoord_real = new List<Point>
+            List<Point> PointsForEdgeCoord_real = new List<Point>();
+            if (basePlate != null)
             {
-                new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM), // Right
-                new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset_DPC_DPM),  // Left Bottom point
-                new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
-                new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight), // Top Right Column Point
-                new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y - fRealOffset_DPC_DPM) // pravy okraj patky (bez floor slab)
-            };
+                PointsForEdgeCoord_real = new List<Point>
+                {
+                    new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM), // Right
+                    new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset_DPC_DPM),  // Left Bottom point
+                    new Point(horizontalOffset + 0, basePlate.Fl_Z + fVerticalOffsetLeft), // Top Left Column Point
+                    new Point(horizontalOffset + crscDepth, basePlate.Fl_Z + fVerticalOffsetRight), // Top Right Column Point
+                    new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y - fRealOffset_DPC_DPM) // pravy okraj patky (bez floor slab)
+                };
+            }
+            else
+            {
+                // Task 402
+                //to Mato- toto treba opravit, pokial je basePlate = null tak co potom?
+                PointsForEdgeCoord_real = new List<Point>
+                {
+                    new Point(PointsFootingPad_real[0].X, PointsFootingPad_real[0].Y - fRealOffset_DPC_DPM), // Right
+                    new Point(PointsFootingPad_real[4].X, PointsFootingPad_real[4].Y - fRealOffset_DPC_DPM),  // Left Bottom point
+                    new Point(PointsFootingPad_real[2].X, PointsFootingPad_real[2].Y - fRealOffset_DPC_DPM), // To Mato - tu som si len nieco vymyslel
+                    new Point(PointsFootingPad_real[3].X, PointsFootingPad_real[3].Y - fRealOffset_DPC_DPM), // To Mato - tu som si len nieco vymyslel
+                    new Point(PointsFootingPad_real[1].X, PointsFootingPad_real[1].Y - fRealOffset_DPC_DPM) // pravy okraj patky (bez floor slab)
+                };
+            }
+
 
             // Vypocitame zoom faktor v prvej iteracii
             double fTempMax_X_F1 = 0, fTempMin_X_F1 = 0, fTempMax_Y_F1 = 0, fTempMin_Y_F1 = 0;
@@ -3749,7 +3767,7 @@ namespace BaseClasses
                 {
                     if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
                     {
-                        if(txtSize.Width < txtSize.Height) Canvas.SetLeft(textBlock, posx - txtSize.Width - 5);  //tu je uz len bulharska konstanta aby dobre bolo (Bug 472)
+                        if (txtSize.Width < txtSize.Height) Canvas.SetLeft(textBlock, posx - txtSize.Width - 5);  //tu je uz len bulharska konstanta aby dobre bolo (Bug 472)
                         else Canvas.SetLeft(textBlock, posx - txtSize.Width);
                     }
                     else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
