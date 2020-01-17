@@ -363,6 +363,18 @@ namespace BaseClasses
     }
 
     //----------------------------------------------------------------------------
+    // Define wind load case type
+    //----------------------------------------------------------------------------
+    public enum ELCWindType
+    {
+        eUndefined = 0,
+        eWL_Cpi_min,                            // "Wind load Cpi,min
+        eWL_Cpi_max,                            // "Wind load Cpi,max
+        eWL_Cpe_min,                            // "Wind load Cpe,min
+        eWL_Cpe_max                             // "Wind load Cpe,max
+    }
+
+    //----------------------------------------------------------------------------
     // Define window shape type (3D)
     //----------------------------------------------------------------------------
     public enum EWindowShapeType

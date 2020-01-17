@@ -7,12 +7,12 @@ namespace BaseClasses
     public class CLoadCase : CObject
     {
         //----------------------------------------------------------------------------
-        private bool m_bIsExternalWindPressure;
+        private ELCWindType m_LC_Wind_Type;
 
-        public bool IsExternalWindPressure
+        public ELCWindType LC_Wind_Type
         {
-            get { return m_bIsExternalWindPressure; }
-            set { m_bIsExternalWindPressure = value; }
+            get { return m_LC_Wind_Type; }
+            set { m_LC_Wind_Type = value; }
         }
 
         // Nepouzije sa, pretoze kazda kombinacia ma vlastny faktor pre dany LC
@@ -24,7 +24,6 @@ namespace BaseClasses
             get { return m_fFactor; }
             set { m_fFactor = value; }
         }
-
 
         private ELCType m_eType;
 
@@ -111,7 +110,7 @@ namespace BaseClasses
             Type = type_temp;
             MainDirection = MainDirection_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, List<CNLoad> NodeLoads_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
@@ -125,7 +124,7 @@ namespace BaseClasses
             MemberLoadsList = MemberLoads_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CNLoad> NodeLoads_temp)
@@ -137,7 +136,7 @@ namespace BaseClasses
             MainDirection = MainDirection_temp;
             NodeLoadsList = NodeLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp)
@@ -148,7 +147,7 @@ namespace BaseClasses
             MainDirection = MainDirection_temp;
             MemberLoadsList = MemberLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CSLoad_Free> SurfaceLoads_temp)
@@ -160,7 +159,7 @@ namespace BaseClasses
             MainDirection = MainDirection_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CNLoad> NodeLoads_temp, List<CMLoad> MemberLoads_temp)
@@ -173,7 +172,7 @@ namespace BaseClasses
             NodeLoadsList = NodeLoads_temp;
             MemberLoadsList = MemberLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
         public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
@@ -182,46 +181,64 @@ namespace BaseClasses
             Name = name_temp;
             MType_LS = eType_LS_temp;
             Type = type_temp;
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
             MainDirection = MainDirection_temp;
             MemberLoadsList = MemberLoads_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
 
-            IsExternalWindPressure = SetValueIsExternalWindPressure();
+            LC_Wind_Type = SetWindPressureType();
         }
 
-        private bool SetValueIsExternalWindPressure()
+        private ELCWindType SetWindPressureType()
         {
-            /*
-            switch (ID) // TODO Krajsi by bol switch ale toto treba doriesit - aby to sedelo s ELCName, ID totiz nemusi odpovedat indexu ELCName z enumu, pripadne pracovat v tomto objekte s ELCName
-            {
-                case 1:
-                    return true;
-                default:
-                    return false;
-
-            }*/
-
-            if (Name == ELCName.eWL_Wu_Cpe_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpe,min - Left - X+"
-            Name == ELCName.eWL_Wu_Cpe_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpe,min - Right - X-"
-            Name == ELCName.eWL_Wu_Cpe_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpe,min - Front - Y+"
-            Name == ELCName.eWL_Wu_Cpe_min_Rear_Y_Minus.GetFriendlyName() ||            // "Wind load Wu - Cpe,min - Rear - Y-"
-            Name == ELCName.eWL_Wu_Cpe_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpe,max - Left - X+"
-            Name == ELCName.eWL_Wu_Cpe_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpe,max - Right - X-"
-            Name == ELCName.eWL_Wu_Cpe_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpe,max - Front - Y+"
-            Name == ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus.GetFriendlyName() ||            // "Wind load Wu - Cpe,max - Rear - Y-"
-
-            Name == ELCName.eWL_Ws_Cpe_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpe,min - Left - X+"
-            Name == ELCName.eWL_Ws_Cpe_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpe,min - Right - X-"
-            Name == ELCName.eWL_Ws_Cpe_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpe,min - Front - Y+"
-            Name == ELCName.eWL_Ws_Cpe_min_Rear_Y_Minus.GetFriendlyName() ||            // "Wind load Ws - Cpe,min - Rear - Y-"
-            Name == ELCName.eWL_Ws_Cpe_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpe,max - Left - X+"
-            Name == ELCName.eWL_Ws_Cpe_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpe,max - Right - X-"
-            Name == ELCName.eWL_Ws_Cpe_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpe,max - Front - Y+"
-            Name == ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus.GetFriendlyName())            // "Wind load Ws - Cpe,max - Rear - Y-"
-                return true; // Load case is external wind pressure
+            if (Name == ELCName.eWL_Wu_Cpi_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpi,min - Left - X+"
+                Name == ELCName.eWL_Wu_Cpi_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpi,min - Right - X-"
+                Name == ELCName.eWL_Wu_Cpi_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpi,min - Front - Y+"
+                Name == ELCName.eWL_Wu_Cpi_min_Rear_Y_Minus.GetFriendlyName())              // "Wind load Wu - Cpi,min - Rear - Y-"
+                return ELCWindType.eWL_Cpi_min;
+            else if (
+                Name == ELCName.eWL_Wu_Cpi_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpi,max - Left - X+"
+                Name == ELCName.eWL_Wu_Cpi_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpi,max - Right - X-"
+                Name == ELCName.eWL_Wu_Cpi_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpi,max - Front - Y+"
+                Name == ELCName.eWL_Wu_Cpi_max_Rear_Y_Minus.GetFriendlyName())              // "Wind load Wu - Cpi,max - Rear - Y-"
+                return ELCWindType.eWL_Cpi_max;
+            else if (
+                Name == ELCName.eWL_Ws_Cpi_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpi,min - Left - X+"
+                Name == ELCName.eWL_Ws_Cpi_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpi,min - Right - X-"
+                Name == ELCName.eWL_Ws_Cpi_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpi,min - Front - Y+"
+                Name == ELCName.eWL_Ws_Cpi_min_Rear_Y_Minus.GetFriendlyName())              // "Wind load Ws - Cpi,min - Rear - Y-"
+                return ELCWindType.eWL_Cpi_min;
+            else if (
+                Name == ELCName.eWL_Ws_Cpi_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpi,max - Left - X+"
+                Name == ELCName.eWL_Ws_Cpi_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpi,max - Right - X-"
+                Name == ELCName.eWL_Ws_Cpi_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpi,max - Front - Y+"
+                Name == ELCName.eWL_Ws_Cpi_max_Rear_Y_Minus.GetFriendlyName())              // "Wind load Ws - Cpi,max - Rear - Y-"
+                return ELCWindType.eWL_Cpi_max;
+            else if (
+                Name == ELCName.eWL_Wu_Cpe_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpe,min - Left - X+"
+                Name == ELCName.eWL_Wu_Cpe_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpe,min - Right - X-"
+                Name == ELCName.eWL_Wu_Cpe_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpe,min - Front - Y+"
+                Name == ELCName.eWL_Wu_Cpe_min_Rear_Y_Minus.GetFriendlyName())              // "Wind load Wu - Cpe,min - Rear - Y-"
+                return ELCWindType.eWL_Cpe_min;
+            else if (
+                Name == ELCName.eWL_Wu_Cpe_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Wu - Cpe,max - Left - X+"
+                Name == ELCName.eWL_Wu_Cpe_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Wu - Cpe,max - Right - X-"
+                Name == ELCName.eWL_Wu_Cpe_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Wu - Cpe,max - Front - Y+"
+                Name == ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus.GetFriendlyName())              // "Wind load Wu - Cpe,max - Rear - Y-"
+                return ELCWindType.eWL_Cpe_max;
+            else if (
+                Name == ELCName.eWL_Ws_Cpe_min_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpe,min - Left - X+"
+                Name == ELCName.eWL_Ws_Cpe_min_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpe,min - Right - X-"
+                Name == ELCName.eWL_Ws_Cpe_min_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpe,min - Front - Y+"
+                Name == ELCName.eWL_Ws_Cpe_min_Rear_Y_Minus.GetFriendlyName())              // "Wind load Ws - Cpe,min - Rear - Y-"
+                return ELCWindType.eWL_Cpe_min;
+            else if (
+                Name == ELCName.eWL_Ws_Cpe_max_Left_X_Plus.GetFriendlyName() ||             // "Wind load Ws - Cpe,max - Left - X+"
+                Name == ELCName.eWL_Ws_Cpe_max_Right_X_Minus.GetFriendlyName() ||           // "Wind load Ws - Cpe,max - Right - X-"
+                Name == ELCName.eWL_Ws_Cpe_max_Front_Y_Plus.GetFriendlyName() ||            // "Wind load Ws - Cpe,max - Front - Y+"
+                Name == ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus.GetFriendlyName())              // "Wind load Ws - Cpe,max - Rear - Y-"
+                return ELCWindType.eWL_Cpe_max;
             else
-                return false;
+                return ELCWindType.eUndefined;
         }
 
         public override bool Equals(object obj)

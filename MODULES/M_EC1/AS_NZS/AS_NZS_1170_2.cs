@@ -141,6 +141,14 @@ namespace M_EC1.AS_NZS
             else
                 return fC_f * fK_a * fK_c; // Eq. (5.2(3)) // fC_fig
         }
+        public static float Get_AreaReductionFactor_Ka_Table54(float fTributaryArea)
+        {
+            // 5.4.2 Area reduction factor(Ka) for roofs and side walls
+            float[] fx = new float[5] { 0, 10, 25, 100, 9999 };
+            float[] fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
+
+            return ArrayF.GetLinearInterpolationValuePositive(fTributaryArea, fx, fy);
+        }
         public static float Get_Mh_442_(bool bIsEscarpment, float fH, float fH_2Lu_ratio, float fx, float fz)
         {
             /*

@@ -29,8 +29,12 @@ namespace M_EC1.AS_NZS
         WindLoadDataInput sWindInput;
 
         bool bConsiderCardinalDirectionsAndDifferentValues_M_D = false; // TODO - napojit na GUI
+
+        public bool bConsiderInternalPressureCoefficient_Cpi_Cpe = true;
         public bool bConsiderAreaReductionFactor_Ka = false;
-        public bool bConsiderAreaReductionFactor_Kci_and_Kce = false;
+        public bool bConsiderCombinationFactor_Kci_and_Kce = false;
+        public bool bConsiderLocalPressureFactor_Kl = false;
+        public bool bCondiderPermeableCladdingFactor_Kp = false;
 
         float fz_max = 200f; // m
         public float fz;
@@ -48,8 +52,9 @@ namespace M_EC1.AS_NZS
         public float fK_a_wall_90or270 = 1.0f;
 
         // 5.4.4 Local pressure factor(K l) for cladding
-        public float fK_l_upwind; // K_l - local pressure factor, as given in Paragraph D1.3
-        public float fK_l_downwind;
+        float fK_l_wall = 1.0f; // TODO - doriesit zadanie pre steny (possitive alebo negative pressure)
+        public float fK_l_upwind = 1.0f; // K_l - local pressure factor, as given in Paragraph D1.3
+        public float fK_l_downwind = 1.0f;
 
         public float fLocalPressureFactorKl_Girt;
         public float fLocalPressureFactorKl_Purlin;
@@ -58,7 +63,7 @@ namespace M_EC1.AS_NZS
 
         // Table 5.7 - reduction factor(Kr) due to parapets
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
-        public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
+        public float fK_p = 1.0f; // K_p - net porosity factor, as given in Paragraph D1.4
 
         /*
         According to AS1170.2:
@@ -233,19 +238,10 @@ namespace M_EC1.AS_NZS
             fWallArea_0or180 = sGeometryInput.fEaveHeight * sGeometryInput.fLengthTotal;
             fWallArea_90or270 = sGeometryInput.fEaveHeight * sGeometryInput.fWidthTotal + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight) * sGeometryInput.fWidthTotal; // Gable Roof
 
-            fK_l_upwind = fK_l_downwind = 1.0f;
-
-            fLocalPressureFactorKl_Girt = sWindInput.fLocalPressureFactorKl_Girt;
-            fLocalPressureFactorKl_Purlin = sWindInput.fLocalPressureFactorKl_Purlin;
-            fLocalPressureFactorKl_EavePurlin_Wall = sWindInput.fLocalPressureFactorKl_EavePurlin_Wall;
-            fLocalPressureFactorKl_EavePurlin_Roof = sWindInput.fLocalPressureFactorKl_EavePurlin_Roof;
-
             fM_lee = 1.0f;
             fM_h = 1.0f;
             fM_s = 1.0f;
             fM_t = 1.0f;
-
-            fK_p = 1.0f;
 
             /*
             An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
@@ -255,17 +251,22 @@ namespace M_EC1.AS_NZS
             */
 
             // Internal pressure
-            fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
-            fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
+            bConsiderInternalPressureCoefficient_Cpi_Cpe = true;
+
+            if (bConsiderInternalPressureCoefficient_Cpi_Cpe)
+            {
+                fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
+                fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
+            }
 
             // TODO - kedze sanie ma znamienko (-) a tlak (+), tak je trosku problem v tom ze pre vysledne zatazenie musime tie znamienka prehodit
             // aby napriklad tlak zhora (Cpe +) posobil rovnakym smerom ako sanie zdola (Cpi -) a opacne tlak zdola (Cpi +) posobilo rovnakym smerom ako sanie zhora (Cpe -)
 
             // Treba poriadne skontrolovat ci zatiazenie posobi v spravnom smere a ci sa zatazenia od vnutorneho a vonkajsieho tlaku spravne kombinuju
 
-            bConsiderAreaReductionFactor_Kci_and_Kce = false; // Zohladnuje sa az v generatore prutovych zatazeni
+            bConsiderCombinationFactor_Kci_and_Kce = false; // Zohladnuje sa az v generatore prutovych zatazeni
 
-            if (bConsiderAreaReductionFactor_Kci_and_Kce)
+            if (bConsiderCombinationFactor_Kci_and_Kce)
             {
                 fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
                 fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
@@ -273,6 +274,16 @@ namespace M_EC1.AS_NZS
 
                 if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
                 if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
+
+            bConsiderLocalPressureFactor_Kl = false;  // Zohladnuje sa az v generatore prutovych zatazeni
+
+            if (bConsiderLocalPressureFactor_Kl)
+            {
+                fLocalPressureFactorKl_Girt = sWindInput.fLocalPressureFactorKl_Girt;
+                fLocalPressureFactorKl_Purlin = sWindInput.fLocalPressureFactorKl_Purlin;
+                fLocalPressureFactorKl_EavePurlin_Wall = sWindInput.fLocalPressureFactorKl_EavePurlin_Wall;
+                fLocalPressureFactorKl_EavePurlin_Roof = sWindInput.fLocalPressureFactorKl_EavePurlin_Roof;
             }
 
             // M_s
@@ -292,7 +303,16 @@ namespace M_EC1.AS_NZS
                 fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
             }
 
+            bCondiderPermeableCladdingFactor_Kp = false; // Zohladnuje sa az v generatore prutovych zatazeni
+            /*
+             An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
+             than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
+             total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
+             to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
+             */
+
             bConsiderAreaReductionFactor_Ka = false;
+
             CalculateWindData();
         }
 
@@ -315,15 +335,17 @@ namespace M_EC1.AS_NZS
 
             float fa = MathF.Min(0.2f * sGeometryInput.fWidthTotal, 0.2f * sGeometryInput.fLengthTotal, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
 
-            fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
-            fK_l_downwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceDownwind);
+            bConsiderLocalPressureFactor_Kl = true;
+            float fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
+            float fK_l_downwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceDownwind);
 
             fM_lee = sWinDataSpecific_temp.fM_lee;
             fM_h = sWinDataSpecific_temp.fM_h;
             fM_s = sWinDataSpecific_temp.fM_s;
             fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
 
-            fK_p = sWinDataSpecific_temp.fK_p;
+            if(bCondiderPermeableCladdingFactor_Kp)
+                fK_p = sWinDataSpecific_temp.fK_p;
 
             /*
             An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
@@ -333,12 +355,17 @@ namespace M_EC1.AS_NZS
             */
 
             // Internal pressure
-            fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
-            fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
+            bConsiderInternalPressureCoefficient_Cpi_Cpe = true;
 
-            bConsiderAreaReductionFactor_Kci_and_Kce = true;
+            if (bConsiderInternalPressureCoefficient_Cpi_Cpe)
+            {
+                fC_pi_min = sWindInput.fInternalPressureCoefficientCpiMaximumSuction; // Underpressure - suction (negative value -0.65 - 0)
+                fC_pi_max = sWindInput.fInternalPressureCoefficientCpiMaximumPressure; // Overpressure (positive value 0 - 0.7)
+            }
 
-            if (bConsiderAreaReductionFactor_Kci_and_Kce)
+            bConsiderCombinationFactor_Kci_and_Kce = true;
+
+            if (bConsiderCombinationFactor_Kci_and_Kce)
             {
                 fK_ci_min = sWinDataSpecific_temp.fK_ci_min;
                 fK_ci_max = sWinDataSpecific_temp.fK_ci_max;
@@ -348,6 +375,7 @@ namespace M_EC1.AS_NZS
             }
 
             bConsiderAreaReductionFactor_Ka = true;
+
             CalculateWindData();
         }
 
@@ -466,124 +494,127 @@ namespace M_EC1.AS_NZS
             float fRatioDtoB_Theta90or270 = sGeometryInput.fWidthTotal / sGeometryInput.fLengthTotal;
             float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fWidthTotal;
 
-            // Table 5.2(A) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - windward wall (W)
-            bool bIsBuildingOnGround = true;
-            bool bIsVariableWindSpeedinHeight = false;
-
-            if (fh > 25 || (fh <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
-                fC_pe_W_wall = 0.8f;
-            else
-                fC_pe_W_wall = 0.7f;
-
-            // Table 5.2(B) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - leeward wall (L)
-            float[] fx;
-            float[] fy;
-
-            // 0 deg
-            if (sGeometryInput.fRoofPitch_deg < 10)
+            if (bConsiderInternalPressureCoefficient_Cpi_Cpe)
             {
+                // Table 5.2(A) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - windward wall (W)
+                bool bIsBuildingOnGround = true;
+                bool bIsVariableWindSpeedinHeight = false;
+
+                if (fh > 25 || (fh <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
+                    fC_pe_W_wall = 0.8f;
+                else
+                    fC_pe_W_wall = 0.7f;
+
+                // Table 5.2(B) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - leeward wall (L)
+                float[] fx;
+                float[] fy;
+
+                // 0 deg
+                if (sGeometryInput.fRoofPitch_deg < 10)
+                {
+                    fx = new float[5] { 0, 1, 2, 4, 9999 };
+                    fy = new float[5] { -0.5f, -0.5f, -0.3f, -0.2f, -0.2f };
+                }
+                else if (sGeometryInput.fRoofPitch_deg < 25)
+                {
+                    fx = new float[4] { 10, 15, 20, 25 };
+                    fy = new float[4] { -0.3f, -0.3f, -0.4f, -0.5f }; // - 0.5 for 25 deg ???
+                }
+                else
+                {
+                    fx = new float[4] { 0, 0.1f, 0.3f, 9999 };
+                    fy = new float[4] { -0.75f, -0.75f, -0.5f, -0.5f };
+                }
+
+                fC_pe_L_wall_Theta0or180 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta0or180, fx, fy);
+
+                // 90 deg
                 fx = new float[5] { 0, 1, 2, 4, 9999 };
                 fy = new float[5] { -0.5f, -0.5f, -0.3f, -0.2f, -0.2f };
-            }
-            else if (sGeometryInput.fRoofPitch_deg < 25)
-            {
-                fx = new float[4] { 10, 15, 20, 25 };
-                fy = new float[4] { -0.3f, -0.3f, -0.4f, -0.5f }; // - 0.5 for 25 deg ???
-            }
-            else
-            {
-                fx = new float[4] { 0, 0.1f, 0.3f, 9999 };
-                fy = new float[4] { -0.75f, -0.75f, -0.5f, -0.5f };
-            }
+                fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
 
-            fC_pe_L_wall_Theta0or180 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta0or180, fx, fy);
+                // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
+                fC_pe_S_wall_dimensions = new float[5] { 0, fh, 2 * fh, 3 * fh, 9999 };
+                fC_pe_S_wall_values = new float[5] { -0.65f, -0.5f, -0.3f, -0.2f, -0.2f };
 
-            // 90 deg
-            fx = new float[5] { 0, 1, 2, 4, 9999 };
-            fy = new float[5] { -0.5f, -0.5f, -0.3f, -0.2f, -0.2f };
-            fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
+                // Roof
+                fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
+                fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
 
-            // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
-            fC_pe_S_wall_dimensions = new float[5] { 0, fh, 2 * fh, 3 * fh, 9999 };
-            fC_pe_S_wall_values = new float[5] { -0.65f, -0.5f, -0.3f, -0.2f, -0.2f };
-
-            // Roof
-            fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
-            fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
-
-            if (sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
-            {
-                // TODO Martin - Interpolation shall only be carried out on values of the same sign ???? To bude neprijemne !!!!
-
-                // Table 5.3(A) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U), and downwind slope (D) and (R) for gable roofs, for Alpha < 10°
-                float[] fC_pe_UD_roof_dimensions = new float[6];
-                float[] fC_pe_UD_roof_values_min = new float[6];
-                float[] fC_pe_UD_roof_values_max = new float[6];
-
-                Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta0or180, ref fC_pe_UD_roof_dimensions, ref fC_pe_UD_roof_values_min, ref fC_pe_UD_roof_values_max);
-
-                fC_pe_U_roof_dimensions = fC_pe_UD_roof_dimensions;
-                fC_pe_U_roof_values_min = fC_pe_UD_roof_values_min;
-                fC_pe_U_roof_values_max = fC_pe_UD_roof_values_max;
-
-                for (int i = 0; i < fC_pe_UD_roof_dimensions.Length; i++)
+                if (sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
                 {
-                    // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
-                    // and set factor for U
-                    if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i + 1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
+                    // TODO Martin - Interpolation shall only be carried out on values of the same sign ???? To bude neprijemne !!!!
+
+                    // Table 5.3(A) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U), and downwind slope (D) and (R) for gable roofs, for Alpha < 10°
+                    float[] fC_pe_UD_roof_dimensions = new float[6];
+                    float[] fC_pe_UD_roof_values_min = new float[6];
+                    float[] fC_pe_UD_roof_values_max = new float[6];
+
+                    Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta0or180, ref fC_pe_UD_roof_dimensions, ref fC_pe_UD_roof_values_min, ref fC_pe_UD_roof_values_max);
+
+                    fC_pe_U_roof_dimensions = fC_pe_UD_roof_dimensions;
+                    fC_pe_U_roof_values_min = fC_pe_UD_roof_values_min;
+                    fC_pe_U_roof_values_max = fC_pe_UD_roof_values_max;
+
+                    for (int i = 0; i < fC_pe_UD_roof_dimensions.Length; i++)
                     {
-                        fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
-                        fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
-                        fC_pe_D_roof_values_max = new float[fC_pe_UD_roof_values_max.Length - i];
-
-                        iFirst_D_SegmentColorID = i;
-
-                        for (int k = i; k < fC_pe_UD_roof_dimensions.Length; k++)
+                        // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
+                        // and set factor for U
+                        if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i + 1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
                         {
-                            if (k == i) // First segment on D side
-                                fC_pe_D_roof_dimensions[k - i] = 0;
-                            else if (k < fC_pe_UD_roof_dimensions.Length - 1)
-                                fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k] - 0.5f * sGeometryInput.fW; // subtract U side length from UD coordinates // D side starts with zero coordinate
-                            else // Last item in the array
-                                fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k];
+                            fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
+                            fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
+                            fC_pe_D_roof_values_max = new float[fC_pe_UD_roof_values_max.Length - i];
 
-                            fC_pe_D_roof_values_min[k - i] = fC_pe_UD_roof_values_min[k];
-                            fC_pe_D_roof_values_max[k - i] = fC_pe_UD_roof_values_max[k];
+                            iFirst_D_SegmentColorID = i;
+
+                            for (int k = i; k < fC_pe_UD_roof_dimensions.Length; k++)
+                            {
+                                if (k == i) // First segment on D side
+                                    fC_pe_D_roof_dimensions[k - i] = 0;
+                                else if (k < fC_pe_UD_roof_dimensions.Length - 1)
+                                    fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k] - 0.5f * sGeometryInput.fW; // subtract U side length from UD coordinates // D side starts with zero coordinate
+                                else // Last item in the array
+                                    fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k];
+
+                                fC_pe_D_roof_values_min[k - i] = fC_pe_UD_roof_values_min[k];
+                                fC_pe_D_roof_values_max[k - i] = fC_pe_UD_roof_values_max[k];
+                            }
+
+                            break; // Finish cycle, the arrays for D side should be already filled
                         }
-
-                        break; // Finish cycle, the arrays for D side should be already filled
                     }
                 }
+                else // More or equal to 10°
+                {
+                    fC_pe_U_roof_dimensions = new float[2] { 0, 9999 };
+                    fC_pe_U_roof_values_min = new float[2];
+                    fC_pe_U_roof_values_max = new float[2];
+
+                    fC_pe_D_roof_dimensions = new float[2] { 0, 9999 };
+                    fC_pe_D_roof_values_min = new float[2];
+                    fC_pe_D_roof_values_max = new float[2];
+
+                    // Table 5.3(B) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U) Alpha >= 10°
+                    Calculate_Cpe_Table_5_3_B(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
+
+                    // Table 5.3(C) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - downhill slope (D), and (R) for hip roofs, for Alpha >= 10°
+                    Calculate_Cpe_Table_5_3_C(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, fRatioDtoB_Theta0or180, ref fC_pe_D_roof_values_min, ref fC_pe_D_roof_values_max);
+                }
+
+                // Wind 90 or 270 deg
+                fC_pe_R_roof_dimensions = new float[6];
+                fC_pe_R_roof_values_min = new float[6];
+                fC_pe_R_roof_values_max = new float[6];
+                Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
             }
-            else // More or equal to 10°
-            {
-                fC_pe_U_roof_dimensions = new float[2] { 0, 9999 };
-                fC_pe_U_roof_values_min = new float[2];
-                fC_pe_U_roof_values_max = new float[2];
-
-                fC_pe_D_roof_dimensions = new float[2] { 0, 9999 };
-                fC_pe_D_roof_values_min = new float[2];
-                fC_pe_D_roof_values_max = new float[2];
-
-                // Table 5.3(B) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U) Alpha >= 10°
-                Calculate_Cpe_Table_5_3_B(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
-
-                // Table 5.3(C) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - downhill slope (D), and (R) for hip roofs, for Alpha >= 10°
-                Calculate_Cpe_Table_5_3_C(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, fRatioDtoB_Theta0or180, ref fC_pe_D_roof_values_min, ref fC_pe_D_roof_values_max);
-            }
-
-            // Wind 90 or 270 deg
-            fC_pe_R_roof_dimensions = new float[6];
-            fC_pe_R_roof_values_min = new float[6];
-            fC_pe_R_roof_values_max = new float[6];
-            Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
 
             // 5.4.2 Area reduction factor(Ka) for roofs and side walls
             if (bConsiderAreaReductionFactor_Ka)
             {
-                fK_a_roof = Get_AreaReductionFactor_Ka(fRoofArea);
-                fK_a_wall_0or180 = Get_AreaReductionFactor_Ka(fWallArea_0or180);
-                fK_a_wall_90or270 = Get_AreaReductionFactor_Ka(fWallArea_90or270);
+                fK_a_roof = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fRoofArea);
+                fK_a_wall_0or180 = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fWallArea_0or180);
+                fK_a_wall_90or270 = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fWallArea_90or270);
             }
 
             // Aerodynamic shape factor (C fig)
@@ -595,8 +626,6 @@ namespace M_EC1.AS_NZS
 
             // External pressure
             // Walls
-
-            float fK_l_wall = 1.0f; // TODO - doriesit zadanie pre steny (possitive alebo negative pressure
 
             fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
             fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
@@ -1270,15 +1299,6 @@ namespace M_EC1.AS_NZS
                 return (fb + 2 * fh) / (fd - 4 * fh);
             else
                 return (fb + 2 * fh) / (fd - 4 * fb);
-        }
-
-        public float Get_AreaReductionFactor_Ka(float fTributaryArea)
-        {
-            // 5.4.2 Area reduction factor(Ka) for roofs and side walls
-            float[]fx = new float[5] { 0, 10, 25, 100, 9999 };
-            float[]fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
-
-            return ArrayF.GetLinearInterpolationValuePositive(fTributaryArea, fx, fy);
         }
 
         protected float Get_LocalPressureFactor_Kl(float fa, ELocalWindPressureReference eLWPR)

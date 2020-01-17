@@ -126,7 +126,7 @@ namespace PFD
 
             // Validation of options
             if (bConsiderFactors_Kci_Kce_Ka_Generator == true &&
-                (wind.bConsiderAreaReductionFactor_Ka == true || wind.bConsiderAreaReductionFactor_Kci_and_Kce == true))
+                (wind.bConsiderAreaReductionFactor_Ka == true || wind.bConsiderCombinationFactor_Kci_and_Kce == true))
             {
                 // Ak uz boli K_ca, Kce alebo Kci redukovane, tak je nastavenie pre tento generator nevalidne
                 throw new Exception("Wind pressure reduction factor Kci, Kce or Ka was already considered. Check options.");
@@ -916,12 +916,12 @@ namespace PFD
            int iWindDirectionIndex,
            float fFrameTributaryWidth,
            ELSType eLSType,
-           int iCodeForCpeMinMaxValue,
+           int iCodeForCpiMinMaxValue,
            CCalcul_1170_2 wind,
            ref List<CMLoad> listOfMemberLoads)
         {
-            float fK_ci_min = 1;
-            float fK_ci_max = 1;
+            float fK_ci_min = 1.0f;
+            float fK_ci_max = 1.0f;
             float fK_ci;
 
             if (bConsiderFactors_Kci_Kce_Ka_Generator)
@@ -938,7 +938,7 @@ namespace PFD
 
             if (eLSType == ELSType.eLS_ULS)
             {
-                if (iCodeForCpeMinMaxValue == 0) // ULS - Cpi,min
+                if (iCodeForCpiMinMaxValue == 0) // ULS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_ULS_Theta_4;
                     fK_ci = fK_ci_min;
@@ -951,7 +951,7 @@ namespace PFD
             }
             else
             {
-                if (iCodeForCpeMinMaxValue == 0) // SLS - Cpi,min
+                if (iCodeForCpiMinMaxValue == 0) // SLS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_SLS_Theta_4;
                     fK_ci = fK_ci_min;
@@ -1011,7 +1011,7 @@ namespace PFD
             if (bConsiderFactors_Kci_Kce_Ka_Generator)
             {
                 // Calculate reduction factors Ka, Kci, Kce
-                // 5.4.2 Area reduction factor(Ka)
+                // 5.4.2 Area reduction factor (Ka)
                 Calculate_Wind_Area_Reduction_Factors_Ka(
                 indexColumn1Left,
                 indexColumn2Right,
@@ -1048,8 +1048,8 @@ namespace PFD
                 fColumnRightLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
             }
 
-            float fReductionFactor_Ka_Kce_Column1Left = fK_a_Column1Left * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column1Left * fK_ce_wall;
-            float fReductionFactor_Ka_Kce_Column2Right = fK_a_Column2Right * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column2Right * fK_ce_wall;
+            float fReductionFactor_Ka_Kce_Column1Left = Set_Product_Ka_Kce(fK_a_Column1Left, fK_ce_wall);
+            float fReductionFactor_Ka_Kce_Column2Right = Set_Product_Ka_Kce(fK_a_Column2Right,fK_ce_wall);
 
             // Columns
             CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Ka_Kce_Column1Left * fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
@@ -1092,8 +1092,8 @@ namespace PFD
                 }
             }
 
-            float fReductionFactor_Ka_Kce_Rafter1Left = fK_a_Rafter1Left * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter1Left * fK_ce_roof;
-            float fReductionFactor_Ka_Kce_Rafter2Right = fK_a_Rafter2Right * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter2Right * fK_ce_roof;
+            float fReductionFactor_Ka_Kce_Rafter1Left = Set_Product_Ka_Kce(fK_a_Rafter1Left, fK_ce_roof);
+            float fReductionFactor_Ka_Kce_Rafter2Right = Set_Product_Ka_Kce(fK_a_Rafter2Right, fK_ce_roof);
 
             float[,] fRafterLeft_LoadValues;
             float[] fRafterLeft_RoofDimensions;
@@ -1297,10 +1297,10 @@ namespace PFD
                 }
             }
 
-            float fReductionFactor_Ka_Kce_Column1Left =  fK_a_Column1Left  * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column1Left  * fK_ce_wall;
-            float fReductionFactor_Ka_Kce_Column2Right = fK_a_Column2Right * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column2Right * fK_ce_wall;
-            float fReductionFactor_Ka_Kce_Rafter1Left =  fK_a_Rafter1Left  * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter1Left  * fK_ce_roof;
-            float fReductionFactor_Ka_Kce_Rafter2Right = fK_a_Rafter2Right * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter2Right * fK_ce_roof;
+            float fReductionFactor_Ka_Kce_Column1Left = Set_Product_Ka_Kce(fK_a_Column1Left, fK_ce_wall);
+            float fReductionFactor_Ka_Kce_Column2Right = Set_Product_Ka_Kce(fK_a_Column2Right, fK_ce_wall);
+            float fReductionFactor_Ka_Kce_Rafter1Left = Set_Product_Ka_Kce(fK_a_Rafter1Left, fK_ce_roof);
+            float fReductionFactor_Ka_Kce_Rafter2Right = Set_Product_Ka_Kce(fK_a_Rafter2Right, fK_ce_roof);
 
             float[] fx_dimensions_Columns = wind.fC_pe_S_wall_dimensions; // Wall - Columns
             float[] fx_dimensions_Rafters = wind.fC_pe_R_roof_dimensions; // Roof - Rafters
@@ -1469,10 +1469,10 @@ namespace PFD
             float fTributaryArea_Rafter1Left = m_arrMembers[indexRafter1Left].FLength * fFrameTributaryWidth;
             float fTributaryArea_Rafter2Right = m_arrMembers[indexRafter2Right].FLength * fFrameTributaryWidth;
 
-            fK_a_Column1Left = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Column1Left);
-            fK_a_Column2Right = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Column2Right);
-            fK_a_Rafter1Left = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Rafter1Left);
-            fK_a_Rafter2Right = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Rafter2Right);
+            fK_a_Column1Left = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fTributaryArea_Column1Left);
+            fK_a_Column2Right = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fTributaryArea_Column2Right);
+            fK_a_Rafter1Left = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fTributaryArea_Rafter1Left);
+            fK_a_Rafter2Right = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fTributaryArea_Rafter2Right);
         }
 
         private void Set_ActionCombinationFactors_Kci(
@@ -1499,6 +1499,14 @@ namespace PFD
             fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
             fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
             fK_ce_wall = 0.8f;
+        }
+
+        private float Set_Product_Ka_Kce(float fKa, float fK_ce)
+        {
+            if (fKa * fK_ce < 0.8f)
+                return 0.8f;
+            else
+                return fKa * fK_ce;
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1536,7 +1544,7 @@ namespace PFD
                                             if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                             if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                                GenerateMemberLoad(l, m, lc.IsExternalWindPressure, lc.IsExternalWindPressure ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                                GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                         }
                                         else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                     }
@@ -1550,7 +1558,7 @@ namespace PFD
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                            GenerateMemberLoad(l, m, lc.IsExternalWindPressure, lc.IsExternalWindPressure ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                            GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                     }
                                     else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
@@ -1574,7 +1582,7 @@ namespace PFD
             return Drawing3D.MemberLiesOnPlane(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[2], m);
         }
 
-        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, bool bIsExternalWindLoadCase, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
+        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, ELCType lcType, ELCWindType lcWindType, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
         {
             // Transformacia pruta do LCS plochy
             GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
@@ -1762,34 +1770,57 @@ namespace PFD
 
             foreach (MemberLoadParameters loadparam in listMemberLoadParams)
             {
+                float fq = (float)(loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * dIntersectionLengthInMember_yz_axis); // Load Value
+
+
+                if (lcType== ELCType.eWind)
+                {
+                    float fC_fig = 1.0f; // Wind load factor
+
+                    // Cfig.i = Cp,i * Kc,i
+                    // Cfig.e = Cp,e * Ka * Kc,e * Kl * Kp
+
+                    float fK_p = 1.0f; // TODO - mohlo by byt nastavitelne z GUI
+                    float fK_l = GetLocalWindPressureFactor_K_l(wind, m, loadparam.eMemberLoadDirection);
+                    float fK_a = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54((float)dIntersectionLengthInMember_yz_axis * m.FLength); // Faktor je konstanta pre cely prut - zavisi od zatazovacej plochy pruta
+                    float fC_pi_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_aux= 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fK_ci = 1.0f; // TODO
+                    float fK_ce = 1.0f; // TODO
+                    if (lcWindType == ELCWindType.eWL_Cpi_min || lcWindType == ELCWindType.eWL_Cpi_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_aux, fK_ci);
+                    else if (lcWindType == ELCWindType.eWL_Cpe_min || lcWindType == ELCWindType.eWL_Cpe_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_aux, fK_ce, fK_a, fK_l, fK_p);
+                    else
+                        fC_fig = 1.0f;
+
+                    fq *= fC_fig; // Upravime hodnotu zatazenia
+                }
+
                 if (intersection == Rect.Empty)
                 {
                     return;
                 }
                 else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
                 {
-                    float fK_l = GetLocalWindPressureFactor_K_l(bIsExternalWindLoadCase, wind, m, loadparam.eMemberLoadDirection);
-                    float fq = loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * (float)dIntersectionLengthInMember_yz_axis; // Load Value
-                    listOfMemberLoads.Add(new CMLoad_21(iLoadID, fK_l * fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    listOfMemberLoads.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
                     iLoadID += 1;
                 }
                 else
                 {
                     //nie som si isty,ci to je spravne
-                    float fq = (float)(loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * dIntersectionLengthInMember_yz_axis); // Load Value
                     float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
                     float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
-                    float fK_l = GetLocalWindPressureFactor_K_l(bIsExternalWindLoadCase, wind, m, loadparam.eMemberLoadDirection);
-                    listOfMemberLoads.Add(new CMLoad_24(iLoadID, fK_l * fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    listOfMemberLoads.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
                     iLoadID += 1;
                 }
             }
         }
 
-        private static float GetLocalWindPressureFactor_K_l(bool bIsExternalWindLoadCase, CCalcul_1170_2 wind, CMember m, ELoadDirection loadDirection)
+        private static float GetLocalWindPressureFactor_K_l(CCalcul_1170_2 wind, CMember m, ELoadDirection loadDirection)
         {
-            if (bIsExternalWindLoadCase && wind != null) // Jedna sa o load case s externym tlakom / sanim vetra
+            if (wind != null) // Jedna sa o load case s externym tlakom / sanim vetra
             {
                 // Pruty podporujuce cladding
                 if (m.EMemberType == EMemberType_FS.eBG || m.EMemberType == EMemberType_FS.eG) // Girts
