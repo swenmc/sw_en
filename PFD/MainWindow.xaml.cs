@@ -1091,7 +1091,7 @@ namespace PFD
 
                 if (Member_Design.Content == null)
                 {
-                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM.ShearDesignAccording334, vm._designOptionsVM.IgnoreWebStiffeners, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
+                    Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm._designOptionsVM, vm.Model, compListVM, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS); ;
                 }
                 else
                 {
@@ -1188,8 +1188,8 @@ namespace PFD
                     UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
                     uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
-                    uc_memberDesign.IgnoreWebStiffeners = vm._designOptionsVM.IgnoreWebStiffeners;
-                    uc_memberDesign.ShearDesignAccording334 = vm._designOptionsVM.ShearDesignAccording334;
+                    ////uc_memberDesign.IgnoreWebStiffeners = vm._designOptionsVM.IgnoreWebStiffeners;
+                    //uc_memberDesign.ShearDesignAccording334 = vm._designOptionsVM.ShearDesignAccording334;
 
                     CPFDMemberDesign vmMD = uc_memberDesign.DataContext as CPFDMemberDesign;
                     vmMD.IsSetFromCode = true;

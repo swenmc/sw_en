@@ -14,19 +14,23 @@ namespace PFD
     public partial class UC_MemberDesign : UserControl
     {
         public bool UseCRSCGeometricalAxes;
-        public bool ShearDesignAccording334;
-        public bool IgnoreWebStiffeners;
+        //public bool ShearDesignAccording334;
+        //public bool IgnoreWebStiffeners;
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
 
-        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, bool bShearDesignAccording334, bool bIgnoreWebStiffeners, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
+        public DesignOptionsViewModel designOptionsVM;
+
+        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, DesignOptionsViewModel doVM,  /*bool bShearDesignAccording334, bool bIgnoreWebStiffeners, */CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
             InitializeComponent();
 
+            designOptionsVM = doVM;
+
             UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
-            ShearDesignAccording334 = bShearDesignAccording334;
-            IgnoreWebStiffeners = bIgnoreWebStiffeners;
+            //ShearDesignAccording334 = bShearDesignAccording334;
+            //IgnoreWebStiffeners = bIgnoreWebStiffeners;
             Model = model;
             DesignResults_ULS = designResults_ULS;
             DesignResults_SLS = designResults_SLS;
@@ -51,7 +55,7 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
             
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
-                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, ShearDesignAccording334, IgnoreWebStiffeners, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, designOptionsVM.ShearDesignAccording334, designOptionsVM.IgnoreWebStiffeners, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
                 CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
         }
