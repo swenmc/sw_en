@@ -276,15 +276,13 @@ namespace M_EC1.AS_NZS
                 if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
             }
 
-            bConsiderLocalPressureFactor_Kl = false;  // Zohladnuje sa az v generatore prutovych zatazeni
+            bConsiderLocalPressureFactor_Kl = false; // Zohladnuje sa az v generatore prutovych zatazeni
 
-            if (bConsiderLocalPressureFactor_Kl)
-            {
-                fLocalPressureFactorKl_Girt = sWindInput.fLocalPressureFactorKl_Girt;
-                fLocalPressureFactorKl_Purlin = sWindInput.fLocalPressureFactorKl_Purlin;
-                fLocalPressureFactorKl_EavePurlin_Wall = sWindInput.fLocalPressureFactorKl_EavePurlin_Wall;
-                fLocalPressureFactorKl_EavePurlin_Roof = sWindInput.fLocalPressureFactorKl_EavePurlin_Roof;
-            }
+            // Hodnoty sa len nastavia do GUI ale k vypoctu surface load values sa nepouziju, zohladnia sa az v generatore prutovych zatazeni
+            fLocalPressureFactorKl_Girt = sWindInput.fLocalPressureFactorKl_Girt;
+            fLocalPressureFactorKl_Purlin = sWindInput.fLocalPressureFactorKl_Purlin;
+            fLocalPressureFactorKl_EavePurlin_Wall = sWindInput.fLocalPressureFactorKl_EavePurlin_Wall;
+            fLocalPressureFactorKl_EavePurlin_Roof = sWindInput.fLocalPressureFactorKl_EavePurlin_Roof;
 
             // M_s
             float fl_s = 1000f;    // Average spacing of shielding buildings

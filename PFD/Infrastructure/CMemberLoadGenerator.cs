@@ -479,7 +479,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimin_Left);
 
@@ -492,7 +492,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimin_Right);
 
@@ -505,7 +505,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimin_Front);
 
@@ -518,7 +518,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimin_Rear);
 
@@ -532,7 +532,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimax_Left);
 
@@ -545,7 +545,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimax_Right);
 
@@ -558,7 +558,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimax_Front);
 
@@ -571,7 +571,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_ULS_Cpimax_Rear);
 
@@ -586,7 +586,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemin_Left);
 
@@ -598,7 +598,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemin_Right);
 
@@ -611,7 +611,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemin_Front);
 
@@ -623,7 +623,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemin_Rear);
 
@@ -636,7 +636,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemax_Left);
 
@@ -648,7 +648,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemax_Right);
 
@@ -660,7 +660,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemax_Front);
 
@@ -672,7 +672,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_ULS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_ULS_Cpemax_Rear);
 
@@ -746,7 +746,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimin_Rear);
 
@@ -760,7 +760,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimax_Left);
 
@@ -773,7 +773,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimax_Right);
 
@@ -786,7 +786,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimax_Front);
 
@@ -799,7 +799,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpi_max,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimax_Rear);
 
@@ -814,7 +814,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemin_Left);
 
@@ -826,7 +826,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemin_Right);
 
@@ -839,7 +839,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemin_Front);
 
@@ -851,7 +851,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpe_min,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemin_Rear);
 
@@ -864,7 +864,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemax_Left);
 
@@ -876,7 +876,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemax_Right);
 
@@ -888,7 +888,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemax_Front);
 
@@ -900,7 +900,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        1,
+                        ELCWindType.eWL_Cpe_max,
                         wind,
                         ref memberLoadExternalPressure_SLS_Cpemax_Rear);
         }
@@ -916,7 +916,7 @@ namespace PFD
            int iWindDirectionIndex,
            float fFrameTributaryWidth,
            ELSType eLSType,
-           int iCodeForCpiMinMaxValue,
+           ELCWindType eLCWindType,
            CCalcul_1170_2 wind,
            ref List<CMLoad> listOfMemberLoads)
         {
@@ -927,6 +927,7 @@ namespace PFD
             if (bConsiderFactors_Kci_Kce_Ka_Generator)
             {
                 Set_ActionCombinationFactors_Kci(
+                            4,
                             wind.fC_pi_min,
                             wind.fC_pi_max,
                             out fK_ci_min,
@@ -938,12 +939,12 @@ namespace PFD
 
             if (eLSType == ELSType.eLS_ULS)
             {
-                if (iCodeForCpiMinMaxValue == 0) // ULS - Cpi,min
+                if (eLCWindType == ELCWindType.eWL_Cpi_min) // ULS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_ULS_Theta_4;
                     fK_ci = fK_ci_min;
                 }
-                else // ULS - Cpi,max
+                else //if (eLCWindType == ELCWindType.eWL_Cpi_max) // ULS - Cpi,max
                 {
                     fp_i_Theta_4 = wind.fp_i_max_ULS_Theta_4;
                     fK_ci = fK_ci_max;
@@ -951,12 +952,12 @@ namespace PFD
             }
             else
             {
-                if (iCodeForCpiMinMaxValue == 0) // SLS - Cpi,min
+                if (eLCWindType == ELCWindType.eWL_Cpi_min) // SLS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_SLS_Theta_4;
                     fK_ci = fK_ci_min;
                 }
-                else // SLS - Cpi,max
+                else //if (eLCWindType == ELCWindType.eWL_Cpi_max) // SLS - Cpi,max
                 {
                     fp_i_Theta_4 = wind.fp_i_max_SLS_Theta_4;
                     fK_ci = fK_ci_max;
@@ -991,7 +992,7 @@ namespace PFD
             int iDirectionIndex,
             float fFrameTributaryWidth,
             ELSType eLSType,
-            int iCodeForCpeMinMaxValue,
+            ELCWindType eLCWindType,
             CCalcul_1170_2 wind,
             ref List<CMLoad> listOfMemberLoads)
         {
@@ -1027,6 +1028,7 @@ namespace PFD
                 // For any roofs and side walls, the product Ka. Kc,e shall not be less than 0.8.
 
                 Set_ActionCombinationFactors_Kce(
+                4,
                 out fK_ce_min_roof,
                 out fK_ce_max_roof,
                 out fK_ce_wall
@@ -1063,13 +1065,13 @@ namespace PFD
 
             if (eLSType == ELSType.eLS_ULS)
             {
-                if (iCodeForCpeMinMaxValue == 0) // ULS - Cpe,min
+                if (eLCWindType == ELCWindType.eWL_Cpe_min) // ULS - Cpe,min
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_ULS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_ULS_Theta_4;
                     fK_ce_roof = fK_ce_min_roof;
                 }
-                else // ULS - Cpe,max
+                else //if (eLCWindType == ELCWindType.eWL_Cpe_max) // ULS - Cpe,max
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_ULS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_ULS_Theta_4;
@@ -1078,13 +1080,13 @@ namespace PFD
             }
             else
             {
-                if (iCodeForCpeMinMaxValue == 0) // SLS - Cpe,min
+                if (eLCWindType == ELCWindType.eWL_Cpe_min) // SLS - Cpe,min
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_SLS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_SLS_Theta_4;
                     fK_ce_roof = fK_ce_min_roof;
                 }
-                else // ULS - Cpe,max
+                else //if (eLCWindType == ELCWindType.eWL_Cpe_max) // ULS - Cpe,max
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_SLS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_SLS_Theta_4;
@@ -1189,7 +1191,7 @@ namespace PFD
             int iWindDirectionIndex,
             float fFrameTributaryWidth,
             ELSType eLSType,
-            int iCodeForCpeMinMaxValue,
+            ELCWindType eLCWind,
             CCalcul_1170_2 wind,
             ref List<CMLoad> listOfMemberLoads)
         {
@@ -1260,6 +1262,7 @@ namespace PFD
                 // For any roofs and side walls, the product Ka. Kc,e shall not be less than 0.8.
 
                 Set_ActionCombinationFactors_Kce(
+                4,
                 out fK_ce_min_roof,
                 out fK_ce_max_roof,
                 out fK_ce_wall
@@ -1270,12 +1273,12 @@ namespace PFD
             {
                 fLoadValues_Columns = wind.fp_e_S_wall_ULS_Theta_4;
 
-                if (iCodeForCpeMinMaxValue == 0)
+                if (eLCWind == ELCWindType.eWL_Cpe_min)
                 {
                     fLoadValues_Rafters = wind.fp_e_min_R_roof_ULS_Theta_4;
                     fK_ce_roof = fK_ce_min_roof;
                 }
-                else
+                else //if((eLCWind == ELCWindType.eWL_Cpe_max)
                 {
                     fLoadValues_Rafters = wind.fp_e_max_R_roof_ULS_Theta_4;
                     fK_ce_roof = fK_ce_max_roof;
@@ -1285,12 +1288,12 @@ namespace PFD
             {
                 fLoadValues_Columns = wind.fp_e_S_wall_SLS_Theta_4;
 
-                if (iCodeForCpeMinMaxValue == 0)
+                if (eLCWind == ELCWindType.eWL_Cpe_min)
                 {
                     fLoadValues_Rafters = wind.fp_e_min_R_roof_SLS_Theta_4;
                     fK_ce_roof = fK_ce_min_roof;
                 }
-                else
+                else //if(eLCWind == ELCWindType.eWL_Cpe_max)
                 {
                     fLoadValues_Rafters = wind.fp_e_max_R_roof_SLS_Theta_4;
                     fK_ce_roof = fK_ce_max_roof;
@@ -1475,7 +1478,8 @@ namespace PFD
             fK_a_Rafter2Right = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54(fTributaryArea_Rafter2Right);
         }
 
-        private void Set_ActionCombinationFactors_Kci(
+        private static void Set_ActionCombinationFactors_Kci(
+            int iNumberOfEffectiveSurfaces,
             float fC_pi_min,
             float fC_pi_max,
             out float fK_ci_min,
@@ -1486,22 +1490,51 @@ namespace PFD
             fK_ci_min = 1.0f;
             fK_ci_max = 1.0f;
 
-            if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            if (iNumberOfEffectiveSurfaces == 1)
+            {
+                fK_ci_min = 1.0f;
+                fK_ci_max = 1.0f;
+            }
+            else if (iNumberOfEffectiveSurfaces == 2)
+            {
+                if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+                if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
+            else
+            {
+                if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
         }
 
-        private void Set_ActionCombinationFactors_Kce(
+        private static void Set_ActionCombinationFactors_Kce(
+            int iNumberOfEffectiveSurfaces,
             out float fK_ce_min,
             out float fK_ce_max,
             out float fK_ce_wall)
         {
             // 5.4.3 Action combination factor
-            fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ce_wall = 0.8f;
+            if (iNumberOfEffectiveSurfaces == 1)
+            {
+                fK_ce_min = 1.0f;
+                fK_ce_max = 1.0f;
+                fK_ce_wall = 1.0f;
+            }
+            else if (iNumberOfEffectiveSurfaces == 2)
+            {
+                fK_ce_min = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_max = 0.9f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_wall = 0.9f;
+            }
+            else
+            {
+                fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_wall = 0.8f;
+            }
         }
 
-        private float Set_Product_Ka_Kce(float fKa, float fK_ce)
+        private static float Set_Product_Ka_Kce(float fKa, float fK_ce)
         {
             if (fKa * fK_ce < 0.8f)
                 return 0.8f;
@@ -1544,7 +1577,7 @@ namespace PFD
                                             if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                             if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                                GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                                GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                         }
                                         else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                     }
@@ -1558,7 +1591,7 @@ namespace PFD
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                            GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
+                                            GenerateMemberLoad(l, m, lc.Type, lc.LC_Wind_Type, lc.MainDirection, lc.Type == ELCType.eWind ? wind : null, null, mtypedata.fLoadingWidth, ref iLoadID, ref listOfMemberLoads);
                                     }
                                     else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
@@ -1582,7 +1615,7 @@ namespace PFD
             return Drawing3D.MemberLiesOnPlane(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[2], m);
         }
 
-        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, ELCType lcType, ELCWindType lcWindType, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
+        private static void GenerateMemberLoad(CSLoad_FreeUniform l, CMember m, ELCType lcType, ELCWindType lcWindType, ELCMainDirection lCMainDirection, CCalcul_1170_2 wind, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID, ref List<CMLoad> listOfMemberLoads)
         {
             // Transformacia pruta do LCS plochy
             GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
@@ -1772,7 +1805,6 @@ namespace PFD
             {
                 float fq = (float)(loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * dIntersectionLengthInMember_yz_axis); // Load Value
 
-
                 if (lcType== ELCType.eWind)
                 {
                     float fC_fig = 1.0f; // Wind load factor
@@ -1781,16 +1813,65 @@ namespace PFD
                     // Cfig.e = Cp,e * Ka * Kc,e * Kl * Kp
 
                     float fK_p = 1.0f; // TODO - mohlo by byt nastavitelne z GUI
-                    float fK_l = GetLocalWindPressureFactor_K_l(wind, m, loadparam.eMemberLoadDirection);
-                    float fK_a = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54((float)dIntersectionLengthInMember_yz_axis * m.FLength); // Faktor je konstanta pre cely prut - zavisi od zatazovacej plochy pruta
-                    float fC_pi_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fC_pe_aux= 1.0f; // Faktor je uz zahrnuty v surface load value
-                    float fK_ci = 1.0f; // TODO
-                    float fK_ce = 1.0f; // TODO
-                    if (lcWindType == ELCWindType.eWL_Cpi_min || lcWindType == ELCWindType.eWL_Cpi_max)
-                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_aux, fK_ci);
-                    else if (lcWindType == ELCWindType.eWL_Cpe_min || lcWindType == ELCWindType.eWL_Cpe_max)
-                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_aux, fK_ce, fK_a, fK_l, fK_p);
+                    if (!wind.bCondiderPermeableCladdingFactor_Kp)
+                        fK_p = wind.fK_p;
+
+                    float fK_l = 1.0f;
+                    if (!wind.bConsiderLocalPressureFactor_Kl)
+                        fK_l = GetLocalWindPressureFactor_K_l(wind, m, loadparam.eMemberLoadDirection);
+
+                    float fK_a = 1.0f;
+                    if (!wind.bConsiderAreaReductionFactor_Ka)
+                        fK_a = AS_NZS_1170_2.Get_AreaReductionFactor_Ka_Table54((float)dIntersectionLengthInMember_yz_axis * m.FLength); // Faktor je konstanta pre cely prut - zavisi od zatazovacej plochy pruta
+
+                    float fC_pi_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pi_max_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_min_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_max_aux = 1.0f; // Faktor je uz zahrnuty v surface load value
+
+                    float fC_pi_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pi_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    float fC_pe_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+
+                    if (lcWindType == ELCWindType.eWL_Cpi_min)
+                        fC_pi_min_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
+                    else if(lcWindType == ELCWindType.eWL_Cpi_max)
+                        fC_pi_max_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
+                    else if (lcWindType == ELCWindType.eWL_Cpe_min)
+                        fC_pe_min_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
+                    else if (lcWindType == ELCWindType.eWL_Cpe_max)
+                        fC_pe_max_real = Math.Abs(l.fValue) / wind.fp_basic_ULS_Theta_4[(int)lCMainDirection]; // Faktor je uz zahrnuty v surface load value
+                    else
+                    {
+                        fC_pi_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                        fC_pi_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                        fC_pe_min_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                        fC_pe_max_real = 1.0f; // Faktor je uz zahrnuty v surface load value
+                    }
+
+                    float fK_ci_min = 1.0f;
+                    float fK_ci_max = 1.0f;
+                    float fK_ce_min = 1.0f;
+                    float fK_ce_max = 1.0f;
+
+                    float fK_ce_wall = 1.0f;
+
+                    if (!wind.bConsiderCombinationFactor_Kci_and_Kce)
+                    {
+                        Set_ActionCombinationFactors_Kci(2, fC_pi_min_real, fC_pi_max_real, out fK_ci_min, out fK_ci_max);
+                        Set_ActionCombinationFactors_Kce(2, out fK_ce_min, out fK_ce_max, out fK_ce_wall);
+                    }
+
+                    // Rozdiel pre hodnoty Kce na streche a na stene zatial nezohladujeme - bolo by potrebne rozlisit typ pruta a smer zatazenia podobne ako pre Kl
+                    if (lcWindType == ELCWindType.eWL_Cpi_min)
+                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_min_aux, fK_ci_min);
+                    else if(lcWindType == ELCWindType.eWL_Cpi_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_1____(fC_pi_max_aux, fK_ci_max);
+                    else if (lcWindType == ELCWindType.eWL_Cpe_min)
+                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_min_aux, fK_ce_min, fK_a, fK_l, fK_p);
+                    else if(lcWindType == ELCWindType.eWL_Cpe_max)
+                        fC_fig = AS_NZS_1170_2.Eq_52_2____(fC_pe_max_aux, fK_ce_max, fK_a, fK_l, fK_p);
                     else
                         fC_fig = 1.0f;
 
