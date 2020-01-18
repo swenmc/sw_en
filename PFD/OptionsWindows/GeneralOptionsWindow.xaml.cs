@@ -39,8 +39,8 @@ namespace PFD
                 if (e.PropertyName == "UseStraightReinforcementBars") _pfdVM.RecreateFoundations = true;
                 if (e.PropertyName == "BracingEverySecondRowOfGirts") _pfdVM.RecreateJoints = true;
                 if (e.PropertyName == "BracingEverySecondRowOfPurlins") _pfdVM.RecreateJoints = true;
-                if (e.PropertyName == "WindPostUnderRafter") _pfdVM.RecreateJoints = true;
-                GeneralOptionsChanged = true;
+                if (e.PropertyName == "WindPostUnderRafter") { _pfdVM.RecreateJoints = true; _pfdVM.RecreateFoundations = true; }
+                    GeneralOptionsChanged = true;
             }
         }
                 
