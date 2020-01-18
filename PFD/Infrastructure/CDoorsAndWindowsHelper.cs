@@ -25,6 +25,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 2.1f;
             doorProps.fDoorsWidth = 1.2f;
             doorProps.fDoorCoordinateXinBlock = 0.3f;
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
             DoorBlocks.Add(doorProps);
 
             doorProps = new DoorProperties();
@@ -34,6 +35,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 2.1f;
             doorProps.fDoorsWidth = 2.2f;
             doorProps.fDoorCoordinateXinBlock = 0.5f;
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
             DoorBlocks.Add(doorProps);
 
             doorProps = new DoorProperties();
@@ -43,6 +45,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 1.1f;
             doorProps.fDoorsWidth = 1.8f;
             doorProps.fDoorCoordinateXinBlock = 0.6f;
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
             DoorBlocks.Add(doorProps);
 
             doorProps = new DoorProperties();
@@ -52,8 +55,9 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 1.1f;
             doorProps.fDoorsWidth = 0.9f;
             doorProps.fDoorCoordinateXinBlock = 0.4f;
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
             DoorBlocks.Add(doorProps);
-            
+
             doorProps = new DoorProperties();
             doorProps.sBuildingSide = "Back";
             doorProps.iBayNumber = 3;
@@ -61,7 +65,7 @@ namespace PFD.Infrastructure
             doorProps.fDoorsHeight = 2.1f;
             doorProps.fDoorsWidth = 0.8f;
             doorProps.fDoorCoordinateXinBlock = 0.5f;
-            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();            
+            doorProps.CoatingColor = doorProps.CoatingColors.FirstOrDefault();
             DoorBlocks.Add(doorProps);
 
             return DoorBlocks;
@@ -75,6 +79,7 @@ namespace PFD.Infrastructure
             d.fDoorsWidth = 0.8f;
             d.fDoorsHeight = 2.1f;
             d.fDoorCoordinateXinBlock = 0.4f;
+            d.CoatingColor = d.CoatingColors.FirstOrDefault();
         }
         public static void SetDefaultWindowParams(WindowProperties w)
         {
@@ -85,6 +90,7 @@ namespace PFD.Infrastructure
             w.fWindowCoordinateXinBay = 0.4f;
             w.fWindowCoordinateZinBay = 2f;
             w.iNumberOfWindowColumns = 2;
+            w.CoatingColor = w.CoatingColors.FirstOrDefault();
         }
 
         public static ObservableCollection<WindowProperties> GetDefaultWindowsProperties()
@@ -98,6 +104,7 @@ namespace PFD.Infrastructure
             windowProps.fWindowCoordinateXinBay = 0.4f;
             windowProps.fWindowCoordinateZinBay = 0.8f;
             windowProps.iNumberOfWindowColumns = 2;
+            windowProps.CoatingColor = windowProps.CoatingColors.FirstOrDefault();
             WindowBlocks.Add(windowProps);
 
             return WindowBlocks;
