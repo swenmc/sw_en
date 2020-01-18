@@ -1805,6 +1805,13 @@ namespace PFD
             get
             {
                 //Task 402 joint je null!!!
+
+                // Bug 402 - TO Ondrej - toto chcem s Tebou este prebrat a potrebujem dovysvetlit preco je joint null ked sa nevyhladava len podla node ID
+                // a preco sa teda musi hladat podla node ID a nie podla objektu.
+                // Malo by to asi fungovat aj pre cely objekt???
+                // Je to tym ze tie objekty klonujeme ???
+                // Problem mozu byt aj rohove patky ktore maju inu excentricitu ???
+
                 m_DictFootings = new Dictionary<string, Tuple<CFoundation, CConnectionJointTypes>>();
                 CFoundation pad = GetFootingPad(EMemberType_FS_Position.MainColumn);
                 CConnectionJointTypes joint = GetBaseJointForSelectedNode(pad.m_Node);
