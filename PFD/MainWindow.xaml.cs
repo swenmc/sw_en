@@ -257,9 +257,7 @@ namespace PFD
                     }
                     else
                     {
-                        cInfo.IsSetFromCode = true;
-                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)
-                        cInfo.IsSetFromCode = false;
+                        cInfo.Generate = true; //vsetky ostatne property sa same oznacia (len aby to nemalo dosah inde)                        
                         return;
                     }
                 }
@@ -277,7 +275,6 @@ namespace PFD
                     }
                     else
                     {
-                        // To Ondrej - preco tu nie je to iste ako pre Girt - Front Side ??? Nastavenie cInfo.IsSetFromCode
                         cInfo.Generate = true;
                         return;
                     }
