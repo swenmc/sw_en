@@ -55,8 +55,8 @@ namespace Examples
             //m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
             //m_arrNodes[01] = new CNode(02, 5f, 1f, 0000.0f, 0);
 
-            m_arrNodes[00] = new CNode(01, 0f, 0f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 3f, 0f, 0000.0f, 0);
+            m_arrNodes[00] = new CNode(01, 1f, 1f, 1f, 0);
+            m_arrNodes[01] = new CNode(02, 1f, 3f, 1f, 0);
 
             //m_arrNodes[02] = new CNode(03, 0f, 2f, 0000.0f, 0);
             //m_arrNodes[03] = new CNode(04, 1f, 2f, 0000.0f, 0);
@@ -73,14 +73,16 @@ namespace Examples
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(1);
-            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
+            //listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, m_arrCrSc[0], 200, 200, 200, 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, "Girt", EMemberType_FS.eG, EMemberType_FS_Position.Girt, m_arrCrSc[0], 200, 200, 200, 0));
 
             // Members
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
 
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eC, EMemberType_FS_Position.ColumnFrontSide, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eG, EMemberType_FS_Position.Girt, eccmember, eccmember, -0.2f, -0.3f, 0.0f, 0);
             //m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FS.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
@@ -115,23 +117,23 @@ namespace Examples
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eOneLeftPlate, true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB - LH", "FB - RH", m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.3f, false, true, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.2f, false, true, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.3f, false, true, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[000], 0.2f, false, true, true));
 
             // Nodal loads
             m_arrNLoads = new CNLoad[1];
             m_arrNLoads[0] = new CNLoadSingle(1, m_arrNodes[00], ENLoadType.eNLT_Fx, 20, true, 0);
 
             // Member loads
-            m_arrMLoads = new CMLoad[1];
-            //m_arrMLoads[0] = new CMLoad_21(1, -250, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_22(1, -250,0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_23(1, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
-            m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            m_arrMLoads = new CMLoad[4];
+            m_arrMLoads[0] = new CMLoad_21(1, -150, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
+            m_arrMLoads[1] = new CMLoad_22(2, 160, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, true, 0);
+            m_arrMLoads[2] = new CMLoad_23(3, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            m_arrMLoads[3] = new CMLoad_24(4, 260, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             //m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadDirection.eLD_Y, true, 0);
 
             m_arrLoadCases = new CLoadCase[1];
-            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0] });
+            m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CNLoad> { m_arrNLoads[0] }, new List<CMLoad> { m_arrMLoads[0], m_arrMLoads[1], m_arrMLoads[2], m_arrMLoads[3] });
         }
     }
 }

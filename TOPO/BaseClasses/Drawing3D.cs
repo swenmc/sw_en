@@ -5159,8 +5159,7 @@ namespace BaseClasses
         private static void TransformVectorsFromLCSAxisToGCSAxis(CMember m,
             Transform3DGroup transform,
             Vector3D memberAxisVectorInLCS, // Vektor v LCS
-            out Vector3D memberLCSAxis_VectorInGCS // Vektor v GCS
-            )
+            out Vector3D memberLCSAxis_VectorInGCS) // Vektor v GCS
         {
             // To neviem ci sa pouzije
             //Vector3D memberVectorInGCS = new Vector3D(m.Delta_X, m.Delta_Y, m.Delta_Z);
@@ -5195,8 +5194,7 @@ namespace BaseClasses
             Vector3D over_LCS,
             Vector3D up_LCS,
             out Vector3D over,
-            out Vector3D up
-    )
+            out Vector3D up)
         {
             // Vytvorime vektory pre urcenie smeru textu
             // To Ondrej - ako tak rozmyslam tak pre zakladny pohlad ked su vsetky texty zobrazene horizontalne a defaultne podla front je to up (0,0,1) a over (1,0,0),

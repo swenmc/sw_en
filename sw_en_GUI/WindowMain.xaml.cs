@@ -1040,9 +1040,22 @@ namespace sw_en_GUI
 
             sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMembersCenterLines = true;
+
+            sDisplayOptions.memberCenterlineColor = Colors.Yellow;
+            sDisplayOptions.fmemberCenterlineThickness = 1;
+
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             sDisplayOptions.bDisplayLoads = true;
+
+            sDisplayOptions.bDisplayMemberLoads = true;
+            sDisplayOptions.bDisplayMemberLoads_Girts = true;
+            sDisplayOptions.bDisplayMemberLoads_Purlins = true;
+            sDisplayOptions.bDisplayMemberLoads_EavePurlins = true;
+
+            sDisplayOptions.DisplayIn3DRatio = 0.001f;
+
+            sDisplayOptions.bDisplayLoadsLabels = true;
 
             Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
             list_trackports.Add(win._trackport);
