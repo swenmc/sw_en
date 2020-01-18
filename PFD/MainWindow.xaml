@@ -289,9 +289,6 @@
                                 <Image Source="Resources/options_design.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Image>
                             </Button>
                         </StackPanel>
-                        
-                        
-
                     </Grid>
                 </ScrollViewer>
             </TabItem>

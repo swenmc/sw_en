@@ -25,8 +25,11 @@
                 <TextBlock Text="Lateral Bracing - Use only every second row" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbBracingEverySecondRowOfGirts" IsChecked="{Binding Path=BracingEverySecondRowOfGirts}">Girts</CheckBox>
                 <CheckBox Name="chbBracingEverySecondRowOfPurlins" IsChecked="{Binding Path=BracingEverySecondRowOfPurlins}">Purlins</CheckBox>
+
                 <TextBlock Text="Wind Post Position" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbPlaceWindPostUnderRafter" IsChecked="{Binding Path=WindPostUnderRafter}">Place wind post under rafter</CheckBox>
+
+                <TextBlock Text="Reinforcement Bar Shape" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"/>
                 <CheckBox Name="chbUseStraightReinforcementBars" IsChecked="{Binding Path=UseStraightReinforcementBars}" >Use straight reinforcement bars</CheckBox>
             </StackPanel>
             
