@@ -250,10 +250,6 @@ namespace PFD
                     if (result == MessageBoxResult.Yes)
                     {
                         RemoveDoorsAndWindowsBuildingSide("Front");
-
-                        // TODO 449 - Review Ondrej
-                        vm.RecreateJoints = true; // Need to recreate joints as the members were added/removed
-                        vm.RecreateModel = true;
                     }
                     else
                     {
@@ -268,10 +264,6 @@ namespace PFD
                     if (result == MessageBoxResult.Yes)
                     {
                         RemoveDoorsAndWindowsBuildingSide("Back");
-
-                        // TODO 449 - Review Ondrej
-                        vm.RecreateJoints = true; // Need to recreate joints as the members were added/removed
-                        vm.RecreateModel = true;
                     }
                     else
                     {
@@ -316,24 +308,34 @@ namespace PFD
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
 
-            List<DoorProperties> doorsToRemove = new List<DoorProperties>();
+            int doorsToRemoveCount = 0;
+            List<DoorProperties> doorsProps = new List<DoorProperties>();
+
             foreach (DoorProperties d in vm.DoorBlocksProperties)
             {
-                if (d.sBuildingSide == sBuildingSide) doorsToRemove.Add(d);
+                if (d.sBuildingSide == sBuildingSide) doorsToRemoveCount++;
+                else doorsProps.Add(d);
             }
-            foreach (DoorProperties d in doorsToRemove)
-            {
-                vm.DoorBlocksProperties.Remove(d);
-            }
-
-            List<WindowProperties> windowsToRemove = new List<WindowProperties>();
+            
+            int windowsToRemoveCount = 0;
+            List<WindowProperties> windowsProps = new List<WindowProperties>();
             foreach (WindowProperties w in vm.WindowBlocksProperties)
             {
-                if (w.sBuildingSide == sBuildingSide) windowsToRemove.Add(w);
+                if (w.sBuildingSide == sBuildingSide) windowsToRemoveCount++;
+                else windowsProps.Add(w);
             }
-            foreach (WindowProperties w in windowsToRemove)
+
+            if (doorsToRemoveCount > 0)
             {
-                vm.WindowBlocksProperties.Remove(w);
+                vm.IsSetFromCode = true;
+                vm.DoorBlocksProperties = new ObservableCollection<DoorProperties>(doorsProps);
+                vm.IsSetFromCode = false;
+            }
+            if (windowsToRemoveCount > 0)
+            {
+                vm.IsSetFromCode = true;
+                vm.WindowBlocksProperties = new ObservableCollection<WindowProperties>(windowsProps);
+                vm.IsSetFromCode = false;
             }
         }
 
