@@ -927,6 +927,7 @@ namespace PFD
             {
                 View_2D.IsEnabled = false;
                 Clear3DModel.IsEnabled = false;
+                ExportDXF_3D.IsEnabled = false;
             }
 
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
