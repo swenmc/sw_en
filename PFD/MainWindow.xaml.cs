@@ -300,8 +300,10 @@ namespace PFD
             //    Datagrid_Windows_SelectionChanged(null, null);
             //}
 
+            if (vm.RecreateFloorSlab) vm.RecreateFloorSlab = false;
             if (vm.RecreateJoints) vm.RecreateJoints = false;
             if (vm.RecreateModel) vm.RecreateModel = false;
+            if (vm.RecreateQuotation) vm.RecreateQuotation = false;
         }
 
         private void RemoveDoorsAndWindowsBuildingSide(string sBuildingSide)

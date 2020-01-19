@@ -1425,6 +1425,7 @@ namespace PFD
             set
             {
                 MRecreateModel = value;
+                if (MRecreateModel == true) RecreateQuotation = true;
             }
         }
 
