@@ -213,6 +213,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = false;
                     opts.bCreateVerticalGridlinesFront = true;
@@ -227,6 +228,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = false;
                     opts.bCreateVerticalGridlinesBack = true;
@@ -241,6 +243,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true;// Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+                    opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = false;
                     opts.bCreateVerticalGridlinesLeft = true;
@@ -255,6 +258,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = false;
                     opts.bCreateVerticalGridlinesRight = true;
@@ -269,6 +273,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = true;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = true;
                 }
@@ -287,6 +292,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Vertical
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateVerticalGridlinesFront = true;
                 }
@@ -310,6 +316,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = true;
                 }
@@ -332,6 +339,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = false;
                     opts.bDisplayDetailSymbols = false;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = true;
 
@@ -362,6 +370,7 @@ namespace EXPIMP
                     opts.bDisplayGridlines = true; // Horizontal
                     opts.bDisplaySectionSymbols = true;
                     opts.bDisplayDetailSymbols = false;
+                    //opts.bDisplayDimensions = true;
 
                     opts.bCreateHorizontalGridlines = true;
 

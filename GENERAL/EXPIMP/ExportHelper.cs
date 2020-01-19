@@ -1538,6 +1538,7 @@ namespace EXPIMP
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
             opts.bDisplayDetailSymbols = false;
+            opts.bDisplayDimensions = false; // V zakladnom 3D nezobrazujeme koty
 
             opts.bCreateHorizontalGridlines = true;
             opts.bCreateVerticalGridlinesFront = false;
