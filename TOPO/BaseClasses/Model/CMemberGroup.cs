@@ -121,9 +121,7 @@ namespace BaseClasses
             MDeflectionLimitFraction_Denominator_ImposedLoad = fDeflectionLimitFraction_Denominator_ImposedLoad;
             MDeflectionLimitFraction_Denominator_Total = fDeflectionLimitFraction_Denominator_Total;
 
-            MDeflectionLimit_PermanentLoad = 1f / MDeflectionLimitFraction_Denominator_PermanentLoad;
-            MDeflectionLimit_ImposedLoad = 1f / MDeflectionLimitFraction_Denominator_ImposedLoad;
-            MDeflectionLimit_Total = 1f / MDeflectionLimitFraction_Denominator_Total;
+            RecalculateDeflectionLimits();
 
             ListOfMembers = new List<CMember>();
         }
@@ -137,6 +135,13 @@ namespace BaseClasses
             CrossSection = crossSection_temp;
             ListOfMembers = memberList;
             FTime = fTime_temp;
+        }
+
+        public void RecalculateDeflectionLimits()
+        {
+            MDeflectionLimit_PermanentLoad = 1f / MDeflectionLimitFraction_Denominator_PermanentLoad;
+            MDeflectionLimit_ImposedLoad = 1f / MDeflectionLimitFraction_Denominator_ImposedLoad;
+            MDeflectionLimit_Total = 1f / MDeflectionLimitFraction_Denominator_Total;
         }
     }
 }

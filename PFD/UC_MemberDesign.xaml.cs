@@ -86,9 +86,7 @@ namespace PFD
             }
 
             // Prepocitame limitne hodnoty
-            GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad;
-            GroupOfMembersWithSelectedType.DeflectionLimit_ImposedLoad = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_ImposedLoad;
-            GroupOfMembersWithSelectedType.DeflectionLimit_Total = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total;
+            GroupOfMembersWithSelectedType.RecalculateDeflectionLimits();
 
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;
