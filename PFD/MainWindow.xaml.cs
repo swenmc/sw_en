@@ -78,6 +78,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         bool bDebugging = false;
+        bool bRelease = true;
 
         ////public ObservableCollection<DoorProperties> DoorBlocksProperties;
         //public ObservableCollection<WindowProperties> WindowBlocksProperties;
@@ -105,16 +106,16 @@ namespace PFD
             SetInitialItemsInComboboxes();
 
             // Prepare data for generating of door blocks
-            ObservableCollection<DoorProperties> DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
+            ObservableCollection<DoorProperties> DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties(bRelease);
 
             // Prepare data for generating of window blocks
-            ObservableCollection<WindowProperties> WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
+            ObservableCollection<WindowProperties> WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties(bRelease);
 
             CComponentListVM compListVM = uc_ComponentList.DataContext as CComponentListVM;
             SetLoadInput();
 
             projectInfoVM = new CProjectInfoVM();
-            
+
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
@@ -757,7 +758,7 @@ namespace PFD
 
             List<CConnectionJointTypes> joints = null;
             if (!vm.RecreateJoints) joints = vm.Model.m_arrConnectionJoints;
-            else if (vm.Model != null)
+            else if (vm.Model != null && !bRelease) // Zobrazovat message len v debug
             {
                 this.IsEnabled = false;
                 MessageBox.Show("Joints will be recreated and changed to defaults.");
@@ -921,6 +922,13 @@ namespace PFD
 
         private void SetUIElementsVisibility()
         {
+            // TO Ondrej - tu som taketo nieco pridal, neviem ci je to dobry napad :)
+            if(bRelease) // Disablujeme prvky ktore nemaju byt v release verzii
+            {
+                View_2D.IsEnabled = false;
+                Clear3DModel.IsEnabled = false;
+            }
+
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
             if (vm.ModelCalculatedResultsValid)
             {
