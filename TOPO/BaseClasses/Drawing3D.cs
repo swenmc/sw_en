@@ -4946,8 +4946,11 @@ namespace BaseClasses
             _model.fW_frame = model.fW_frame;
             _model.fH1_frame = model.fH1_frame;
             _model.fH2_frame = model.fH2_frame;
+            _model.fDist_Girt = model.fDist_Girt;
+            _model.fDist_Purlin = model.fDist_Purlin;
             _model.fDist_FrontColumns = model.fDist_FrontColumns;
             _model.fDist_BackColumns = model.fDist_BackColumns;
+            _model.fBottomGirtPosition = model.fBottomGirtPosition;
 
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
             {

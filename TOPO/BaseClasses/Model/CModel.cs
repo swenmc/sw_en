@@ -23,6 +23,11 @@ namespace BaseClasses
         public float fH1_frame;
         public float fH2_frame;
 
+        public float fDist_Girt;
+        public float fDist_Purlin;
+
+        public float fBottomGirtPosition;
+
         public float fDist_FrontColumns;
         public float fDist_BackColumns;
 

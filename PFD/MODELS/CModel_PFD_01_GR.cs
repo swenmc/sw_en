@@ -18,10 +18,7 @@ namespace PFD
     {
         public float fRoofPitch_rad;
         public int iFrameNo;
-        
-        public float fDist_Girt;
-        public float fDist_Purlin;
-        public float fBottomGirtPosition;
+
         public float fUpperGirtLimit;
         public float fDist_FrontGirts;
         public float fDist_BackGirts;

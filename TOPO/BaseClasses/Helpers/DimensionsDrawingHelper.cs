@@ -29,6 +29,13 @@ namespace BaseClasses.Helpers
 
             // TODO - To Ondrej - nedame tu switch alebo else if ???
 
+            // Defaultne koty - zakladne rozmery
+            if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.All)
+            {
+                // Basic dimension - GUI input
+                DrawDimensionsAll(_trackport, model, sDisplayOptions, gr);
+            }
+
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.LEFT)
             {
                 DrawDimensionsLEFT(_trackport, model, sDisplayOptions, gr);
@@ -72,6 +79,59 @@ namespace BaseClasses.Helpers
             if (sDisplayOptions.ViewModelMembers == (int)EViewModelMemberFilters.FLOOR)
             {
                 DrawDimensionsFLOOR(_trackport, model, sDisplayOptions, gr);
+            }
+        }
+
+        private static void DrawDimensionsAll(Trackport3D _trackport, CModel model, DisplayOptions displayOptions, Model3DGroup gr)
+        {
+            // Basic dimensions
+            bool bDrawBasicDimensions = true;
+
+            // Zakladne rozmery definovane v GUI
+
+            if (bDrawBasicDimensions)
+            {
+                CMember m1 = model.m_arrMembers[0]; // Lavy stlp vpredu
+                CMember m2 = model.m_arrMembers[3]; // Pravy stlp vpredu
+
+                CMember m4 = model.m_arrMembers.LastOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn); // Pravy stlp vzadu
+
+                CDimensionLinear3D dimPOKUSNA1 = new CDimensionLinear3D(m1.NodeStart.GetPoint3D(), m2.NodeEnd.GetPoint3D(), EGlobalPlane.XZ, -1, 0,
+                    0.6, 0.6, 0.05, 0.15, (model.fW_frame * 1000).ToString("F0"), true);
+
+                // stlp vpravo - vyskova kota
+                CDimensionLinear3D dimPOKUSNA2 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m2.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, 1,
+                    0.6, 0.6, 0.05, 0.15, (model.fH1_frame * 1000).ToString("F0"), true);
+
+                CDimensionLinear3D dimPOKUSNA3 = new CDimensionLinear3D(m2.NodeEnd.GetPoint3D(), m4.NodeEnd.GetPoint3D(), EGlobalPlane.YZ, -1, 0,
+                    0.6, 0.6, 0.05, 0.15, (model.fL_tot * 1000).ToString("F0"), true);
+
+                // TODO Ondrej - prevadzam pole na list lebo neviem ako najst elegantne index v poli objektov
+                List<CMember> listOfMembers = model.m_arrMembers.ToList();
+
+                // Girts
+                CMember m5 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Girt); // Prvy girt vlavo
+                int index = listOfMembers.IndexOf(m5);
+                CMember m6 = model.m_arrMembers[index+1]; // Nasledujuci girt vlavo
+
+                CDimensionLinear3D dimPOKUSNA4 = new CDimensionLinear3D(m5.NodeStart.GetPoint3D(), m6.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                   0.6, 0.6, 0.05, 0.15, (model.fDist_Girt * 1000).ToString("F0"), false);
+
+                // Purlins
+                CMember m7 = model.m_arrMembers.FirstOrDefault(m => m.EMemberTypePosition == EMemberType_FS_Position.Purlin); // Prva purlin vlavo
+                index = listOfMembers.IndexOf(m7);
+                CMember m8 = model.m_arrMembers[index + 1]; // Nasledujuca purlin vlavo
+
+                CDimensionLinear3D dimPOKUSNA5 = new CDimensionLinear3D(m7.NodeStart.GetPoint3D(), m8.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 1, -1,
+                   0.6, 0.6, 0.05, 0.15, (model.fDist_Purlin * 1000).ToString("F0"), false);
+
+                // Bottom Girt
+                CDimensionLinear3D dimPOKUSNA6 = new CDimensionLinear3D(new Point3D(0,0,0), m5.NodeStart.GetPoint3D(), EGlobalPlane.XZ, 0, -1,
+                   0.6, 0.6, 0.05, 0.15, (model.fBottomGirtPosition * 1000).ToString("F0"), false);
+
+                List<CDimensionLinear3D> listOfDimensions = new List<CDimensionLinear3D> { dimPOKUSNA1, dimPOKUSNA2, dimPOKUSNA3, dimPOKUSNA4, dimPOKUSNA5, dimPOKUSNA6 };
+
+                DrawDimensions(_trackport, listOfDimensions, model, displayOptions, gr);
             }
         }
 
