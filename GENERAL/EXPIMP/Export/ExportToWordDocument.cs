@@ -85,14 +85,16 @@ namespace EXPIMP
 
                 DrawProjectInfo(document, data.ProjectInfo);
 
+                string sStringFormat_Length = "F2";
+
                 // Replace parameter identificators by values in .doc
                 //-----------------------------------------------------------------------------------------------------------
-                document.ReplaceText("[Length]", data.Length.ToString("F2"));
-                document.ReplaceText("[GableWidth]", data.GableWidth.ToString("F2"));
-                document.ReplaceText("[WallHeight]", data.WallHeight.ToString("F2"));
-                document.ReplaceText("[ApexHeight_H2]",data.ApexHeight_H2.ToString("F2"));
-                document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString());
-                document.ReplaceText("[BayWidth]", data.BayWidth.ToString("F2"));
+                document.ReplaceText("[Length]", data.Length.ToString(sStringFormat_Length));
+                document.ReplaceText("[GableWidth]", data.GableWidth.ToString(sStringFormat_Length));
+                document.ReplaceText("[WallHeight]", data.WallHeight.ToString(sStringFormat_Length));
+                document.ReplaceText("[ApexHeight_H2]",data.ApexHeight_H2.ToString(sStringFormat_Length));
+                document.ReplaceText("[RoofPitch_deg]", data.RoofPitch_deg.ToString("F0"));
+                document.ReplaceText("[BayWidth]", data.BayWidth.ToString(sStringFormat_Length));
 
                 document.ReplaceText("[roofCladding]", $"{data.RoofCladding}-{data.RoofCladdingThickness_mm}");
                 document.ReplaceText("[wallCladding]", $"{data.WallCladding}-{data.WallCladdingThickness_mm}");
@@ -574,11 +576,27 @@ namespace EXPIMP
             // TO Ondrej - tu mi nie je jasne preco nieco vytvarame cez ValueDisplayHelper vdh.GetStringReport(data.R_SLS, "R_SLS")); a nieco priamo konvertujeme z cisla ToString data.AnnualProbabilitySLS.ToString(nfi));
             // Pre AnnualProbabilitySLS to cez vdh nefungovalo, tak som to zmenil
 
+            string sStringFormat_Load_Member = "F3";
+            string sStringFormat_Load_Surface = "F3";
+
+            string sStringFormat_Period = "F3";
+            string sStringFormat_TimeYears = "F0";
+            string sStringFormat_Speed = "F3";
+            string sStringFormat_Distance = "F3";
+
+            string sStringFormat_Factor = "F3";
+            string sStringFormat_FactorPrecise = "F5";
+
+            string sStringFormat_Force = "F3";
+            string sStringFormat_Weight = "F3";
+            string sStringFormat_Mass = "F3";
+            string sStringFormat_Density = "F3";
+
             // Basic parameters
             document.ReplaceText("[Location]", data.Location);
             document.ReplaceText("[DesignLife_Value]", data.DesignLife);
             document.ReplaceText("[ImportanceClass]", data.ImportanceClass);
-            document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(nfi)); // vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS")); ??? Toto nefungovalo ???
+            document.ReplaceText("[AnnualProbabilitySLS]", data.AnnualProbabilitySLS.ToString(sStringFormat_FactorPrecise, nfi)); // vdh.GetStringReport(data.AnnualProbabilitySLS, "AnnualProbabilitySLS")); ??? Toto nefungovalo ???
             document.ReplaceText("[R_SLS]", vdh.GetStringReport(data.R_SLS, "R_SLS"));
             document.ReplaceText("[SiteElevation]", vdh.GetStringReport(data.SiteElevation, "SiteElevation"));
 
@@ -591,102 +609,108 @@ namespace EXPIMP
             document.ReplaceText("[CCalcul_1170_1.DeadLoadTotal_Roof]", vdh.GetStringReport(data.GeneralLoad.fDeadLoadTotal_Roof, "CCalcul_1170_1.DeadLoadTotal_Roof"));
 
             // Imposed Load
-            document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(nfi));
+            document.ReplaceText("[ImposedActionRoof]", data.ImposedActionRoof.ToString(sStringFormat_Load_Surface, nfi));
 
             // Snow Load
-            document.ReplaceText("[AnnualProbabilityULS_Snow]", data.AnnualProbabilityULS_Snow.ToString(nfi));
-            document.ReplaceText("[R_ULS_Snow]", data.R_ULS_Snow.ToString(nfi));
+            document.ReplaceText("[AnnualProbabilityULS_Snow]", data.AnnualProbabilityULS_Snow.ToString(sStringFormat_FactorPrecise, nfi));
+            document.ReplaceText("[R_ULS_Snow]", data.R_ULS_Snow.ToString(sStringFormat_TimeYears, nfi));
 
             document.ReplaceText("[CCalcul_1170_3.eSnowElevationRegion]", data.Snow.eSnowElevationRegion.GetFriendlyName());
-            document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", data.Snow.fs_g_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", data.Snow.fs_g_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_3.s_g_ULS]", data.Snow.fs_g_ULS.ToString(sStringFormat_Load_Surface, nfi));
+            document.ReplaceText("[CCalcul_1170_3.s_g_SLS]", data.Snow.fs_g_SLS.ToString(sStringFormat_Load_Surface, nfi));
             document.ReplaceText("[ExposureCategory]", data.ExposureCategory);
-            document.ReplaceText("[CCalcul_1170_3.C_e]", data.Snow.fC_e.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", data.Snow.fNu1_Alpha1.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", data.Snow.fNu2_Alpha1.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_3.s_ULS]", data.Snow.fs_ULS_Nu_1.ToString(nfi)); //???
-            document.ReplaceText("[CCalcul_1170_3.s_SLS]", data.Snow.fs_SLS_Nu_1.ToString(nfi)); //???
+            document.ReplaceText("[CCalcul_1170_3.C_e]", data.Snow.fC_e.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_3.Nu1_Alpha1]", data.Snow.fNu1_Alpha1.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_3.Nu2_Alpha1]", data.Snow.fNu2_Alpha1.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_3.s_ULS]", data.Snow.fs_ULS_Nu_1.ToString(sStringFormat_Load_Surface, nfi)); //???
+            document.ReplaceText("[CCalcul_1170_3.s_SLS]", data.Snow.fs_SLS_Nu_1.ToString(sStringFormat_Load_Surface, nfi)); //???
 
             // Wind Load
-            document.ReplaceText("[AnnualProbabilityULS_Wind]", data.AnnualProbabilityULS_Wind.ToString(nfi));
-            document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(nfi));
+            document.ReplaceText("[AnnualProbabilityULS_Wind]", data.AnnualProbabilityULS_Wind.ToString(sStringFormat_FactorPrecise, nfi));
+            document.ReplaceText("[R_ULS_Wind]", data.R_ULS_Wind.ToString(sStringFormat_TimeYears, nfi));
             document.ReplaceText("[EWindRegion]", data.WindRegion);
             document.ReplaceText("[TerrainCategory]", data.TerrainCategory);
-            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", data.Wind.fV_R_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", data.Wind.fV_R_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.M_z_cat]", data.Wind.fM_z_cat.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.M_s]", data.Wind.fM_s.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.M_t]", data.Wind.fM_t.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.z]", data.Wind.fz.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[CCalcul_1170_2.h]", data.Wind.fh.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_R_ULS]", data.Wind.fV_R_ULS.ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_R_SLS]", data.Wind.fV_R_SLS.ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_z_cat]", data.Wind.fM_z_cat.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_s]", data.Wind.fM_s.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.M_t]", data.Wind.fM_t.ToString(sStringFormat_Factor, nfi));
 
             // Hodnoty sa daju pocitat pre rozne smery vetra N, W, E, S. Zatial budeme zobrazovat len hodnoty s indexom[0]
 
-            document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", data.Wind.fM_D_array_values_9[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_sit_SLS_Theta_9[0]]", data.Wind.fV_sit_SLS_Theta_9[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_des_ULS_Theta_4[0]]", data.Wind.fV_des_ULS_Theta_4[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.V_des_SLS_Theta_4[0]]", data.Wind.fV_des_SLS_Theta_4[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.Rho_air]", data.Wind.fRho_air.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.C_dyn]", data.Wind.fC_dyn.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", data.Wind.fp_basic_ULS_Theta_4[0].ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", data.Wind.fp_basic_SLS_Theta_4[0].ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_2.fM_D_array_values_9[0]]", data.Wind.fM_D_array_values_9[0].ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_ULS_Theta_9[0]]", data.Wind.fV_sit_ULS_Theta_9[0].ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_sit_SLS_Theta_9[0]]", data.Wind.fV_sit_SLS_Theta_9[0].ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_des_ULS_Theta_4[0]]", data.Wind.fV_des_ULS_Theta_4[0].ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.V_des_SLS_Theta_4[0]]", data.Wind.fV_des_SLS_Theta_4[0].ToString(sStringFormat_Speed, nfi));
+            document.ReplaceText("[CCalcul_1170_2.Rho_air]", data.Wind.fRho_air.ToString(sStringFormat_Density, nfi));
+            document.ReplaceText("[CCalcul_1170_2.C_dyn]", data.Wind.fC_dyn.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.p_basic_ULS_Theta_4[0]]", data.Wind.fp_basic_ULS_Theta_4[0].ToString(sStringFormat_Load_Surface, nfi));
+            document.ReplaceText("[CCalcul_1170_2.p_basic_SLS_Theta_4[0]]", data.Wind.fp_basic_SLS_Theta_4[0].ToString(sStringFormat_Load_Surface, nfi));
 
             // External and internal pressure coefficients
-            document.ReplaceText("[Cpi_max]", data.InternalPressureCoefficientCpiMaximumPressure.ToString(nfi));
-            document.ReplaceText("[Cpi_min]", data.InternalPressureCoefficientCpiMaximumSuction.ToString(nfi));
+            document.ReplaceText("[Cpi_max]", data.InternalPressureCoefficientCpiMaximumPressure.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[Cpi_min]", data.InternalPressureCoefficientCpiMaximumSuction.ToString(sStringFormat_Factor, nfi));
+
+            // Local pressure factors
+            document.ReplaceText("[CCalcul_1170_2.LocalPressureFactorKl_Girt]", data.Wind.fLocalPressureFactorKl_Girt.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.LocalPressureFactorKl_Purlin]", data.Wind.fLocalPressureFactorKl_Purlin.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.LocalPressureFactorKl_EavePurlin_Wall]", data.Wind.fLocalPressureFactorKl_EavePurlin_Wall.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_2.LocalPressureFactorKl_EavePurlin_Roof]", data.Wind.fLocalPressureFactorKl_EavePurlin_Roof.ToString(sStringFormat_Factor, nfi));
 
             // Seismic Load
-            document.ReplaceText("[AnnualProbabilityULS_EQ]", data.AnnualProbabilityULS_EQ.ToString(nfi));
-            document.ReplaceText("[R_ULS_EQ]", data.R_ULS_EQ.ToString(nfi));
+            document.ReplaceText("[AnnualProbabilityULS_EQ]", data.AnnualProbabilityULS_EQ.ToString(sStringFormat_FactorPrecise, nfi));
+            document.ReplaceText("[R_ULS_EQ]", data.R_ULS_EQ.ToString(sStringFormat_TimeYears, nfi));
             document.ReplaceText("[ESiteSubSoilClass]", data.SiteSubSoilClass);
-            document.ReplaceText("[FaultDistanceDmin]", data.FaultDistanceDmin.ToString(nfi));
-            document.ReplaceText("[FaultDistanceDmax]", data.FaultDistanceDmax.ToString(nfi));
-            document.ReplaceText("[ZoneFactorZ]", data.ZoneFactorZ.ToString(nfi));
+            document.ReplaceText("[FaultDistanceDmin]", data.FaultDistanceDmin.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[FaultDistanceDmax]", data.FaultDistanceDmax.ToString(sStringFormat_Distance, nfi));
+            document.ReplaceText("[ZoneFactorZ]", data.ZoneFactorZ.ToString(sStringFormat_Factor, nfi));
 
-            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.PeriodAlongXDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTy]", data.Eq.fPeriodAlongYDirection_Ty.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTx]", data.Eq.fSpectralShapeFactor_Ch_Tx.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTy]", data.Eq.fSpectralShapeFactor_Ch_Ty.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_x]", data.Eq.fG_tot_x.ToString(sStringFormat_Weight, nfi));
+            document.ReplaceText("[CCalcul_1170_5.G_tot_y]", data.Eq.fG_tot_y.ToString(sStringFormat_Weight, nfi));
+            document.ReplaceText("[CCalcul_1170_5.PeriodAlongXDirectionTx]", data.Eq.fPeriodAlongXDirection_Tx.ToString(sStringFormat_Period, nfi));
+            document.ReplaceText("[CCalcul_1170_5.PeriodAlongYDirectionTy]", data.Eq.fPeriodAlongYDirection_Ty.ToString(sStringFormat_Period, nfi));
+            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTx]", data.Eq.fSpectralShapeFactor_Ch_Tx.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.SpectralShapeFactorChTy]", data.Eq.fSpectralShapeFactor_Ch_Ty.ToString(sStringFormat_Factor, nfi));
 
             // ULS
             // TO Ondrej - tu by to chcelo do tabulky riadok s textom Ultimiate Limit State
-            document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.Nu_ULS]", data.Eq.fNu_ULS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.S_p_ULS_strength]", data.Eq.fS_p_ULS_strength.ToString(sStringFormat_Factor, nfi));
             // X-direction
-            document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", data.Eq.fN_TxD_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.fk_Nu_Tx_ULS_strength.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TxD_ULS]", data.Eq.fN_TxD_ULS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Tx_ULS]", data.Eq.fC_Tx_ULS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_ULS]", data.Eq.fk_Nu_Tx_ULS_strength.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_ULS_strength]", data.Eq.fC_d_T1x_ULS_strength.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_ULS_strength]", data.Eq.fV_x_ULS_strength.ToString(sStringFormat_Force, nfi));
             // Y-direction
-            document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.fk_Nu_Ty_ULS_strength.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TyD_ULS]", data.Eq.fN_TyD_ULS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Ty_ULS]", data.Eq.fC_Ty_ULS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_ULS]", data.Eq.fk_Nu_Ty_ULS_strength.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_ULS_strength]", data.Eq.fC_d_T1y_ULS_strength.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_ULS_strength]", data.Eq.fV_y_ULS_strength.ToString(sStringFormat_Force, nfi));
 
             // SLS
             // TO Ondrej - tu by to chcelo do tabulky riadok s textom Serviceability Limit State
             // alebo tu tabulku rozdelit na dve tabulky a tie texty tam dat ako nazov tabulky
 
-            document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.Nu_SLS]", data.Eq.fNu_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.S_p_SLS]", data.Eq.fS_p_SLS.ToString(sStringFormat_Factor, nfi));
             // X-direction
-            document.ReplaceText("[CCalcul_1170_5.N_TxD_SLS]", data.Eq.fN_TxD_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_Tx_SLS]", data.Eq.fC_Tx_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_SLS]", data.Eq.fk_Nu_Tx_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS]", data.Eq.fC_d_T1x_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", data.Eq.fV_x_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TxD_SLS]", data.Eq.fN_TxD_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Tx_SLS]", data.Eq.fC_Tx_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Tx_SLS]", data.Eq.fk_Nu_Tx_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1x_SLS]", data.Eq.fC_d_T1x_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_x_SLS]", data.Eq.fV_x_SLS.ToString(sStringFormat_Force, nfi));
             // Y-direction
-            document.ReplaceText("[CCalcul_1170_5.N_TyD_SLS]", data.Eq.fN_TyD_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_Ty_SLS]", data.Eq.fC_Ty_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_SLS]", data.Eq.fk_Nu_Ty_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS]", data.Eq.fC_d_T1y_SLS.ToString(nfi));
-            document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(nfi));
+            document.ReplaceText("[CCalcul_1170_5.N_TyD_SLS]", data.Eq.fN_TyD_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_Ty_SLS]", data.Eq.fC_Ty_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.k_Nu_Ty_SLS]", data.Eq.fk_Nu_Ty_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.C_d_T1y_SLS]", data.Eq.fC_d_T1y_SLS.ToString(sStringFormat_Factor, nfi));
+            document.ReplaceText("[CCalcul_1170_5.V_y_SLS]", data.Eq.fV_y_SLS.ToString(sStringFormat_Force, nfi));
         }
 
         private static void DrawBasicGeometryParameters(DocX document)
