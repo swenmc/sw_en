@@ -215,7 +215,7 @@ namespace PFD
             float fVerticalDisplacementLimitDenominator_Rafter_IL = 150f;
             float fVerticalDisplacementLimitDenominator_Rafter_TL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_TL;
             float fHorizontalDisplacementLimitDenominator_Column_PL = 50f;
-            float fHorizontalDisplacementLimitDenominator_Column_IL = 50f;
+            float fHorizontalDisplacementLimitDenominator_Column_IL = 100f;
             float fHorizontalDisplacementLimitDenominator_Column_TL = vm._designOptionsVM.HorizontalDisplacementLimitDenominator_Column_TL;
             float fVerticalDisplacementLimitDenominator_Purlin_PL = vm._designOptionsVM.VerticalDisplacementLimitDenominator_Purlin_PL;
             float fVerticalDisplacementLimitDenominator_Purlin_IL = 100f;
@@ -225,7 +225,7 @@ namespace PFD
             float fHorizontalDisplacementLimitDenominator_Girt_TL = vm._designOptionsVM.HorizontalDisplacementLimitDenominator_Girt_TL;
             float fHorizontalDisplacementLimitDenominator_WindPost_PL = 50f;
             float fHorizontalDisplacementLimitDenominator_WindPost_IL = 100f;
-            float fHorizontalDisplacementLimitDenominator_WindPost_TL = 100f;
+            float fHorizontalDisplacementLimitDenominator_WindPost_TL = vm._designOptionsVM.HorizontalDisplacementLimitDenominator_Windpost_TL;
 
             float fVerticalDisplacementLimit_Rafter_PL = 1f / fVerticalDisplacementLimitDenominator_Rafter_PL;
             float fVerticalDisplacementLimit_Rafter_IL = 1f / fVerticalDisplacementLimitDenominator_Rafter_IL;

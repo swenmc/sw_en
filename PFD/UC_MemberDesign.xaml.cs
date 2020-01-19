@@ -50,19 +50,45 @@ namespace PFD
             if (vm.ComponentTypeIndex == -1) return;
 
             CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups.FirstOrDefault(c => c.Name == vm.ComponentList[vm.ComponentTypeIndex]);
-            if (GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.EdgeColumn ||
-               GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.MainColumn)
-            {
-                GroupOfMembersWithSelectedType.DeflectionLimit_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Column_TL;
-            }
-            else if (GroupOfMembersWithSelectedType.MemberType_FS_Position == EMemberType_FS_Position.MainRafter)
-            {
-                GroupOfMembersWithSelectedType.DeflectionLimit_Total = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_PL;
 
+            // Prepiseme defaultne hodnoty limitov hodnotami z GUI - design options
+            // TODO - ak budu v design options vsetky potrebne limity, mozu sa defaulty odstranit
 
+            // Nastavime menovatele zlomkov
+            if (GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eEC ||
+                GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eMC)
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Column_TL;
             }
-            //TODO Mato - dokonci si to
-            
+            else if (GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eER ||
+                     GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eMR)
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_PL;
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.VerticalDisplacementLimitDenominator_Rafter_TL;
+            }
+            else if(GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eC) // Wind post - TODO bude potrebne prerobit enum eC vsade na eWP
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Windpost_TL;
+            }
+            else if(GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eP ||
+                GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eEP) // TODO Nastavovat aj horizontalny smer
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad = designOptionsVM.VerticalDisplacementLimitDenominator_Purlin_PL;
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.VerticalDisplacementLimitDenominator_Purlin_TL;
+            }
+            else if(GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eG ||
+                   GroupOfMembersWithSelectedType.MemberType_FS == EMemberType_FS.eBG)
+            {
+                GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total = designOptionsVM.HorizontalDisplacementLimitDenominator_Girt_TL;
+            }
+            else
+            {
+            }
+
+            // Prepocitame limitne hodnoty
+            GroupOfMembersWithSelectedType.DeflectionLimit_PermanentLoad = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_PermanentLoad;
+            GroupOfMembersWithSelectedType.DeflectionLimit_ImposedLoad = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_ImposedLoad;
+            GroupOfMembersWithSelectedType.DeflectionLimit_Total = 1f / GroupOfMembersWithSelectedType.DeflectionLimitFraction_Denominator_Total;
 
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;

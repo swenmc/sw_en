@@ -23,6 +23,7 @@ namespace PFD
         private float MVerticalDisplacementLimitDenominator_Rafter_PL;
         private float MVerticalDisplacementLimitDenominator_Rafter_TL;
         private float MHorizontalDisplacementLimitDenominator_Column_TL;
+        private float MHorizontalDisplacementLimitDenominator_Windpost_TL;
         private float MVerticalDisplacementLimitDenominator_Purlin_PL;
         private float MVerticalDisplacementLimitDenominator_Purlin_TL;
         private float MHorizontalDisplacementLimitDenominator_Girt_TL;
@@ -75,6 +76,21 @@ namespace PFD
                 MHorizontalDisplacementLimitDenominator_Column_TL = value;
                 
                 NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Column_TL");
+            }
+        }
+
+        public float HorizontalDisplacementLimitDenominator_Windpost_TL
+        {
+            get
+            {
+                return MHorizontalDisplacementLimitDenominator_Windpost_TL;
+            }
+
+            set
+            {
+                MHorizontalDisplacementLimitDenominator_Windpost_TL = value;
+
+                NotifyPropertyChanged("HorizontalDisplacementLimitDenominator_Windpost_TL");
             }
         }
 
@@ -165,6 +181,7 @@ namespace PFD
             MVerticalDisplacementLimitDenominator_Rafter_PL = 300;
             MVerticalDisplacementLimitDenominator_Rafter_TL = 250;
             MHorizontalDisplacementLimitDenominator_Column_TL = 150;
+            MHorizontalDisplacementLimitDenominator_Windpost_TL = 150;
             MVerticalDisplacementLimitDenominator_Purlin_PL = 300;
             MVerticalDisplacementLimitDenominator_Purlin_TL = 150;
             MHorizontalDisplacementLimitDenominator_Girt_TL = 150;
