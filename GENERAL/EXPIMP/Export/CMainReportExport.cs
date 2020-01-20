@@ -203,6 +203,12 @@ namespace EXPIMP
                 opts.bCreateVerticalGridlinesLeft = false;
                 opts.bCreateVerticalGridlinesRight = false;
 
+                float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch
+                float fWireFrameLineThickness_Factor = 1.1f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+
+                float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor;
+
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
                     opts.bDisplayMemberDescription = true;
@@ -307,7 +313,7 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bDisplayMembersWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = 2f * (modelMaxLength / 1000.0f);
+                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
                     
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
@@ -328,7 +334,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = 0.002f * (modelMaxLength / 1000.0f);
+                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -354,7 +360,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = 0.002f * (modelMaxLength / 1000.0f);
+                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
