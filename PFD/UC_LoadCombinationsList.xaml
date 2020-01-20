@@ -8,10 +8,8 @@
         d:DesignHeight="1270" d:DesignWidth="600">
     <Grid Margin="5,10,5,5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true" Margin="5,0"/>
-        
     </Grid>
 </UserControl>

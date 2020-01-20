@@ -8,11 +8,10 @@
         d:DesignHeight="1070" d:DesignWidth="600">
     <Grid Margin="5,10,5,5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>            
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0"
                   IsReadOnly="true" SelectedCellsChanged="Datagrid_LoadCases_SelectedCellsChanged"
                   SelectionMode="Single" />
-        
     </Grid>
 </UserControl>
