@@ -294,8 +294,8 @@ namespace PFD
             }
             set
             {
-                if (value < 3 || value > 100)
-                    throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
+                if (value < 3 || value > 50)
+                    throw new ArgumentException("Gable Width must be between 3 and 50 [m]");
                 MGableWidth = value;
 
                 if (MModelIndex != 0)
@@ -447,8 +447,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.5 || value > 5)
-                    throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
+                if (value < 0.5 || value > 0.8 * MWallHeight)
+                    throw new ArgumentException("Girt distance must be between 0.5 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
 
                 MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
@@ -470,8 +470,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.5 || value > 5)
-                    throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
+                if (value < 0.5 || value > 0.4 * MGableWidth)
+                    throw new ArgumentException("Purlin distance must be between 0.5 and " + Math.Round(0.4 * MGableWidth, 3) + " [m]");
 
                 MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
                 SetResultsAreNotValid();
@@ -493,8 +493,8 @@ namespace PFD
 
             set
             {
-                if (value < 1 || value > 10)
-                    throw new ArgumentException("Column distance must be between 1 and 10 [m]");
+                if (value < 1 || value > 0.5 * MGableWidth)
+                    throw new ArgumentException("Column distance must be between 1 and " + Math.Round(0.5 * MGableWidth, 3) + " [m]");
                 MColumnDistance = value;
 
                 if (MModelIndex != 0)
@@ -533,8 +533,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
-                    throw new ArgumentException("Bottom Girt Position must be between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
+                if (value < 0.2 || value > 0.6 * MWallHeight) // Limit is 60% of main column height, could be more but it is
+                    throw new ArgumentException("Bottom Girt Position must be between 0.2 and " + Math.Round(0.6 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
                 SetResultsAreNotValid();
                 RecreateJoints = true;
