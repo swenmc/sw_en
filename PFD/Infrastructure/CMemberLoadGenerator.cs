@@ -707,7 +707,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimin_Left);
 
@@ -720,7 +720,7 @@ namespace PFD
                         (int)ELCMainDirection.eMinusX,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimin_Right);
 
@@ -733,7 +733,7 @@ namespace PFD
                         (int)ELCMainDirection.ePlusY,
                         fFrameTributaryWidth,
                         ELSType.eLS_SLS,
-                        0,
+                        ELCWindType.eWL_Cpi_min,
                         wind,
                 ref memberLoadInternalPressure_SLS_Cpimin_Front);
 
