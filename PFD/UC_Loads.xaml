@@ -139,13 +139,19 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=InternalPressureCoefficientCpiMaximumPressure, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="13" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            
+
             <TextBlock Grid.Row="14" Grid.Column="3" Text="Maximum Suction Cpi (-ve):" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="14" Grid.Column="4" Name ="InternalPressureCoefficientCpiMaximumSuction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=InternalPressureCoefficientCpiMaximumSuction, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="5" Text="[-]" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <Button Grid.Row="14" Grid.Column="5" ToolTip="Info" HorizontalAlignment="Center" Name="WindPressureCoefficientsInfo" Width="20" Margin="25,0,35,20" Click="WindPressureCoefficientsInfo_Click">
+                <StackPanel>
+                    <Image Source="Resources/info.png"></Image>
+                </StackPanel>
+            </Button>
 
             <TextBlock Grid.Row="16" Grid.Column="3" Text="Local Pressure Factors" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
@@ -199,7 +205,7 @@
             <TextBox Grid.Row="19" Grid.Column="1" Name ="ZoneFactorZ" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ZoneFactorZ, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-<!--
+            <!--
             <TextBlock Grid.Row="20" Grid.Column="0" Text="Period along X-direction Tx:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="20" Grid.Column="1" Name ="PeriodAlongXdirectionTx" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -245,6 +251,6 @@
 
         </Grid>
     </ScrollViewer>
-    
-    
+
+
 </UserControl>

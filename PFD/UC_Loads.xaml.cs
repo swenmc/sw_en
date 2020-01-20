@@ -105,7 +105,6 @@ namespace PFD
             if (sender == null) return;
             CPFDLoadInput loadInput = sender as CPFDLoadInput;
             if (loadInput != null && loadInput.IsSetFromCode) return;
-            
         }
 
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
@@ -145,6 +144,12 @@ namespace PFD
 
             WindSpeedChart wind_chart = new WindSpeedChart(wind);
             wind_chart.Show();
+        }
+
+        private void WindPressureCoefficientsInfo_Click(object sender, RoutedEventArgs e)
+        {
+            WindPressureCoefficients window = new WindPressureCoefficients();
+            window.Show();
         }
 
         private float GetTerrainCategory(int iCategoryIndex) // TODO - prerobit na nacitanie z databazy
