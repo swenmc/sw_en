@@ -204,7 +204,7 @@ namespace EXPIMP
                 opts.bCreateVerticalGridlinesRight = false;
 
                 float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch
-                float fWireFrameLineThickness_Factor = 1.1f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
                 float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
 
                 float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor;

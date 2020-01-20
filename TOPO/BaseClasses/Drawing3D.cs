@@ -2667,7 +2667,17 @@ namespace BaseClasses
 
                     for (int i = 0; i < wireFramePoints.Count / 2; i++)
                     {
-                        float fFactor = 0.01f;
+                        // TO Ondrej - Bug 477
+
+                        // Toto bol faktor ktory menil hrubku ciary v bodoch na priemer valca v metroch
+                        // Kedze toto uz dynamicky nastavujeme pri vstupe podla velkosti modelu nastavil som tento faktor na 1
+                        // Myslim si vsak, ze spravnejsie by bolo ak by bola hodnota fWireFrameLineThickness vzdy v bodoch, takze sem by prisla hodnota "2"
+                        // a az tu by bol prepocet z bodov "2" na priemer valcov na tomto mieste
+                        // Momentalne sa to prepocitava v CMainReportExport, vid fWireFrameLineThickness_Final
+
+                        // float fFactor = 0.01f;
+
+                        float fFactor = 1;
                         GeometryModel3D cylinder = Get3DLineReplacement(sDisplayOptions.wireFrameColor, fFactor * sDisplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
