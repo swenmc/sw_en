@@ -1039,16 +1039,33 @@ namespace PFD
             float fColumnLeftLoadValue;
             float fColumnRightLoadValue;
 
-            if (iDirectionIndex == (int)ELCMainDirection.ePlusX)
+            if (eLSType == ELSType.eLS_ULS)
             {
-                fColumnLeftLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
-                fColumnRightLoadValue = -wind.fp_e_L_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                if (iDirectionIndex == (int)ELCMainDirection.ePlusX)
+                {
+                    fColumnLeftLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                    fColumnRightLoadValue = -wind.fp_e_L_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                }
+                else
+                {
+                    fColumnLeftLoadValue = -wind.fp_e_L_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                    fColumnRightLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                }
             }
             else
             {
-                fColumnLeftLoadValue = -wind.fp_e_L_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
-                fColumnRightLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                if (iDirectionIndex == (int)ELCMainDirection.ePlusX)
+                {
+                    fColumnLeftLoadValue = -wind.fp_e_W_wall_SLS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                    fColumnRightLoadValue = -wind.fp_e_L_wall_SLS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                }
+                else
+                {
+                    fColumnLeftLoadValue = -wind.fp_e_L_wall_SLS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                    fColumnRightLoadValue = -wind.fp_e_W_wall_SLS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
+                }
             }
+
 
             float fReductionFactor_Ka_Kce_Column1Left = Set_Product_Ka_Kce(fK_a_Column1Left, fK_ce_wall);
             float fReductionFactor_Ka_Kce_Column2Right = Set_Product_Ka_Kce(fK_a_Column2Right,fK_ce_wall);

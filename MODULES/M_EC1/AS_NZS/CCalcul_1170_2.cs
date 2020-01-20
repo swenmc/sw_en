@@ -56,10 +56,10 @@ namespace M_EC1.AS_NZS
         public float fK_l_upwind = 1.0f; // K_l - local pressure factor, as given in Paragraph D1.3
         public float fK_l_downwind = 1.0f;
 
-        public float fLocalPressureFactorKl_Girt;
-        public float fLocalPressureFactorKl_Purlin;
-        public float fLocalPressureFactorKl_EavePurlin_Wall;
-        public float fLocalPressureFactorKl_EavePurlin_Roof;
+        public float fLocalPressureFactorKl_Girt = 1.0f;
+        public float fLocalPressureFactorKl_Purlin = 1.0f;
+        public float fLocalPressureFactorKl_EavePurlin_Wall = 1.0f;
+        public float fLocalPressureFactorKl_EavePurlin_Roof = 1.0f;
 
         // Table 5.7 - reduction factor(Kr) due to parapets
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
