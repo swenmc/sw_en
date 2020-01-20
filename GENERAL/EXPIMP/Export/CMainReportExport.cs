@@ -136,7 +136,6 @@ namespace EXPIMP
             trackport.Dispose();
             gfx.Dispose();
             page.Close();
-
         }
 
         private static void DrawModelViews(PdfDocument s_document, CModelData data)
@@ -173,11 +172,6 @@ namespace EXPIMP
                 // Defaultne hodnoty pre vsetky pohlady
                 opts.bTransformScreenLines3DToCylinders3D = false;  // Do not convert lines (v PDF sa teda nezobrazia)
                 opts.wireFrameColor = System.Windows.Media.Colors.Black; // Nastavenie farby wireframe pre export (ina farba ako je v 3D scene)
-                //opts.fWireFrameLineThickness = 0.015f; // Priemer valca v 3D ktory reprezentuje ciaru // TO Ondrej - Tu by to chcelo vymysliet nejaky mechanizmus, ktory na zaklade rozmerov vykresu a velkosti obrazku modelu urci aky priemer maju mat valce pre ciary aby bola hrubka ciary na vykrese konstantna, vo vysledku maju byt ciary na vykrese cca 0.15 - 0.25 mm hrube
-                // TO Ondrej - Tu treba doriesit co sa nastavuje ako line thickness v [pxs] a co sa nastavuje ako rozmer valca v [m]
-                // Trosku sa to pomiesalo, niekde vstupuju metre, niekde hodnota pre hrubku ciary ... Skus to nejako upratat
-                opts.fWireFrameLineThickness = 1f;
-
                 // Mozeme nastavit pre ktory view chceme kreslit wireframe a konvertovat ciary, farbu a hrubku ciary
 
                 // TO Ondrej - tu je trosku problem ze mame jedny 
@@ -203,11 +197,13 @@ namespace EXPIMP
                 opts.bCreateVerticalGridlinesLeft = false;
                 opts.bCreateVerticalGridlinesRight = false;
 
+                // Bug 477 - Refactoring
                 float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch
                 float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
                 float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+                float fZoomFactor = 1f;
 
-                float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor;
+                float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
 
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
@@ -1354,6 +1350,7 @@ namespace EXPIMP
             opts.bDisplayGridlines = false;
             opts.bDisplaySectionSymbols = false;
             opts.bDisplayDetailSymbols = false;
+            opts.bDisplayDimensions = false;
 
             opts.bCreateHorizontalGridlines = true;
             opts.bCreateVerticalGridlinesFront = false;

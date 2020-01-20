@@ -1251,7 +1251,6 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.fWireFrameLineThickness = 0.002f;
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
 
             sDisplayOptions.bDisplayMembersWireFrame = true;
@@ -1285,6 +1284,18 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
+
+                    // Bug 477 - Refactoring
+                    float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
+
+                    float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch / obrazkoch
+                    float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                    float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+                    float fZoomFactor = 0.1f;
+
+                    float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
+
+                    sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
@@ -1350,7 +1361,6 @@ namespace EXPIMP
 
             // Do dokumentu exporujeme aj s wireframe
             sDisplayOptions.bDisplayWireFrameModel = true;
-            sDisplayOptions.fWireFrameLineThickness = 0.003f; // TODO - zavisi od zoomu !!!
             sDisplayOptions.bTransformScreenLines3DToCylinders3D = true;
 
             sDisplayOptions.bDisplayMembersWireFrame = true;
@@ -1406,6 +1416,19 @@ namespace EXPIMP
                     par.StyleName = "Heading3";
 
                     par = par.InsertParagraphAfterSelf("");
+
+                    // Bug 477 - Refactoring
+                    float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
+
+                    float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch / obrazkoch
+                    float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                    float fWireFrameLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+                    float fZoomFactor = 0.2f;
+
+                    float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
+
+                    sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+
                     Trackport3D trackport = null;
                     Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, out trackport);
                     viewPort.UpdateLayout();
