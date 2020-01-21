@@ -69,8 +69,8 @@ namespace PFD
             sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
 
             loadInputTextBoxValues sloadInputTextBoxes;
-            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure = 0.2f; // 0 - 0.7
-            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction = -0.3f; //-0.65 - 0
+            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumPressure = 0.0f; // 0.20f; //  0.00 - 0.70
+            sloadInputTextBoxes.InternalPressureCoefficientCpiMaximumSuction = -0.3f; //-0.03f; // -0.65 - 0.00
 
             sloadInputTextBoxes.LocalPressureFactorKl_Girt = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky
             sloadInputTextBoxes.LocalPressureFactorKl_Purlin = 1.5f; //1.5; 1.0 - 3.0 // Dalo by sa urcit automaticky

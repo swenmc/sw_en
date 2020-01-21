@@ -34,7 +34,7 @@ namespace PFD
 
             // Basic validation
             if ((prop.fDoorsWidth + prop.fDoorCoordinateXinBlock) > fBayWidth)
-                throw new Exception("Door is defined out of frame bay."); // Door is defined out of frame bay
+                throw new Exception("Door is defined out of frame bay."); // Door is defined out of frame bay // Bug 500
 
             EMemberType_FS eTypeColumn;
             EMemberType_FS eTypeLintel;
