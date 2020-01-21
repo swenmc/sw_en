@@ -889,6 +889,7 @@ namespace EXPIMP
         {
             string sParagraphName;
             string sImageName;
+            string sTitle = "";
 
             if(eViewtype == EViewType3D.MEMBER_CENTERLINES)
             {
@@ -896,26 +897,31 @@ namespace EXPIMP
                 {
                     sParagraphName = "[3DModelImage_MemberCenterlines_Front]";
                     sImageName = "ViewPort2.png";
+                    sTitle = "Front";
                 }
                 else if (view == EModelViews.BACK)
                 {
                     sParagraphName = "[3DModelImage_MemberCenterlines_Back]";
                     sImageName = "ViewPort3.png";
+                    sTitle = "Back";
                 }
                 else if (view == EModelViews.LEFT)
                 {
                     sParagraphName = "[3DModelImage_MemberCenterlines_Left]";
                     sImageName = "ViewPort4.png";
+                    sTitle = "Left";
                 }
                 else if (view == EModelViews.RIGHT)
                 {
                     sParagraphName = "[3DModelImage_MemberCenterlines_Right]";
                     sImageName = "ViewPort5.png";
+                    sTitle = "Right";
                 }
                 else if (view == EModelViews.TOP)
                 {
                     sParagraphName = "[3DModelImage_MemberCenterlines_Top]";
                     sImageName = "ViewPort6.png";
+                    sTitle = "Top";
                 }
                 else
                 {
@@ -928,9 +934,9 @@ namespace EXPIMP
             {
                 sParagraphName = "[3DModelImage_MemberSolidModel]";
                 sImageName = "ViewPort1.png";
+                sTitle = "";
             }
-
-            // TO Ondrej Task 493 - potreboval by som tie pohlady / obrazky spravne zazoomovat.
+                        
             DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
 
             opts.bCreateHorizontalGridlines = false;
@@ -944,7 +950,7 @@ namespace EXPIMP
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
-            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));            
 
             //ExportHelper.SaveViewPortContentAsImage(viewPort);
             RenderTargetBitmap bmp = ExportHelper.RenderVisual(viewPort);
@@ -959,6 +965,8 @@ namespace EXPIMP
             var picture = image.CreatePicture((int)(viewPort.ActualHeight * ratio), imageMaxWidth);
             // Insert Picture in paragraph.
             par.RemoveText(0);
+            par.InsertText(sTitle);
+
             par.AppendPicture(picture);
             //par.InsertPageBreakAfterSelf();
             picture = null;
