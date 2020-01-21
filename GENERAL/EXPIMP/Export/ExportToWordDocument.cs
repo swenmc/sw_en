@@ -27,8 +27,9 @@ namespace EXPIMP
             MEMBER_CENTERLINES = 0,
             MEMBER_SOLID = 1,
         }
-
-        private const string resourcesFolderPath = "./../../Resources/";
+        
+        //private const string resourcesFolderPath = "./../../Resources/";
+        private static string resourcesFolderPath = ConfigurationManager.AppSettings["ResourcesFolder"];
         private const double fontSizeInTable = 8;
         private const int imageMaxWidth = 720;
 
@@ -36,6 +37,7 @@ namespace EXPIMP
 
         public static void ReportAllDataToWordDoc(CModelData modelData)
         {
+            
             string fileName = GetReportName();
             // Create a new document.
             using (DocX document = DocX.Create(fileName))
