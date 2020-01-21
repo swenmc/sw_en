@@ -766,27 +766,18 @@ namespace EXPIMP
 
             par = DrawDataExportTable(document, par, CStringsManager.LoadWindLoadParameters_AS1170_2());
 
-            // Load Case - Datails
-
-            // TODO Ondrej - Toto potrebujem vkladat do kapitoly 6.6 Wind Load
-            // Nejako sa mi nedarilo zistit index paragraph kam to chcem vlozit
-
-            par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad_LoadCasesDetails]"));
-            int index = 0; // TODO - nacitat index //document.Paragraphs.IndexOf(par); // Zapamatame si index kde je text, akurat ze mi to vracia cislo -1
+            // Load Case - Datails            
+            par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad_LoadCasesDetails]"));            
             par.RemoveText(0);
 
             for (int i = 0; i < data.Model.m_arrLoadCases.Length; i++)
             {
                 CLoadCase lc = data.Model.m_arrLoadCases[i];
-
-                int index2 = 1; // Index pre jednotlive tabulky
+                
                 // Cpe Factors
                 if (lc.Type == ELCType.eWind && lc.MType_LS == ELCGTypeForLimitState.eULSOnly &&
                    (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)) // Vypiseme len stavy s ULS, SLS maju rovnake faktory
                 {
-                    // Vlozim pomocny text a prepisem ho tabulkou
-                    // TODO Docasne vkladam na koniec
-
                     string lc_tableName = "";
                     string coeficientType = "";
 
@@ -806,15 +797,9 @@ namespace EXPIMP
 
                     Formatting formatting = new Formatting();
                     formatting.Bold = true;
-                    document.InsertParagraph(lc_tableName + " - " + coeficientType, false, formatting);
-
-                    document.InsertParagraph("[cpe_table]"); //document.InsertParagraph(index + index2, "[cpe_table]", false);
-                    Paragraph par2 = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[cpe_table]"));
-                    par2.RemoveText(0);
-
-                    DrawLoadCaseDetails(document, data.Wind, lc, par2);
-
-                    index2++;
+                    par = par.InsertParagraphAfterSelf(lc_tableName + " - " + coeficientType, false, formatting);                                        
+                    par = par.InsertParagraphAfterSelf("");
+                    DrawLoadCaseDetails(document, data.Wind, lc, par);
                 }
             }
         }
