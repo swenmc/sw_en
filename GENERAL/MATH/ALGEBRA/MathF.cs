@@ -31,6 +31,14 @@ namespace MATH
         {
             return data.Max();
         }
+        public static int Min(params int[] data)
+        {
+            return data.Min();
+        }
+        public static int Max(params int[] data)
+        {
+            return data.Max();
+        }
 
         // float
         public static float Min(params float[] data)

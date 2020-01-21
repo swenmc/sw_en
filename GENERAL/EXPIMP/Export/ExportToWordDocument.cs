@@ -566,7 +566,7 @@ namespace EXPIMP
             DrawDeadLoadParameters(document);
             DrawImposedLoadParameters(document);
             DrawSnowLoadParameters(document);
-            DrawWindLoadParameters(document);
+            DrawWindLoadParameters(document, data);
             DrawSeismicLoadParameters(document);
 
             Dictionary<string, DataExportTables> allItems = CStringsManager.GetAllDict();
@@ -753,12 +753,64 @@ namespace EXPIMP
             par = DrawDataExportTable(document, par, CStringsManager.LoadSnowLoadParameters_AS1170_3());
         }
 
-        private static void DrawWindLoadParameters(DocX document)
+        private static void DrawWindLoadParameters(DocX document, CModelData data)
         {
             Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad]"));
             par.RemoveText(0);
 
             par = DrawDataExportTable(document, par, CStringsManager.LoadWindLoadParameters_AS1170_2());
+
+            // Load Case - Datails
+
+            // TODO Ondrej - Toto potrebujem vkladat do kapitoly 6.6 Wind Load
+            // Nejako sa mi nedarilo zistit index paragraph kam to chcem vlozit
+
+            par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[WindLoad_LoadCasesDetails]"));
+            int index = 0; // TODO - nacitat index //document.Paragraphs.IndexOf(par); // Zapamatame si index kde je text, akurat ze mi to vracia cislo -1
+            par.RemoveText(0);
+
+            for (int i = 0; i < data.Model.m_arrLoadCases.Length; i++)
+            {
+                CLoadCase lc = data.Model.m_arrLoadCases[i];
+
+                int index2 = 1; // Index pre jednotlive tabulky
+                // Cpe Factors
+                if (lc.Type == ELCType.eWind && lc.MType_LS == ELCGTypeForLimitState.eULSOnly &&
+                   (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min || lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)) // Vypiseme len stavy s ULS, SLS maju rovnake faktory
+                {
+                    // Vlozim pomocny text a prepisem ho tabulkou
+                    // TODO Docasne vkladam na koniec
+
+                    string lc_tableName = "";
+                    string coeficientType = "";
+
+                    if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                        coeficientType = "Cpe,min";
+                    else //if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)
+                        coeficientType = "Cpe,max";
+
+                    if (lc.MainDirection == ELCMainDirection.eMinusX)
+                        lc_tableName = "External Pressure Coefficients - Right (X-)";
+                    else if (lc.MainDirection == ELCMainDirection.ePlusY)
+                        lc_tableName = "External Pressure Coefficients - Front (Y+)";
+                    else if (lc.MainDirection == ELCMainDirection.ePlusX)
+                        lc_tableName = "External Pressure Coefficients - Left (X+)";
+                    else //if (lc.MainDirection == ELCMainDirection.eMinusY)
+                        lc_tableName = "External Pressure Coefficients - Back (Y-)";
+
+                    Formatting formatting = new Formatting();
+                    formatting.Bold = true;
+                    document.InsertParagraph(lc_tableName + " - " + coeficientType, false, formatting);
+
+                    document.InsertParagraph("[cpe_table]"); //document.InsertParagraph(index + index2, "[cpe_table]", false);
+                    Paragraph par2 = document.Paragraphs.FirstOrDefault(p => p.Text.Contains("[cpe_table]"));
+                    par2.RemoveText(0);
+
+                    DrawLoadCaseDetails(document, data.Wind, lc, par2);
+
+                    index2++;
+                }
+            }
         }
 
         private static void DrawSeismicLoadParameters(DocX document)
@@ -871,6 +923,163 @@ namespace EXPIMP
             picture = null;
             viewPort.Dispose();
             trackport.Dispose();
+        }
+
+        // Vytvori polia s koeficientami Cpe pre vybrany load case
+        private static void DrawLoadCaseDetails(DocX document, M_EC1.AS_NZS.CCalcul_1170_2 wind, CLoadCase lc, Paragraph par)
+        {
+            if (lc.Type == ELCType.eWind)
+            {
+                /*
+                // Strana odkial vietor smeruje + smer osi v ktorom fuka (kam fuka)
+                From Right MinusX = 0, // (load acting in -X) Theta = 000 deg (see AS/NZS 1170.2, Figure 2.2)
+                From Front PlusY  = 1, // (load acting in +Y) Theta = 090 deg (see AS/NZS 1170.2, Figure 2.2)
+                From Left  PlusX  = 2, // (load acting in +X) Theta = 180 deg (see AS/NZS 1170.2, Figure 2.2)
+                From Back  MinusY = 3, // (load acting in -Y) Theta = 270 deg (see AS/NZS 1170.2, Figure 2.2)
+                */
+
+                List<float> values_Right = new List<float>();
+                List<float> values_Front = new List<float>();
+                List<float> values_Left = new List<float>();
+                List<float> values_Back = new List<float>();
+                List<float> values_RoofLeft = new List<float>();
+                List<float> values_RoofRight = new List<float>();
+
+                if (lc.MainDirection == ELCMainDirection.ePlusX) // Left
+                {
+                    values_Right = new List<float> { wind.fC_pe_L_wall_Theta0or180 };
+                    values_Front = wind.fC_pe_S_wall_values.ToList();
+                    values_Left = new List<float> { wind.fC_pe_W_wall };
+                    values_Back = wind.fC_pe_S_wall_values.ToList();
+
+                    if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                    {
+                        values_RoofLeft = wind.fC_pe_U_roof_values_min.ToList();
+                        values_RoofRight = wind.fC_pe_D_roof_values_min.ToList();
+                    }
+                    else //if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)
+                    {
+                        values_RoofLeft = wind.fC_pe_U_roof_values_max.ToList();
+                        values_RoofRight = wind.fC_pe_D_roof_values_max.ToList();
+                    }
+                }
+                if (lc.MainDirection == ELCMainDirection.eMinusX) // Right
+                {
+                    values_Right = new List<float> { wind.fC_pe_W_wall };
+                    values_Front = wind.fC_pe_S_wall_values.ToList();
+                    values_Left = new List<float> { wind.fC_pe_L_wall_Theta0or180 };
+                    values_Back = wind.fC_pe_S_wall_values.ToList();
+
+                    if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                    {
+                        values_RoofRight = wind.fC_pe_U_roof_values_min.ToList();
+                        values_RoofLeft = wind.fC_pe_D_roof_values_min.ToList();
+                    }
+                    else //if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)
+                    {
+                        values_RoofRight =  wind.fC_pe_U_roof_values_max.ToList();
+                        values_RoofLeft = wind.fC_pe_D_roof_values_max.ToList();
+                    }
+                }
+                else // Front or Back
+                {
+                    values_Right = wind.fC_pe_S_wall_values.ToList();
+                    values_Left = wind.fC_pe_S_wall_values.ToList();
+
+                    if (lc.MainDirection == ELCMainDirection.ePlusY) // Front
+                    {
+                        values_Front = new List<float> { wind.fC_pe_W_wall };
+                        values_Back = new List<float> { wind.fC_pe_L_wall_Theta90or270 };
+                    }
+                    else //if (lc.MainDirection == ELCMainDirection.eMinusY) // Back
+                    {
+                        values_Front = new List<float> { wind.fC_pe_L_wall_Theta90or270 };
+                        values_Back = new List<float> { wind.fC_pe_W_wall };
+                    }
+
+                    if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_min)
+                    {
+                        values_RoofRight = wind.fC_pe_R_roof_values_min.ToList();
+                        values_RoofLeft = wind.fC_pe_R_roof_values_min.ToList();
+                    }
+                    else //if (lc.LC_Wind_Type == ELCWindType.eWL_Cpe_max)
+                    {
+                        values_RoofRight = wind.fC_pe_R_roof_values_max.ToList();
+                        values_RoofLeft = wind.fC_pe_R_roof_values_max.ToList();
+                    }
+                }
+
+                var t = document.AddTable(1, 6);
+                t.Design = TableDesign.TableGrid;
+                t.Alignment = Alignment.right;
+                t.AutoFit = AutoFit.Window;
+
+                t.Rows[0].Cells[0].Paragraphs[0].InsertText("Right Side");
+                t.Rows[0].Cells[1].Paragraphs[0].InsertText("Front Side");
+                t.Rows[0].Cells[2].Paragraphs[0].InsertText("Left Side");
+                t.Rows[0].Cells[3].Paragraphs[0].InsertText("Back Side");
+                t.Rows[0].Cells[4].Paragraphs[0].InsertText("Roof Left");
+                t.Rows[0].Cells[5].Paragraphs[0].InsertText("Roof Right");
+                t.Rows[0].Cells[0].Paragraphs[0].Bold();
+                t.Rows[0].Cells[1].Paragraphs[0].Bold();
+                t.Rows[0].Cells[2].Paragraphs[0].Bold();
+                t.Rows[0].Cells[3].Paragraphs[0].Bold();
+                t.Rows[0].Cells[4].Paragraphs[0].Bold();
+                t.Rows[0].Cells[5].Paragraphs[0].Bold();
+                t.Rows[0].Cells[0].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[1].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[2].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[3].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[4].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[5].Paragraphs[0].Alignment = Alignment.left;
+                t.Rows[0].Cells[0].Width = document.PageWidth * 0.166;
+                t.Rows[0].Cells[1].Width = document.PageWidth * 0.166;
+                t.Rows[0].Cells[2].Width = document.PageWidth * 0.166;
+                t.Rows[0].Cells[3].Width = document.PageWidth * 0.166;
+                t.Rows[0].Cells[4].Width = document.PageWidth * 0.166;
+                t.Rows[0].Cells[5].Width = document.PageWidth * 0.166;
+
+                // Pocet riadkov tabulky
+                int iNumberOfRows = MATH.MathF.Max(
+                    values_Right.Count,
+                    values_Front.Count,
+                    values_Left.Count,
+                    values_Back.Count,
+                    values_RoofLeft.Count,
+                    values_RoofRight.Count
+                    );
+
+                for (int i = 0; i < iNumberOfRows; i++) // Vlozime jednotlive riadky
+                {
+                    string item_Right = i < values_Right.Count ? values_Right[i].ToString("F3") : "";
+                    string item_Front = i < values_Front.Count ? values_Front[i].ToString("F3") : "";
+                    string item_Left = i < values_Left.Count ? values_Left[i].ToString("F3") : "";
+                    string item_Back = i < values_Back.Count ? values_Back[i].ToString("F3") : "";
+                    string item_RoofLeft = i < values_RoofLeft.Count ? values_RoofLeft[i].ToString("F3") : "";
+                    string item_RoofRight = i < values_RoofRight.Count ? values_RoofRight[i].ToString("F3") : "";
+
+                    Row row = t.InsertRow();
+                    row.Cells[0].Paragraphs[0].InsertText(item_Right);
+                    row.Cells[1].Paragraphs[0].InsertText(item_Front);
+                    row.Cells[2].Paragraphs[0].InsertText(item_Left);
+                    row.Cells[3].Paragraphs[0].InsertText(item_Back);
+                    row.Cells[4].Paragraphs[0].InsertText(item_RoofLeft);
+                    row.Cells[5].Paragraphs[0].InsertText(item_RoofRight);
+
+                    row.Cells[0].Paragraphs[0].Alignment = Alignment.right;
+                    row.Cells[1].Paragraphs[0].Alignment = Alignment.right;
+                    row.Cells[2].Paragraphs[0].Alignment = Alignment.right;
+                    row.Cells[3].Paragraphs[0].Alignment = Alignment.right;
+                    row.Cells[4].Paragraphs[0].Alignment = Alignment.right;
+                    row.Cells[5].Paragraphs[0].Alignment = Alignment.right;
+                }
+
+                // TODO
+                //document.InsertParagraph(lc_tableName); // Vlozime nazov tabulky
+
+                SetFontSizeForTable(t);
+                par.InsertTableBeforeSelf(t);
+            }
         }
 
         private static void DrawLoadCases(DocX document, CModelData data)

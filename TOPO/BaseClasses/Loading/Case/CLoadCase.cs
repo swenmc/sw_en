@@ -107,6 +107,7 @@ namespace BaseClasses
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = MainDirection_temp;
 
@@ -143,6 +144,7 @@ namespace BaseClasses
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = MainDirection_temp;
             MemberLoadsList = MemberLoads_temp;
