@@ -46,7 +46,12 @@ namespace EXPIMP
                 document.ApplyTemplate(templatePath);
 
                 DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_SOLID);
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES);
+
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.BACK, EViewModelMemberFilters.BACK);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.RIGHT, EViewModelMemberFilters.RIGHT);
+                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.TOP, EViewModelMemberFilters.ROOF);
 
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
@@ -61,7 +66,6 @@ namespace EXPIMP
                 DrawMemberDesign(document, modelData);
                 DrawJointDesign(document, modelData);
                 DrawFootingDesign(document, modelData);
-
 
                 CreateTOC(document);
 
@@ -875,15 +879,48 @@ namespace EXPIMP
             p.InsertPageBreakAfterSelf();
         }
 
-        private static void DrawModel3DToDoc(DocX document, CModelData data, EViewType3D eViewtype)
+        private static void DrawModel3DToDoc(DocX document,
+            CModelData data,
+            EViewType3D eViewtype,
+            EModelViews view = EModelViews.ISO_FRONT_RIGHT,
+            EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             string sParagraphName;
             string sImageName;
 
             if(eViewtype == EViewType3D.MEMBER_CENTERLINES)
             {
-                sParagraphName = "[3DModelImage_MemberCenterlines]";
-                sImageName = "ViewPort2.png";
+                if (view == EModelViews.FRONT)
+                {
+                    sParagraphName = "[3DModelImage_MemberCenterlines_Front]";
+                    sImageName = "ViewPort2.png";
+                }
+                else if (view == EModelViews.BACK)
+                {
+                    sParagraphName = "[3DModelImage_MemberCenterlines_Back]";
+                    sImageName = "ViewPort3.png";
+                }
+                else if (view == EModelViews.LEFT)
+                {
+                    sParagraphName = "[3DModelImage_MemberCenterlines_Left]";
+                    sImageName = "ViewPort4.png";
+                }
+                else if (view == EModelViews.RIGHT)
+                {
+                    sParagraphName = "[3DModelImage_MemberCenterlines_Right]";
+                    sImageName = "ViewPort5.png";
+                }
+                else if (view == EModelViews.TOP)
+                {
+                    sParagraphName = "[3DModelImage_MemberCenterlines_Top]";
+                    sImageName = "ViewPort6.png";
+                }
+                else
+                {
+                    // Toto by nemalo nastat
+                    sParagraphName = "[error_case]";
+                    sImageName = "error_case.png";
+                }
             }
             else
             {
@@ -891,7 +928,9 @@ namespace EXPIMP
                 sImageName = "ViewPort1.png";
             }
 
-            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES);
+            // TO Ondrej Task 493 - potreboval by som tie pohlady / obrazky spravne zazoomovat.
+            DisplayOptions opts = ExportHelper.GetDisplayOptionsForMainModelExport(data, eViewtype == EViewType3D.MEMBER_CENTERLINES, view, filter);
+
             opts.bCreateHorizontalGridlines = false;
             opts.bCreateVerticalGridlinesFront = false;
             opts.bCreateVerticalGridlinesBack = false;
@@ -899,7 +938,7 @@ namespace EXPIMP
             opts.bCreateVerticalGridlinesRight = false;
 
             CModel filteredModel = null;
-            Trackport3D trackport = null;            
+            Trackport3D trackport = null;
             Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 

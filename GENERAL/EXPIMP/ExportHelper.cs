@@ -1502,7 +1502,10 @@ namespace EXPIMP
             return _trackport.ViewPort;
         }
 
-        public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data, bool bCenterLinesMemberModelAndIDs = false)
+        public static DisplayOptions GetDisplayOptionsForMainModelExport(CModelData data,
+            bool bCenterLinesMemberModelAndIDs = false,
+            EModelViews view = EModelViews.ISO_FRONT_RIGHT,
+            EViewModelMemberFilters filter = EViewModelMemberFilters.All)
         {
             DisplayOptions opts = data.DisplayOptions; // Display properties pre export do PDF - TO Ondrej - mohla by to byt samostatna sada nastaveni nezavisla na 3D scene
             opts.bUseOrtographicCamera = false;
@@ -1510,8 +1513,8 @@ namespace EXPIMP
             opts.bColorsAccordingToSections = true;
             opts.bDisplayGlobalAxis = false;
             opts.bDisplayMemberDescription = false;
-            opts.ModelView = (int)EModelViews.ISO_FRONT_RIGHT;
-            opts.ViewModelMembers = (int)EViewModelMemberFilters.All;
+            opts.ModelView = (int)view;
+            opts.ViewModelMembers = (int)filter;
             opts.bDisplaySolidModel = true;
             opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
