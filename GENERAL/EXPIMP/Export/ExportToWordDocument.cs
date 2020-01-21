@@ -949,7 +949,7 @@ namespace EXPIMP
             ExportHelper.SaveBitmapImage(bmp, sImageName);
             bmp = null;
 
-            double ratio = imageMaxWidth / viewPort.ActualWidth;
+            double ratio = imageMaxWidth / viewPort.ActualWidth; // TODO 493
 
             // Add a simple image from disk.
             var image = document.AddImage(sImageName);
