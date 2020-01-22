@@ -1886,8 +1886,7 @@ namespace PFD
             ReinforcementGrade = "500E"; // 500 MPa
             ReinforcementMeshGrade = "SE92DE"; // SE92
 
-
-            //To Mato - toto su tie soil capacity parametre?
+            // To Mato - toto su tie soil capacity parametre?
             // TO Ondrej - Tieto 2 parametre nizsie su konkretne parametre pre vypocet a posudenie tlaku v zemine pod zakladom.
             // Co myslis co je lepsie mat ich zadavane v dialogoch pri objektoch alebo urobit samostatny dialog,
             // kde budu len nastavenia parametrov tykajucich sa vypoctu a posudenia?
@@ -1897,23 +1896,7 @@ namespace PFD
 
             SoilBearingCapacity = 200f; // kPa (konverovat kPa na Pa)
 
-            // ---------------------------------------------------------------------------------------------------
-            // To Ondrej - tieto hodnoty by sa mali prevziat z vygenerovaneho CModel_PFD_01_GR
-            // Alebo sa tu nastavia a podla toho sa vyrobi model ???
-
             UpdateFloorSlabViewModelFromModel();
-
-            //CFoundation pad = GetSelectedFootingPad();
-            //FootingPadSize_x_Or_a = pad.m_fDim1;
-            //FootingPadSize_y_Or_b = pad.m_fDim2;
-            //FootingPadSize_z_Or_h = pad.m_fDim3;
-
-            // TO ONDREJ S tymito excentricitami je trosku problem
-            // Pre rovnaky typ patiek sa im pri vyslednom zobrazeni meni sa im znamienko podla toho ako je otocena patka
-            // podla toho ci sme na lavej alebo pravej strane budovy
-
-            //Eccentricity_ex_abs = Math.Abs(pad.Eccentricity_x);  //toto nenastavujem lebo bolo zaporne a hned sa to zrube na validacii
-            //Eccentricity_ey_abs = Math.Abs(pad.Eccentricity_y);
 
             IsSetFromCode = false;
         }
@@ -2077,41 +2060,6 @@ namespace PFD
 
             return list;
         }
-
-        // Komentovane 23.1.2020
-        /*
-        private void UpdateModelFootingPads()
-        {
-            foreach (CFoundation pad in listOfSelectedTypePads)
-            {
-                pad.m_fDim1 = FootingPadSize_x_Or_a;
-                pad.m_fDim2 = FootingPadSize_y_Or_b;
-                pad.m_fDim3 = FootingPadSize_z_Or_h;
-
-                // Urcim znamienka pre hodnotu excentricity a nastavim ich patkam
-                float fe_x = 0, fe_y = 0;
-
-                string sBuildingSide = "";
-
-                // TODO Ondrej - tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
-                if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
-                    sBuildingSide = "Front";
-                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
-                    sBuildingSide = "Back";
-                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.EdgeColumn || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.MainColumn)
-                {
-                    sBuildingSide = "Left";
-
-                    if (!MathF.d_equal(pad.m_Node.Y, 0)) // Nepaci sa mi tato podmienka, mozno by sme mali dat do patky alebo do stlpa na pravej strane este nejaky priznak
-                        sBuildingSide = "Right";
-                }
-
-                SetFootingPadEccentricitySign(pad.m_ColumnMemberTypePosition, "Back", Eccentricity_ex_abs, Eccentricity_ey_abs, out fe_x, out fe_y);
-
-                pad.Eccentricity_x = fe_x;
-                pad.Eccentricity_y = fe_y;
-            }
-        }*/
 
         // Funkcia nastavi excentricitam znamienka podla polohy footing pad, vstupom su absolutne hodnoty excentricit
         public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, bool bIsLastFrame, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
@@ -2469,9 +2417,10 @@ namespace PFD
                 cp_Bottom_y = new Point3D(cp_Bottom_y_coordX, cp_Bottom_y_coordY, m_FootingPadSize_z_Or_h - fConcreteCover);
             }
 
-            // Regenerate reinforcement bars
             foreach (CFoundation pad in listOfSelectedTypePads)
             {
+                // Regenerate footing pad and its reinforcement bars
+
                 //--------------------------------------------------------------------------------------------------------
                 // Presunuty kod z funkcie private void UpdateModelFootingPads(), ktoru som zakomentoval 23.1.2020
 
@@ -2557,41 +2506,6 @@ namespace PFD
             int iNumberOfDiameters = bIsPerpendicularStraightBar ? 0 : 2;
             return (footingPadWidth - 2 * fConcreteCover - iNumberOfDiameters * fPerpendicularBarDiameter - fBarDiameter) / (iNumberOfBarsPerSection - 1);
         }
-
-        //private void GetDefaultFootingPadSize(out float faX, out float fbY, out float fhZ)
-        //{
-        //    if (FootingPadMemberTypeIndex <= 1)
-        //    {
-        //        // Main or edge frame column (0 and 1)
-        //        faX = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.08f, _pfdVM.fL1 * 0.40f)), 1);
-        //        fbY = (float)Math.Round(MathF.Max(0.6f, Math.Min(_pfdVM.GableWidth * 0.07f, _pfdVM.fL1 * 0.35f)), 1);
-        //        fhZ = 0.4f;
-        //    }
-        //    else // Front a back side wind posts (2 and 3)
-        //    {
-        //        float fDist_Column;
-
-        //        // Pripravene pre rozne rozostupy wind post na prednej a zadnej strane budovy
-        //        if (FootingPadMemberTypeIndex == 2) // Front Side
-        //            fDist_Column = _pfdVM.ColumnDistance;
-        //        else // Back Side
-        //            fDist_Column = _pfdVM.ColumnDistance;
-
-        //        // Front or back side - wind posts
-        //        faX = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
-        //        fbY = (float)Math.Round(MathF.Max(0.5f, fDist_Column * 0.40f), 1);
-        //        fhZ = 0.4f;
-        //    }
-        //}
-
-        //private int GetDefaultNumberOfReinforcingBars(float footingPadWidth, float fBarDiameter, float fConcreteCover)
-        //{
-        //    // Pre priblizne urcenie poctu vyztuznych prutov pouzijeme ich defaultnu vzdialenost 150 mm medzi stredmi tyci
-        //    float fDefaultDistanceBetweenReinforcementBars = 0.15f; // 150 mm
-
-        //    // Number of spacings + 1
-        //    return (int)((footingPadWidth - 2 * fConcreteCover - 3 * fBarDiameter) / fDefaultDistanceBetweenReinforcementBars) + 1;
-        //}
 
         public CalculationSettingsFoundation GetCalcSettings()
         {
