@@ -97,7 +97,6 @@ namespace BaseClasses
                 {
                     m_fWindowsWidth = temp;
                     MessageBox.Show("Window outside of bay width.");
-
                 }
                 else NotifyPropertyChanged("fWindowsWidth");
             }

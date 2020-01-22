@@ -1788,14 +1788,30 @@ namespace PFD
             if (doorGeneratorViewModel.AddDoors)
             {
                 List<DoorProperties> doorProperties = generatorWindow.GetDoorProperties();
+                List<DoorProperties> validatedDoorProperties = new List<DoorProperties>();
+                bool errorOccurs = false;
+                foreach (DoorProperties dp in doorProperties)
+                {
+                    dp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    if (!dp.ValidateDoorInsideBay())
+                    {
+                        if(!errorOccurs) MessageBox.Show("Door is defined out of frame bay.");
+                        errorOccurs = true;
+                        continue;
+                    }
+
+                    validatedDoorProperties.Add(dp);
+                }
+                if (validatedDoorProperties.Count != doorProperties.Count) doorProperties = validatedDoorProperties;
+
                 if (doorProperties.Count == 0) return;
 
+                
                 foreach (DoorProperties dp in vm.DoorBlocksProperties)
                 {
                     //dp.PropertyChanged -= null;
                     bool existsSameItem = doorProperties.Exists(p => p.iBayNumber == dp.iBayNumber && p.sBuildingSide == dp.sBuildingSide);
                     if (!existsSameItem) doorProperties.Add(dp);
-
                 }
 
                 //door and windows collision detection
@@ -1843,6 +1859,21 @@ namespace PFD
             if (windowGeneratorViewModel.AddWindows)
             {
                 List<WindowProperties> windowProperties = generatorWindow.GetWindowsProperties();
+                List<WindowProperties> validatedWindowProperties = new List<WindowProperties>();
+                bool errorOccurs = false;
+                foreach (WindowProperties wp in windowProperties)
+                {
+                    wp.SetValidationValues(vm.WallHeight, vm.Model.fL1_frame, vm.Model.fDist_FrontColumns, vm.Model.fDist_BackColumns);
+                    if (!wp.ValidateWindowInsideBay())
+                    {
+                        if (!errorOccurs) MessageBox.Show("Window is defined out of frame bay.");
+                        errorOccurs = true;
+                        continue;
+                    }
+                    validatedWindowProperties.Add(wp);
+                }
+                if (validatedWindowProperties.Count != windowProperties.Count) windowProperties = validatedWindowProperties;
+
                 if (windowProperties.Count == 0) return;
 
                 foreach (WindowProperties dp in vm.WindowBlocksProperties)

@@ -176,7 +176,7 @@ namespace PFD
         private WindowProperties GetModelWindowProperties(string buildingSide)
         {
             WindowProperties wp = new WindowProperties();
-            wp.SetValidationValues(fWallHeight, fL1, fColumnsDistance, fColumnsDistance);
+            //wp.SetValidationValues(fWallHeight, fL1, fColumnsDistance, fColumnsDistance); //bug fix 500 - zmazal som,aby sa validovalo na inom mieste
 
             wp.sBuildingSide = buildingSide;
             wp.fWindowsHeight = vm.WindowHeight;
