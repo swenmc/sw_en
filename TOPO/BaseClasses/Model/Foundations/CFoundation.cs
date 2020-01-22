@@ -16,6 +16,8 @@ namespace BaseClasses
         public CNode m_Node;
         public EMemberType_FS_Position m_ColumnMemberTypePosition;
 
+        private float m_EccentricityBasicColumn_x; //y
+        private float m_EccentricityBasicColumn_y; //z
         private float m_Eccentricity_x;
         private float m_Eccentricity_y;
         private float m_RotationAboutZ_deg;
@@ -51,6 +53,32 @@ namespace BaseClasses
         {
             get { return m_DesignDetails; }
             set { m_DesignDetails = value; }
+        }
+
+        public float EccentricityBasicColumn_x
+        {
+            get
+            {
+                return m_EccentricityBasicColumn_x;
+            }
+
+            set
+            {
+                m_EccentricityBasicColumn_x = value;
+            }
+        }
+
+        public float EccentricityBasicColumn_y
+        {
+            get
+            {
+                return m_EccentricityBasicColumn_y;
+            }
+
+            set
+            {
+                m_EccentricityBasicColumn_y = value;
+            }
         }
 
         public float Eccentricity_x
@@ -374,6 +402,8 @@ namespace BaseClasses
             float fX,
             float fY,
             float fZ,
+            float feBasicColumn_x,//y
+            float feBasicColumn_y,//y
             float ex,
             float ey,
             float rotationAboiutZInDeg,
@@ -403,6 +433,8 @@ namespace BaseClasses
             m_fDim2 = fY;
             m_fDim3 = fZ;
             m_fVolume = fX * fY * fZ; // !!! PLATI LEN PRE KVADER
+            m_EccentricityBasicColumn_x = feBasicColumn_x;
+            m_EccentricityBasicColumn_y = feBasicColumn_y;
             m_Eccentricity_x = ex;
             m_Eccentricity_y = ey;
             m_RotationAboutZ_deg = rotationAboiutZInDeg;
@@ -437,8 +469,8 @@ namespace BaseClasses
             float fCornerPointOffsetX = 0.3f;
             float fCornerPointOffsetY = 0.2f;
 
-            float fOffsetX = m_fDim1 + m_Eccentricity_x + fCornerPointOffsetX;
-            float fOffsetY = m_fDim2 + m_Eccentricity_y + fCornerPointOffsetY;
+            float fOffsetX = m_fDim1 + m_EccentricityBasicColumn_x + m_Eccentricity_x + fCornerPointOffsetX;
+            float fOffsetY = m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y + fCornerPointOffsetY;
             float fOffsetFromPlane = m_fDim3 + 0.005f; // Offset nad urovnou podlahy aby sa text nevnoril do jej 3D reprezentacie
 
             m_PointText = new Point3D()
@@ -453,8 +485,8 @@ namespace BaseClasses
         {
             m_pControlPoint = new Point3D()
             {
-                X = -0.5 * m_fDim1 + m_Eccentricity_x,
-                Y = -0.5 * m_fDim2 + m_Eccentricity_y,
+                X = -0.5 * m_fDim1 + m_EccentricityBasicColumn_x + m_Eccentricity_x,
+                Y = -0.5 * m_fDim2 + m_EccentricityBasicColumn_y + m_Eccentricity_y,
                 Z = -m_fDim3
             };
         }
