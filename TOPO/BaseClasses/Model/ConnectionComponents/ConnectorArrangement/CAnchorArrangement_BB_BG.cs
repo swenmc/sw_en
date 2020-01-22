@@ -17,8 +17,8 @@ namespace BaseClasses
     public class CAnchorArrangement_BB_BG : CAnchorArrangement_Rectangular
     {
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-        public int iNumberOfScrewsInRow_xDirection_SQ1;
-        public int iNumberOfScrewsInColumn_yDirection_SQ1;
+        public int iNumberOfAnchorsInRow_xDirection_SQ1;
+        public int iNumberOfAnchorsInColumn_yDirection_SQ1;
         public float fx_c_SQ1;
         public float fy_c_SQ1;
         public float[] fDistanceOfPointsX_SQ1;
@@ -38,8 +38,8 @@ namespace BaseClasses
             NumberOfAnchorsInZDirection = prop.iNoOfAnchorsInColumn;
 
             // Parametre sekvencie
-            iNumberOfScrewsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
-            iNumberOfScrewsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
+            iNumberOfAnchorsInRow_xDirection_SQ1 = NumberOfAnchorsInYDirection;
+            iNumberOfAnchorsInColumn_yDirection_SQ1 = NumberOfAnchorsInZDirection;
             fx_c_SQ1 = (float)prop.a1_pos_cp_x;
             fy_c_SQ1 = (float)prop.a1_pos_cp_y;
             float dist_x1 = (float)prop.dist_x1;
@@ -82,8 +82,8 @@ namespace BaseClasses
             ListOfSequenceGroups.Add(new CAnchorSequenceGroup());
 
             CAnchorRectSequence seq1 = new CAnchorRectSequence();
-            seq1.NumberOfAnchorsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ1;
-            seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ1;
+            seq1.NumberOfAnchorsInRow_xDirection = iNumberOfAnchorsInRow_xDirection_SQ1;
+            seq1.NumberOfAnchorsInColumn_yDirection = iNumberOfAnchorsInColumn_yDirection_SQ1;
             seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
             seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
             seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;

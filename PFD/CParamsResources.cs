@@ -12,6 +12,7 @@ namespace PFD
         // UNITS
         public const string sUnit_CrscLength = "[mm]";
         public const string sUnit_PlateLength = "[mm]";
+        public const string sUnit_ConnectorLength = "[mm]";
 
         public const string sUnit_PlateSurface = "[mm²]";
         public const string sUnit_PlateVolume = "[mm³]";
@@ -301,6 +302,31 @@ namespace PFD
             public const string DBName = "ScrewGauge";
             public const string Unit = sUnit_CountIntNumber;
             public const string Symbol = "g";
+        }
+
+        // ANCHOR PROPERTIES
+        public struct AnchorNameS
+        {
+            public const string Name = "Anchor name";
+            public const string DBName = "AnchorName";
+            public const string Unit = sUnit_None;
+            public const string Symbol = "Name";
+        }
+
+        public struct AnchorDiameterS
+        {
+            public const string Name = "Anchor diameter";
+            public const string DBName = "AnchorDiameter";
+            public const string Unit = sUnit_ConnectorLength;
+            public const string Symbol = "d";
+        }
+
+        public struct AnchorLengthS
+        {
+            public const string Name = "Anchor length";
+            public const string DBName = "AnchorLength";
+            public const string Unit = sUnit_ConnectorLength;
+            public const string Symbol = "l";
         }
     }
 }

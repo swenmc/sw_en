@@ -188,15 +188,22 @@ namespace BaseClasses
             {
                 CBoltNutProperties properties = CBoltNutsManager.GetBoltNutProperties(name_temp, "Nuts");
 
-                m_fPitch_coarse = (float)properties.Pitch_coarse;
-                m_fSizeAcrossFlats_max = (float)properties.SizeAcrossFlats_max;
-                m_fSizeAcrossFlats_min = (float)properties.SizeAcrossFlats_min;
-                m_fSizeAcrossCorners = (float)properties.SizeAcrossCorners;
-                m_fThickness_max = (float)properties.Thickness_max;
-                m_fThickness_min = (float)properties.Thickness_min;
-                m_fMass = (float)properties.Mass;
-                m_fPrice_PPKG_NZD = (float)properties.Price_PPKG_NZD;
-                m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
+                if (properties != null)
+                {
+                    m_fPitch_coarse = (float)properties.Pitch_coarse;
+                    m_fSizeAcrossFlats_max = (float)properties.SizeAcrossFlats_max;
+                    m_fSizeAcrossFlats_min = (float)properties.SizeAcrossFlats_min;
+                    m_fSizeAcrossCorners = (float)properties.SizeAcrossCorners;
+                    m_fThickness_max = (float)properties.Thickness_max;
+                    m_fThickness_min = (float)properties.Thickness_min;
+                    m_fMass = (float)properties.Mass;
+                    m_fPrice_PPKG_NZD = (float)properties.Price_PPKG_NZD;
+                    m_fPrice_PPP_NZD = (float)properties.Price_PPP_NZD;
+                }
+                else
+                {
+                    throw new ArgumentNullException("Selected nut is not defined in the database.");
+                }
             }
 
             INoPoints2Dfor3D = 2 * iEdgesOutBasic * iNumberOfSegmentsPerSideOut;

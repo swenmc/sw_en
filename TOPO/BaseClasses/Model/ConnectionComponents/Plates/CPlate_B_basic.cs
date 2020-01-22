@@ -112,10 +112,10 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            UpdatePlateData(screwArrangement_temp);
+            UpdatePlateData(screwArrangement_temp/*, AnchorArrangement*/);
         }
 
-        public override void UpdatePlateData(CScrewArrangement screwArrangement)
+        public override void UpdatePlateData(CScrewArrangement screwArrangement/*, CAnchorArrangement AnchorArrangmement*/)
         {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -146,6 +146,40 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement)
+        {
+            // Create Array - allocate memory
+            PointsOut2D = new Point[ITotNoPointsin2D];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+
+            if (ScrewArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[ScrewArrangement.IHolesNumber];
+            }
+
+            // Calculate point positions
+            Calc_Coord2D();
+
+            // Calculate parameters of arrangement depending on plate geometry
+            if (anchorArrangement != null)
+            {
+                anchorArrangement.Calc_BasePlateData(Fb_X, m_flZ, Fh_Y, Ft);
+                AnchorArrangement = anchorArrangement;
+            }
+
+            Calc_Coord3D(); // Tato funckia potrebuje aby boli inicializovany objekt AnchorArrangement - vykresluju sa podla toho otvory v plechu (vypocet suradnic dier)
+
+            if (ScrewArrangement != null)
+            {
+                ScrewArrangement.Calc_BasePlateData(Fb_X, m_flZ, Fh_Y, Ft);
+            }
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            UpdatePlateData_Basic(ScrewArrangement);
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)

@@ -1087,7 +1087,7 @@ namespace BaseClasses
                     // Spodna neviditelna hrana
                     DrawLine(l, opts.BasePlateColor, PenLineCap.Flat, PenLineCap.Flat, opts.BasePlateThickness, canvasForImage, DashStyles.Dash);
 
-                    if (opts.bDrawScrews)
+                    if (opts.bDrawScrews && basePlate.ScrewArrangement != null && basePlate.ScrewArrangement.HolesCentersPoints2D != null)
                     {
                         List<Point> PointsHolesScrews = basePlate.ScrewArrangement.HolesCentersPoints2D.ToList();
 

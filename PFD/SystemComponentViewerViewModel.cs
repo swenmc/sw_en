@@ -677,7 +677,7 @@ namespace PFD
                         {
                             Components = databaseComponents.arr_Serie_B_Names;
                             ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
-                            ScrewArrangementIndex = 0;
+                            ScrewArrangementIndex = 1;
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:

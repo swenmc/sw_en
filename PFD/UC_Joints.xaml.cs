@@ -78,7 +78,7 @@ namespace PFD
             if (e.PropertyName == "SelectedTabIndex") return;
             if (e.PropertyName == "JointTypeIndex") SetDynamicTabs(vm);
 
-            if (e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
+            if (e.PropertyName == "ChangedAnchorArrangementParameter" || e.PropertyName == "ChangedScrewArrangementParameter" || e.PropertyName == "ChangedGeometryParameter")
             {   
                 CConnectionJointTypes joint = GetSelectedJoint();
                 displayJoint(joint);
@@ -679,6 +679,36 @@ namespace PFD
             //row.Height = new GridLength(1.0, GridUnitType.Star);
             //grid.RowDefinitions.Add(row);
 
+            // Base Plate - Anchor Arrangement
+            if (plate is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                // Anchor arrangement
+                StackPanel spAA = new StackPanel();
+                sp.Width = 550;
+                spAA.Orientation = Orientation.Horizontal;
+                Label lAA = new Label() { Content = "Anchor Arrangement: " };
+                ComboBox selectAA = new ComboBox();
+                selectAA.Width = 200;
+                selectAA.Height = 20;
+                selectAA.ItemsSource = CPlateHelper.GetPlateAnchorArangementTypes(basePlate);
+                selectAA.SelectedIndex = CPlateHelper.GetPlateAnchorArangementIndex(basePlate);
+                selectAA.SelectionChanged += SelectAA_SelectionChanged;
+                spAA.Children.Add(lAA);
+                spAA.Children.Add(selectAA);
+                sp.Children.Add(spAA);
+
+                if (basePlate.AnchorArrangement != null)
+                {
+                    List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+                    //lAA.SetValue(Grid.RowProperty, 0);
+                    sp.Children.Add(GetDatagridForAnchorArrangement(anchorArrangementParams));
+                }
+            }
+
+            // Screw Arrangement
+
             StackPanel spSA = new StackPanel();
             sp.Width = 550;
             spSA.Orientation = Orientation.Horizontal;
@@ -719,6 +749,27 @@ namespace PFD
             ti.IsEnabled = true;
         }
 
+        private void SelectAA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CPlate plate = GetSelectedPlate();
+            if (plate == null) return;
+            CConnectionJointTypes joint = GetSelectedJoint();
+            if (joint == null) return;
+
+            ComboBox cbAA = sender as ComboBox;
+            if (cbAA == null) return;
+            ChangeAllSameJointsPlateAnchorArrangement(cbAA.SelectedIndex);
+            //CPlateHelper.AnchorArrangementChanged(joint, plate, cbAA.SelectedIndex);
+            //CPlateHelper.UpdatePlateAnchorArrangementData(plate);
+
+            TabItem ti = vm.TabItems[vm.SelectedTabIndex];
+            SetTabContent(ti, plate);
+
+            displayJoint(joint);
+
+            if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
         private void SelectSA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CPlate plate = GetSelectedPlate();
@@ -738,6 +789,16 @@ namespace PFD
             displayJoint(joint);
 
             if (_pfdVM.SynchronizeGUI) _pfdVM.SynchronizeGUI = true;
+        }
+
+        private void ChangeAllSameJointsPlateAnchorArrangement(int anchorArrangementIndex)
+        {
+            List<CConnectionJointTypes> joints = GetSelectedJoints();
+            foreach (CConnectionJointTypes joint in joints)
+            {
+                CPlateHelper.AnchorArrangementChanged(joint, joint.m_arrPlates[vm.SelectedTabIndex], anchorArrangementIndex);
+                CPlateHelper.UpdatePlateAnchorArrangementData(joint.m_arrPlates[vm.SelectedTabIndex]);
+            }
         }
 
         private void ChangeAllSameJointsPlateScrewArrangement(int screwArrangementIndex)
@@ -774,6 +835,88 @@ namespace PFD
         {
             CConnectionDescription con = vm.JointTypes[vm.JointTypeIndex];
             return jointsDict[con.ID];
+        }
+
+        private DataGrid GetDatagridForAnchorArrangement(List<CComponentParamsView> anchorArrangementParams)
+        {
+            DataGrid dgAA = new DataGrid();
+            //dgAA.SetValue(Grid.RowProperty, 1);
+            dgAA.ItemsSource = anchorArrangementParams;
+            dgAA.HorizontalAlignment = HorizontalAlignment.Stretch;
+            dgAA.AutoGenerateColumns = false;
+            dgAA.IsEnabled = true;
+            dgAA.IsReadOnly = false;
+            dgAA.HeadersVisibility = DataGridHeadersVisibility.None;
+            dgAA.SelectionMode = DataGridSelectionMode.Single;
+            dgAA.SelectionUnit = DataGridSelectionUnit.Cell;
+
+            DataGridTextColumn tc1 = new DataGridTextColumn();
+            tc1.Binding = new Binding("Name");
+            tc1.CellStyle = GetReadonlyCellStyle();
+            tc1.IsReadOnly = true;
+            tc1.Width = new DataGridLength(5.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc1);
+
+            DataGridTextColumn tc2 = new DataGridTextColumn();
+            tc2.Binding = new Binding("ShortCut");
+            tc2.CellStyle = GetReadonlyCellStyle();
+            tc2.IsReadOnly = true;
+            tc2.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc2);
+
+            DataGridTemplateColumn tc3 = new DataGridTemplateColumn();
+            tc3.IsReadOnly = false;
+            tc3.CellTemplate = GetDataTemplate();
+            tc3.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc3);
+
+            DataGridTextColumn tc4 = new DataGridTextColumn();
+            tc4.Binding = new Binding("Unit");
+            tc4.CellStyle = GetReadonlyCellStyle();
+            tc4.IsReadOnly = true;
+            tc4.Width = new DataGridLength(1.0, DataGridLengthUnitType.Star);
+            dgAA.Columns.Add(tc4);
+
+            foreach (CComponentParamsView cpw in anchorArrangementParams)
+            {
+                cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+            }
+
+            return dgAA;
+        }
+        private void HandleAnchorArrangementComponentParamsViewPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is CComponentParamsView)) return;
+            CComponentParamsView item = sender as CComponentParamsView;
+            foreach (CConnectionJointTypes joint in list_joints)
+            {
+                CPlate plate = joint.m_arrPlates[vm.SelectedTabIndex];
+
+                if (plate is CConCom_Plate_B_basic)
+                {
+                    CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+                    CPlateHelper.DataGridAnchorArrangement_ValueChanged(item, basePlate);
+                    List<CComponentParamsView> anchorArrangementParams = CPlateHelper.GetAnchorArrangementProperties(basePlate.AnchorArrangement);
+
+                    CPlateHelper.UpdatePlateScrewArrangementData(plate);
+
+                    if (anchorArrangementParams != null)
+                    {
+                        //ScrollViewer sw = vm.TabItems[vm.SelectedTabIndex].Content as ScrollViewer;
+                        //StackPanel sp = sw.Content as StackPanel;
+                        StackPanel sp = vm.TabItems[vm.SelectedTabIndex].Content as StackPanel;
+                        DataGrid dgAA = sp.Children[1] as DataGrid;
+                        dgAA.ItemsSource = anchorArrangementParams;
+                        foreach (CComponentParamsView cpw in anchorArrangementParams)
+                        {
+                            cpw.PropertyChanged += HandleAnchorArrangementComponentParamsViewPropertyChangedEvent;
+                        }
+                    }
+                }
+            }
+
+            vm.ChangedAnchorArrangementParameter = item;
+            //HandleJointsPropertyChangedEvent(sender, e);            
         }
 
         private DataGrid GetDatagridForScrewArrangement(List<CComponentParamsView> screwArrangementParams)
@@ -850,7 +993,7 @@ namespace PFD
             }
 
             vm.ChangedScrewArrangementParameter = item;
-            //HandleJointsPropertyChangedEvent(sender, e);            
+            //HandleJointsPropertyChangedEvent(sender, e);
         }
         private DataGrid GetDatagridForGeometry(List<CComponentParamsView> geometryParams)
         {

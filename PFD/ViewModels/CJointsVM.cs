@@ -25,6 +25,7 @@ namespace PFD
         
         private int m_SelectedTabIndex;
 
+        private CComponentParamsView m_ChangedAnchorArrangementParameter;
         private CComponentParamsView m_ChangedScrewArrangementParameter;
         private CComponentParamsView m_ChangedGeometryParameter;
         public bool IsSetFromCode = false;
@@ -103,6 +104,20 @@ namespace PFD
             {
                 m_SelectedTabIndex = value;
                 NotifyPropertyChanged("SelectedTabIndex");
+            }
+        }
+
+        public CComponentParamsView ChangedAnchorArrangementParameter
+        {
+            get
+            {
+                return m_ChangedAnchorArrangementParameter;
+            }
+
+            set
+            {
+                m_ChangedAnchorArrangementParameter = value;
+                NotifyPropertyChanged("ChangedAnchorArrangementParameter");
             }
         }
 

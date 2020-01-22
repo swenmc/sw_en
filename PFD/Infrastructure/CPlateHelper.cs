@@ -12,6 +12,105 @@ namespace PFD
 {
     public static class CPlateHelper
     {
+        // Anchors
+
+        public static List<CComponentParamsView> GetAnchorArrangementProperties(CAnchorArrangement anchorArrangement)
+        {
+            int iNumberOfDecimalPlaces_Length = 1;
+            float fUnitFactor_Length = 1000;
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            List<CComponentParamsView> anchorArrangementProperties = new List<CComponentParamsView>();
+
+            if (anchorArrangement != null && anchorArrangement is CAnchorArrangement_BB_BG)
+            {
+                CAnchorArrangement_BB_BG baseArrangement = (CAnchorArrangement_BB_BG)anchorArrangement;
+
+                List<string> listScrewGauges = CTEKScrewsManager.LoadTEKScrewsProperties().Select(i => i.gauge).ToList();
+
+                List<string> listAnchorDiameters = CBoltsManager.LoadBoltsProperties("ThreadedBars").Select(i => i.Name).ToList();
+
+                anchorArrangementProperties.Add(new CComponentParamsViewList(CParamsResources.AnchorNameS.Name, CParamsResources.AnchorNameS.Symbol, baseArrangement.referenceAnchor.Name.ToString(), listAnchorDiameters, CParamsResources.AnchorNameS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
+                anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorDiameterS.Name, CParamsResources.AnchorDiameterS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorDiameterS.Unit, false));
+                anchorArrangementProperties.Add(new CComponentParamsViewString(CParamsResources.AnchorLengthS.Name, CParamsResources.AnchorLengthS.Symbol, (Math.Round(baseArrangement.referenceAnchor.Length * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.AnchorLengthS.Unit, true));
+
+                anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in row SQ1", "No", baseArrangement.iNumberOfAnchorsInRow_xDirection_SQ1.ToString(), "[-]"));
+                anchorArrangementProperties.Add(new CComponentParamsViewString("Number of anchors in column SQ1", "No", baseArrangement.iNumberOfAnchorsInColumn_yDirection_SQ1.ToString(), "[-]"));
+                anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate x SQ1", "xc1", (Math.Round(baseArrangement.fx_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                anchorArrangementProperties.Add(new CComponentParamsViewString("Inserting point coordinate y SQ1", "yc1", (Math.Round(baseArrangement.fy_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                if (baseArrangement.fDistanceOfPointsX_SQ1.Length > 0 && baseArrangement.fDistanceOfPointsX_SQ1[0] > 0)
+                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.1", "x1", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                if (baseArrangement.fDistanceOfPointsY_SQ1.Length > 0 && baseArrangement.fDistanceOfPointsY_SQ1[0] > 0)
+                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.1", "y1", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[0] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                // Pole pozicii obsahuje rozne pocty (1 alebo 2 medzery medzi kotvami v jednom rade, pocet kotiev je 1 - 3 v rade
+                if(baseArrangement.fDistanceOfPointsX_SQ1.Length > 1 && baseArrangement.fDistanceOfPointsX_SQ1[1] > 0)
+                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors x SQ1.2", "x2", (Math.Round(baseArrangement.fDistanceOfPointsX_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                if (baseArrangement.fDistanceOfPointsY_SQ1.Length > 1 && baseArrangement.fDistanceOfPointsY_SQ1[1] > 0)
+                    anchorArrangementProperties.Add(new CComponentParamsViewString("Distance between anchors y SQ1.2", "y2", (Math.Round(baseArrangement.fDistanceOfPointsY_SQ1[1] * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else
+            {
+                // Anchor arrangement is not implemented
+            }
+
+            return anchorArrangementProperties;
+        }
+
+        public static void DataGridAnchorArrangement_ValueChanged(CComponentParamsView item, CConCom_Plate_B_basic plate)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+
+            // Set current anchor arrangement parameters
+            if (plate.AnchorArrangement != null && plate.AnchorArrangement is CAnchorArrangement_BB_BG)
+            {
+                CAnchorArrangement_BB_BG arrangementTemp = (CAnchorArrangement_BB_BG)plate.AnchorArrangement;
+                if (item is CComponentParamsViewString)
+                {
+                    CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+                    if (string.IsNullOrEmpty(itemStr.Value)) return;
+                    float item_val = 0;
+                    if (!float.TryParse(itemStr.Value.Replace(",", "."), NumberStyles.AllowDecimalPoint, nfi, out item_val)) return;
+
+                    if (item.Name.Equals(CParamsResources.AnchorDiameterS.Name)) arrangementTemp.referenceAnchor.Diameter_shank = item_val / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.AnchorLengthS.Name)) arrangementTemp.referenceAnchor.Length = item_val / fLengthUnitFactor;
+
+                    if (item.Name == "Number of anchors in row SQ1") arrangementTemp.iNumberOfAnchorsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                    if (item.Name == "Number of anchors in column SQ1") arrangementTemp.iNumberOfAnchorsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = item_val / fLengthUnitFactor;
+                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = item_val / fLengthUnitFactor;
+
+                    if (arrangementTemp.fDistanceOfPointsX_SQ1.Length > 0 && arrangementTemp.fDistanceOfPointsX_SQ1[0] > 0)
+                        if (item.Name == "Distance between anchors x SQ1.1") arrangementTemp.fDistanceOfPointsX_SQ1[0] = item_val / fLengthUnitFactor;
+                    if (arrangementTemp.fDistanceOfPointsY_SQ1.Length > 0 && arrangementTemp.fDistanceOfPointsY_SQ1[0] > 0)
+                        if (item.Name == "Distance between anchors y SQ1.1") arrangementTemp.fDistanceOfPointsY_SQ1[0] = item_val / fLengthUnitFactor;
+
+                    if (arrangementTemp.fDistanceOfPointsX_SQ1.Length > 1 && arrangementTemp.fDistanceOfPointsX_SQ1[1] > 0)
+                        if (item.Name == "Distance between anchors x SQ1.2") arrangementTemp.fDistanceOfPointsX_SQ1[1] = item_val / fLengthUnitFactor;
+                    if (arrangementTemp.fDistanceOfPointsY_SQ1.Length > 1 && arrangementTemp.fDistanceOfPointsY_SQ1[1] > 0)
+                        if (item.Name == "Distance between anchors y SQ1.2") arrangementTemp.fDistanceOfPointsY_SQ1[1] = item_val / fLengthUnitFactor;
+                }
+                else if (item is CComponentParamsViewList)
+                {
+                    CComponentParamsViewList itemList = item as CComponentParamsViewList;
+                    if (item.Name.Equals(CParamsResources.AnchorNameS.Name)) arrangementTemp.referenceAnchor.Name = itemList.Value;
+                }
+
+                arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
+                plate.AnchorArrangement = arrangementTemp;       // Set current screw arrangement to the plate
+            }
+            else
+            {
+                // Anchor arrangement is not implemented
+            }
+        }
+
+        // Screws
         public static List<CComponentParamsView> GetScrewArrangementProperties(CScrewArrangement screwArrangement)
         {
             int iNumberOfDecimalPlaces_Length = 1;
@@ -195,7 +294,6 @@ namespace PFD
 
             return screwArrangmenetProperties;
         }
-
 
         public static void DataGridScrewArrangement_ValueChanged(CComponentParamsView item, CPlate plate)
         {
@@ -462,6 +560,8 @@ namespace PFD
             if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
             else return false;
         }
+
+        // Geometry
 
         public static void DataGridGeometryParams_ValueChanged(CComponentParamsView item, CPlate plate)
         {
@@ -996,6 +1096,11 @@ namespace PFD
             return details;
         }
 
+        public static void AnchorArrangementChanged(CConnectionJointTypes joint, CPlate plate, int anchorArrangementIndex)
+        {
+            // TODO Toto potrebujem nejako dorobit alebo zlucit s ScrewArrangementChanged
+        }
+
         public static void ScrewArrangementChanged(CConnectionJointTypes joint, CPlate plate, int screwArrangementIndex)
         {
             int iNumberofHoles = 0;
@@ -1188,6 +1293,23 @@ namespace PFD
             }
         }
 
+        public static List<string> GetPlateAnchorArangementTypes(CPlate plate)
+        {
+            CDatabaseComponents dc = new CDatabaseComponents();
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        return new List<string>(1) { "Undefined", "Arrangement B" };
+                    }
+                default:
+                    {
+                        // Not implemented
+                        return new List<string>(1) { " " };
+                    }
+            }
+        }
+
         public static List<string> GetPlateScrewArangementTypes(CPlate plate)
         {
             CDatabaseComponents dc = new CDatabaseComponents();
@@ -1267,6 +1389,27 @@ namespace PFD
             }
         }
 
+        public static int GetPlateAnchorArangementIndex(CPlate plate)
+        {
+            CDatabaseComponents dc = new CDatabaseComponents();
+            switch (plate.m_ePlateSerieType_FS)
+            {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                        if (basePlate.AnchorArrangement == null) return 0;
+                        else if (basePlate.AnchorArrangement is CAnchorArrangement_BB_BG) return 1;
+                        else return 0;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        return 0;
+                    }
+            }
+        }
+
         public static int GetPlateScrewArangementIndex(CPlate plate)
         {
             CDatabaseComponents dc = new CDatabaseComponents();
@@ -1278,11 +1421,6 @@ namespace PFD
                         else if (plate.ScrewArrangement is CScrewArrangement_BX_1) return 1;
                         else if (plate.ScrewArrangement is CScrewArrangement_BX_2) return 2;
                         else return 0;
-
-                        //??? mato
-                        //dc.arr_Serie_B_ScrewArrangement_Names;
-                        //nenasiel som odpovedajuce triedy k arr_Serie_B_ScrewArrangement_Names
-                        //je potrebne nieco na zaklade coho povieme aky index to je podla toho aky screw arrangement ma Plate
                     }
                 case ESerieTypePlate.eSerie_L:
                     {
@@ -1375,14 +1513,24 @@ namespace PFD
             }
         }
 
+        public static void UpdatePlateAnchorArrangementData(CPlate plate)
+        {
+            if (plate is CConCom_Plate_B_basic) // Base plates
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)plate;
+
+                if (basePlate.AnchorArrangement != null) basePlate.AnchorArrangement.UpdateArrangmentData();
+
+                basePlate.UpdatePlateData(basePlate.AnchorArrangement);
+            }
+        }
+
         public static void UpdatePlateScrewArrangementData(CPlate plate)
         {
-            if (plate.ScrewArrangement != null) plate.ScrewArrangement.UpdateArrangmentData();
+            if (plate.ScrewArrangement != null)
+                plate.ScrewArrangement.UpdateArrangmentData();
 
-            if (plate is CConCom_Plate_B_basic) // Base plates
-                plate.UpdatePlateData(plate.ScrewArrangement);
-            else // other plates (without anchors)
-                plate.UpdatePlateData(plate.ScrewArrangement);
+            plate.UpdatePlateData(plate.ScrewArrangement);
         }
     }
 }
