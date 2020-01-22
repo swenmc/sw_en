@@ -715,7 +715,6 @@ namespace PFD
             {
                 m_LongReinBottom_y_No = value;
 
-
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     if (m_LongReinBottom_y_No == "None")
@@ -785,10 +784,13 @@ namespace PFD
 
                 LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color.Value;
 
+                // Komentovane 23.1.2020
+                /*
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.Reference_Bottom_Bar_y.ColorBar = LongReinBottom_y_Color;
                 }
+                */
 
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -811,11 +813,13 @@ namespace PFD
 
                 m_FootingPadSize_x_Or_a = value;
 
+                // Komentovane 23.1.2020
+                /*
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim1 = FootingPadSize_x_Or_a;
                     pad.SetControlPoint();
-                }
+                }*/
 
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_x_Or_a");
@@ -836,11 +840,14 @@ namespace PFD
                     throw new ArgumentException("Footing pad size must be between 0.4 and 5 [m]");
 
                 m_FootingPadSize_y_Or_b = value;
+                // Komentovane 23.1.2020
+                /*
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim2 = FootingPadSize_y_Or_b;
                     pad.SetControlPoint();
                 }
+                */
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_y_Or_b");
             }
@@ -1826,7 +1833,7 @@ namespace PFD
                 pad = GetFootingPad(EMemberType_FS_Position.ColumnBackSide);
                 joint = GetBaseJointForSelectedNode(pad.m_Node);
                 m_DictFootings.Add("Wind Post - Back", Tuple.Create<CFoundation, CConnectionJointTypes>(pad, joint));
-                
+
                 return m_DictFootings;
             }
         }
@@ -2067,6 +2074,8 @@ namespace PFD
             return list;
         }
 
+        // Komentovane 23.1.2020
+        /*
         private void UpdateModelFootingPads()
         {
             foreach (CFoundation pad in listOfSelectedTypePads)
@@ -2098,7 +2107,7 @@ namespace PFD
                 pad.Eccentricity_x = fe_x;
                 pad.Eccentricity_y = fe_y;
             }
-        }
+        }*/
 
         // Funkcia nastavi excentricitam znamienka podla polohy footing pad, vstupom su absolutne hodnoty excentricit
         public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
@@ -2115,8 +2124,8 @@ namespace PFD
             {
                 fe_x = fe_x_abs; // First Frame Left
 
-                if (sBuildingSide == "Right") // First Frame Right
-                    fe_x = -fe_x_abs;
+                //if (sBuildingSide == "Right") // First Frame Right
+                //    fe_x = -fe_x_abs;
 
                 if (sBuildingSide == "Back") // Last Frame Left
                 {
@@ -2457,6 +2466,41 @@ namespace PFD
             // Regenerate reinforcement bars
             foreach (CFoundation pad in listOfSelectedTypePads)
             {
+                //--------------------------------------------------------------------------------------------------------
+                // Presunuty kod z funkcie private void UpdateModelFootingPads(), ktoru som zakomentoval 23.1.2020
+
+                pad.m_fDim1 = FootingPadSize_x_Or_a;
+                pad.m_fDim2 = FootingPadSize_y_Or_b;
+                pad.m_fDim3 = FootingPadSize_z_Or_h;
+
+                // Urcim znamienka pre hodnotu excentricity a nastavim ich patkam
+                float fe_x = 0, fe_y = 0;
+
+                string sBuildingSide = "";
+
+                // TODO Ondrej - tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
+                if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                    sBuildingSide = "Front";
+                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    sBuildingSide = "Back";
+                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.EdgeColumn || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                {
+                    sBuildingSide = "Left";
+
+                    if (!MathF.d_equal(pad.m_Node.Y, 0)) // Nepaci sa mi tato podmienka, mozno by sme mali dat do patky alebo do stlpa na pravej strane este nejaky priznak
+                        sBuildingSide = "Right";
+                }
+
+                SetFootingPadEccentricitySign(pad.m_ColumnMemberTypePosition, sBuildingSide, Eccentricity_ex_abs, Eccentricity_ey_abs, out fe_x, out fe_y);
+
+                pad.Eccentricity_x = fe_x;
+                pad.Eccentricity_y = fe_y;
+
+                // Nastavime rozmery a excentricity a updatujeme control point patky
+                pad.SetControlPoint();
+
+                //--------------------------------------------------------------------------------------------------------
+
                 // For each pad recalculate lengths of reference bars
                 pad.Reference_Top_Bar_x.ProjectionLength = pad.Reference_Top_Bar_x is CReinforcementBarStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Top_Bar_x.Diameter;
                 pad.Reference_Bottom_Bar_x.ProjectionLength = pad.Reference_Bottom_Bar_x is CReinforcementBarStraight ? m_FootingPadSize_x_Or_a - 2 * fConcreteCover : m_FootingPadSize_x_Or_a - 2 * fConcreteCover - pad.Reference_Bottom_Bar_x.Diameter;
