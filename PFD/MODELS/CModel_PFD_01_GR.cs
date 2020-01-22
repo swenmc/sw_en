@@ -3330,50 +3330,6 @@ namespace PFD
             }
         }
 
-        // Funkcia nastavi excentricitam znamienka podla polohy footing pad, vstupom su absolutne hodnoty excentricit
-        public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
-        {
-            if (columnTypePosition == EMemberType_FS_Position.MainColumn)
-            {
-              fe_x = fe_x_abs;
-              fe_y = -fe_y_abs;
-
-                if (sBuildingSide == "Right") // Main Columns on the right side
-                    fe_x = -fe_x_abs;
-            }
-            else if (columnTypePosition == EMemberType_FS_Position.EdgeColumn)
-            {
-                fe_x = fe_x_abs; // First Frame Left
-
-                if (sBuildingSide == "Right") // First Frame Right
-                    fe_x = -fe_x_abs;
-
-                if (sBuildingSide == "Back") // Last Frame Left
-                {
-                    fe_x = -fe_x_abs;
-
-                    if (sBuildingSide == "Right") // First Frame Right
-                        fe_x = fe_x_abs;
-                }
-
-                fe_y = -fe_y_abs;
-            }
-            else if (columnTypePosition == EMemberType_FS_Position.ColumnFrontSide)
-            {
-                fe_x = fe_x_abs;
-                fe_y = -fe_y_abs; // + eccentricityColumnFront_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
-            }
-            else if (columnTypePosition == EMemberType_FS_Position.ColumnBackSide)
-            {
-                fe_x = fe_x_abs;
-                fe_y = fe_y_abs; // + eccentricityColumnBack_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
-            }
-            else
-            {
-                throw new ArgumentNullException("Invalid footing pad type.");
-            }
-        }
-
         private void CreateFloorSlab(bool bGenerateFrontColumns, bool bGenerateBackColumns, bool bGenerateFrontGirts, bool bGenerateBackGirts, bool bWindPostUnderRafter)
         {
             bool bGenerateSlabs = true;

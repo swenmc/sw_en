@@ -73,8 +73,8 @@ namespace PFD
         private float m_FootingPadSize_y_Or_b;
         private float m_FootingPadSize_z_Or_h;
 
-        private float m_Eccentricity_ex;
-        private float m_Eccentricity_ey;
+        private float m_Eccentricity_ex_abs;
+        private float m_Eccentricity_ey_abs;
 
         private float m_SoilReductionFactor_Phi;
         private float m_SoilReductionFactorEQ_Phi;
@@ -871,42 +871,40 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float Eccentricity_ex
+        public float Eccentricity_ex_abs
         {
             get
             {
-                return m_Eccentricity_ex;
+                return m_Eccentricity_ex_abs;
             }
 
             set
             {
-                if (value < -0.5f * FootingPadSize_x_Or_a || value > 0.5f * FootingPadSize_x_Or_a)
-                    throw new ArgumentException("Eccentricity must be between -x/2 = " + string.Format("{0:0.000}", -0.5f * FootingPadSize_x_Or_a) +
-                                                                          "and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
+                if (value < 0 || value > 0.5f * FootingPadSize_x_Or_a)
+                    throw new ArgumentException("Eccentricity must be between 0 and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
 
-                m_Eccentricity_ex = value;
+                m_Eccentricity_ex_abs = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-                NotifyPropertyChanged("Eccentricity_ex");
+                NotifyPropertyChanged("Eccentricity_ex_abs");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float Eccentricity_ey
+        public float Eccentricity_ey_abs
         {
             get
             {
-                return m_Eccentricity_ey;
+                return m_Eccentricity_ey_abs;
             }
 
             set
             {
-                if (value < -0.5f * FootingPadSize_y_Or_b || value > 0.5f * FootingPadSize_y_Or_b)
-                    throw new ArgumentException("Eccentricity must be between -y/2= " + string.Format("{0:0.000}", -0.5f * FootingPadSize_y_Or_b) +
-                                                                          "and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
+                if (value < 0 || value > 0.5f * FootingPadSize_y_Or_b)
+                    throw new ArgumentException("Eccentricity must be between 0 and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
 
-                m_Eccentricity_ey = value;
+                m_Eccentricity_ey_abs = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
-                NotifyPropertyChanged("Eccentricity_ey");
+                NotifyPropertyChanged("Eccentricity_ey_abs");
             }
         }
 
@@ -1903,10 +1901,8 @@ namespace PFD
             // Pre rovnaky typ patiek sa im pri vyslednom zobrazeni meni sa im znamienko podla toho ako je otocena patka
             // podla toho ci sme na lavej alebo pravej strane budovy
 
-            //Eccentricity_ex = pad.Eccentricity_x;  //toto nenastavujem lebo bolo zaporne a hned sa to zrube na validacii
-            //Eccentricity_ey = pad.Eccentricity_y;
-            Eccentricity_ex = 0; // m
-            Eccentricity_ey = 0; // m
+            //Eccentricity_ex_abs = Math.Abs(pad.Eccentricity_x);  //toto nenastavujem lebo bolo zaporne a hned sa to zrube na validacii
+            //Eccentricity_ey_abs = Math.Abs(pad.Eccentricity_y);
 
             IsSetFromCode = false;
         }
@@ -2078,6 +2074,73 @@ namespace PFD
                 pad.m_fDim1 = FootingPadSize_x_Or_a;
                 pad.m_fDim2 = FootingPadSize_y_Or_b;
                 pad.m_fDim3 = FootingPadSize_z_Or_h;
+
+                // Urcim znamienka pre hodnotu excentricity a nastavim ich patkam
+                float fe_x = 0, fe_y = 0;
+
+                string sBuildingSide = "";
+
+                // TODO Ondrej - tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
+                if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+                    sBuildingSide = "Front";
+                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
+                    sBuildingSide = "Back";
+                else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.EdgeColumn || pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                {
+                    sBuildingSide = "Left";
+
+                    if (!MathF.d_equal(pad.m_Node.Y, 0)) // Nepaci sa mi tato podmienka, mozno by sme mali dat do patky alebo do stlpa na pravej strane este nejaky priznak
+                        sBuildingSide = "Right";
+                }
+
+                SetFootingPadEccentricitySign(pad.m_ColumnMemberTypePosition, "Back", Eccentricity_ex_abs, Eccentricity_ey_abs, out fe_x, out fe_y);
+
+                pad.Eccentricity_x = fe_x;
+                pad.Eccentricity_y = fe_y;
+            }
+        }
+
+        // Funkcia nastavi excentricitam znamienka podla polohy footing pad, vstupom su absolutne hodnoty excentricit
+        public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
+        {
+            if (columnTypePosition == EMemberType_FS_Position.MainColumn)
+            {
+                fe_x = fe_x_abs;
+                fe_y = -fe_y_abs;
+
+                if (sBuildingSide == "Right") // Main Columns on the right side
+                    fe_x = -fe_x_abs;
+            }
+            else if (columnTypePosition == EMemberType_FS_Position.EdgeColumn)
+            {
+                fe_x = fe_x_abs; // First Frame Left
+
+                if (sBuildingSide == "Right") // First Frame Right
+                    fe_x = -fe_x_abs;
+
+                if (sBuildingSide == "Back") // Last Frame Left
+                {
+                    fe_x = -fe_x_abs;
+
+                    if (sBuildingSide == "Right") // First Frame Right
+                        fe_x = fe_x_abs;
+                }
+
+                fe_y = -fe_y_abs;
+            }
+            else if (columnTypePosition == EMemberType_FS_Position.ColumnFrontSide)
+            {
+                fe_x = fe_x_abs;
+                fe_y = -fe_y_abs; // + eccentricityColumnFront_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
+            }
+            else if (columnTypePosition == EMemberType_FS_Position.ColumnBackSide)
+            {
+                fe_x = fe_x_abs;
+                fe_y = fe_y_abs; // + eccentricityColumnBack_Z.MFz_local // Ak chceme urcit celkovu excentricitu od uzla
+            }
+            else
+            {
+                throw new ArgumentNullException("Invalid footing pad type.");
             }
         }
 
@@ -2267,8 +2330,9 @@ namespace PFD
             FootingPadSize_y_Or_b = pad.m_fDim2;
             FootingPadSize_z_Or_h = pad.m_fDim3;
 
-            //Eccentricity_ex
-            //Eccentricity_ey
+            Eccentricity_ex_abs = Math.Abs(pad.Eccentricity_x);
+            Eccentricity_ey_abs = Math.Abs(pad.Eccentricity_y);
+
             //LongReinTop_x_No
             //LongReinTop_x_Phi
             //LongReinTop_x_distance_s_y

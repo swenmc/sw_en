@@ -73,8 +73,8 @@ namespace PFD
             if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
-                float feccentricity_x = 0;
-                float feccentricity_y = 0;
+                float feccentricity_x = pad.Eccentricity_x;
+                float feccentricity_y = pad.Eccentricity_x;
                 float fpad_x = pad.m_fDim1;
                 float fpad_y = pad.m_fDim2;
 
