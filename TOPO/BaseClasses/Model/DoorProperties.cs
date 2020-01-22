@@ -287,7 +287,7 @@ namespace BaseClasses
             if (m_iBayNumber < 0f) return false;
             if (m_fDoorsHeight < 0.1f) return false;
             if (m_fDoorsWidth < 0.1f) return false;
-            if (m_fDoorCoordinateXinBlock < 0f) return false;
+            if (m_fDoorCoordinateXinBlock < 0.05f) return false;
 
             return isValid;
         }
@@ -313,7 +313,9 @@ namespace BaseClasses
                 if (float.IsNaN(m_L1)) return true;
                 if (m_L1 < m_fDoorsWidth + m_fDoorCoordinateXinBlock) return false;
             }
-            
+
+            if(m_WallHeight < m_fDoorsHeight) return false; // Doors are higher than wall (Todo - pre prednu a zadnu stenu by bolo dobre zohladnit presne vysku v danej bay
+
             return true;
         }
 

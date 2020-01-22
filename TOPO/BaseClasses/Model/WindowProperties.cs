@@ -240,8 +240,9 @@ namespace BaseClasses
             }
 
             if (float.IsNaN(fBayWidth)) return true;
-            if (fBayWidth < m_fWindowsWidth+ m_fWindowCoordinateXinBay) return false;
-            
+            if (fBayWidth < m_fWindowsWidth + m_fWindowCoordinateXinBay) return false;
+            if(m_WallHeight < m_fWindowsHeight + m_fWindowCoordinateZinBay) return false;
+
             return true;
         }
 
