@@ -784,13 +784,10 @@ namespace PFD
 
                 LongReinBottom_y_Color = listOfMediaColours[m_LongReinBottom_y_ColorIndex].Color.Value;
 
-                // Komentovane 23.1.2020
-                /*
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.Reference_Bottom_Bar_y.ColorBar = LongReinBottom_y_Color;
                 }
-                */
 
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
 
@@ -867,11 +864,14 @@ namespace PFD
                     throw new ArgumentException("AS 2870 - Footing pad size must be between 0.45 and 2 [m]"); // TODO napojit na tabulku normy
 
                 m_FootingPadSize_z_Or_h = value;
+                // Komentovane 23.1.2020
+                /*
                 foreach (CFoundation pad in listOfSelectedTypePads)
                 {
                     pad.m_fDim3 = FootingPadSize_z_Or_h;
                     pad.SetControlPoint();
                 }
+                */
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
                 NotifyPropertyChanged("FootingPadSize_z_Or_h");
             }
@@ -906,6 +906,7 @@ namespace PFD
 
             set
             {
+                // TODO - pridat do limitu hodnotu polovice rozmeru sltpa aby sa nemohol nastavit stred stlpa na okraj patky
                 if (value < 0 || value > 0.5f * FootingPadSize_y_Or_b)
                     throw new ArgumentException("Eccentricity must be between 0 and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
 
