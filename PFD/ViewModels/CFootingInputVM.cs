@@ -2110,7 +2110,7 @@ namespace PFD
         }*/
 
         // Funkcia nastavi excentricitam znamienka podla polohy footing pad, vstupom su absolutne hodnoty excentricit
-        public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
+        public void SetFootingPadEccentricitySign(EMemberType_FS_Position columnTypePosition, string sBuildingSide, bool bIsLastFrame, float fe_x_abs, float fe_y_abs, out float fe_x, out float fe_y)
         {
             if (columnTypePosition == EMemberType_FS_Position.MainColumn)
             {
@@ -2122,14 +2122,16 @@ namespace PFD
             }
             else if (columnTypePosition == EMemberType_FS_Position.EdgeColumn)
             {
+                // sBuildingSide = "Left" alebo sBuildingSide = "Right";
+
                 fe_x = fe_x_abs; // First Frame Left
 
-                //if (sBuildingSide == "Right") // First Frame Right
-                //    fe_x = -fe_x_abs;
-
-                if (sBuildingSide == "Back") // Last Frame Left
-                {
+                if (sBuildingSide == "Right") // First Frame Right
                     fe_x = -fe_x_abs;
+
+                if (bIsLastFrame)
+                {
+                    fe_x = -fe_x_abs; // Last Frame Left
 
                     if (sBuildingSide == "Right") // First Frame Right
                         fe_x = fe_x_abs;
@@ -2477,8 +2479,12 @@ namespace PFD
                 float fe_x = 0, fe_y = 0;
 
                 string sBuildingSide = "";
+                bool bIsLastFrame = false;
 
-                // TODO Ondrej - tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
+                // TODO Ondrej
+                // Tu potrebujem zistit na ktorej strane budovy su jednotlive patky - ta "Right" side by sa mohla urcovat asi aj nejako krajsie
+                // Podobne bool pre posledny ram
+
                 if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnFrontSide)
                     sBuildingSide = "Front";
                 else if (pad.m_ColumnMemberTypePosition == EMemberType_FS_Position.ColumnBackSide)
@@ -2487,11 +2493,14 @@ namespace PFD
                 {
                     sBuildingSide = "Left";
 
-                    if (!MathF.d_equal(pad.m_Node.Y, 0)) // Nepaci sa mi tato podmienka, mozno by sme mali dat do patky alebo do stlpa na pravej strane este nejaky priznak
+                    if (!MathF.d_equal(pad.m_Node.X, 0)) // Nepaci sa mi tato podmienka, mozno by sme mali dat do patky alebo do stlpa na pravej strane este nejaky priznak
                         sBuildingSide = "Right";
+
+                    if (!MathF.d_equal(pad.m_Node.Y, 0))  // Nepaci sa mi tato podmienka, to ci sme na prvom alebo poslednom rame by sa asi dalo zistit aj nejako krajsie
+                        bIsLastFrame = true;
                 }
 
-                SetFootingPadEccentricitySign(pad.m_ColumnMemberTypePosition, sBuildingSide, Eccentricity_ex_abs, Eccentricity_ey_abs, out fe_x, out fe_y);
+                SetFootingPadEccentricitySign(pad.m_ColumnMemberTypePosition, sBuildingSide, bIsLastFrame, Eccentricity_ex_abs, Eccentricity_ey_abs, out fe_x, out fe_y);
 
                 pad.Eccentricity_x = fe_x;
                 pad.Eccentricity_y = fe_y;
