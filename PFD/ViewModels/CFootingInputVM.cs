@@ -887,8 +887,10 @@ namespace PFD
 
             set
             {
-                if (value < 0 || value > 0.5f * FootingPadSize_x_Or_a)
-                    throw new ArgumentException("Eccentricity must be between 0 and x/2 = " + string.Format("{0:0.000}", 0.5f * FootingPadSize_x_Or_a) + " [m]");
+                // TODO - pridat do limitu hodnotu polovice rozmeru sltpa aby sa nemohol nastavit stred stlpa na okraj patky
+                // TODO - doriesit ci sa ma zadavat celkova excentricta od uzla alebo excentricita medzi stredom patky a stredom stlpa
+                if (value < 0 || value > /*0.5f **/ FootingPadSize_x_Or_a)
+                    throw new ArgumentException("Eccentricity must be between 0 and x/2 = " + string.Format("{0:0.000}", /*0.5f **/ FootingPadSize_x_Or_a) + " [m]");
 
                 m_Eccentricity_ex_abs = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
@@ -907,8 +909,9 @@ namespace PFD
             set
             {
                 // TODO - pridat do limitu hodnotu polovice rozmeru sltpa aby sa nemohol nastavit stred stlpa na okraj patky
-                if (value < 0 || value > 0.5f * FootingPadSize_y_Or_b)
-                    throw new ArgumentException("Eccentricity must be between 0 and y/2= " + string.Format("{0:0.000}", 0.5f * FootingPadSize_y_Or_b) + "[m]");
+                // TODO - doriesit ci sa ma zadavat celkova excentricta od uzla alebo excentricita medzi stredom patky a stredom stlpa
+                if (value < 0 || value > /*0.5f **/ FootingPadSize_y_Or_b)
+                    throw new ArgumentException("Eccentricity must be between 0 and y/2= " + string.Format("{0:0.000}", /*0.5f **/ FootingPadSize_y_Or_b) + "[m]");
 
                 m_Eccentricity_ey_abs = value;
                 if (IsSetFromCode == false) UpdateSelectedFootingPadsValuesFromGUI();
