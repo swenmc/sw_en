@@ -232,7 +232,6 @@ namespace BaseClasses
             else if (sBuildingSide == "Front")
             {
                 fBayWidth = m_distFrontColumns;
-
             }
             else if (sBuildingSide == "Back")
             {
