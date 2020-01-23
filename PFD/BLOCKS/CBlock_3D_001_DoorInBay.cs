@@ -117,7 +117,7 @@ namespace PFD
             if (prop.fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
                 bDoorToCloseToLeftColumn = true; // Door is to close to the left column
 
-            if((fBayWidth - (prop.fDoorCoordinateXinBlock + prop.fDoorsWidth)) < fLimitDistanceFromColumn)
+            if ((fBayWidth - (prop.fDoorCoordinateXinBlock + prop.fDoorsWidth)) < fLimitDistanceFromColumn)
                 bDoorToCloseToRightColumn = true; // Door is to close to the right column
 
             int iNumberOfGirtsSequences;
@@ -226,7 +226,7 @@ namespace PFD
                     eccentricityGirtStart_temp = new CMemberEccentricity(eccentricityGirtStart.MFy_local, eccentricityGirtStart.MFz_local);
                     eccentricityGirtEnd_temp = new CMemberEccentricity(eccentricityGirtEnd.MFy_local, eccentricityGirtEnd.MFz_local);
 
-                    if(bIsReverseGirtSession) // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
+                    if (bIsReverseGirtSession) // Zmenime znamienko pre excentricitu, lebo girts v bloku maju inu orientaciu osi ako girts v session
                     {
                         eccentricityGirtStart_temp = new CMemberEccentricity(-eccentricityGirtStart.MFy_local, -eccentricityGirtStart.MFz_local);
                         eccentricityGirtEnd_temp = new CMemberEccentricity(-eccentricityGirtEnd.MFy_local, -eccentricityGirtEnd.MFz_local);
@@ -270,7 +270,7 @@ namespace PFD
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
 
-            if(bDoorColumnIsConnectedtoEavePurlin)
+            if (bDoorColumnIsConnectedtoEavePurlin)
             {
                 fDoorColumnEnd = (float)referenceEavePurlin.CrScStart.z_min - fCutOffOneSide;
             }
@@ -401,11 +401,10 @@ namespace PFD
             {
                 CMember current_member = m_arrMembers[iMembersGirts + iNumberOfColumns];
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates,  true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true));
             }
 
             /*
-
             4------------3
             |            |
             |            |
@@ -413,7 +412,6 @@ namespace PFD
             |            |
             |            |
             1------------2
-
             */
 
             // x horizontalna os, y-zvisla os (z)
