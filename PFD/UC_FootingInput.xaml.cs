@@ -45,11 +45,6 @@ namespace PFD
             vm.PropertyChanged += HandleFootingPadPropertyChangedEvent;
             this.DataContext = vm;
             vm.FootingPadMemberTypeIndex = 0;
-
-            CFoundation pad = vm.GetSelectedFootingPad();
-            CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
-            CSlab floorSlab = vm.GetFloorSlab();
-            displayFootingPad(pad, joint, floorSlab);
         }
 
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

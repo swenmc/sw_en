@@ -65,13 +65,14 @@ namespace PFD
         {
             if (!(sender is CPFDViewModel)) return;
 
-            //toto tu nemoze byt, resp. sa to musi prerobit na IsSetFromCode a zaroven na konkretne premenne ktore ked sa zmenia, tak sa ma aj zobrazit joint 
-            //nemyslitelne aby sa to takto vkuse zobrazovalo milionkrat
-            //TODO - nutna optimalizacia
+            if (_pfdVM.IsSetFromCode) return;
 
-            //temp 23.1.2020 commented
-            //CConnectionJointTypes joint = GetSelectedJoint();
-            //displayJoint(joint);
+            //To Mato - tu by mozno trebalo pridat premenne pri zmene ktorych je nutne prekreslit Joint preview
+
+            if (e.PropertyName == "ModelIndex") return;
+                        
+            CConnectionJointTypes joint = GetSelectedJoint();
+            displayJoint(joint);
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
