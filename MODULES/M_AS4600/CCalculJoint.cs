@@ -1165,8 +1165,8 @@ namespace M_AS4600
             designDetails.fN_asterix_anchor_uplif = designDetails.fN_asterix_joint_uplif / designDetails.iNumberAnchors_t; // Design axial force per anchor
             designDetails.fV_asterix_anchor = designDetails.fV_asterix_res_joint / designDetails.iNumberAnchors_v; // Design shear force per anchor
 
-            designDetails.fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
-            designDetails.fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
+            designDetails.fplateWidth_x = basePlate.Width_bx;
+            designDetails.fplateWidth_y = basePlate.Height_hy;
 
             designDetails.fFootingDimension_x = foundation.m_fDim1; // Input
             designDetails.fFootingDimension_y = foundation.m_fDim2; // Input
@@ -1174,11 +1174,39 @@ namespace M_AS4600
 
             joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
 
-            designDetails.fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
-            designDetails.fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
+            float pe_x_min_AnchorToPlateEdge = float.MaxValue;
+            float pe_y_min_AnchorToPlateEdge = float.MaxValue;
+            float fe_x_min_AnchorToFootingEdge = float.MaxValue;
+            float fe_y_min_AnchorToFootingEdge = float.MaxValue;
 
-            designDetails.fe_x_BasePlateToFootingEdge = basePlate.x_min_plateEdge_to_pad;
-            designDetails.fe_y_BasePlateToFootingEdge = basePlate.y_min_plateEdge_to_pad;
+            designDetails.bIsCastInHeadedStud = false; // TODO - rozlisovat typ kotvy
+
+            //(a) For cast-in headed stud anchors // Eq. 17-14
+            //(b) For cast-in headed bolts and hooked bolt anchors // Eq. 17-15
+
+            foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
+            {
+                if (anchor.x_pe_min < pe_x_min_AnchorToPlateEdge)
+                    pe_x_min_AnchorToPlateEdge  = anchor.x_pe_min;
+
+                if (anchor.y_pe_min < pe_y_min_AnchorToPlateEdge)
+                    pe_y_min_AnchorToPlateEdge = anchor.y_pe_min;
+
+                if (anchor.x_fe_min < fe_x_min_AnchorToFootingEdge)
+                    fe_x_min_AnchorToFootingEdge = anchor.x_fe_min;
+
+                if (anchor.y_fe_min < fe_y_min_AnchorToFootingEdge)
+                    fe_y_min_AnchorToFootingEdge = anchor.y_fe_min;
+            }
+
+            designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
+            designDetails.fe_y_AnchorToPlateEdge = pe_y_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
+
+            designDetails.fe_x_BasePlateToFootingEdge = basePlate.x_min_abs_plateEdge_to_pad; // Minimum distance between plate edge and footing edge
+            designDetails.fe_y_BasePlateToFootingEdge = basePlate.y_min_abs_plateEdge_to_pad; // Minimum distance between plate edge and footing edge
+
+            designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
+            designDetails.fe_y_AnchorToFootingEdge = fe_y_min_AnchorToFootingEdge;
 
             designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx; // Input
             designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
@@ -1187,7 +1215,7 @@ namespace M_AS4600
             materialConcrete = (CMat_02_00)foundation.m_Mat;
 
             designDetails.ff_apostrophe_c = (float)materialConcrete.Fck; // Characteristic compressive (cylinder) concrete strength
-            designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete - TODO - nacitat z materialu zakladov
+            designDetails.fRho_c = materialConcrete.m_fRho; // Density of concrete
 
             // Anchors (bolts)
             designDetails.fd_s = basePlate.AnchorArrangement.referenceAnchor.Diameter_thread;
@@ -1387,11 +1415,12 @@ namespace M_AS4600
             // 17.5.8.1 Lower characteristic shear strength of steel of anchor
             // Group of anchors
 
-            // TODO - rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
-            designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
-            designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+            // Rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
+            if(designDetails.bIsCastInHeadedStud) // 17-14
+                designDetails.fV_s_17581_group = designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+            else // 17-15
+                designDetails.fV_s_17581_group = designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
 
-            designDetails.fV_s_17581_group = Math.Min(designDetails.fV_s_1714_group, designDetails.fV_s_1715_group);
             designDetails.fEta_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
             fEta_max_Footing = MathF.Max(fEta_max_Footing, designDetails.fEta_17573_group);
 

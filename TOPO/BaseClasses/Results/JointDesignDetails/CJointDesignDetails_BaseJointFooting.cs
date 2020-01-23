@@ -9,6 +9,8 @@ namespace BaseClasses
     public class CJointDesignDetails_BaseJointFooting : CJointDesignDetails
     {
         // Anchors
+        public bool bIsCastInHeadedStud;
+
         public float fN_asterix_joint_uplif;
         public float fN_asterix_joint_bearing;
 
@@ -34,6 +36,9 @@ namespace BaseClasses
 
         public float fe_x_BasePlateToFootingEdge;
         public float fe_y_BasePlateToFootingEdge;
+
+        public float fe_x_AnchorToFootingEdge;
+        public float fe_y_AnchorToFootingEdge;
 
         public float fu_x_Washer;
         public float fu_y_Washer;

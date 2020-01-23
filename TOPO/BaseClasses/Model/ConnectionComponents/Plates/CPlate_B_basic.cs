@@ -162,33 +162,33 @@ namespace BaseClasses
             }
         }
 
-        float m_fx_min_plateEdge_to_pad;
+        float m_fx_min_abs_plateEdge_to_pad;
 
-        public float x_min_plateEdge_to_pad
+        public float x_min_abs_plateEdge_to_pad
         {
             get
             {
-                return m_fx_min_plateEdge_to_pad;
+                return m_fx_min_abs_plateEdge_to_pad;
             }
 
             set
             {
-                m_fx_min_plateEdge_to_pad = value;
+                m_fx_min_abs_plateEdge_to_pad = value;
             }
         }
 
-        float m_fy_min_plateEdge_to_pad;
+        float m_fy_min_abs_plateEdge_to_pad;
 
-        public float y_min_plateEdge_to_pad
+        public float y_min_abs_plateEdge_to_pad
         {
             get
             {
-                return m_fy_min_plateEdge_to_pad;
+                return m_fy_min_abs_plateEdge_to_pad;
             }
 
             set
             {
-                m_fy_min_plateEdge_to_pad = value;
+                m_fy_min_abs_plateEdge_to_pad = value;
             }
         }
 

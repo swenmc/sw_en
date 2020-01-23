@@ -2824,6 +2824,14 @@ namespace M_AS4600
                 listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
 
+                listPhysicalQuantity_Symbols.Add("ex.a.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ey.a.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
                 listPhysicalQuantity_Symbols.Add("bx.washer");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fu_x_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
@@ -3148,13 +3156,18 @@ namespace M_AS4600
 
                 // 17.5.8.1 Lower characteristic shear strength of steel of anchor
                 // Group of anchors
-                listPhysicalQuantity_Symbols.Add("Vs.g1714");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1714_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Vs.g1715");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1715_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
+                if (det.bIsCastInHeadedStud)
+                {
+                    listPhysicalQuantity_Symbols.Add("Vs.g1714");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1714_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+                }
+                else
+                {
+                    listPhysicalQuantity_Symbols.Add("Vs.g1715");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1715_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+                }
 
                 listPhysicalQuantity_Symbols.Add("Vs.g");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_17581_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());

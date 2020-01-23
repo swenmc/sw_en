@@ -250,8 +250,8 @@ namespace BaseClasses
                 basePlate.x_plus_plateEdge_to_pad = fpad_x - basePlate.x_plateEdge_to_pad - basePlate.Fb_X;
                 basePlate.y_plus_plateEdge_to_pad = fpad_y - basePlate.y_plateEdge_to_pad - basePlate.Fh_Y;
 
-                basePlate.x_min_plateEdge_to_pad = Math.Min(basePlate.x_minus_plateEdge_to_pad, basePlate.x_plus_plateEdge_to_pad);
-                basePlate.y_min_plateEdge_to_pad = Math.Max(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad);
+                basePlate.x_min_abs_plateEdge_to_pad = Math.Min(Math.Abs(basePlate.x_minus_plateEdge_to_pad), Math.Abs(basePlate.x_plus_plateEdge_to_pad));
+                basePlate.y_min_abs_plateEdge_to_pad = Math.Max(Math.Abs(basePlate.y_minus_plateEdge_to_pad), Math.Abs(basePlate.y_plus_plateEdge_to_pad));
 
                 basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad);
             }
