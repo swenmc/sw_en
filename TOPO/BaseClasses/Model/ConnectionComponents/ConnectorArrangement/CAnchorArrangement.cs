@@ -135,7 +135,7 @@ namespace BaseClasses
                 IHolesNumber = 0;
         }
 
-        public virtual void SetEdgeDistances(CConCom_Plate_B_basic plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
+        public virtual void SetEdgeDistances(CConCom_Plate_B_basic plate, CFoundation pad)
         { }
 
         public override void FillArrayOfHolesCentersInWholeArrangement()

@@ -1172,11 +1172,13 @@ namespace M_AS4600
             designDetails.fFootingDimension_y = foundation.m_fDim2; // Input
             designDetails.fFootingHeight = foundation.m_fDim3; // Input
 
+            joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
+
             designDetails.fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
             designDetails.fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
 
-            designDetails.fe_x_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_x - designDetails.fplateWidth_x); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
-            designDetails.fe_y_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_y - designDetails.fplateWidth_y); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
+            designDetails.fe_x_BasePlateToFootingEdge = basePlate.x_min_plateEdge_to_pad;
+            designDetails.fe_y_BasePlateToFootingEdge = basePlate.y_min_plateEdge_to_pad;
 
             designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx; // Input
             designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input

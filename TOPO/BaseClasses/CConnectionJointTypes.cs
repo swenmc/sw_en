@@ -231,6 +231,32 @@ namespace BaseClasses
                 return null; // Exception - not defined plate prefix
         }
 
+        public void SetBaseJointEdgeDistances(CFoundation pad)
+        {
+            // Joint with base plate and anchors
+            if (m_arrPlates != null && m_arrPlates[0] is CConCom_Plate_B_basic)
+            {
+                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)m_arrPlates[0];
+                float feccentricity_x = pad.Eccentricity_x;
+                float feccentricity_y = pad.Eccentricity_x;
+                float fpad_x = pad.m_fDim1;
+                float fpad_y = pad.m_fDim2;
+
+                basePlate.x_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
+                basePlate.y_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
+
+                basePlate.x_minus_plateEdge_to_pad = basePlate.x_plateEdge_to_pad;
+                basePlate.y_minus_plateEdge_to_pad = basePlate.y_plateEdge_to_pad;
+                basePlate.x_plus_plateEdge_to_pad = fpad_x - basePlate.x_plateEdge_to_pad - basePlate.Fb_X;
+                basePlate.y_plus_plateEdge_to_pad = fpad_y - basePlate.y_plateEdge_to_pad - basePlate.Fh_Y;
+
+                basePlate.x_min_plateEdge_to_pad = Math.Min(basePlate.x_minus_plateEdge_to_pad, basePlate.x_plus_plateEdge_to_pad);
+                basePlate.y_min_plateEdge_to_pad = Math.Max(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad);
+
+                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad);
+            }
+        }
+
         public virtual CConnectionJointTypes RecreateJoint()
         {
             return null;

@@ -58,7 +58,7 @@ namespace BaseClasses
             RadiusAngle = 360; // Circle total angle to generate holes
         }
 
-        public override void SetEdgeDistances(CConCom_Plate_B_basic plate, CFoundation pad, float fx_plateEdge_to_pad, float fy_plateEdge_to_pad)
+        public override void SetEdgeDistances(CConCom_Plate_B_basic plate, CFoundation pad)
         {
             float fpadX = pad.m_fDim1; // X
             float fpadY = pad.m_fDim2; // Y
@@ -80,9 +80,9 @@ namespace BaseClasses
                 Anchors[i].y_pe_max = Math.Max(Anchors[i].y_pe_minus, Anchors[i].y_pe_plus);
 
                 // Anchor to foundation edge distances
-                Anchors[i].x_fe_minus = fx_plateEdge_to_pad + Anchors[i].x_pe_minus;
+                Anchors[i].x_fe_minus = plate.x_plateEdge_to_pad + Anchors[i].x_pe_minus;
                 Anchors[i].x_fe_plus = fpadX - Anchors[i].x_fe_minus;
-                Anchors[i].y_fe_minus = fy_plateEdge_to_pad + Anchors[i].y_pe_minus;
+                Anchors[i].y_fe_minus = plate.y_plateEdge_to_pad + Anchors[i].y_pe_minus;
                 Anchors[i].y_fe_plus = fpadY - Anchors[i].y_fe_minus;
 
                 Anchors[i].x_fe_min = Math.Min(Anchors[i].x_fe_minus, Anchors[i].x_fe_plus);

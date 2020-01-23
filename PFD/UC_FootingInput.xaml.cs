@@ -60,37 +60,9 @@ namespace PFD
             
             CFoundation pad = vm.GetSelectedFootingPad();
             CConnectionJointTypes joint = vm.GetBaseJointForSelectedNode(pad.m_Node);
+            if (joint == null) return; // Ak je to foundation pad a nebol najdeny odpovedajuci joint tak je to nevalidne
+
             CSlab floorSlab = vm.GetFloorSlab();
-
-            if (joint == null) return;
-            // To Mato trosku nerozumiem,ze naco tu taketo vypocty tu su. Resp. ci naozaj musia byt...
-            // To Ondrej - kvoli vypoctu a kresleniu patky v 2D potrebujem niekde spocitat vzdialenosti
-            // ake su medzi anchors a hranami base plates a medzi anchors a hranami foundation pads
-            // Prosim presun to niekam kde by to malo byt aby som to mohol pouzivat,tak ze ked zmenim nejaky rozmer footing pad, excentricita, alebo column crsc - teda rozmery base plate
-            // tak sa tie hodnoty prepocitaju
-
-            // Joint with base plate and anchors
-            if (joint != null && joint.m_arrPlates != null && joint.m_arrPlates[0] is CConCom_Plate_B_basic)
-            {
-                CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)joint.m_arrPlates[0];
-                float feccentricity_x = pad.Eccentricity_x;
-                float feccentricity_y = pad.Eccentricity_x;
-                float fpad_x = pad.m_fDim1;
-                float fpad_y = pad.m_fDim2;
-
-                float fx_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
-                float fy_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
-
-                float fx_minus_plateEdge_to_pad = fx_plateEdge_to_pad;
-                float fy_minus_plateEdge_to_pad = fy_plateEdge_to_pad;
-                float fx_plus_plateEdge_to_pad = fpad_x - fx_plateEdge_to_pad - basePlate.Fb_X;
-                float fy_plus_plateEdge_to_pad = fpad_y - fy_plateEdge_to_pad - basePlate.Fh_Y;
-
-                float fx_min_plateEdge_to_pad = Math.Min(fx_minus_plateEdge_to_pad, fx_plus_plateEdge_to_pad);
-                float fy_min_plateEdge_to_pad = Math.Max(fy_minus_plateEdge_to_pad, fy_plus_plateEdge_to_pad);
-
-                basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad, fx_plateEdge_to_pad, fy_plateEdge_to_pad);
-            }
 
             displayFootingPad(pad, joint, floorSlab);
         }

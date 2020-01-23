@@ -71,6 +71,127 @@ namespace BaseClasses
             }
         }
 
+        // Base Plate to Edge Distances
+        float m_fx_plateEdge_to_pad;
+
+        public float x_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fx_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fx_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fy_plateEdge_to_pad;
+
+        public float y_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fy_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fy_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fx_minus_plateEdge_to_pad;
+
+        public float x_minus_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fx_minus_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fx_minus_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fy_minus_plateEdge_to_pad;
+
+        public float y_minus_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fy_minus_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fy_minus_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fx_plus_plateEdge_to_pad;
+
+        public float x_plus_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fx_plus_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fx_plus_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fy_plus_plateEdge_to_pad;
+
+        public float y_plus_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fy_plus_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fy_plus_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fx_min_plateEdge_to_pad;
+
+        public float x_min_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fx_min_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fx_min_plateEdge_to_pad = value;
+            }
+        }
+
+        float m_fy_min_plateEdge_to_pad;
+
+        public float y_min_plateEdge_to_pad
+        {
+            get
+            {
+                return m_fy_min_plateEdge_to_pad;
+            }
+
+            set
+            {
+                m_fy_min_plateEdge_to_pad = value;
+            }
+        }
+
         public CConCom_Plate_B_basic()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
