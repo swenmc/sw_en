@@ -64,8 +64,14 @@ namespace PFD
         private void _pfdVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!(sender is CPFDViewModel)) return;
-            CConnectionJointTypes joint = GetSelectedJoint();
-            displayJoint(joint);
+
+            //toto tu nemoze byt, resp. sa to musi prerobit na IsSetFromCode a zaroven na konkretne premenne ktore ked sa zmenia, tak sa ma aj zobrazit joint 
+            //nemyslitelne aby sa to takto vkuse zobrazovalo milionkrat
+            //TODO - nutna optimalizacia
+
+            //temp 23.1.2020 commented
+            //CConnectionJointTypes joint = GetSelectedJoint();
+            //displayJoint(joint);
         }
 
         protected void HandleJointsPropertyChangedEvent(object sender, PropertyChangedEventArgs e)

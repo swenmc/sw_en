@@ -162,6 +162,13 @@ namespace BaseClasses
         public static CConnectionJointTypes GetClonedJoint(this CConnectionJointTypes joint)
         {
             CConnectionJointTypes clone = null;
+
+            //temp 23.1.2020 snazim sa ostranit OutOfMemoryException
+            joint.Visual_ConnectionJoint = null;
+            foreach (CPlate plate in joint.m_arrPlates) plate.Visual_Plate = null;
+            //end temp
+
+
             if (joint is CConnectionJoint_A001)
             {
                 CConnectionJoint_A001 j = joint as CConnectionJoint_A001;
