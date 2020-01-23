@@ -3077,7 +3077,7 @@ namespace PFD
                 for (int i = 0; i < iFrameNo; i++)
                 {
                     float fMainColumnFooting_Eccentricity_x = 0f;
-                    float fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h;
+                    float fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h);
 
                     EMemberType_FS_Position columnTypePosition = EMemberType_FS_Position.MainColumn;
                     string sName = "A";
@@ -3089,12 +3089,20 @@ namespace PFD
                         columnTypePosition = EMemberType_FS_Position.EdgeColumn;
                         sName = "B";
                         sDescriptionText = "PAD TYPE B [EC]";
-                        fMainColumnFooting_Eccentricity_y = 0.5f * fMainColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h;
+                        fMainColumnFooting_Eccentricity_y = 0.5f * (fMainColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF].h);
+
+                        // Zistenie hrubky base plate v spoji
+                        float fBasePlateThickness = 0.003f;
+                        if (m_arrConnectionJoints != null)
+                           fBasePlateThickness = (m_arrConnectionJoints.Find(x => x.m_MainMember.EMemberTypePosition == columnTypePosition)).m_arrPlates[0].Ft;
+
+                        // Kedze kotevny plech sa je pripojeny z vonkajsej strany stlpa je potrebne pocitat pri excentricite s tymto rozmerom a zmmensit ju
 
                         // Front side edge frame columns
-                        fMainColumnFooting_Eccentricity_x = 0.5f * fMainColumnFooting_aX - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b;
+                        fMainColumnFooting_Eccentricity_x = 0.5f * (fMainColumnFooting_aX - (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - 2 * fBasePlateThickness);
 
-                        if (i == (iFrameNo - 1)) // Back side edge frame columns
+                        // Back side edge frame columns
+                        if (i == (iFrameNo - 1)) 
                             fMainColumnFooting_Eccentricity_x *= -1;
 
                         //color = Colors.LightSteelBlue;
@@ -3176,7 +3184,7 @@ namespace PFD
                     float fFrontColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_FrontColumns * 0.40f), 1);
                     float fFrontColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fFrontColumnFooting_Eccentricity_y = 0.5f * fFrontColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h;
+                    float fFrontColumnFooting_Eccentricity_y = 0.5f * (fFrontColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].h);
 
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_x;
                     CReinforcementBar FrontColumnFootingReference_Top_Bar_y;
@@ -3261,7 +3269,7 @@ namespace PFD
                     float fBackColumnFooting_bY = (float)Math.Round(MathF.Max(0.5f, fDist_BackColumns * 0.40f), 1);
                     float fBackColumnFooting_h = 0.45f; // "AS 2870 - Footing pad size must be between 0.45 and 2 [m]" // TODO napojit na tabulku normy
 
-                    float fBackColumnFooting_Eccentricity_y = 0.5f * fBackColumnFooting_bY - 0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h;
+                    float fBackColumnFooting_Eccentricity_y = 0.5f * (fBackColumnFooting_bY - (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].h);
 
                     CReinforcementBar BackColumnFootingReference_Top_Bar_x;
                     CReinforcementBar BackColumnFootingReference_Top_Bar_y;

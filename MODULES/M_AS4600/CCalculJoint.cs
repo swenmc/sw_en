@@ -1211,7 +1211,7 @@ namespace M_AS4600
                 if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge)
                     fe_y_minus_min_AnchorToFootingEdge = anchor.y_fe_minus;
 
-                if (anchor.y_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
+                if (anchor.y_fe_plus < fe_y_plus_min_AnchorToFootingEdge)
                     fe_y_plus_min_AnchorToFootingEdge = anchor.y_fe_plus;
             }
 
@@ -1261,6 +1261,27 @@ namespace M_AS4600
             designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
             designDetails.fc_1_y = designDetails.fe_y_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
 
+            // Validation of distances
+
+            ValidateDimensionValue(designDetails.fe_x_AnchorToPlateEdge);
+            ValidateDimensionValue(designDetails.fe_y_AnchorToPlateEdge);
+
+            ValidateDimensionValue(designDetails.fe_x_BasePlateToFootingEdge);
+            ValidateDimensionValue(designDetails.fe_y_BasePlateToFootingEdge);
+
+            ValidateDimensionValue(designDetails.fe_x_AnchorToFootingEdge);
+            ValidateDimensionValue(designDetails.fe_y_AnchorToFootingEdge);
+
+            ValidateDimensionValue(designDetails.fu_x_Washer);
+            ValidateDimensionValue(designDetails.fu_y_Washer);
+
+            ValidateDimensionValue(designDetails.fs_2_x);
+            ValidateDimensionValue(designDetails.fs_1_y);
+
+            ValidateDimensionValue(designDetails.fc_2_x);
+            ValidateDimensionValue(designDetails.fc_1_y);
+ 
+            // Material properties
             CMat_02_00 materialConcrete = new CMat_02_00();
             materialConcrete = (CMat_02_00)foundation.m_Mat;
 
@@ -1909,6 +1930,17 @@ namespace M_AS4600
             fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
             fEta_N_t_screw_5433 = (Math.Abs(fTensionForce) / iNumberOfScrewInTension) / (fPhi_N_t_screw * fN_t_nom_screw_5433);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_screw_5433);
+        }
+
+        private void ValidateDimensionValue(float fDimValue)
+        {
+            float fLimitMin = 0.0001f; // 0.1 mm
+            float fLimitMax = 10f; // 10 m
+
+            if(fDimValue < -fLimitMin || fDimValue > fLimitMax) // Negative distance or extremely large value in the joint or footing design
+            {
+                throw new Exception("Invalid propery value " + fDimValue + "[m].");
+            }
         }
     }
 }
