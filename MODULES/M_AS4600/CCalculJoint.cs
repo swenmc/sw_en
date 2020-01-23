@@ -1174,10 +1174,14 @@ namespace M_AS4600
 
             joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
 
-            float pe_x_min_AnchorToPlateEdge = float.MaxValue;
-            float pe_y_min_AnchorToPlateEdge = float.MaxValue;
-            float fe_x_min_AnchorToFootingEdge = float.MaxValue;
-            float fe_y_min_AnchorToFootingEdge = float.MaxValue;
+            float pe_x_minus_min_AnchorToPlateEdge = float.MaxValue;
+            float pe_x_plus_min_AnchorToPlateEdge = float.MaxValue;
+            float pe_y_minus_min_AnchorToPlateEdge = float.MaxValue;
+            float pe_y_plus_min_AnchorToPlateEdge = float.MaxValue;
+            float fe_x_minus_min_AnchorToFootingEdge = float.MaxValue;
+            float fe_x_plus_min_AnchorToFootingEdge = float.MaxValue;
+            float fe_y_minus_min_AnchorToFootingEdge = float.MaxValue;
+            float fe_y_plus_min_AnchorToFootingEdge = float.MaxValue;
 
             designDetails.bIsCastInHeadedStud = false; // TODO - rozlisovat typ kotvy
 
@@ -1186,17 +1190,57 @@ namespace M_AS4600
 
             foreach (CAnchor anchor in basePlate.AnchorArrangement.Anchors)
             {
-                if (anchor.x_pe_min < pe_x_min_AnchorToPlateEdge)
-                    pe_x_min_AnchorToPlateEdge  = anchor.x_pe_min;
+                if (anchor.x_pe_minus < pe_x_minus_min_AnchorToPlateEdge)
+                    pe_x_minus_min_AnchorToPlateEdge = anchor.x_pe_minus;
 
-                if (anchor.y_pe_min < pe_y_min_AnchorToPlateEdge)
-                    pe_y_min_AnchorToPlateEdge = anchor.y_pe_min;
+                if (anchor.x_pe_plus < pe_x_plus_min_AnchorToPlateEdge)
+                    pe_x_plus_min_AnchorToPlateEdge = anchor.x_pe_plus;
 
-                if (anchor.x_fe_min < fe_x_min_AnchorToFootingEdge)
-                    fe_x_min_AnchorToFootingEdge = anchor.x_fe_min;
+                if (anchor.y_pe_minus < pe_y_minus_min_AnchorToPlateEdge)
+                    pe_y_minus_min_AnchorToPlateEdge = anchor.y_pe_minus;
 
-                if (anchor.y_fe_min < fe_y_min_AnchorToFootingEdge)
-                    fe_y_min_AnchorToFootingEdge = anchor.y_fe_min;
+                if (anchor.y_pe_plus < pe_y_plus_min_AnchorToPlateEdge)
+                    pe_y_plus_min_AnchorToPlateEdge = anchor.y_pe_plus;
+
+                if (anchor.x_fe_minus < fe_x_minus_min_AnchorToFootingEdge)
+                    fe_x_minus_min_AnchorToFootingEdge = anchor.x_fe_minus;
+
+                if (anchor.x_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
+                    fe_x_plus_min_AnchorToFootingEdge = anchor.x_fe_plus;
+
+                if (anchor.y_fe_minus < fe_y_minus_min_AnchorToFootingEdge)
+                    fe_y_minus_min_AnchorToFootingEdge = anchor.y_fe_minus;
+
+                if (anchor.y_fe_plus < fe_x_plus_min_AnchorToFootingEdge)
+                    fe_y_plus_min_AnchorToFootingEdge = anchor.y_fe_plus;
+            }
+
+            // Nastavenie minimalnych okrajovych vzdialenosti podla smeru sily
+            float pe_x_min_AnchorToPlateEdge = 0;
+            float pe_y_min_AnchorToPlateEdge = 0;
+            float fe_x_min_AnchorToFootingEdge = 0;
+            float fe_y_min_AnchorToFootingEdge = 0;
+
+            if (sDIF_temp.fV_xu_xx > 0)
+            {
+                pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
+                fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
+             }
+            else
+            {
+                pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
+                fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
+            }
+
+            if (sDIF_temp.fV_yv_yy > 0)
+            {
+                pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
+                fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+            }
+            else
+            {
+                pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
+                fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
             }
 
             designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
@@ -1208,8 +1252,14 @@ namespace M_AS4600
             designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
             designDetails.fe_y_AnchorToFootingEdge = fe_y_min_AnchorToFootingEdge;
 
-            designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx; // Input
+            designDetails.fu_x_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Width_bx;  // Input
             designDetails.fu_y_Washer = anchorArrangement.referenceAnchor.WasherPlateTop.Height_hy; // Input
+
+            designDetails.fs_2_x = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsX_SQ1); // centre-to-centre spacing of the anchors
+            designDetails.fs_1_y = MathF.Min(basePlate.AnchorArrangement.fDistanceOfPointsY_SQ1); // centre-to-centre spacing of the anchors
+
+            designDetails.fc_2_x = designDetails.fe_x_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
+            designDetails.fc_1_y = designDetails.fe_y_AnchorToFootingEdge; // Vzdialenost kotvy od okraja betonoveho zakladu
 
             CMat_02_00 materialConcrete = new CMat_02_00();
             materialConcrete = (CMat_02_00)foundation.m_Mat;
@@ -1290,20 +1340,13 @@ namespace M_AS4600
             // Group of anchors
 
             // Figure C17.4 – Definition of dimension e´n for group anchors
-            designDetails.fe_apostrophe_n = 0f;                           // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
+            designDetails.fe_apostrophe_n = 0f;       // TODO dopracovat                    // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
             designDetails.fConcreteCover = footing.ConcreteCover; // Input
             designDetails.fh_ef = basePlate.AnchorArrangement.referenceAnchor.h_effective;        // effective anchor embedment depth
-            designDetails.fs_2_x = 0f;                                    // centre-to-centre spacing of the anchors
-            designDetails.fs_1_y = 0.23f;                                 // centre-to-centre spacing of the anchors
             designDetails.fs_min = Math.Min(designDetails.fs_2_x, designDetails.fs_1_y);
-            designDetails.fc_2_x = 0.55f;
-            designDetails.fc_1_y = 0.55f;
             designDetails.fc_min = Math.Min(designDetails.fc_2_x, designDetails.fc_1_y);
             designDetails.fk = 10f; // for cast-in anchors
             designDetails.fLambda_53 = eq_concrete.Eq_5_3_____(designDetails.fRho_c);
-
-            designDetails.fe_x_AnchorToPlateEdge = 0.5f * (designDetails.fplateWidth_x - (iNumberAnchors_x - 1) * designDetails.fs_2_x);
-            designDetails.fe_y_AnchorToPlateEdge = 0.5f * (designDetails.fplateWidth_y - (iNumberAnchors_y - 1) * designDetails.fs_1_y);
 
             designDetails.fPsi_1_group = eq_concrete.Eq_17_8____(designDetails.fe_apostrophe_n, designDetails.fh_ef);
             designDetails.fPsi_2 = eq_concrete.Get_Psi_2__(designDetails.fc_min, designDetails.fh_ef);
@@ -1427,7 +1470,7 @@ namespace M_AS4600
             // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
             // Group of anchors
 
-            designDetails.fe_apostrophe_v = 0;
+            designDetails.fe_apostrophe_v = 0; // TODO dopracovat
             designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
             designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y, designDetails.fc_2_x);
 
