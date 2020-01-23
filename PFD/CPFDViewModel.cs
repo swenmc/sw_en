@@ -610,7 +610,9 @@ namespace PFD
 
                 MRoofCladdingIndex = value;
 
-                IsSetFromCode = true;
+                bool isChangedFromCode = IsSetFromCode;
+
+                if(!isChangedFromCode) IsSetFromCode = true;
                 MRoofCladdingID = MRoofCladdingIndex;
                 RoofCladding = Claddings.ElementAtOrDefault(MRoofCladdingIndex);
                 RoofCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(RoofCladdingCoatingID) && p.claddingIDs.Contains(RoofCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
@@ -621,9 +623,8 @@ namespace PFD
                 RoofFibreglassThicknessIndex = 0;
 
                 SetResultsAreNotValid();
-                IsSetFromCode = false;
-
-                //RecreateJoints = true;
+                if (!isChangedFromCode) IsSetFromCode = false;
+                                
                 RecreateModel = true;
                 NotifyPropertyChanged("RoofCladdingIndex");
             }
@@ -644,7 +645,9 @@ namespace PFD
 
                 MRoofCladdingCoatingIndex = value;
 
-                IsSetFromCode = true;
+                bool isChangedFromCode = IsSetFromCode;
+
+                if (!isChangedFromCode) IsSetFromCode = true;
                 RoofCladdingCoatingID = MRoofCladdingCoatingIndex + 1;
                 RoofCladdingCoating = Coatings.ElementAtOrDefault(MRoofCladdingCoatingIndex);
                 RoofCladdingColors = CCoatingColorManager.LoadCoatingColours(RoofCladdingCoatingID);
@@ -652,9 +655,10 @@ namespace PFD
                 RoofCladdingColorIndex = 0;
                 RoofCladdingThicknessIndex = 0;
                 RoofCladdingThickness = RoofCladdingsThicknessTypes.ElementAtOrDefault(RoofCladdingThicknessIndex);
-                IsSetFromCode = false;
 
                 RecreateQuotation = true;
+                if (!isChangedFromCode) IsSetFromCode = false;
+                                
                 NotifyPropertyChanged("RoofCladdingCoatingIndex");
             }
         }
@@ -707,7 +711,9 @@ namespace PFD
 
                 MWallCladdingIndex = value;
 
-                IsSetFromCode = true;
+                bool isChangedFromCode = IsSetFromCode;
+
+                if (!isChangedFromCode) IsSetFromCode = true;
                 WallCladdingID = MWallCladdingIndex;
                 WallCladding = Claddings.ElementAtOrDefault(MWallCladdingIndex);
                 WallCladdingsThicknessTypes = ThicknessPropertiesList.Where(p => p.coatingIDs.Contains(WallCladdingCoatingID) && p.claddingIDs.Contains(WallCladdingID)).Select(p => (p.thicknessCore * 100).ToString("F2", nfi) + " mm").ToList();
@@ -717,11 +723,9 @@ namespace PFD
                 WallFibreglassThicknessTypes = CDatabaseManager.GetStringList("FibreglassSQLiteDB", WallCladding, "name");
                 WallFibreglassThicknessIndex = 0;
 
-                //SetResultsAreNotValid();
-                IsSetFromCode = false;
-
-                //RecreateJoints = true;
                 RecreateQuotation = true;
+                if (!isChangedFromCode) IsSetFromCode = false;
+
                 NotifyPropertyChanged("WallCladdingIndex");
             }
         }
@@ -741,7 +745,8 @@ namespace PFD
 
                 MWallCladdingCoatingIndex = value;
 
-                IsSetFromCode = true;
+                bool isChangedFromCode = IsSetFromCode;
+                if (!isChangedFromCode) IsSetFromCode = true;
                 WallCladdingCoatingID = MWallCladdingCoatingIndex + 1;
                 WallCladdingCoating = Coatings.ElementAtOrDefault(MWallCladdingCoatingIndex);
                 WallCladdingColors = CCoatingColorManager.LoadCoatingColours(WallCladdingCoatingID);
@@ -749,11 +754,10 @@ namespace PFD
                 WallCladdingThicknessIndex = 0;
                 WallCladdingThickness = WallCladdingsThicknessTypes.ElementAtOrDefault(WallCladdingThicknessIndex);
                 WallCladdingColorIndex = 0;
-                IsSetFromCode = false;
 
-                //SetResultsAreNotValid();
-                //RecreateJoints = true;
                 RecreateQuotation = true;
+                if (!isChangedFromCode) IsSetFromCode = false;
+
                 NotifyPropertyChanged("WallCladdingCoatingIndex");
             }
         }
@@ -954,9 +958,10 @@ namespace PFD
             set
             {
                 MModel = value;
-                IsSetFromCode = true;
+                bool isChangedFromCode = IsSetFromCode;                
+                if(!isChangedFromCode) IsSetFromCode = true;
                 SetModelBays();
-                IsSetFromCode = false;
+                if (!isChangedFromCode) IsSetFromCode = false;
             }
         }
 
@@ -1530,7 +1535,7 @@ namespace PFD
             set
             {   
                 m_RecreateQuotation = value;
-                NotifyPropertyChanged("RecreateQuotation");
+                //NotifyPropertyChanged("RecreateQuotation");
             }
         }
 
