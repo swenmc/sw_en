@@ -238,20 +238,18 @@ namespace BaseClasses
             {
                 CConCom_Plate_B_basic basePlate = (CConCom_Plate_B_basic)m_arrPlates[0];
                 float feccentricity_x = pad.Eccentricity_x;
-                float feccentricity_y = pad.Eccentricity_x;
+                float feccentricity_y = pad.Eccentricity_y;
                 float fpad_x = pad.m_fDim1;
                 float fpad_y = pad.m_fDim2;
 
-                basePlate.x_plateEdge_to_pad = 0.5f * (fpad_x - basePlate.Fb_X) + feccentricity_x;
-                basePlate.y_plateEdge_to_pad = 0.5f * (fpad_y - basePlate.Fh_Y) + feccentricity_y;
+                float x_plateEdge_to_pad_basic = 0.5f * (fpad_x - basePlate.Fb_X);
+                float y_plateEdge_to_pad_basic = 0.5f * (fpad_y - basePlate.Fh_Y);
 
-                basePlate.x_minus_plateEdge_to_pad = basePlate.x_plateEdge_to_pad;
-                basePlate.y_minus_plateEdge_to_pad = basePlate.y_plateEdge_to_pad;
-                basePlate.x_plus_plateEdge_to_pad = fpad_x - basePlate.x_plateEdge_to_pad - basePlate.Fb_X;
-                basePlate.y_plus_plateEdge_to_pad = fpad_y - basePlate.y_plateEdge_to_pad - basePlate.Fh_Y;
+                basePlate.x_minus_plateEdge_to_pad = x_plateEdge_to_pad_basic - feccentricity_x;
+                basePlate.y_minus_plateEdge_to_pad = y_plateEdge_to_pad_basic - feccentricity_y;
 
-                basePlate.x_min_abs_plateEdge_to_pad = Math.Min(Math.Abs(basePlate.x_minus_plateEdge_to_pad), Math.Abs(basePlate.x_plus_plateEdge_to_pad));
-                basePlate.y_min_abs_plateEdge_to_pad = Math.Max(Math.Abs(basePlate.y_minus_plateEdge_to_pad), Math.Abs(basePlate.y_plus_plateEdge_to_pad));
+                basePlate.x_plus_plateEdge_to_pad = x_plateEdge_to_pad_basic + feccentricity_x;
+                basePlate.y_plus_plateEdge_to_pad = y_plateEdge_to_pad_basic + feccentricity_y;
 
                 basePlate.AnchorArrangement.SetEdgeDistances(basePlate, pad);
             }

@@ -80,9 +80,9 @@ namespace BaseClasses
                 Anchors[i].y_pe_max = Math.Max(Anchors[i].y_pe_minus, Anchors[i].y_pe_plus);
 
                 // Anchor to foundation edge distances
-                Anchors[i].x_fe_minus = plate.x_plateEdge_to_pad + Anchors[i].x_pe_minus;
+                Anchors[i].x_fe_minus = plate.x_minus_plateEdge_to_pad + Anchors[i].x_pe_minus;
                 Anchors[i].x_fe_plus = fpadX - Anchors[i].x_fe_minus;
-                Anchors[i].y_fe_minus = plate.y_plateEdge_to_pad + Anchors[i].y_pe_minus;
+                Anchors[i].y_fe_minus = plate.y_minus_plateEdge_to_pad + Anchors[i].y_pe_minus;
                 Anchors[i].y_fe_plus = fpadY - Anchors[i].y_fe_minus;
 
                 Anchors[i].x_fe_min = Math.Min(Anchors[i].x_fe_minus, Anchors[i].x_fe_plus);

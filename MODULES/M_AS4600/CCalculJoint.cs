@@ -1202,8 +1202,8 @@ namespace M_AS4600
             designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
             designDetails.fe_y_AnchorToPlateEdge = pe_y_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
 
-            designDetails.fe_x_BasePlateToFootingEdge = basePlate.x_min_abs_plateEdge_to_pad; // Minimum distance between plate edge and footing edge
-            designDetails.fe_y_BasePlateToFootingEdge = basePlate.y_min_abs_plateEdge_to_pad; // Minimum distance between plate edge and footing edge
+            designDetails.fe_x_BasePlateToFootingEdge = Math.Min(basePlate.x_minus_plateEdge_to_pad, basePlate.x_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
+            designDetails.fe_y_BasePlateToFootingEdge = Math.Min(basePlate.y_minus_plateEdge_to_pad, basePlate.y_plus_plateEdge_to_pad); // Minimum distance between plate edge and footing edge
 
             designDetails.fe_x_AnchorToFootingEdge = fe_x_min_AnchorToFootingEdge;
             designDetails.fe_y_AnchorToFootingEdge = fe_y_min_AnchorToFootingEdge;
