@@ -610,6 +610,87 @@ namespace M_AS4600
                 else if (!joint_S001.m_bWindPostEndUnderRafter)
                 {
                     // Plate M - novy typ (2 x L (plate1) + jeden pas (plate2))
+
+                    // Urcenie poctov skrutiek pre vypocet faktora distribucie smykovej sily do jednotlivych casti spoja
+                    int iNumberOfScrews_Plate11_OneLeg = joint_temp.m_arrPlates[0].ScrewArrangement.IHolesNumber / 2;
+                    int iNumberOfScrews_Plate12_OneLeg = iNumberOfScrews_Plate11_OneLeg; // Plechy su rovnake
+                    int iNumberOfScrews_Plate2 = 2 * (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1].ScrewArrangement.IHolesNumber / 3); // Pas 2 skrutky na oboch koncoch
+
+                    int iNumberOfScrews_Total = iNumberOfScrews_Plate11_OneLeg + iNumberOfScrews_Plate12_OneLeg + iNumberOfScrews_Plate2;
+
+                    // Prestalo to pocitat !!!!!!!!!!!!!!!!!!
+                    float fForceFactor_Plate11 = (iNumberOfScrews_Plate11_OneLeg / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
+                    float fForceFactor_Plate12 = (iNumberOfScrews_Plate12_OneLeg / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
+                    float fForceFactor_Plate2 = (iNumberOfScrews_Plate2 / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
+
+                    // Plate L
+                    // Plechy sa posudzuju len v strihu / smyku
+                    if (joint_temp.m_arrPlates[0] is CConCom_Plate_F_or_L) // Plate M - strip is last plate
+                    {
+                        CConCom_Plate_F_or_L plate1 = (CConCom_Plate_F_or_L)joint_temp.m_arrPlates[0];
+
+                        designDetails.iNumberOfScrewInTension_Plate1_Left = plate1.ScrewArrangement.IHolesNumber / 2;
+                        //int iNumberOfScrewInTension_Plate1_Right = 0;
+                        //int iNumberOfScrewInShear_Plate1_Left = 0;
+                        designDetails.iNumberOfScrewsInShear_Plate1_Right = plate1.ScrewArrangement.IHolesNumber / 2;
+
+                        fDIF_V_connection_one_side = fForceFactor_Plate11 * Math.Abs(sDIF_temp.fV_yv_yy); // Equally distributed force between plate 1.1 and plate 1.2
+
+                        // Plate 1
+                        designDetails.ft_1_Plate1 = plate1.Ft;
+                        designDetails.ff_yk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plate1.Ft);
+                        designDetails.ff_uk_1_Plate1 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plate1.Ft);
+
+                        // Left Leg
+
+                        DesignScrewedConnectionInTension(
+                            fDIF_V_connection_one_side,
+                            designDetails.iNumberOfScrewInTension_Plate1_Left,
+                            designDetails.ft_1_Plate1,
+                            designDetails.ff_uk_1_Plate1,
+                            ft_2_crscmainMember,
+                            ff_uk_2_MainMember,
+                            designDetails.fPhi_N_screw,
+                            designDetails.fPhi_N_t_screw,
+                            out designDetails.fN_t_5432_MainMember,
+                            out designDetails.fEta_N_t_5432_MainMember,
+                            out designDetails.fN_t_nom_screw_5433,
+                            out designDetails.fEta_N_t_screw_5433
+                            );
+
+                        // Shear
+
+                        // Right Leg
+                        // Distance to an end of the connected part is parallel to the line of the applied force
+                        designDetails.fe_Plate1 = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+
+                        DesignScrewedConnectionInShear(
+                                    fDIF_V_connection_one_side,
+                                    designDetails.iNumberOfScrewsInShear_Plate1_Right,
+                                    designDetails.ft_1_Plate1,
+                                    designDetails.ff_uk_1_Plate1,
+                                    designDetails.ff_yk_1_Plate1,
+                                    ft_2_crscsecMember,
+                                    ff_uk_2_SecondaryMember,
+                                    designDetails.fe_Plate1,
+                                    designDetails.fPhi_shear_Vb_5424,
+                                    out designDetails.fC_for5424_Plate1,
+                                    out designDetails.fV_b_for5424_Plate1,
+                                    out designDetails.fV_asterix_b_for5424_Plate1,
+                                    out designDetails.fEta_5424_1_Plate1,
+                                    out designDetails.fV_asterix_fv_Plate1,
+                                    out designDetails.fV_fv_Plate1,
+                                    out designDetails.fEta_V_fv_5425_Plate1,
+                                    out designDetails.fV_w_nom_screw_5426_Plate1,
+                                    out designDetails.fEta_V_w_5426_Plate1
+                                    );
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid plate type.");
+                    }
+
+                    // Plate M
                     if (joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1] is CConCom_Plate_M) // Plate M - strip is last plate
                     {
                         CConCom_Plate_M plateM = (CConCom_Plate_M)joint_temp.m_arrPlates[joint_temp.m_arrPlates.Length - 1];
@@ -617,10 +698,8 @@ namespace M_AS4600
                         designDetails.ff_yk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_yk_by_thickness(plateM.Ft);
                         designDetails.ff_uk_1_Plate2 = ((CMat_03_00)plate.m_Mat).Get_f_uk_by_thickness(plateM.Ft);
 
-                        // TEMPORARY - spoj posudime tak akoby celu smykovu silu preberal pas - Plate M
-
-                        // Sila na jednej strane spoja sa uvazuje ako polovica z celkovej sily v spoji
-                        fDIF_V_connection_one_side = Math.Abs(sDIF_temp.fV_yv_yy) / 2f;
+                        // Sila na jednej strane spoja sa uvazuje ako polovica z celkovej sily v spoji ktora prislucha plechu
+                        fDIF_V_connection_one_side = fForceFactor_Plate2 * Math.Abs(sDIF_temp.fV_yv_yy) / 2f;
                         fDIF_N_plate = fDIF_V_connection_one_side / (float)Math.Cos(plateM.Gamma1_rad);
 
                         // Zlozky reakcie v pripoji plechu M k main member v osovom systeme secondary member
@@ -665,6 +744,8 @@ namespace M_AS4600
                     {
                         throw new Exception("Invalid plate type.");
                     }
+
+                    // Plates L
                 }
                 else if (joint_S001.bUseSamePlates)
                 {
