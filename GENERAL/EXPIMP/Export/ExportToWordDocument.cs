@@ -1478,6 +1478,7 @@ namespace EXPIMP
         {
             // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
+            sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
             sDisplayOptions.bDisplayMembers = true;
@@ -1588,6 +1589,7 @@ namespace EXPIMP
         {
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
+            sDisplayOptions.bDisplayMembersCenterLines = false;
             sDisplayOptions.bDisplaySolidModel = true;
 
             sDisplayOptions.bDisplayMembers = true;

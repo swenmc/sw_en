@@ -29,6 +29,8 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private bool debugging = true;
+
+
         private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public MainWindow PFDMainWindow;
@@ -39,6 +41,7 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        private bool MIsRelease;
         private int MModelIndex;
         private float MGableWidth;
         private float MLength;
@@ -217,6 +220,19 @@ namespace PFD
 
         public List<CFrame> frameModels;
         public List<CBeam_Simple> beamSimpleModels;
+
+        //-------------------------------------------------------------------------------------------------------------
+        public bool IsRelease
+        {
+            get
+            {
+                return MIsRelease;
+            }
+            set
+            {
+                MIsRelease = value;
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
@@ -2288,9 +2304,11 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
+        public CPFDViewModel(int modelIndex, bool bRelease, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties,
             CComponentListVM componentVM, CPFDLoadInput loadInput, CProjectInfoVM projectInfoVM)
         {
+            MIsRelease = bRelease;
+
             IsSetFromCode = true;
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
@@ -2305,7 +2323,7 @@ namespace PFD
 
             _projectInfoVM = projectInfoVM;
 
-            _displayOptionsVM = new DisplayOptionsViewModel();
+            _displayOptionsVM = new DisplayOptionsViewModel(bRelease);
             _generalOptionsVM = new GeneralOptionsViewModel();
             _solverOptionsVM = new SolverOptionsViewModel();
             _designOptionsVM = new DesignOptionsViewModel();

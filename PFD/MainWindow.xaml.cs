@@ -117,7 +117,7 @@ namespace PFD
             projectInfoVM = new CProjectInfoVM();
 
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
+            vm = new CPFDViewModel(1, bRelease, DoorBlocksProperties, WindowBlocksProperties, compListVM, loadInput, projectInfoVM);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;

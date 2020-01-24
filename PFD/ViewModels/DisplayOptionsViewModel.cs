@@ -2305,7 +2305,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public DisplayOptionsViewModel()
+        public DisplayOptionsViewModel(bool bRelease = false)
         {
             IsSetFromCode = true;
 
@@ -2358,6 +2358,20 @@ namespace PFD
             ShowSectionSymbols = false;
             ShowDetailSymbols = false;
             ShowSlabRebates = true;
+
+            if(bRelease) // Vsetko okrem centerlines a zakladnych kot vypneme
+            {
+                LightAmbient = true;
+                DisplayJoints = false;
+                DisplayPlates = false;
+                DisplayFoundations = false;
+                DisplayFloorSlab = false;
+                DisplaySawCuts = false;
+                DisplayControlJoints = false;
+                DisplayMembersCenterLines = true; // Zobrazujeme
+                DisplaySolidModel = false;
+                ShowSlabRebates = false;
+            }
 
             ShowLoads = false;
             ShowLoadsOnMembers = false;
