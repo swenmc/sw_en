@@ -310,8 +310,8 @@ namespace PFD
             }
             set
             {
-                if (value < 3 || value > 50)
-                    throw new ArgumentException("Gable Width must be between 3 and 50 [m]");
+                if (value < 3 || value > 100)
+                    throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
                 MGableWidth = value;
 
                 if (MModelIndex != 0)
