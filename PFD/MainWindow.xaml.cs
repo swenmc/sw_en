@@ -291,7 +291,7 @@ namespace PFD
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
 
-            DeleteCalculationResults();
+            //DeleteCalculationResults();
             UpdateAll();
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
@@ -376,19 +376,19 @@ namespace PFD
             //hide the popup
         }
 
-        private void DeleteCalculationResults()
-        {
-            // TODO - Ondrej - je potrebne zmazat vysledky a updatovat UC_InternalForces, UC_MemberDesign, UC_JointDesign (tieto UC by sa nemali zobrazovat pokial nie su k dispozicii vysledky)
-            // tj. nebola spustena metoda Calculate_Click, vysledky boli z dovodu zmeny topologickeho 3D modelu zmazane a pod
+        //private void DeleteCalculationResults()
+        //{
+        //    // TODO - Ondrej - je potrebne zmazat vysledky a updatovat UC_InternalForces, UC_MemberDesign, UC_JointDesign (tieto UC by sa nemali zobrazovat pokial nie su k dispozicii vysledky)
+        //    // tj. nebola spustena metoda Calculate_Click, vysledky boli z dovodu zmeny topologickeho 3D modelu zmazane a pod
 
-            //Todo - asi sa to da jednoduchsie
-            /*
-            DeleteLists();
-            Results_GridView.ItemsSource = null;
-            Results_GridView.Items.Clear();
-            Results_GridView.Items.Refresh();
-            */
-        }
+        //    //Todo - asi sa to da jednoduchsie
+        //    /*
+        //    DeleteLists();
+        //    Results_GridView.ItemsSource = null;
+        //    Results_GridView.Items.Clear();
+        //    Results_GridView.Items.Refresh();
+        //    */
+        //}
 
         private void RunFEMSOlver()
         {
@@ -440,7 +440,7 @@ namespace PFD
 
             //DateTime start = DateTime.Now;
             // Clear results of previous calculation
-            DeleteCalculationResults();
+            //DeleteCalculationResults();
 
             // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();

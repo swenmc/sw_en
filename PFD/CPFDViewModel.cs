@@ -957,8 +957,7 @@ namespace PFD
 
             set
             {
-                MLoadCaseIndex = value;
-                SetResultsAreNotValid();
+                MLoadCaseIndex = value;                
                 RecreateModel = true;
                 NotifyPropertyChanged("LoadCaseIndex");
             }
