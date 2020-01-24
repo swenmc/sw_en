@@ -618,10 +618,9 @@ namespace M_AS4600
 
                     int iNumberOfScrews_Total = iNumberOfScrews_Plate11_OneLeg + iNumberOfScrews_Plate12_OneLeg + iNumberOfScrews_Plate2;
 
-                    // Prestalo to pocitat !!!!!!!!!!!!!!!!!!
-                    float fForceFactor_Plate11 = (iNumberOfScrews_Plate11_OneLeg / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
-                    float fForceFactor_Plate12 = (iNumberOfScrews_Plate12_OneLeg / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
-                    float fForceFactor_Plate2 = (iNumberOfScrews_Plate2 / (float)iNumberOfScrews_Total) * Math.Abs(sDIF_temp.fV_yv_yy);
+                    float fForceFactor_Plate11 = iNumberOfScrews_Plate11_OneLeg / (float)iNumberOfScrews_Total;
+                    float fForceFactor_Plate12 = iNumberOfScrews_Plate12_OneLeg / (float)iNumberOfScrews_Total;
+                    float fForceFactor_Plate2 = iNumberOfScrews_Plate2 / (float)iNumberOfScrews_Total;
 
                     // Plate L
                     // Plechy sa posudzuju len v strihu / smyku
