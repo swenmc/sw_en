@@ -1174,6 +1174,7 @@ namespace M_AS4600
 
             joint.SetBaseJointEdgeDistances(foundation); // Vypocitame vzdialenosti
 
+            // Vsetky hodnoty by mali byt kladne, plus a minus znamenaju len to v smere ktorej osi (na ktoru stranu -x vlavo, +x vpravo, -y dole, +y hore) je vzdialenost medzi okrajmi merana
             float pe_x_minus_min_AnchorToPlateEdge = float.MaxValue;
             float pe_x_plus_min_AnchorToPlateEdge = float.MaxValue;
             float pe_y_minus_min_AnchorToPlateEdge = float.MaxValue;
@@ -1221,26 +1222,69 @@ namespace M_AS4600
             float fe_x_min_AnchorToFootingEdge = 0;
             float fe_y_min_AnchorToFootingEdge = 0;
 
+            // Znamienka su opacne ako som zvyknuty :-/
+            /*
+            -> |\
+            -> | \
+            -> |  \
+            -> |   \
+            -> |____\  Hodnota V je zaporna
+
+               ^
+               | LCS
+            <--
+            */
+
+            // Zaporna sila - zaporna suradnica
+            // Stlpy na zadnej strane maju rovnaky sme LCS ako stlpy na prednej strane, ale opacnu orientaciu patky
             if (sDIF_temp.fV_xu_xx > 0)
-            {
-                pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
-                fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
-             }
-            else
             {
                 pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
                 fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
+             }
+            else
+            {
+                pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
+                fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
             }
 
             if (sDIF_temp.fV_yv_yy > 0)
             {
-                pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+                pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
+                fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
             }
             else
             {
-                pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
-                fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
+                pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
+                fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+            }
+
+            // Pre stlpy ramu na pravej strane treba hodnoty prehodit - nie som si uplne isty ci je znamienko hodnoty Vyv_yy spravne
+            if((joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.EdgeColumn || joint.m_MainMember.EMemberTypePosition == EMemberType_FS_Position.MainColumn)
+                && joint.m_MainMember.NodeEnd.ID == joint.m_Node.ID) // TODO polohu stlpov by trebalo urcit nejako krajsie
+            {
+                // Stlpy hlavneho ramu vlavo maju os x smerujucu nahor, stply na pravej strane maju os x smerujucu nadol
+                if (sDIF_temp.fV_xu_xx > 0)
+                {
+                    pe_x_min_AnchorToPlateEdge = pe_x_minus_min_AnchorToPlateEdge;
+                    fe_x_min_AnchorToFootingEdge = fe_x_minus_min_AnchorToFootingEdge;
+                }
+                else
+                {
+                    pe_x_min_AnchorToPlateEdge = pe_x_plus_min_AnchorToPlateEdge;
+                    fe_x_min_AnchorToFootingEdge = fe_x_plus_min_AnchorToFootingEdge;
+                }
+
+                if (sDIF_temp.fV_yv_yy > 0)
+                {
+                    pe_y_min_AnchorToPlateEdge = pe_y_minus_min_AnchorToPlateEdge;
+                    fe_y_min_AnchorToFootingEdge = fe_y_minus_min_AnchorToFootingEdge;
+                }
+                else
+                {
+                    pe_y_min_AnchorToPlateEdge = pe_y_plus_min_AnchorToPlateEdge;
+                    fe_y_min_AnchorToFootingEdge = fe_y_plus_min_AnchorToFootingEdge;
+                }
             }
 
             designDetails.fe_x_AnchorToPlateEdge = pe_x_min_AnchorToPlateEdge; // Minimum distance between anchor and plate edge
