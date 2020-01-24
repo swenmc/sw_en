@@ -1549,9 +1549,11 @@ namespace PFD
             }
 
             set
-            {   
+            {
+                bool changed = false;
+                if (value == true && m_RecreateQuotation == false) changed = true;
                 m_RecreateQuotation = value;
-                //NotifyPropertyChanged("RecreateQuotation");
+                if(changed) NotifyPropertyChanged("RecreateQuotation");
             }
         }
 

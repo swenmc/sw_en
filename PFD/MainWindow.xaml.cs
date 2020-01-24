@@ -277,6 +277,12 @@ namespace PFD
                 {
                     CModelHelper.ChangeMembersMaterial(cInfo, vm.Model);
                 }
+                if (e.PropertyName == "MaterialList")
+                {
+                    //To Mato - ak nastavim member IsSelectedForMaterialList - musim nastavovat tu premennu aj pre ine objekty viazane na member, alebo netreba?
+                    CModelHelper.ChangeMembersIsSelectedForMaterialList(cInfo, vm.Model);
+                    vm.RecreateQuotation = true;
+                }
             }
 
             SetUIElementsVisibility();

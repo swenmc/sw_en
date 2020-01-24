@@ -510,7 +510,16 @@ namespace PFD
 
         }
 
-        
+        public static void ChangeMembersIsSelectedForMaterialList(CComponentInfo cInfo, CModel model)
+        {
+            List<CMember> members = model.m_arrMembers.Where(m => m.EMemberTypePosition == cInfo.MemberTypePosition).ToList();
+            foreach (CMember m in members)
+            {
+                m.BIsSelectedForMaterialList = cInfo.MaterialList;
+            }
+        }
+
+
 
     }
 }
