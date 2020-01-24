@@ -1055,9 +1055,9 @@ namespace M_AS4600
             designDetails.fPhi_shear_screw = 0.5f;
             designDetails.fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
 
-            int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
+            designDetails.iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            designDetails.fEta_MainMember = Math.Abs(sDIF_temp.fV_yv_yy) / (iNumberOfScrewsInShear * designDetails.fVb_MainMember);
+            designDetails.fEta_MainMember = Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInShear * designDetails.fVb_MainMember);
 
             designDetails.fMb_MainMember_oneside_plastic = 0;
 

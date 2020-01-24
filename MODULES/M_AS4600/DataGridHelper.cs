@@ -842,11 +842,11 @@ namespace M_AS4600
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv");
@@ -2028,7 +2028,7 @@ namespace M_AS4600
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString(sNumberOfDecimalPlaces_DesignRatio));
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv");
