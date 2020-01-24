@@ -2267,11 +2267,13 @@ namespace BaseClasses
                 if (sDiplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     cylinders = new Model3DGroup();
-
+                    
+                    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                    float fmemberCenterlineThickness = maxModelLength / 500f;  //velkost podla modelu, ale to cislo "500f" je potrebne data do DisplayOptions
+                    
                     for (int i = 0; i < wireFramePoints.Count / 2; i++)
-                    {
-                        float fFactor = 0.01f;
-                        GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.memberCenterlineColor, fFactor * sDiplayOptions.fmemberCenterlineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
+                    {                        
+                        GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.memberCenterlineColor, fmemberCenterlineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
                         cylinders.Children.Add(cylinder);
                     }
                 }
@@ -5242,6 +5244,7 @@ namespace BaseClasses
             DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
 
             float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
+
 
             short NumberOfCirclePoints = 9; // Osem uholnik + stredovy bod (je pocet bodov len 4+1 tak moze mat ciara inu hrubku podla toho ako je hranol otoceny)
 
