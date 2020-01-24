@@ -221,6 +221,12 @@ namespace BaseClasses
             return isValid;
         }
 
+        public bool ValidateBays()
+        {
+            if (iBayNumber <= Bays.Count) return true;
+            else return false;
+        }
+
         public bool ValidateWindowInsideBay()
         {
             //TODO implement according to DoorProperties

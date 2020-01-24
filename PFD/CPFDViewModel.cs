@@ -1872,7 +1872,33 @@ namespace PFD
             SetDoorsWindowsValidationProperties();
         }
 
-        private void SetDoorsBays()
+        public void SetModelBays(int iFrameNo)
+        {
+            frontBays = new List<int>();
+            backBays = new List<int>();
+            leftRightBays = new List<int>();
+                        
+            int i = 0;
+            while (i < iFrameNo - 1)
+            {
+                leftRightBays.Add((++i));
+            }
+            i = 0;
+            while (i < IFrontColumnNoInOneFrame + 1)
+            {
+                frontBays.Add((++i));
+            }
+            i = 0;
+            while (i < IFrontColumnNoInOneFrame + 1)
+            {
+                backBays.Add((++i));
+            }
+
+            SetDoorsBays(false);
+            SetWindowsBays(false);
+        }
+
+        private void SetDoorsBays(bool check = true)
         {
             foreach (DoorProperties d in MDoorBlocksProperties)
             {
@@ -1881,7 +1907,7 @@ namespace PFD
                 else if (d.sBuildingSide == "Left" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
                 else if (d.sBuildingSide == "Right" && !d.Bays.SequenceEqual(leftRightBays)) d.Bays = leftRightBays;
             }
-            CheckDoorsBays();
+            if(check) CheckDoorsBays();
         }
 
         private void SetDoorsBays(DoorProperties d)
@@ -1908,6 +1934,7 @@ namespace PFD
                 }
             }
         }
+        
 
         private void CheckDoorsBays(DoorProperties d)
         {
@@ -1930,7 +1957,7 @@ namespace PFD
             }
         }
 
-        private void SetWindowsBays()
+        private void SetWindowsBays(bool check = true)
         {
             foreach (WindowProperties w in MWindowBlocksProperties)
             {
@@ -1939,7 +1966,7 @@ namespace PFD
                 else if (w.sBuildingSide == "Left" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
                 else if (w.sBuildingSide == "Right" && !w.Bays.SequenceEqual(leftRightBays)) w.Bays = leftRightBays;
             }
-            CheckWindowsBays();
+            if(check) CheckWindowsBays();
         }
 
         private void SetWindowsBays(WindowProperties w)
