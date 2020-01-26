@@ -1136,7 +1136,7 @@ namespace EXPIMP
                 m.Fill_Basic();
 
                 jointModel.m_arrMembers[0] = m; // Set new member (member array)
-                jointClone.m_MainMember = m; // Set new member (joint)                
+                jointClone.m_MainMember = m; // Set new member (joint)
             }
 
             // Secondary members
@@ -1217,11 +1217,15 @@ namespace EXPIMP
             _trackport.ViewPort.Arrange(new Rect(size));
             
             CJointHelper.SetJoinModelRotationDisplayOptions(firstSameJoint, ref sDisplayOptions);
+
+            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+            float jointModelMaxLength = ModelHelper.GetModelMaxLength(jointModel, sDisplayOptions); // TODO 493 - Pre Export do Wordu by sme potrebovali zohladnit velkost modelu, V PDF je to OK
+
             Drawing3D.DrawJointToTrackPort(_trackport, jointModel, fZoomFactor, sDisplayOptions);
             return _trackport.ViewPort;
         }
 
-        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, float fZoomFactor, out Trackport3D _trackport, double width = 570, double height = 430)
+        public static Viewport3D GetFootingViewPort(CConnectionJointTypes joint, CFoundation pad, DisplayOptions sDisplayOptions, CModel model, float fZoomFactor, out Trackport3D _trackport, double width = 570, double height = 430)
         {
             CConnectionJointTypes jointClone = joint.Clone();
             CFoundation padClone = pad.Clone();
@@ -1472,7 +1476,10 @@ namespace EXPIMP
             Size size = new Size(_trackport.ViewPort.RenderSize.Width, _trackport.ViewPort.RenderSize.Height);
             _trackport.ViewPort.Measure(size);
             _trackport.ViewPort.Arrange(new Rect(size));
-            
+
+            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+            float jointModelMaxLength = ModelHelper.GetModelMaxLength(jointModel, sDisplayOptions); // TODO 493 - Pre Export do Wordu by sme potrebovali zohladnit velkost modelu, V PDF je to OK
+
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, fZoomFactor, sDisplayOptions);
             return _trackport.ViewPort;
         }

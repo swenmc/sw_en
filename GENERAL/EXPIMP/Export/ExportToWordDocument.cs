@@ -1684,7 +1684,7 @@ namespace EXPIMP
                     */
 
                     Trackport3D trackport = null;
-                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, fZoomFactor, out trackport);
+                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
                     viewPort.Dispose();
