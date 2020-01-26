@@ -1478,7 +1478,7 @@ namespace EXPIMP
 
         private static void DrawJointDesign(DocX document, CModelData data)
         {
-            float fZoomFactor = 1.5f;
+            float fZoomFactor = 1f;//1.5f;
 
             // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
@@ -1593,7 +1593,7 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
-            float fZoomFactor = 3f;
+            float fZoomFactor = 1f;//3f;
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
             sDisplayOptions.bDisplayMembersCenterLines = false;

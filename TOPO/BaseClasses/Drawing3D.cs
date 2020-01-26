@@ -2730,7 +2730,7 @@ namespace BaseClasses
                 //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
 
                 float fLineThickness_Basic = thickness; // Default value - prebera sa z GUI - same as in GUI - zakladna hrubka ciar, ktoru chceme na vykresoch / obrazkoch
-                float fLineThickness_Factor = 1.02f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fLineThickness_Factor = 1.10f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
                 float fLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
 
                 float fThickness_CylinderDiameter_Final = fLineThickness_Basic * fLineThickness_Factor * fLineThickness_ModelSize_Factor * fZoomFactor;

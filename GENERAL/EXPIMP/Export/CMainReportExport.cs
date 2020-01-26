@@ -691,7 +691,7 @@ namespace EXPIMP
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
                 Trackport3D trackport = null;
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, data.Model, 1f, out trackport, 1140, 800);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, data.Model, 1f, out trackport/*, 1140, 800*/);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -740,7 +740,7 @@ namespace EXPIMP
             gfx.Dispose();
             page.Close();
         }
-        
+
         private static DisplayOptions GetFootingTypesDisplayOptions(CModelData data)
         {
             DisplayOptions opts = data.DisplayOptions;
