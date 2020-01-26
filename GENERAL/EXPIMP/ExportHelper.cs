@@ -1218,7 +1218,7 @@ namespace EXPIMP
             
             CJointHelper.SetJoinModelRotationDisplayOptions(firstSameJoint, ref sDisplayOptions);
 
-            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions); // TODO 493 - Rozmer celkoveho modelu
             float jointModelMaxLength = ModelHelper.GetModelMaxLength(jointModel, sDisplayOptions); // TODO 493 - Pre Export do Wordu by sme potrebovali zohladnit velkost modelu, V PDF je to OK
 
             Drawing3D.DrawJointToTrackPort(_trackport, jointModel, fZoomFactor, sDisplayOptions);
@@ -1477,7 +1477,7 @@ namespace EXPIMP
             _trackport.ViewPort.Measure(size);
             _trackport.ViewPort.Arrange(new Rect(size));
 
-            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+            float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions); // TODO 493 - Rozmer celkoveho modelu
             float jointModelMaxLength = ModelHelper.GetModelMaxLength(jointModel, sDisplayOptions); // TODO 493 - Pre Export do Wordu by sme potrebovali zohladnit velkost modelu, V PDF je to OK
 
             Drawing3D.DrawFootingToTrackPort(_trackport, jointModel, fZoomFactor, sDisplayOptions);
