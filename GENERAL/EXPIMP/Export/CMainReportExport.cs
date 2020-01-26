@@ -439,23 +439,23 @@ namespace EXPIMP
             // Vysku textu mozeme nastavovat ako velkost fontu ale pre export do 2D je lepsie uzivatelsky nastavovat velkost v mm lebo stavbari nevedia aky velky je font c. 8, pripadne tam bude prepocet z bodov na mm
 
             /*
-            7 PT    9 PX    2.5 MM  0.6 EM   60 %
-            7 PT    10 PX   2.5 MM  0.6 EM   60 %
-            8 PT    11 PX   2.8 MM  0.7 EM   70 %
-            9 PT    12 PX   3.4 MM  0.8 EM   80 %
-            9 PT    13 PX   3.4 MM  0.8 EM   80 %
-            10 PT   13 PX   3.4 MM  0.8 EM   80 %
-            10.5 PT 14 PX   3.6 MM  0.85 EM  85 %
-            11 PT   15 PX   3.9 MM  0.95 EM  95 %
-            12 PT   16 PX   4.2 MM  1.05 EM 105 %
-            12 PT   17 PX   4.2 MM  1.05 EM 105 %
-            13 PT   17 PX   4.2 MM  1.1 EM  110 %
-            13 PT   18 PX   4.8 MM  1.1 EM  110 %
-            14 PT   19 PX   5 MM    1.2 EM  120 %
-            15 PT   20 PX   5.4 MM  1.33 EM 133 %
-            16 PT   21 PX   5.8 MM  1.4 EM  140 %
-            16 PT   22 PX   5.8 MM  1.4 EM  140 %
-            17 PT   23 PX   6.2 MM  1.5 EM  150 %
+            07.0 PT     09 PX     2.5 MM     0.60 EM     060 %
+            07.0 PT     10 PX     2.5 MM     0.60 EM     060 %
+            08.0 PT     11 PX     2.8 MM     0.70 EM     070 %
+            09.0 PT     12 PX     3.4 MM     0.80 EM     080 %
+            09.0 PT     13 PX     3.4 MM     0.80 EM     080 %
+            10.0 PT     13 PX     3.4 MM     0.80 EM     080 %
+            10.5 PT     14 PX     3.6 MM     0.85 EM     085 %
+            11.0 PT     15 PX     3.9 MM     0.95 EM     095 %
+            12.0 PT     16 PX     4.2 MM     1.05 EM     105 %
+            12.0 PT     17 PX     4.2 MM     1.05 EM     105 %
+            13.0 PT     17 PX     4.2 MM     1.10 EM     110 %
+            13.0 PT     18 PX     4.8 MM     1.10 EM     110 %
+            14.0 PT     19 PX     5.0 MM     1.20 EM     120 %
+            15.0 PT     20 PX     5.4 MM     1.33 EM     133 %
+            16.0 PT     21 PX     5.8 MM     1.40 EM     140 %
+            16.0 PT     22 PX     5.8 MM     1.40 EM     140 %
+            17.0 PT     23 PX     6.2 MM     1.50 EM     150 %
             */
 
             opts.fMemberDescriptionTextFontSize = 14; // Font 14 znamena 0.14 m v 3D grafike, takze hodnota / 100f
