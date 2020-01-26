@@ -62,7 +62,7 @@ namespace PFD
 
             try
             {
-                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase, jointsDict);
+                Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, loadcase, jointsDict);
             }
             catch (Exception ex)
             {
@@ -82,11 +82,11 @@ namespace PFD
             sDisplayOptions.bCreateVerticalGridlinesRight = false;
 
             if (modelType == EModelType.eJoint)
-                Drawing3D.DrawJointToTrackPort(_trackport, model, sDisplayOptions);
+                Drawing3D.DrawJointToTrackPort(_trackport, model, 1f, sDisplayOptions);
             else if(modelType == EModelType.eFooting)
-                Drawing3D.DrawFootingToTrackPort(_trackport, model, sDisplayOptions);
+                Drawing3D.DrawFootingToTrackPort(_trackport, model, 1f, sDisplayOptions);
             else
-                Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, null, null);
+                Drawing3D.DrawToTrackPort(_trackport, model, 1f, sDisplayOptions, null, null);
         }
         public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)
         {

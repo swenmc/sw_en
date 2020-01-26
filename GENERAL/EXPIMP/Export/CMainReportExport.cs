@@ -111,7 +111,7 @@ namespace EXPIMP
             CModel filteredModel = null;
             Trackport3D trackport = null;
 
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XFont fontBold = new XFont(fontFamily, fontSizeTitle, XFontStyle.Bold, options);
@@ -197,6 +197,7 @@ namespace EXPIMP
                 opts.bCreateVerticalGridlinesLeft = false;
                 opts.bCreateVerticalGridlinesRight = false;
 
+                /*
                 // Bug 477 - Refactoring
                 float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch
                 float fWireFrameLineThickness_Factor = 1.05f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
@@ -204,6 +205,7 @@ namespace EXPIMP
                 float fZoomFactor = 1f;
 
                 float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
+                */
 
                 if (viewMembers == EViewModelMemberFilters.FRONT)
                 {
@@ -309,8 +311,8 @@ namespace EXPIMP
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bDisplayMembersWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
-                    
+                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+
                     opts.bDisplayFoundations = false;
                     opts.bDisplayReinforcementBars = false;
                     opts.bDisplayFloorSlab = true;
@@ -330,7 +332,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = true;
@@ -356,7 +358,7 @@ namespace EXPIMP
                     opts.bDisplayFoundationsWireFrame = true;
                     opts.bDisplayFloorSlabWireFrame = true;
                     opts.bTransformScreenLines3DToCylinders3D = true;
-                    opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+                    //opts.fWireFrameLineThickness = fWireFrameLineThickness_Final;
 
                     opts.bDisplayFoundations = true;
                     opts.bDisplayReinforcementBars = false;
@@ -382,7 +384,7 @@ namespace EXPIMP
 
                 CModel filteredModel = null;
                 Trackport3D trackport = null;
-                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+                Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
                 viewPort.UpdateLayout();
                 DrawCrscLegendTable(gfx, filteredModel, (int)page.Width.Point, legendTextWidth);
                 filteredModel = null;
@@ -566,7 +568,7 @@ namespace EXPIMP
                 CConnectionJointTypes joint = kvp.Value;
 
                 Trackport3D trackport = null;
-                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model, out trackport);
+                Viewport3D viewPort = ExportHelper.GetJointViewPort(joint, opts, data.Model, 1f, out trackport);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -689,7 +691,7 @@ namespace EXPIMP
                 CConnectionJointTypes joint = kvp.Value.Item2;
 
                 Trackport3D trackport = null;
-                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, out trackport, 1140, 800);
+                Viewport3D viewPort = ExportHelper.GetFootingViewPort(joint, pad, opts, 1f, out trackport, 1140, 800);
                 foreach (Visual3D obj3D in viewPort.Children)
                 {
                     if (obj3D is ScreenSpaceLines3D) ((ScreenSpaceLines3D)obj3D).Rescale();  //the only way to draw line in 3D perspective, offline viewport
@@ -1327,7 +1329,7 @@ namespace EXPIMP
             opts.bDisplayMembersCenterLines = false;
             opts.bDisplayWireFrameModel = false; //musi byt false, lebo to je neskutocne vela dat a potom OutOfMemory Exception
             opts.bTransformScreenLines3DToCylinders3D = true;
-            opts.fWireFrameLineThickness = 0.001f;
+            opts.fWireFrameLineThickness = 2f;
 
             opts.bDisplayMembers = true;
             opts.bDisplayJoints = true;
@@ -1360,7 +1362,7 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, 1f, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
             XImage imageModel = XImage.FromBitmapSource(ExportHelper.RenderVisual(viewPort));

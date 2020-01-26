@@ -37,7 +37,8 @@ namespace EXPIMP
 
         public static void ReportAllDataToWordDoc(CModelData modelData)
         {
-            
+            float fZoomFactor = 1.0f;
+
             string fileName = GetReportName();
             // Create a new document.
             using (DocX document = DocX.Create(fileName))
@@ -47,13 +48,13 @@ namespace EXPIMP
                 // Apply a template to the document based on a path.
                 document.ApplyTemplate(templatePath);
 
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_SOLID);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_SOLID);
 
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.BACK, EViewModelMemberFilters.BACK);
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.RIGHT, EViewModelMemberFilters.RIGHT);
-                DrawModel3DToDoc(document, modelData, EViewType3D.MEMBER_CENTERLINES, EModelViews.TOP, EViewModelMemberFilters.ROOF);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.FRONT, EViewModelMemberFilters.FRONT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.BACK, EViewModelMemberFilters.BACK);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.LEFT, EViewModelMemberFilters.LEFT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.RIGHT, EViewModelMemberFilters.RIGHT);
+                DrawModel3DToDoc(document, modelData, fZoomFactor, EViewType3D.MEMBER_CENTERLINES, EModelViews.TOP, EViewModelMemberFilters.ROOF);
 
                 DrawProjectInfo(document, modelData.ProjectInfo);
                 DrawBasicGeometry(document, modelData);
@@ -868,6 +869,7 @@ namespace EXPIMP
 
         private static void DrawModel3DToDoc(DocX document,
             CModelData data,
+            float fZoomFactor,
             EViewType3D eViewtype,
             EModelViews view = EModelViews.ISO_FRONT_RIGHT,
             EViewModelMemberFilters filter = EViewModelMemberFilters.All)
@@ -932,10 +934,10 @@ namespace EXPIMP
 
             CModel filteredModel = null;
             Trackport3D trackport = null;
-            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, out filteredModel, out trackport);
+            Viewport3D viewPort = ExportHelper.GetBaseModelViewPort(opts, data, fZoomFactor, out filteredModel, out trackport);
             viewPort.UpdateLayout();
 
-            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));            
+            Paragraph par = document.Paragraphs.FirstOrDefault(p => p.Text.Contains(sParagraphName));
 
             //ExportHelper.SaveViewPortContentAsImage(viewPort);
             RenderTargetBitmap bmp = ExportHelper.RenderVisual(viewPort);
@@ -1476,6 +1478,8 @@ namespace EXPIMP
 
         private static void DrawJointDesign(DocX document, CModelData data)
         {
+            float fZoomFactor = 1.5f;
+
             // Refaktorovat s FootingDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
             sDisplayOptions.bDisplayMembersCenterLines = false;
@@ -1530,6 +1534,7 @@ namespace EXPIMP
                     par = par.InsertParagraphAfterSelf("");
 
                     // Bug 477 - Refactoring
+                    /*
                     float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
 
                     float fWireFrameLineThickness_Basic = 2f; // Default value same as in GUI - zakladna hrubka ciar wireframe, ktoru chceme na vykresoch / obrazkoch
@@ -1540,9 +1545,10 @@ namespace EXPIMP
                     float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
 
                     sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+                    */
 
                     Trackport3D trackport = null;
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
                     viewPort.Dispose();
@@ -1571,7 +1577,7 @@ namespace EXPIMP
 
                     par = par.InsertParagraphAfterSelf("");
                     Trackport3D trackport = null;
-                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, out trackport);
+                    Viewport3D viewPort = ExportHelper.GetJointViewPort(calcul.joint, sDisplayOptions, data.Model, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
                     viewPort.Dispose();
@@ -1587,6 +1593,7 @@ namespace EXPIMP
 
         private static void DrawFootingDesign(DocX document, CModelData data)
         {
+            float fZoomFactor = 3f;
             // Refaktorovat s JointDesign
             DisplayOptions sDisplayOptions = data.DisplayOptions;
             sDisplayOptions.bDisplayMembersCenterLines = false;
@@ -1662,6 +1669,7 @@ namespace EXPIMP
 
                     par = par.InsertParagraphAfterSelf("");
 
+                    /*
                     // Bug 477 - Refactoring
                     float modelMaxLength = ModelHelper.GetModelMaxLength(data.Model, data.DisplayOptions);
 
@@ -1673,9 +1681,10 @@ namespace EXPIMP
                     float fWireFrameLineThickness_Final = fWireFrameLineThickness_Basic * fWireFrameLineThickness_Factor * fWireFrameLineThickness_ModelSize_Factor * fZoomFactor;
 
                     sDisplayOptions.fWireFrameLineThickness = fWireFrameLineThickness_Final;
+                    */
 
                     Trackport3D trackport = null;
-                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, out trackport);
+                    Viewport3D viewPort = ExportHelper.GetFootingViewPort(calcul.joint, calcul.footing, sDisplayOptions, fZoomFactor, out trackport);
                     viewPort.UpdateLayout();
                     AppendImageFromViewPort(document, viewPort, par);
                     viewPort.Dispose();

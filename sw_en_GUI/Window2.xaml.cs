@@ -74,7 +74,7 @@ namespace sw_en_GUI
             sDisplayOptions.bCreateVerticalGridlinesBack = false;
             sDisplayOptions.bCreateVerticalGridlinesLeft = false;
             sDisplayOptions.bCreateVerticalGridlinesRight = false;
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null);
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, 1f, sDisplayOptions, null);
         }
 
         public Window2(CModel cmodel, DisplayOptions sDisplayOptions_temp, CLoadCase loadCaseToDisplay, bool bDebugging_temp)
@@ -89,7 +89,7 @@ namespace sw_en_GUI
             sDisplayOptions.bCreateVerticalGridlinesBack = false;
             sDisplayOptions.bCreateVerticalGridlinesLeft = false;
             sDisplayOptions.bCreateVerticalGridlinesRight = false;
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, loadCaseToDisplay);
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, 1f, sDisplayOptions, loadCaseToDisplay);
         }
     }
 }

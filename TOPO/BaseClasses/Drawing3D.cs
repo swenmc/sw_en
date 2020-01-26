@@ -28,16 +28,16 @@ namespace BaseClasses
 
 
         #region DrawToTrackPort methods
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, float fZoomFactor, DisplayOptions sDisplayOptions)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions, null, null);
+            return DrawToTrackPort(_trackport, _model, fZoomFactor, sDisplayOptions, null, null);
         }
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, float fZoomFactor, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
-            return DrawToTrackPort(_trackport, _model, sDisplayOptions, loadcase, null);
+            return DrawToTrackPort(_trackport, _model, fZoomFactor, sDisplayOptions, loadcase, null);
         }
 
-        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, DisplayOptions sDisplayOptions,
+        public static CModel DrawToTrackPort(Trackport3D _trackport, CModel _model, float fZoomFactor, DisplayOptions sDisplayOptions,
             CLoadCase loadcase, Dictionary<CConnectionDescription, CConnectionJointTypes> jointsDict)
         {
             CModel model = null;
@@ -142,7 +142,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -153,7 +153,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -163,7 +163,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -173,7 +173,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -183,7 +183,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (slabsModel3DGroup == null) slabsModel3DGroup = Drawing3D.CreateModelSlabsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelSlabsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -274,7 +274,7 @@ namespace BaseClasses
             return model;
         }
 
-        public static void DrawJointToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)
+        public static void DrawJointToTrackPort(Trackport3D _trackport, CModel model, float fZoomFactor, DisplayOptions sDisplayOptions)
         {
             //DateTime start = DateTime.Now;
 
@@ -351,7 +351,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -362,7 +362,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -372,7 +372,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -433,7 +433,7 @@ namespace BaseClasses
             _trackport.SetupScene();
         }
 
-        public static void DrawFootingToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions)
+        public static void DrawFootingToTrackPort(Trackport3D _trackport, CModel model, float fZoomFactor, DisplayOptions sDisplayOptions)
         {
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(sDisplayOptions.backgroundColor);
@@ -506,7 +506,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -517,7 +517,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines; // linie ako 3D valcove plochy
                     if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, sDisplayOptions.bColorsAccordingToMembers, sDisplayOptions.bColorsAccordingToSections);
-                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -527,7 +527,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -537,7 +537,7 @@ namespace BaseClasses
                 {
                     Model3DGroup lines;  // linie ako 3D valcove plochy
                     if (foundationsModel3DGroup == null) foundationsModel3DGroup = Drawing3D.CreateModelFoundationsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, sDisplayOptions, out lines);
+                    Drawing3D.DrawModelFoundationsWireFrame(model, _trackport.ViewPort, fZoomFactor, sDisplayOptions, out lines);
                     if (lines != null)
                         gr.Children.Add(lines); // Pridaj valcove plochy do modelu
                 }
@@ -2239,7 +2239,7 @@ namespace BaseClasses
         }
 
         // Draw Member Centerlines
-        public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions, out Model3DGroup cylinders)
+        public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDiplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
 
@@ -2264,23 +2264,7 @@ namespace BaseClasses
                     }
                 }
 
-                if (sDiplayOptions.bTransformScreenLines3DToCylinders3D)
-                {
-                    cylinders = new Model3DGroup();
-                    
-                    float maxModelLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
-                    float fmemberCenterlineThickness = maxModelLength / 500f;  //velkost podla modelu, ale to cislo "500f" je potrebne data do DisplayOptions
-                    
-                    for (int i = 0; i < wireFramePoints.Count / 2; i++)
-                    {                        
-                        GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.memberCenterlineColor, fmemberCenterlineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
-                        cylinders.Children.Add(cylinder);
-                    }
-                }
-                else
-                {
-                    AddLineToViewPort(wireFramePoints, sDiplayOptions.memberCenterlineColor, sDiplayOptions.fmemberCenterlineThickness, viewPort);
-                }
+                DrawLinesToViewport(viewPort, sDiplayOptions, fZoomFactor, sDiplayOptions.memberCenterlineColor, sDiplayOptions.fmemberCenterlineThickness, wireFramePoints, ref cylinders);
             }
         }
 
@@ -2353,7 +2337,7 @@ namespace BaseClasses
         }
 
         // Add all members in one wireframe collection
-        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDiplayOptions, out Model3DGroup cylinders)
+        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDiplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
 
@@ -2373,27 +2357,12 @@ namespace BaseClasses
                     }
                 }
 
-                if (sDiplayOptions.bTransformScreenLines3DToCylinders3D)
-                {
-                    cylinders = new Model3DGroup();
-
-                    for (int i = 0; i < wireFramePoints.Count / 2; i++)
-                    {
-                        //float fFactor = 1f; toto som menil pre task 477
-                        //float fFactor = 0.01f;
-                        GeometryModel3D cylinder = Get3DLineReplacement(sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFramePoints[i * 2], wireFramePoints[i * 2 + 1]);
-                        cylinders.Children.Add(cylinder);
-                    }
-                }
-                else
-                {
-                    AddLineToViewPort(wireFramePoints, sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, viewPort);
-                }
+                DrawLinesToViewport(viewPort, sDiplayOptions, fZoomFactor, sDiplayOptions.wireFrameColor, sDiplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
             }
         }
 
         // Draw Model Connection Joints Wire Frame
-        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
 
@@ -2528,6 +2497,8 @@ namespace BaseClasses
 
                     if (jointsWireFramePoints.Count > maxPoints)
                     {
+                        DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, jointsWireFramePoints, ref cylinders);
+                        /*
                         if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                         {
                             if (cylinders == null) cylinders = new Model3DGroup();
@@ -2542,10 +2513,15 @@ namespace BaseClasses
                         {
                             AddLineToViewPort(jointsWireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
                         }
+                        */
+
                         jointsWireFramePoints.Clear();
                     }
                 }
 
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, jointsWireFramePoints, ref cylinders);
+
+                /*
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     if (cylinders == null) cylinders = new Model3DGroup();
@@ -2560,11 +2536,12 @@ namespace BaseClasses
                 {
                     AddLineToViewPort(jointsWireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
                 }
+                */
             }
         }
 
         // Add all foundations in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelFoundationsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        public static void DrawModelFoundationsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
 
@@ -2589,6 +2566,8 @@ namespace BaseClasses
                     }
                 }
 
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+                /*
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     cylinders = new Model3DGroup();
@@ -2605,7 +2584,7 @@ namespace BaseClasses
                 else
                 {
                     AddLineToViewPort(wireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
-                }
+                }*/
             }
         }
 
@@ -2625,7 +2604,7 @@ namespace BaseClasses
         }
 
         // Add all slabs in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelSlabsWireFrame(CModel model, Viewport3D viewPort, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
+        public static void DrawModelSlabsWireFrame(CModel model, Viewport3D viewPort, float fZoomFactor, DisplayOptions sDisplayOptions, out Model3DGroup cylinders)
         {
             cylinders = null;
 
@@ -2663,6 +2642,8 @@ namespace BaseClasses
                     }
                 }
 
+                DrawLinesToViewport(viewPort, sDisplayOptions, fZoomFactor, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, wireFramePoints, ref cylinders);
+                /*
                 if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
                 {
                     cylinders = new Model3DGroup();
@@ -2687,7 +2668,7 @@ namespace BaseClasses
                 else
                 {
                     AddLineToViewPort(wireFramePoints, sDisplayOptions.wireFrameColor, sDisplayOptions.fWireFrameLineThickness, viewPort);
-                }
+                }*/
             }
         }
 
@@ -2710,7 +2691,7 @@ namespace BaseClasses
             if (useScreenSpaceLines)
             {
                 //ScreenSpaceLines are much slower = performance issue
-                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(color, thickness); // Just one collection for all members                
+                ScreenSpaceLines3D line_3D = new ScreenSpaceLines3D(color, thickness); // Just one collection for all members
                 line_3D.Points = new Point3DCollection(points);
                 line_3D.Color = color;
                 if (centerModel) { line_3D.Transform = centerModelTransGr; }
@@ -2737,6 +2718,33 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_FrontSide);
             viewPort.Children.Add(wireFrame_BackSide);
             viewPort.Children.Add(wireFrame_Lateral);
+        }
+
+        public static void DrawLinesToViewport(Viewport3D viewPort, DisplayOptions sDisplayOptions, float fZoomFactor, Color color, float thickness, List<Point3D> points, ref Model3DGroup cylinders)
+        {
+            if (sDisplayOptions.bTransformScreenLines3DToCylinders3D)
+            {
+                if(cylinders == null) cylinders = new Model3DGroup();
+
+                float modelMaxLength = MathF.Max(fModel_Length_X, fModel_Length_Y, fModel_Length_Z);
+                //float modelMaxLength = ModelHelper.GetModelMaxLength(model, sDisplayOptions);
+
+                float fLineThickness_Basic = thickness; // Default value - prebera sa z GUI - same as in GUI - zakladna hrubka ciar, ktoru chceme na vykresoch / obrazkoch
+                float fLineThickness_Factor = 1.02f; //  Faktor ktory zohladnuje vztah medzi hodnotou basic v "bodoch" a model size factor pre velkost modelu v metroch
+                float fLineThickness_ModelSize_Factor = modelMaxLength / 1000.0f;
+
+                float fThickness_CylinderDiameter_Final = fLineThickness_Basic * fLineThickness_Factor * fLineThickness_ModelSize_Factor * fZoomFactor;
+
+                for (int i = 0; i < points.Count / 2; i++)
+                {
+                    GeometryModel3D cylinder = Get3DLineReplacement(color, fThickness_CylinderDiameter_Final, points[i * 2], points[i * 2 + 1]);
+                    cylinders.Children.Add(cylinder);
+                }
+            }
+            else
+            {
+                AddLineToViewPort(points, color, thickness, viewPort);
+            }
         }
 
         public static void DrawSurfaceLoadsAxis(CLoadCase loadCase, Viewport3D viewPort)
@@ -5241,10 +5249,9 @@ namespace BaseClasses
             // TO Ondrej - ak chces pouzivat triedu R3, tak asi by stalo zato dat to vsetko nejako dokopy s Point3D a CNode a CPoint, uz som toho navytvaral vela :)
             // Potom pracne prevazdam hore dole mezi sebou tie objekty a pritom je to stale len bod v 2D alebo v 3D, akurat ze raz ma ID alebo nejaku inu pridavnu vlastnost
 
-            DiffuseMaterial material = new DiffuseMaterial(new System.Windows.Media.SolidColorBrush(color));
+            DiffuseMaterial material = new DiffuseMaterial(new SolidColorBrush(color));
 
             float fLineCylinderRadius = fLineThickness / 2; //0.05f; // Polomer valca ako polovica hrubky ciary
-
 
             short NumberOfCirclePoints = 9; // Osem uholnik + stredovy bod (je pocet bodov len 4+1 tak moze mat ciara inu hrubku podla toho ako je hranol otoceny)
 
@@ -5260,7 +5267,7 @@ namespace BaseClasses
             // TO Ondrej - control point valca ma byt 0,0,0 kedze presun do bodu pA je zohladneny vo funkcii TransformMember_LCStoGCS
             // Model valca som nahradil len plastom a nebudeme kreslit hornu a spodnu podstavu, to bz malo pre "ciaru" postacovat
             // TODO - zjednotit triedy Cylinder a funkcie z CVolume pre valec
-            //To Mato mozno treba pozriet aj triedu Cylinder od Petzolda,ci tam nie je vsetko co potrebujeme            
+            //To Mato mozno treba pozriet aj triedu Cylinder od Petzolda,ci tam nie je vsetko co potrebujeme
             GeometryModel3D gm3D = BaseClasses.GraphObj.Objects_3D.Cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(0, 0, 0), NumberOfCirclePoints, fLineCylinderRadius, distance, material, 0, false, false);
 
             // Transform cylinder from its LCS to GCS
