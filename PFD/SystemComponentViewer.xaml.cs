@@ -1217,7 +1217,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_L:
                         {
                             CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_L, true); // L
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, 0.27f, 0, 0, 0, screwArrangement_L, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
@@ -1229,7 +1229,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_F:
                         {
                             CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0.27f, 0f, 0f, 0f, screwArrangement_F, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_G:

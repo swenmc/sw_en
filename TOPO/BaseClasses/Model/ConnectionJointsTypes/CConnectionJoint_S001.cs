@@ -203,8 +203,8 @@ namespace BaseClasses
 
                 CConCom_Plate_M pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
 
-                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
-                CConCom_Plate_F_or_L pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
+                CConCom_Plate_F_or_L pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
+                CConCom_Plate_F_or_L pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
 
                 // Identification of current joint node location (start or end definition node of secondary member)
                 if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -217,8 +217,8 @@ namespace BaseClasses
 
                     pPlate1 = new CConCom_Plate_M("M", ControlPoint_P1, fbX1_Plate1, fbX1_Plate1, fh_Plate1, ft_Plate1, (float)m_SecondaryMembers[0].CrScStart.b, m_fRoofPitch_rad, fGamma_rad, 0, fRotationAboutLCS_x_deg, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
 
-                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
-                    pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
+                    pPlate2 = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation2AboutLCS_y_deg, fRotation2AboutLCS_z_deg, screwArrangement_L, true);
+                    pPlate3 = new CConCom_Plate_F_or_L("LH", ControlPoint_P3, fb_Plate2, fh_Plate2, fb_Plate2, ft_Plate2, (float)m_SecondaryMembers[0].CrScStart.h, 0, fRotation3AboutLCS_y_deg, fRotation3AboutLCS_z_deg, screwArrangement_L, true);
                 }
 
                 m_arrPlates = new CPlate[3]; // Three plates in joint (1 + 2)

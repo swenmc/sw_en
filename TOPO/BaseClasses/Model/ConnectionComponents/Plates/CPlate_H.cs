@@ -256,9 +256,6 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
-            // Minimum edge distances - zadane v suradnicovom smere plechu
-            SetMinimumScrewToEdgeDistances(screwArrangement_temp);
-
             fA_g = Get_A_rect(Ft, m_fhY2);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
@@ -268,33 +265,6 @@ namespace BaseClasses
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY2); // Elastic section modulus
 
             ScrewArrangement = screwArrangement_temp;
-        }
-
-        public void SetMinimumScrewToEdgeDistances(CScrewArrangement_H screwArrangement)
-        {
-            e_min_x_BottomLeg = 0;
-            e_min_y_BottomLeg = 0;
-
-            e_min_z_TopLeg = 0;
-            e_min_y_TopLeg = 0;
-
-            if (screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0 &&
-                screwArrangement.arrConnectorControlPoints3D != null && screwArrangement.arrConnectorControlPoints3D.Length > 0)
-            {
-                // Minimum edge distances - zadane v suradnicovom smere plechu
-                e_min_x_BottomLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[0].X;
-                e_min_y_BottomLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[0].Y;
-
-                e_min_z_TopLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints[0].X;
-                e_min_y_TopLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints[0].Y;
-
-                // Alternativne
-                e_min_x_BottomLeg = screwArrangement.fx_edge_BottomLeg;
-                e_min_y_BottomLeg = screwArrangement.fy_edge_BottomLeg;
-
-                e_min_z_TopLeg = screwArrangement.fx_edge_TopLeg;
-                e_min_y_TopLeg = screwArrangement.fy_edge_TopLeg;
-            }
         }
 
         //----------------------------------------------------------------------------
@@ -382,6 +352,12 @@ namespace BaseClasses
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement_H screwArrangement)
         {
+            e_min_x_BottomLeg = screwArrangement.fx_edge_BottomLeg;
+            e_min_y_BottomLeg = screwArrangement.fy_edge_BottomLeg;
+
+            e_min_z_TopLeg = screwArrangement.fx_edge_TopLeg;
+            e_min_y_TopLeg = screwArrangement.fy_edge_TopLeg;
+
             float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
 
             // Bottom leg
@@ -438,7 +414,6 @@ namespace BaseClasses
         protected override void loadIndices()
         {
             TriangleIndices = new Int32Collection();
-
 
             if (iLeftRightIndex == 0) // Left
             {

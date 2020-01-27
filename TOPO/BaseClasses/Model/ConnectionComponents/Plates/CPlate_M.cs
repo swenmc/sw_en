@@ -101,6 +101,36 @@ namespace BaseClasses
             }
         }
 
+        private float m_fe_min_x; // Minimalna vzdialenost skrutiek - smer x
+
+        public float e_min_x
+        {
+            get
+            {
+                return m_fe_min_x;
+            }
+
+            set
+            {
+                m_fe_min_x = value;
+            }
+        }
+
+        private float m_fe_min_y; // Minimalna vzdialenost skrutiek - smer y
+
+        public float e_min_y
+        {
+            get
+            {
+                return m_fe_min_y;
+            }
+
+            set
+            {
+                m_fe_min_y = value;
+            }
+        }
+
         public CConCom_Plate_M()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -341,26 +371,26 @@ namespace BaseClasses
             // 3 x 2 screws = 6 screws in the plate
             float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
 
-            float fx_edge = 0.015f;  // x-direction
-            float fy_edge = 0.015f;  // y-direction in 2D
+            m_fe_min_x = 0.015f;  // x-direction
+            m_fe_min_y = 0.015f;  // y-direction in 2D
 
             // Middle
             arrConnectorControlPoints3D[0].X = 0;
-            arrConnectorControlPoints3D[0].Y = fy_edge;
+            arrConnectorControlPoints3D[0].Y = e_min_y;
             arrConnectorControlPoints3D[0].Z =  Ft + fScrewOffset;
 
             arrConnectorControlPoints3D[1].X = 0;
-            arrConnectorControlPoints3D[1].Y = m_fhY - fy_edge;
+            arrConnectorControlPoints3D[1].Y = m_fhY - e_min_y;
             arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
 
             // Auxiliary calculations
             // Left
 
             float fS3OffSetGCS_X, fS3OffSetGCS_Yb, fS3OffSetGCS_Yabove, fS3OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fScrewOffset, m_fGamma1_rad, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
+            GetScrewPositionCoordinates(m_fe_min_x, e_min_y, fScrewOffset, m_fGamma1_rad, out fS3OffSetGCS_X, out fS3OffSetGCS_Yb, out fS3OffSetGCS_Yabove, out fS3OffSetGCS_Z);
 
             float fS4OffSetGCS_X, fS4OffSetGCS_Yb, fS4OffSetGCS_Yabove, fS4OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fScrewOffset, m_fGamma1_rad, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
+            GetScrewPositionCoordinates(m_fe_min_x, m_fhY - e_min_y, fScrewOffset, m_fGamma1_rad, out fS4OffSetGCS_X, out fS4OffSetGCS_Yb, out fS4OffSetGCS_Yabove, out fS4OffSetGCS_Z);
 
             arrConnectorControlPoints3D[2].X = arrPoints3D[15].X + fS3OffSetGCS_X;
             arrConnectorControlPoints3D[2].Y = arrPoints3D[15].Y + fS3OffSetGCS_Yb + fS3OffSetGCS_Yabove;
@@ -372,10 +402,10 @@ namespace BaseClasses
 
             // Right
             float fS5OffSetGCS_X, fS5OffSetGCS_Yb, fS5OffSetGCS_Yabove, fS5OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, fy_edge, fScrewOffset, m_fGamma1_rad, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
+            GetScrewPositionCoordinates(m_fe_min_x, m_fe_min_y, fScrewOffset, m_fGamma1_rad, out fS5OffSetGCS_X, out fS5OffSetGCS_Yb, out fS5OffSetGCS_Yabove, out fS5OffSetGCS_Z);
 
             float fS6OffSetGCS_X, fS6OffSetGCS_Yb, fS6OffSetGCS_Yabove, fS6OffSetGCS_Z;
-            GetScrewPositionCoordinates(fx_edge, m_fhY - fy_edge, fScrewOffset, m_fGamma1_rad, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
+            GetScrewPositionCoordinates(m_fe_min_x, m_fhY - m_fe_min_y, fScrewOffset, m_fGamma1_rad, out fS6OffSetGCS_X, out fS6OffSetGCS_Yb, out fS6OffSetGCS_Yabove, out fS6OffSetGCS_Z);
 
             arrConnectorControlPoints3D[4].X = arrPoints3D[12].X - fS5OffSetGCS_X;
             arrConnectorControlPoints3D[4].Y = arrPoints3D[12].Y - fS5OffSetGCS_Yb + fS5OffSetGCS_Yabove;
