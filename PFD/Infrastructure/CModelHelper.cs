@@ -10,7 +10,7 @@ namespace PFD
 {
     public static class CModelHelper
     {
-        const bool debugging = false;
+        const bool debugging = true;
         //Extension method
         //returns list of frames with members from Model
         public static List<CFrame> GetFramesFromModel(this CModel_PFD_01_GR model)
