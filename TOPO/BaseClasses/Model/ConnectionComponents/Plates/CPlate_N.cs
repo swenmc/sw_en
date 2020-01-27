@@ -93,6 +93,36 @@ namespace BaseClasses
 
         public int m_iHolesNumber = 0;
 
+        private float m_fe_min_x; // Minimalna vzdialenost skrutiek - smer x
+
+        public float e_min_x
+        {
+            get
+            {
+                return m_fe_min_x;
+            }
+
+            set
+            {
+                m_fe_min_x = value;
+            }
+        }
+
+        private float m_fe_min_y; // Minimalna vzdialenost skrutiek - smer y
+
+        public float e_min_y
+        {
+            get
+            {
+                return m_fe_min_y;
+            }
+
+            set
+            {
+                m_fe_min_y = value;
+            }
+        }
+
         public CConCom_Plate_N()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -339,22 +369,22 @@ namespace BaseClasses
         {
             // 3 x 4 screws = 12 screws in the plate (square arrangement 4 screws in group)
 
-            float fx_edge = 0.020f;
-            float fy_edge = 0.020f;
+            m_fe_min_x = 0.020f;
+            m_fe_min_y = 0.020f;
 
             float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
 
             // Left back
-            arrConnectorControlPoints3D[0].X = fx_edge;
-            arrConnectorControlPoints3D[0].Y = fy_edge;
+            arrConnectorControlPoints3D[0].X = m_fe_min_x;
+            arrConnectorControlPoints3D[0].Y = m_fe_min_y;
             arrConnectorControlPoints3D[0].Z = Ft + fScrewOffset; // TODO Position depends on screw length
 
-            arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
+            arrConnectorControlPoints3D[1].X = m_fbX1 - m_fe_min_x;
             arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
             arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
 
             arrConnectorControlPoints3D[2].X = arrConnectorControlPoints3D[0].X;
-            arrConnectorControlPoints3D[2].Y = m_fhY - fy_edge;
+            arrConnectorControlPoints3D[2].Y = m_fhY - m_fe_min_y;
             arrConnectorControlPoints3D[2].Z = arrConnectorControlPoints3D[0].Z;
 
             arrConnectorControlPoints3D[3].X = arrConnectorControlPoints3D[1].X;
@@ -362,11 +392,11 @@ namespace BaseClasses
             arrConnectorControlPoints3D[3].Z = arrConnectorControlPoints3D[0].Z;
 
             // Right back
-            arrConnectorControlPoints3D[4].X = m_fbX1 + 2 * x_a + m_fbX3 + fx_edge;
+            arrConnectorControlPoints3D[4].X = m_fbX1 + 2 * x_a + m_fbX3 + m_fe_min_x;
             arrConnectorControlPoints3D[4].Y = arrConnectorControlPoints3D[0].Y;
             arrConnectorControlPoints3D[4].Z = arrConnectorControlPoints3D[0].Z;
 
-            arrConnectorControlPoints3D[5].X = 2 * m_fbX1 + 2 * x_a + m_fbX3 - fx_edge;
+            arrConnectorControlPoints3D[5].X = 2 * m_fbX1 + 2 * x_a + m_fbX3 - m_fe_min_x;
             arrConnectorControlPoints3D[5].Y = arrConnectorControlPoints3D[4].Y;
             arrConnectorControlPoints3D[5].Z = arrConnectorControlPoints3D[0].Z;
 
@@ -379,11 +409,11 @@ namespace BaseClasses
             arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[0].Z;
 
             // Middle front
-            arrConnectorControlPoints3D[8].X = m_fbX1 + x_a + fx_edge;
+            arrConnectorControlPoints3D[8].X = m_fbX1 + x_a + m_fe_min_x;
             arrConnectorControlPoints3D[8].Y = arrConnectorControlPoints3D[0].Y;
             arrConnectorControlPoints3D[8].Z = m_fZ + Ft + fScrewOffset;
 
-            arrConnectorControlPoints3D[9].X = m_fbX1 + x_a + m_fbX3 - fx_edge;
+            arrConnectorControlPoints3D[9].X = m_fbX1 + x_a + m_fbX3 - m_fe_min_x;
             arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[0].Y;
             arrConnectorControlPoints3D[9].Z = arrConnectorControlPoints3D[8].Z;
 

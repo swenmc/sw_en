@@ -44,13 +44,13 @@ namespace BaseClasses
             CScrewArrangement_L screwArrangement = new CScrewArrangement_L(m_iHoleNo, referenceScrew);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_F_or_L("LJ", ControlPoint_P1, fb_plate, fh_plate, 0, m_ft, 90, 0, 90, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_F_or_L("LJ", ControlPoint_P1, fb_plate, fh_plate, 0, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 90, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
 
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new Point3D(m_SecondaryMembers[0].FLength - fAlignment_x, /*m_MainMember.CrScStart.y_max*/ + 0.5f * fb_plate, -0.5f * fh_plate);
-                m_arrPlates[0] = new CConCom_Plate_F_or_L("LJ", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 180+90, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_F_or_L("LJ", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, (float)m_SecondaryMembers[0].CrScStart.h, 90, 0, 180+90, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
             }
         }
 

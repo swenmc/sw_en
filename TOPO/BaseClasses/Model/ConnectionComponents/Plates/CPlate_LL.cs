@@ -70,6 +70,66 @@ namespace BaseClasses
             }
         }
 
+        private float m_e_min_x_LeftLeg;
+
+        public float e_min_x_LeftLeg
+        {
+            get
+            {
+                return m_e_min_x_LeftLeg;
+            }
+
+            set
+            {
+                m_e_min_x_LeftLeg = value;
+            }
+        }
+
+        private float m_e_min_y_LeftLeg;
+
+        public float e_min_y_LeftLeg
+        {
+            get
+            {
+                return m_e_min_y_LeftLeg;
+            }
+
+            set
+            {
+                m_e_min_y_LeftLeg = value;
+            }
+        }
+
+        private float m_e_min_z_RightLeg;
+
+        public float e_min_z_RightLeg
+        {
+            get
+            {
+                return m_e_min_z_RightLeg;
+            }
+
+            set
+            {
+                m_e_min_z_RightLeg = value;
+            }
+        }
+
+        private float m_e_min_y_RightLeg;
+
+        public float e_min_y_RightLeg
+        {
+            get
+            {
+                return m_e_min_y_RightLeg;
+            }
+
+            set
+            {
+                m_e_min_y_RightLeg = value;
+            }
+        }
+
         public CConCom_Plate_LL()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -326,6 +386,12 @@ namespace BaseClasses
             float fy_edge1 = 0.010f;
             float fy_edge2 = 0.030f;
             float fy_edge3 = 0.120f;
+
+            m_e_min_x_LeftLeg = fx_edge;
+            m_e_min_y_LeftLeg = fy_edge1;
+
+            e_min_z_RightLeg = fx_edge; // !!! TODO - Preberat z praveho ramena plechu
+            e_min_y_RightLeg = fy_edge1;
 
             float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;
 
