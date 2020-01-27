@@ -122,6 +122,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_G.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_M.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CNut.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_Frame.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_H.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_G.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_M.cs" />

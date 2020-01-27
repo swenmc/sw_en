@@ -9,7 +9,7 @@ using MATH;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_JB : CPlate
+    public class CConCom_Plate_JB : CPlate_Frame
     {
         private float m_fbX;
 
@@ -192,6 +192,9 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
 
             fA_g = Get_A_channel(m_flZ, Ft, Ft, m_fhY1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek

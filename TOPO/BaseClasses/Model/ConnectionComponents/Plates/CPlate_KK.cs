@@ -9,7 +9,7 @@ using BaseClasses.GraphObj;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KK : CPlate
+    public class CConCom_Plate_KK : CPlate_Frame
     {
         private float m_fbXR; // Rafter Width
 
@@ -199,6 +199,9 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
 
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * Ft, Ft, m_fbX1);

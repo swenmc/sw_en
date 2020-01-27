@@ -167,6 +167,9 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
+
             fA_g = Get_A_rect(2 * Ft, Fh_Y);
             int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 

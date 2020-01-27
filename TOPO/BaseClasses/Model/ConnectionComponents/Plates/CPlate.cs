@@ -690,7 +690,7 @@ namespace BaseClasses
             }
         }
 
-        public bool IsSymmetric()
+        public bool IsSymmetric() // TODO - zistit naco sa to pouziva, ci je to spravne a ci to nema byt v CPlate_Frame pre KNEE a APEX plates
         {
             if (this.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
             {

@@ -9,7 +9,7 @@ using MATH;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KB : CPlate
+    public class CConCom_Plate_KB : CPlate_Frame
     {
         private float m_fbX1;
 
@@ -226,6 +226,9 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
 
             // Konzervativne, vynechana pasnica
             fA_g = Get_A_rect(Ft, m_fbX1);

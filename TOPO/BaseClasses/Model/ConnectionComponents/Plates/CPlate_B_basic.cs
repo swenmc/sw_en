@@ -133,6 +133,36 @@ namespace BaseClasses
             }
         }
 
+        private float m_fe_min_y; // Minimalna vzdialenost skrutiek - smer y
+
+        public float e_min_y
+        {
+            get
+            {
+                return m_fe_min_y;
+            }
+
+            set
+            {
+                m_fe_min_y = value;
+            }
+        }
+
+        private float m_fe_min_z; // Minimalna vzdialenost skrutiek - smer x
+
+        public float e_min_z
+        {
+            get
+            {
+                return m_fe_min_z;
+            }
+
+            set
+            {
+                m_fe_min_z = value;
+            }
+        }
+
         public CConCom_Plate_B_basic()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -257,6 +287,9 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
+
             fA_g = Get_A_rect(2 * Ft, Fh_Y);
             int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 
@@ -282,6 +315,19 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
+        }
+
+        public void SetMinimumScrewToEdgeDistances(CScrewArrangement screwArrangement)
+        {
+            e_min_y = 0;
+            e_min_z = 0;
+
+            if (screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0)
+            {
+                // Minimum edge distances - zadane v suradnicovom smere plechu
+                e_min_y = (float)screwArrangement.HolesCentersPoints2D[0].Y;
+                e_min_z = (float)screwArrangement.HolesCentersPoints2D[0].X;
+            }
         }
     }
 }

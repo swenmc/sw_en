@@ -70,7 +70,67 @@ namespace BaseClasses
             }
         }
 
-        private int iLeftRightIndex; // F - plate 0 - left, 1 - right 
+        private int iLeftRightIndex; // F - plate 0 - left, 1 - right
+
+        private float m_e_min_x_LeftLeg;
+
+        public float e_min_x_LeftLeg
+        {
+            get
+            {
+                return m_e_min_x_LeftLeg;
+            }
+
+            set
+            {
+                m_e_min_x_LeftLeg = value;
+            }
+        }
+
+        private float m_e_min_y_LeftLeg;
+
+        public float e_min_y_LeftLeg
+        {
+            get
+            {
+                return m_e_min_y_LeftLeg;
+            }
+
+            set
+            {
+                m_e_min_y_LeftLeg = value;
+            }
+        }
+
+        private float m_e_min_z_RightLeg;
+
+        public float e_min_z_RightLeg
+        {
+            get
+            {
+                return m_e_min_z_RightLeg;
+            }
+
+            set
+            {
+                m_e_min_z_RightLeg = value;
+            }
+        }
+
+        private float m_e_min_y_RightLeg;
+
+        public float e_min_y_RightLeg
+        {
+            get
+            {
+                return m_e_min_y_RightLeg;
+            }
+
+            set
+            {
+                m_e_min_y_RightLeg = value;
+            }
+        }
 
         public CConCom_Plate_F_or_L()
         {
@@ -135,6 +195,9 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement_temp);
 
             fA_g = Get_A_rect(Ft, m_fhY);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
@@ -234,6 +297,9 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement_temp);
+
             fA_g = Get_A_rect(Ft, m_fhY);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
@@ -243,6 +309,26 @@ namespace BaseClasses
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
             ScrewArrangement = screwArrangement_temp;
+        }
+
+        public void SetMinimumScrewToEdgeDistances(CScrewArrangement screwArrangement)
+        {
+            e_min_x_LeftLeg = 0;
+            e_min_y_LeftLeg = 0;
+
+            e_min_z_RightLeg = 0;
+            e_min_y_RightLeg = 0;
+
+            if (screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0 &&
+                screwArrangement.arrConnectorControlPoints3D != null && screwArrangement.arrConnectorControlPoints3D.Length > 0)
+            {
+                // Minimum edge distances - zadane v suradnicovom smere plechu
+                e_min_x_LeftLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[0].X;
+                e_min_y_LeftLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints[0].Y;
+
+                e_min_z_RightLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints[0].X;
+                e_min_y_RightLeg = (float)screwArrangement.ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints[0].Y;
+            }
         }
 
         //----------------------------------------------------------------------------

@@ -9,7 +9,7 @@ using MATH;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KFS : CPlate
+    public class CConCom_Plate_KFS : CPlate_Frame
     {
         private float m_fbX1;
 
@@ -211,6 +211,9 @@ namespace BaseClasses
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
 
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
+
             // Konzervativne, vynechana pasnica
             fA_g = Get_A_rect(Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
@@ -237,6 +240,13 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
+        }
+
+        public override void SetMinimumScrewToEdgeDistances(CScrewArrangement screwArrangement)
+        {
+            SetMinimumScrewToEdgeDistances_Basic(screwArrangement);
+
+            e_min_x -= m_flZ; // Odpocitame sirku laveho ohybu
         }
 
         //----------------------------------------------------------------------------

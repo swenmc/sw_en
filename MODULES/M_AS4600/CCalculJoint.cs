@@ -321,7 +321,17 @@ namespace M_AS4600
             designDetails.fEta_Vb_5424 = Math.Max(designDetails.fEta_Vb_5424_MainMember, designDetails.fEta_Vb_5424_SecondaryMember);
 
             // 5.4.2.5 Connection shear as limited by end distance
-            designDetails.fe = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
+            if (plate is CPlate_Frame)
+            {
+                CPlate_Frame framePlate = (CPlate_Frame)plate;
+                float fe_horizontal = framePlate.e_min_x;
+                float fe_vertical = framePlate.e_min_y;
+
+                designDetails.fe = Math.Min(fe_horizontal, fe_vertical); // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
+            }
+            else
+                throw new ArgumentNullException("Invalid type of the knee or apex plate.");
+
             designDetails.fV_fv_MainMember = eq.Eq_5425_2__(ft_2_crscmainMember, designDetails.fe, ff_uk_2_MainMember);
             designDetails.fV_fv_SecondaryMember = eq.Eq_5425_2__(ft_2_crscsecMember, designDetails.fe, ff_uk_2_SecondaryMember);
             designDetails.fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, designDetails.fe, ff_uk_1_plate);
@@ -1129,7 +1139,10 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_Vb_5424_MainMember);
 
             // 5.4.2.5 Connection shear as limited by end distance
-            designDetails.fe = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
+            float fe_horizontal = basePlate.e_min_y;
+            float fe_vertical = basePlate.e_min_z;
+
+            designDetails.fe = Math.Min(fe_horizontal, fe_vertical); // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
             designDetails.fV_fv_MainMember = eq.Eq_5425_2__(ft_2_crscmainMember, designDetails.fe, ff_uk_2_MainMember);
             designDetails.fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, designDetails.fe, ff_uk_1_plate);
 
@@ -2065,6 +2078,12 @@ namespace M_AS4600
             {
                 throw new Exception("Invalid propery value " + fDimValue + "[m].");
             }
+        }
+
+        private void DeterminateMinimumEdgeDistance_Screw_Shear_()
+        {
+
+
         }
     }
 }

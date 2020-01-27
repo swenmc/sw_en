@@ -9,7 +9,7 @@ using BaseClasses.GraphObj;
 namespace BaseClasses
 {
     [Serializable]
-    public class CConCom_Plate_KA : CPlate
+    public class CConCom_Plate_KA : CPlate_Frame
     {
         private float m_fbX1;
 
@@ -190,6 +190,9 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            // Minimum edge distances - zadane v suradnicovom smere plechu
+            SetMinimumScrewToEdgeDistances(screwArrangement);
 
             fA_g = Get_A_rect(Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
