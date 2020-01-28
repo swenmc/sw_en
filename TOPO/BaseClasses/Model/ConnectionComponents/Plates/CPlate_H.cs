@@ -133,18 +133,18 @@ namespace BaseClasses
             }
         }
 
-        private float m_e_min_z_TopLeg;
+        private float m_e_min_x_TopLeg;
 
-        public float e_min_z_TopLeg
+        public float e_min_x_TopLeg
         {
             get
             {
-                return m_e_min_z_TopLeg;
+                return m_e_min_x_TopLeg;
             }
 
             set
             {
-                m_e_min_z_TopLeg = value;
+                m_e_min_x_TopLeg = value;
             }
         }
 
@@ -355,7 +355,7 @@ namespace BaseClasses
             e_min_x_BottomLeg = screwArrangement.fx_edge_BottomLeg;
             e_min_y_BottomLeg = screwArrangement.fy_edge_BottomLeg;
 
-            e_min_z_TopLeg = screwArrangement.fx_edge_TopLeg;
+            e_min_x_TopLeg = screwArrangement.fx_edge_TopLeg;
             e_min_y_TopLeg = screwArrangement.fy_edge_TopLeg;
 
             float fScrewOffset = screwArrangement.referenceScrew.T_ht_headTotalThickness;

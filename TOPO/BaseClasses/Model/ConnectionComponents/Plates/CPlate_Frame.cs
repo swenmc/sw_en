@@ -44,7 +44,7 @@ namespace BaseClasses
             e_min_x = 0;
             e_min_y = 0;
 
-            if (screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0)
+            if (screwArrangement != null && screwArrangement.HolesCentersPoints2D != null && screwArrangement.HolesCentersPoints2D.Length > 0)
             {
                 e_min_x = float.MaxValue;
                 e_min_y = float.MaxValue;

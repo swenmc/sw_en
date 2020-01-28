@@ -208,11 +208,6 @@ namespace PFD
             CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
-            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
-            CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
-            CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
-            CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
-
             bool bUseAdditionalConnectors = true;
             int iNumberOfAdditionalConnectorsInCorner = 4;
             int iConnectorNumberInCircleSequence = 20;
@@ -309,6 +304,76 @@ namespace PFD
 
                         break;
                     }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // L
+                        {
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_L;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_LL:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // LLH / LLK
+                        {
+                            CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_LL;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // F
+                        {
+                            CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_F;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_G:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // G
+                        {
+                            CScrewArrangement_G screwArrangement_G = new CScrewArrangement_G(/*iNumberofHoles, */ referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_G;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_H:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // H
+                        {
+                            CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(/*iNumberofHoles, */ referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_H;
+                        }
+
+                        break;
+                    }
+                    /*
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                            plate.ScrewArrangement = screwArrangement_Q;
+
+                        break;
+                    }*/
                 case ESerieTypePlate.eSerie_J:
                     {
                         if (vm.ComponentIndex == 0) // JA
@@ -409,12 +474,39 @@ namespace PFD
                         }
                         break;
                     }
+                case ESerieTypePlate.eSerie_M:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // Plate M
+                        {
+                            CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_M;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_N:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // Plate N
+                        {
+                            CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
+                            plate.ScrewArrangement = screwArrangement_N;
+                        }
+
+                        break;
+                    }
                 case ESerieTypePlate.eSerie_O:
                     {
                         if (vm.ScrewArrangementIndex == 0) // Undefined
                             plate.ScrewArrangement = null;
                         else if (vm.ScrewArrangementIndex == 1) // Rectangular - Plate O
+                        {
+                            CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
                             plate.ScrewArrangement = screwArrangement_O;
+                        }
 
                         break;
                     }
@@ -1147,14 +1239,7 @@ namespace PFD
                 CAnchor referenceAnchor = new CAnchor("M16", "8.8", 0.33f, 0.3f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
-                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
-                CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
-                CScrewArrangement_G screwArrangement_G = new CScrewArrangement_G(/*iNumberofHoles, */ referenceScrew);
-                CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(/*iNumberofHoles, */ referenceScrew);
-                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
-                CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
-                CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
-                CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
+                float fCrsc_h = 0.27f; // Default depth of connected member cross-section
 
                 bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
@@ -1217,28 +1302,33 @@ namespace PFD
                     case ESerieTypePlate.eSerie_L:
                         {
                             CPlate_L_Properties prop = CJointsManager.GetPlate_L_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, 0.27f, 0, 0, 0, screwArrangement_L, true); // L
+                            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(prop.NumberOfHolesScrews, referenceScrew);
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fh, fl, ft, fCrsc_h, 0, 0, 0, screwArrangement_L, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
                             CPlate_LL_Properties prop = CJointsManager.GetPlate_LL_Properties(vm.ComponentIndex + 1);
+                            CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(prop.NumberOfHolesScrews, referenceScrew);
                             plate = new CConCom_Plate_LL(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
                             CPlate_F_Properties prop = CJointsManager.GetPlate_F_Properties(vm.ComponentIndex + 1);
-                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, 0.27f, 0f, 0f, 0f, screwArrangement_F, true); // F
+                            CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(prop.NumberOfHolesScrews, referenceScrew);
+                            plate = new CConCom_Plate_F_or_L(prop.Name, controlpoint, fb, fb2, fh, fl, ft, fCrsc_h, 0f, 0f, 0f, screwArrangement_F, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_G:
                         {
+                            CScrewArrangement_G screwArrangement_G = new CScrewArrangement_G(/*iNumberofHoles, */ referenceScrew);
                             plate = new CConCom_Plate_G(dcomponents.arr_Serie_G_Names[vm.ComponentIndex], controlpoint, fb, fb2, fh, fh2, fl, 0.5f * fh2, ft, 0f, 0f, 0f, screwArrangement_G, true); // G
                             break;
                         }
                     case ESerieTypePlate.eSerie_H:
                         {
+                            CScrewArrangement_H screwArrangement_H = new CScrewArrangement_H(/*iNumberofHoles, */ referenceScrew);
                             plate = new CConCom_Plate_H(dcomponents.arr_Serie_H_Names[vm.ComponentIndex], controlpoint, fb, fh, fh2, 0.2f * fb, ft, 11f * MathF.fPI / 180f, 0f, 0f, 0f, screwArrangement_H, true); // H
                             break;
                         }
@@ -1410,17 +1500,21 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_M:
                         {
+                            CScrewArrangement_M screwArrangement_M = new CScrewArrangement_M(iNumberofHoles, referenceScrew);
                             // b, h, t, iHoles, bBeam, slope_rad
                             plate = new CConCom_Plate_M(dcomponents.arr_Serie_M_Names[0], controlpoint, 0.5f*(fb- fb_B), 0.5f * (fb - fb_B), fh, ft, fb_B, fRoofPitch_rad, fGamma_rad, 0, 0, 0, screwArrangement_M, true); // M
                             break;
                         }
                     case ESerieTypePlate.eSerie_N:
                         {
+                            CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
                             plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0,0,0, screwArrangement_N, true); // N
                             break;
                         }
                     case ESerieTypePlate.eSerie_O:
                         {
+                            CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
+
                             if (vm.ScrewArrangementIndex == 0) // Undefined
                                 plate = new CConCom_Plate_O(dcomponents.arr_Serie_O_Names[0], controlpoint, fb, fb2, fh, fh2, ft, 11f * MathF.fPI / 180f, 0, 0, 0, null, true);
                             else //if (vm.ScrewArrangementIndex == 1) // Rectangular

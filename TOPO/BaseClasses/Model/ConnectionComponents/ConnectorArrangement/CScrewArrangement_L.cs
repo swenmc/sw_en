@@ -20,8 +20,12 @@ namespace BaseClasses
 
         public void Calc_HolesCentersCoord2D(float fbX1, float fhY, float flZ)
         {
-            float fx_edge = 0.010f;
-            float fy_edge1 = 0.010f;
+            float m_e_min_x_LeftLeg = 0.010f; // Left leg
+            float m_e_min_z_RightLeg = 0.010f; // Right leg
+
+            float m_e_min_y_LeftLeg = 0.010f;
+            float m_e_min_y_RightLeg = 0.010f;
+
             float fy_edge2 = 0.030f;
             float fy_edge3 = 0.120f;
 
@@ -35,9 +39,9 @@ namespace BaseClasses
                 {
                     // Left Leg
 
-                    HolesCentersPoints2D[0] = new Point(fx_edge, fy_edge1);
+                    HolesCentersPoints2D[0] = new Point(m_e_min_x_LeftLeg, m_e_min_y_LeftLeg);
 
-                    HolesCentersPoints2D[1] = new Point(flZ - fx_edge, HolesCentersPoints2D[0].Y);
+                    HolesCentersPoints2D[1] = new Point(flZ - m_e_min_x_LeftLeg, HolesCentersPoints2D[0].Y);
 
                     HolesCentersPoints2D[2] = new Point(0.5f * flZ, fy_edge2);
 
@@ -47,9 +51,9 @@ namespace BaseClasses
 
                     HolesCentersPoints2D[5] = new Point(HolesCentersPoints2D[3].X, fhY - fy_edge2);
 
-                    HolesCentersPoints2D[6] = new Point(HolesCentersPoints2D[0].X, fhY - fy_edge1);
+                    HolesCentersPoints2D[6] = new Point(HolesCentersPoints2D[0].X, fhY - m_e_min_y_LeftLeg);
 
-                    HolesCentersPoints2D[7] = new Point(HolesCentersPoints2D[1].X, fhY - fy_edge1);
+                    HolesCentersPoints2D[7] = new Point(HolesCentersPoints2D[1].X, fhY - m_e_min_y_LeftLeg);
 
                     // Right Leg
                     HolesCentersPoints2D[8] = new Point(fbX1 + HolesCentersPoints2D[6].X, HolesCentersPoints2D[6].Y);
@@ -72,11 +76,11 @@ namespace BaseClasses
                 {
                     // Left Leg
 
-                    HolesCentersPoints2D[0] = new Point(fx_edge, fy_edge1);
+                    HolesCentersPoints2D[0] = new Point(m_e_min_x_LeftLeg, m_e_min_y_LeftLeg);
 
-                    HolesCentersPoints2D[1] = new Point(flZ - fx_edge, HolesCentersPoints2D[0].Y);
+                    HolesCentersPoints2D[1] = new Point(flZ - m_e_min_x_LeftLeg, HolesCentersPoints2D[0].Y);
 
-                    HolesCentersPoints2D[2] = new Point(HolesCentersPoints2D[0].X, fhY - fy_edge1);
+                    HolesCentersPoints2D[2] = new Point(HolesCentersPoints2D[0].X, fhY - m_e_min_y_LeftLeg);
 
                     HolesCentersPoints2D[3] = new Point(HolesCentersPoints2D[1].X, HolesCentersPoints2D[2].Y);
 

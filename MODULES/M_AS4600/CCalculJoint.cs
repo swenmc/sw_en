@@ -327,7 +327,7 @@ namespace M_AS4600
                 float fe_horizontal = framePlate.e_min_x;
                 float fe_vertical = framePlate.e_min_y;
 
-                designDetails.fe = Math.Min(fe_horizontal, fe_vertical); // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
+                designDetails.fe = Math.Min(fe_horizontal, fe_vertical); // Min vzdialenost skrutky od okraja plechu alebo prierezu
             }
             else
                 throw new ArgumentNullException("Invalid type of the knee or apex plate.");
@@ -485,8 +485,30 @@ namespace M_AS4600
             designDetails.fEta_5435_MainMember = eq.Eq_5435____(designDetails.fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / designDetails.iNumberOfScrewsInTension, 0.6f, designDetails.fV_b_for5435_MainMember, designDetails.fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_5435_MainMember);
 
+            float fe_horizontal_SecMember;
+
             // 5.4.2.5 Connection shear as limited by end distance
-            designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+            if (plate is CConCom_Plate_F_or_L)
+            {
+                CConCom_Plate_F_or_L plate_F_or_L = (CConCom_Plate_F_or_L)plate;
+
+                fe_horizontal_SecMember = plate_F_or_L.e_min_z_RightLeg;
+                float fe_horizontal = Math.Min(plate_F_or_L.e_min_x_LeftLeg, plate_F_or_L.e_min_z_RightLeg);
+                float fe_vertical = Math.Min(plate_F_or_L.e_min_y_LeftLeg, plate_F_or_L.e_min_y_RightLeg);
+                designDetails.fe_Plate = fe_vertical; // Uvazujeme vertikalnu vzdialenost, dominantne zatazenie je v smere vertikalnej osi pruta
+
+            }
+            else if(plate is CConCom_Plate_LL)
+            {
+                CConCom_Plate_LL plate_LL = (CConCom_Plate_LL)plate;
+
+                fe_horizontal_SecMember = plate_LL.e_min_z_RightLeg;
+                float fe_horizontal = Math.Min(plate_LL.e_min_x_LeftLeg, plate_LL.e_min_z_RightLeg);
+                float fe_vertical = Math.Min(plate_LL.e_min_y_LeftLeg, plate_LL.e_min_y_RightLeg);
+                designDetails.fe_Plate = fe_vertical; // Uvazujeme vertikalnu vzdialenost, dominantne zatazenie je v smere vertikalnej osi pruta
+            }
+            else
+                throw new ArgumentNullException("Invalid type of the member joint plate.");
 
             // Distance to an end of the connected part is parallel to the line of the applied force
             designDetails.fV_asterix_fv_plate = Math.Abs(sDIF_temp.fV_yv_yy / designDetails.iNumberOfScrewsInTension);
@@ -548,7 +570,7 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_Vb_5424_SecondaryMember);
 
             // Tension force in secondary member, distance between end of member and screw
-            designDetails.fe_SecondaryMember = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja nosnika
+            designDetails.fe_SecondaryMember = fe_horizontal_SecMember; // Horizontal distance
             designDetails.fV_asterix_fv_SecondaryMember = Math.Abs(sDIF_temp.fN / designDetails.iNumberOfScrewsInConnectionOfSecondaryMember);
             designDetails.fV_fv_SecondaryMember = eq.Eq_5425_2__(ft_2_crscsecMember, designDetails.fe_SecondaryMember, ff_uk_2_SecondaryMember);
             designDetails.fEta_V_fv_5425_SecondaryMember = eq.Eq_5425_1__(designDetails.fV_asterix_fv_SecondaryMember, designDetails.fV_fv_SecondaryMember, ff_uk_2_SecondaryMember, ff_yk_2_SecondaryMember);
@@ -671,7 +693,7 @@ namespace M_AS4600
 
                         // Right Leg
                         // Distance to an end of the connected part is parallel to the line of the applied force
-                        designDetails.fe_Plate1 = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                        designDetails.fe_Plate1 = plate1.e_min_z_RightLeg; // Horizontalna vzdialenost - v smere smykovej sily v stlpe
 
                         DesignScrewedConnectionInShear(
                                     fDIF_V_connection_one_side,
@@ -718,7 +740,7 @@ namespace M_AS4600
                         designDetails.iNumberOfScrewsInShear_Plate2 = plateM.ScrewArrangement.IHolesNumber / 3; // TODO - urcit presny pocet skrutiek v spoji ktore su pripojene k main member a ktore k secondary member, tahovu silu prenasaju skrutky pripojene k main member
 
                         // Distance to an end of the connected part is parallel to the line of the applied force
-                        designDetails.fe_Plate2 = 0.02f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                        designDetails.fe_Plate2 = plateM.e_min_x; // Horizontalna vzdialenost - v smere tahovej sily v plechu
 
                         DesignScrewedConnectionInShear(
                                     fDIF_N_plate,
@@ -807,7 +829,7 @@ namespace M_AS4600
 
                     // Right Leg
                     // Distance to an end of the connected part is parallel to the line of the applied force
-                    designDetails.fe_Plate1 = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                    designDetails.fe_Plate1 = plate1.e_min_z_RightLeg; // Horizontalna vzdialenost - v smere smykovej sily v stlpe
 
                     DesignScrewedConnectionInShear(
                                 fDIF_V_connection_one_side,
@@ -837,7 +859,7 @@ namespace M_AS4600
 
                     // Bottom Leg
                     // Distance to an end of the connected part is parallel to the line of the applied force
-                    designDetails.fe_Plate2_BL = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                    designDetails.fe_Plate2_BL = plate2.e_min_x_BottomLeg; // Horizontalna vzdialenost - v smere smykovej sily v stlpe
 
                     DesignScrewedConnectionInShear(
                                 fDIF_V_connection_one_side,
@@ -862,7 +884,7 @@ namespace M_AS4600
 
                     // Top Leg
                     // Distance to an end of the connected part is parallel to the line of the applied force
-                    designDetails.fe_Plate2_TL = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                    designDetails.fe_Plate2_TL = plate2.e_min_x_TopLeg; // Horizontalna vzdialenost - v smere smykovej sily v stlpe
 
                     DesignScrewedConnectionInShear(
                                 fDIF_V_connection_one_side,
@@ -953,7 +975,7 @@ namespace M_AS4600
                     fEta_max = MathF.Max(fEta_max, designDetails.fEta_5435_MainMember);
 
                     // 5.4.2.5 Connection shear as limited by end distance
-                    designDetails.fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
+                    designDetails.fe_Plate =  0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
 
                     // Distance to an end of the connected part is parallel to the line of the applied force
                     designDetails.fV_asterix_fv_plate = fDIF_V_connection_one_side / (designDetails.iNumberOfScrewsInTension / 2);
